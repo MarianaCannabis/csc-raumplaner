@@ -120,7 +120,7 @@ canvas{display:block}
 .rtab{flex:1;padding:9px 4px;text-align:center;font-size:11px;cursor:pointer;color:var(--tx3);border-bottom:2px solid transparent;transition:.12s}
 .rtab.active{color:var(--gr);border-color:var(--gr)}
 
-.rpanel{flex:1;display:none;flex-direction:column;overflow:hidden}
+.rpanel{flex:1;display:none;flex-direction:column;overflow:hidden;min-height:0}
 .rpanel.active{display:flex}
 /* Phase 4 – light panel */
 .lp-body{flex:1;overflow-y:auto;padding:10px;scrollbar-width:thin;scrollbar-color:var(--bd2) transparent}
@@ -174,7 +174,7 @@ canvas{display:block}
 .asend:disabled{background:var(--bg3);border-color:var(--bd);color:var(--tx3);cursor:not-allowed}
 
 /* Save panel */
-.spanel-body{flex:1;overflow-y:auto;padding:10px;scrollbar-width:thin;scrollbar-color:var(--bd2) transparent}
+.spanel-body{flex:1;overflow-y:auto;overflow-x:hidden;padding:10px;scrollbar-width:thin;scrollbar-color:var(--bd2) transparent;max-height:calc(100vh - 100px)}
 .api-box{padding:10px;background:var(--bg3);border:1px solid var(--bd);border-radius:var(--r8);margin-bottom:10px}
 .api-box label{display:block;font-size:10px;color:var(--gr);font-weight:700;margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px}
 .api-row{display:flex;gap:5px}
@@ -684,8 +684,10 @@ canvas{display:block}
         <button class="tbt" style="padding:9px" onclick="document.getElementById('json-up').click()">📤 .json laden</button>
         <input type="file" id="json-up" accept=".json" style="display:none" onchange="loadJSONFile(event)">
       </div>
+      <div style="height:1px;background:var(--bd);margin:8px 0"></div>
       <!-- SUPABASE CLOUD -->
-      <div class="api-box" style="border-color:#0c2230;margin-top:6px">
+      <div style="font-size:9px;font-weight:700;color:#38bdf8;text-transform:uppercase;letter-spacing:.4px;margin:14px 0 5px">☁️ Cloud-Speicher</div>
+      <div class="api-box" style="border-color:#38bdf8;margin-top:0;background:#0a1520" id="supabase-box">
         <label style="color:#38bdf8">☁️ Cloud-Speicher (Supabase)</label>
         <div id="sb-status" style="font-size:10px;color:var(--tx3);margin-bottom:6px">Nicht verbunden</div>
         <div style="display:flex;flex-direction:column;gap:4px">
