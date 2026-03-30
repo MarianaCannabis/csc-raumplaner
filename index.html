@@ -694,6 +694,10 @@ canvas{display:block}
           <input class="api-inp" id="sb-url" type="text" placeholder="https://xxx.supabase.co" autocomplete="off" style="font-size:10px">
           <input class="api-inp" id="sb-key" type="password" placeholder="anon public key (eyJ…)" autocomplete="off" style="font-size:10px">
           <button class="tbt" style="padding:6px;border-color:#38bdf8;color:#38bdf8" onclick="connectSupabase()">🔗 Verbinden</button>
+          <div style="font-size:9px;color:var(--tx3);line-height:1.6;margin-top:4px">
+            📍 Supabase → dein Projekt → <b>Settings → API</b><br>
+            URL = "Project URL" · Key = "<b>anon public</b>" (nicht service_role!)
+          </div>
         </div>
       </div>
       <div style="display:flex;gap:5px;margin-bottom:6px">
@@ -4240,6 +4244,8 @@ function loadSupabaseConfig(){
     if(u) u.value = SB_URL;
     if(k) k.value = '••••••••••••••';
     updateSbStatus(true);
+    // Auto-load cloud projects list
+    setTimeout(showCloudProjects, 500);
   }
 }
 
@@ -4262,32 +4268,87 @@ function updateSbStatus(connected){
 }
 
 async function connectSupabase(){
-  const url = document.getElementById('sb-url')?.value.trim();
-  const key = document.getElementById('sb-key')?.value.trim();
-  if(!url || !key){ toast('Bitte URL und Key eintragen','r'); return; }
-  if(key.startsWith('•')){ 
-    // Already saved — just reconnect with stored values
+  let url = (document.getElementById('sb-url')?.value||'').trim();
+  const key = (document.getElementById('sb-key')?.value||'').trim();
+
+  // Reconnect with stored values if already saved
+  if(key.startsWith('••')){
+    SB_URL = localStorage.getItem('sb-url')||'';
+    SB_KEY = localStorage.getItem('sb-key')||'';
     updateSbStatus(true);
     toast('☁️ Supabase verbunden!','g');
     return;
   }
-  // Test connection
+
+  // Basic validation
+  if(!url){ setSbMsg('❌ Bitte Supabase URL eintragen','r'); return; }
+  if(!key){ setSbMsg('❌ Bitte Anon-Key eintragen','r'); return; }
+
+  // Normalize URL (remove trailing slash)
+  url = url.replace(/\/+$/, '');
+
+  // Must start with https://
+  if(!url.startsWith('http')){
+    setSbMsg('❌ URL muss mit https:// beginnen','r'); return;
+  }
+
+  setSbMsg('⏳ Verbinde…','n');
+
   try {
-    const r = await fetch(url+'/rest/v1/csc_projects?select=id&limit=1', {
+    // Step 1: Test if Supabase is reachable at all
+    const pingR = await fetch(url+'/rest/v1/', {
       headers: { 'apikey': key, 'Authorization': 'Bearer '+key }
     });
-    if(r.status === 200 || r.status === 404 || r.status === 406){
-      SB_URL = url; SB_KEY = key;
-      localStorage.setItem('sb-url', url);
-      localStorage.setItem('sb-key', key);
-      updateSbStatus(true);
-      toast('☁️ Supabase verbunden!','g');
-    } else {
-      toast('Verbindung fehlgeschlagen ('+r.status+')','r');
+
+    if(pingR.status === 401){
+      setSbMsg('❌ Key ungültig — bitte "anon public" Key prüfen (nicht den service_role Key)','r');
+      return;
     }
+    if(pingR.status !== 200 && pingR.status !== 404){
+      setSbMsg('❌ Supabase nicht erreichbar (Status '+pingR.status+') — URL prüfen','r');
+      return;
+    }
+
+    // Step 2: Check if our table exists
+    const tableR = await fetch(url+'/rest/v1/csc_projects?select=id&limit=1', {
+      headers: { 'apikey': key, 'Authorization': 'Bearer '+key }
+    });
+
+    if(tableR.status === 404 || tableR.status === 406){
+      const body = await tableR.text();
+      if(body.includes('relation') || body.includes('does not exist') || body.includes('csc_projects')){
+        setSbMsg('❌ Tabelle "csc_projects" nicht gefunden — bitte erst SQL ausführen (siehe Anleitung)','r');
+        return;
+      }
+    }
+
+    if(tableR.status !== 200){
+      const body = await tableR.text().catch(()=>'');
+      setSbMsg('❌ Fehler '+tableR.status+': '+body.slice(0,80),'r');
+      return;
+    }
+
+    // Success!
+    SB_URL = url;
+    SB_KEY = key;
+    localStorage.setItem('sb-url', url);
+    localStorage.setItem('sb-key', key);
+    updateSbStatus(true);
+    toast('☁️ Supabase verbunden!','g');
+
   } catch(e){
-    toast('Verbindungsfehler: '+e.message,'r');
+    if(e.message.includes('Failed to fetch') || e.message.includes('NetworkError')){
+      setSbMsg('❌ Netzwerkfehler — URL prüfen: "'+url+'"','r');
+    } else {
+      setSbMsg('❌ '+e.message,'r');
+    }
   }
+}
+
+function setSbMsg(msg, type){
+  const el = document.getElementById('sb-status'); if(!el) return;
+  el.textContent = msg;
+  el.style.color = type==='r'?'#f87171': type==='g'?'#4ade80':'#38bdf8';
 }
 
 async function cloudSave(){
