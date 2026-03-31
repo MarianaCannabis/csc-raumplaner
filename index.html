@@ -489,7 +489,7 @@ canvas{display:block}
 
 <!-- TOPBAR -->
 <div id="topbar">
-  <span class="logo">🌿 CSC <em>Raumplaner</em></span><span class="vbadge">v3.10r</span>
+  <span class="logo">🌿 CSC <em>Raumplaner</em></span><span class="vbadge">v3.11</span>
   <div class="tsep"></div>
   <button class="tbt" id="undo-btn" onclick="undo()" disabled title="Rückgängig (Ctrl+Z)" style="letter-spacing:.5px">↩ Undo</button>
   <button class="tbt" id="redo-btn" onclick="redo()" disabled title="Wiederholen (Ctrl+Y)" style="letter-spacing:.5px">↪ Redo</button>
@@ -2024,16 +2024,26 @@ tCv.addEventListener('mousedown',e=>{
   mDnX=e.clientX;mDnY=e.clientY;mMov=false;oDrg=true;lmx=e.clientX;lmy=e.clientY;
 });
 tCv.addEventListener('mousemove',e=>{
-  if(currentView==='walk')return;
+  if(currentView==='walk') return;
+  // Grab3d object movement (G key mode)
+  if(grab3d) { _doGrab3dMove(e); return; }
+  // Orbit / pan
   if(oDrg){
-    const dx=e.clientX-lmx,dy=e.clientY-lmy;lmx=e.clientX;lmy=e.clientY;
-    if(Math.abs(e.clientX-mDnX)>3||Math.abs(e.clientY-mDnY)>3)mMov=true;
-    if(e.buttons===1){oTh-=dx*0.007;oPh=Math.max(0.05,Math.min(Math.PI*0.47,oPh+dy*0.007));}
+    const dx=e.clientX-lmx, dy=e.clientY-lmy;
+    lmx=e.clientX; lmy=e.clientY;
+    if(Math.abs(e.clientX-mDnX)>3||Math.abs(e.clientY-mDnY)>3) mMov=true;
+    if(e.buttons===1){
+      oTh -= dx*0.007;
+      oPh  = Math.max(0.05, Math.min(Math.PI*0.47, oPh+dy*0.007));
+    }
     if(e.buttons===2||e.buttons===4){
       const spd=oRad*0.0014;
-      const rgt=new THREE.Vector3();rgt.crossVectors(new THREE.Vector3(0,1,0),oCam.position.clone().sub(oTgt)).normalize();
+      const rgt=new THREE.Vector3();
+      rgt.crossVectors(new THREE.Vector3(0,1,0), oCam.position.clone().sub(oTgt)).normalize();
       const fwd2=new THREE.Vector3(Math.sin(oTh),0,Math.cos(oTh));
-      oTgt.addScaledVector(rgt,dx*spd);oTgt.addScaledVector(fwd2,-dy*spd*0.6);oTgt.y=0;
+      oTgt.addScaledVector(rgt,dx*spd);
+      oTgt.addScaledVector(fwd2,-dy*spd*0.6);
+      oTgt.y=0;
     }
   }
 });
@@ -2357,6 +2367,22 @@ function loadPD(d){
 loadSupabaseConfig();
 initGuide();
 loadCustomDesigns();
+// ── Auto-restore last session ──────────────────────────────────────
+(function autoRestore(){
+  const saved = localStorage.getItem('csc-autosave');
+  const ts    = +(localStorage.getItem('csc-autosave-ts')||0);
+  if(!saved) return;
+  // Only auto-restore if saved within last 7 days and has content
+  if(Date.now()-ts > 7*24*3600*1000) return;
+  try {
+    const s = JSON.parse(saved);
+    if(!s.rooms || s.rooms.length === 0) return; // empty, skip
+    _restoreSnapshot(saved);
+    const ago = Math.round((Date.now()-ts)/60000);
+    const agoStr = ago<60 ? ago+'min' : Math.round(ago/60)+'h';
+    toast('🔄 Letzter Stand wiederhergestellt (vor '+agoStr+')', 'g');
+  } catch(e) {}
+})();
 }
 function saveProj(){
   const saves=JSON.parse(localStorage.getItem('csc-saves3')||'{}');
@@ -2398,7 +2424,7 @@ function doPrint(){
     +'td,th{border:1px solid #ddd;padding:4px 6px;text-align:left}th{background:#f5f5f5}'
     +'@media print{body{padding:8px}}</style></head><body>'
     +'<h1>🌿 '+d.name+'</h1>'
-    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.6 · '+new Date().toLocaleDateString('de-DE')+'</div>'
+    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.11 · '+new Date().toLocaleDateString('de-DE')+'</div>'
     +'<img src="'+img+'">'
     +'<div class=grid>'
     +'<div class=box><h3>Räume ('+d.rooms.length+')</h3>'
@@ -2458,6 +2484,11 @@ function snapshot(){
   if(undoStack.length > MAX_HISTORY) undoStack.shift();
   undoIdx = undoStack.length - 1;
   _updUndoBtns();
+  // Auto-save to localStorage on every change
+  try {
+    localStorage.setItem('csc-autosave', state);
+    localStorage.setItem('csc-autosave-ts', Date.now().toString());
+  } catch(e) {}
 }
 
 function undo(){
@@ -3094,7 +3125,9 @@ function buildDoor3D_v2(g, item, o){
       const m=new THREE.Mesh(new THREE.BoxGeometry(fw,fh,fd),frameMat);m.position.set(px,py,pz);m.castShadow=true;g.add(m);
     });
     // Glass panel
-    const gl=new THREE.Mesh(new THREE.BoxGeometry(w-0.08,h-0.08,0.12),glassMat);gl.position.set(0,h/2,0);g.add(gl);
+    // Full-height glass panel (transparent, light passes through)
+    const gl=new THREE.Mesh(new THREE.BoxGeometry(w-0.1,h-0.1,0.02),glassMat);
+    gl.position.set(0,h/2,0); gl.renderOrder=1; g.add(gl);
     // Handle
     const hMat=new THREE.MeshStandardMaterial({color:0xcccccc,roughness:0.1,metalness:0.95});
     const hnd=new THREE.Mesh(new THREE.BoxGeometry(0.03,0.18,0.04),hMat);hnd.position.set(w/2-0.08,1.05,0.04);g.add(hnd);
@@ -3121,17 +3154,31 @@ function buildDoor3D_v2(g, item, o){
     // Standard panel door (existing logic, enhanced)
     const colHex = o.customColor ? parseInt(o.customColor.replace('#',''),16) : (item.col||0x8a6030);
     const dMat=new THREE.MeshStandardMaterial({color:colHex,roughness:0.55,metalness:0.05});
-    const door=new THREE.Mesh(new THREE.BoxGeometry(w-0.04,h-0.04,0.14),dMat);door.position.set(0,h/2,0);door.castShadow=true;g.add(door);
-    // Panels
-    const pMat=new THREE.MeshStandardMaterial({color:colHex-0x0a0a0a,roughness:0.65});
-    const pH=h*0.3, pW=w*0.38;
-    [[-pW*0.55,h*0.62],[pW*0.55,h*0.62],[-pW*0.55,h*0.27],[pW*0.55,h*0.27]].forEach(([ox,oy])=>{
-      const pm=new THREE.Mesh(new THREE.BoxGeometry(pW,pH,0.012),pMat);pm.position.set(ox,oy,0.026);g.add(pm);
+    // Door leaf
+    const door=new THREE.Mesh(new THREE.BoxGeometry(w-0.04,h-0.04,0.06),dMat);
+    door.position.set(0,h/2,0.04); door.castShadow=true; g.add(door);
+    // Inset panels (embossed)
+    const pMat=new THREE.MeshStandardMaterial({color:Math.max(0,colHex-0x151515),roughness:0.68});
+    const pH=h*0.28, pW=w*0.4;
+    [[-pW*0.52,h*0.65],[pW*0.52,h*0.65],[-pW*0.52,h*0.30],[pW*0.52,h*0.30]].forEach(([ox,oy])=>{
+      const pm=new THREE.Mesh(new THREE.BoxGeometry(pW,pH,0.015),pMat);
+      pm.position.set(ox,oy,0.075); g.add(pm);
     });
-    // Handle
-    const hMat=new THREE.MeshStandardMaterial({color:0xd4aa50,roughness:0.12,metalness:0.92});
-    const hnd=new THREE.Mesh(new THREE.BoxGeometry(0.12,0.03,0.03),hMat);hnd.position.set(w/2-0.14,1.05,0.045);g.add(hnd);
-    const hndV=new THREE.Mesh(new THREE.BoxGeometry(0.03,0.12,0.03),hMat);hndV.position.set(w/2-0.11,1.05,0.045);g.add(hndV);
+    // Gold handle + backplate
+    const hMat=new THREE.MeshStandardMaterial({color:0xd4aa50,roughness:0.12,metalness:0.95});
+    const bpMat=new THREE.MeshStandardMaterial({color:0xc09020,roughness:0.2,metalness:0.8});
+    // Backplate
+    const bp=new THREE.Mesh(new THREE.BoxGeometry(0.04,0.22,0.015),bpMat);
+    bp.position.set(w/2-0.12,1.05,0.075); g.add(bp);
+    // Horizontal grip
+    const hndH=new THREE.Mesh(new THREE.CylinderGeometry(0.012,0.012,0.13,10),hMat);
+    hndH.rotation.z=Math.PI/2; hndH.position.set(w/2-0.14,1.05,0.10); g.add(hndH);
+    // Vertical part
+    const hndV2=new THREE.Mesh(new THREE.CylinderGeometry(0.012,0.012,0.10,10),hMat);
+    hndV2.position.set(w/2-0.07,1.05,0.10); g.add(hndV2);
+    // Keyhole
+    const kh=new THREE.Mesh(new THREE.CylinderGeometry(0.015,0.015,0.012,8),bpMat);
+    kh.rotation.x=Math.PI/2; kh.position.set(w/2-0.12,0.95,0.078); g.add(kh);
     // Frame
     const fMat=new THREE.MeshStandardMaterial({color:0xe8e0d0,roughness:0.6});
     [[0.07,h+0.04,0.13,-w/2-0.035,h/2,0],[0.07,h+0.04,0.13,w/2+0.035,h/2,0],[w+0.14,0.07,0.13,0,h+0.035,0]].forEach(([fw,fh,fd,px,py,pz])=>{
@@ -3152,23 +3199,42 @@ function buildWindow3D_v2(g, item, o){
   const foilOpacity = o.foilOpacity!=null ? o.foilOpacity : 0.0;
   const sill = style==='shopfront' ? 0.0 : 0.9; // bodentief
 
-  // Glass pane
-  const glOpacity = style==='shopfront' ? 0.22 : 0.26;
-  const glColor = foilColor && foilOpacity > 0 ? foilColor : 0x88ccff;
-  const glOp = foilColor && foilOpacity > 0 ? foilOpacity : glOpacity;
-  const glMat=new THREE.MeshStandardMaterial({color:glColor,roughness:0.02,metalness:0.0,transparent:true,opacity:glOp,side:THREE.DoubleSide});
-  const gl=new THREE.Mesh(new THREE.BoxGeometry(w-0.06,h-0.04,0.12),glMat);gl.position.set(0,sill+h/2,0);g.add(gl);
+  // Glass pane — physically correct transparent material
+  const glColor = foilColor && foilOpacity > 0 ? foilColor : 0x99ccff;
+  const glOp    = foilColor && foilOpacity > 0 ? foilOpacity : (style==='shopfront' ? 0.18 : 0.25);
+  const glMat   = new THREE.MeshStandardMaterial({
+    color:glColor, roughness:0.0, metalness:0.0,
+    transparent:true, opacity:glOp,
+    side:THREE.DoubleSide, depthWrite:false,
+    envMapIntensity:1.5
+  });
+  const glThick = style==='shopfront' ? 0.02 : 0.08;
+  const gl=new THREE.Mesh(new THREE.BoxGeometry(w-0.04,h-0.02,glThick),glMat);
+  gl.position.set(0,sill+h/2,0); gl.renderOrder=1; g.add(gl);
 
-  const fMat=new THREE.MeshStandardMaterial({color: style==='shopfront'?0x888888:0xf5f0e8, roughness: style==='shopfront'?0.4:0.55, metalness: style==='shopfront'?0.6:0.0});
+  // Window frame material
+  const fMat=new THREE.MeshStandardMaterial({
+    color: style==='shopfront'?0x999999:0xf5f0e8,
+    roughness: style==='shopfront'?0.35:0.55,
+    metalness: style==='shopfront'?0.7:0.0
+  });
 
-  // The wall already has the opening — just place glass panel
+  // The wall already has the opening — just place frame + glass
   if(style==='shopfront'){
-    [[w+0.1,0.06,0.12,0,sill-0.03],[w+0.1,0.06,0.12,0,sill+h+0.03],[0.06,h+0.12,0.12,-w/2-0.03,sill+h/2],[0.06,h+0.12,0.12,w/2+0.03,sill+h/2]].forEach(([fw,fh,fd,px,py])=>{
-      const m=new THREE.Mesh(new THREE.BoxGeometry(fw,fh,fd),fMat);m.position.set(px,py,0);m.castShadow=true;g.add(m);
+    // Aluminium profiles: top, bottom, left, right
+    const profW=0.05;
+    [[w+profW*2,profW,0.12,0,sill+h+profW/2],           // top bar
+     [w+profW*2,profW,0.12,0,sill-profW/2],              // bottom bar
+     [profW,h+profW*2,0.12,-w/2-profW/2,sill+h/2],      // left post
+     [profW,h+profW*2,0.12,w/2+profW/2,sill+h/2]        // right post
+    ].forEach(([fw,fh,fd,px,py])=>{
+      const m=new THREE.Mesh(new THREE.BoxGeometry(fw,fh,fd),fMat);
+      m.position.set(px,py,0); m.castShadow=true; g.add(m);
     });
-    // Central cross bar at 1.2m
+    // Central horizontal bar at 1.2m for tall shopfronts
     if(h>2.0){
-      const cross=new THREE.Mesh(new THREE.BoxGeometry(w-0.08,0.05,0.05),fMat);cross.position.set(0,1.2,0.001);g.add(cross);
+      const cross=new THREE.Mesh(new THREE.BoxGeometry(w-0.04,profW,0.12),fMat);
+      cross.position.set(0,1.2,0); g.add(cross);
     }
   } else {
     // Standard window: white frame, cross bars, window sill
@@ -4155,7 +4221,7 @@ function pickKallaxColor(id, part){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// KALLAX PRO EDITOR — Extended (v3.7)
+// KALLAX PRO EDITOR — Extended (v3.11)
 // ════════════════════════════════════════════════════════════════════════
 
 // Additional color palettes
@@ -5239,29 +5305,28 @@ function get3dObjId(mesh){
 }
 
 tCv.addEventListener('click', e=>{
-  // 3D SELECT: single click (orbit drag is handled separately)
   if(currentView!=='3d') return;
   if(e.button!==0) return;
-  if(mMov) return; // was a drag, not a click
+  // Stop grab mode on click
+  if(grab3d){
+    grab3d=false; grab3dLast=null;
+    tCv.style.cursor='default';
+    snapshot(); toast('📦 Position gespeichert','g');
+    return;
+  }
+  if(mMov) return; // was a drag = orbit, not a select-click
 
-  const rect = tCv.getBoundingClientRect();
+  // Raycast select
+  const rect=tCv.getBoundingClientRect();
   MV3.set(((e.clientX-rect.left)/rect.width)*2-1, -((e.clientY-rect.top)/rect.height)*2+1);
   RC3.setFromCamera(MV3, oCam);
-
-  const allMeshes = [];
+  const allMeshes=[];
   Object.values(obj3Map).forEach(g=>{ if(g) g.traverse(c=>{ if(c.isMesh) allMeshes.push(c); }); });
-  const hits = RC3.intersectObjects(allMeshes, false);
-
-  if(hits.length > 0){
-    const objId = get3dObjId(hits[0].object);
-    if(objId){
-      setSelection(objId, false);
-      openPropPanel(objId, false);
-      toast('📦 Objekt ausgewählt — Ziehen zum Verschieben (G), Del zum Löschen','b');
-    }
-  } else {
-    setSelection(null, false);
-  }
+  const hits=RC3.intersectObjects(allMeshes, false);
+  if(hits.length>0){
+    const objId=get3dObjId(hits[0].object);
+    if(objId){ setSelection(objId,false); openPropPanel(objId,false); toast('📦 Ausgewählt · G=Verschieben · Del=Löschen','b'); }
+  } else { setSelection(null,false); }
 });
 
 // 3D DRAG: G key + mouse to move selected object in 3D
@@ -5278,34 +5343,22 @@ document.addEventListener('keydown', e=>{
 });
 
 let grab3dLast = null;
-tCv.addEventListener('mousemove', e=>{
-  if(currentView!=='3d') return;
+// Grab3d movement is handled inside the existing mousemove via extension:
+// (see the oDrg mousemove handler above — grab3d is checked there)
+function _doGrab3dMove(e){
   if(!grab3d || !selId) return;
-
   if(!grab3dLast){ grab3dLast={x:e.clientX,y:e.clientY}; return; }
-
-  const dx = e.clientX - grab3dLast.x;
-  const dy = e.clientY - grab3dLast.y;
-  grab3dLast = {x:e.clientX, y:e.clientY};
-
-  const o = objects.find(o=>o.id===selId); if(!o) return;
-  const camAngle = Math.atan2(oCam.position.x-oTgt.x, oCam.position.z-oTgt.z);
-  const spd = 0.025;
-  o.x = snapM(o.x + (dx*Math.cos(camAngle)+dy*Math.sin(camAngle))*spd);
-  o.y = snapM(o.y + (-dx*Math.sin(camAngle)+dy*Math.cos(camAngle))*spd);
-
-  const g2 = obj3Map[selId];
-  if(g2){
-    const it2=findItem(o.typeId)||{};
-    g2.position.set(o.x+(o.w||it2.w||1)/2, o.py||0, o.y+(o.d||it2.d||1)/2);
-  }
+  const dx=e.clientX-grab3dLast.x, dy=e.clientY-grab3dLast.y;
+  grab3dLast={x:e.clientX,y:e.clientY};
+  const o=objects.find(o=>o.id===selId); if(!o) return;
+  const ca=Math.atan2(oCam.position.x-oTgt.x, oCam.position.z-oTgt.z);
+  const spd=0.025;
+  o.x=snapM(o.x+(dx*Math.cos(ca)+dy*Math.sin(ca))*spd);
+  o.y=snapM(o.y+(-dx*Math.sin(ca)+dy*Math.cos(ca))*spd);
+  const g2=obj3Map[selId];
+  if(g2){const it2=findItem(o.typeId)||{};g2.position.set(o.x+(o.w||it2.w||1)/2,o.py||0,o.y+(o.d||it2.d||1)/2);}
   draw2D();
-});
-
-tCv.addEventListener('click', e=>{
-  // Stop grab3d on click
-  if(grab3d){ grab3d=false; grab3dLast=null; tCv.style.cursor='default'; snapshot(); toast('📦 Position gespeichert','g'); }
-}, {capture:true});
+}
 
 // 3D keyboard shortcuts
 document.addEventListener('keydown', e=>{
@@ -5450,6 +5503,22 @@ updateSavedUI();
 loadSupabaseConfig();
 initGuide();
 loadCustomDesigns();
+// ── Auto-restore last session ──────────────────────────────────────
+(function autoRestore(){
+  const saved = localStorage.getItem('csc-autosave');
+  const ts    = +(localStorage.getItem('csc-autosave-ts')||0);
+  if(!saved) return;
+  // Only auto-restore if saved within last 7 days and has content
+  if(Date.now()-ts > 7*24*3600*1000) return;
+  try {
+    const s = JSON.parse(saved);
+    if(!s.rooms || s.rooms.length === 0) return; // empty, skip
+    _restoreSnapshot(saved);
+    const ago = Math.round((Date.now()-ts)/60000);
+    const agoStr = ago<60 ? ago+'min' : Math.round(ago/60)+'h';
+    toast('🔄 Letzter Stand wiederhergestellt (vor '+agoStr+')', 'g');
+  } catch(e) {}
+})();
 showLeft('rooms');
 setView('2d');
 animate(0);
@@ -5475,7 +5544,7 @@ draw2D();
 
 renderFloorTabs();
 initUndoSystem();
-setTimeout(()=>toast('🌿 v3.10r | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
+setTimeout(()=>toast('🌿 v3.11 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
 
 
 // ════════════════════════════════════════════════════════════════════════
@@ -5778,7 +5847,7 @@ function build3DObj(o){
   const metal = o.metalness !== undefined ? o.metalness : (item.arch==='window'?0.0: item.arch==='door'?0.05:['Lager','Info'].includes(item.cat)?0.55:0.04);
 
   if(item.isKallax || (item.id&&item.id.startsWith('kallax'))){
-    buildKallax3DPro(g, item, o); // v3.7 Pro
+    buildKallax3DPro(g, item, o); // v3.11 Pro
   } else if(item.arch==='security'){
     buildSecurity3D(g, item, o);
   } else if(item.arch==='foil'){
