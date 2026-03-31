@@ -489,7 +489,7 @@ canvas{display:block}
 
 <!-- TOPBAR -->
 <div id="topbar">
-  <span class="logo">🌿 CSC <em>Raumplaner</em></span><span class="vbadge">v3.9</span>
+  <span class="logo">🌿 CSC <em>Raumplaner</em></span><span class="vbadge">v3.10</span>
   <div class="tsep"></div>
   <button class="tbt" id="undo-btn" onclick="undo()" disabled title="Rückgängig (Ctrl+Z)" style="letter-spacing:.5px">↩ Undo</button>
   <button class="tbt" id="redo-btn" onclick="redo()" disabled title="Wiederholen (Ctrl+Y)" style="letter-spacing:.5px">↪ Redo</button>
@@ -500,6 +500,7 @@ canvas{display:block}
   <button class="tbt" onclick="dlJSON()">📥 Export</button>
   <button class="tbt" onclick="doPrint()">🖨 Drucken</button>
   <button class="tbt" onclick="showStats()" title="Raumstatistik">📊</button>
+  <span id="view-hint-3d" style="font-size:10px;color:var(--tx3);display:none">3D: Klick=Auswählen · Ziehen=Verschieben · Del=Löschen · Pfeiltasten=Feinpos. · Rechts=Orbit</span>
   <div class="tsep"></div>
   <button class="tbt" onclick="toggleMoodPanel()" style="color:var(--yw);border-color:#3a3000;background:#1a1800">🌅 Stimmung</button>
   <button class="tbt" onclick="openM('m-wizard')" style="color:var(--pu);border-color:#3a2a4a;background:#1a0d2a">🤖 KI-Möbel</button>
@@ -739,6 +740,42 @@ canvas{display:block}
   </div>
 </div>
 
+
+
+<!-- DESIGN CREATOR MODAL -->
+<div class="mover" id="m-design-create">
+<div class="modal" style="max-width:420px">
+  <h2>🎨 Eigenes Design erstellen</h2>
+  <div class="mf">
+    <label>Design-Name</label>
+    <input id="dc-name" value="Mein Design" style="width:100%">
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <div class="mf"><label>Frontfarbe</label><input type="color" id="dc-front" value="#C4A572" style="width:100%"></div>
+    <div class="mf"><label>Akzentfarbe</label><input type="color" id="dc-accent" value="#654321" style="width:100%"></div>
+    <div class="mf"><label>Arbeitsplatte</label><input type="color" id="dc-top" value="#3E2723" style="width:100%"></div>
+    <div class="mf"><label>Rahmenfarbe</label><input type="color" id="dc-frame" value="#F5F0E8" style="width:100%"></div>
+    <div class="mf"><label>LED-Farbe</label><input type="color" id="dc-led" value="#1B4332" style="width:100%"></div>
+    <div class="mf"><label>Bodenfarbe</label><input type="color" id="dc-floor" value="#c8a060" style="width:100%"></div>
+    <div class="mf"><label>Wandfarbe</label><input type="color" id="dc-wall" value="#e8dcc8" style="width:100%"></div>
+    <div class="mf"><label>Sofa-Farbe</label><input type="color" id="dc-sofa" value="#2d5040" style="width:100%"></div>
+  </div>
+  <div class="mf">
+    <label>Muster</label>
+    <select id="dc-pattern" style="width:100%;padding:5px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px">
+      <option value="uniform">Einheitlich</option>
+      <option value="alternating-2" selected>2er-Wechsel</option>
+      <option value="alternating-3">3er-Wechsel</option>
+      <option value="gradient">Gradient</option>
+      <option value="checkerboard">Schachbrett</option>
+    </select>
+  </div>
+  <div class="mbtns">
+    <button class="mbt" onclick="closeM('m-design-create')">Abbrechen</button>
+    <button class="mbt ok" onclick="saveCustomDesign()">✓ Design speichern</button>
+  </div>
+</div>
+</div>
 
 <!-- STEP-BY-STEP GUIDE -->
 <div id="guide-overlay">
@@ -1984,6 +2021,7 @@ function build3DRoomFloor(r){
 // 3D Controls
 tCv.addEventListener('mousedown',e=>{
   if(currentView==='walk'){tCv.requestPointerLock();return;}
+  if(e.button===0 && currentView==='3d') return; // handled by 3D edit mode
   mDnX=e.clientX;mDnY=e.clientY;mMov=false;oDrg=true;lmx=e.clientX;lmy=e.clientY;
 });
 tCv.addEventListener('mousemove',e=>{
@@ -2016,6 +2054,8 @@ function resize3D(){
 // ════════════════════════════════════════════════════════════════════════
 function setView(v){
   currentView=v;
+  const h=document.getElementById('view-hint-3d');
+  if(h) h.style.display=v==='3d'?'inline':'none';
   ['2d','3d','walk'].forEach(x=>document.getElementById('vt-'+x).classList.toggle('active',x===v));
   const is2d=v==='2d';
   fpCv.style.display=is2d?'block':'none';
@@ -2253,6 +2293,7 @@ function loadPD(d){
   rebuild3D();renderLeft();draw2D();updateSavedUI();
 loadSupabaseConfig();
 initGuide();
+loadCustomDesigns();
 }
 function saveProj(){
   const saves=JSON.parse(localStorage.getItem('csc-saves3')||'{}');
@@ -2826,8 +2867,8 @@ function placeOpeningOrObject(typeId, wx, wz){
     py=0.0;
   }
 
-  // Doors/windows: thin depth (0.02) so they sit in the wall face, not through it
-  const archDepth = (item.arch==='door'||item.arch==='window') ? 0.02 : (item.d||0.15);
+  // Doors/windows use wall thickness (0.16m) so they fill the wall gap exactly
+  const archDepth = (item.arch==='door'||item.arch==='window') ? 0.16 : (item.d||0.15);
   addObject({
     typeId, x:x-(item.w||1)/2, y:z-archDepth/2,
     w:item.w, d:archDepth, h:item.h,
@@ -2861,14 +2902,14 @@ function buildDoor3D_v2(g, item, o){
       const m=new THREE.Mesh(new THREE.BoxGeometry(fw,fh,fd),frameMat);m.position.set(px,py,pz);m.castShadow=true;g.add(m);
     });
     // Glass panel
-    const gl=new THREE.Mesh(new THREE.BoxGeometry(w-0.1,h-0.1,0.01),glassMat);gl.position.set(0,h/2,0);g.add(gl);
+    const gl=new THREE.Mesh(new THREE.BoxGeometry(w-0.08,h-0.08,0.12),glassMat);gl.position.set(0,h/2,0);g.add(gl);
     // Handle
     const hMat=new THREE.MeshStandardMaterial({color:0xcccccc,roughness:0.1,metalness:0.95});
     const hnd=new THREE.Mesh(new THREE.BoxGeometry(0.03,0.18,0.04),hMat);hnd.position.set(w/2-0.08,1.05,0.04);g.add(hnd);
   } else if(style==='security'){
     // Security door: thick steel, multi-lock
     const steelMat=new THREE.MeshStandardMaterial({color:0x444450,roughness:0.4,metalness:0.75});
-    const door=new THREE.Mesh(new THREE.BoxGeometry(w-0.04,h-0.04,0.07),steelMat);door.position.set(0,h/2,0);door.castShadow=true;g.add(door);
+    const door=new THREE.Mesh(new THREE.BoxGeometry(w-0.02,h-0.02,0.14),steelMat);door.position.set(0,h/2,0);door.castShadow=true;g.add(door);
     // Reinforcement ribs
     const ribMat=new THREE.MeshStandardMaterial({color:0x333340,roughness:0.5,metalness:0.7});
     [-h*0.2,0,h*0.2].forEach(oy=>{
@@ -2888,7 +2929,7 @@ function buildDoor3D_v2(g, item, o){
     // Standard panel door (existing logic, enhanced)
     const colHex = o.customColor ? parseInt(o.customColor.replace('#',''),16) : (item.col||0x8a6030);
     const dMat=new THREE.MeshStandardMaterial({color:colHex,roughness:0.55,metalness:0.05});
-    const door=new THREE.Mesh(new THREE.BoxGeometry(w-0.06,h-0.06,0.045),dMat);door.position.set(0,h/2,0);door.castShadow=true;g.add(door);
+    const door=new THREE.Mesh(new THREE.BoxGeometry(w-0.04,h-0.04,0.14),dMat);door.position.set(0,h/2,0);door.castShadow=true;g.add(door);
     // Panels
     const pMat=new THREE.MeshStandardMaterial({color:colHex-0x0a0a0a,roughness:0.65});
     const pH=h*0.3, pW=w*0.38;
@@ -2923,8 +2964,8 @@ function buildWindow3D_v2(g, item, o){
   const glOpacity = style==='shopfront' ? 0.22 : 0.26;
   const glColor = foilColor && foilOpacity > 0 ? foilColor : 0x88ccff;
   const glOp = foilColor && foilOpacity > 0 ? foilOpacity : glOpacity;
-  const glMat=new THREE.MeshStandardMaterial({color:glColor,roughness:0.02,metalness:0.0,transparent:true,opacity:glOp,side:THREE.DoubleSide,envMapIntensity:1.5});
-  const gl=new THREE.Mesh(new THREE.PlaneGeometry(w-0.08,h-0.06),glMat);gl.position.set(0,sill+h/2,0);g.add(gl);
+  const glMat=new THREE.MeshStandardMaterial({color:glColor,roughness:0.02,metalness:0.0,transparent:true,opacity:glOp,side:THREE.DoubleSide});
+  const gl=new THREE.Mesh(new THREE.BoxGeometry(w-0.06,h-0.04,0.12),glMat);gl.position.set(0,sill+h/2,0);g.add(gl);
 
   const fMat=new THREE.MeshStandardMaterial({color: style==='shopfront'?0x888888:0xf5f0e8, roughness: style==='shopfront'?0.4:0.55, metalness: style==='shopfront'?0.6:0.0});
 
@@ -3475,10 +3516,10 @@ function applyMoodFull(name){
   _setSlider('fog-dens',    m.fog);
 
   applyLightSliders();
+  applyMoodToScene();
 
-  // Sync old mood panel buttons + re-render 3D with new mood
+  // Sync old mood panel buttons
   document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('active'));
-  rebuild3D(); // rebuild to apply new material tints
 }
 
 function _setSlider(id, val){
@@ -4127,6 +4168,7 @@ function renderDesignPanelFull(selObjId){
       +'<div class="pc-nm">'+p.name+'</div></div>';
   });
   h += '</div></div>';
+  h += '<button class="tbt" style="width:100%;margin-bottom:8px;border-color:var(--or);color:var(--or)" onclick="openM(\'m-design-create\')">🎨 Eigenes Design erstellen</button>';
 
   if(!selObjId){ container.innerHTML = h; return; }
 
@@ -4876,6 +4918,204 @@ document.addEventListener('DOMContentLoaded',()=>{
   });
 });
 
+
+// ── Apply mood to ALL objects in scene (materials + lights) ──────────
+function applyMoodToScene(){
+  const exp    = +(document.getElementById('exposure')?.value||1.1);
+  const roomStr= +(document.getElementById('room-str')?.value||0.85);
+  const roomCol= document.getElementById('room-col')?.value||'#fff5e0';
+  const skyHex = document.getElementById('sky-color')?.value||'#c8dff0';
+  const fogDens= +(document.getElementById('fog-dens')?.value||0.013);
+
+  // Sky + fog
+  scene.background = new THREE.Color(skyHex);
+  if(scene.fog){ scene.fog.color.set(skyHex); scene.fog.density=fogDens; }
+
+  // All lights in scene
+  scene.traverse(child=>{
+    if(child.isPointLight && !child._manual){
+      child.color.set(roomCol);
+      child.intensity = roomStr * (child._base||1);
+    }
+  });
+
+  // Renderer exposure
+  rend3.toneMappingExposure = exp;
+
+  // Subtle material tint on dark/night moods
+  const isDark = exp < 0.85;
+  Object.values(obj3Map).forEach(g=>{
+    if(!g) return;
+    g.traverse(child=>{
+      if(child.isMesh && child.material && !child.material._isLed){
+        if(isDark){
+          // Darken non-emissive materials slightly for night mood
+          if(!child.material.emissive || child.material.emissiveIntensity < 0.1){
+            child.material.envMapIntensity = 0.3;
+          }
+        } else {
+          child.material.envMapIntensity = 1.0;
+        }
+        child.material.needsUpdate = true;
+      }
+    });
+  });
+}
+
+
+// ════════════════════════════════════════════════════════════════════════
+// 3D EDIT MODE — click, drag, delete objects in 3D view
+// ════════════════════════════════════════════════════════════════════════
+let drag3d = null;   // {id, startX, startY, startObjX, startObjY}
+let sel3dHighlightMat = null;
+
+function get3dObjId(mesh){
+  // Find which obj3Map entry contains this mesh
+  for(const [id, g] of Object.entries(obj3Map)){
+    if(!g) continue;
+    let found = false;
+    g.traverse(c=>{ if(c===mesh) found=true; });
+    if(found) return id;
+  }
+  return null;
+}
+
+tCv.addEventListener('mousedown', e=>{
+  if(currentView!=='3d') return;
+  if(e.button!==0) return;
+
+  const rect = tCv.getBoundingClientRect();
+  MV3.set(((e.clientX-rect.left)/rect.width)*2-1, -((e.clientY-rect.top)/rect.height)*2+1);
+  RC3.setFromCamera(MV3, oCam);
+
+  // Collect all meshes
+  const allMeshes = [];
+  Object.values(obj3Map).forEach(g=>{ if(g) g.traverse(c=>{ if(c.isMesh) allMeshes.push(c); }); });
+  const hits = RC3.intersectObjects(allMeshes, false);
+
+  if(hits.length > 0){
+    const hit = hits[0];
+    const objId = get3dObjId(hit.object);
+    if(objId){
+      const o = objects.find(o=>o.id===objId);
+      if(o){
+        // Select it
+        setSelection(objId, false);
+        openPropPanel(objId, false);
+        // Start drag tracking
+        drag3d = {id:objId, startX:e.clientX, startY:e.clientY, startObjX:o.x, startObjY:o.y, moved:false};
+        tCv.style.cursor='grabbing';
+        e.stopPropagation(); e.preventDefault();
+        return;
+      }
+    }
+  }
+  drag3d = null;
+});
+
+tCv.addEventListener('mousemove', e=>{
+  if(currentView!=='3d') return;
+  if(!drag3d || e.buttons===0){ drag3d=null; return; }
+
+  const dx = e.clientX - drag3d.startX;
+  const dy = e.clientY - drag3d.startY;
+  if(Math.abs(dx)<5 && Math.abs(dy)<5) return;
+
+  drag3d.moved = true;
+
+  // Project mouse movement to world XZ plane
+  // Use camera orientation to determine X/Z mapping
+  const camAngle = Math.atan2(oCam.position.x-oTgt.x, oCam.position.z-oTgt.z);
+  const worldDx = (dx * Math.cos(camAngle) + dy * Math.sin(camAngle)) * 0.015;
+  const worldDz = (-dx * Math.sin(camAngle) + dy * Math.cos(camAngle)) * 0.015;
+
+  const o = objects.find(o=>o.id===drag3d.id); if(!o) return;
+  o.x = snapM(drag3d.startObjX + worldDx);
+  o.y = snapM(drag3d.startObjY + worldDz);
+
+  // Update 3D position live
+  const g = obj3Map[drag3d.id];
+  if(g){
+    const item = findItem(o.typeId)||{};
+    const w = o.w||item.w||1, d = o.d||item.d||1;
+    g.position.set(o.x+w/2, o.py||0, o.y+d/2);
+  }
+  draw2D();
+});
+
+tCv.addEventListener('mouseup', e=>{
+  if(!drag3d) return;
+  if(drag3d.moved){ snapshot(); toast('📦 Objekt verschoben','b'); }
+  tCv.style.cursor='default';
+  drag3d = null;
+});
+
+// 3D keyboard shortcuts
+document.addEventListener('keydown', e=>{
+  if(currentView!=='3d') return;
+  if(e.target.matches('input,textarea')) return;
+  if(selId && !selIsRoom && !selIsWall){
+    if(e.key==='Delete'||e.key==='Backspace'){ deleteSel(); toast('🗑 Gelöscht','b'); }
+    if(e.key==='r'||e.key==='R'){ rotateSel(); }
+    // Arrow keys for fine positioning
+    const step = e.shiftKey?0.5:0.1;
+    const o = objects.find(o=>o.id===selId); if(!o) return;
+    if(e.key==='ArrowLeft')  { o.x=snapM(o.x-step); }
+    if(e.key==='ArrowRight') { o.x=snapM(o.x+step); }
+    if(e.key==='ArrowUp')    { o.y=snapM(o.y-step); }
+    if(e.key==='ArrowDown')  { o.y=snapM(o.y+step); }
+    if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){
+      e.preventDefault();
+      rebuild3D(); draw2D(); snapshot();
+    }
+  }
+});
+
+
+// ── Custom Design Creator ────────────────────────────────────────────
+function saveCustomDesign(){
+  const name    = document.getElementById('dc-name')?.value.trim()||'Mein Design';
+  const front   = document.getElementById('dc-front')?.value||'#C4A572';
+  const accent  = document.getElementById('dc-accent')?.value||'#654321';
+  const top     = document.getElementById('dc-top')?.value||'#3E2723';
+  const frame   = document.getElementById('dc-frame')?.value||'#F5F0E8';
+  const led     = document.getElementById('dc-led')?.value||'#1B4332';
+  const floor   = document.getElementById('dc-floor')?.value||'#c8a060';
+  const wall    = document.getElementById('dc-wall')?.value||'#e8dcc8';
+  const sofa    = document.getElementById('dc-sofa')?.value||'#2d5040';
+  const pattern = document.getElementById('dc-pattern')?.value||'alternating-2';
+
+  // Add to STYLE_PRESETS dynamically
+  const id = 'custom_'+Date.now();
+  STYLE_PRESETS[id] = {
+    name, front, pattern,
+    tops:[front, accent],
+    led, frame,
+    sofa, table: top,
+    wall: 'plaster_white', floor: 'parquet_light',
+    topColor: top,
+  };
+
+  // Save to localStorage so it persists
+  const saved = JSON.parse(localStorage.getItem('csc-custom-designs')||'{}');
+  saved[id] = STYLE_PRESETS[id];
+  localStorage.setItem('csc-custom-designs', JSON.stringify(saved));
+
+  closeM('m-design-create');
+  toast('🎨 Design "'+name+'" gespeichert!','g');
+  // Apply it immediately
+  applyStylePreset(id);
+  // Refresh design panel
+  const dp=document.getElementById('rpanel-design');
+  if(dp&&dp.classList.contains('active')) renderDesignPanelFull(selId&&!selIsRoom&&!selIsWall?selId:null);
+}
+
+// Load saved custom designs on startup
+function loadCustomDesigns(){
+  const saved = JSON.parse(localStorage.getItem('csc-custom-designs')||'{}');
+  Object.assign(STYLE_PRESETS, saved);
+}
+
 // ════════════════════════════════════════════════════════════════════════
 // ANIMATION LOOP
 // ════════════════════════════════════════════════════════════════════════
@@ -4897,6 +5137,7 @@ updateApiSt();
 updateSavedUI();
 loadSupabaseConfig();
 initGuide();
+loadCustomDesigns();
 showLeft('rooms');
 setView('2d');
 animate(0);
@@ -4922,7 +5163,7 @@ draw2D();
 
 renderFloorTabs();
 initUndoSystem();
-setTimeout(()=>toast('🌿 v3.9 | KI-System · 50+ Möbel · Fixes','g'),600);
+setTimeout(()=>toast('🌿 v3.10 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
 
 
 // ════════════════════════════════════════════════════════════════════════
@@ -5281,10 +5522,15 @@ function build3DObj(o){
     mesh.position.y=h/2;mesh.castShadow=true;mesh.receiveShadow=true;g.add(mesh);
   } else {
     // Phase 4: rich geometry dispatch
-    const isTableOrCounter = item.cat==='Ausgabe'||item.cat==='Empfang'||(item.cat==='Sozial'&&(item.id.includes('tisch')||item.id==='ctisch'))||(item.cat==='Küche'&&item.id==='kueche-z');
-    const isShelf = item.id.includes('regal')||item.id.includes('schrank')||item.id.includes('locker')||item.id==='tresor';
-    const isSofa  = item.id.includes('sofa')||item.id.includes('sessel');
-    const isPlant = item.id.includes('pflanze');
+    const isTableOrCounter = item.cat==='Ausgabe'||item.cat==='Empfang'||
+      (item.cat==='Sozial'&&(item.id.includes('tisch')||item.id==='ctisch'||item.id==='beistelltisch'))||
+      (item.cat==='Küche'&&(item.id==='kueche-z'||item.id==='kueche-insel'||item.id==='bartresen'))||
+      item.id==='schreibtisch'||item.id==='bartresen'||item.id==='rezeption'||item.id==='info-desk';
+    const isShelf = item.id.includes('regal')||item.id.includes('schrank')||
+      item.id.includes('locker')||item.id==='tresor'||item.id==='safe-boden'||item.id==='buecher'||item.id==='aktenschr';
+    const isSofa  = item.id.includes('sofa')||item.id.includes('sessel')||
+      item.id==='w-bank'||item.id==='ottomane'||item.id==='w-sofa';
+    const isPlant = item.id.includes('pflanze')||item.id.includes('baum')||item.id==='blumentopf'||item.id==='blumenkuebel';
 
     if(isSofa){
       buildSofa3D(g, w, d, h, colHex, rough, metal, o.matPreset);
