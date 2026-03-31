@@ -2277,6 +2277,70 @@ async function handleFileUpload(e){
     addMsg(uploadedPages.length+' Bild(er) geladen. KI analysiert alle beim Senden.','sys');
   }
 }
+
+// ════════════════════════════════════════════════════════════════════════
+// FILE UPLOAD HELPERS (uploadImg / uploadPDF / uploadDOCX)
+// ════════════════════════════════════════════════════════════════════════
+async function uploadImg(file){
+  return new Promise((res,rej)=>{
+    const r=new FileReader();
+    r.onload=ev=>{
+      uploadedPages.push({
+        b64: ev.target.result.split(',')[1],
+        label: file.name.slice(0,12),
+        mime: file.type||'image/jpeg'
+      });
+      res();
+    };
+    r.onerror=()=>rej(new Error('Bild konnte nicht gelesen werden'));
+    r.readAsDataURL(file);
+  });
+}
+
+async function uploadPDF(file){
+  if(typeof pdfjsLib==='undefined') throw new Error('PDF.js nicht geladen');
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({data:buf}).promise;
+  for(let i=1;i<=Math.min(pdf.numPages,10);i++){
+    const page  = await pdf.getPage(i);
+    const vp    = page.getViewport({scale:1.5});
+    const cv    = document.createElement('canvas');
+    cv.width=vp.width; cv.height=vp.height;
+    await page.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
+    uploadedPages.push({
+      b64:  cv.toDataURL('image/jpeg',0.88).split(',')[1],
+      label:'S.'+i,
+      mime: 'image/jpeg'
+    });
+    setProg(Math.round((i/pdf.numPages)*80)+10,'Seite '+i+'/'+pdf.numPages);
+  }
+}
+
+async function uploadDOCX(file){
+  if(typeof mammoth==='undefined') throw new Error('Mammoth.js nicht geladen');
+  const buf = await file.arrayBuffer();
+  const res = await mammoth.convertToHtml({arrayBuffer:buf});
+  // Render HTML to canvas as image
+  const cv  = document.createElement('canvas');
+  cv.width=800; cv.height=1000;
+  const c   = cv.getContext('2d');
+  c.fillStyle='#fff'; c.fillRect(0,0,800,1000);
+  c.fillStyle='#111'; c.font='13px sans-serif';
+  // Strip tags, render as text
+  const txt = res.value.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+  let y=30;
+  txt.split(' ').reduce((line,word)=>{
+    const test=line+word+' ';
+    if(c.measureText(test).width>760&&line){c.fillText(line,20,y);y+=20;return word+' ';}
+    return test;
+  },'');
+  uploadedPages.push({
+    b64: cv.toDataURL('image/jpeg',0.85).split(',')[1],
+    label: file.name.slice(0,12),
+    mime: 'image/jpeg'
+  });
+}
+
 // ════════════════════════════════════════════════════════════════════════
 // SAVE / LOAD
 // ════════════════════════════════════════════════════════════════════════
@@ -2721,21 +2785,121 @@ function buildWallSegMesh3D(seg){
   const dx=seg.b.x-seg.a.x, dz=seg.b.z-seg.a.z;
   const len=Math.hypot(dx,dz);
   if(len<0.05) return null;
-  // Phase 4: textured wall (use wallTex from associated room if available)
+
   const wallTexKey = seg.wallTex ? WALL_TEX_MAP[seg.wallTex] : null;
-  let wMat;
-  if(wallTexKey){
-    const tx=makeTex(wallTexKey,2,1);
-    wMat=new THREE.MeshStandardMaterial({color:seg.col,roughness:0.82,metalness:0,map:tx,side:THREE.DoubleSide});
+  const makeMat=()=>{
+    if(wallTexKey){
+      const tx=makeTex(wallTexKey,Math.max(1,len),1);
+      return new THREE.MeshStandardMaterial({color:seg.col,roughness:0.82,metalness:0,map:tx,side:THREE.DoubleSide});
+    }
+    return new THREE.MeshStandardMaterial({color:seg.col,roughness:0.82,metalness:0,side:THREE.DoubleSide});
+  };
+
+  const H     = seg.h||2.8;
+  const THICK = 0.15;
+  const elev  = seg.elev||0;
+  const angle = Math.atan2(-dz,dx);
+  const group = new THREE.Group();
+  group.position.set((seg.a.x+seg.b.x)/2, 0, (seg.a.z+seg.b.z)/2);
+  group.rotation.y = angle;
+
+  // Find doors/windows that sit on this wall segment
+  const wallOpenings = getOpeningsOnWall(seg, len);
+
+  if(wallOpenings.length === 0){
+    // Solid wall — single box
+    const m=new THREE.Mesh(new THREE.BoxGeometry(len,H,THICK), makeMat());
+    m.position.y = elev+H/2; m.castShadow=true; m.receiveShadow=true;
+    group.add(m);
   } else {
-    wMat=new THREE.MeshStandardMaterial({color:seg.col,roughness:0.82,metalness:0,side:THREE.DoubleSide});
+    // Sort openings left→right along wall
+    wallOpenings.sort((a,b)=>a.t-b.t);
+
+    // Build wall pieces around each opening
+    let cursor = -len/2; // left edge of wall in local X
+
+    wallOpenings.forEach(op=>{
+      const isDoor = op.arch==='door';
+      const opLeft  = op.t * len - len/2 - op.w/2; // left edge of opening
+      const opRight = opLeft + op.w;
+      const opH     = op.h;
+      const sillH   = isDoor ? 0 : (op.sill||0.9);
+
+      // Left wall piece
+      const leftW = opLeft - cursor;
+      if(leftW > 0.02){
+        const m=new THREE.Mesh(new THREE.BoxGeometry(leftW,H,THICK), makeMat());
+        m.position.set(cursor+leftW/2, elev+H/2, 0);
+        m.castShadow=true; m.receiveShadow=true; group.add(m);
+      }
+
+      // Above opening (lintel/sturz)
+      const lintelH = H - opH - (isDoor?0:sillH);
+      if(lintelH > 0.02){
+        const m=new THREE.Mesh(new THREE.BoxGeometry(op.w,lintelH,THICK), makeMat());
+        m.position.set(opLeft+op.w/2, elev+H-lintelH/2, 0);
+        m.castShadow=true; m.receiveShadow=true; group.add(m);
+      }
+
+      // Below opening (Brüstung — only for windows)
+      if(!isDoor && sillH > 0.02){
+        const m=new THREE.Mesh(new THREE.BoxGeometry(op.w,sillH,THICK), makeMat());
+        m.position.set(opLeft+op.w/2, elev+sillH/2, 0);
+        m.castShadow=true; m.receiveShadow=true; group.add(m);
+      }
+
+      cursor = opRight;
+    });
+
+    // Right wall piece (after last opening)
+    const rightW = len/2 - cursor;
+    if(rightW > 0.02){
+      const m=new THREE.Mesh(new THREE.BoxGeometry(rightW,H,THICK), makeMat());
+      m.position.set(cursor+rightW/2, elev+H/2, 0);
+      m.castShadow=true; m.receiveShadow=true; group.add(m);
+    }
   }
-  const geo=new THREE.BoxGeometry(len, seg.h, 0.15);
-  const m=new THREE.Mesh(geo,wMat);
-  m.castShadow=true; m.receiveShadow=true;
-  m.position.set((seg.a.x+seg.b.x)/2, (seg.elev||0)+(seg.h||2.8)/2, (seg.a.z+seg.b.z)/2);
-  m.rotation.y=Math.atan2(-dz,dx);
-  return m;
+
+  return group;
+}
+
+// Find doors/windows placed on this wall segment
+function getOpeningsOnWall(seg, wallLen){
+  const result = [];
+  const dx=seg.b.x-seg.a.x, dz=seg.b.z-seg.a.z;
+  const angle = Math.atan2(-dz,dx);
+  const WALL_TOL = 0.35; // how close to wall center line to count
+
+  const archObjs = objects.filter(o=>{
+    const it=findItem(o.typeId);
+    return it && (it.arch==='door'||it.arch==='window') && (o.floorId===seg.floorId||!o.floorId);
+  });
+
+  archObjs.forEach(o=>{
+    const it = findItem(o.typeId); if(!it) return;
+    // Object center in world
+    const cx = o.x + (o.w||it.w||1)/2;
+    const cz = o.y + (o.d||it.d||0.15)/2;
+
+    // Project onto wall line: find t (0..1 along wall)
+    const wx=seg.a.x, wz=seg.a.z;
+    const t=((cx-wx)*dx+(cz-wz)*dz)/(wallLen*wallLen);
+    if(t<0||t>1) return; // outside wall extent
+
+    // Perpendicular distance to wall
+    const projX=wx+t*dx, projZ=wz+t*dz;
+    const dist=Math.hypot(cx-projX, cz-projZ);
+    if(dist>WALL_TOL) return; // too far from wall
+
+    const sill = it.winStyle==='shopfront' ? 0.0 : 0.9;
+    result.push({
+      t, w: o.w||it.w||1, h: o.h||it.h||2.2,
+      arch: it.arch, sill,
+      id: o.id
+    });
+  });
+
+  return result;
 }
 
 
@@ -2968,21 +3132,7 @@ function buildWindow3D_v2(g, item, o){
 
   const fMat=new THREE.MeshStandardMaterial({color: style==='shopfront'?0x888888:0xf5f0e8, roughness: style==='shopfront'?0.4:0.55, metalness: style==='shopfront'?0.6:0.0});
 
-  // Wall jambs around window opening
-  const winWallMat=new THREE.MeshStandardMaterial({color:0xd8d0c0,roughness:0.82,metalness:0});
-  const jw=0.06;
-  [[-w/2-jw/2,sill+h/2],[w/2+jw/2,sill+h/2]].forEach(([jx,jy])=>{
-    const jm=new THREE.Mesh(new THREE.BoxGeometry(jw,h+0.2,0.15),winWallMat);jm.position.set(jx,jy,0);g.add(jm);
-  });
-  // Wall above window
-  const aboveMesh=new THREE.Mesh(new THREE.BoxGeometry(w+jw*2,0.25,0.15),winWallMat);
-  aboveMesh.position.set(0,sill+h+0.125,0);g.add(aboveMesh);
-  // Wall below window (sill fill)
-  if(sill>0.1){
-    const belowMesh=new THREE.Mesh(new THREE.BoxGeometry(w+jw*2,sill-0.05,0.15),winWallMat);
-    belowMesh.position.set(0,(sill-0.05)/2,0);g.add(belowMesh);
-  }
-
+  // The wall already has the opening — just place glass panel
   if(style==='shopfront'){
     [[w+0.1,0.06,0.12,0,sill-0.03],[w+0.1,0.06,0.12,0,sill+h+0.03],[0.06,h+0.12,0.12,-w/2-0.03,sill+h/2],[0.06,h+0.12,0.12,w/2+0.03,sill+h/2]].forEach(([fw,fh,fd,px,py])=>{
       const m=new THREE.Mesh(new THREE.BoxGeometry(fw,fh,fd),fMat);m.position.set(px,py,0);m.castShadow=true;g.add(m);
