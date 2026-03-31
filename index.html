@@ -2729,17 +2729,18 @@ function buildFreeWall3D(w){
   const len=Math.hypot(dx,dz);
   if(len<0.05) return null;
 
-  const col = parseInt((w.col||'#d8d0c0').replace('#',''),16);
-  const mat = new THREE.MeshStandardMaterial({
-    color:col, roughness:0.82, metalness:0.0, side:THREE.DoubleSide
-  });
-  const geo = new THREE.BoxGeometry(len, w.h||2.8, w.thick||0.15);
-  const mesh= new THREE.Mesh(geo, mat);
-  mesh.castShadow = true; mesh.receiveShadow = true;
-  mesh.position.set((w.x1+w.x2)/2, elev+(w.h||2.8)/2, (w.z1+w.z2)/2);
-  mesh.rotation.y = Math.atan2(-dz, dx);
-  w.mesh = mesh;
-  return mesh;
+  // Use same opening-aware builder as room walls
+  const seg = {
+    a:{x:w.x1,z:w.z1}, b:{x:w.x2,z:w.z2},
+    h:w.h||2.8, col:parseInt((w.col||'#d8d0c0').replace('#',''),16),
+    elev, floorId:w.floorId, wallTex:null
+  };
+  const group = buildWallSegMesh3D(seg);
+  if(group){
+    group.position.set(0,0,0); // already positioned inside buildWallSegMesh3D
+    w.mesh = group;
+  }
+  return group;
 }
 
 // ════════════════════════════════════════════════════════════════════════
@@ -2820,8 +2821,9 @@ function buildWallSegMesh3D(seg){
 
     wallOpenings.forEach(op=>{
       const isDoor = op.arch==='door';
-      const opLeft  = op.t * len - len/2 - op.w/2; // left edge of opening
-      const opRight = opLeft + op.w;
+      // Use pre-computed tLeft/tRight if available, else compute from t
+      const opLeft  = op.tLeft  != null ? op.tLeft  * len - len/2 : op.t * len - len/2 - op.w/2;
+      const opRight = op.tRight != null ? op.tRight * len - len/2 : opLeft + op.w;
       const opH     = op.h;
       const sillH   = isDoor ? 0 : (op.sill||0.9);
 
@@ -2867,39 +2869,66 @@ function buildWallSegMesh3D(seg){
 function getOpeningsOnWall(seg, wallLen){
   const result = [];
   const dx=seg.b.x-seg.a.x, dz=seg.b.z-seg.a.z;
-  const angle = Math.atan2(-dz,dx);
-  const WALL_TOL = 0.35; // how close to wall center line to count
+  const lenSq = dx*dx + dz*dz;
+  if(lenSq < 0.001) return result;
+
+  // Generous tolerance: door can be up to 0.8m away from wall centerline
+  const WALL_TOL = 0.80;
 
   const archObjs = objects.filter(o=>{
     const it=findItem(o.typeId);
-    return it && (it.arch==='door'||it.arch==='window') && (o.floorId===seg.floorId||!o.floorId);
+    return it && (it.arch==='door'||it.arch==='window');
   });
 
   archObjs.forEach(o=>{
     const it = findItem(o.typeId); if(!it) return;
-    // Object center in world
-    const cx = o.x + (o.w||it.w||1)/2;
-    const cz = o.y + (o.d||it.d||0.15)/2;
+    const ow = o.w||it.w||1;
+    const od = o.d||it.d||0.15;
 
-    // Project onto wall line: find t (0..1 along wall)
+    // Object center in world coords
+    const cx = o.x + ow/2;
+    const cz = o.y + od/2;
+
+    // Project onto wall line
     const wx=seg.a.x, wz=seg.a.z;
-    const t=((cx-wx)*dx+(cz-wz)*dz)/(wallLen*wallLen);
-    if(t<0||t>1) return; // outside wall extent
+    let t = ((cx-wx)*dx + (cz-wz)*dz) / lenSq;
 
-    // Perpendicular distance to wall
+    // Allow slight overshoot (door at wall edge)
+    if(t < -0.02 || t > 1.02) return;
+    t = Math.max(0.001, Math.min(0.999, t));
+
+    // Perpendicular distance from object center to wall line
     const projX=wx+t*dx, projZ=wz+t*dz;
     const dist=Math.hypot(cx-projX, cz-projZ);
-    if(dist>WALL_TOL) return; // too far from wall
+    if(dist > WALL_TOL) return;
 
-    const sill = it.winStyle==='shopfront' ? 0.0 : 0.9;
+    // Clamp opening within wall bounds
+    const tPos = t * wallLen; // position along wall in meters
+    const half  = ow / 2;
+    const tLeft  = Math.max(0.05, tPos - half);
+    const tRight = Math.min(wallLen - 0.05, tPos + half);
+    const actualW = tRight - tLeft;
+    if(actualW < 0.1) return;
+
+    const isSF = it.winStyle==='shopfront';
+    const sill = isSF ? 0.0 : (it.arch==='door' ? 0.0 : 0.9);
+    const opH  = o.h||it.h||2.2;
+
     result.push({
-      t, w: o.w||it.w||1, h: o.h||it.h||2.2,
-      arch: it.arch, sill,
+      t: (tLeft + actualW/2) / wallLen, // center t
+      tLeft: tLeft / wallLen,
+      tRight: tRight / wallLen,
+      w: actualW,
+      h: opH,
+      arch: it.arch,
+      sill,
       id: o.id
     });
   });
 
-  return result;
+  // Remove duplicates (same opening on shared wall)
+  const seen = new Set();
+  return result.filter(r=>{ if(seen.has(r.id)){return false;} seen.add(r.id); return true; });
 }
 
 
