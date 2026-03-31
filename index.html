@@ -489,7 +489,7 @@ canvas{display:block}
 
 <!-- TOPBAR -->
 <div id="topbar">
-  <span class="logo">🌿 CSC <em>Raumplaner</em></span><span class="vbadge">v3.10</span>
+  <span class="logo">🌿 CSC <em>Raumplaner</em></span><span class="vbadge">v3.10r</span>
   <div class="tsep"></div>
   <button class="tbt" id="undo-btn" onclick="undo()" disabled title="Rückgängig (Ctrl+Z)" style="letter-spacing:.5px">↩ Undo</button>
   <button class="tbt" id="redo-btn" onclick="redo()" disabled title="Wiederholen (Ctrl+Y)" style="letter-spacing:.5px">↪ Redo</button>
@@ -2021,7 +2021,6 @@ function build3DRoomFloor(r){
 // 3D Controls
 tCv.addEventListener('mousedown',e=>{
   if(currentView==='walk'){tCv.requestPointerLock();return;}
-  if(e.button===0 && currentView==='3d') return; // handled by 3D edit mode
   mDnX=e.clientX;mDnY=e.clientY;mMov=false;oDrg=true;lmx=e.clientX;lmy=e.clientY;
 });
 tCv.addEventListener('mousemove',e=>{
@@ -2969,9 +2968,23 @@ function buildWindow3D_v2(g, item, o){
 
   const fMat=new THREE.MeshStandardMaterial({color: style==='shopfront'?0x888888:0xf5f0e8, roughness: style==='shopfront'?0.4:0.55, metalness: style==='shopfront'?0.6:0.0});
 
+  // Wall jambs around window opening
+  const winWallMat=new THREE.MeshStandardMaterial({color:0xd8d0c0,roughness:0.82,metalness:0});
+  const jw=0.06;
+  [[-w/2-jw/2,sill+h/2],[w/2+jw/2,sill+h/2]].forEach(([jx,jy])=>{
+    const jm=new THREE.Mesh(new THREE.BoxGeometry(jw,h+0.2,0.15),winWallMat);jm.position.set(jx,jy,0);g.add(jm);
+  });
+  // Wall above window
+  const aboveMesh=new THREE.Mesh(new THREE.BoxGeometry(w+jw*2,0.25,0.15),winWallMat);
+  aboveMesh.position.set(0,sill+h+0.125,0);g.add(aboveMesh);
+  // Wall below window (sill fill)
+  if(sill>0.1){
+    const belowMesh=new THREE.Mesh(new THREE.BoxGeometry(w+jw*2,sill-0.05,0.15),winWallMat);
+    belowMesh.position.set(0,(sill-0.05)/2,0);g.add(belowMesh);
+  }
+
   if(style==='shopfront'){
-    // Aluminium shopfront profile: thin frames, no sill, full height
-    [[w+0.1,0.06,0.08,0,sill-0.03],[w+0.1,0.06,0.08,0,sill+h+0.03],[0.06,h+0.12,0.08,-w/2-0.03,sill+h/2],[0.06,h+0.12,0.08,w/2+0.03,sill+h/2]].forEach(([fw,fh,fd,px,py])=>{
+    [[w+0.1,0.06,0.12,0,sill-0.03],[w+0.1,0.06,0.12,0,sill+h+0.03],[0.06,h+0.12,0.12,-w/2-0.03,sill+h/2],[0.06,h+0.12,0.12,w/2+0.03,sill+h/2]].forEach(([fw,fh,fd,px,py])=>{
       const m=new THREE.Mesh(new THREE.BoxGeometry(fw,fh,fd),fMat);m.position.set(px,py,0);m.castShadow=true;g.add(m);
     });
     // Central cross bar at 1.2m
@@ -4807,58 +4820,124 @@ function getStateCtx(){
 
 async function sendAI(){
   const inp = document.getElementById('ai-inp');
-  const text = (inp?.value||'').trim();
-  if(!text && !uploadedPages.length) return;
-  inp.value = '';
+  const text = (inp ? inp.value : '').trim();
+  const hasImg = uploadedPages && uploadedPages.length > 0;
 
+  if(!text && !hasImg){
+    toast('Bitte Text eingeben oder Datei hochladen','b');
+    return;
+  }
+
+  // Clear input
+  if(inp) inp.value = '';
+
+  // Check API key
   const k = getKey();
-  if(!k){ addMsg('❌ Kein API Key — bitte unter 💾 Projekte eintragen','sys'); return; }
+  if(!k){
+    addMsg('❌ Kein API Key. Der eingebettete Key ist aktiv — bitte Seite neu laden.','sys');
+    return;
+  }
 
-  addMsg(text||'📎 '+uploadedPages.length+' Bild(er) gesendet','user');
-  const load = addMsg('🤖 KI denkt…','load');
-  document.getElementById('ai-send').disabled = true;
+  // Show user message
+  addMsg(text || ('📎 ' + uploadedPages.length + ' Bild(er) zum Analysieren'), 'user');
+  const loadEl = addMsg('🤖 KI analysiert…', 'load');
+  const sendBtn = document.getElementById('ai-send');
+  if(sendBtn) sendBtn.disabled = true;
 
   try {
-    const stateCtx = getStateCtx();
+    // Build state context
+    const stateCtx = 'AKTUELLER ZUSTAND:\nRäume: ' +
+      JSON.stringify(rooms.map(r=>({name:r.name,x:Math.round(r.x*10)/10,y:Math.round(r.y*10)/10,w:r.w,d:r.d}))) +
+      '\nObjekte (erste 15): ' +
+      JSON.stringify(objects.slice(0,15).map(o=>({typeId:o.typeId,x:Math.round(o.x*10)/10,y:Math.round(o.y*10)/10})));
+
+    // Build content array
     let content = [];
-    if(uploadedPages.length > 0){
-      const pages = uploadedPages.slice(0,10);
-      pages.forEach(p=>content.push({type:'image',source:{type:'base64',media_type:p.mime||'image/jpeg',data:p.b64}}));
-      content.push({type:'text',text:stateCtx+'\n\n'+(text||'Analysiere diesen Grundriss vollständig für eine CSC-Ausgabestelle. Erkenne alle Räume, schätze Maße, platziere Möbel, Türen, Fenster und Lichter. Erstelle eine vollständige Einrichtung.')});
+    if(hasImg){
+      const pages = uploadedPages.slice(0, 10);
+      pages.forEach(p => {
+        content.push({
+          type: 'image',
+          source: {type:'base64', media_type: p.mime||'image/jpeg', data: p.b64}
+        });
+      });
+      content.push({
+        type: 'text',
+        text: stateCtx + '\n\n' + (text ||
+          'Analysiere diesen Grundriss vollständig für eine CSC-Ausgabestelle. ' +
+          'Erkenne alle Räume, schätze reale Maße in Metern, platziere passende Möbel. ' +
+          'Erstelle eine vollständige Einrichtung mit Türen, Fenstern und Lichtern.')
+      });
     } else {
-      content = [{type:'text',text:stateCtx+'\n\n'+text}];
+      content = [{type:'text', text: stateCtx + '\n\n' + text}];
     }
 
-    const resp = await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,system:AI_SYS,messages:[{role:'user',content}]})
+    // API call
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': k,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 4096,
+        system: AI_SYS,
+        messages: [{role:'user', content}]
+      })
     });
 
-    const data = await resp.json();
-    load.remove();
+    if(loadEl && loadEl.remove) loadEl.remove();
 
-    if(data.error){
-      addMsg('❌ API Fehler: '+data.error.message,'sys');
+    if(!resp.ok){
+      const errText = await resp.text().catch(()=>'');
+      addMsg('❌ API Fehler ' + resp.status + ': ' + errText.slice(0,120), 'sys');
       return;
     }
 
-    const raw = data.content?.[0]?.text||'{}';
-    let parsed;
-    try { parsed = JSON.parse(raw.match(/\{[\s\S]*\}/)?.[0]||'{}'); }
-    catch(e){ addMsg('❌ KI-Antwort konnte nicht verarbeitet werden: '+raw.slice(0,100),'sys'); return; }
+    const data = await resp.json();
 
-    if(parsed.message) addMsg(parsed.message,'ai');
-    if(parsed.actions?.length) execActions(parsed.actions);
-    if(uploadedPages.length) { clearUpload(); }
+    if(data.error){
+      addMsg('❌ ' + data.error.message, 'sys');
+      return;
+    }
+
+    const rawText = (data.content && data.content[0] && data.content[0].text) ? data.content[0].text : '';
+    if(!rawText){
+      addMsg('❌ Keine Antwort von KI erhalten.', 'sys');
+      return;
+    }
+
+    // Parse JSON from response
+    const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+    if(!jsonMatch){
+      addMsg('KI: ' + rawText.slice(0, 300), 'ai');
+      return;
+    }
+
+    let parsed;
+    try { parsed = JSON.parse(jsonMatch[0]); }
+    catch(e){ addMsg('⚠️ Antwort konnte nicht verarbeitet werden:\n' + rawText.slice(0,200), 'sys'); return; }
+
+    if(parsed.message) addMsg(parsed.message, 'ai');
+    if(parsed.actions && parsed.actions.length > 0){
+      execActions(parsed.actions);
+      addMsg('✅ ' + parsed.actions.length + ' Aktionen ausgeführt.', 'sys');
+    }
+
+    // Clear uploaded files after successful analysis
+    if(hasImg) clearUpload();
 
   } catch(e){
-    load.remove();
-    addMsg('❌ Fehler: '+e.message,'sys');
+    if(loadEl && loadEl.remove) loadEl.remove();
+    addMsg('❌ Verbindungsfehler: ' + e.message + '\n\nMögliche Ursache: Seite lokal geöffnet (file://) statt über GitHub Pages.', 'sys');
   } finally {
-    document.getElementById('ai-send').disabled = false;
+    if(sendBtn) sendBtn.disabled = false;
   }
 }
+
 
 function execActions(actions){
   if(!actions?.length) return;
@@ -4980,75 +5059,74 @@ function get3dObjId(mesh){
   return null;
 }
 
-tCv.addEventListener('mousedown', e=>{
+tCv.addEventListener('click', e=>{
+  // 3D SELECT: single click (orbit drag is handled separately)
   if(currentView!=='3d') return;
   if(e.button!==0) return;
+  if(mMov) return; // was a drag, not a click
 
   const rect = tCv.getBoundingClientRect();
   MV3.set(((e.clientX-rect.left)/rect.width)*2-1, -((e.clientY-rect.top)/rect.height)*2+1);
   RC3.setFromCamera(MV3, oCam);
 
-  // Collect all meshes
   const allMeshes = [];
   Object.values(obj3Map).forEach(g=>{ if(g) g.traverse(c=>{ if(c.isMesh) allMeshes.push(c); }); });
   const hits = RC3.intersectObjects(allMeshes, false);
 
   if(hits.length > 0){
-    const hit = hits[0];
-    const objId = get3dObjId(hit.object);
+    const objId = get3dObjId(hits[0].object);
     if(objId){
-      const o = objects.find(o=>o.id===objId);
-      if(o){
-        // Select it
-        setSelection(objId, false);
-        openPropPanel(objId, false);
-        // Start drag tracking
-        drag3d = {id:objId, startX:e.clientX, startY:e.clientY, startObjX:o.x, startObjY:o.y, moved:false};
-        tCv.style.cursor='grabbing';
-        e.stopPropagation(); e.preventDefault();
-        return;
-      }
+      setSelection(objId, false);
+      openPropPanel(objId, false);
+      toast('📦 Objekt ausgewählt — Ziehen zum Verschieben (G), Del zum Löschen','b');
     }
+  } else {
+    setSelection(null, false);
   }
-  drag3d = null;
 });
 
+// 3D DRAG: G key + mouse to move selected object in 3D
+let grab3d = false;
+document.addEventListener('keydown', e=>{
+  if(currentView!=='3d') return;
+  if(e.target.matches('input,textarea')) return;
+  if((e.key==='g'||e.key==='G') && selId && !selIsRoom){
+    grab3d = true;
+    tCv.style.cursor='crosshair';
+    toast('🖱 Maus bewegen → Objekt verschieben · Klick = fertig','b');
+  }
+  if(e.key==='Escape'){ grab3d=false; tCv.style.cursor='default'; }
+});
+
+let grab3dLast = null;
 tCv.addEventListener('mousemove', e=>{
   if(currentView!=='3d') return;
-  if(!drag3d || e.buttons===0){ drag3d=null; return; }
+  if(!grab3d || !selId) return;
 
-  const dx = e.clientX - drag3d.startX;
-  const dy = e.clientY - drag3d.startY;
-  if(Math.abs(dx)<5 && Math.abs(dy)<5) return;
+  if(!grab3dLast){ grab3dLast={x:e.clientX,y:e.clientY}; return; }
 
-  drag3d.moved = true;
+  const dx = e.clientX - grab3dLast.x;
+  const dy = e.clientY - grab3dLast.y;
+  grab3dLast = {x:e.clientX, y:e.clientY};
 
-  // Project mouse movement to world XZ plane
-  // Use camera orientation to determine X/Z mapping
+  const o = objects.find(o=>o.id===selId); if(!o) return;
   const camAngle = Math.atan2(oCam.position.x-oTgt.x, oCam.position.z-oTgt.z);
-  const worldDx = (dx * Math.cos(camAngle) + dy * Math.sin(camAngle)) * 0.015;
-  const worldDz = (-dx * Math.sin(camAngle) + dy * Math.cos(camAngle)) * 0.015;
+  const spd = 0.025;
+  o.x = snapM(o.x + (dx*Math.cos(camAngle)+dy*Math.sin(camAngle))*spd);
+  o.y = snapM(o.y + (-dx*Math.sin(camAngle)+dy*Math.cos(camAngle))*spd);
 
-  const o = objects.find(o=>o.id===drag3d.id); if(!o) return;
-  o.x = snapM(drag3d.startObjX + worldDx);
-  o.y = snapM(drag3d.startObjY + worldDz);
-
-  // Update 3D position live
-  const g = obj3Map[drag3d.id];
-  if(g){
-    const item = findItem(o.typeId)||{};
-    const w = o.w||item.w||1, d = o.d||item.d||1;
-    g.position.set(o.x+w/2, o.py||0, o.y+d/2);
+  const g2 = obj3Map[selId];
+  if(g2){
+    const it2=findItem(o.typeId)||{};
+    g2.position.set(o.x+(o.w||it2.w||1)/2, o.py||0, o.y+(o.d||it2.d||1)/2);
   }
   draw2D();
 });
 
-tCv.addEventListener('mouseup', e=>{
-  if(!drag3d) return;
-  if(drag3d.moved){ snapshot(); toast('📦 Objekt verschoben','b'); }
-  tCv.style.cursor='default';
-  drag3d = null;
-});
+tCv.addEventListener('click', e=>{
+  // Stop grab3d on click
+  if(grab3d){ grab3d=false; grab3dLast=null; tCv.style.cursor='default'; snapshot(); toast('📦 Position gespeichert','g'); }
+}, {capture:true});
 
 // 3D keyboard shortcuts
 document.addEventListener('keydown', e=>{
@@ -5116,6 +5194,61 @@ function loadCustomDesigns(){
   Object.assign(STYLE_PRESETS, saved);
 }
 
+
+// ════════════════════════════════════════════════════════════════════════
+// AI CHAT HELPER FUNCTIONS
+// ════════════════════════════════════════════════════════════════════════
+function addMsg(text, type){
+  const el = document.getElementById('ai-msgs');
+  if(!el) return {remove:()=>{}};
+  const div = document.createElement('div');
+  div.className = 'amsg ' + (type==='user'?'usr':type==='load'?'load':type==='ai'?'ai':'sys');
+  if(type==='ai') div.innerHTML = '<div class="ailbl">🌿 KI-Assistent</div>' + text;
+  else            div.textContent = text;
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+  return div;
+}
+
+function qmsg(text){
+  const inp = document.getElementById('ai-inp');
+  if(inp){ inp.value = text; sendAI(); }
+}
+
+function clearUpload(){
+  uploadedPages = []; selPageIdx = 0;
+  const prev = document.getElementById('file-prev');
+  if(prev) prev.innerHTML = '';
+  setProg(0);
+}
+
+function renderFilePrev(name, type, pages){
+  const el = document.getElementById('file-prev');
+  if(!el) return;
+  if(type==='pdf' && uploadedPages.length > 1){
+    let h = '<div class="fthumb-row">';
+    uploadedPages.forEach((p,i)=>{
+      h += '<div class="fthumb'+(i===selPageIdx?' sel':'')+'" onclick="selPage('+i+')">';
+      h += '<img src="data:'+p.mime+';base64,'+p.b64+'">';
+      h += '<span>'+p.label+'</span></div>';
+    });
+    h += '</div>';
+    el.innerHTML = h;
+  } else if(uploadedPages[0]){
+    el.innerHTML = '<img src="data:'+uploadedPages[0].mime+';base64,'+uploadedPages[0].b64+'" style="max-width:100%;max-height:110px;border-radius:4px;border:1px solid var(--bd2);display:block;margin-top:3px">';
+  }
+}
+
+function selPage(i){
+  selPageIdx = i;
+  document.querySelectorAll('.fthumb').forEach((el,j)=>el.classList.toggle('sel',j===i));
+}
+
+function updateAnalysisOverlay(msg){
+  // Show progress in AI chat
+  addMsg('⏳ ' + msg, 'sys');
+}
+
 // ════════════════════════════════════════════════════════════════════════
 // ANIMATION LOOP
 // ════════════════════════════════════════════════════════════════════════
@@ -5163,7 +5296,7 @@ draw2D();
 
 renderFloorTabs();
 initUndoSystem();
-setTimeout(()=>toast('🌿 v3.10 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
+setTimeout(()=>toast('🌿 v3.10r | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
 
 
 // ════════════════════════════════════════════════════════════════════════
