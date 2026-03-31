@@ -489,7 +489,7 @@ canvas{display:block}
 
 <!-- TOPBAR -->
 <div id="topbar">
-  <span class="logo">🌿 CSC <em>Raumplaner</em></span><span class="vbadge">v3.8</span>
+  <span class="logo">🌿 CSC <em>Raumplaner</em></span><span class="vbadge">v3.9</span>
   <div class="tsep"></div>
   <button class="tbt" id="undo-btn" onclick="undo()" disabled title="Rückgängig (Ctrl+Z)" style="letter-spacing:.5px">↩ Undo</button>
   <button class="tbt" id="redo-btn" onclick="redo()" disabled title="Wiederholen (Ctrl+Y)" style="letter-spacing:.5px">↪ Redo</button>
@@ -997,6 +997,63 @@ const BUILTIN = [
   {id:'infowand',   cat:'Info',     icon:'📌',name:'Infowand',       w:1.5,d:0.08,h:1.8,  col:0x6a2a90},
   {id:'pinnwand',   cat:'Info',     icon:'📋',name:'Pinnwand',       w:1.2,d:0.08,h:0.9,  col:0xc0900a},
   {id:'monitor',    cat:'Info',     icon:'📺',name:'Monitor/TV',     w:1.2,d:0.08,h:0.7,  col:0x0a0a0a},
+
+  // ── Empfang (erweitert) ──────────────────────────────────────────
+  {id:'emp-theke-l', cat:'Empfang', icon:'🏪',name:'Empfangstheke L-Form', w:3.0,d:0.7,h:1.0, col:0xb86c1a},
+  {id:'emp-theke-u', cat:'Empfang', icon:'🏪',name:'Empfangstheke U-Form', w:3.5,d:1.4,h:1.0, col:0xb86c1a},
+  {id:'rezeption',   cat:'Empfang', icon:'🖥️',name:'Rezeptionspult',       w:1.6,d:0.8,h:1.1, col:0x2a2a3a},
+  {id:'w-bank',      cat:'Empfang', icon:'🪑',name:'Wartebank 3-Sitzer',   w:1.8,d:0.6,h:0.8, col:0x3a4a5a},
+  {id:'w-sessel',    cat:'Empfang', icon:'🪑',name:'Wartesessel',          w:0.7,d:0.7,h:0.85,col:0x2d5e50},
+  {id:'info-desk',   cat:'Empfang', icon:'ℹ️',name:'Info-Desk',            w:1.2,d:0.6,h:0.9, col:0x3a3a5a},
+  // ── Ausgabe (erweitert) ──────────────────────────────────────────
+  {id:'aus-theke-l', cat:'Ausgabe', icon:'🌿',name:'Ausgabetheke groß',    w:3.5,d:0.7,h:1.0, col:0x4a7a00},
+  {id:'ber-platz-2', cat:'Ausgabe', icon:'📋',name:'Beratungszone',        w:2.4,d:1.2,h:0.75,col:0x5a4a35},
+  {id:'display-kl',  cat:'Ausgabe', icon:'🖼️',name:'Produktdisplay klein', w:0.6,d:0.3,h:1.4, col:0x1a1a2a},
+  {id:'display-gr',  cat:'Ausgabe', icon:'🖼️',name:'Produktdisplay groß',  w:1.2,d:0.3,h:1.6, col:0x1a1a2a},
+  {id:'tablett-disp',cat:'Ausgabe', icon:'📱',name:'Tablett-Ständer',      w:0.3,d:0.3,h:1.2, col:0x111111},
+  {id:'schilder-w',  cat:'Ausgabe', icon:'🔖',name:'Schilderhalter Wand',  w:0.5,d:0.08,h:0.6,col:0x888888},
+  // ── Lager (erweitert) ────────────────────────────────────────────
+  {id:'regal-hoch',  cat:'Lager',   icon:'📦',name:'Hochregal 2.4m',       w:1.2,d:0.5,h:2.4, col:0x7a6040},
+  {id:'regal-breit', cat:'Lager',   icon:'📦',name:'Breitregal 2m',        w:2.0,d:0.5,h:2.0, col:0x7a6040},
+  {id:'rollwagen',   cat:'Lager',   icon:'🛒',name:'Rollwagen',            w:0.6,d:0.45,h:0.9, col:0x888888},
+  {id:'kuehl-gr',    cat:'Lager',   icon:'❄️',name:'Kühlschrank groß',     w:0.9,d:0.85,h:2.1, col:0x88aabb},
+  {id:'safe-boden',  cat:'Lager',   icon:'🔒',name:'Bodentresor',          w:0.4,d:0.4,h:0.25, col:0x222222},
+  {id:'abfall',      cat:'Lager',   icon:'🗑️',name:'Abfallbehälter',      w:0.35,d:0.35,h:0.65,col:0x444444},
+  // ── Sozial (erweitert) ───────────────────────────────────────────
+  {id:'sofa-2',      cat:'Sozial',  icon:'🛋️',name:'2-Sitzer Sofa',       w:1.5,d:0.85,h:0.75,col:0x5a2a90},
+  {id:'sofa-eck',    cat:'Sozial',  icon:'🛋️',name:'Ecksofa',             w:2.8,d:2.2,h:0.75, col:0x2a2a7a},
+  {id:'ottomane',    cat:'Sozial',  icon:'🪑',name:'Ottomane/Hocker',      w:0.6,d:0.6,h:0.4,  col:0x4a3a6a},
+  {id:'stehlampe',   cat:'Sozial',  icon:'💡',name:'Stehlampe',            w:0.3,d:0.3,h:1.6,  col:0x8a7a60},
+  {id:'beistelltisch',cat:'Sozial', icon:'🪵',name:'Beistelltisch',        w:0.5,d:0.5,h:0.55, col:0x7a5a30},
+  {id:'tv-bank',     cat:'Sozial',  icon:'📺',name:'TV-Bank',              w:1.8,d:0.45,h:0.45,col:0x2a2a2a},
+  {id:'buecher',     cat:'Sozial',  icon:'📚',name:'Bücherregal',          w:0.8,d:0.3,h:2.0,  col:0x6a5a40},
+  {id:'spieltisch',  cat:'Sozial',  icon:'🎮',name:'Spieltisch',           w:1.4,d:1.0,h:0.75, col:0x3a4a2a},
+  {id:'pflanze-xl',  cat:'Sozial',  icon:'🌳',name:'Pflanze XL (Baum)',    w:1.0,d:1.0,h:2.2,  col:0x1a5a1a},
+  {id:'blumentopf',  cat:'Sozial',  icon:'🪴',name:'Blumentopf Keramik',   w:0.25,d:0.25,h:0.3, col:0xb06030},
+  // ── Küche (erweitert) ────────────────────────────────────────────
+  {id:'kueche-insel',cat:'Küche',   icon:'🍳',name:'Kücheninsel',          w:1.6,d:1.0,h:0.9,  col:0xcccccc},
+  {id:'spuele',      cat:'Küche',   icon:'🚿',name:'Spüle',               w:0.8,d:0.55,h:0.88, col:0xaaaaaa},
+  {id:'backofen',    cat:'Küche',   icon:'♨️',name:'Backofen',             w:0.6,d:0.55,h:0.9,  col:0x1a1a1a},
+  {id:'mikrowelle',  cat:'Küche',   icon:'📦',name:'Mikrowelle',           w:0.5,d:0.38,h:0.3,  col:0x1a1a1a},
+  {id:'kasse-bar',   cat:'Küche',   icon:'💰',name:'Bar-Kasse',            w:0.4,d:0.35,h:0.5,  col:0x111111},
+  {id:'bartresen',   cat:'Küche',   icon:'🍺',name:'Bartresen',            w:2.5,d:0.65,h:1.05, col:0x4a3020},
+  // ── Büro / Info (erweitert) ──────────────────────────────────────
+  {id:'schreibtisch',cat:'Info',    icon:'🖥️',name:'Schreibtisch',         w:1.4,d:0.7,h:0.75, col:0xf0ece4},
+  {id:'buero-stuhl', cat:'Info',    icon:'🪑',name:'Bürostuhl',            w:0.6,d:0.6,h:1.1,  col:0x111111},
+  {id:'aktenschr',   cat:'Info',    icon:'🗄️',name:'Aktenschrank',         w:0.8,d:0.45,h:1.8,  col:0x8a8a9a},
+  {id:'drucker',     cat:'Info',    icon:'🖨️',name:'Drucker/Scanner',      w:0.5,d:0.4,h:0.35,  col:0x222222},
+  {id:'monitor-gr',  cat:'Info',    icon:'📺',name:'Monitor groß (50")',   w:1.4,d:0.1,h:0.85,  col:0x0a0a0a},
+  {id:'whiteboard',  cat:'Info',    icon:'📋',name:'Whiteboard',           w:1.8,d:0.06,h:1.2,  col:0xf8f8f8},
+  // ── Außenbereich ─────────────────────────────────────────────────
+  {id:'aussen-tisch',cat:'Außen',   icon:'🪑',name:'Außentisch',           w:1.2,d:0.7,h:0.75, col:0x5a5a5a},
+  {id:'aussen-bank', cat:'Außen',   icon:'🪑',name:'Außenbank',            w:1.5,d:0.45,h:0.78,col:0x5a5a5a},
+  {id:'sonnenschirm',cat:'Außen',   icon:'☂️',name:'Sonnenschirm',         w:2.5,d:2.5,h:2.2,  col:0x4a6a3a},
+  {id:'blumenkuebel',cat:'Außen',   icon:'🌺',name:'Blumenkübel groß',     w:0.6,d:0.6,h:0.6,  col:0x8a5030},
+  // ── Technik ──────────────────────────────────────────────────────
+  {id:'server-schr', cat:'Technik', icon:'🖥️',name:'Serverschrank',        w:0.6,d:0.8,h:2.0,  col:0x1a1a2a},
+  {id:'netzwerk-sw', cat:'Technik', icon:'📡',name:'Netzwerkswitch',        w:0.44,d:0.25,h:0.06,col:0x1a1a1a},
+  {id:'ups',         cat:'Technik', icon:'🔋',name:'USV (Notstrom)',        w:0.6,d:0.3,h:0.5,  col:0x2a2a2a},
+  {id:'klimaanlage', cat:'Technik', icon:'❄️',name:'Klimagerät Wand',       w:0.9,d:0.22,h:0.3, col:0xeeeeee},
   // WC
   {id:'wc-klo',     cat:'WC',       icon:'🚽',name:'WC',             w:0.4,d:0.7, h:0.8,  col:0xeeeeee},
   {id:'wc-beck',    cat:'WC',       icon:'🚿',name:'Waschbecken',    w:0.6,d:0.5, h:0.85, col:0xeeeeee},
@@ -2769,9 +2826,11 @@ function placeOpeningOrObject(typeId, wx, wz){
     py=0.0;
   }
 
+  // Doors/windows: thin depth (0.02) so they sit in the wall face, not through it
+  const archDepth = (item.arch==='door'||item.arch==='window') ? 0.02 : (item.d||0.15);
   addObject({
-    typeId, x:x-( item.w||1)/2, y:z-(item.d||0.15)/2,
-    w:item.w, d:item.d, h:item.h,
+    typeId, x:x-(item.w||1)/2, y:z-archDepth/2,
+    w:item.w, d:archDepth, h:item.h,
     rot: Math.round(wallAngleRad/15)*15,
     py, arch:item.arch||null,
     wallRef,
@@ -3417,8 +3476,9 @@ function applyMoodFull(name){
 
   applyLightSliders();
 
-  // Also sync old mood panel buttons
+  // Sync old mood panel buttons + re-render 3D with new mood
   document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('active'));
+  rebuild3D(); // rebuild to apply new material tints
 }
 
 function _setSlider(id, val){
@@ -3463,15 +3523,23 @@ function applyLightSliders(){
   // Exposure
   rend3.toneMappingExposure = +(document.getElementById('exposure')?.value||1.1);
 
-  // Room point lights
+  // Room point lights + tint all meshes slightly
   const roomStr = +(document.getElementById('room-str')?.value||0.85);
   const roomCol = document.getElementById('room-col')?.value||'#fff5e0';
+  const expVal  = +(document.getElementById('exposure')?.value||1.1);
   Object.values(obj3Map).forEach(g=>{
     if(!g) return;
     g.traverse(child=>{
       if(child.isPointLight && !child._manual){
         child.color.set(roomCol);
         child.intensity = roomStr * (child._base||1);
+      }
+      // Light tint on materials at high exposure
+      if(child.isMesh && child.material && expVal > 1.3){
+        const tint = (expVal - 1.0) * 0.08;
+        if(child.material.emissive && !child.material._isLed){
+          child.material.emissiveIntensity = Math.min(0.15, tint);
+        }
       }
     });
   });
@@ -4638,6 +4706,176 @@ function updateBotHint(){
   const el = document.getElementById('bot-tip'); if(!el) return;
   el.textContent = hints[tool2d] || hints.sel;
 }
+
+// ════════════════════════════════════════════════════════════════════════
+// KI-ASSISTENT — Hauptfunktionen (sendAI + execActions)
+// ════════════════════════════════════════════════════════════════════════
+const AI_SYS = `Du bist ein professioneller 3D-Raumplaner für Cannabis Social Clubs (CSC) in Deutschland.
+Du analysierst Grundrisse und planst Räume für Ausgabestellen.
+
+ANTWORTFORMAT: Antworte IMMER NUR mit einem JSON-Objekt (kein Text davor/danach, kein Markdown):
+{"message":"Kurze Erklärung auf Deutsch","actions":[...]}
+
+VERFÜGBARE AKTIONEN:
+
+A) RAUM ERSTELLEN:
+{"type":"addRoom","name":"Raumname","x":0,"y":0,"w":8,"d":7,"h":2.8,"floorColor":"#c8b99a","wallColor":"#d8d0c0","ceilColor":"#f0ece0"}
+Farben: Empfang/Ausgabe: floor #c8b99a wall #d8d0c0 | Sozial: floor #8a9a7c wall #c4ccb8 | Lager: floor #888888 wall #aaaaaa | WC: floor #cccccc wall #e0e0e0
+
+B) OBJEKT PLATZIEREN:
+{"type":"addObj","typeId":"aus-theke","x":3,"y":2,"rot":0,"py":0}
+rot = Grad (0/90/180/270), py = Höhe (Lichter py=Raumhöhe z.B. 2.8)
+
+WICHTIGE typeIds:
+Empfang: emp-theke,emp-theke-l,scanner,w-sofa,w-stuhl,w-bank,w-sessel,rezeption
+Ausgabe: aus-theke,aus-theke-l,ber-tisch,kasse,locker,display-gr,display-kl
+Lager: kuehlschr,kuehl-gr,regal,regal-hoch,regal-breit,tresor,safe-boden
+Sozial: l-sofa,sofa-2,sofa-eck,ctisch,etisch,stuhl,ottomane,beistelltisch,stehlampe,pflanze-gr,pflanze-kl,pflanze-xl,tv-bank,spieltisch
+Küche: kueche-z,kueche-insel,spuele,backofen,kaffeemsch,barhocker,bartresen,kschr-kl
+Info: infowand,monitor,monitor-gr,schreibtisch,buero-stuhl,whiteboard,aktenschr,drucker
+WC: wc-klo,wc-beck,wc-kab
+Technik: server-schr,klimaanlage,ups
+Türen: at-std,at-dbl,at-wc,at-glass,at-sec
+Fenster: aw-sm,aw-md,aw-lg
+Schaufenster: aw-sf-sm,aw-sf-md,aw-sf-lg
+Licht: al-pt,al-str,al-wnd
+Sonstiges: ac-col,ac-wall
+Sicherheit: sec-cam-ceil,sec-cam-wall,sec-alarm,sec-pir,sec-smoke,sec-ext,sec-bar,sec-access,sec-safe,sec-sign-exit,sec-emlight
+
+C) ALLES LÖSCHEN: {"type":"clearAll"}
+D) KAMERA: {"type":"cam","x":5,"y":5}
+E) NACHRICHT: {"type":"noop"}
+
+GRUNDRISS-ANALYSE (wenn Bild vorhanden):
+1. Erkenne alle Räume: Form, Größe (Türbreite≈1m als Maßstab), Funktion
+2. Schätze reale Maße (typisch: 3-10m Breite, 4-15m Länge)
+3. Räume DIREKT nebeneinander: Raum2.x = Raum1.x + Raum1.w (KEIN Abstand!)
+4. Möbel passend zur Funktion platzieren
+5. Türen an alle Durchgänge (an Raumgrenzen)
+6. Fenster an Außenwände
+7. Decklichter (al-str, py=Raumhöhe) in jeden Raum
+8. Sicherheit: sec-cam-ceil, sec-smoke, sec-alarm im Eingang
+9. Für CSC: Empfang/Ausgabe, Sozialbereich, Lager, WC vollständig einrichten
+10. Möbel INNERHALB der Räume platzieren (x/y im Raumbereich)`;
+
+function getStateCtx(){
+  return 'AKTUELLER ZUSTAND:\nRäume: '+JSON.stringify(rooms.map(r=>({id:r.id,name:r.name,x:r.x,y:r.y,w:r.w,d:r.d})))+
+    '\nObjekte: '+JSON.stringify(objects.map(o=>({typeId:o.typeId,x:Math.round(o.x*10)/10,y:Math.round(o.y*10)/10})).slice(0,20));
+}
+
+async function sendAI(){
+  const inp = document.getElementById('ai-inp');
+  const text = (inp?.value||'').trim();
+  if(!text && !uploadedPages.length) return;
+  inp.value = '';
+
+  const k = getKey();
+  if(!k){ addMsg('❌ Kein API Key — bitte unter 💾 Projekte eintragen','sys'); return; }
+
+  addMsg(text||'📎 '+uploadedPages.length+' Bild(er) gesendet','user');
+  const load = addMsg('🤖 KI denkt…','load');
+  document.getElementById('ai-send').disabled = true;
+
+  try {
+    const stateCtx = getStateCtx();
+    let content = [];
+    if(uploadedPages.length > 0){
+      const pages = uploadedPages.slice(0,10);
+      pages.forEach(p=>content.push({type:'image',source:{type:'base64',media_type:p.mime||'image/jpeg',data:p.b64}}));
+      content.push({type:'text',text:stateCtx+'\n\n'+(text||'Analysiere diesen Grundriss vollständig für eine CSC-Ausgabestelle. Erkenne alle Räume, schätze Maße, platziere Möbel, Türen, Fenster und Lichter. Erstelle eine vollständige Einrichtung.')});
+    } else {
+      content = [{type:'text',text:stateCtx+'\n\n'+text}];
+    }
+
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,system:AI_SYS,messages:[{role:'user',content}]})
+    });
+
+    const data = await resp.json();
+    load.remove();
+
+    if(data.error){
+      addMsg('❌ API Fehler: '+data.error.message,'sys');
+      return;
+    }
+
+    const raw = data.content?.[0]?.text||'{}';
+    let parsed;
+    try { parsed = JSON.parse(raw.match(/\{[\s\S]*\}/)?.[0]||'{}'); }
+    catch(e){ addMsg('❌ KI-Antwort konnte nicht verarbeitet werden: '+raw.slice(0,100),'sys'); return; }
+
+    if(parsed.message) addMsg(parsed.message,'ai');
+    if(parsed.actions?.length) execActions(parsed.actions);
+    if(uploadedPages.length) { clearUpload(); }
+
+  } catch(e){
+    load.remove();
+    addMsg('❌ Fehler: '+e.message,'sys');
+  } finally {
+    document.getElementById('ai-send').disabled = false;
+  }
+}
+
+function execActions(actions){
+  if(!actions?.length) return;
+  actions.forEach(a=>{
+    try{
+      switch(a.type){
+        case 'clearAll':
+          rooms.forEach(r=>{if(obj3Map[r.id])scene.remove(obj3Map[r.id]);});
+          objects.forEach(o=>{if(obj3Map[o.id])scene.remove(obj3Map[o.id]);});
+          rooms=[];objects=[];measures=[];selId=null;selIsRoom=false;
+          Object.keys(obj3Map).forEach(k=>{scene.remove(obj3Map[k]);delete obj3Map[k];});
+          break;
+        case 'addRoom':{
+          const cfg={...a}; delete cfg.type;
+          if(!cfg.floorColor) cfg.floorColor='#c8b99a';
+          if(!cfg.wallColor)  cfg.wallColor='#d8d0c0';
+          if(!cfg.ceilColor)  cfg.ceilColor='#f0ece0';
+          if(!cfg.h)          cfg.h=2.8;
+          // Snap to existing room edges
+          if(cfg.x!==undefined && rooms.length>0){
+            rooms.forEach(r=>{
+              if(Math.abs(cfg.x-(r.x+r.w))<0.3) cfg.x=r.x+r.w;
+              if(Math.abs((cfg.x+cfg.w)-r.x)<0.3) cfg.x=r.x-cfg.w;
+              if(Math.abs(cfg.y-(r.y+r.d))<0.3) cfg.y=r.y+r.d;
+              if(Math.abs((cfg.y+cfg.d)-r.y)<0.3) cfg.y=r.y-cfg.d;
+            });
+          }
+          addRoom(cfg); break;
+        }
+        case 'addObj':{
+          const item=findItem(a.typeId); if(!item) break;
+          addObject({typeId:a.typeId,x:a.x||0,y:a.y||0,
+            w:a.w||item.w,d:a.d||item.d,h:a.h||item.h,
+            rot:a.rot||0,py:a.py||0,arch:item.arch||null,
+            floorId:curFloor});
+          break;
+        }
+        case 'setMood':
+          if(a.name) { applyMoodFull(a.name); setMood(a.name); }
+          break;
+        case 'cam':
+          if(a.x!==undefined){ oTgt.set(a.x,0,a.y||0); }
+          break;
+        case 'noop': break;
+        default: break;
+      }
+    }catch(e){ console.warn('Action error:',a.type,e); }
+  });
+  rebuild3D(); draw2D(); renderLeft(); snapshot();
+}
+
+// Enter key in AI input
+document.addEventListener('DOMContentLoaded',()=>{
+  const inp=document.getElementById('ai-inp');
+  if(inp) inp.addEventListener('keydown',e=>{
+    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAI();}
+  });
+});
+
 // ════════════════════════════════════════════════════════════════════════
 // ANIMATION LOOP
 // ════════════════════════════════════════════════════════════════════════
@@ -4684,7 +4922,7 @@ draw2D();
 
 renderFloorTabs();
 initUndoSystem();
-setTimeout(()=>toast('🌿 v3.8 | Alle Fixes · Phase 8 UX','g'),600);
+setTimeout(()=>toast('🌿 v3.9 | KI-System · 50+ Möbel · Fixes','g'),600);
 
 
 // ════════════════════════════════════════════════════════════════════════
@@ -5205,13 +5443,18 @@ async function wizardGenerate(){
   const k = getKey(); if(!k){ toast('Kein API Key','r'); return; }
   const load = addMsg('🤖 Erstelle Objekt…','load');
 
-  const prompt = 'Erstelle ein 3D-Objekt für den CSC-Raumplaner basierend auf diesen Angaben:\n'+
+  const prompt = 'Erstelle ein realistisches 3D-Möbel-Objekt für den CSC Raumplaner.\n'+
 'Kategorie: '+(wizState.category||'Möbel')+'\nMaterial: '+(wizState.material||'Holz')+
 '\nGröße: '+(wizState.size||'Mittel')+'\nFarbe: '+(wizState.color||'Naturholz')+
 '\nBeschreibung: '+(wizState.description||'Standard')+
-'\n\nAntworte NUR mit JSON:\n'+
-'{"name":"Objektname","icon":"emoji","cat":"Kategorie","w":1.0,"d":0.6,"h":0.9,"colHex":"#7a5c38","roughness":0.65,"metalness":0.02,"description":"Kurze Beschreibung"}'+
-'\n\nWähle realistischen colHex passend zur Farbe/Material. roughness: Holz=0.65, Metall=0.2, Stoff=0.9, Glas=0.05, Kunststoff=0.5, Beton=0.9, Marmor=0.2.';
+'\nKategorie: '+(wizState.category||'Möbel')+'\nMaterial: '+(wizState.material||'Holz')+
+'\nGröße: '+(wizState.size||'Mittel')+'\nFarbe: '+(wizState.color||'Naturholz')+
+'\nBeschreibung: '+(wizState.description||'Standard')+
+'\n\nAntworte NUR mit JSON (kein Markdown):\n'+
+'{"name":"Name","icon":"emoji","cat":"Kategorie","w":1.2,"d":0.7,"h":0.9,"colHex":"#7a5c38","roughness":0.65,"metalness":0.02,"matPreset":"wood","description":"Beschreibung","tags":["sofa","sitz"]}'+
+'\n\nRichtwerte: Sofa w:1.8-2.5 d:0.85-1.0 h:0.75 | Tisch w:0.8-2.0 d:0.6-1.0 h:0.72-0.78 | Regal w:0.6-2.0 d:0.3-0.5 h:1.2-2.2'+
+'\nmatPreset: wood|metal|fabric|glass|concrete|marble|leather|plastic'+
+'\nroughness: Holz=0.65 Metall=0.2 Stoff=0.9 Glas=0.05 Kunststoff=0.5 Beton=0.9 Marmor=0.2 Leder=0.7';
 
   try {
     const resp = await fetch('https://api.anthropic.com/v1/messages',{
