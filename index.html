@@ -489,7 +489,7 @@ canvas{display:block}
 
 <!-- TOPBAR -->
 <div id="topbar">
-  <span class="logo">🌿 CSC <em>Raumplaner</em></span><span class="vbadge">v3.11</span>
+  <span class="logo">🌿 CSC <em>Raumplaner</em></span><span class="vbadge">v3.12</span>
   <div class="tsep"></div>
   <button class="tbt" id="undo-btn" onclick="undo()" disabled title="Rückgängig (Ctrl+Z)" style="letter-spacing:.5px">↩ Undo</button>
   <button class="tbt" id="redo-btn" onclick="redo()" disabled title="Wiederholen (Ctrl+Y)" style="letter-spacing:.5px">↪ Redo</button>
@@ -500,6 +500,7 @@ canvas{display:block}
   <button class="tbt" onclick="dlJSON()">📥 Export</button>
   <button class="tbt" onclick="doPrint()">🖨 Drucken</button>
   <button class="tbt" onclick="showStats()" title="Raumstatistik">📊</button>
+  <button class="tbt" id="btn-all-floors" onclick="toggleAllFloors()" title="Alle Etagen anzeigen" style="display:none">🏢 Alle</button>
   <span id="view-hint-3d" style="font-size:10px;color:var(--tx3);display:none">3D: Klick=Auswählen · Ziehen=Verschieben · Del=Löschen · Pfeiltasten=Feinpos. · Rechts=Orbit</span>
   <div class="tsep"></div>
   <button class="tbt" onclick="toggleMoodPanel()" style="color:var(--yw);border-color:#3a3000;background:#1a1800">🌅 Stimmung</button>
@@ -1911,14 +1912,15 @@ function rebuild3D(){
   Object.values(obj3Map).forEach(g=>scene.remove(g));
   Object.keys(obj3Map).forEach(k=>delete obj3Map[k]);
 
-  // ── Room FLOORS (each room builds its own floor + ceiling lights)
-  rooms.forEach(r=>{
+  // ── Room FLOORS — show current floor, but include all for structure
+  const showAllFloors = typeof _show3DAllFloors !== 'undefined' && _show3DAllFloors;
+  rooms.filter(r=>showAllFloors||(r.floorId===curFloor||!r.floorId)).forEach(r=>{
     const g=build3DRoomFloor(r);
     scene.add(g); obj3Map[r.id]=g;
   });
 
-  // ── Unique ROOM WALLS (no double walls at shared edges)
-  const allCurRooms = rooms.filter(r=>r.floorId===curFloor||!r.floorId);
+  // ── Unique ROOM WALLS
+  const allCurRooms = showAF2 ? rooms : rooms.filter(r=>r.floorId===curFloor||!r.floorId);
   const wallSegs = buildRoomWalls3D(allCurRooms);
   wallSegs.forEach((seg,i)=>{
     const m = buildWallSegMesh3D(seg);
@@ -1931,8 +1933,9 @@ function rebuild3D(){
     if(m){ scene.add(m); obj3Map['fw_'+w.id]=m; }
   });
 
-  // ── Objects
-  objects.forEach(o=>{
+  // ── Objects (only current floor, or all if in "alle Etagen" overview)
+  const showAF2 = typeof _show3DAllFloors !== 'undefined' && _show3DAllFloors;
+  objects.filter(o=>showAF2||(o.floorId===curFloor||!o.floorId)).forEach(o=>{
     const g=build3DObj(o);
     if(g){scene.add(g);obj3Map[o.id]=g;}
   });
@@ -1951,6 +1954,9 @@ function rebuild3D(){
 function build3DRoomFloor(r){
   const g=new THREE.Group();
   const T=0.13;
+  // Apply floor elevation offset
+  const floorElev = getFloorElev(r.floorId||'eg');
+  g.position.y = floorElev;
   const fc=parseInt(r.floorColor.replace('#',''),16);
   const wc=parseInt(r.wallColor.replace('#',''),16);
   const smat=(c,rough=0.75,metal=0)=>new THREE.MeshStandardMaterial({color:c,roughness:rough,metalness:metal,side:THREE.DoubleSide});
@@ -2363,26 +2369,7 @@ function loadPD(d){
   (d.rooms||[]).forEach(r=>addRoom(r));
   (d.objects||[]).forEach(o=>addObject(o));
   measures=d.measures||[];
-  rebuild3D();renderLeft();draw2D();updateSavedUI();
-loadSupabaseConfig();
-initGuide();
-loadCustomDesigns();
-// ── Auto-restore last session ──────────────────────────────────────
-(function autoRestore(){
-  const saved = localStorage.getItem('csc-autosave');
-  const ts    = +(localStorage.getItem('csc-autosave-ts')||0);
-  if(!saved) return;
-  // Only auto-restore if saved within last 7 days and has content
-  if(Date.now()-ts > 7*24*3600*1000) return;
-  try {
-    const s = JSON.parse(saved);
-    if(!s.rooms || s.rooms.length === 0) return; // empty, skip
-    _restoreSnapshot(saved);
-    const ago = Math.round((Date.now()-ts)/60000);
-    const agoStr = ago<60 ? ago+'min' : Math.round(ago/60)+'h';
-    toast('🔄 Letzter Stand wiederhergestellt (vor '+agoStr+')', 'g');
-  } catch(e) {}
-})();
+    rebuild3D();renderLeft();draw2D();updateSavedUI();
 }
 function saveProj(){
   const saves=JSON.parse(localStorage.getItem('csc-saves3')||'{}');
@@ -2424,7 +2411,7 @@ function doPrint(){
     +'td,th{border:1px solid #ddd;padding:4px 6px;text-align:left}th{background:#f5f5f5}'
     +'@media print{body{padding:8px}}</style></head><body>'
     +'<h1>🌿 '+d.name+'</h1>'
-    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.11 · '+new Date().toLocaleDateString('de-DE')+'</div>'
+    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.12 · '+new Date().toLocaleDateString('de-DE')+'</div>'
     +'<img src="'+img+'">'
     +'<div class=grid>'
     +'<div class=box><h3>Räume ('+d.rooms.length+')</h3>'
@@ -2484,11 +2471,13 @@ function snapshot(){
   if(undoStack.length > MAX_HISTORY) undoStack.shift();
   undoIdx = undoStack.length - 1;
   _updUndoBtns();
-  // Auto-save to localStorage on every change
-  try {
-    localStorage.setItem('csc-autosave', state);
-    localStorage.setItem('csc-autosave-ts', Date.now().toString());
-  } catch(e) {}
+  // Auto-save to localStorage on every change (skip during init)
+  if(typeof _autoSaveReady !== 'undefined' && _autoSaveReady) {
+    try {
+      localStorage.setItem('csc-autosave', state);
+      localStorage.setItem('csc-autosave-ts', Date.now().toString());
+    } catch(e) {}
+  }
 }
 
 function undo(){
@@ -2563,7 +2552,7 @@ function confirmFloor(){
   const newId = 'floor_' + Date.now();
   floors.push({id:newId, name, elev});
   curFloor = newId;
-  renderFloorTabs(); renderLeft(); draw2D();
+  renderFloorTabs(); renderLeft(); draw2D(); updateFloorUI();
   closeM('m-floor');
   snapshot();
   toast('🏢 Etage "'+name+'" erstellt','g');
@@ -3154,31 +3143,34 @@ function buildDoor3D_v2(g, item, o){
     // Standard panel door (existing logic, enhanced)
     const colHex = o.customColor ? parseInt(o.customColor.replace('#',''),16) : (item.col||0x8a6030);
     const dMat=new THREE.MeshStandardMaterial({color:colHex,roughness:0.55,metalness:0.05});
-    // Door leaf
-    const door=new THREE.Mesh(new THREE.BoxGeometry(w-0.04,h-0.04,0.06),dMat);
-    door.position.set(0,h/2,0.04); door.castShadow=true; g.add(door);
+    // Door leaf — DoubleSide so visible from both sides
+    const dMatDS=new THREE.MeshStandardMaterial({color:colHex,roughness:rough,metalness:metal,side:THREE.DoubleSide});
+    const door=new THREE.Mesh(new THREE.BoxGeometry(w-0.04,h-0.04,0.06),dMatDS);
+    door.position.set(0,h/2,0.0); door.castShadow=true; g.add(door);
     // Inset panels (embossed)
     const pMat=new THREE.MeshStandardMaterial({color:Math.max(0,colHex-0x151515),roughness:0.68});
     const pH=h*0.28, pW=w*0.4;
     [[-pW*0.52,h*0.65],[pW*0.52,h*0.65],[-pW*0.52,h*0.30],[pW*0.52,h*0.30]].forEach(([ox,oy])=>{
-      const pm=new THREE.Mesh(new THREE.BoxGeometry(pW,pH,0.015),pMat);
-      pm.position.set(ox,oy,0.075); g.add(pm);
+      const pm=new THREE.Mesh(new THREE.BoxGeometry(pW,pH,0.014),pMat);
+      pm.position.set(ox,oy,0.036); g.add(pm);
+      // Back side panels
+      const pm2=pm.clone(); pm2.position.set(ox,oy,-0.036); g.add(pm2);
     });
     // Gold handle + backplate
     const hMat=new THREE.MeshStandardMaterial({color:0xd4aa50,roughness:0.12,metalness:0.95});
     const bpMat=new THREE.MeshStandardMaterial({color:0xc09020,roughness:0.2,metalness:0.8});
     // Backplate
     const bp=new THREE.Mesh(new THREE.BoxGeometry(0.04,0.22,0.015),bpMat);
-    bp.position.set(w/2-0.12,1.05,0.075); g.add(bp);
+    bp.position.set(w/2-0.12,1.05,0.04); g.add(bp);
     // Horizontal grip
     const hndH=new THREE.Mesh(new THREE.CylinderGeometry(0.012,0.012,0.13,10),hMat);
-    hndH.rotation.z=Math.PI/2; hndH.position.set(w/2-0.14,1.05,0.10); g.add(hndH);
-    // Vertical part
+    hndH.rotation.z=Math.PI/2; hndH.position.set(w/2-0.14,1.05,0.06); g.add(hndH);
     const hndV2=new THREE.Mesh(new THREE.CylinderGeometry(0.012,0.012,0.10,10),hMat);
-    hndV2.position.set(w/2-0.07,1.05,0.10); g.add(hndV2);
-    // Keyhole
+    hndV2.position.set(w/2-0.07,1.05,0.06); g.add(hndV2);
     const kh=new THREE.Mesh(new THREE.CylinderGeometry(0.015,0.015,0.012,8),bpMat);
-    kh.rotation.x=Math.PI/2; kh.position.set(w/2-0.12,0.95,0.078); g.add(kh);
+    kh.rotation.x=Math.PI/2; kh.position.set(w/2-0.12,0.95,0.044); g.add(kh);
+    // Back handle (other side)
+    const hndH2=hndH.clone(); hndH2.position.set(-(w/2-0.14),1.05,-0.06); hndH2.rotation.z=Math.PI/2; g.add(hndH2);
     // Frame
     const fMat=new THREE.MeshStandardMaterial({color:0xe8e0d0,roughness:0.6});
     [[0.07,h+0.04,0.13,-w/2-0.035,h/2,0],[0.07,h+0.04,0.13,w/2+0.035,h/2,0],[w+0.14,0.07,0.13,0,h+0.035,0]].forEach(([fw,fh,fd,px,py,pz])=>{
@@ -3237,16 +3229,22 @@ function buildWindow3D_v2(g, item, o){
       cross.position.set(0,1.2,0); g.add(cross);
     }
   } else {
-    // Standard window: white frame, cross bars, window sill
-    [[w,0.04,0.04,0,sill+h/2],[0.04,h,0.04,0,sill+h/2]].forEach(([fw,fh,fd,px,py])=>{
-      const m=new THREE.Mesh(new THREE.BoxGeometry(fw,fh,fd),fMat);m.position.set(px,py,0.001);g.add(m);
+    // Standard window: inset frame (stays within opening)
+    const frameThick=0.04;
+    // Inner cross bars
+    [[w-0.04,frameThick,frameThick,0,sill+h/2,0],[frameThick,h-0.04,frameThick,0,sill+h/2,0]].forEach(([fw,fh,fd,px,py,pz])=>{
+      const m=new THREE.Mesh(new THREE.BoxGeometry(fw,fh,fd),fMat);m.position.set(px,py,pz);g.add(m);
     });
-    [[w+0.14,0.06,0.08,0,sill-0.03],[w+0.14,0.06,0.08,0,sill+h+0.03],[0.06,h+0.14,0.08,-w/2-0.03,sill+h/2],[0.06,h+0.14,0.08,w/2+0.03,sill+h/2]].forEach(([fw,fh,fd,px,py])=>{
+    // Frame border — fits inside opening
+    [[w-0.02,frameThick,0.1,0,sill+frameThick/2],[w-0.02,frameThick,0.1,0,sill+h-frameThick/2],
+     [frameThick,h,0.1,-w/2+frameThick/2,sill+h/2],[frameThick,h,0.1,w/2-frameThick/2,sill+h/2]
+    ].forEach(([fw,fh,fd,px,py])=>{
       const m=new THREE.Mesh(new THREE.BoxGeometry(fw,fh,fd),fMat);m.position.set(px,py,0);m.castShadow=true;g.add(m);
     });
-    // Sill ledge
-    const sl=new THREE.Mesh(new THREE.BoxGeometry(w+0.2,0.04,0.18),new THREE.MeshStandardMaterial({color:0xf5f2ee,roughness:0.5}));
-    sl.position.set(0,sill-0.02,0.09);g.add(sl);
+    // Window sill (interior ledge)
+    const sl=new THREE.Mesh(new THREE.BoxGeometry(w+0.04,0.04,0.15),
+      new THREE.MeshStandardMaterial({color:0xf5f2ee,roughness:0.5}));
+    sl.position.set(0,sill-0.01,0.07);g.add(sl);
   }
 
   // Foil layer (separate from main glass for editability)
@@ -4221,7 +4219,7 @@ function pickKallaxColor(id, part){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// KALLAX PRO EDITOR — Extended (v3.11)
+// KALLAX PRO EDITOR — Extended (v3.12)
 // ════════════════════════════════════════════════════════════════════════
 
 // Additional color palettes
@@ -5481,6 +5479,15 @@ function updateAnalysisOverlay(msg){
   addMsg('⏳ ' + msg, 'sys');
 }
 
+
+// ── Throttled rebuild for performance ───────────────────────────────
+let _rebuildPending = false;
+function rebuild3DThrottled(){
+  if(_rebuildPending) return;
+  _rebuildPending = true;
+  requestAnimationFrame(()=>{ _rebuildPending=false; rebuild3D(); });
+}
+
 // ════════════════════════════════════════════════════════════════════════
 // ANIMATION LOOP
 // ════════════════════════════════════════════════════════════════════════
@@ -5544,8 +5551,51 @@ draw2D();
 
 renderFloorTabs();
 initUndoSystem();
-setTimeout(()=>toast('🌿 v3.11 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
+setTimeout(()=>toast('🌿 v3.12 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
 
+
+
+// ════════════════════════════════════════════════════════════════════════
+// AUTO-SAVE SYSTEM
+// ════════════════════════════════════════════════════════════════════════
+let _autoSaveReady = false;
+
+function initAutoSave(){
+  // Try to restore last session
+  try {
+    const saved = localStorage.getItem('csc-autosave');
+    const ts    = +(localStorage.getItem('csc-autosave-ts')||0);
+    if(saved && (Date.now()-ts) < 14*24*3600*1000){
+      const s = JSON.parse(saved);
+      if(s.rooms && s.rooms.length > 0){
+        _restoreSnapshot(saved);
+        const ago   = Math.round((Date.now()-ts)/60000);
+        const agoTxt= ago<2?'gerade eben':ago<60?ago+' Min.':Math.round(ago/60)+' Std.';
+        setTimeout(()=>toast('🔄 Letzter Stand geladen (vor '+agoTxt+')','g'),400);
+      }
+    }
+  } catch(e){ console.warn('AutoRestore failed:',e); }
+
+  // Enable auto-saving from now on
+  _autoSaveReady = true;
+  toast('🌿 v3.12 | Auto-Save aktiv','g');
+}
+
+
+// ── Multi-floor 3D overview ──────────────────────────────────────────
+let _show3DAllFloors = false;
+function toggleAllFloors(){
+  _show3DAllFloors = !_show3DAllFloors;
+  const btn=document.getElementById('btn-all-floors');
+  if(btn){ btn.style.background=_show3DAllFloors?'var(--bl2)':''; btn.style.borderColor=_show3DAllFloors?'var(--bl)':''; }
+  rebuild3D();
+  toast(_show3DAllFloors?'🏢 Alle Etagen sichtbar':'📐 Nur aktive Etage','b');
+}
+// Show "alle Etagen" button when more than 1 floor exists
+function updateFloorUI(){
+  const btn=document.getElementById('btn-all-floors');
+  if(btn) btn.style.display = floors.length>1?'block':'none';
+}
 
 // ════════════════════════════════════════════════════════════════════════
 // MOOD / LIGHTING SYSTEM
@@ -5847,7 +5897,7 @@ function build3DObj(o){
   const metal = o.metalness !== undefined ? o.metalness : (item.arch==='window'?0.0: item.arch==='door'?0.05:['Lager','Info'].includes(item.cat)?0.55:0.04);
 
   if(item.isKallax || (item.id&&item.id.startsWith('kallax'))){
-    buildKallax3DPro(g, item, o); // v3.11 Pro
+    buildKallax3DPro(g, item, o); // v3.12 Pro
   } else if(item.arch==='security'){
     buildSecurity3D(g, item, o);
   } else if(item.arch==='foil'){
