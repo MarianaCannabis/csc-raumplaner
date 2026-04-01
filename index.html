@@ -994,6 +994,8 @@ let currentView = '2d';
 let tool2d = 'sel';   // sel|room|measure|pan
 let placingCatalogId = null;
 let wallDrawStart = null;    // {wx,wz} when drawing a wall (click A)
+var _show3DAllFloors = false; // show all floors in 3D view
+var _autoSaveReady   = false; // true after initAutoSave runs
 let customObjs = [];
 let moodPanelVis = false;  // declared here to avoid TDZ
 
@@ -1912,15 +1914,17 @@ function rebuild3D(){
   Object.values(obj3Map).forEach(g=>scene.remove(g));
   Object.keys(obj3Map).forEach(k=>delete obj3Map[k]);
 
-  // ── Room FLOORS — show current floor, but include all for structure
-  const showAllFloors = typeof _show3DAllFloors !== 'undefined' && _show3DAllFloors;
-  rooms.filter(r=>showAllFloors||(r.floorId===curFloor||!r.floorId)).forEach(r=>{
+  // All-floors flag (declared once at top to avoid TDZ)
+  const showAF = !!_show3DAllFloors;
+
+  // ── Room FLOORS
+  rooms.filter(r=>showAF||(r.floorId===curFloor||!r.floorId)).forEach(r=>{
     const g=build3DRoomFloor(r);
     scene.add(g); obj3Map[r.id]=g;
   });
 
   // ── Unique ROOM WALLS
-  const allCurRooms = showAF2 ? rooms : rooms.filter(r=>r.floorId===curFloor||!r.floorId);
+  const allCurRooms = showAF ? rooms : rooms.filter(r=>r.floorId===curFloor||!r.floorId);
   const wallSegs = buildRoomWalls3D(allCurRooms);
   wallSegs.forEach((seg,i)=>{
     const m = buildWallSegMesh3D(seg);
@@ -1933,9 +1937,8 @@ function rebuild3D(){
     if(m){ scene.add(m); obj3Map['fw_'+w.id]=m; }
   });
 
-  // ── Objects (only current floor, or all if in "alle Etagen" overview)
-  const showAF2 = typeof _show3DAllFloors !== 'undefined' && _show3DAllFloors;
-  objects.filter(o=>showAF2||(o.floorId===curFloor||!o.floorId)).forEach(o=>{
+  // ── Objects
+  objects.filter(o=>showAF||(o.floorId===curFloor||!o.floorId)).forEach(o=>{
     const g=build3DObj(o);
     if(g){scene.add(g);obj3Map[o.id]=g;}
   });
@@ -1952,76 +1955,56 @@ function rebuild3D(){
 }
 
 function build3DRoomFloor(r){
-  const g=new THREE.Group();
-  const T=0.13;
-  // Apply floor elevation offset
-  const floorElev = getFloorElev(r.floorId||'eg');
-  g.position.y = floorElev;
-  const fc=parseInt(r.floorColor.replace('#',''),16);
-  const wc=parseInt(r.wallColor.replace('#',''),16);
-  const smat=(c,rough=0.75,metal=0)=>new THREE.MeshStandardMaterial({color:c,roughness:rough,metalness:metal,side:THREE.DoubleSide});
-  const box=(w,h,d,mat,px,py,pz)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(px,py,pz);m.castShadow=true;m.receiveShadow=true;g.add(m);return m;};
+  const g = new THREE.Group();
+  const T = 0.13;
+  const elev = getFloorElev(r.floorId||'eg');
+  // NOTE: use ABSOLUTE world positions for all meshes.
+  // Do NOT set g.position.y — walls are built separately in world space.
 
-  const cx=r.x+r.w/2, cz=r.y+r.d/2, H=r.h;
-  // Phase 4: textured floor
-  box(r.w,T,r.d, makeFloorMat(r), cx,-T/2,cz);
+  const cx = r.x+r.w/2, cz = r.y+r.d/2, H = r.h;
 
-  // ── Walls are now built by buildRoomWalls3D (unique-wall algorithm)
-  //    This room-floor builder only adds floor + lights + decorative door/window details
-  const wMat=smat(wc,0.82,0);
-  const dW=1.0,dH=2.2,lW=(r.w-dW)/2;
-  // Door
-  const dMat=new THREE.MeshStandardMaterial({color:0x7a5c38,roughness:0.55,metalness:0.05});
-  const dr=new THREE.Mesh(new THREE.BoxGeometry(dW-0.06,dH-0.06,0.04),dMat);
-  dr.position.set(r.x+lW+dW/2,dH/2,r.y+0.001);dr.castShadow=true;g.add(dr);
-  const hndMat=new THREE.MeshStandardMaterial({color:0xd4aa50,roughness:0.15,metalness:0.9});
-  const hnd=new THREE.Mesh(new THREE.BoxGeometry(0.12,0.04,0.04),hndMat);
-  hnd.position.set(r.x+lW+dW-0.18,1.05,r.y+0.04);g.add(hnd);
+  // ── Floor panel ──────────────────────────────────────────────────
+  const floor = new THREE.Mesh(new THREE.BoxGeometry(r.w, T, r.d), makeFloorMat(r));
+  floor.position.set(cx, elev - T/2, cz);
+  floor.castShadow = true; floor.receiveShadow = true;
+  g.add(floor);
 
-  // South wall (window)
-  const wW=Math.min(1.6,r.w*0.35),wH=1.1,wSill=0.9,sLW=(r.w-wW)/2;
-  box(sLW,H,T,wMat,r.x+sLW/2,H/2,r.y+r.d);
-  box(sLW,H,T,wMat,r.x+sLW+wW+sLW/2,H/2,r.y+r.d);
-  box(wW,wSill,T,wMat,r.x+sLW+wW/2,wSill/2,r.y+r.d);
-  box(wW,H-wSill-wH,T,wMat,r.x+sLW+wW/2,wSill+wH+(H-wSill-wH)/2,r.y+r.d);
-  // Glass
-  const glMat=new THREE.MeshStandardMaterial({color:0x88ccff,roughness:0.03,transparent:true,opacity:0.25,side:THREE.DoubleSide});
-  const gl=new THREE.Mesh(new THREE.PlaneGeometry(wW-0.1,wH-0.08),glMat);
-  gl.position.set(r.x+sLW+wW/2,wSill+wH/2,r.y+r.d+0.001);g.add(gl);
-  // Frame south
-  const fMat=new THREE.MeshStandardMaterial({color:0xf5f0e8,roughness:0.55});
-  [{w:wW+0.14,h:0.06,d:T+0.01,px:r.x+sLW+wW/2,py:wSill-0.03,pz:r.y+r.d},
-   {w:wW+0.14,h:0.06,d:T+0.01,px:r.x+sLW+wW/2,py:wSill+wH+0.03,pz:r.y+r.d},
-   {w:0.06,h:wH+0.12,d:T+0.01,px:r.x+sLW-0.03,py:wSill+wH/2,pz:r.y+r.d},
-   {w:0.06,h:wH+0.12,d:T+0.01,px:r.x+sLW+wW+0.03,py:wSill+wH/2,pz:r.y+r.d}]
-  .forEach(({w,h,d,px,py,pz})=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),fMat);m.position.set(px,py,pz);g.add(m);});
+  // ── Skirting boards ──────────────────────────────────────────────
+  const skMat = new THREE.MeshStandardMaterial({color:0xeae4d8, roughness:0.6});
+  [[r.w,0.10,0.025, cx,       elev+0.05, r.y+0.012],
+   [r.w,0.10,0.025, cx,       elev+0.05, r.y+r.d-0.012],
+   [0.025,0.10,r.d, r.x+0.012,elev+0.05, cz],
+   [0.025,0.10,r.d, r.x+r.w-0.012,elev+0.05,cz]
+  ].forEach(([w,h,d,px,py,pz])=>{
+    const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),skMat);
+    m.position.set(px,py,pz); g.add(m);
+  });
 
-  // East + West walls
-  box(T,H,r.d,wMat,r.x,H/2,cz);
-  box(T,H,r.d,wMat,r.x+r.w,H/2,cz);
-
-  // Skirting
-  const skMat=new THREE.MeshStandardMaterial({color:0xeae4d8,roughness:0.6});
-  [[r.w,0.12,0.03,cx,0.06,r.y+0.015],[r.w,0.12,0.03,cx,0.06,r.y+r.d-0.015],
-   [0.03,0.12,r.d,r.x+0.015,0.06,cz],[0.03,0.12,r.d,r.x+r.w-0.015,0.06,cz]]
-  .forEach(([w,h,d,px,py,pz])=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),skMat);m.position.set(px,py,pz);g.add(m);});
-
-  // Lights
-  const numL=Math.max(1,Math.min(4,Math.round(r.w*r.d/20)));
-  const emMat=new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xffffcc,emissiveIntensity:0.9,roughness:0.35});
-  for(let li=0;li<numL;li++){
-    const lx=r.x+(numL===1?r.w/2:(r.w/(numL+1))*(li+1));
-    const pl=new THREE.PointLight(0xfff5e0,0.85/numL*2,Math.max(r.w,r.d)*1.8);
-    pl._base=0.85/numL*2;  // Phase 4: base intensity for mood scaling
-    pl.position.set(lx,H*0.88,cz);g.add(pl);
-    const fix=new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.18,0.07,12),emMat);
-    fix.position.set(lx,H-0.035,cz);g.add(fix);
-    const cord=new THREE.Mesh(new THREE.CylinderGeometry(0.01,0.01,0.3,4),new THREE.MeshStandardMaterial({color:0x888888}));
-    cord.position.set(lx,H-0.35,cz);g.add(cord);
+  // ── Ceiling lights ────────────────────────────────────────────────
+  const numL = Math.max(1, Math.min(4, Math.round(r.w*r.d/20)));
+  const emMat = new THREE.MeshStandardMaterial({
+    color:0xffffff, emissive:0xffffcc, emissiveIntensity:0.9, roughness:0.35
+  });
+  for(let li=0; li<numL; li++){
+    const lx = r.x + (numL===1 ? r.w/2 : (r.w/(numL+1))*(li+1));
+    const ly = elev + H;
+    // Point light
+    const pl = new THREE.PointLight(0xfff5e0, 0.85/numL*2, Math.max(r.w,r.d)*1.8);
+    pl._base = 0.85/numL*2;
+    pl.position.set(lx, ly-0.1, cz); g.add(pl);
+    // Fixture body
+    const fix = new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.18,0.07,12), emMat);
+    fix.position.set(lx, ly-0.035, cz); g.add(fix);
+    // Cord
+    const cord = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.01,0.01,0.3,4),
+      new THREE.MeshStandardMaterial({color:0x888888})
+    );
+    cord.position.set(lx, ly-0.35, cz); g.add(cord);
   }
+
   return g;
 }
-
 // build3DObj: replaced by Phase 4 enhanced version below
 
 // 3D Controls
@@ -2472,7 +2455,7 @@ function snapshot(){
   undoIdx = undoStack.length - 1;
   _updUndoBtns();
   // Auto-save to localStorage on every change (skip during init)
-  if(typeof _autoSaveReady !== 'undefined' && _autoSaveReady) {
+  if(_autoSaveReady) {
     try {
       localStorage.setItem('csc-autosave', state);
       localStorage.setItem('csc-autosave-ts', Date.now().toString());
@@ -2821,7 +2804,7 @@ function buildWallSegMesh3D(seg){
   const elev  = seg.elev||0;
   const angle = Math.atan2(-dz,dx);
   const group = new THREE.Group();
-  group.position.set((seg.a.x+seg.b.x)/2, 0, (seg.a.z+seg.b.z)/2);
+  group.position.set((seg.a.x+seg.b.x)/2, seg.elev||0, (seg.a.z+seg.b.z)/2);
   group.rotation.y = angle;
 
   // Find doors/windows that sit on this wall segment
@@ -2830,7 +2813,7 @@ function buildWallSegMesh3D(seg){
   if(wallOpenings.length === 0){
     // Solid wall — single box
     const m=new THREE.Mesh(new THREE.BoxGeometry(len,H,THICK), makeMat());
-    m.position.y = elev+H/2; m.castShadow=true; m.receiveShadow=true;
+    m.position.y = H/2; m.castShadow=true; m.receiveShadow=true;
     group.add(m);
   } else {
     // Sort openings left→right along wall
@@ -2851,7 +2834,7 @@ function buildWallSegMesh3D(seg){
       const leftW = opLeft - cursor;
       if(leftW > 0.02){
         const m=new THREE.Mesh(new THREE.BoxGeometry(leftW,H,THICK), makeMat());
-        m.position.set(cursor+leftW/2, elev+H/2, 0);
+        m.position.set(cursor+leftW/2, H/2, 0);
         m.castShadow=true; m.receiveShadow=true; group.add(m);
       }
 
@@ -2859,14 +2842,14 @@ function buildWallSegMesh3D(seg){
       const lintelH = H - opH - (isDoor?0:sillH);
       if(lintelH > 0.02){
         const m=new THREE.Mesh(new THREE.BoxGeometry(op.w,lintelH,THICK), makeMat());
-        m.position.set(opLeft+op.w/2, elev+H-lintelH/2, 0);
+        m.position.set(opLeft+op.w/2, H-lintelH/2, 0);
         m.castShadow=true; m.receiveShadow=true; group.add(m);
       }
 
       // Below opening (Brüstung — only for windows)
       if(!isDoor && sillH > 0.02){
         const m=new THREE.Mesh(new THREE.BoxGeometry(op.w,sillH,THICK), makeMat());
-        m.position.set(opLeft+op.w/2, elev+sillH/2, 0);
+        m.position.set(opLeft+op.w/2, sillH/2, 0);
         m.castShadow=true; m.receiveShadow=true; group.add(m);
       }
 
@@ -3081,11 +3064,13 @@ function placeOpeningOrObject(typeId, wx, wz){
 
   // Doors/windows use wall thickness (0.16m) so they fill the wall gap exactly
   const archDepth = (item.arch==='door'||item.arch==='window') ? 0.16 : (item.d||0.15);
+  // Doors/windows sit at floor elevation of current floor
+  const archPy = (item.arch==='door'||item.arch==='window') ? getFloorElev(curFloor) : py;
   addObject({
     typeId, x:x-(item.w||1)/2, y:z-archDepth/2,
     w:item.w, d:archDepth, h:item.h,
     rot: Math.round(wallAngleRad/15)*15,
-    py, arch:item.arch||null,
+    py: archPy, arch:item.arch||null,
     wallRef,
     foilColor: item.foilColor||null,
     foilOpacity: item.foilOpacity!=null?item.foilOpacity:null,
@@ -5558,7 +5543,7 @@ setTimeout(()=>toast('🌿 v3.12 | KI ✓ · Türen ✓ · 3D-Edit · Design','g
 // ════════════════════════════════════════════════════════════════════════
 // AUTO-SAVE SYSTEM
 // ════════════════════════════════════════════════════════════════════════
-let _autoSaveReady = false;
+// _autoSaveReady declared in STATE block
 
 function initAutoSave(){
   // Try to restore last session
@@ -5582,8 +5567,7 @@ function initAutoSave(){
 }
 
 
-// ── Multi-floor 3D overview ──────────────────────────────────────────
-let _show3DAllFloors = false;
+// ── Multi-floor 3D overview (declared in STATE block above) ─────────
 function toggleAllFloors(){
   _show3DAllFloors = !_show3DAllFloors;
   const btn=document.getElementById('btn-all-floors');
