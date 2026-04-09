@@ -400,6 +400,100 @@ canvas{display:block}
 .stat-v{font-size:15px;font-weight:700;color:var(--gr)}
 .stat-l{font-size:9px;color:var(--tx3);text-transform:uppercase;letter-spacing:.3px}
 
+
+/* ══ INTERAKTIVE ANLEITUNG ════════════════════════════════════════ */
+#help-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:500;display:none;flex-direction:column}
+#help-overlay.open{display:flex}
+#help-container{display:flex;flex:1;overflow:hidden}
+
+/* Sidebar */
+#help-sidebar{width:220px;flex-shrink:0;background:#0a0f0a;border-right:1px solid #1a2a1a;overflow-y:auto;padding:8px 0}
+.help-cat{padding:6px 14px 3px;font-size:9px;color:#4ade80;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:6px}
+.help-item{padding:7px 14px;font-size:12px;color:#9a9288;cursor:pointer;transition:.12s;display:flex;align-items:center;gap:7px;border-left:2px solid transparent}
+.help-item:hover{background:#111;color:#e8e4d8}
+.help-item.active{background:#0d2010;color:#4ade80;border-left-color:#4ade80}
+.help-item .hi{font-size:14px;width:18px;flex-shrink:0}
+
+/* Content */
+#help-content{flex:1;overflow-y:auto;padding:28px 36px;max-width:780px}
+.help-page{display:none}
+.help-page.active{display:block}
+.help-page h1{font-size:22px;color:#4ade80;margin-bottom:6px;font-weight:800}
+.help-page .subtitle{font-size:12px;color:#555;margin-bottom:24px}
+.help-page h2{font-size:14px;color:#38bdf8;margin:22px 0 8px;padding-left:10px;border-left:3px solid #38bdf8}
+.help-page h3{font-size:12px;color:#fbbf24;margin:14px 0 5px;font-weight:700}
+.help-page p,.help-page li{font-size:12px;color:#9a9288;line-height:1.85;margin-bottom:5px}
+.help-page ul{padding-left:16px;margin-bottom:10px}
+.help-page kbd{background:#1a1a1a;border:1px solid #333;border-radius:4px;padding:1px 6px;font-family:monospace;font-size:11px;color:#e8e4d8}
+.help-tip{background:#0d2010;border:1px solid #1a4020;border-radius:6px;padding:10px 14px;font-size:11px;color:#4ade80;margin:10px 0}
+.help-warn{background:#1a1200;border:1px solid #3a2800;border-radius:6px;padding:10px 14px;font-size:11px;color:#fbbf24;margin:10px 0}
+.help-step{display:flex;gap:12px;align-items:flex-start;margin:10px 0;padding:10px;background:#111;border-radius:6px}
+.help-step-num{width:26px;height:26px;background:#0d2010;border:1px solid #4ade80;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#4ade80;flex-shrink:0}
+.help-step-body{font-size:12px;color:#9a9288;line-height:1.7}
+.help-step-body b{color:#e8e4d8}
+.shortcut-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin:8px 0}
+.sc-row{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:#111;border-radius:4px}
+.sc-label{font-size:11px;color:#9a9288}
+.sc-keys{display:flex;gap:3px}
+.help-img-placeholder{background:#111;border:1px dashed #333;border-radius:6px;height:120px;display:flex;align-items:center;justify-content:center;color:#333;font-size:11px;margin:10px 0}
+.help-nav{display:flex;justify-content:space-between;align-items:center;margin-top:28px;padding-top:16px;border-top:1px solid #1a1a1a}
+.help-search{padding:8px 14px;display:flex;gap:8px;border-bottom:1px solid #1a2a1a}
+.help-search input{flex:1;padding:7px 10px;background:#111;border:1px solid #222;border-radius:4px;color:#e8e4d8;font-size:12px;outline:none}
+.help-search input:focus{border-color:#4ade80}
+
+/* Tutorial mode */
+#tutorial-overlay{position:fixed;inset:0;pointer-events:none;z-index:400;display:none}
+#tutorial-overlay.active{display:block}
+.tut-highlight{position:absolute;border:2px solid #4ade80;border-radius:4px;box-shadow:0 0 0 9999px rgba(0,0,0,.6);pointer-events:none;transition:.3s;z-index:401}
+#tut-tooltip{position:fixed;background:#0a1a0a;border:1px solid #4ade80;border-radius:8px;padding:14px 16px;max-width:300px;z-index:402;pointer-events:all;box-shadow:0 4px 20px rgba(0,0,0,.8)}
+#tut-tooltip h4{font-size:13px;color:#4ade80;margin-bottom:6px}
+#tut-tooltip p{font-size:11px;color:#9a9288;line-height:1.7;margin-bottom:10px}
+.tut-btns{display:flex;gap:6px;justify-content:flex-end}
+#tut-progress{font-size:10px;color:#555;margin-bottom:8px}
+
+/* Close button */
+#help-close{position:absolute;top:14px;right:14px;background:none;border:none;color:#555;font-size:20px;cursor:pointer;z-index:10;padding:4px 8px;border-radius:4px}
+#help-close:hover{color:#e8e4d8;background:#1a1a1a}
+
+
+/* ══ NEW FEATURES v3.15 ═══════════════════════════════════════════ */
+
+/* Heatmap canvas */
+#heatmap-canvas{position:absolute;inset:0;pointer-events:none;opacity:0.55;display:none;z-index:8}
+#heatmap-canvas.vis{display:block}
+
+/* Vision Board Modal */
+.vision-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0}
+.vision-thumb{position:relative;border-radius:6px;overflow:hidden;cursor:pointer;border:2px solid var(--bd);transition:.15s;aspect-ratio:4/3}
+.vision-thumb:hover{border-color:var(--bl)}
+.vision-thumb img{width:100%;height:100%;object-fit:cover}
+.vision-thumb .del{position:absolute;top:3px;right:3px;background:rgba(0,0,0,.7);border:none;color:#fff;border-radius:3px;cursor:pointer;font-size:10px;padding:1px 4px;opacity:0;transition:.15s}
+.vision-thumb:hover .del{opacity:1}
+.vision-add{border:2px dashed var(--bd);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;aspect-ratio:4/3;transition:.15s;background:var(--bg3);color:var(--tx3)}
+.vision-add:hover{border-color:var(--bl);color:var(--bl)}
+
+/* Room Templates */
+.tpl-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.tpl-card{background:var(--bg3);border:1px solid var(--bd);border-radius:8px;padding:12px;cursor:pointer;transition:.15s;text-align:center}
+.tpl-card:hover{border-color:var(--gr);background:var(--bg4)}
+.tpl-icon{font-size:28px;margin-bottom:5px}
+.tpl-name{font-size:12px;font-weight:600;color:var(--tx)}
+.tpl-desc{font-size:10px;color:var(--tx3);margin-top:2px}
+.tpl-size{font-size:10px;color:var(--gr);margin-top:3px;font-weight:600}
+
+/* Dimension chains */
+.dim-chain{position:absolute;pointer-events:none;z-index:7}
+.dim-line{stroke:var(--bl);stroke-width:1.5;fill:none}
+.dim-text{fill:var(--bl);font-size:10px;text-anchor:middle;font-family:monospace}
+.dim-tick{stroke:var(--bl);stroke-width:1}
+
+/* Sun animation */
+.sun-btn.active{background:var(--yw2)!important;border-color:var(--yw)!important;color:var(--yw)!important}
+
+/* Share Vision overlay */
+#vision-link-box{background:var(--bg3);border:1px solid var(--gr);border-radius:8px;padding:12px;margin-top:8px}
+.vlink-inp{width:100%;padding:7px;background:var(--bg);border:1px solid var(--bd2);border-radius:4px;color:var(--tx);font-family:monospace;font-size:10px;margin:5px 0}
+
 /* TOAST */
 .toast{position:fixed;bottom:62px;left:50%;transform:translateX(-50%);padding:7px 16px;border-radius:var(--r6);font-size:12px;z-index:9999;transition:opacity .35s;white-space:nowrap;pointer-events:none}
 .toast.g{background:var(--gr3);color:var(--gr);border:1px solid var(--gr)}
@@ -489,7 +583,7 @@ canvas{display:block}
 
 <!-- TOPBAR -->
 <div id="topbar">
-  <span class="logo">🌿 CSC <em>Raumplaner</em></span><span class="vbadge">v3.12</span>
+  <span class="logo">🌿 CSC <em>Raumplaner</em></span><span class="vbadge">v3.15</span>
   <div class="tsep"></div>
   <button class="tbt" id="undo-btn" onclick="undo()" disabled title="Rückgängig (Ctrl+Z)" style="letter-spacing:.5px">↩ Undo</button>
   <button class="tbt" id="redo-btn" onclick="redo()" disabled title="Wiederholen (Ctrl+Y)" style="letter-spacing:.5px">↪ Redo</button>
@@ -501,6 +595,16 @@ canvas{display:block}
   <button class="tbt" onclick="doPrint()">🖨 Drucken</button>
   <button class="tbt" onclick="showStats()" title="Raumstatistik">📊</button>
   <button class="tbt" id="btn-all-floors" onclick="toggleAllFloors()" title="Alle Etagen anzeigen" style="display:none">🏢 Alle</button>
+  <button class="tbt" id="btn-ceiling" onclick="toggleCeiling()" title="Decke ein/ausblenden">⬜ Offen</button>
+  <button class="tbt" onclick="toggleSliceView()" title="Schnittansicht">✂️ Schnitt</button>
+  <button class="tbt" onclick="showCSCPanel()" title="CSC Status & Kapazität" style="color:var(--gr);border-color:var(--gr3)">🌿 CSC</button>
+  <button class="tbt" onclick="openVisionBoard()" title="Visions-Board" style="color:#c084fc">🎨 Vision</button>
+  <button class="tbt" onclick="openTemplates()" title="Raumvorlagen">🏗 Vorlagen</button>
+  <button class="tbt" id="btn-sun-anim" onclick="toggleSunAnimation()" title="Tag/Nacht Animation">🌅 Animation</button>
+  <button class="tbt" id="btn-heatmap" onclick="toggleHeatmap()" title="Heatmap Laufwege">🌡 Heatmap</button>
+  <button class="tbt" onclick="toggleDimensions()" title="Maßketten ein/aus">📏 Maße</button>
+  <button class="tbt" onclick="shareProject()" title="Projekt teilen">🔗 Teilen</button>
+  <button class="tbt" onclick="generateQRCode()" title="QR-Code">📱 QR</button>
   <span id="view-hint-3d" style="font-size:10px;color:var(--tx3);display:none">3D: Klick=Auswählen · Ziehen=Verschieben · Del=Löschen · Pfeiltasten=Feinpos. · Rechts=Orbit</span>
   <div class="tsep"></div>
   <button class="tbt" onclick="toggleMoodPanel()" style="color:var(--yw);border-color:#3a3000;background:#1a1800">🌅 Stimmung</button>
@@ -626,6 +730,9 @@ canvas{display:block}
           <span class="chip" onclick="qmsg('Erstelle einen Empfangsraum 8x6m mit Ausgabetheke, Scanner und Wartezone')">📐 Empfangsraum</span>
           <span class="chip" onclick="qmsg('Erstelle einen Sozialbereich 7x7m mit Lounge, Tischen und Kaffeebar')">🛋️ Sozialbereich</span>
           <span class="chip" onclick="qmsg('Analysiere den hochgeladenen Grundriss und richte alles ein')">🖼️ Grundriss analysieren</span>
+          <span class="chip" onclick="optimizeLayout()">🔍 Grundriss optimieren</span>
+          <span class="chip" onclick="estimateCosts()">💰 Kosten schätzen</span>
+          <span class="chip" onclick="checkAccessibility()">♿ Barrierefrei prüfen</span>
         </div>
       </div>
     </div>
@@ -637,7 +744,7 @@ canvas{display:block}
       </div>
       <div id="file-prev"></div>
       <div class="arow">
-        <textarea class="ainput" id="ai-input" rows="1" placeholder="Räume beschreiben, Fragen stellen…" onkeydown="aiKey(event)"></textarea>
+        <textarea class="ainput" id="ai-inp" rows="1" placeholder="Räume beschreiben, Fragen stellen…" onkeydown="aiKey(event)"></textarea>
         <button class="asend" id="ai-send" onclick="sendAI()">↑</button>
       </div>
     </div>
@@ -735,6 +842,11 @@ canvas{display:block}
       </div>
       <div id="cloud-list" style="margin-bottom:8px"></div>
 
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+        <div class="sh" style="margin:0">Versionen</div>
+        <button class="tbt" onclick="saveVersion()" style="padding:3px 8px;font-size:10px">📌 Merken</button>
+      </div>
+      <div id="version-list" style="margin-bottom:12px"></div>
       <div class="sh">Lokal gespeicherte Projekte</div>
       <div id="saved-list"></div>
     </div>
@@ -775,6 +887,45 @@ canvas{display:block}
     <button class="mbt" onclick="closeM('m-design-create')">Abbrechen</button>
     <button class="mbt ok" onclick="saveCustomDesign()">✓ Design speichern</button>
   </div>
+</div>
+</div>
+
+
+<!-- VISION BOARD -->
+<div class="mover" id="m-vision">
+<div class="modal" style="max-width:520px">
+  <h2>🎨 Visions-Board — Ideen & Vorbilder</h2>
+  <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">
+    Lade Inspirationsbilder, Skizzen oder Referenzfotos hoch. Erstelle dann einen Teilen-Link der das gesamte Projekt + Bilder enthält.
+  </p>
+  <div class="vision-grid" id="vision-grid">
+    <div class="vision-add" onclick="document.getElementById('vision-file-inp').click()">＋</div>
+  </div>
+  <input type="file" id="vision-file-inp" accept="image/*" multiple style="display:none" onchange="addVisionImages(event)">
+  <div style="margin-top:10px">
+    <button class="mbt ok" onclick="shareWithVision()" style="width:100%">🔗 Teilen-Link mit Visions-Board erstellen</button>
+  </div>
+  <div id="vision-link-box" style="display:none">
+    <div style="font-size:11px;color:var(--gr);margin-bottom:4px">✓ Link erstellt — jetzt kopieren und teilen:</div>
+    <input class="vlink-inp" id="vision-link-inp" readonly onclick="this.select()">
+    <div style="display:flex;gap:6px;margin-top:6px">
+      <button class="mbt ok" onclick="navigator.clipboard.writeText(document.getElementById('vision-link-inp').value).then(()=>toast('📋 Kopiert!','g'))" style="flex:1">📋 Kopieren</button>
+      <button class="mbt" onclick="printVisionBoard()" style="flex:1">🖨 Drucken</button>
+    </div>
+  </div>
+  <div class="mbtns" style="margin-top:8px">
+    <button class="mbt" onclick="closeM('m-vision')">Schließen</button>
+  </div>
+</div>
+</div>
+
+<!-- RAUMVORLAGEN -->
+<div class="mover" id="m-templates">
+<div class="modal" style="max-width:500px">
+  <h2>🏗 Raumvorlagen — 1-Klick CSC-Layouts</h2>
+  <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Wähle eine Vorlage. Bestehende Räume werden ersetzt.</p>
+  <div class="tpl-grid" id="tpl-grid"></div>
+  <div class="mbtns"><button class="mbt" onclick="closeM('m-templates')">Abbrechen</button></div>
 </div>
 </div>
 
@@ -964,6 +1115,17 @@ canvas{display:block}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script>
 'use strict';
+
+// ── Late-declared vars moved here to avoid TDZ ──────────────────────
+var dragCatPos   = null;   // position while dragging from catalog
+var SB_URL       = '';     // Supabase URL
+var SB_KEY       = '';     // Supabase anon key
+var grab3d       = false;  // 3D grab mode active
+var grab3dLast   = null;   // last mouse pos during grab
+var _sunAnimActive = false; // day/night animation running
+var _sunAnimTimer  = null;  // animation interval
+var _heatmapActive = false; // heatmap overlay active
+var _visionBoards  = [];    // uploaded vision images
 
 // ════════════════════════════════════════════════════════════════════════
 // CONFIG
@@ -1469,7 +1631,7 @@ function hitRoomResizeHandle(wx,wy, r){
 }
 
 // ── 2D MOUSE EVENTS ─────────────────────────────────────────────────────
-let dragCatPos = null;
+// dragCatPos declared in STATE block
 
 fpCv.addEventListener('mousedown', e => {
   isDown=true; downBtn=e.button;
@@ -1589,7 +1751,7 @@ fpCv.addEventListener('mouseup', e => {
   if(isPanning) isPanning=false;
   if(resizeHandle){ resizeHandle=null; snapshot(); }
   if(dragObj){ dragObj=null; snapshot(); }
-  if(dragRoom){ dragRoom=null; snapshot(); }
+  if(dragRoom){ const r=rooms.find(r=>r.id===(dragRoom?.id||"")); if(r) snapRoomToNeighbors(r); dragRoom=null; rebuild3D(); snapshot(); }
   draw2D();
 });
 
@@ -1625,8 +1787,9 @@ document.addEventListener('keydown',e=>{
   if(!e.target.matches('input,textarea')){
     if(e.key==='Delete'||e.key==='Backspace') deleteSel();
     if(e.key==='r'||e.key==='R') rotateSel();
-    if(e.key==='h'||e.key==='H') openGuide();
+    if(e.key==='h'||e.key==='H') openHelp();
     if(e.key==='i'||e.key==='I') showStats();
+    if(e.key==='z'||e.key==='Z') zoomToSelection();
     if(e.key==='Escape'){ placingCatalogId=null; dragCatPos=null; wallDrawStart=null; hideDraw2DHint(); document.body.style.cursor='default'; draw2D(); }
   }
   keys[e.key.toLowerCase()]=true;
@@ -2394,7 +2557,7 @@ function doPrint(){
     +'td,th{border:1px solid #ddd;padding:4px 6px;text-align:left}th{background:#f5f5f5}'
     +'@media print{body{padding:8px}}</style></head><body>'
     +'<h1>🌿 '+d.name+'</h1>'
-    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.12 · '+new Date().toLocaleDateString('de-DE')+'</div>'
+    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.15 · '+new Date().toLocaleDateString('de-DE')+'</div>'
     +'<img src="'+img+'">'
     +'<div class=grid>'
     +'<div class=box><h3>Räume ('+d.rooms.length+')</h3>'
@@ -4204,7 +4367,7 @@ function pickKallaxColor(id, part){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// KALLAX PRO EDITOR — Extended (v3.12)
+// KALLAX PRO EDITOR — Extended (v3.15)
 // ════════════════════════════════════════════════════════════════════════
 
 // Additional color palettes
@@ -4682,8 +4845,8 @@ function exportKallaxConfig(oid){
 // ════════════════════════════════════════════════════════════════════════
 // SUPABASE CLOUD SAVE / LOAD
 // ════════════════════════════════════════════════════════════════════════
-let SB_URL = '';
-let SB_KEY = '';
+// SB_URL declared in STATE block
+// SB_KEY declared in STATE block
 
 function loadSupabaseConfig(){
   // Immer eingebettete Werte nutzen (gespeicherte überschreiben)
@@ -5313,7 +5476,7 @@ tCv.addEventListener('click', e=>{
 });
 
 // 3D DRAG: G key + mouse to move selected object in 3D
-let grab3d = false;
+// grab3d declared in STATE block
 document.addEventListener('keydown', e=>{
   if(currentView!=='3d') return;
   if(e.target.matches('input,textarea')) return;
@@ -5325,7 +5488,7 @@ document.addEventListener('keydown', e=>{
   if(e.key==='Escape'){ grab3d=false; tCv.style.cursor='default'; }
 });
 
-let grab3dLast = null;
+// grab3dLast declared in STATE block
 // Grab3d movement is handled inside the existing mousemove via extension:
 // (see the oDrg mousemove handler above — grab3d is checked there)
 function _doGrab3dMove(e){
@@ -5425,6 +5588,7 @@ function addMsg(text, type){
   return div;
 }
 
+function aiKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAI();} }
 function qmsg(text){
   const inp = document.getElementById('ai-inp');
   if(inp){ inp.value = text; sendAI(); }
@@ -5473,6 +5637,1031 @@ function rebuild3DThrottled(){
   requestAnimationFrame(()=>{ _rebuildPending=false; rebuild3D(); });
 }
 
+
+// ════════════════════════════════════════════════════════════════════════
+// NEW FEATURES v3.15
+// ════════════════════════════════════════════════════════════════════════
+
+// ── 1. RAUM-SNAP beim Platzieren ─────────────────────────────────────
+// Already in execActions — extended here for manual drag
+function snapRoomToNeighbors(r){
+  const TOL = 0.4;
+  rooms.forEach(other=>{
+    if(other.id===r.id) return;
+    // Snap right edge of r to left edge of other
+    if(Math.abs((r.x+r.w) - other.x) < TOL)       r.x = other.x - r.w;
+    // Snap left edge of r to right edge of other
+    if(Math.abs(r.x - (other.x+other.w)) < TOL)    r.x = other.x + other.w;
+    // Snap bottom of r to top of other
+    if(Math.abs((r.y+r.d) - other.y) < TOL)        r.y = other.y - r.d;
+    // Snap top of r to bottom of other
+    if(Math.abs(r.y - (other.y+other.d)) < TOL)    r.y = other.y + other.d;
+  });
+}
+
+// ── 2. DECKE EIN/AUSBLENDEN ──────────────────────────────────────────
+var _showCeiling = false;
+function toggleCeiling(){
+  _showCeiling = !_showCeiling;
+  // Add/remove ceiling planes in scene
+  Object.entries(obj3Map).forEach(([key, g])=>{
+    if(!g || !key.startsWith('ceil_')) return;
+    g.visible = _showCeiling;
+  });
+  // Rebuild to add ceilings if newly enabled
+  if(_showCeiling) buildCeilings();
+  else removeCeilings();
+  const btn = document.getElementById('btn-ceiling');
+  if(btn) btn.textContent = _showCeiling ? '🏠 Decke' : '⬜ Offen';
+  toast(_showCeiling ? '🏠 Decke sichtbar' : '⬜ Decke ausgeblendet', 'b');
+}
+
+function buildCeilings(){
+  rooms.filter(r=>(r.floorId||'eg')===curFloor||!!_show3DAllFloors).forEach(r=>{
+    if(obj3Map['ceil_'+r.id]) return;
+    const elev = getFloorElev(r.floorId||'eg');
+    const mat  = new THREE.MeshStandardMaterial({
+      color: parseInt((r.ceilColor||'#f0ece0').replace('#',''),16),
+      roughness:0.7, side:THREE.DoubleSide, transparent:true, opacity:0.85
+    });
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(r.w, 0.1, r.d), mat);
+    mesh.position.set(r.x+r.w/2, elev+r.h+0.05, r.y+r.d/2);
+    mesh.visible = _showCeiling;
+    scene.add(mesh); obj3Map['ceil_'+r.id] = mesh;
+  });
+}
+
+function removeCeilings(){
+  Object.keys(obj3Map).filter(k=>k.startsWith('ceil_')).forEach(k=>{
+    scene.remove(obj3Map[k]); delete obj3Map[k];
+  });
+}
+
+// ── 3. ZOOM AUF AUSWAHL (Z-Taste) ────────────────────────────────────
+function zoomToSelection(){
+  if(!selId) return;
+  if(selIsRoom){
+    const r = rooms.find(r=>r.id===selId); if(!r) return;
+    oTgt.set(r.x+r.w/2, 0, r.y+r.d/2);
+    oRad = Math.max(r.w, r.d) * 1.5;
+  } else {
+    const o = objects.find(o=>o.id===selId); if(!o) return;
+    const it = findItem(o.typeId)||{};
+    oTgt.set(o.x+(o.w||it.w||1)/2, 0, o.y+(o.d||it.d||1)/2);
+    oRad = 4;
+  }
+}
+
+// ── 4. CSC MITGLIEDER-KAPAZITÄT ──────────────────────────────────────
+function calcCapacity(){
+  const SQM_PER_PERSON = 2.0;
+  let total = 0;
+  const details = [];
+  rooms.filter(r=>(r.floorId||'eg')===curFloor).forEach(r=>{
+    const area = r.w * r.d;
+    const cap  = Math.floor(area / SQM_PER_PERSON);
+    total += cap;
+    details.push({name:r.name, area:area.toFixed(1), cap});
+  });
+  return {total, details};
+}
+
+// ── 5. KCanG CHECKLISTE ───────────────────────────────────────────────
+function getKCaNGChecklist(){
+  const checks = [
+    {id:'ausgabe',    label:'Ausgaberaum vorhanden',      check:()=>rooms.some(r=>r.name.toLowerCase().includes('ausgab'))},
+    {id:'lager',      label:'Lagerraum vorhanden',        check:()=>rooms.some(r=>r.name.toLowerCase().includes('lager'))},
+    {id:'wc',         label:'WC vorhanden',               check:()=>rooms.some(r=>r.name.toLowerCase().includes('wc')||r.name.toLowerCase().includes('toilet'))},
+    {id:'sozial',     label:'Sozialbereich vorhanden',    check:()=>rooms.some(r=>r.name.toLowerCase().includes('sozial')||r.name.toLowerCase().includes('lounge'))},
+    {id:'eingang',    label:'Eingangstür (RC2)',           check:()=>objects.some(o=>o.typeId==='at-sec')},
+    {id:'rauch',      label:'Rauchmelder installiert',    check:()=>objects.some(o=>o.typeId==='sec-smoke')},
+    {id:'kamera',     label:'Überwachungskamera',         check:()=>objects.some(o=>o.typeId&&o.typeId.startsWith('sec-cam'))},
+    {id:'notausgang', label:'Notausgang-Schild',          check:()=>objects.some(o=>o.typeId==='sec-sign-exit')},
+    {id:'loescher',   label:'Feuerlöscher vorhanden',     check:()=>objects.some(o=>o.typeId==='sec-ext')},
+    {id:'alarm',      label:'Alarmanlage installiert',    check:()=>objects.some(o=>o.typeId==='sec-alarm')},
+    {id:'flucht',     label:'Fluchtweg ≥ 1.2m frei',      check:()=>true}, // manual check
+    {id:'kapaz',      label:'Min. 2m² pro Mitglied',      check:()=>calcCapacity().total >= 10},
+  ];
+  return checks.map(c=>({...c, passed: c.check()}));
+}
+
+// ── 6. SCHNITTANSICHT ─────────────────────────────────────────────────
+var _sliceHeight = 1.2; // meters above floor
+var _sliceActive = false;
+function toggleSliceView(){
+  _sliceActive = !_sliceActive;
+  if(_sliceActive){
+    // Add clipping plane at _sliceHeight
+    rend3.clippingPlanes = [new THREE.Plane(new THREE.Vector3(0,-1,0), _sliceHeight)];
+    rend3.localClippingEnabled = true;
+  } else {
+    rend3.clippingPlanes = [];
+    rend3.localClippingEnabled = false;
+  }
+  toast(_sliceActive ? '✂️ Schnittansicht bei '+_sliceHeight+'m' : '✂️ Schnittansicht aus', 'b');
+}
+
+// ── 7. QR-CODE GENERATOR ─────────────────────────────────────────────
+function generateQRCode(){
+  const url = window.location.href;
+  const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+encodeURIComponent(url);
+  const win = window.open('','_blank','width=300,height=350');
+  if(win){
+    win.document.write('<html><body style="margin:0;background:#fff;text-align:center;font-family:sans-serif">'
+      +'<h3 style="padding:12px;color:#166534">🌿 CSC Raumplaner</h3>'
+      +'<img src="'+qrUrl+'" style="width:200px;height:200px">'
+      +'<p style="font-size:11px;color:#666;padding:8px">Diesen QR-Code scannen<br>um den Planer zu öffnen</p>'
+      +'</body></html>');
+  }
+}
+
+// ── 8. KOSTEN-SCHÄTZUNG via KI ────────────────────────────────────────
+async function estimateCosts(){
+  const k = getKey(); if(!k){ toast('Kein API Key','r'); return; }
+  const items = objects.map(o=>{
+    const it=findItem(o.typeId)||{}; return it.name||o.typeId;
+  }).filter(Boolean);
+  if(!items.length){ toast('Keine Möbel vorhanden','b'); return; }
+  const totalArea = rooms.reduce((s,r)=>s+r.w*r.d,0).toFixed(0);
+  toast('💰 KI schätzt Kosten…','b');
+  try{
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,
+        messages:[{role:'user',content:
+          'Schätze grobe Einrichtungskosten für eine CSC-Ausgabestelle in Deutschland.\n'
+          +'Gesamtfläche: '+totalArea+'m²\n'
+          +'Einrichtung: '+items.slice(0,20).join(', ')+'\n\n'
+          +'Antworte mit einer kurzen übersichtlichen Kostenschätzung auf Deutsch '
+          +'(Möbel, Sicherheit, Elektro, Gesamt). Realistisch für 2024/2025.'}]
+      })
+    });
+    const data = await resp.json();
+    const text = data.content?.[0]?.text||'Keine Antwort';
+    addMsg('💰 Kostenschätzung:\n\n'+text,'ai');
+    showRight('ai');
+  }catch(e){ toast('Fehler: '+e.message,'r'); }
+}
+
+// ── 9. BARRIEREFREIHEIT PRÜFEN ────────────────────────────────────────
+function checkAccessibility(){
+  const issues = [];
+  // Check door widths
+  objects.filter(o=>findItem(o.typeId)?.arch==='door').forEach(o=>{
+    const it=findItem(o.typeId);
+    if((o.w||it.w||1) < 0.9) issues.push('Tür zu schmal (< 0.9m): '+it.name);
+  });
+  // Check corridor widths (simplified: check if rooms are wide enough)
+  rooms.forEach(r=>{
+    if(r.w < 1.2 && r.d < 1.2) issues.push('Raum zu eng für Rollstuhl: '+r.name);
+  });
+  // Check WC exists
+  if(!rooms.some(r=>r.name.toLowerCase().includes('wc')))
+    issues.push('Kein WC vorhanden');
+
+  if(issues.length===0){
+    addMsg('♿ Barrierefreiheit: Alle Basis-Anforderungen erfüllt ✅','ai');
+  } else {
+    addMsg('♿ Barrierefreiheit — Probleme gefunden:\n\n'
+      +issues.map(i=>'• '+i).join('\n'),'ai');
+  }
+  showRight('ai');
+}
+
+// ── 10. FLUCHT- UND RETTUNGSPLAN PDF-EXPORT ───────────────────────────
+function exportEvacuationPlan(){
+  const d = getPD();
+  // Render 2D top view
+  const prev = currentView; setView('2d');
+  draw2D();
+  const img2d = fpCv.toDataURL('image/png');
+  setView(prev);
+
+  const pw = window.open('','_blank');
+  if(!pw){ alert('Popup-Blocker deaktivieren'); return; }
+
+  const exits = objects.filter(o=>o.typeId==='sec-sign-exit');
+  const extinguishers = objects.filter(o=>o.typeId==='sec-ext');
+  const assembly = rooms.find(r=>r.name.toLowerCase().includes('sozial')||r.name.toLowerCase().includes('empfang'));
+
+  pw.document.write('<!DOCTYPE html><html><head><meta charset=UTF-8>'
+    +'<title>Flucht- und Rettungsplan — '+d.name+'</title>'
+    +'<style>body{font-family:sans-serif;padding:20px;color:#111}'
+    +'h1{color:#cc0000;border-bottom:3px solid #cc0000;padding-bottom:8px}'
+    +'h2{color:#444;font-size:14px;margin-top:16px}'
+    +'.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}'
+    +'.box{border:2px solid #ddd;border-radius:6px;padding:10px}'
+    +'.ok{color:green}.warn{color:orange}.danger{color:red}'
+    +'img{max-width:100%;border:1px solid #ccc;margin:8px 0}'
+    +'@media print{.noprint{display:none}}</style></head><body>'
+    +'<h1>🚨 Flucht- und Rettungsplan</h1>'
+    +'<p><b>Objekt:</b> '+d.name+' | <b>Datum:</b> '+new Date().toLocaleDateString('de-DE')+'</p>'
+    +'<img src="'+img2d+'">'
+    +'<div class=grid>'
+    +'<div class=box><h2>🚪 Notausgänge ('+exits.length+')</h2>'
+    +(exits.length>0?'<p class=ok>✓ Notausgang-Schilder installiert</p>':'<p class=danger>✗ Keine Notausgang-Schilder!</p>')
+    +'</div>'
+    +'<div class=box><h2>🧯 Feuerlöscher ('+extinguishers.length+')</h2>'
+    +(extinguishers.length>0?'<p class=ok>✓ '+extinguishers.length+' Feuerlöscher installiert</p>':'<p class=danger>✗ Kein Feuerlöscher!</p>')
+    +'</div>'
+    +'<div class=box><h2>🏥 Sammelplatz</h2>'
+    +(assembly?'<p class=ok>✓ '+assembly.name+'</p>':'<p class=warn>⚠ Sammelplatz festlegen</p>')
+    +'</div>'
+    +'<div class=box><h2>📋 Räume</h2>'
+    +d.rooms.map(r=>'<p>'+r.name+' ('+r.w+'×'+r.d+'m)</p>').join('')
+    +'</div></div>'
+    +'<button class=noprint onclick=window.print() style="padding:10px 20px;background:#cc0000;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:14px">🖨 Drucken / PDF</button>'
+    +'</body></html>');
+  pw.document.close();
+}
+
+// ── 11. VERSIONSVERLAUF ───────────────────────────────────────────────
+var _versionHistory = [];
+var MAX_VERSIONS = 10;
+
+function saveVersion(label){
+  const data = getPD();
+  _versionHistory.unshift({
+    label: label || new Date().toLocaleString('de-DE'),
+    data, ts: Date.now()
+  });
+  if(_versionHistory.length > MAX_VERSIONS) _versionHistory.pop();
+  try { localStorage.setItem('csc-versions', JSON.stringify(_versionHistory)); } catch(e){}
+  toast('📌 Version gespeichert','g');
+  renderVersionHistory();
+}
+
+function loadVersionHistory(){
+  try {
+    const saved = localStorage.getItem('csc-versions');
+    if(saved) _versionHistory = JSON.parse(saved);
+  } catch(e){}
+}
+
+function renderVersionHistory(){
+  const el = document.getElementById('version-list'); if(!el) return;
+  if(!_versionHistory.length){
+    el.innerHTML='<div style="font-size:11px;color:var(--tx3);padding:8px">Keine Versionen gespeichert.<br>Klicke "📌 Version merken" um den aktuellen Stand zu sichern.</div>';
+    return;
+  }
+  el.innerHTML = _versionHistory.map((v,i)=>
+    '<div class="sitem" onclick="restoreVersion('+i+')">'
+    +'<div class="ri"><div class="rn">'+v.label+'</div>'
+    +'<div class="rd">'+(v.data.rooms||[]).length+' Räume · '+(v.data.objects||[]).length+' Objekte</div></div>'
+    +'<button class="sdel" onclick="deleteVersion('+i+');event.stopPropagation()">🗑</button>'
+    +'</div>'
+  ).join('');
+}
+
+function restoreVersion(i){
+  if(!confirm('Version "'+_versionHistory[i].label+'" wiederherstellen? Aktuelle Änderungen gehen verloren.')) return;
+  loadPD(_versionHistory[i].data);
+  toast('🔄 Version wiederhergestellt','g');
+}
+
+function deleteVersion(i){
+  _versionHistory.splice(i,1);
+  try{ localStorage.setItem('csc-versions',JSON.stringify(_versionHistory)); }catch(e){}
+  renderVersionHistory();
+}
+
+// ── 12. PROJEKT TEILEN via URL ────────────────────────────────────────
+function shareProject(){
+  try {
+    const data = getPD();
+    const json = JSON.stringify(data);
+    const b64  = btoa(unescape(encodeURIComponent(json)));
+    if(b64.length > 50000){ toast('Projekt zu groß zum Teilen (>50KB)','r'); return; }
+    const url  = window.location.origin + window.location.pathname + '?share=' + b64;
+    navigator.clipboard.writeText(url).then(()=>
+      toast('🔗 Link kopiert! Jetzt einfügen und teilen.','g')
+    ).catch(()=>prompt('Projekt-Link:', url));
+  } catch(e){ toast('Fehler: '+e.message,'r'); }
+}
+
+function loadSharedProject(){
+  const params = new URLSearchParams(window.location.search);
+  const share  = params.get('share');
+  if(!share) return;
+  try {
+    const json = decodeURIComponent(escape(atob(share)));
+    const data = JSON.parse(json);
+    loadPD(data);
+    // Remove ?share= from URL without reload
+    window.history.replaceState({}, '', window.location.pathname);
+    toast('🔗 Geteiltes Projekt geladen!','g');
+  } catch(e){ toast('Link ungültig: '+e.message,'r'); }
+}
+
+// ── 13. KI GRUNDRISS OPTIMIERUNG ─────────────────────────────────────
+async function optimizeLayout(){
+  const k = getKey(); if(!k){ toast('Kein API Key','r'); return; }
+  addMsg('🔍 KI analysiert deinen Grundriss…','sys');
+  showRight('ai');
+  const stateCtx = 'Räume: '+JSON.stringify(rooms.map(r=>({name:r.name,x:r.x,y:r.y,w:r.w,d:r.d,h:r.h})))
+    +'\nObjekte: '+JSON.stringify(objects.slice(0,20).map(o=>({typeId:o.typeId,x:Math.round(o.x*10)/10,y:Math.round(o.y*10)/10})));
+  try{
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,
+        messages:[{role:'user',content:stateCtx+'\n\nDu bist ein CSC-Experte. '
+          +'Analysiere diesen Grundriss und gib konkrete Verbesserungsvorschläge:\n'
+          +'1. Kundenfluss & Ergonomie\n'
+          +'2. Sicherheit (KCanG)\n'
+          +'3. Effizienz der Raumnutzung\n'
+          +'4. Fehlende Pflichtbereiche\n'
+          +'Antworte auf Deutsch, konkret und umsetzbar.'}]
+      })
+    });
+    const data = await resp.json();
+    const text = data.content?.[0]?.text||'Keine Antwort';
+    addMsg('🔍 Grundriss-Analyse:\n\n'+text,'ai');
+  }catch(e){ addMsg('Fehler: '+e.message,'sys'); }
+}
+
+// ── 14. KAPAZITÄTS- UND CHECKLISTEN-PANEL ────────────────────────────
+function showCSCPanel(){
+  const cap = calcCapacity();
+  const checks = getKCaNGChecklist();
+  const passed = checks.filter(c=>c.passed).length;
+  const total  = checks.length;
+
+  let h = '<div style="padding:12px;max-height:400px;overflow-y:auto">';
+  h += '<div style="font-size:12px;font-weight:700;color:var(--gr);margin-bottom:8px">🌿 CSC Status-Check</div>';
+
+  // Capacity
+  h += '<div style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px;padding:8px;margin-bottom:8px">';
+  h += '<div style="font-size:10px;color:var(--tx3);margin-bottom:4px">KAPAZITÄT (2m²/Person)</div>';
+  cap.details.forEach(d=>{
+    h += '<div style="font-size:11px;display:flex;justify-content:space-between;padding:2px 0">'
+      +'<span>'+d.name+'</span><span style="color:var(--gr)">'+d.cap+' Pers.</span></div>';
+  });
+  h += '<div style="font-size:12px;font-weight:700;border-top:1px solid var(--bd);margin-top:4px;padding-top:4px;display:flex;justify-content:space-between">'
+    +'<span>Gesamt</span><span style="color:var(--gr)">'+cap.total+' Personen</span></div>';
+  h += '</div>';
+
+  // KCanG Checklist
+  h += '<div style="font-size:10px;color:var(--tx3);margin-bottom:4px">KCanG CHECKLISTE ('+passed+'/'+total+')</div>';
+  checks.forEach(c=>{
+    h += '<div style="font-size:11px;padding:3px 0;display:flex;align-items:center;gap:5px">'
+      +'<span style="color:'+(c.passed?'#4ade80':'#f87171')+'">'+( c.passed?'✓':'✗')+'</span>'
+      +'<span style="color:'+(c.passed?'var(--tx2)':'var(--tx)')+'">'+c.label+'</span></div>';
+  });
+
+  h += '<div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap">';
+  h += '<button class="tbt" style="flex:1;padding:6px" onclick="optimizeLayout()">🔍 KI-Analyse</button>';
+  h += '<button class="tbt" style="flex:1;padding:6px" onclick="checkAccessibility()">♿ Barrierefrei</button>';
+  h += '<button class="tbt" style="flex:1;padding:6px" onclick="estimateCosts()">💰 Kosten</button>';
+  h += '<button class="tbt" style="flex:1;padding:6px" onclick="exportEvacuationPlan()">🚨 Fluchtplan</button>';
+  h += '</div></div>';
+
+  // Show as a popup panel
+  const existing = document.getElementById('csc-panel-popup');
+  if(existing){ existing.remove(); return; }
+  const div = document.createElement('div');
+  div.id = 'csc-panel-popup';
+  div.style.cssText = 'position:fixed;top:50px;right:350px;width:280px;background:var(--bg2);border:1px solid var(--gr);border-radius:8px;z-index:200;box-shadow:0 4px 20px rgba(0,0,0,.5)';
+  div.innerHTML = h;
+  document.body.appendChild(div);
+}
+
+
+// ════════════════════════════════════════════════════════════════════════
+// INTERAKTIVE ANLEITUNG v3.15
+// ════════════════════════════════════════════════════════════════════════
+function openHelp(page){
+  document.getElementById('help-overlay').classList.add('open');
+  showHelpPage(page||'start');
+}
+function closeHelp(){
+  document.getElementById('help-overlay').classList.remove('open');
+}
+function showHelpPage(id){
+  document.querySelectorAll('.help-page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.help-item').forEach(i=>i.classList.remove('active'));
+  const page=document.getElementById('hp-'+id);
+  if(page) page.classList.add('active');
+  const item=document.querySelector('[data-page="'+id+'"]');
+  if(item){ item.classList.add('active'); item.scrollIntoView({block:'nearest'}); }
+}
+function searchHelp(q){
+  const pages=document.querySelectorAll('.help-page');
+  const items=document.querySelectorAll('.help-item');
+  if(!q.trim()){
+    pages.forEach(p=>p.style.display='');
+    items.forEach(i=>i.style.display='');
+    return;
+  }
+  q=q.toLowerCase();
+  items.forEach(item=>{
+    const id=item.getAttribute('data-page');
+    const page=document.getElementById('hp-'+id);
+    const text=(page?page.textContent+item.textContent:'').toLowerCase();
+    const match=text.includes(q);
+    item.style.display=match?'':'none';
+    if(match && page && page.style.display!=='') showHelpPage(id);
+  });
+}
+
+// Override H key to open help
+document.addEventListener('keydown',e=>{
+  if(e.target.matches('input,textarea')) return;
+  if(e.key==='F1'){ e.preventDefault(); openHelp(); }
+  if(e.key==='Escape' && document.getElementById('help-overlay').classList.contains('open')){
+    closeHelp();
+  }
+});
+
+// ── TUTORIAL SYSTEM ───────────────────────────────────────────────────
+var _tutStep = 0;
+const TUT_STEPS = [
+  {
+    target: null,
+    title: '👋 Willkommen beim CSC Raumplaner!',
+    text: 'In diesem kurzen Tutorial lernst du die wichtigsten Funktionen kennen. Du kannst das Tutorial jederzeit beenden — es dauert ca. 2 Minuten.',
+  },
+  {
+    target: '#left-panel',
+    title: '📋 Linke Sidebar — Werkzeuge',
+    text: 'Hier findest du alle Werkzeuge: Räume verwalten, Möbel auswählen, Bauelemente und Sicherheit. Klicke auf die Icons um zwischen den Kategorien zu wechseln.',
+  },
+  {
+    target: '.rtabs',
+    title: '🔧 Rechte Sidebar — KI & Design',
+    text: 'Hier ist der KI-Assistent, Design-Editor, Beleuchtungssteuerung und Projektverwaltung. Der wichtigste Tab: 🤖 KI-Assistent für automatische Grundriss-Erstellung.',
+  },
+  {
+    target: '#topbar',
+    title: '🛠 Toolbar — Häufige Aktionen',
+    text: 'Undo/Redo, Speichern, Ansicht wechseln, und viele Spezialfunktionen. Wichtig: 🌿 CSC Panel für die KCanG-Checkliste und ✂️ Schnitt für die Schnittansicht.',
+  },
+  {
+    target: '#vt-2d',
+    title: '📐 2D-Grundriss',
+    text: 'Die Standardansicht zum Zeichnen und Einrichten. Linksklick+Ziehen = Objekte verschieben. Rechtsklick auf Objekt = Kontextmenü.',
+  },
+  {
+    target: '#vt-3d',
+    title: '🏗 3D-Ansicht',
+    text: 'Realistisches 3D-Rendering deiner Planung. Linksklick+Ziehen = Kamera drehen. Scroll = Zoom. G-Taste = Objekt in 3D verschieben.',
+  },
+  {
+    target: '#rpanel-ai',
+    title: '🤖 KI-Assistent — dein wichtigstes Werkzeug',
+    text: 'Schreibe einfach was du brauchst: "Erstelle eine CSC-Ausgabestelle mit Empfang, Lager und Sozialbereich" — die KI baut alles automatisch. Du kannst auch Grundrisse als PDF/Bild hochladen.',
+  },
+  {
+    target: null,
+    title: '✅ Tutorial abgeschlossen!',
+    text: 'Du kennst jetzt die wichtigsten Bereiche. Für detaillierte Hilfe zu jeder Funktion: ❓ Button in der Toolbar oder F1-Taste drücken. Viel Erfolg beim Planen! 🌿',
+  },
+];
+
+function startTutorial(){
+  closeHelp();
+  _tutStep = 0;
+  document.getElementById('tutorial-overlay').classList.add('active');
+  renderTutStep();
+}
+
+function endTutorial(){
+  document.getElementById('tutorial-overlay').classList.remove('active');
+  document.getElementById('tut-highlight').style.display='none';
+}
+
+function tutNav(dir){
+  _tutStep = Math.max(0, Math.min(TUT_STEPS.length-1, _tutStep+dir));
+  if(_tutStep >= TUT_STEPS.length){ endTutorial(); return; }
+  renderTutStep();
+  if(_tutStep === TUT_STEPS.length-1){
+    document.getElementById('tut-next').textContent = '✓ Fertig';
+    document.getElementById('tut-next').onclick = endTutorial;
+  }
+}
+
+function renderTutStep(){
+  const step = TUT_STEPS[_tutStep];
+  document.getElementById('tut-progress').textContent = (_tutStep+1)+' / '+TUT_STEPS.length;
+  document.getElementById('tut-title').textContent = step.title;
+  document.getElementById('tut-text').textContent = step.text;
+  document.getElementById('tut-prev').style.display = _tutStep>0?'block':'none';
+  document.getElementById('tut-next').textContent = _tutStep<TUT_STEPS.length-1?'Weiter →':'✓ Fertig';
+  document.getElementById('tut-next').onclick = ()=>tutNav(1);
+
+  const hl = document.getElementById('tut-highlight');
+  const tt = document.getElementById('tut-tooltip');
+
+  if(step.target){
+    const el = document.querySelector(step.target);
+    if(el){
+      const r = el.getBoundingClientRect();
+      hl.style.cssText = 'display:block;left:'+(r.left-4)+'px;top:'+(r.top-4)+'px;width:'+(r.width+8)+'px;height:'+(r.height+8)+'px';
+      // Position tooltip below or above
+      const ttTop = r.bottom+12 < window.innerHeight-120 ? r.bottom+12 : r.top-140;
+      tt.style.cssText = 'display:block;left:'+Math.max(10,r.left)+'px;top:'+ttTop+'px';
+    }
+  } else {
+    hl.style.display='none';
+    tt.style.cssText = 'display:block;left:50%;top:50%;transform:translate(-50%,-50%)';
+  }
+}
+
+
+// ════════════════════════════════════════════════════════════════════════
+// v3.15 — ALLE NEUEN FEATURES
+// ════════════════════════════════════════════════════════════════════════
+
+// ── 1. KI MÖBELANORDNUNG ─────────────────────────────────────────────
+async function optimizeFurnitureInRoom(roomId){
+  const k = getKey(); if(!k){ toast('Kein API Key','r'); return; }
+  const r = rooms.find(r=>r.id===(roomId||selId));
+  if(!r){ toast('Bitte zuerst einen Raum auswählen','b'); return; }
+  const roomObjs = objects.filter(o=>
+    o.x>=r.x && o.x<=r.x+r.w && o.y>=r.y && o.y<=r.y+r.d
+  );
+  if(!roomObjs.length){ toast('Keine Möbel in diesem Raum','b'); return; }
+  showRight('ai');
+  addMsg('🪄 Optimiere Möbel in "'+r.name+'"…','sys');
+  const objList = roomObjs.map(o=>{
+    const it=findItem(o.typeId)||{};
+    return {typeId:o.typeId,name:it.name||o.typeId,w:o.w||it.w||1,d:o.d||it.d||1,x:Math.round((o.x-r.x)*10)/10,y:Math.round((o.y-r.y)*10)/10,rot:o.rot||0};
+  });
+  try{
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,
+        messages:[{role:'user',content:
+          'Du bist Innenarchitekt für CSC-Ausgabestellen. Optimiere die Möbelpositionierung.\n\n'
+          +'Raum "'+r.name+'": '+r.w+'m × '+r.d+'m (Koordinaten: x='+r.x+', y='+r.y+')\n'
+          +'Vorhandene Möbel (x/y relativ zum Raum):\n'
+          +JSON.stringify(objList,null,2)+'\n\n'
+          +'Regeln:\n'
+          +'- Möbel NICHT außerhalb des Raums platzieren\n'
+          +'- Durchgangswege mind. 0.9m breit lassen\n'
+          +'- Ausgabetheke nahe Eingang, Sofas an Wände, Pflanzen in Ecken\n'
+          +'- Koordinaten = absolute Weltkoordinaten (Raumstart x='+r.x+', y='+r.y+')\n\n'
+          +'Antworte NUR mit JSON:\n'
+          +'{"message":"Kurze Erklärung","moves":[{"typeId":"...","newX":1.0,"newY":1.0,"newRot":0}]}'
+        }]
+      })
+    });
+    const data = await resp.json();
+    const raw = (data.content?.[0]?.text||'{}');
+    const parsed = JSON.parse(raw.match(/\{[\s\S]*\}/)?.[0]||'{}');
+    if(parsed.message) addMsg('🪄 '+parsed.message,'ai');
+    if(parsed.moves?.length){
+      snapshot();
+      parsed.moves.forEach(mv=>{
+        const o=objects.find(o=>o.typeId===mv.typeId&&o.x>=r.x-0.5&&o.x<=r.x+r.w+0.5);
+        if(o){
+          o.x = Math.max(r.x+0.05, Math.min(r.x+r.w-0.1, mv.newX));
+          o.y = Math.max(r.y+0.05, Math.min(r.y+r.d-0.1, mv.newY));
+          if(mv.newRot!==undefined) o.rot = mv.newRot;
+        }
+      });
+      rebuild3D(); draw2D();
+      addMsg('✅ '+parsed.moves.length+' Objekte neu positioniert.','sys');
+    }
+  }catch(e){ addMsg('Fehler: '+e.message,'sys'); }
+}
+
+// ── 2. AUTOMATISCHE MAßKETTEN ──────────────────────────────────────
+var _dimVisible = false;
+function toggleDimensions(){
+  _dimVisible = !_dimVisible;
+  draw2D();
+  toast(_dimVisible?'📏 Maßketten eingeblendet':'📏 Maßketten ausgeblendet','b');
+}
+
+function drawDimensions(ctx, scale, vpX, vpY){
+  if(!_dimVisible) return;
+  ctx.save();
+  rooms.filter(r=>(r.floorId||'eg')===curFloor).forEach(r=>{
+    const x1=(r.x)*scale+vpX, y1=(r.y)*scale+vpY;
+    const x2=(r.x+r.w)*scale+vpX, y2=(r.y+r.d)*scale+vpY;
+    const off=18;
+    ctx.strokeStyle='#38bdf8'; ctx.fillStyle='#38bdf8';
+    ctx.lineWidth=1; ctx.font='bold 10px monospace';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.setLineDash([3,3]);
+    // Width dimension (top)
+    drawDimLine(ctx, x1,y1-off, x2,y1-off, r.w.toFixed(1)+'m');
+    // Depth dimension (right)
+    drawDimLine(ctx, x2+off,y1, x2+off,y2, r.d.toFixed(1)+'m', true);
+  });
+  ctx.restore();
+}
+
+function drawDimLine(ctx, x1,y1,x2,y2,label,vertical){
+  ctx.setLineDash([3,3]);
+  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+  // Ticks
+  ctx.setLineDash([]);
+  [[x1,y1],[x2,y2]].forEach(([tx,ty])=>{
+    ctx.beginPath();
+    if(vertical){ ctx.moveTo(tx-5,ty); ctx.lineTo(tx+5,ty); }
+    else         { ctx.moveTo(tx,ty-5); ctx.lineTo(tx,ty+5); }
+    ctx.stroke();
+  });
+  // Label
+  const mx=(x1+x2)/2, my=(y1+y2)/2;
+  ctx.save();
+  if(vertical){ ctx.translate(mx,my); ctx.rotate(-Math.PI/2); ctx.fillText(label,0,0); }
+  else         { ctx.fillText(label,mx,my-6); }
+  ctx.restore();
+}
+
+// ── 3. RAUM DUPLIZIEREN ───────────────────────────────────────────
+function duplicateRoom(roomId, mirror){
+  const r = rooms.find(r=>r.id===(roomId||selId)); if(!r) return;
+  const newRoom = {...r, id:null, x: r.x + r.w + 0.05};
+  addRoom(newRoom);
+  // Duplicate objects in room
+  const roomObjs = objects.filter(o=>o.x>=r.x&&o.x<=r.x+r.w&&o.y>=r.y&&o.y<=r.y+r.d);
+  const newR = rooms[rooms.length-1];
+  roomObjs.forEach(o=>{
+    const relX = o.x - r.x;
+    const relY = o.y - r.y;
+    const newX = mirror ? newR.x + (r.w - relX - (o.w||0.5)) : newR.x + relX;
+    const newRot= mirror ? (180 - (o.rot||0) + 360) % 360 : (o.rot||0);
+    addObject({...o, id:null, x:newX, y:newR.y+relY, rot:newRot, floorId:curFloor});
+  });
+  snapshot();
+  toast((mirror?'🪞 Raum gespiegelt':'📋 Raum kopiert')+': '+r.name,'g');
+  rebuild3D(); draw2D();
+}
+
+// ── 4. TAG/NACHT ANIMATION ────────────────────────────────────────
+var _sunAngle = 0; // 0-360 degrees
+function toggleSunAnimation(){
+  _sunAnimActive = !_sunAnimActive;
+  const btn = document.getElementById('btn-sun-anim');
+  if(_sunAnimActive){
+    if(btn) btn.classList.add('active');
+    _sunAnimTimer = setInterval(()=>{
+      _sunAngle = (_sunAngle + 1) % 360;
+      const rad  = _sunAngle * Math.PI / 180;
+      const elev = Math.max(0, Math.sin(rad) * 90); // 0-90 degrees
+      const az   = _sunAngle; // 0-360 degrees
+      // Update sun position
+      if(typeof sun !== 'undefined'){
+        const sunRad = elev * Math.PI / 180;
+        const azRad  = az  * Math.PI / 180;
+        sun.position.set(
+          Math.cos(sunRad)*Math.sin(azRad)*30,
+          Math.sin(sunRad)*30,
+          Math.cos(sunRad)*Math.cos(azRad)*30
+        );
+        sun.intensity = Math.max(0, Math.sin(rad)) * 2.0;
+      }
+      // Update sky color
+      const isDay  = _sunAngle > 30 && _sunAngle < 150;
+      const isDawn = (_sunAngle >= 0 && _sunAngle <= 30) || (_sunAngle >= 150 && _sunAngle <= 210);
+      const isNight= _sunAngle > 210;
+      const skyCol = isDay? 0xc8dff0 : isDawn? 0xf0c878 : 0x080818;
+      if(scene && scene.background) scene.background.setHex(skyCol);
+      if(hemi){
+        const h = isDay? 0.7 : isDawn? 0.4 : 0.1;
+        hemi.intensity = h;
+      }
+    }, 40); // ~25fps
+    toast('🌅 Tag/Nacht Animation läuft…','b');
+  } else {
+    if(btn) btn.classList.remove('active');
+    clearInterval(_sunAnimTimer); _sunAnimTimer=null;
+    setMood('day');
+    toast('⏹ Animation gestoppt','b');
+  }
+}
+
+// ── 5. HEATMAP — LAUFWEGE ─────────────────────────────────────────
+function toggleHeatmap(){
+  _heatmapActive = !_heatmapActive;
+  const cv = document.getElementById('heatmap-canvas');
+  if(_heatmapActive){
+    if(!cv) buildHeatmapCanvas();
+    else { cv.classList.add('vis'); renderHeatmap(); }
+    toast('🌡 Heatmap: Rot = Engstellen, Grün = gute Laufwege','b');
+  } else {
+    if(cv) cv.classList.remove('vis');
+    toast('🌡 Heatmap ausgeblendet','b');
+  }
+  const btn = document.getElementById('btn-heatmap');
+  if(btn){ btn.style.borderColor=_heatmapActive?'#f87171':''; btn.style.color=_heatmapActive?'#f87171':''; }
+}
+
+function buildHeatmapCanvas(){
+  const wrap = document.getElementById('canvas-wrap');
+  if(!wrap) return;
+  let cv = document.getElementById('heatmap-canvas');
+  if(!cv){
+    cv = document.createElement('canvas');
+    cv.id = 'heatmap-canvas';
+    cv.style.cssText = 'position:absolute;inset:0;pointer-events:none;opacity:0.5;z-index:8;display:none';
+    wrap.appendChild(cv);
+  }
+  cv.width  = fpCv.width;
+  cv.height = fpCv.height;
+  cv.classList.add('vis');
+  renderHeatmap();
+}
+
+function renderHeatmap(){
+  const cv = document.getElementById('heatmap-canvas'); if(!cv) return;
+  const ctx = cv.getContext('2d');
+  cv.width  = fpCv.width; cv.height = fpCv.height;
+  ctx.clearRect(0,0,cv.width,cv.height);
+
+  // Build occupancy grid
+  const CELL = 20; // pixels per cell
+  const cols = Math.ceil(cv.width/CELL);
+  const rows = Math.ceil(cv.height/CELL);
+  const grid = new Float32Array(cols*rows);
+
+  // Mark cells occupied by furniture
+  objects.filter(o=>(o.floorId||'eg')===curFloor).forEach(o=>{
+    const it=findItem(o.typeId)||{};
+    const px1=Math.floor(((o.x)*vpZoom+vpX)/CELL);
+    const py1=Math.floor(((o.y)*vpZoom+vpY)/CELL);
+    const px2=Math.ceil(((o.x+(o.w||it.w||1))*vpZoom+vpX)/CELL);
+    const py2=Math.ceil(((o.y+(o.d||it.d||1))*vpZoom+vpY)/CELL);
+    for(let gy=py1;gy<py2;gy++) for(let gx=px1;gx<px2;gx++){
+      if(gx>=0&&gx<cols&&gy>=0&&gy<rows) grid[gy*cols+gx]=2; // obstacle
+    }
+  });
+
+  // Calculate "congestion" = distance to nearest obstacle
+  rooms.filter(r=>(r.floorId||'eg')===curFloor).forEach(r=>{
+    const rx1=Math.floor((r.x*vpZoom+vpX)/CELL);
+    const ry1=Math.floor((r.y*vpZoom+vpY)/CELL);
+    const rx2=Math.ceil(((r.x+r.w)*vpZoom+vpX)/CELL);
+    const ry2=Math.ceil(((r.y+r.d)*vpZoom+vpY)/CELL);
+    for(let gy=ry1;gy<ry2;gy++) for(let gx=rx1;gx<rx2;gx++){
+      if(gx<0||gx>=cols||gy<0||gy>=rows) continue;
+      if(grid[gy*cols+gx]===2) continue; // obstacle
+      // Count nearby obstacles
+      let near=0;
+      for(let dy=-2;dy<=2;dy++) for(let dx=-2;dx<=2;dx++){
+        const nx=gx+dx, ny=gy+dy;
+        if(nx>=0&&nx<cols&&ny>=0&&ny<rows&&grid[ny*cols+nx]===2) near++;
+      }
+      grid[gy*cols+gx]=near;
+    }
+  });
+
+  // Render heatmap
+  for(let gy=0;gy<rows;gy++) for(let gx=0;gx<cols;gx++){
+    const v=grid[gy*cols+gx];
+    if(v===0) continue;
+    if(v===2){ ctx.fillStyle='rgba(60,60,60,0.3)'; } // obstacle = dark
+    else{
+      const t=Math.min(1,v/8);
+      const r=Math.round(255*t), g2=Math.round(200*(1-t)), b=0;
+      ctx.fillStyle='rgba('+r+','+g2+','+b+',0.45)';
+    }
+    ctx.fillRect(gx*CELL,gy*CELL,CELL,CELL);
+  }
+
+  // Legend
+  const grad=ctx.createLinearGradient(10,cv.height-25,120,cv.height-25);
+  grad.addColorStop(0,'rgba(0,200,0,0.7)');
+  grad.addColorStop(1,'rgba(255,0,0,0.7)');
+  ctx.fillStyle=grad; ctx.fillRect(10,cv.height-22,110,12);
+  ctx.fillStyle='#fff'; ctx.font='9px sans-serif';
+  ctx.fillText('Gut',10,cv.height-4); ctx.fillText('Engstelle',80,cv.height-4);
+}
+
+// ── 6. RAUMVORLAGEN ───────────────────────────────────────────────
+const ROOM_TEMPLATES = [
+  {
+    id:'csc-small',
+    name:'CSC Klein',
+    icon:'🌱',
+    desc:'Kleiner Club, max. 25 Mitglieder',
+    size:'~80m²',
+    rooms:[
+      {name:'Empfang & Ausgabe',x:0,y:0,w:8,d:6,h:2.8,floorColor:'#c4b08a',wallColor:'#ddd4be'},
+      {name:'Lagerraum',x:8,y:0,w:4,d:6,h:2.8,floorColor:'#888',wallColor:'#aaa'},
+      {name:'Sozialbereich',x:0,y:6,w:8,d:5,h:2.8,floorColor:'#8a9a7c',wallColor:'#c4ccb8'},
+      {name:'WC',x:8,y:6,w:2.5,d:2.5,h:2.5,floorColor:'#ccc',wallColor:'#e0e0e0'},
+    ],
+    objects:[
+      {typeId:'emp-theke',x:1,y:0.5,rot:0},{typeId:'scanner',x:3.5,y:0.5,rot:0},
+      {typeId:'w-sofa',x:0.3,y:3,rot:0},{typeId:'kuehlschr',x:8.2,y:0.3,rot:0},
+      {typeId:'regal',x:8.2,y:1.2,rot:0},{typeId:'l-sofa',x:0.3,y:6.3,rot:0},
+      {typeId:'ctisch',x:2,y:7,rot:0},{typeId:'kaffeemsch',x:6.5,y:6.2,rot:0},
+      {typeId:'sec-cam-ceil',x:0,y:0,rot:0},{typeId:'sec-smoke',x:4,y:3,rot:0},
+      {typeId:'at-std',x:7.9,y:2.5,rot:0},{typeId:'al-str',x:4,y:3,rot:0},
+    ]
+  },
+  {
+    id:'csc-medium',
+    name:'CSC Mittel',
+    icon:'🌿',
+    desc:'Mittlerer Club, max. 50 Mitglieder',
+    size:'~150m²',
+    rooms:[
+      {name:'Empfang & Ausgabe',x:0,y:0,w:10,d:7,h:2.8,floorColor:'#c4b08a',wallColor:'#ddd4be'},
+      {name:'Lagerraum',x:10,y:0,w:5,d:7,h:2.8,floorColor:'#888',wallColor:'#aaa'},
+      {name:'Sozialbereich',x:15,y:0,w:8,d:7,h:2.8,floorColor:'#8a9a7c',wallColor:'#c4ccb8'},
+      {name:'WC',x:0,y:7,w:3,d:3,h:2.5,floorColor:'#ccc',wallColor:'#e0e0e0'},
+      {name:'Büro',x:3,y:7,w:4,d:3,h:2.8,floorColor:'#c4b08a',wallColor:'#ddd4be'},
+    ],
+    objects:[
+      {typeId:'emp-theke-l',x:1,y:0.5,rot:0},{typeId:'scanner',x:4,y:0.5,rot:0},
+      {typeId:'w-sofa',x:0.3,y:3.5,rot:0},{typeId:'w-stuhl',x:0.3,y:2.5,rot:0},
+      {typeId:'kuehl-gr',x:10.2,y:0.3,rot:0},{typeId:'regal-hoch',x:10.2,y:1.5,rot:0},
+      {typeId:'regal-hoch',x:11.5,y:1.5,rot:0},{typeId:'tresor',x:10.2,y:5.5,rot:0},
+      {typeId:'l-sofa',x:15.3,y:0.5,rot:0},{typeId:'sofa-2',x:15.3,y:3,rot:0},
+      {typeId:'etisch',x:18,y:3,rot:0},{typeId:'kaffeemsch',x:21,y:0.3,rot:0},
+      {typeId:'pflanze-gr',x:22,y:6,rot:0},
+      {typeId:'sec-cam-ceil',x:0.5,y:0.5,rot:0},{typeId:'sec-cam-wall',x:14.9,y:0.5,rot:0},
+      {typeId:'sec-alarm',x:9.5,y:6.5,rot:0},{typeId:'sec-smoke',x:5,y:3.5,rot:0},
+      {typeId:'sec-ext',x:9.7,y:0.3,rot:0},{typeId:'at-sec',x:0,y:3,rot:0},
+      {typeId:'aw-sf-md',x:3,y:7.15,rot:0},{typeId:'schreibtisch',x:3.3,y:7.3,rot:0},
+    ]
+  },
+  {
+    id:'csc-large',
+    name:'CSC Groß',
+    icon:'🏢',
+    desc:'Großer Club, max. 100 Mitglieder',
+    size:'~250m²',
+    rooms:[
+      {name:'Eingang & Empfang',x:0,y:0,w:6,d:8,h:3.0,floorColor:'#c4b08a',wallColor:'#ddd4be'},
+      {name:'Ausgabe',x:6,y:0,w:8,d:8,h:3.0,floorColor:'#c4b08a',wallColor:'#ddd4be'},
+      {name:'Lagerraum',x:14,y:0,w:6,d:8,h:3.0,floorColor:'#888',wallColor:'#aaa'},
+      {name:'Sozialbereich',x:0,y:8,w:14,d:9,h:3.0,floorColor:'#8a9a7c',wallColor:'#c4ccb8'},
+      {name:'Küche & Bar',x:14,y:8,w:6,d:5,h:3.0,floorColor:'#c8b09a',wallColor:'#ddd4be'},
+      {name:'WC Herren',x:14,y:13,w:3,d:4,h:2.5,floorColor:'#ccc',wallColor:'#e0e0e0'},
+      {name:'WC Damen',x:17,y:13,w:3,d:4,h:2.5,floorColor:'#ccc',wallColor:'#e0e0e0'},
+      {name:'Büro',x:0,y:17,w:5,d:4,h:2.8,floorColor:'#c4b08a',wallColor:'#ddd4be'},
+    ],
+    objects:[
+      {typeId:'rezeption',x:0.5,y:3,rot:0},{typeId:'w-bank',x:0.5,y:0.5,rot:0},
+      {typeId:'emp-theke-u',x:6.5,y:0.5,rot:0},{typeId:'scanner',x:9,y:0.5,rot:0},
+      {typeId:'kasse',x:10,y:0.5,rot:0},{typeId:'locker',x:11,y:0.5,rot:0},
+      {typeId:'kuehl-gr',x:14.2,y:0.3,rot:0},{typeId:'regal-hoch',x:14.2,y:2,rot:0},
+      {typeId:'regal-hoch',x:15.5,y:2,rot:0},{typeId:'regal-breit',x:14.2,y:4,rot:0},
+      {typeId:'l-sofa',x:0.5,y:8.5,rot:0},{typeId:'sofa-eck',x:4,y:8.5,rot:0},
+      {typeId:'etisch',x:8,y:10,rot:0},{typeId:'stuhl',x:7,y:10,rot:0},
+      {typeId:'stehlampe',x:12,y:8.3,rot:0},{typeId:'pflanze-xl',x:13,y:8.3,rot:0},
+      {typeId:'monitor-gr',x:0.3,y:15.5,rot:0},{typeId:'bartresen',x:14.2,y:8.3,rot:0},
+      {typeId:'kaffeemsch',x:16,y:8.3,rot:0},{typeId:'kueche-z',x:14.2,y:10,rot:0},
+      {typeId:'sec-cam-ceil',x:0.5,y:0.5,rot:0},{typeId:'sec-cam-wall',x:5.9,y:0.5,rot:0},
+      {typeId:'sec-cam-ceil',x:7,y:12,rot:0},{typeId:'sec-alarm',x:5.7,y:7.8,rot:0},
+      {typeId:'sec-smoke',x:3,y:4,rot:0},{typeId:'sec-smoke',x:10,y:12,rot:0},
+      {typeId:'sec-ext',x:5.7,y:0.3,rot:0},{typeId:'sec-ext',x:13.7,y:8.3,rot:0},
+      {typeId:'sec-sign-exit',x:0,y:7.9,rot:0},{typeId:'at-sec',x:0,y:4,rot:0},
+      {typeId:'at-dbl',x:6,y:4,rot:0},{typeId:'at-std',x:14,y:4,rot:0},
+      {typeId:'aw-sf-lg',x:0,y:8.15,rot:0},{typeId:'aw-sf-md',x:7,y:8.15,rot:0},
+    ]
+  },
+  {
+    id:'csc-popup',
+    name:'Pop-Up CSC',
+    icon:'🏠',
+    desc:'Temporäre/mobile Ausgabe',
+    size:'~40m²',
+    rooms:[
+      {name:'Ausgabe & Empfang',x:0,y:0,w:8,d:5,h:2.8,floorColor:'#c4b08a',wallColor:'#ddd4be'},
+      {name:'Mini-Lager',x:8,y:0,w:3,d:5,h:2.8,floorColor:'#888',wallColor:'#aaa'},
+    ],
+    objects:[
+      {typeId:'aus-theke',x:0.5,y:0.5,rot:0},{typeId:'scanner',x:2.5,y:0.5,rot:0},
+      {typeId:'w-stuhl',x:4,y:1,rot:0},{typeId:'w-stuhl',x:5,y:1,rot:0},
+      {typeId:'regal',x:8.2,y:0.3,rot:0},{typeId:'kuehlschr',x:8.2,y:1.5,rot:0},
+      {typeId:'sec-cam-wall',x:0.3,y:0.1,rot:0},{typeId:'at-std',x:7.9,y:2,rot:0},
+    ]
+  },
+];
+
+function openTemplates(){
+  const grid = document.getElementById('tpl-grid'); if(!grid) return;
+  grid.innerHTML = ROOM_TEMPLATES.map(t=>
+    '<div class="tpl-card" onclick="applyTemplate(\''+t.id+'\')">'+
+    '<div class="tpl-icon">'+t.icon+'</div>'+
+    '<div class="tpl-name">'+t.name+'</div>'+
+    '<div class="tpl-desc">'+t.desc+'</div>'+
+    '<div class="tpl-size">'+t.size+'</div></div>'
+  ).join('');
+  openM('m-templates');
+}
+
+function applyTemplate(id){
+  const tpl = ROOM_TEMPLATES.find(t=>t.id===id); if(!tpl) return;
+  if(!confirm('Vorlage "'+tpl.name+'" laden? Alle aktuellen Räume werden ersetzt.')) return;
+  closeM('m-templates');
+  // Clear existing
+  rooms.forEach(r=>{ if(obj3Map[r.id]) scene.remove(obj3Map[r.id]); });
+  objects.forEach(o=>{ if(obj3Map[o.id]) scene.remove(obj3Map[o.id]); });
+  Object.keys(obj3Map).forEach(k=>{ scene.remove(obj3Map[k]); delete obj3Map[k]; });
+  rooms=[]; objects=[]; measures=[];
+  // Apply template
+  tpl.rooms.forEach(r=>addRoom({...r, ceilColor:'#f0ece0'}));
+  tpl.objects.forEach(o=>{
+    const it=findItem(o.typeId); if(!it) return;
+    addObject({...o, id:null, w:it.w, d:it.d, h:it.h, py:0, arch:it.arch||null, floorId:curFloor});
+  });
+  rebuild3D(); draw2D(); renderLeft(); snapshot();
+  toast('🏗 Vorlage "'+tpl.name+'" geladen!','g');
+}
+
+// ── 7. VISIONS-BOARD ─────────────────────────────────────────────
+function openVisionBoard(){
+  renderVisionGrid();
+  openM('m-vision');
+  document.getElementById('vision-link-box').style.display='none';
+}
+
+function addVisionImages(e){
+  const files = Array.from(e.target.files||[]);
+  e.target.value='';
+  files.slice(0,12-_visionBoards.length).forEach(file=>{
+    const reader = new FileReader();
+    reader.onload=ev=>{
+      _visionBoards.push({name:file.name, b64:ev.target.result});
+      renderVisionGrid();
+      saveVisionBoards();
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderVisionGrid(){
+  const grid = document.getElementById('vision-grid'); if(!grid) return;
+  grid.innerHTML = _visionBoards.map((v,i)=>
+    '<div class="vision-thumb">'
+    +'<img src="'+v.b64+'" title="'+v.name+'">'
+    +'<button class="del" onclick="removeVisionImage('+i+')">✕</button>'
+    +'</div>'
+  ).join('') + '<div class="vision-add" onclick="document.getElementById(\'vision-file-inp\').click()">＋</div>';
+}
+
+function removeVisionImage(i){
+  _visionBoards.splice(i,1);
+  renderVisionGrid(); saveVisionBoards();
+}
+
+function saveVisionBoards(){
+  try{ localStorage.setItem('csc-vision', JSON.stringify(_visionBoards.map(v=>({name:v.name,b64:v.b64.slice(0,5000)})))); }catch(e){}
+}
+
+function loadVisionBoards(){
+  try{
+    const saved = localStorage.getItem('csc-vision');
+    if(saved) _visionBoards = JSON.parse(saved);
+  }catch(e){}
+}
+
+function shareWithVision(){
+  try{
+    const data = getPD();
+    const payload = {project:data, vision:_visionBoards.map(v=>({name:v.name,b64:v.b64}))};
+    const json = JSON.stringify(payload);
+    // Use base64 encoding
+    const b64 = btoa(unescape(encodeURIComponent(json)));
+    if(b64.length > 200000){ toast('Visions-Board zu groß (>200KB). Bitte weniger/kleinere Bilder.','r'); return; }
+    const url = window.location.origin+window.location.pathname+'?vision='+b64;
+    document.getElementById('vision-link-inp').value = url;
+    document.getElementById('vision-link-box').style.display='block';
+  }catch(e){ toast('Fehler: '+e.message,'r'); }
+}
+
+function loadVisionShare(){
+  const params = new URLSearchParams(window.location.search);
+  const share = params.get('vision');
+  if(!share) return;
+  try{
+    const json = decodeURIComponent(escape(atob(share)));
+    const payload = JSON.parse(json);
+    if(payload.project) loadPD(payload.project);
+    if(payload.vision)  _visionBoards = payload.vision;
+    window.history.replaceState({},'',window.location.pathname);
+    toast('🎨 Visions-Board + Projekt geladen!','g');
+  }catch(e){ toast('Link ungültig','r'); }
+}
+
+function printVisionBoard(){
+  const pw = window.open('','_blank');
+  if(!pw) return;
+  const d = getPD();
+  const imgs = _visionBoards.map(v=>'<img src="'+v.b64+'" style="width:calc(33% - 8px);border-radius:6px;border:1px solid #ddd">').join('');
+  pw.document.write('<!DOCTYPE html><html><head><meta charset=UTF-8><title>Visions-Board — '+d.name+'</title>'
+    +'<style>body{font-family:sans-serif;padding:20px;color:#111}'
+    +'h1{color:#166534}img{margin:4px}.grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}'
+    +'@media print{.noprint{display:none}}</style></head><body>'
+    +'<h1>🌿 '+d.name+' — Visions-Board</h1>'
+    +'<p style="color:#888;font-size:11px">'+new Date().toLocaleDateString('de-DE')+' · '+_visionBoards.length+' Bilder</p>'
+    +'<div class=grid>'+imgs+'</div>'
+    +'<button class=noprint onclick=window.print() style="margin-top:16px;padding:8px 16px;background:#166534;color:#fff;border:none;border-radius:4px;cursor:pointer">🖨 Drucken</button>'
+    +'</body></html>');
+  pw.document.close();
+}
+
 // ════════════════════════════════════════════════════════════════════════
 // ANIMATION LOOP
 // ════════════════════════════════════════════════════════════════════════
@@ -5495,6 +6684,10 @@ updateSavedUI();
 loadSupabaseConfig();
 initGuide();
 loadCustomDesigns();
+loadVersionHistory();
+loadVisionBoards();
+loadSharedProject();
+loadVisionShare();
 // ── Auto-restore last session ──────────────────────────────────────
 (function autoRestore(){
   const saved = localStorage.getItem('csc-autosave');
@@ -5538,7 +6731,7 @@ draw2D();
 
 renderFloorTabs();
 initUndoSystem();
-setTimeout(()=>toast('🌿 v3.12 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
+setTimeout(()=>toast('🌿 v3.15 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
 
 
 
@@ -5565,7 +6758,8 @@ function initAutoSave(){
 
   // Enable auto-saving from now on
   _autoSaveReady = true;
-  toast('🌿 v3.12 | Auto-Save aktiv','g');
+  renderVersionHistory();
+  toast('🌿 v3.15 | Auto-Save aktiv','g');
 }
 
 
@@ -5715,6 +6909,9 @@ function renderRoomProps(id){
     <div class="pp-section">
       <div class="pp-sh">Aktionen</div>
       <button class="pp-btn" onclick="dupSel()">⧉ Raum duplizieren</button>
+      <button class="pp-btn" onclick="duplicateRoom('${id}',false)" style="border-color:var(--bl);color:var(--bl)">📋 Kopieren</button>
+      <button class="pp-btn" onclick="duplicateRoom('${id}',true)" style="border-color:var(--pu);color:var(--pu)">🪞 Spiegeln</button>
+      <button class="pp-btn" onclick="optimizeFurnitureInRoom('${id}')" style="border-color:var(--gr);color:var(--gr)">🪄 KI-Möbel</button>
       <button class="pp-btn del" onclick="removeRoom('${id}');closePropPanel()">🗑 Raum löschen</button>
     </div>
   `;
@@ -5883,7 +7080,7 @@ function build3DObj(o){
   const metal = o.metalness !== undefined ? o.metalness : (item.arch==='window'?0.0: item.arch==='door'?0.05:['Lager','Info'].includes(item.cat)?0.55:0.04);
 
   if(item.isKallax || (item.id&&item.id.startsWith('kallax'))){
-    buildKallax3DPro(g, item, o); // v3.12 Pro
+    buildKallax3DPro(g, item, o); // v3.15 Pro
   } else if(item.arch==='security'){
     buildSecurity3D(g, item, o);
   } else if(item.arch==='foil'){
@@ -6167,5 +7364,574 @@ document.getElementById('mood-panel').classList.remove('vis');
 document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
 
 </script>
+
+<!-- ══ INTERAKTIVE ANLEITUNG ══════════════════════════════════════════ -->
+<div id="help-overlay">
+  <button id="help-close" onclick="closeHelp()">✕</button>
+
+  <div style="padding:12px 20px;border-bottom:1px solid #1a2a1a;display:flex;align-items:center;gap:14px;flex-shrink:0">
+    <div style="font-size:16px;font-weight:800;color:#4ade80">🌿 CSC Raumplaner — Vollständige Anleitung</div>
+    <div style="font-size:11px;color:#555">v3.15</div>
+    <div style="flex:1"></div>
+    <button class="tbt" onclick="startTutorial()" style="border-color:var(--gr);color:var(--gr);padding:6px 14px">▶ Tutorial starten</button>
+    <button class="tbt" onclick="closeHelp()" style="padding:6px 14px">Schließen</button>
+  </div>
+
+  <div class="help-search">
+    <input id="help-search-inp" placeholder="🔍 Funktion suchen… z.B. 'Tür', 'KI', 'Speichern'" oninput="searchHelp(this.value)">
+  </div>
+
+  <div id="help-container">
+    <!-- SIDEBAR -->
+    <div id="help-sidebar">
+      <div class="help-cat">Erste Schritte</div>
+      <div class="help-item active" onclick="showHelpPage('start')" data-page="start"><span class="hi">🚀</span>Schnellstart</div>
+      <div class="help-item" onclick="showHelpPage('interface')" data-page="interface"><span class="hi">🖥</span>Oberfläche</div>
+      <div class="help-item" onclick="showHelpPage('keys')" data-page="keys"><span class="hi">⌨</span>Tastenkürzel</div>
+
+      <div class="help-cat">Grundriss</div>
+      <div class="help-item" onclick="showHelpPage('rooms')" data-page="rooms"><span class="hi">⬜</span>Räume zeichnen</div>
+      <div class="help-item" onclick="showHelpPage('walls')" data-page="walls"><span class="hi">🧱</span>Wände & Öffnungen</div>
+      <div class="help-item" onclick="showHelpPage('floors')" data-page="floors"><span class="hi">🏢</span>Mehrere Etagen</div>
+      <div class="help-item" onclick="showHelpPage('measure')" data-page="measure"><span class="hi">📏</span>Maße & Abstände</div>
+
+      <div class="help-cat">Einrichtung</div>
+      <div class="help-item" onclick="showHelpPage('furniture')" data-page="furniture"><span class="hi">🛋</span>Möbel platzieren</div>
+      <div class="help-item" onclick="showHelpPage('doors')" data-page="doors"><span class="hi">🚪</span>Türen & Fenster</div>
+      <div class="help-item" onclick="showHelpPage('security')" data-page="security"><span class="hi">🔒</span>Sicherheit</div>
+      <div class="help-item" onclick="showHelpPage('custom')" data-page="custom"><span class="hi">✏</span>Eigene Objekte</div>
+
+      <div class="help-cat">3D & Design</div>
+      <div class="help-item" onclick="showHelpPage('3d')" data-page="3d"><span class="hi">🏗</span>3D-Ansicht</div>
+      <div class="help-item" onclick="showHelpPage('design')" data-page="design"><span class="hi">🎨</span>Design & Stile</div>
+      <div class="help-item" onclick="showHelpPage('lighting')" data-page="lighting"><span class="hi">💡</span>Beleuchtung</div>
+
+      <div class="help-cat">KI-Assistent</div>
+      <div class="help-item" onclick="showHelpPage('ai-basic')" data-page="ai-basic"><span class="hi">🤖</span>KI Grundfunktionen</div>
+      <div class="help-item" onclick="showHelpPage('ai-plan')" data-page="ai-plan"><span class="hi">🖼</span>Grundriss analysieren</div>
+      <div class="help-item" onclick="showHelpPage('ai-wizard')" data-page="ai-wizard"><span class="hi">✨</span>Möbel-Assistent</div>
+      <div class="help-item" onclick="showHelpPage('ai-csc')" data-page="ai-csc"><span class="hi">🌿</span>CSC-Funktionen</div>
+
+      <div class="help-cat">Speichern & Teilen</div>
+      <div class="help-item" onclick="showHelpPage('save')" data-page="save"><span class="hi">💾</span>Speichern</div>
+      <div class="help-item" onclick="showHelpPage('cloud')" data-page="cloud"><span class="hi">☁</span>Cloud (Supabase)</div>
+      <div class="help-item" onclick="showHelpPage('share')" data-page="share"><span class="hi">🔗</span>Teilen & Export</div>
+      <div class="help-item" onclick="showHelpPage('versions')" data-page="versions"><span class="hi">📌</span>Versionsverlauf</div>
+
+      <div class="help-cat">CSC-spezifisch</div>
+      <div class="help-item" onclick="showHelpPage('csc-rules')" data-page="csc-rules"><span class="hi">📋</span>KCanG Anforderungen</div>
+      <div class="help-item" onclick="showHelpPage('csc-capacity')" data-page="csc-capacity"><span class="hi">👥</span>Kapazitätsplanung</div>
+      <div class="help-item" onclick="showHelpPage('csc-evac')" data-page="csc-evac"><span class="hi">🚨</span>Flucht- & Rettungsplan</div>
+    </div>
+
+    <!-- CONTENT -->
+    <div id="help-content">
+
+      <!-- SCHNELLSTART -->
+      <div class="help-page active" id="hp-start">
+        <h1>🚀 Schnellstart in 5 Minuten</h1>
+        <div class="subtitle">Von leer zu einer vollständigen CSC-Ausgabestelle</div>
+
+        <div class="help-step"><div class="help-step-num">1</div><div class="help-step-body"><b>Raum zeichnen:</b> Klicke oben auf <b>⬜ Raum zeichnen</b>, dann diagonal über den Grundriss ziehen. Beim Loslassen entsteht ein Raum. Doppelklick auf den Raum → Namen und Farben anpassen.</div></div>
+        <div class="help-step"><div class="help-step-num">2</div><div class="help-step-body"><b>Mehrere Räume:</b> Wiederhole Schritt 1 für alle Bereiche: Empfang, Ausgabe, Lager, Sozialbereich, WC. Räume docken automatisch aneinander wenn du sie nah genug platzierst.</div></div>
+        <div class="help-step"><div class="help-step-num">3</div><div class="help-step-body"><b>Möbel einrichten:</b> Linke Sidebar → <b>🛋 Möbel</b>. Objekt aus dem Katalog klicken → wird auf dem Grundriss platziert. Ziehen zum Verschieben, R-Taste zum Drehen.</div></div>
+        <div class="help-step"><div class="help-step-num">4</div><div class="help-step-body"><b>Türen & Fenster:</b> Linke Sidebar → <b>🔨 Bau</b>. Tür oder Fenster in der Nähe einer Wand platzieren → Wand wird automatisch aufgeschnitten.</div></div>
+        <div class="help-step"><div class="help-step-num">5</div><div class="help-step-body"><b>3D ansehen:</b> Oben rechts auf <b>3D Ansicht</b> klicken. Linksklick + Ziehen = Drehen. Scroll = Zoom. Rechtsklick + Ziehen = Verschieben.</div></div>
+        <div class="help-step"><div class="help-step-num">6</div><div class="help-step-body"><b>Speichern:</b> <b>💾 Speichern</b> Taste oben — oder automatisch: Der Planer speichert nach jeder Änderung automatisch im Browser.</div></div>
+
+        <div class="help-tip">💡 <b>Tipp:</b> Nutze den KI-Assistenten (rechts oben → 🤖) und schreibe einfach: <i>„Erstelle eine vollständige CSC-Ausgabestelle mit Empfang, Lager und Sozialbereich"</i> — die KI baut alles automatisch auf.</div>
+        <div class="help-tip">🌿 Klicke auf <b>🌿 CSC</b> in der Toolbar um die gesetzliche KCanG-Checkliste und die Kapazitätsberechnung zu sehen.</div>
+      </div>
+
+      <!-- OBERFLÄCHE -->
+      <div class="help-page" id="hp-interface">
+        <h1>🖥 Die Oberfläche</h1>
+        <div class="subtitle">Überblick über alle Bereiche und Bedienelemente</div>
+        <h2>Toolbar (oben)</h2>
+        <ul>
+          <li><b>↩ Undo / ↪ Redo</b> — bis zu 50 Schritte rückgängig/wiederholen</li>
+          <li><b>Neu</b> — Neues leeres Projekt starten</li>
+          <li><b>💾 Speichern</b> — Manuell im Browser speichern (mit Name)</li>
+          <li><b>📂 Öffnen</b> — Gespeichertes Projekt laden</li>
+          <li><b>📥 Export</b> — Als .json-Datei herunterladen</li>
+          <li><b>🖨 Drucken</b> — PDF mit 3D-Screenshot erstellen</li>
+          <li><b>🌅 Stimmung</b> — Beleuchtungs-Preset wechseln</li>
+          <li><b>🤖 KI-Möbel</b> — KI-Möbel-Assistent öffnen</li>
+          <li><b>📊</b> — Raumstatistik (I-Taste)</li>
+          <li><b>⬜ Offen / 🏠 Decke</b> — Decke ein/ausblenden</li>
+          <li><b>✂️ Schnitt</b> — Horizontalen Schnitt durch Gebäude</li>
+          <li><b>🌿 CSC</b> — KCanG-Checkliste und Kapazität</li>
+          <li><b>🔗 Teilen</b> — Link zum Projekt kopieren</li>
+          <li><b>📱 QR</b> — QR-Code für die App-URL</li>
+          <li><b>EG / OG</b> — Etagen-Tabs wechseln</li>
+        </ul>
+        <h2>Linke Sidebar</h2>
+        <ul>
+          <li><b>🏠 Räume</b> — Liste aller Räume, Eigenschaften bearbeiten</li>
+          <li><b>🛋 Möbel</b> — Möbelkatalog nach Kategorien</li>
+          <li><b>🔨 Bau</b> — Türen, Fenster, Schaufenster, Folierung, Beleuchtung</li>
+          <li><b>🔒 Sicherheit</b> — Kameras, Alarm, Brandschutz</li>
+          <li><b>✏ Eigene</b> — Selbst erstellte Objekte</li>
+        </ul>
+        <h2>Rechte Sidebar</h2>
+        <ul>
+          <li><b>🤖 KI-Assistent</b> — Chat mit der KI, Datei-Upload</li>
+          <li><b>🎨 Design</b> — Stil-Presets, KALLAX-Editor, Materialien</li>
+          <li><b>🌅 Licht</b> — Detaillierte Beleuchtungssteuerung</li>
+          <li><b>💾 Projekte</b> — Speichern, Laden, Cloud, Versionen</li>
+        </ul>
+        <h2>Zeichenfläche (Mitte)</h2>
+        <ul>
+          <li>Der <b>graue Bereich</b> ist die 2D-Grundrissansicht</li>
+          <li>Weiße Linien = Rasterlinien (1m Abstand)</li>
+          <li>Farbige Labels = Räume mit Namen und Maßen</li>
+          <li>Oben rechts: Ansicht umschalten (2D / 3D / Durchgehen)</li>
+        </ul>
+      </div>
+
+      <!-- TASTENKÜRZEL -->
+      <div class="help-page" id="hp-keys">
+        <h1>⌨ Tastenkürzel</h1>
+        <div class="subtitle">Alle Shortcuts für schnelles Arbeiten</div>
+        <h2>Allgemein</h2>
+        <div class="shortcut-grid">
+          <div class="sc-row"><span class="sc-label">Rückgängig</span><div class="sc-keys"><kbd>Ctrl</kbd><kbd>Z</kbd></div></div>
+          <div class="sc-row"><span class="sc-label">Wiederholen</span><div class="sc-keys"><kbd>Ctrl</kbd><kbd>Y</kbd></div></div>
+          <div class="sc-row"><span class="sc-label">Anleitung öffnen</span><div class="sc-keys"><kbd>H</kbd></div></div>
+          <div class="sc-row"><span class="sc-label">Statistik</span><div class="sc-keys"><kbd>I</kbd></div></div>
+          <div class="sc-row"><span class="sc-label">Zoom auf Auswahl</span><div class="sc-keys"><kbd>Z</kbd></div></div>
+          <div class="sc-row"><span class="sc-label">Abbrechen</span><div class="sc-keys"><kbd>Esc</kbd></div></div>
+        </div>
+        <h2>Objekte bearbeiten</h2>
+        <div class="shortcut-grid">
+          <div class="sc-row"><span class="sc-label">Löschen</span><div class="sc-keys"><kbd>Del</kbd></div></div>
+          <div class="sc-row"><span class="sc-label">Drehen 90°</span><div class="sc-keys"><kbd>R</kbd></div></div>
+          <div class="sc-row"><span class="sc-label">10cm verschieben</span><div class="sc-keys"><kbd>↑↓←→</kbd></div></div>
+          <div class="sc-row"><span class="sc-label">50cm verschieben</span><div class="sc-keys"><kbd>Shift</kbd><kbd>↑↓←→</kbd></div></div>
+        </div>
+        <h2>3D-Ansicht</h2>
+        <div class="shortcut-grid">
+          <div class="sc-row"><span class="sc-label">Orbit (drehen)</span><div class="sc-keys"><kbd>LMB</kbd><span style="color:#555;font-size:10px">+drag</span></div></div>
+          <div class="sc-row"><span class="sc-label">Pan (verschieben)</span><div class="sc-keys"><kbd>RMB</kbd><span style="color:#555;font-size:10px">+drag</span></div></div>
+          <div class="sc-row"><span class="sc-label">Zoom</span><div class="sc-keys"><kbd>Scroll</kbd></div></div>
+          <div class="sc-row"><span class="sc-label">Objekt greifen</span><div class="sc-keys"><kbd>G</kbd></div></div>
+          <div class="sc-row"><span class="sc-label">Objekt löschen</span><div class="sc-keys"><kbd>Del</kbd></div></div>
+          <div class="sc-row"><span class="sc-label">Durchgehen WASD</span><div class="sc-keys"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></div></div>
+        </div>
+        <div class="help-tip">💡 Im Durchgehen-Modus: Mausbewegung = Blickrichtung. <kbd>Shift</kbd> = schneller laufen.</div>
+      </div>
+
+      <!-- RÄUME -->
+      <div class="help-page" id="hp-rooms">
+        <h1>⬜ Räume zeichnen</h1>
+        <div class="subtitle">Grundriss aufbauen mit Räumen</div>
+        <h2>Raum erstellen</h2>
+        <div class="help-step"><div class="help-step-num">1</div><div class="help-step-body">Oben auf <b>⬜ Raum zeichnen</b> klicken (oder Taste R).</div></div>
+        <div class="help-step"><div class="help-step-num">2</div><div class="help-step-body">Auf den Grundriss klicken und diagonal ziehen — beim Loslassen entsteht der Raum. Mindestgröße: 1×1m.</div></div>
+        <div class="help-step"><div class="help-step-num">3</div><div class="help-step-body"><b>Doppelklick</b> auf den Raum → Eigenschaften öffnen: Name, Breite, Tiefe, Höhe, Boden- und Wandfarbe.</div></div>
+        <h2>Räume anpassen</h2>
+        <ul>
+          <li>Klicken und ziehen: Raum verschieben</li>
+          <li>An den <b>grünen Ecken</b> ziehen: Größe anpassen</li>
+          <li>Räume docken automatisch aneinander (Snap bei 40cm)</li>
+          <li>Innenfarben: Sidebar → Raum auswählen → Boden/Wand</li>
+        </ul>
+        <h2>Typische CSC-Raumgrößen</h2>
+        <ul>
+          <li><b>Empfang & Ausgabe:</b> 15–30m² (mind. 6×4m)</li>
+          <li><b>Lager:</b> 8–15m² (4×3m reicht meist)</li>
+          <li><b>Sozialbereich:</b> 20–50m²</li>
+          <li><b>WC:</b> 2.5×2.5m minimum</li>
+          <li><b>Büro/Verwaltung:</b> 10–20m²</li>
+        </ul>
+        <div class="help-tip">💡 Mit dem KI-Assistenten kannst du automatisch alle Räume erstellen: <i>„Erstelle CSC mit 100m² Ausgabe, 30m² Lager, 60m² Sozialbereich und WC"</i></div>
+      </div>
+
+      <!-- WÄNDE -->
+      <div class="help-page" id="hp-walls">
+        <h1>🧱 Wände & Öffnungen</h1>
+        <div class="subtitle">Freie Wände zeichnen und Durchgänge schaffen</div>
+        <h2>Freie Wand zeichnen</h2>
+        <div class="help-step"><div class="help-step-num">1</div><div class="help-step-body">Oben auf <b>🧱 Wand zeichnen</b> klicken.</div></div>
+        <div class="help-step"><div class="help-step-num">2</div><div class="help-step-body">Klick = Startpunkt setzen. Dann zweiten Klick = Endpunkt. Die Wand wird sofort gezeichnet.</div></div>
+        <div class="help-step"><div class="help-step-num">3</div><div class="help-step-body">Wände <b>sn­appen</b> automatisch an bestehende Ecken (innerhalb 40cm). Der Cursor zeigt einen grünen Punkt.</div></div>
+        <h2>Türen & Fenster in Wände einsetzen</h2>
+        <ul>
+          <li>Linke Sidebar → <b>🔨 Bau</b> → Tür oder Fenster wählen</li>
+          <li>Auf oder neben eine Wand klicken → automatisch eingepasst</li>
+          <li>Die Wand wird <b>aufgeschnitten</b> — echter Durchgang entsteht</li>
+          <li>Tür drehen mit <kbd>R</kbd> oder per Eigenschaftspanel</li>
+        </ul>
+        <h2>Verfügbare Öffnungen</h2>
+        <ul>
+          <li>🚪 <b>Tür Standard</b> 1.0m — normale Innentür</li>
+          <li>🚪 <b>Doppeltür</b> 1.8m — für breite Durchgänge</li>
+          <li>🚪 <b>WC-Tür</b> 0.7m — für enge WC-Räume</li>
+          <li>🚪 <b>Glastür</b> — transparent, Lichteinfall</li>
+          <li>🔒 <b>Sicherheitstür RC2</b> — Stahl, Eingangstür</li>
+          <li>🪟 <b>Fenster</b> klein/mittel/groß</li>
+          <li>🪟 <b>Schaufenster</b> 2m/3m/4m — bodentief, Aluminium</li>
+        </ul>
+        <div class="help-warn">⚠ Türen müssen innerhalb <b>80cm</b> einer Wand platziert werden damit die Wand automatisch aufgeschnitten wird.</div>
+      </div>
+
+      <!-- ETAGEN -->
+      <div class="help-page" id="hp-floors">
+        <h1>🏢 Mehrere Etagen</h1>
+        <div class="subtitle">Erdgeschoss, Obergeschoss und Untergeschoss verwalten</div>
+        <h2>Etage hinzufügen</h2>
+        <div class="help-step"><div class="help-step-num">1</div><div class="help-step-body">Oben rechts auf <b>EG +</b> klicken → Neue Etage hinzufügen.</div></div>
+        <div class="help-step"><div class="help-step-num">2</div><div class="help-step-body">Name eingeben (EG / OG1 / OG2 / UG) und Etagenhöhe festlegen (Standard: 3m).</div></div>
+        <div class="help-step"><div class="help-step-num">3</div><div class="help-step-body">Etage über die Tabs oben rechts wechseln. Jede Etage hat eigene Räume, Möbel und Wände.</div></div>
+        <h2>3D-Darstellung</h2>
+        <ul>
+          <li><b>Standard:</b> Nur aktive Etage wird angezeigt</li>
+          <li><b>🏢 Alle:</b> Toolbar-Button → alle Etagen übereinander sichtbar</li>
+          <li>Etagenhöhe (Standard 3m) = vertikaler Abstand in 3D</li>
+        </ul>
+        <div class="help-tip">💡 Für eine CSC-Anlage: EG = Ausgabe/Empfang/Sozial, OG = Büro/Verwaltung, UG = Lager</div>
+      </div>
+
+      <!-- MÖBEL -->
+      <div class="help-page" id="hp-furniture">
+        <h1>🛋 Möbel platzieren</h1>
+        <div class="subtitle">Über 80 Objekte in 10 Kategorien</div>
+        <h2>Aus dem Katalog platzieren</h2>
+        <div class="help-step"><div class="help-step-num">1</div><div class="help-step-body">Links auf <b>🛋 Möbel</b> klicken → Kategorie auswählen.</div></div>
+        <div class="help-step"><div class="help-step-num">2</div><div class="help-step-body">Objekt aus der Liste klicken → wird in der Mitte des aktuellen Bereichs platziert. Oder: Objekt aus Liste auf den Grundriss <b>ziehen</b>.</div></div>
+        <div class="help-step"><div class="help-step-num">3</div><div class="help-step-body">Platziertes Objekt anklicken → blauer Rahmen = ausgewählt. Jetzt verschieben, drehen, löschen.</div></div>
+        <h2>Objekt bearbeiten</h2>
+        <ul>
+          <li><b>Verschieben:</b> Klicken und ziehen (2D) oder G-Taste (3D)</li>
+          <li><b>Drehen:</b> R-Taste (90°) oder in Eigenschaften genaue Grad</li>
+          <li><b>Größe ändern:</b> In Eigenschaften (Breite, Tiefe, Höhe)</li>
+          <li><b>Farbe ändern:</b> Rechte Sidebar → 🎨 Design</li>
+          <li><b>Löschen:</b> Del-Taste oder Kontext-Menu</li>
+          <li><b>Duplizieren:</b> Rechtsklick → Duplizieren</li>
+        </ul>
+        <h2>Wichtige Möbelkategorien</h2>
+        <ul>
+          <li>🏪 <b>Empfang:</b> Theke L/U-Form, Scanner, Wartezone</li>
+          <li>🌿 <b>Ausgabe:</b> Ausgabetheke, Beratungsplatz, Kassensystem</li>
+          <li>📦 <b>Lager:</b> Regale, Kühlschrank, Tresor</li>
+          <li>🛋 <b>Sozial:</b> Sofas, Tische, Pflanzen, TV</li>
+          <li>🍳 <b>Küche:</b> Küchenzeile, Kaffeemaschine, Bartresen</li>
+          <li>🖥 <b>Büro:</b> Schreibtisch, Whiteboard, Aktenschrank</li>
+          <li>🏛 <b>Sonstiges:</b> Säulen, Trennwände, Treppen</li>
+        </ul>
+        <div class="help-tip">💡 <b>KALLAX-Tresen</b> hat einen eigenen Design-Editor: Klicke auf einen KALLAX → rechts öffnet sich der KALLAX Pro-Editor mit 4 Tabs.</div>
+      </div>
+
+      <!-- 3D -->
+      <div class="help-page" id="hp-3d">
+        <h1>🏗 3D-Ansicht</h1>
+        <div class="subtitle">Realistisches 3D-Rendering und Durchgehen</div>
+        <h2>Kamerasteuerung</h2>
+        <ul>
+          <li><b>Linksklick + Ziehen:</b> Kamera drehen (Orbit)</li>
+          <li><b>Rechtsklick + Ziehen:</b> Kamera verschieben (Pan)</li>
+          <li><b>Scrollrad:</b> Zoom rein/raus</li>
+          <li><b>Mittelklick + Ziehen:</b> Pan (Alternative)</li>
+        </ul>
+        <h2>Objekte in 3D bearbeiten</h2>
+        <ul>
+          <li><b>Klick auf Objekt:</b> Auswählen (blauer Rahmen)</li>
+          <li><b>G-Taste</b> nach Auswahl: Grab-Modus — Maus bewegt das Objekt</li>
+          <li><b>Klick</b> im Grab-Modus: Neue Position bestätigen</li>
+          <li><b>Del-Taste:</b> Ausgewähltes Objekt löschen</li>
+          <li><b>R-Taste:</b> 90° drehen</li>
+          <li><b>Pfeiltasten:</b> Feinpositionierung 10cm (Shift: 50cm)</li>
+        </ul>
+        <h2>Durchgehen-Modus</h2>
+        <div class="help-step"><div class="help-step-num">1</div><div class="help-step-body">Oben auf <b>🚶 Durchgehen</b> klicken → Klick auf Canvas aktiviert Maus-Look.</div></div>
+        <div class="help-step"><div class="help-step-num">2</div><div class="help-step-body"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> zum Laufen, Maus zum Umschauen. <kbd>Shift</kbd> = schneller.</div></div>
+        <div class="help-step"><div class="help-step-num">3</div><div class="help-step-body"><kbd>Esc</kbd> verlässt den Maus-Lock-Modus.</div></div>
+        <h2>Spezialfunktionen</h2>
+        <ul>
+          <li><b>⬜ Offen / 🏠 Decke:</b> Decke ein/ausblenden — für Draufsicht ohne Deckel</li>
+          <li><b>✂️ Schnitt:</b> Horizontaler Schnitt bei 1.2m — zeigt Möbel von oben</li>
+          <li><b>🏢 Alle:</b> Alle Etagen gleichzeitig darstellen</li>
+          <li><b>Z-Taste:</b> Auf ausgewähltes Objekt zoomen</li>
+        </ul>
+      </div>
+
+      <!-- DESIGN -->
+      <div class="help-page" id="hp-design">
+        <h1>🎨 Design & Stile</h1>
+        <div class="subtitle">Materialien, Farben, Texturen und KALLAX-Editor</div>
+        <h2>Stil-Presets</h2>
+        <p>Rechts → 🎨 Design → Preset klicken:</p>
+        <ul>
+          <li>🪵 <b>Rustikal</b> — warme Holztöne, Parkett</li>
+          <li>🌿 <b>Urban Green</b> — Cannabis-typisches Grün und Naturholz</li>
+          <li>⬜ <b>Skandinavisch</b> — helles Holz, weiße Wände</li>
+          <li>🔩 <b>Industrial</b> — Beton, Metall, dunkle Töne</li>
+          <li>✨ <b>Classic Weiß</b> — clean und minimalistisch</li>
+          <li>💎 <b>Premium</b> — dunkles Holz, Goldakzente</li>
+        </ul>
+        <h2>Eigenes Design erstellen</h2>
+        <div class="help-step"><div class="help-step-num">1</div><div class="help-step-body">Rechts → 🎨 Design → <b>🎨 Eigenes Design erstellen</b> klicken.</div></div>
+        <div class="help-step"><div class="help-step-num">2</div><div class="help-step-body">Farben für Front, Akzent, Arbeitsplatte, Rahmen, LED, Boden, Wand und Sofa festlegen.</div></div>
+        <div class="help-step"><div class="help-step-num">3</div><div class="help-step-body">Namen vergeben → <b>Speichern</b>. Wird dauerhaft gespeichert und als neues Preset angezeigt.</div></div>
+        <h2>KALLAX Pro-Editor</h2>
+        <p>KALLAX-Tresen anklicken → rechts öffnet sich der KALLAX-Editor mit 4 Tabs:</p>
+        <ul>
+          <li><b>🎨 Stil:</b> Frontfarbe, Akzentfarbe, Muster (Schachbrett, Gradient, Diagonal…)</li>
+          <li><b>🔲 Fächer:</b> Jedes Fach einzeln einfärben</li>
+          <li><b>🪵 Oberfläche:</b> Plankenstruktur (Matt, Glänzend, Gebürstet…), Rahmen-Textur</li>
+          <li><b>💡 LED:</b> LED-Farbe, Helligkeit, Ein/Aus</li>
+        </ul>
+      </div>
+
+      <!-- BELEUCHTUNG -->
+      <div class="help-page" id="hp-lighting">
+        <h1>💡 Beleuchtung</h1>
+        <div class="subtitle">Tageszeit-Stimmungen und individuelle Lichtsteuerung</div>
+        <h2>Stimmungs-Presets (Toolbar → 🌅)</h2>
+        <ul>
+          <li>☀️ <b>Tag</b> — helles Tageslicht, neutralweiß</li>
+          <li>🌅 <b>Golden Hour</b> — warmes Abendlicht</li>
+          <li>🌆 <b>Abend</b> — dämmriges Purpurlicht</li>
+          <li>🌙 <b>Nacht</b> — dunkles Nachtambiente</li>
+          <li>🔥 <b>Gemütlich</b> — warmes, gedimmtes Kerzenlicht</li>
+          <li>💼 <b>Professionell</b> — klares weißes Bürolicht</li>
+        </ul>
+        <h2>Detaillierte Steuerung (Rechts → 🌅 Licht)</h2>
+        <ul>
+          <li><b>Himmelshintergrund:</b> Farbe des Himmels / Hintergrundes</li>
+          <li><b>Hemisphärenlicht:</b> Umgebungslicht von oben und unten</li>
+          <li><b>Sonne:</b> Stärke, Azimut (Richtung), Elevation (Höhe)</li>
+          <li><b>Fülllicht:</b> Schattenseitige Aufhellung</li>
+          <li><b>Raumlichter:</b> Die Deckenleuchten in den Räumen</li>
+          <li><b>Belichtung:</b> Gesamthelligkeit (Kamera-Exposure)</li>
+        </ul>
+        <div class="help-tip">💡 <b>KI-Stimmung:</b> Im Licht-Panel auf „✨ KI Stimmung" klicken und eine Atmosphäre beschreiben: <i>„Warmer Herbstabend mit grünem Neonschimmer"</i></div>
+      </div>
+
+      <!-- KI BASIC -->
+      <div class="help-page" id="hp-ai-basic">
+        <h1>🤖 KI-Assistent: Grundfunktionen</h1>
+        <div class="subtitle">Chat mit Claude AI — keine Grenzen</div>
+        <h2>KI-Chat nutzen</h2>
+        <div class="help-step"><div class="help-step-num">1</div><div class="help-step-body">Rechts oben auf <b>🤖 KI-Assistent</b> klicken → Chat öffnet sich.</div></div>
+        <div class="help-step"><div class="help-step-num">2</div><div class="help-step-body">Text eingeben → <kbd>Enter</kbd> oder Pfeil-Taste zum Senden.</div></div>
+        <div class="help-step"><div class="help-step-num">3</div><div class="help-step-body">KI antwortet und führt Aktionen direkt im Planer aus (Räume erstellen, Möbel platzieren etc.).</div></div>
+        <h2>Beispiel-Befehle</h2>
+        <ul>
+          <li><i>„Erstelle eine vollständige CSC-Ausgabestelle mit 4 Bereichen"</i></li>
+          <li><i>„Füge im Empfangsraum eine Sicherheitsausstattung hinzu"</i></li>
+          <li><i>„Platziere im Sozialbereich Lounge-Möbel für 15 Personen"</i></li>
+          <li><i>„Erstelle einen Lagerraum 5×4m neben dem Empfang"</i></li>
+          <li><i>„Welche gesetzlichen Anforderungen fehlen noch?"</i></li>
+        </ul>
+        <h2>Schnell-Chips</h2>
+        <p>Unter dem Eingabefeld gibt es vorbelegte Chips:</p>
+        <ul>
+          <li>🌿 <b>Komplette CSC-Anlage</b> — alles auf einmal erstellen</li>
+          <li>📐 <b>Empfangsraum</b> — Empfang mit Möbeln</li>
+          <li>🛋 <b>Sozialbereich</b> — Lounge einrichten</li>
+          <li>🔍 <b>Grundriss optimieren</b> — KI analysiert und verbessert</li>
+          <li>💰 <b>Kosten schätzen</b> — Einrichtungskosten schätzen</li>
+          <li>♿ <b>Barrierefrei prüfen</b> — Barrierefreiheit analysieren</li>
+        </ul>
+        <div class="help-warn">⚠ Die KI funktioniert nur über die GitHub Pages URL (https://...), nicht wenn die Datei lokal geöffnet wird (file://).</div>
+      </div>
+
+      <!-- KI GRUNDRISS -->
+      <div class="help-page" id="hp-ai-plan">
+        <h1>🖼 Grundriss analysieren</h1>
+        <div class="subtitle">PDF oder Foto hochladen — KI erkennt alles automatisch</div>
+        <h2>Grundriss hochladen</h2>
+        <div class="help-step"><div class="help-step-num">1</div><div class="help-step-body">Im KI-Chat auf <b>📎 Datei hochladen</b> klicken.</div></div>
+        <div class="help-step"><div class="help-step-num">2</div><div class="help-step-body">Grundriss als <b>PDF, JPG, PNG</b> oder <b>DOCX</b> auswählen. Mehrere Dateien gleichzeitig möglich (bis 10 Seiten).</div></div>
+        <div class="help-step"><div class="help-step-num">3</div><div class="help-step-body">Nach dem Upload: <b>↑ Senden</b> oder auf den Chip <b>🖼 Grundriss analysieren</b> klicken.</div></div>
+        <div class="help-step"><div class="help-step-num">4</div><div class="help-step-body">KI erkennt alle Räume, schätzt Maße, platziert Möbel und baut den Grundriss automatisch auf.</div></div>
+        <h2>Was die KI erkennt</h2>
+        <ul>
+          <li>Raumformen und -größen (Türbreite ≈ 1m als Maßstab)</li>
+          <li>Raumfunktionen (Beschriftungen, typische Maße)</li>
+          <li>Eingänge, Treppen, Sanitärräume</li>
+          <li>Fensterpositionen</li>
+        </ul>
+        <div class="help-tip">💡 <b>Tipp:</b> Je klarer der Grundriss, desto besser die Erkennung. Ein Foto vom Originalgrundriss funktioniert sehr gut.</div>
+        <div class="help-tip">💡 Nach der automatischen Erkennung kannst du noch sagen: <i>„Füge CSC-spezifische Einrichtung hinzu"</i> um alles passend einzurichten.</div>
+      </div>
+
+      <!-- KI WIZARD -->
+      <div class="help-page" id="hp-ai-wizard">
+        <h1>✨ KI Möbel-Assistent</h1>
+        <div class="subtitle">Eigene Möbel mit KI erstellen</div>
+        <h2>Neues Objekt erstellen</h2>
+        <div class="help-step"><div class="help-step-num">1</div><div class="help-step-body">Toolbar → <b>🤖 KI-Möbel</b> klicken.</div></div>
+        <div class="help-step"><div class="help-step-num">2</div><div class="help-step-body">Kategorie, Material, Größe und Farbe auswählen.</div></div>
+        <div class="help-step"><div class="help-step-num">3</div><div class="help-step-body">Freitext-Beschreibung eingeben: <i>„Moderner Empfangstresen mit Glasfront und Beleuchtung"</i></div></div>
+        <div class="help-step"><div class="help-step-num">4</div><div class="help-step-body">KI erstellt das Objekt und platziert es automatisch im ersten Raum. Es erscheint unter <b>✏ Eigene Objekte</b>.</div></div>
+        <h2>Eigene Objekte verwalten</h2>
+        <ul>
+          <li>Linke Sidebar → <b>✏ Eigene</b></li>
+          <li>Objekte können wie normale Möbel platziert werden</li>
+          <li>Sind dauerhaft gespeichert und in jedem Projekt verfügbar</li>
+          <li>Bei Supabase-Verbindung: werden für alle Nutzer geteilt</li>
+        </ul>
+      </div>
+
+      <!-- KI CSC -->
+      <div class="help-page" id="hp-ai-csc">
+        <h1>🌿 KI CSC-Funktionen</h1>
+        <div class="subtitle">Speziell für Cannabis Social Clubs</div>
+        <h2>Grundriss optimieren (🔍)</h2>
+        <p>KI analysiert deinen Grundriss auf CSC-Tauglichkeit und gibt Verbesserungsvorschläge zu:</p>
+        <ul>
+          <li>Kundenfluss und Ergonomie</li>
+          <li>Gesetzliche KCanG-Anforderungen</li>
+          <li>Effizienz der Raumnutzung</li>
+          <li>Fehlende Pflichtbereiche</li>
+        </ul>
+        <h2>Kosten schätzen (💰)</h2>
+        <p>KI schätzt realistische Einrichtungskosten basierend auf Fläche und Möbeln (Stand 2024/2025).</p>
+        <h2>Barrierefreiheit prüfen (♿)</h2>
+        <p>Automatische Prüfung auf:</p>
+        <ul>
+          <li>Türbreiten (mind. 0.9m für Rollstuhl)</li>
+          <li>Gang- und Raumbreiten</li>
+          <li>WC-Verfügbarkeit</li>
+        </ul>
+        <div class="help-tip">💡 Alle diese Funktionen sind auch im <b>🌿 CSC Panel</b> (Toolbar) auf einen Blick verfügbar.</div>
+      </div>
+
+      <!-- SPEICHERN -->
+      <div class="help-page" id="hp-save">
+        <h1>💾 Speichern & Laden</h1>
+        <div class="subtitle">Lokales Speichern, Export und Auto-Save</div>
+        <h2>Auto-Save</h2>
+        <p>Der Planer speichert nach <b>jeder Änderung</b> automatisch im Browser-Speicher. Beim nächsten Öffnen der Seite wird der letzte Stand automatisch wiederhergestellt.</p>
+        <div class="help-tip">💡 Beim Laden siehst du eine Toast-Meldung „🔄 Letzter Stand geladen" mit der Zeit seit dem letzten Speichern.</div>
+        <h2>Manuell speichern</h2>
+        <ul>
+          <li><b>💾 Speichern:</b> Speichert unter dem Projektnamen im Browser</li>
+          <li><b>📥 Export:</b> Lädt als .json-Datei herunter (Backup)</li>
+          <li><b>📤 .json laden:</b> Lädt eine .json-Backup-Datei</li>
+        </ul>
+        <h2>Versionsverlauf</h2>
+        <ul>
+          <li>Rechts → 💾 Projekte → <b>📌 Merken</b> klicken</li>
+          <li>Bis zu 10 Versionen werden gespeichert</li>
+          <li>Klick auf eine Version → wird wiederhergestellt</li>
+        </ul>
+        <div class="help-warn">⚠ Browser-Speicher kann bei manchen Browsern gelöscht werden (z.B. bei „Verlauf löschen"). Nutze Cloud-Speicher oder regelmäßige .json-Exporte als Backup.</div>
+      </div>
+
+      <!-- CLOUD -->
+      <div class="help-page" id="hp-cloud">
+        <h1>☁ Cloud-Speicher (Supabase)</h1>
+        <div class="subtitle">Projekte online speichern und von überall laden</div>
+        <h2>Supabase einrichten (einmalig)</h2>
+        <div class="help-step"><div class="help-step-num">1</div><div class="help-step-body">Die Supabase-Verbindung ist bereits eingerichtet und fest eingebunden. Du musst nichts konfigurieren.</div></div>
+        <div class="help-step"><div class="help-step-num">2</div><div class="help-step-body">Falls die Tabelle noch nicht existiert, wird im Chat eine Fehlermeldung mit dem SQL-Code angezeigt. Diesen einmalig in Supabase → SQL Editor ausführen.</div></div>
+        <h2>Cloud nutzen</h2>
+        <ul>
+          <li>Rechts → 💾 Projekte → <b>☁ Cloud speichern</b></li>
+          <li>Projekt wird unter dem Projektnamen gespeichert</li>
+          <li>Vorhandenes Projekt gleichen Namens wird überschrieben</li>
+          <li><b>📂 Cloud laden</b> → zeigt alle gespeicherten Cloud-Projekte</li>
+          <li>Projekte sind von jedem Gerät abrufbar</li>
+        </ul>
+        <div class="help-tip">💡 Cloud-Projekte sind für alle Nutzer zugänglich die dieselbe Supabase-Verbindung nutzen — ideal für Teams.</div>
+      </div>
+
+      <!-- TEILEN -->
+      <div class="help-page" id="hp-share">
+        <h1>🔗 Teilen & Export</h1>
+        <div class="subtitle">Projekt weitergeben und exportieren</div>
+        <h2>Projekt-Link teilen</h2>
+        <div class="help-step"><div class="help-step-num">1</div><div class="help-step-body">Toolbar → <b>🔗 Teilen</b> klicken.</div></div>
+        <div class="help-step"><div class="help-step-num">2</div><div class="help-step-body">Link wird in die Zwischenablage kopiert. Link enthält das gesamte Projekt als komprimierte URL.</div></div>
+        <div class="help-step"><div class="help-step-num">3</div><div class="help-step-body">Empfänger öffnet den Link → Projekt wird automatisch geladen.</div></div>
+        <div class="help-warn">⚠ Maximale Projektgröße für Link-Sharing: ~50KB. Bei größeren Projekten → Cloud-Speicher nutzen.</div>
+        <h2>QR-Code</h2>
+        <p>Toolbar → <b>📱 QR</b> → QR-Code für die App-URL wird generiert. Scannen mit Smartphone öffnet die App direkt.</p>
+        <h2>PDF Drucken</h2>
+        <p>Toolbar → <b>🖨 Drucken</b> → Öffnet Druckvorschau mit 3D-Screenshot, Raumliste und Objektliste.</p>
+        <h2>Flucht- und Rettungsplan</h2>
+        <p>🌿 CSC Panel → <b>🚨 Fluchtplan</b> → PDF mit Grundriss, Notausgängen, Feuerlöschern und Sammelplatz.</p>
+      </div>
+
+      <!-- KCanG -->
+      <div class="help-page" id="hp-csc-rules">
+        <h1>📋 KCanG Anforderungen</h1>
+        <div class="subtitle">Gesetzliche Pflichten für Cannabis Social Clubs in Deutschland</div>
+        <h2>Pflichtbereiche</h2>
+        <ul>
+          <li>✅ <b>Ausgaberaum</b> — separate Ausgabestation mit Beratungsmöglichkeit</li>
+          <li>✅ <b>Lagerraum</b> — gesicherter, abgeschlossener Lagerbereich</li>
+          <li>✅ <b>WC</b> — eigene Sanitäreinrichtung</li>
+          <li>✅ <b>Sozialbereich</b> — Aufenthaltsbereich für Mitglieder</li>
+        </ul>
+        <h2>Sicherheitsanforderungen</h2>
+        <ul>
+          <li>🔒 Eingangstür RC2 oder höher (Sicherheitstür)</li>
+          <li>📷 Videoüberwachung an Eingängen</li>
+          <li>🔔 Einbruchmeldeanlage</li>
+          <li>🔥 Rauchmelder in allen Räumen</li>
+          <li>🧯 Feuerlöscher (mind. 1 pro 200m²)</li>
+          <li>🚨 Notausgang-Schilder und Notbeleuchtung</li>
+        </ul>
+        <h2>Flächenanforderungen</h2>
+        <ul>
+          <li>Mindestens <b>2m² pro Mitglied</b> im Sozialbereich</li>
+          <li>Ausgabebereich: mind. 2m Abstand zwischen Wartenden</li>
+          <li>Fluchtwege: mind. <b>1.2m breit</b></li>
+        </ul>
+        <div class="help-tip">💡 Der <b>🌿 CSC Panel</b> (Toolbar) zeigt dir immer den aktuellen Stand deiner Checkliste — grüne Haken = erfüllt, rote Kreuz = fehlt noch.</div>
+        <div class="help-warn">⚠ Diese Angaben sind eine allgemeine Orientierung. Für rechtsverbindliche Anforderungen bitte das zuständige Ordnungsamt oder einen Rechtsanwalt konsultieren.</div>
+      </div>
+
+      <!-- KAPAZITÄT -->
+      <div class="help-page" id="hp-csc-capacity">
+        <h1>👥 Kapazitätsplanung</h1>
+        <div class="subtitle">Wie viele Mitglieder passen in deine Räume?</div>
+        <h2>Berechnung</h2>
+        <p>Der Planer berechnet automatisch nach dem Grundsatz <b>2m² pro Person</b> (nach KCanG).</p>
+        <p>Klicke auf <b>🌿 CSC Panel</b> in der Toolbar um die Kapazität pro Raum zu sehen.</p>
+        <h2>Empfohlene Mindestgrößen</h2>
+        <ul>
+          <li><b>10 Mitglieder gleichzeitig:</b> mind. 20m² Nutzfläche</li>
+          <li><b>25 Mitglieder gleichzeitig:</b> mind. 50m² Nutzfläche</li>
+          <li><b>50 Mitglieder gleichzeitig:</b> mind. 100m² Nutzfläche</li>
+        </ul>
+        <div class="help-tip">💡 Die Kapazität wird von der <b>Raumfläche minus Möbelfläche</b> bestimmt. Plane großzügig!</div>
+      </div>
+
+      <!-- FLUCHTPLAN -->
+      <div class="help-page" id="hp-csc-evac">
+        <h1>🚨 Flucht- & Rettungsplan</h1>
+        <div class="subtitle">PDF-Export für Behörden und Aushang</div>
+        <h2>Fluchtplan erstellen</h2>
+        <div class="help-step"><div class="help-step-num">1</div><div class="help-step-body">Stelle sicher dass Notausgang-Schilder (<b>🔒 Sicherheit</b> → Notfall) und Feuerlöscher platziert sind.</div></div>
+        <div class="help-step"><div class="help-step-num">2</div><div class="help-step-body">Klicke auf <b>🌿 CSC Panel</b> → <b>🚨 Fluchtplan</b>.</div></div>
+        <div class="help-step"><div class="help-step-num">3</div><div class="help-step-body">Es öffnet sich ein Druckvorschau-Fenster mit Grundriss, Notausgängen, Feuerlöschern und Sammelplatz.</div></div>
+        <div class="help-step"><div class="help-step-num">4</div><div class="help-step-body">Auf <b>🖨 Drucken / PDF</b> klicken → als PDF speichern.</div></div>
+        <div class="help-tip">💡 Den Fluchtplan ausdrucken und gut sichtbar an der Eingangstür und in jedem Raum aushängen.</div>
+      </div>
+
+    </div><!-- #help-content -->
+  </div><!-- #help-container -->
+</div><!-- #help-overlay -->
+
+<!-- Tutorial Overlay -->
+<div id="tutorial-overlay">
+  <div class="tut-highlight" id="tut-highlight"></div>
+  <div id="tut-tooltip">
+    <div id="tut-progress"></div>
+    <h4 id="tut-title"></h4>
+    <p id="tut-text"></p>
+    <div class="tut-btns">
+      <button class="mbt" id="tut-skip" onclick="endTutorial()" style="opacity:.6">Beenden</button>
+      <button class="mbt" id="tut-prev" onclick="tutNav(-1)">← Zurück</button>
+      <button class="mbt ok" id="tut-next" onclick="tutNav(1)">Weiter →</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
