@@ -456,7 +456,7 @@ canvas{display:block}
 #help-close:hover{color:#e8e4d8;background:#1a1a1a}
 
 
-/* ══ NEW FEATURES v3.15 ═══════════════════════════════════════════ */
+/* ══ NEW FEATURES v3.16 ═══════════════════════════════════════════ */
 
 /* Heatmap canvas */
 #heatmap-canvas{position:absolute;inset:0;pointer-events:none;opacity:0.55;display:none;z-index:8}
@@ -493,6 +493,40 @@ canvas{display:block}
 /* Share Vision overlay */
 #vision-link-box{background:var(--bg3);border:1px solid var(--gr);border-radius:8px;padding:12px;margin-top:8px}
 .vlink-inp{width:100%;padding:7px;background:var(--bg);border:1px solid var(--bd2);border-radius:4px;color:var(--tx);font-family:monospace;font-size:10px;margin:5px 0}
+
+
+/* ══ v3.16 FEATURES ══════════════════════════════════════════════ */
+/* Budget Tracker */
+#budget-panel{position:fixed;top:50px;right:360px;width:300px;background:var(--bg2);border:1px solid var(--bd2);border-radius:10px;z-index:200;display:none;box-shadow:0 4px 20px rgba(0,0,0,.6)}
+#budget-panel.vis{display:block}
+.budget-row{display:flex;align-items:center;gap:6px;padding:4px 8px;border-bottom:1px solid var(--bd);font-size:11px}
+.budget-row:last-child{border:none}
+.budget-name{flex:1;color:var(--tx2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.budget-price{width:70px;text-align:right;color:var(--gr);font-weight:600;font-family:monospace}
+.budget-total{background:var(--bg3);border-top:2px solid var(--gr);padding:8px;display:flex;justify-content:space-between;font-size:13px;font-weight:700;border-radius:0 0 10px 10px}
+
+/* Notes */
+.floor-note{position:absolute;background:#ffd700;color:#111;font-size:10px;padding:4px 6px;border-radius:4px;cursor:move;max-width:120px;word-break:break-word;box-shadow:2px 2px 6px rgba(0,0,0,.4);z-index:15;user-select:none;line-height:1.4}
+.floor-note .del-note{position:absolute;top:-6px;right:-6px;background:#f87171;color:#fff;border:none;border-radius:50%;width:14px;height:14px;font-size:8px;cursor:pointer;display:none;align-items:center;justify-content:center}
+.floor-note:hover .del-note{display:flex}
+
+/* Changelog */
+.changelog-entry{padding:7px 10px;border-bottom:1px solid var(--bd);font-size:11px}
+.changelog-entry .cl-time{font-size:9px;color:var(--tx3);margin-bottom:2px}
+.changelog-entry .cl-msg{color:var(--tx2)}
+
+/* Live cursors */
+.live-cursor{position:absolute;pointer-events:none;z-index:50;transition:left .1s,top .1s}
+.live-cursor::before{content:'';width:10px;height:10px;border-radius:50%;display:block}
+.live-cursor-label{font-size:9px;background:rgba(0,0,0,.7);color:#fff;padding:1px 4px;border-radius:3px;white-space:nowrap;margin-top:2px}
+
+/* Pie chart */
+#area-chart{display:none}
+#area-chart.vis{display:block}
+
+/* Ruler */
+.ruler-line{stroke:#fbbf24;stroke-width:2;stroke-dasharray:5,3;fill:none}
+.ruler-text{fill:#fbbf24;font-size:11px;font-weight:700;font-family:monospace}
 
 /* TOAST */
 .toast{position:fixed;bottom:62px;left:50%;transform:translateX(-50%);padding:7px 16px;border-radius:var(--r6);font-size:12px;z-index:9999;transition:opacity .35s;white-space:nowrap;pointer-events:none}
@@ -583,7 +617,7 @@ canvas{display:block}
 
 <!-- TOPBAR -->
 <div id="topbar">
-  <span class="logo">🌿 CSC <em>Raumplaner</em></span><span class="vbadge">v3.15</span>
+  <span class="logo">🌿 CSC <em>Raumplaner</em></span><span class="vbadge">v3.16</span>
   <div class="tsep"></div>
   <button class="tbt" id="undo-btn" onclick="undo()" disabled title="Rückgängig (Ctrl+Z)" style="letter-spacing:.5px">↩ Undo</button>
   <button class="tbt" id="redo-btn" onclick="redo()" disabled title="Wiederholen (Ctrl+Y)" style="letter-spacing:.5px">↪ Redo</button>
@@ -594,6 +628,12 @@ canvas{display:block}
   <button class="tbt" onclick="dlJSON()">📥 Export</button>
   <button class="tbt" onclick="doPrint()">🖨 Drucken</button>
   <button class="tbt" onclick="showStats()" title="Raumstatistik">📊</button>
+  <button class="tbt" onclick="showAreaChart()" title="Flächendiagramm">🥧 Fläche</button>
+  <button class="tbt" onclick="toggleBudget()" title="Möbelbudget">💰 Budget</button>
+  <button class="tbt" id="btn-ruler" onclick="toggleRuler()" title="Lineal-Werkzeug">📐 Lineal</button>
+  <button class="tbt" id="btn-notes" onclick="toggleNoteMode()" title="Notizen pinnen">📌 Notiz</button>
+  <button class="tbt" id="btn-sound" onclick="toggleSoundHeatmap()" title="Schallschutz-Analyse">🔊 Schall</button>
+  <button class="tbt" id="btn-lightsim" onclick="toggleLightSim()" title="Lichteinfall">☀️ Licht</button>
   <button class="tbt" id="btn-all-floors" onclick="toggleAllFloors()" title="Alle Etagen anzeigen" style="display:none">🏢 Alle</button>
   <button class="tbt" id="btn-ceiling" onclick="toggleCeiling()" title="Decke ein/ausblenden">⬜ Offen</button>
   <button class="tbt" onclick="toggleSliceView()" title="Schnittansicht">✂️ Schnitt</button>
@@ -821,6 +861,11 @@ canvas{display:block}
       <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px">
         <button class="tbt g" style="padding:9px" onclick="saveProj()">💾 Projekt speichern</button>
         <button class="tbt" style="padding:9px" onclick="dlJSON()">📥 Als .json exportieren</button>
+        <button class="tbt" style="padding:9px" onclick="exportFurnitureCSV()">📊 Möbelliste (.csv)</button>
+        <button class="tbt" style="padding:9px" onclick="exportBudgetCSV()">💰 Budget (.csv)</button>
+        <button class="tbt" style="padding:9px" onclick="exportGLTF()">🏗 3D-Modell (.gltf)</button>
+        <button class="tbt" style="padding:9px" onclick="exportDXF()">📐 Grundriss (.dxf)</button>
+        <button class="tbt" style="padding:9px" onclick="showChangelog()">📋 Änderungsprotokoll</button>
         <button class="tbt" style="padding:9px" onclick="document.getElementById('json-up').click()">📤 .json laden</button>
         <input type="file" id="json-up" accept=".json" style="display:none" onchange="loadJSONFile(event)">
       </div>
@@ -926,6 +971,45 @@ canvas{display:block}
   <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Wähle eine Vorlage. Bestehende Räume werden ersetzt.</p>
   <div class="tpl-grid" id="tpl-grid"></div>
   <div class="mbtns"><button class="mbt" onclick="closeM('m-templates')">Abbrechen</button></div>
+</div>
+</div>
+
+
+<!-- BUDGET TRACKER -->
+<div id="budget-panel">
+  <div style="padding:10px 12px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
+    <div style="font-size:12px;font-weight:700;color:var(--gr)">💰 Möbelbudget</div>
+    <div style="display:flex;gap:6px">
+      <button class="tbt" onclick="exportBudgetCSV()" style="padding:3px 8px;font-size:10px">📥 CSV</button>
+      <button class="tbt" onclick="document.getElementById('budget-panel').classList.remove('vis')" style="padding:3px 6px">✕</button>
+    </div>
+  </div>
+  <div id="budget-list" style="max-height:300px;overflow-y:auto"></div>
+  <div class="budget-total">
+    <span>Gesamt</span>
+    <span id="budget-total-val" style="color:var(--gr)">0 €</span>
+  </div>
+</div>
+
+<!-- CHANGELOG MODAL -->
+<div class="mover" id="m-changelog">
+<div class="modal" style="max-width:480px">
+  <h2>📋 Änderungs-Protokoll</h2>
+  <div id="changelog-list" style="max-height:400px;overflow-y:auto;margin:8px 0"></div>
+  <div class="mbtns">
+    <button class="mbt" onclick="clearChangelog()">🗑 Löschen</button>
+    <button class="mbt ok" onclick="closeM('m-changelog')">Schließen</button>
+  </div>
+</div>
+</div>
+
+<!-- AREA ANALYSIS MODAL -->
+<div class="mover" id="m-area">
+<div class="modal" style="max-width:480px">
+  <h2>📊 Flächenaufteilung</h2>
+  <canvas id="area-chart-canvas" width="320" height="320" style="display:block;margin:0 auto"></canvas>
+  <div id="area-legend" style="margin-top:12px"></div>
+  <div class="mbtns"><button class="mbt ok" onclick="closeM('m-area')">Schließen</button></div>
 </div>
 </div>
 
@@ -1113,6 +1197,7 @@ canvas{display:block}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/GLTFExporter.js"></script>
 <script>
 'use strict';
 
@@ -1644,6 +1729,11 @@ fpCv.addEventListener('mousedown', e => {
   if(e.button===2){ isPanning=true; return; }
 
   if(tool2d==='pan'){ isPanning=true; return; }
+
+  // Ruler mode
+  if(_rulerMode && e.button===0){ handleRulerClick(wx,wy); return; }
+  // Note mode
+  if(_noteMode && e.button===0){ addNote(wx,wy); return; }
 
   if(tool2d==='wall' && e.button===0){
     wallClick2D(wx,wy,e); return;
@@ -2200,6 +2290,7 @@ tCv.addEventListener('mousemove',e=>{
   // Grab3d object movement (G key mode)
   if(grab3d) { _doGrab3dMove(e); return; }
   // Orbit / pan
+  _lastMouseWX=cx2wx(e.offsetX||0); _lastMouseWY=cy2wy(e.offsetY||0);
   if(oDrg){
     const dx=e.clientX-lmx, dy=e.clientY-lmy;
     lmx=e.clientX; lmy=e.clientY;
@@ -2577,7 +2668,7 @@ function doPrint(){
     +'td,th{border:1px solid #ddd;padding:4px 6px;text-align:left}th{background:#f5f5f5}'
     +'@media print{body{padding:8px}}</style></head><body>'
     +'<h1>🌿 '+d.name+'</h1>'
-    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.15 · '+new Date().toLocaleDateString('de-DE')+'</div>'
+    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.16 · '+new Date().toLocaleDateString('de-DE')+'</div>'
     +'<img src="'+img+'">'
     +'<div class=grid>'
     +'<div class=box><h3>Räume ('+d.rooms.length+')</h3>'
@@ -2640,6 +2731,20 @@ function snapshot(){
   _updUndoBtns();
   // Auto-save to localStorage on every change (skip during init)
   if(_autoSaveReady) {
+    // Log the change
+    const prev = undoIdx > 0 ? JSON.parse(undoStack[undoIdx-1]||'{}') : {};
+    if(prev.rooms !== undefined){
+      const roomDiff = rooms.length - (prev.rooms||[]).length;
+      const objDiff  = objects.length - (prev.objects||[]).length;
+      if(roomDiff!==0||objDiff!==0){
+        const msgs=[];
+        if(roomDiff>0) msgs.push('+'+roomDiff+' Raum(e)');
+        if(roomDiff<0) msgs.push(roomDiff+' Raum(e) gelöscht');
+        if(objDiff>0)  msgs.push('+'+objDiff+' Objekt(e)');
+        if(objDiff<0)  msgs.push(objDiff+' Objekt(e) gelöscht');
+        if(msgs.length) logChange(msgs.join(', '));
+      }
+    }
     try {
       localStorage.setItem('csc-autosave', state);
       localStorage.setItem('csc-autosave-ts', Date.now().toString());
@@ -4392,7 +4497,7 @@ function pickKallaxColor(id, part){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// KALLAX PRO EDITOR — Extended (v3.15)
+// KALLAX PRO EDITOR — Extended (v3.16)
 // ════════════════════════════════════════════════════════════════════════
 
 // Additional color palettes
@@ -5664,7 +5769,7 @@ function rebuild3DThrottled(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// NEW FEATURES v3.15
+// NEW FEATURES v3.16
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. RAUM-SNAP beim Platzieren ─────────────────────────────────────
@@ -6054,7 +6159,7 @@ function showCSCPanel(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// INTERAKTIVE ANLEITUNG v3.15
+// INTERAKTIVE ANLEITUNG v3.16
 // ════════════════════════════════════════════════════════════════════════
 function openHelp(page){
   document.getElementById('help-overlay').classList.add('open');
@@ -6195,7 +6300,7 @@ function renderTutStep(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.15 — ALLE NEUEN FEATURES
+// v3.16 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. KI MÖBELANORDNUNG ─────────────────────────────────────────────
@@ -6845,6 +6950,552 @@ function removeWallCtxMenu(){
   if(el) el.remove();
 }
 
+
+// ════════════════════════════════════════════════════════════════════════
+// v3.16 — ALLE NEUEN FEATURES
+// ════════════════════════════════════════════════════════════════════════
+
+// ── FURNITURE PRICES DATABASE ────────────────────────────────────────
+const FURNITURE_PRICES = {
+  // Empfang
+  'emp-theke':180,'emp-theke-l':320,'emp-theke-u':480,'rezeption':250,
+  'scanner':890,'w-sofa':420,'w-stuhl':85,'w-bank':280,'w-sessel':120,
+  // Ausgabe
+  'aus-theke':240,'aus-theke-l':380,'ber-tisch':140,'kasse':650,
+  'locker':95,'display-gr':180,'display-kl':90,
+  // Lager
+  'kuehlschr':480,'kuehl-gr':720,'regal':65,'regal-hoch':110,
+  'regal-breit':160,'tresor':390,'safe-boden':280,'rollwagen':120,
+  // Sozial
+  'l-sofa':680,'sofa-2':420,'sofa-eck':890,'ctisch':180,'etisch':320,
+  'stuhl':75,'ottomane':140,'stehlampe':95,'beistelltisch':85,
+  'tv-bank':220,'buecher':140,'spieltisch':280,'pflanze-gr':65,
+  'pflanze-xl':120,'blumentopf':25,
+  // Küche
+  'kueche-z':680,'kueche-insel':420,'spuele':180,'backofen':320,
+  'kaffeemsch':180,'barhocker':85,'bartresen':480,'kschr-kl':220,
+  // Büro
+  'schreibtisch':220,'buero-stuhl':180,'aktenschr':280,'drucker':320,
+  'monitor-gr':480,'whiteboard':140,'infowand':85,
+  // Sicherheit
+  'sec-cam-ceil':180,'sec-cam-wall':150,'sec-cam-360':280,
+  'sec-alarm':420,'sec-pir':45,'sec-smoke':25,'sec-co2':35,
+  'sec-ext':55,'sec-bar':120,'sec-access':380,'sec-safe':280,
+  'sec-sign-exit':18,'sec-emlight':45,
+  // Türen
+  'at-std':380,'at-dbl':680,'at-wc':280,'at-glass':520,'at-sec':1200,
+  // Fenster
+  'aw-sm':180,'aw-md':280,'aw-lg':380,'aw-sf-sm':480,'aw-sf-md':720,'aw-sf-lg':960,
+  // Technik
+  'server-schr':680,'klimaanlage':1200,'ups':380,
+};
+
+function getObjPrice(typeId){
+  return FURNITURE_PRICES[typeId] || 0;
+}
+
+// ── 1. BUDGET TRACKER ─────────────────────────────────────────────
+function toggleBudget(){
+  const el = document.getElementById('budget-panel');
+  el.classList.toggle('vis');
+  if(el.classList.contains('vis')) renderBudget();
+}
+
+function renderBudget(){
+  const list  = document.getElementById('budget-list'); if(!list) return;
+  const items = {};
+  let total   = 0;
+  objects.filter(o=>(o.floorId||'eg')===curFloor || true).forEach(o=>{
+    const it = findItem(o.typeId)||{};
+    const price = getObjPrice(o.typeId);
+    if(!items[o.typeId]) items[o.typeId]={name:it.name||o.typeId,count:0,price,sub:0};
+    items[o.typeId].count++;
+    items[o.typeId].sub += price;
+    total += price;
+  });
+  const sorted = Object.values(items).sort((a,b)=>b.sub-a.sub);
+  list.innerHTML = sorted.map(i=>
+    '<div class="budget-row">'
+    +'<span style="font-size:10px;color:var(--tx3);width:18px">'+i.count+'×</span>'
+    +'<span class="budget-name">'+i.name+'</span>'
+    +'<span class="budget-price">'+i.sub.toLocaleString('de-DE')+'€</span>'
+    +'</div>'
+  ).join('');
+  const tv = document.getElementById('budget-total-val');
+  if(tv) tv.textContent = total.toLocaleString('de-DE') + ' €';
+}
+
+function exportBudgetCSV(){
+  const rows = ['Anzahl,Objekt,Einzelpreis,Gesamt'];
+  const items = {};
+  objects.forEach(o=>{
+    const it=findItem(o.typeId)||{};
+    const price=getObjPrice(o.typeId);
+    if(!items[o.typeId]) items[o.typeId]={name:it.name||o.typeId,count:0,price};
+    items[o.typeId].count++;
+  });
+  let total=0;
+  Object.values(items).sort((a,b)=>b.count-a.count).forEach(i=>{
+    const sub=i.count*i.price; total+=sub;
+    rows.push([i.count,'"'+i.name+'"',i.price,sub].join(','));
+  });
+  rows.push(['','GESAMT','',total].join(','));
+  const blob=new Blob(['\uFEFF'+rows.join('\n')],{type:'text/csv;charset=utf-8'});
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:'csc_budget.csv'});
+  a.click();
+  toast('📥 Budget als CSV exportiert','g');
+}
+
+// ── 2. FLÄCHENDIAGRAMM ────────────────────────────────────────────
+function showAreaChart(){
+  openM('m-area');
+  const cv = document.getElementById('area-chart-canvas'); if(!cv) return;
+  const ctx = cv.getContext('2d');
+  ctx.clearRect(0,0,320,320);
+
+  // Group rooms by function
+  const groups = {};
+  const COLORS = ['#4ade80','#38bdf8','#fbbf24','#f87171','#c084fc','#fb923c','#34d399','#a78bfa'];
+  rooms.forEach(r=>{
+    const cat = getRoomCategory(r.name);
+    if(!groups[cat]) groups[cat]={area:0,color:null};
+    groups[cat].area += r.w*r.d;
+  });
+  const entries = Object.entries(groups).sort((a,b)=>b[1].area-a[1].area);
+  const total = entries.reduce((s,[,v])=>s+v.area,0);
+  entries.forEach(([,v],i)=>v.color=COLORS[i%COLORS.length]);
+
+  // Draw pie
+  const cx=160,cy=150,r=120;
+  let angle=-Math.PI/2;
+  entries.forEach(([name,v])=>{
+    const slice=(v.area/total)*Math.PI*2;
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,r,angle,angle+slice);
+    ctx.closePath(); ctx.fillStyle=v.color; ctx.fill();
+    ctx.strokeStyle='#0a0a0a'; ctx.lineWidth=2; ctx.stroke();
+    // Label
+    const mid=angle+slice/2;
+    if(slice>0.2){
+      const lx=cx+Math.cos(mid)*80, ly=cy+Math.sin(mid)*80;
+      ctx.fillStyle='#fff'; ctx.font='bold 11px sans-serif';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(Math.round(v.area/total*100)+'%',lx,ly);
+    }
+    angle+=slice;
+  });
+
+  // Legend
+  const leg=document.getElementById('area-legend'); if(!leg) return;
+  leg.innerHTML='<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">'
+    +entries.map(([name,v])=>
+      '<div style="display:flex;align-items:center;gap:4px;font-size:11px">'
+      +'<div style="width:12px;height:12px;border-radius:2px;background:'+v.color+'"></div>'
+      +'<span style="color:var(--tx2)">'+name+': '+v.area.toFixed(0)+'m²</span></div>'
+    ).join('')+'</div>';
+}
+
+function getRoomCategory(name){
+  const n=name.toLowerCase();
+  if(n.includes('empfang')||n.includes('eingang')||n.includes('warte')) return 'Empfang';
+  if(n.includes('ausgabe')||n.includes('verkauf')) return 'Ausgabe';
+  if(n.includes('lager')||n.includes('storage')) return 'Lager';
+  if(n.includes('sozial')||n.includes('lounge')||n.includes('aufenthalt')) return 'Sozial';
+  if(n.includes('büro')||n.includes('buro')||n.includes('office')) return 'Büro';
+  if(n.includes('wc')||n.includes('toilet')||n.includes('bad')) return 'WC';
+  if(n.includes('küche')||n.includes('kuche')||n.includes('bar')) return 'Küche';
+  return 'Sonstiges';
+}
+
+// ── 3. SCHALLSCHUTZ-HEATMAP ───────────────────────────────────────
+var _soundHeatActive=false;
+function toggleSoundHeatmap(){
+  _soundHeatActive=!_soundHeatActive;
+  const btn=document.getElementById('btn-sound');
+  if(btn){btn.style.color=_soundHeatActive?'#fbbf24':'';btn.style.borderColor=_soundHeatActive?'#fbbf24':'';}
+  draw2D();
+  toast(_soundHeatActive?'🔊 Schallschutz-Analyse aktiv':'🔊 Schallschutz aus','b');
+}
+
+// Noise levels by object type (dB estimation)
+const NOISE_LEVELS={'kaffeemsch':65,'bartresen':70,'monitor':55,'monitor-gr':55,
+  'l-sofa':35,'sofa-2':35,'etisch':50,'spieltisch':60,'kasse':45,
+  'klimaanlage':55,'server-schr':50,'ups':45};
+
+function drawSoundHeatmap(ctx){
+  if(!_soundHeatActive) return;
+  ctx.save();
+  // Find noise sources
+  objects.filter(o=>(o.floorId||'eg')===curFloor).forEach(o=>{
+    const level=NOISE_LEVELS[o.typeId]||0;
+    if(!level) return;
+    const it=findItem(o.typeId)||{};
+    const cx2=wx2cx(o.x+(o.w||it.w||1)/2);
+    const cy2=wy2cy(o.y+(o.d||it.d||1)/2);
+    const radius=Math.max(30,level)*vpZoom/8;
+    const grad=ctx.createRadialGradient(cx2,cy2,0,cx2,cy2,radius);
+    const alpha=Math.min(0.4,(level-40)/100);
+    grad.addColorStop(0,'rgba(255,100,0,'+alpha+')');
+    grad.addColorStop(1,'rgba(255,100,0,0)');
+    ctx.fillStyle=grad;
+    ctx.beginPath(); ctx.arc(cx2,cy2,radius,0,Math.PI*2); ctx.fill();
+  });
+  ctx.restore();
+}
+
+// ── 4. LICHTEINFALL-SIMULATION ────────────────────────────────────
+var _lightSimActive=false;
+function toggleLightSim(){
+  _lightSimActive=!_lightSimActive;
+  const btn=document.getElementById('btn-lightsim');
+  if(btn){btn.style.color=_lightSimActive?'#fbbf24':'';btn.style.borderColor=_lightSimActive?'#fbbf24':'';}
+  draw2D();
+  toast(_lightSimActive?'☀️ Lichteinfall-Simulation aktiv':'☀️ Lichteinfall aus','b');
+}
+
+function drawLightSim(ctx){
+  if(!_lightSimActive) return;
+  ctx.save();
+  // Find windows and project light rays
+  objects.filter(o=>{
+    const it=findItem(o.typeId);
+    return it&&it.arch==='window'&&(o.floorId||'eg')===curFloor;
+  }).forEach(o=>{
+    const it=findItem(o.typeId)||{};
+    const cx2=wx2cx(o.x+(o.w||it.w||1)/2);
+    const cy2=wy2cy(o.y+(o.d||it.d||0.15)/2);
+    const ow=wx2cx(o.x+(o.w||it.w||1))-wx2cx(o.x);
+    // Determine light direction based on window orientation
+    const rot=(o.rot||0)*Math.PI/180;
+    const dx=Math.sin(rot), dy=Math.cos(rot);
+    const depth=vpZoom*6; // 6m light depth
+    // Light cone
+    const grad=ctx.createLinearGradient(cx2,cy2,cx2+dy*depth,cy2-dx*depth);
+    grad.addColorStop(0,'rgba(255,240,150,0.35)');
+    grad.addColorStop(1,'rgba(255,240,150,0)');
+    ctx.beginPath();
+    ctx.moveTo(cx2-dx*ow/2, cy2+dy*ow/2);
+    ctx.lineTo(cx2+dy*depth-dx*ow, cy2-dx*depth+dy*ow);
+    ctx.lineTo(cx2+dy*depth+dx*ow, cy2-dx*depth-dy*ow);
+    ctx.lineTo(cx2+dx*ow/2, cy2-dy*ow/2);
+    ctx.closePath();
+    ctx.fillStyle=grad; ctx.fill();
+  });
+  ctx.restore();
+}
+
+// ── 5. NOTIZEN / KOMMENTARE ───────────────────────────────────────
+var _notes=[];
+var _noteMode=false;
+var _draggingNote=null;
+
+function toggleNoteMode(){
+  _noteMode=!_noteMode;
+  const btn=document.getElementById('btn-notes');
+  if(btn){btn.style.color=_noteMode?'#fbbf24':'';btn.style.borderColor=_noteMode?'#fbbf24':'';}
+  fpCv.style.cursor=_noteMode?'crosshair':'default';
+  toast(_noteMode?'📌 Klick auf Grundriss = Notiz setzen · Nochmals klicken = Aus':'📌 Notiz-Modus aus','b');
+}
+
+function addNote(wx,wy){
+  const text=prompt('Notiz:',''); if(!text) return;
+  _notes.push({id:'n'+Date.now(),wx,wy,text,color:'#ffd700',floorId:curFloor});
+  saveNotes(); renderNotes();
+}
+
+function saveNotes(){
+  try{localStorage.setItem('csc-notes',JSON.stringify(_notes));}catch(e){}
+}
+
+function loadNotes(){
+  try{const s=localStorage.getItem('csc-notes');if(s)_notes=JSON.parse(s);}catch(e){}
+}
+
+function renderNotes(){
+  // Remove existing note elements
+  document.querySelectorAll('.floor-note').forEach(e=>e.remove());
+  const wrap=document.getElementById('canvas-wrap'); if(!wrap) return;
+  _notes.filter(n=>n.floorId===curFloor).forEach(n=>{
+    const px=wx2cx(n.wx), py=wy2cy(n.wy);
+    const div=document.createElement('div');
+    div.className='floor-note';
+    div.style.left=px+'px'; div.style.top=py+'px';
+    div.innerHTML='<button class="del-note" onclick="deleteNote(\''+n.id+'\')">✕</button>'
+      +'<div contenteditable="true" onblur="updateNoteText(\''+n.id+'\',this.textContent)">'+n.text+'</div>';
+    div.addEventListener('mousedown',e=>startNoteAdrag(e,n,div));
+    wrap.appendChild(div);
+  });
+}
+
+function startNoteAdrag(e,n,div){
+  if(e.target.tagName==='BUTTON'||e.target.contentEditable==='true') return;
+  e.preventDefault();
+  const startX=e.clientX,startY=e.clientY;
+  const origX=n.wx,origY=n.wy;
+  function mm(me){
+    n.wx=origX+(me.clientX-startX)/vpZoom;
+    n.wy=origY+(me.clientY-startY)/vpZoom;
+    div.style.left=wx2cx(n.wx)+'px'; div.style.top=wy2cy(n.wy)+'px';
+  }
+  function mu(){ document.removeEventListener('mousemove',mm); document.removeEventListener('mouseup',mu); saveNotes(); }
+  document.addEventListener('mousemove',mm); document.addEventListener('mouseup',mu);
+}
+
+function updateNoteText(id,text){
+  const n=_notes.find(n=>n.id===id); if(n){n.text=text;saveNotes();}
+}
+
+function deleteNote(id){
+  _notes=_notes.filter(n=>n.id!==id); saveNotes(); renderNotes();
+}
+
+// Hook note placement into 2D click
+// (injected into mousedown handler)
+
+// ── 6. ÄNDERUNGS-PROTOKOLL ────────────────────────────────────────
+var _changelog=[];
+var MAX_CHANGELOG=50;
+
+function logChange(msg){
+  _changelog.unshift({
+    ts:Date.now(),
+    msg,
+    rooms:rooms.length,
+    objects:objects.length,
+    floor:curFloor
+  });
+  if(_changelog.length>MAX_CHANGELOG) _changelog.pop();
+  try{localStorage.setItem('csc-changelog',JSON.stringify(_changelog));}catch(e){}
+}
+
+function loadChangelog(){
+  try{const s=localStorage.getItem('csc-changelog');if(s)_changelog=JSON.parse(s);}catch(e){}
+}
+
+function showChangelog(){
+  const el=document.getElementById('changelog-list'); if(!el) return;
+  if(!_changelog.length){
+    el.innerHTML='<div style="padding:12px;font-size:11px;color:var(--tx3)">Noch keine Änderungen protokolliert.</div>';
+  } else {
+    el.innerHTML=_changelog.map(c=>{
+      const d=new Date(c.ts).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+      return '<div class="changelog-entry">'
+        +'<div class="cl-time">'+d+' · Etage: '+c.floor+' · '+c.rooms+' Räume · '+c.objects+' Objekte</div>'
+        +'<div class="cl-msg">'+c.msg+'</div></div>';
+    }).join('');
+  }
+  openM('m-changelog');
+}
+
+function clearChangelog(){
+  _changelog=[]; try{localStorage.removeItem('csc-changelog');}catch(e){}
+  showChangelog();
+}
+
+// ── 7. LIVE CURSORS (Supabase Realtime) ───────────────────────────
+var _myUserId = 'user_'+Math.random().toString(36).slice(2,8);
+var _myUserName = localStorage.getItem('csc-username') || 'Nutzer '+Math.random().toString(36).slice(2,5).toUpperCase();
+var _liveChannel = null;
+var _liveCursors = {};
+
+function initLiveCollaboration(){
+  if(!SB_URL||!SB_KEY) return;
+  // Ask for name if first time
+  if(!localStorage.getItem('csc-username')){
+    const name=prompt('Dein Name für die Live-Zusammenarbeit:','Planer '+Math.floor(Math.random()*100));
+    if(name){ _myUserName=name; localStorage.setItem('csc-username',name); }
+  }
+  try{
+    // Use Supabase REST for simple presence (no WebSocket needed)
+    // Broadcast cursor position via periodic POST to a presence table
+    toast('👥 Live-Modus: '+_myUserName,'b');
+    startCursorBroadcast();
+  }catch(e){ console.warn('Live collab error:',e); }
+}
+
+var _cursorBroadcastTimer=null;
+function startCursorBroadcast(){
+  if(_cursorBroadcastTimer) clearInterval(_cursorBroadcastTimer);
+  // Broadcast every 500ms
+  _cursorBroadcastTimer=setInterval(async()=>{
+    if(!SB_URL||!SB_KEY||!_lastMouseWX) return;
+    try{
+      await fetch(SB_URL+'/rest/v1/csc_cursors',{
+        method:'POST',
+        headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,
+          'Content-Type':'application/json','Prefer':'resolution=merge-duplicates'},
+        body:JSON.stringify({
+          user_id:_myUserId,name:_myUserName,
+          wx:Math.round(_lastMouseWX*100)/100,wy:Math.round(_lastMouseWY*100)/100,
+          floor:curFloor,updated_at:new Date().toISOString()
+        })
+      });
+      // Fetch other cursors
+      const r=await fetch(SB_URL+'/rest/v1/csc_cursors?user_id=neq.'+_myUserId+'&floor=eq.'+curFloor+'&select=user_id,name,wx,wy',
+        {headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
+      if(r.ok){const cursors=await r.json();renderLiveCursors(cursors);}
+    }catch(e){}
+  },500);
+}
+
+var _lastMouseWX=5,_lastMouseWY=5;
+
+function renderLiveCursors(cursors){
+  // Remove old
+  document.querySelectorAll('.live-cursor').forEach(e=>e.remove());
+  const wrap=document.getElementById('canvas-wrap'); if(!wrap||currentView!=='2d') return;
+  const colors=['#4ade80','#38bdf8','#f87171','#fbbf24','#c084fc'];
+  cursors.forEach((c,i)=>{
+    const px=wx2cx(c.wx),py=wy2cy(c.wy);
+    if(px<0||py<0||px>fpCv.width||py>fpCv.height) return;
+    const div=document.createElement('div');
+    div.className='live-cursor';
+    div.style.left=px+'px'; div.style.top=py+'px';
+    const col=colors[i%colors.length];
+    div.innerHTML='<div style="width:10px;height:10px;border-radius:50%;background:'+col+';border:2px solid #fff;box-shadow:0 0 4px rgba(0,0,0,.5)"></div>'
+      +'<div class="live-cursor-label" style="background:'+col+'">'+c.name+'</div>';
+    wrap.appendChild(div);
+  });
+}
+
+// ── 8. GLTF EXPORT ───────────────────────────────────────────────
+function exportGLTF(){
+  if(typeof THREE.GLTFExporter==='undefined'){
+    toast('GLTFExporter nicht geladen — bitte Seite neu laden','r'); return;
+  }
+  toast('⏳ GLTF wird erstellt…','b');
+  const exporter=new THREE.GLTFExporter();
+  exporter.parse(scene,(gltf)=>{
+    const str=JSON.stringify(gltf);
+    const blob=new Blob([str],{type:'application/json'});
+    const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:projName.replace(/[^a-z0-9]/gi,'_')+'.gltf'});
+    a.click();
+    toast('✅ GLTF exportiert!','g');
+  },{binary:false});
+}
+
+// ── 9. DXF EXPORT ────────────────────────────────────────────────
+function exportDXF(){
+  let dxf='0\nSECTION\n2\nHEADER\n9\n$ACADVER\n1\nAC1015\n0\nENDSEC\n';
+  dxf+='0\nSECTION\n2\nENTITIES\n';
+  // Rooms as rectangles
+  rooms.forEach(r=>{
+    dxf+=dxfRect(r.x,r.y,r.x+r.w,r.y+r.d,r.name);
+  });
+  // Free walls
+  walls.forEach(w=>{
+    dxf+='0\nLINE\n8\nWALLS\n';
+    dxf+='10\n'+w.x1+'\n20\n'+w.z1+'\n30\n0\n';
+    dxf+='11\n'+w.x2+'\n21\n'+w.z2+'\n31\n0\n';
+  });
+  // Objects as points with text
+  objects.forEach(o=>{
+    const it=findItem(o.typeId)||{};
+    const cx=(o.x+(o.w||it.w||1)/2).toFixed(3);
+    const cy=(o.y+(o.d||it.d||1)/2).toFixed(3);
+    dxf+='0\nPOINT\n8\nFURNITURE\n10\n'+cx+'\n20\n'+cy+'\n30\n0\n';
+    dxf+='0\nTEXT\n8\nFURNITURE\n10\n'+cx+'\n20\n'+cy+'\n30\n0\n40\n0.3\n1\n'+(it.name||o.typeId)+'\n';
+  });
+  dxf+='0\nENDSEC\n0\nEOF\n';
+  const blob=new Blob([dxf],{type:'application/dxf'});
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:projName.replace(/[^a-z0-9]/gi,'_')+'.dxf'});
+  a.click();
+  toast('📐 DXF exportiert!','g');
+}
+
+function dxfRect(x1,y1,x2,y2,layer){
+  let s='';
+  [[x1,y1,x2,y1],[x2,y1,x2,y2],[x2,y2,x1,y2],[x1,y2,x1,y1]].forEach(([ax,ay,bx,by])=>{
+    s+='0\nLINE\n8\n'+(layer||'ROOMS')+'\n10\n'+ax+'\n20\n'+ay+'\n30\n0\n11\n'+bx+'\n21\n'+by+'\n31\n0\n';
+  });
+  return s;
+}
+
+// ── 10. MÖBELLISTE CSV EXPORT ─────────────────────────────────────
+function exportFurnitureCSV(){
+  const rows=['\uFEFFObjekt,Kategorie,Breite(m),Tiefe(m),Höhe(m),X(m),Y(m),Etage,Preis(€)'];
+  objects.forEach(o=>{
+    const it=findItem(o.typeId)||{};
+    rows.push([
+      '"'+(it.name||o.typeId)+'"',
+      '"'+(it.cat||'')+'"',
+      (o.w||it.w||1).toFixed(2),
+      (o.d||it.d||1).toFixed(2),
+      (o.h||it.h||1).toFixed(2),
+      (o.x||0).toFixed(2),
+      (o.y||0).toFixed(2),
+      '"'+(o.floorId||'eg')+'"',
+      getObjPrice(o.typeId)
+    ].join(','));
+  });
+  rows.push(['','','','','','','','Gesamt:',objects.reduce((s,o)=>s+getObjPrice(o.typeId),0)].join(','));
+  const blob=new Blob([rows.join('\n')],{type:'text/csv;charset=utf-8'});
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:projName.replace(/[^a-z0-9]/gi,'_')+'_möbel.csv'});
+  a.click();
+  toast('📊 Möbelliste als CSV exportiert!','g');
+}
+
+// ── 11. LINEAL-WERKZEUG ───────────────────────────────────────────
+var _rulerMode=false;
+var _rulerStart=null;
+var _rulerEnd=null;
+
+function toggleRuler(){
+  _rulerMode=!_rulerMode;
+  _rulerStart=null; _rulerEnd=null;
+  const btn=document.getElementById('btn-ruler');
+  if(btn){btn.style.color=_rulerMode?'#fbbf24':'';btn.style.borderColor=_rulerMode?'#fbbf24':'';}
+  fpCv.style.cursor=_rulerMode?'crosshair':(_noteMode?'crosshair':'default');
+  draw2D();
+  toast(_rulerMode?'📏 Lineal: Klick Start → Klick Ende':'📏 Lineal aus','b');
+}
+
+function handleRulerClick(wx,wy){
+  if(!_rulerStart){
+    _rulerStart={wx,wy}; _rulerEnd=null;
+  } else {
+    _rulerEnd={wx,wy};
+    const dist=Math.hypot(wx-_rulerStart.wx, wy-_rulerStart.wy);
+    toast('📏 Abstand: '+dist.toFixed(2)+'m','g');
+    draw2D();
+    // Reset after 5s
+    setTimeout(()=>{_rulerStart=null;_rulerEnd=null;draw2D();},5000);
+  }
+}
+
+function drawRuler(ctx){
+  if(!_rulerMode||!_rulerStart) return;
+  ctx.save();
+  const x1=wx2cx(_rulerStart.wx), y1=wy2cy(_rulerStart.wy);
+  const end=_rulerEnd||{wx:cx2wx(lastX)||_rulerStart.wx,wy:cy2wy(lastY)||_rulerStart.wy};
+  const x2=wx2cx(end.wx), y2=wy2cy(end.wy);
+  const dist=Math.hypot(end.wx-_rulerStart.wx,end.wy-_rulerStart.wy);
+
+  ctx.strokeStyle='#fbbf24'; ctx.lineWidth=2;
+  ctx.setLineDash([5,3]);
+  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+  ctx.setLineDash([]);
+  // Endpoints
+  [[x1,y1],[x2,y2]].forEach(([px,py])=>{
+    ctx.beginPath(); ctx.arc(px,py,4,0,Math.PI*2);
+    ctx.fillStyle='#fbbf24'; ctx.fill();
+  });
+  // Distance label
+  const mx=(x1+x2)/2, my=(y1+y2)/2;
+  ctx.fillStyle='rgba(0,0,0,0.7)';
+  ctx.beginPath(); ctx.roundRect(mx-30,my-11,60,18,4); ctx.fill();
+  ctx.fillStyle='#fbbf24'; ctx.font='bold 11px monospace';
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(dist.toFixed(2)+'m',mx,my);
+  ctx.restore();
+}
+
+// ── LOG HOOKS ─────────────────────────────────────────────────────
+// Wrap addRoom/addObject to log changes
+const _origAddRoom = addRoom;
+// Note: can't re-declare, use monkey-patch approach via snapshot
+// Instead hook into snapshot
+
 // ════════════════════════════════════════════════════════════════════════
 // ANIMATION LOOP
 // ════════════════════════════════════════════════════════════════════════
@@ -6870,6 +7521,9 @@ loadCustomDesigns();
 loadVersionHistory();
 loadVisionBoards();
 loadWallExclusions();
+loadNotes();
+loadChangelog();
+setTimeout(initLiveCollaboration, 2000);
 loadSharedProject();
 loadVisionShare();
 // ── Auto-restore last session ──────────────────────────────────────
@@ -6915,7 +7569,7 @@ draw2D();
 
 renderFloorTabs();
 initUndoSystem();
-setTimeout(()=>toast('🌿 v3.15 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
+setTimeout(()=>toast('🌿 v3.16 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
 
 
 
@@ -6943,7 +7597,7 @@ function initAutoSave(){
   // Enable auto-saving from now on
   _autoSaveReady = true;
   renderVersionHistory();
-  toast('🌿 v3.15 | Auto-Save aktiv','g');
+  toast('🌿 v3.16 | Auto-Save aktiv','g');
 }
 
 
@@ -7264,7 +7918,7 @@ function build3DObj(o){
   const metal = o.metalness !== undefined ? o.metalness : (item.arch==='window'?0.0: item.arch==='door'?0.05:['Lager','Info'].includes(item.cat)?0.55:0.04);
 
   if(item.isKallax || (item.id&&item.id.startsWith('kallax'))){
-    buildKallax3DPro(g, item, o); // v3.15 Pro
+    buildKallax3DPro(g, item, o); // v3.16 Pro
   } else if(item.arch==='security'){
     buildSecurity3D(g, item, o);
   } else if(item.arch==='foil'){
@@ -7555,7 +8209,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
 
   <div style="padding:12px 20px;border-bottom:1px solid #1a2a1a;display:flex;align-items:center;gap:14px;flex-shrink:0">
     <div style="font-size:16px;font-weight:800;color:#4ade80">🌿 CSC Raumplaner — Vollständige Anleitung</div>
-    <div style="font-size:11px;color:#555">v3.15</div>
+    <div style="font-size:11px;color:#555">v3.16</div>
     <div style="flex:1"></div>
     <button class="tbt" onclick="startTutorial()" style="border-color:var(--gr);color:var(--gr);padding:6px 14px">▶ Tutorial starten</button>
     <button class="tbt" onclick="closeHelp()" style="padding:6px 14px">Schließen</button>
