@@ -1122,6 +1122,7 @@ var SB_URL       = '';     // Supabase URL
 var SB_KEY       = '';     // Supabase anon key
 var grab3d       = false;  // 3D grab mode active
 var grab3dLast   = null;   // last mouse pos during grab
+var _wallExclusions = [];    // room wall segments excluded from render
 var _sunAnimActive = false; // day/night animation running
 var _sunAnimTimer  = null;  // animation interval
 var _heatmapActive = false; // heatmap overlay active
@@ -1679,7 +1680,8 @@ fpCv.addEventListener('mousedown', e => {
     const hitW=hitFreeWall(wx,wy);
     if(hitW && !hitW.locked){
       selId=hitW.id; selIsRoom=false; selIsWall=true;
-      updateSelBotBar(); renderLeft(); draw2D(); return;
+      updateSelBotBar(); renderLeft(); draw2D();
+      openWallPropPanel(hitW.id); return;
     }
     // Hit room
     const hitR=hitRoom(wx,wy);
@@ -1767,6 +1769,16 @@ fpCv.addEventListener('wheel', e=>{
 
 fpCv.addEventListener('contextmenu',e=>{
   e.preventDefault();
+  const wx=cx2wx(e.offsetX), wy=cy2wy(e.offsetY);
+  // Try to hit a room wall segment for deletion
+  const hitSeg = hitRoomWallSeg(wx, wy);
+  if(hitSeg){
+    showWallCtxMenu(e.clientX, e.clientY, hitSeg);
+    return;
+  }
+  // Also handle free wall context menu
+  const hitW = hitFreeWall(wx,wy);
+  if(hitW){ selId=hitW.id; selIsWall=true; openWallPropPanel(hitW.id); return; }
   // Could show context menu
 });
 
@@ -1927,9 +1939,17 @@ function dupSel(){
 }
 
 function deleteSel(){
-  if(!selId)return;
-  if(selIsRoom) removeRoom(selId);
+  if(!selId) return;
+  if(selIsRoom)   removeRoom(selId);
+  else if(selIsWall) removeFreeWall(selId);
   else { objects=objects.filter(o=>o.id!==selId); setSelection(null,false); rebuild3D(); draw2D(); }
+}
+
+function removeFreeWall(id){
+  walls = walls.filter(w=>w.id!==id);
+  selId=null; selIsWall=false;
+  rebuild3D(); draw2D(); renderLeft(); snapshot();
+  toast('🗑 Wand gelöscht','b');
 }
 
 // ── TOOL + ROOM EDIT ─────────────────────────────────────────────────────
@@ -2610,6 +2630,7 @@ function snapshot(){
     measures: measures,
     floors:   floors,
     curFloor: curFloor,
+    wallExcl: _wallExclusions,
   });
   // Discard any redo-future when a new action is taken
   undoStack = undoStack.slice(0, undoIdx + 1);
@@ -2651,6 +2672,7 @@ function _restoreSnapshot(json){
   measures = s.measures || [];
   floors   = s.floors   || [{id:'eg',name:'EG',elev:0}];
   curFloor = s.curFloor || 'eg';
+  if(s.wallExcl) _wallExclusions = s.wallExcl;
   selId = null; selIsRoom = false; selIsWall = false;
   rebuild3D(); renderLeft(); draw2D(); renderFloorTabs();
   updateSelBotBar();
@@ -2969,6 +2991,9 @@ function buildWallSegMesh3D(seg){
   const group = new THREE.Group();
   group.position.set((seg.a.x+seg.b.x)/2, seg.elev||0, (seg.a.z+seg.b.z)/2);
   group.rotation.y = angle;
+
+  // Check if this wall segment is excluded (deleted by user)
+  if(isWallExcluded(seg)) return null;
 
   // Find doors/windows that sit on this wall segment
   const wallOpenings = getOpeningsOnWall(seg, len);
@@ -6662,6 +6687,164 @@ function printVisionBoard(){
   pw.document.close();
 }
 
+
+// ════════════════════════════════════════════════════════════════════════
+// WAND-EIGENSCHAFTEN PANEL
+// ════════════════════════════════════════════════════════════════════════
+function openWallPropPanel(wallId){
+  const w = walls.find(w=>w.id===wallId); if(!w) return;
+  const len = Math.hypot(w.x2-w.x1, w.z2-w.z1).toFixed(2);
+  const pp  = document.getElementById('prop-panel');
+  pp.classList.add('vis');
+
+  const colHex = w.col || '#d8d0c0';
+  pp.innerHTML = `
+    <div class="pp-head">
+      <div class="pp-title">🧱 Freie Wand</div>
+      <div class="pp-sub">${len}m lang</div>
+      <button class="pp-close" onclick="closePropPanel()">✕</button>
+    </div>
+    <div class="pp-body">
+      <div class="psec">
+        <div class="psh">Maße</div>
+        <div class="pprow"><label>Länge</label><span style="color:var(--gr)">${len}m</span></div>
+        <div class="pprow"><label>Höhe (m)</label>
+          <input type="number" value="${w.h||2.8}" step="0.1" min="0.5" max="6"
+            onchange="updateWallProp('${w.id}','h',+this.value)" style="width:70px;padding:4px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx)">
+        </div>
+        <div class="pprow"><label>Dicke (m)</label>
+          <input type="number" value="${w.thick||0.15}" step="0.05" min="0.05" max="0.6"
+            onchange="updateWallProp('${w.id}','thick',+this.value)" style="width:70px;padding:4px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx)">
+        </div>
+      </div>
+      <div class="psec">
+        <div class="psh">Aussehen</div>
+        <div class="pprow"><label>Wandfarbe</label>
+          <input type="color" value="${colHex}"
+            onchange="updateWallProp('${w.id}','col',parseInt(this.value.replace('#',''),16));this.closest('.pp-body').querySelector('.wall-col-prev').style.background=this.value">
+        </div>
+        <div class="wall-col-prev" style="height:20px;background:${colHex};border-radius:4px;margin-top:4px;border:1px solid var(--bd)"></div>
+        <div class="pprow" style="margin-top:8px"><label>Gesperrt</label>
+          <input type="checkbox" ${w.locked?'checked':''} 
+            onchange="updateWallProp('${w.id}','locked',this.checked)">
+        </div>
+      </div>
+      <div class="psec">
+        <div class="psh">Aktionen</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="pp-btn" onclick="splitWallAt('${w.id}')" style="border-color:var(--bl);color:var(--bl)">✂️ Teilen</button>
+          <button class="pp-btn" onclick="duplicateWall('${w.id}')" style="border-color:var(--yw);color:var(--yw)">📋 Kopieren</button>
+          <button class="pp-btn del" onclick="removeFreeWall('${w.id}');closePropPanel()">🗑 Löschen</button>
+        </div>
+        <div style="font-size:9px;color:var(--tx3);margin-top:8px">
+          💡 Tipp: <kbd>Del</kbd> löscht die ausgewählte Wand direkt
+        </div>
+      </div>
+    </div>`;
+}
+
+function updateWallProp(id, prop, val){
+  const w = walls.find(w=>w.id===id); if(!w) return;
+  w[prop] = val;
+  rebuild3D(); draw2D(); snapshot();
+}
+
+function duplicateWall(id){
+  const w = walls.find(w=>w.id===id); if(!w) return;
+  const offs = 0.3;
+  walls.push({...w, id:'w'+(wid++), x1:w.x1+offs, z1:w.z1+offs, x2:w.x2+offs, z2:w.z2+offs});
+  rebuild3D(); draw2D(); snapshot();
+  toast('📋 Wand kopiert','b');
+}
+
+// Split a free wall at its midpoint → creates 2 walls from 1
+function splitWallAt(id){
+  const w = walls.find(w=>w.id===id); if(!w) return;
+  const mx = (w.x1+w.x2)/2, mz = (w.z1+w.z2)/2;
+  walls = walls.filter(ww=>ww.id!==id);
+  walls.push({...w, id:'w'+(wid++), x2:mx, z2:mz});
+  walls.push({...w, id:'w'+(wid++), x1:mx, z1:mz});
+  selId=null; selIsWall=false;
+  rebuild3D(); draw2D(); snapshot();
+  closePropPanel();
+  toast('✂️ Wand geteilt — beide Hälften separat bearbeitbar','g');
+}
+
+// ── RAUMWAND-SEGMENT löschen (für generierte Wände) ──────────────────
+// Statt echtes Löschen: wir speichern "Ausnahmen" und überspringen sie beim Render
+
+function excludeRoomWallSegment(ax,az,bx,bz){
+  // Normalize: always store smaller point first
+  if(ax>bx||(ax===bx&&az>bz)){ [ax,bx]=[bx,ax]; [az,bz]=[bz,az]; }
+  _wallExclusions.push({ax,az,bx,bz});
+  try{ localStorage.setItem('csc-wall-excl',JSON.stringify(_wallExclusions)); }catch(e){}
+  rebuild3D(); draw2D();
+  toast('🧱 Wandabschnitt entfernt','b');
+}
+
+function loadWallExclusions(){
+  try{
+    const s=localStorage.getItem('csc-wall-excl');
+    if(s) _wallExclusions=JSON.parse(s);
+  }catch(e){}
+}
+
+function isWallExcluded(seg){
+  const TOL=0.1;
+  let ax=seg.a.x,az=seg.a.z,bx=seg.b.x,bz=seg.b.z;
+  if(ax>bx||(ax===bx&&az>bz)){ [ax,bx]=[bx,ax]; [az,bz]=[bz,az]; }
+  return _wallExclusions.some(e=>
+    Math.abs(e.ax-ax)<TOL && Math.abs(e.az-az)<TOL &&
+    Math.abs(e.bx-bx)<TOL && Math.abs(e.bz-bz)<TOL
+  );
+}
+
+function clearWallExclusions(){
+  _wallExclusions=[];
+  try{ localStorage.removeItem('csc-wall-excl'); }catch(e){}
+  rebuild3D(); draw2D();
+  toast('🧱 Alle entfernten Wände wiederhergestellt','g');
+}
+
+
+// ── Hit test for room wall segments in 2D ────────────────────────────
+function hitRoomWallSeg(wx, wy){
+  const TOL = Math.max(0.2, 0.15 + 4/vpZoom);
+  const segs = buildRoomWalls3D(rooms.filter(r=>(r.floorId||'eg')===curFloor));
+  for(const seg of segs){
+    if(isWallExcluded(seg)) continue;
+    const dx=seg.b.x-seg.a.x, dz=seg.b.z-seg.a.z;
+    const len2=dx*dx+dz*dz; if(len2<0.01) continue;
+    const t=((wx-seg.a.x)*dx+(wy-seg.a.z)*dz)/len2;
+    if(t<0||t>1) continue;
+    const projX=seg.a.x+t*dx, projZ=seg.a.z+t*dz;
+    if(Math.hypot(wx-projX,wy-projZ)<TOL) return seg;
+  }
+  return null;
+}
+
+// ── Context menu for room wall segment ───────────────────────────────
+var _wallCtxSeg = null;
+function showWallCtxMenu(cx, cy, seg){
+  _wallCtxSeg = seg;
+  removeWallCtxMenu();
+  const len = Math.hypot(seg.b.x-seg.a.x, seg.b.z-seg.a.z).toFixed(1);
+  const div = document.createElement('div');
+  div.id = 'wall-ctx-menu';
+  div.style.cssText = 'position:fixed;left:'+cx+'px;top:'+cy+'px;background:var(--bg2);border:1px solid var(--bd2);border-radius:6px;z-index:200;min-width:180px;box-shadow:0 4px 12px rgba(0,0,0,.5);overflow:hidden';
+  div.innerHTML = 
+    '<div style="padding:6px 12px;font-size:10px;color:var(--tx3);border-bottom:1px solid var(--bd);font-weight:600">🧱 Wandsegment '+len+'m</div>'
+    +'<div class="cmitem" onclick="excludeRoomWallSegment('+seg.a.x+','+seg.a.z+','+seg.b.x+','+seg.b.z+');removeWallCtxMenu()">🗑 Segment löschen</div>'
+    +'<div class="cmitem" onclick="clearWallExclusions();removeWallCtxMenu()">↺ Alle Wände wiederherstellen</div>'
+    +'<div class="cmitem" onclick="removeWallCtxMenu()">Abbrechen</div>';
+  document.body.appendChild(div);
+  setTimeout(()=>document.addEventListener('click',removeWallCtxMenu,{once:true}),50);
+}
+function removeWallCtxMenu(){
+  const el=document.getElementById('wall-ctx-menu');
+  if(el) el.remove();
+}
+
 // ════════════════════════════════════════════════════════════════════════
 // ANIMATION LOOP
 // ════════════════════════════════════════════════════════════════════════
@@ -6686,6 +6869,7 @@ initGuide();
 loadCustomDesigns();
 loadVersionHistory();
 loadVisionBoards();
+loadWallExclusions();
 loadSharedProject();
 loadVisionShare();
 // ── Auto-restore last session ──────────────────────────────────────
