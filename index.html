@@ -456,7 +456,7 @@ canvas{display:block}
 #help-close:hover{color:#e8e4d8;background:#1a1a1a}
 
 
-/* ══ NEW FEATURES v3.17 ═══════════════════════════════════════════ */
+/* ══ NEW FEATURES v3.18 ═══════════════════════════════════════════ */
 
 /* Heatmap canvas */
 #heatmap-canvas{position:absolute;inset:0;pointer-events:none;opacity:0.55;display:none;z-index:8}
@@ -495,7 +495,7 @@ canvas{display:block}
 .vlink-inp{width:100%;padding:7px;background:var(--bg);border:1px solid var(--bd2);border-radius:4px;color:var(--tx);font-family:monospace;font-size:10px;margin:5px 0}
 
 
-/* ══ v3.17 FEATURES ══════════════════════════════════════════════ */
+/* ══ v3.18 FEATURES ══════════════════════════════════════════════ */
 /* Budget Tracker */
 #budget-panel{position:fixed;top:50px;right:360px;width:300px;background:var(--bg2);border:1px solid var(--bd2);border-radius:10px;z-index:200;display:none;box-shadow:0 4px 20px rgba(0,0,0,.6)}
 #budget-panel.vis{display:block}
@@ -529,7 +529,7 @@ canvas{display:block}
 .ruler-text{fill:#fbbf24;font-size:11px;font-weight:700;font-family:monospace}
 
 
-/* ══ DROPDOWN MENU SYSTEM v3.17 ══════════════════════════════════ */
+/* ══ DROPDOWN MENU SYSTEM v3.18 ══════════════════════════════════ */
 .tb-menu-group{display:flex;align-items:center;gap:2px}
 .tbm{position:relative}
 .tbm-btn{padding:4px 9px;background:transparent;border:1px solid transparent;border-radius:var(--r4);font-size:11px;cursor:pointer;color:var(--tx2);transition:.12s;white-space:nowrap;display:flex;align-items:center;gap:3px}
@@ -578,6 +578,61 @@ canvas{display:block}
 .compare-pane{overflow:hidden;position:relative;border-right:2px solid var(--gr)}
 .compare-pane:last-child{border:none}
 .compare-label{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);color:var(--gr);font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;z-index:10}
+
+
+/* ══ v3.18 ════════════════════════════════════════════════════════ */
+/* Light mode */
+body.light-mode{--bg:#f5f5f0;--bg2:#ffffff;--bg3:#ebebeb;--bg4:#e0e0d8;
+  --tx:#111;--tx2:#333;--tx3:#777;--bd:#ccc;--bd2:#aaa;
+  --gr4:rgba(22,101,52,.1);--gr3:#16a34a;--yw2:rgba(180,140,0,.2)}
+body.light-mode #topbar{background:#fff;border-color:#ddd}
+body.light-mode #left-panel{background:#f0f0eb;border-color:#ddd}
+body.light-mode #right{background:#f0f0eb;border-color:#ddd}
+
+/* Layer panel */
+#layer-panel{position:fixed;bottom:48px;left:260px;background:var(--bg2);
+  border:1px solid var(--bd2);border-radius:8px;z-index:200;
+  display:none;min-width:200px;box-shadow:0 4px 16px rgba(0,0,0,.5);padding:6px 0}
+#layer-panel.vis{display:block}
+.layer-row{display:flex;align-items:center;gap:8px;padding:6px 12px;
+  font-size:12px;color:var(--tx2);cursor:pointer;transition:.12s}
+.layer-row:hover{background:var(--bg3)}
+.layer-check{width:16px;height:16px;accent-color:var(--gr);cursor:pointer}
+
+/* Collision warning */
+.obj-collision{outline:2px solid #f87171!important;outline-offset:1px}
+
+/* Undo preview tooltip */
+#undo-preview{position:fixed;background:var(--bg2);border:1px solid var(--bd2);
+  border-radius:6px;padding:8px 12px;font-size:10px;color:var(--tx3);
+  pointer-events:none;z-index:300;display:none;max-width:220px}
+
+/* Snap selector */
+.snap-btn{padding:3px 8px;background:var(--bg3);border:1px solid var(--bd);
+  border-radius:3px;font-size:10px;color:var(--tx3);cursor:pointer;transition:.12s}
+.snap-btn.active{background:var(--gr3);border-color:var(--gr);color:#fff}
+
+/* Waittime sim */
+.wt-result{background:var(--bg3);border-radius:6px;padding:10px;margin-top:8px;font-size:12px}
+.wt-bar{height:16px;border-radius:3px;margin:4px 0;display:flex;align-items:center;
+  padding:0 6px;font-size:10px;color:#fff;font-weight:600;transition:.4s}
+
+/* Room groups */
+.rgrp-badge{display:inline-block;padding:1px 6px;border-radius:10px;
+  font-size:9px;font-weight:700;margin-left:4px;vertical-align:middle}
+
+/* Person silhouette */
+.person3d{cursor:pointer}
+
+/* North arrow */
+#north-arrow{position:absolute;bottom:8px;right:8px;z-index:20;
+  pointer-events:none;display:none}
+#north-arrow.vis{display:block}
+
+/* Font picker */
+.font-sample{font-size:13px;padding:4px 8px;cursor:pointer;border-radius:3px;
+  border:1px solid var(--bd);margin:2px;background:var(--bg3)}
+.font-sample:hover,.font-sample.active{border-color:var(--gr);color:var(--gr)}
 
 /* TOAST */
 .toast{position:fixed;bottom:62px;left:50%;transform:translateX(-50%);padding:7px 16px;border-radius:var(--r6);font-size:12px;z-index:9999;transition:opacity .35s;white-space:nowrap;pointer-events:none}
@@ -670,11 +725,12 @@ canvas{display:block}
 <div id="topbar">
   <!-- LOGO -->
   <span class="logo">🌿 CSC <em>Raumplaner</em></span>
-  <span class="vbadge">v3.17</span>
+  <span class="vbadge">v3.18</span>
   <div class="tsep"></div>
 
   <!-- UNDO/REDO -->
-  <button class="tbt icon-btn" id="undo-btn" onclick="undo()" disabled title="Rückgängig (Ctrl+Z)">↩</button>
+  <button class="tbt icon-btn" id="undo-btn" onclick="undo()" disabled title="Rückgängig (Ctrl+Z)" onmouseenter="showUndoPreview()" onmouseleave="hideUndoPreview()">↩</button>
+  <div id="undo-preview"></div>
   <button class="tbt icon-btn" id="redo-btn" onclick="redo()" disabled title="Wiederholen (Ctrl+Y)">↪</button>
   <div class="tsep"></div>
 
@@ -719,6 +775,11 @@ canvas{display:block}
         <div class="tbm-item" onclick="toggleNoteMode();closeTBMenu()" id="mi-notes">📌 Notizen</div>
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="openLayoutComparison();closeTBMenu()">🔀 Lageplan vergleichen</div>
+        <div class="tbm-sep"></div>
+        <div class="tbm-label">Einstellungen</div>
+        <div class="tbm-item" onclick="toggleLayerPanel();closeTBMenu()">📚 Ebenen (Layer)</div>
+        <div class="tbm-item" onclick="openM('m-display');closeTBMenu()">🎨 Darstellung</div>
+        <div class="tbm-item" onclick="openM('m-groups');closeTBMenu()">📦 Räume gruppieren</div>
       </div>
     </div>
 
@@ -739,6 +800,11 @@ canvas{display:block}
         <div class="tbm-item" onclick="openSmartHome();closeTBMenu()">🏠 Smart Home Planung</div>
         <div class="tbm-item" onclick="openTimeline();closeTBMenu()">📅 Zeitplan</div>
         <div class="tbm-item" onclick="startAR();closeTBMenu()">🔮 Augmented Reality</div>
+        <div class="tbm-item" onclick="openM('m-waittime');closeTBMenu()">⏱ Wartezeit-Simulation</div>
+        <div class="tbm-sep"></div>
+        <div class="tbm-item" onclick="aiDescribeRoom();closeTBMenu()">🔮 KI: Raum beschreiben</div>
+        <div class="tbm-item" onclick="aiSecurityAudit();closeTBMenu()">🔐 KI: Sicherheits-Audit</div>
+        <div class="tbm-item" onclick="aiAccessibleRebuild();closeTBMenu()">♿ KI: Barrierefrei-Umbau</div>
       </div>
     </div>
 
@@ -752,6 +818,9 @@ canvas{display:block}
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="showChangelog();closeTBMenu()">📋 Änderungsprotokoll</div>
         <div class="tbm-item" onclick="saveVersion();closeTBMenu()">📌 Version merken</div>
+        <div class="tbm-sep"></div>
+        <div class="tbm-item" onclick="saveCurrentAIChat();closeTBMenu()">💬 KI-Chat speichern</div>
+        <div class="tbm-item" onclick="showAIChatHistory();closeTBMenu()">💬 KI-Gespräche laden</div>
       </div>
     </div>
 
@@ -1233,6 +1302,130 @@ canvas{display:block}
   </div>
 </div>
 
+
+<!-- WARTEZEIT SIMULATION -->
+<div class="mover" id="m-waittime">
+<div class="modal" style="max-width:460px">
+  <h2>⏱ Wartezeit-Simulation</h2>
+  <p style="font-size:11px;color:var(--tx3);margin-bottom:12px">Simuliert die durchschnittliche Wartezeit bei deiner Ausgabestation.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+    <div class="mf"><label>Mitglieder gesamt</label><input id="wt-members" type="number" value="50" min="1" max="500" style="width:100%"></div>
+    <div class="mf"><label>Ausgabeplätze</label><input id="wt-counters" type="number" value="2" min="1" max="20" style="width:100%"></div>
+    <div class="mf"><label>Ausgabedauer (Min.)</label><input id="wt-service" type="number" value="3" min="0.5" max="30" step="0.5" style="width:100%"></div>
+    <div class="mf"><label>Ankunftsrate (/Std.)</label><input id="wt-arrival" type="number" value="20" min="1" max="200" style="width:100%"></div>
+  </div>
+  <button class="mbt ok" onclick="runWaittimeSim()" style="width:100%">▶ Simulation starten</button>
+  <div id="wt-result"></div>
+  <div class="mbtns"><button class="mbt" onclick="closeM('m-waittime')">Schließen</button></div>
+</div>
+</div>
+
+<!-- LAYER SYSTEM (as popup, not modal) -->
+<div id="layer-panel">
+  <div style="padding:5px 12px 3px;font-size:9px;color:var(--tx3);font-weight:700;text-transform:uppercase;letter-spacing:.4px">Ebenen</div>
+  <div class="layer-row" onclick="toggleLayer('furniture')"><input class="layer-check" type="checkbox" checked id="lyr-furniture" onclick="event.stopPropagation()"> 🛋 Möbel</div>
+  <div class="layer-row" onclick="toggleLayer('walls')"><input class="layer-check" type="checkbox" checked id="lyr-walls" onclick="event.stopPropagation()"> 🧱 Wände</div>
+  <div class="layer-row" onclick="toggleLayer('security')"><input class="layer-check" type="checkbox" checked id="lyr-security" onclick="event.stopPropagation()"> 🔒 Sicherheit</div>
+  <div class="layer-row" onclick="toggleLayer('tech')"><input class="layer-check" type="checkbox" checked id="lyr-tech" onclick="event.stopPropagation()"> 💡 Beleuchtung/Technik</div>
+  <div class="layer-row" onclick="toggleLayer('smarthome')"><input class="layer-check" type="checkbox" checked id="lyr-smarthome" onclick="event.stopPropagation()"> 🏠 Smart Home</div>
+  <div class="layer-row" onclick="toggleLayer('measures')"><input class="layer-check" type="checkbox" checked id="lyr-measures" onclick="event.stopPropagation()"> 📏 Maßketten</div>
+  <div style="height:1px;background:var(--bd);margin:4px 0"></div>
+  <div class="layer-row" onclick="_collisionWarn=!_collisionWarn;this.querySelector('input').checked=_collisionWarn;draw2D()"><input class="layer-check" type="checkbox" checked onclick="event.stopPropagation()"> 🔴 Kollisionswarnung</div>
+  <div class="layer-row" onclick="_showShadows2D=!_showShadows2D;this.querySelector('input').checked=_showShadows2D;draw2D()"><input class="layer-check" type="checkbox" checked onclick="event.stopPropagation()"> 🌑 Schatten 2D</div>
+</div>
+
+<!-- DISPLAY SETTINGS -->
+<div class="mover" id="m-display">
+<div class="modal" style="max-width:440px">
+  <h2>🎨 Darstellungs-Einstellungen</h2>
+
+  <div class="psec">
+    <div class="psh">🌗 Dark/Light Mode</div>
+    <div style="display:flex;gap:8px;margin-top:6px">
+      <button class="mbt" onclick="setColorMode(true)" id="btn-dark" style="flex:1">🌙 Dark</button>
+      <button class="mbt ok" onclick="setColorMode(false)" id="btn-light" style="flex:1">☀️ Light</button>
+    </div>
+  </div>
+
+  <div class="psec" style="margin-top:12px">
+    <div class="psh">📝 Beschriftungs-Schriftart</div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px" id="font-picker">
+      <div class="font-sample active" style="font-family:system-ui" onclick="setLabelFont('system-ui',this)">System</div>
+      <div class="font-sample" style="font-family:Georgia" onclick="setLabelFont('Georgia',this)">Georgia</div>
+      <div class="font-sample" style="font-family:'Courier New'" onclick="setLabelFont('Courier New',this)">Mono</div>
+      <div class="font-sample" style="font-family:Arial" onclick="setLabelFont('Arial',this)">Arial</div>
+      <div class="font-sample" style="font-family:'Times New Roman'" onclick="setLabelFont('Times New Roman',this)">Times</div>
+      <div class="font-sample" style="font-family:Impact" onclick="setLabelFont('Impact',this)">Impact</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:8px;font-size:11px">
+      <label>Größe</label>
+      <input type="range" min="8" max="20" value="13" id="label-size-sl" oninput="_labelSize=+this.value;document.getElementById('label-size-val').textContent=this.value+'px';draw2D()" style="flex:1;accent-color:var(--gr)">
+      <span id="label-size-val" style="width:32px;text-align:right;color:var(--tx3)">13px</span>
+    </div>
+  </div>
+
+  <div class="psec" style="margin-top:12px">
+    <div class="psh">🧭 Nord-Pfeil</div>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:6px;font-size:11px">
+      <label><input type="checkbox" id="north-toggle" onchange="_showNorth=this.checked;renderNorthArrow();draw2D()" style="accent-color:var(--gr)"> Anzeigen</label>
+      <label>Winkel <input type="number" id="north-angle" value="0" min="0" max="360" style="width:55px;padding:3px;background:var(--bg3);border:1px solid var(--bd);border-radius:3px;color:var(--tx)" oninput="_northAngle=+this.value;renderNorthArrow()"> °</label>
+    </div>
+  </div>
+
+  <div class="psec" style="margin-top:12px">
+    <div class="psh">Grid Snap</div>
+    <div style="display:flex;gap:5px;margin-top:6px" id="snap-btns">
+      <button class="snap-btn" onclick="setSnapGrid(0.05,this)">5cm</button>
+      <button class="snap-btn active" onclick="setSnapGrid(0.1,this)">10cm</button>
+      <button class="snap-btn" onclick="setSnapGrid(0.25,this)">25cm</button>
+      <button class="snap-btn" onclick="setSnapGrid(0.5,this)">50cm</button>
+      <button class="snap-btn" onclick="setSnapGrid(1.0,this)">1m</button>
+    </div>
+  </div>
+
+  <div class="psec" style="margin-top:12px">
+    <div class="psh">💧 Wasserzeichen auf Exporten</div>
+    <input id="watermark-inp" placeholder="z.B. © CSC Marburg 2025" value="" style="width:100%;padding:6px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:12px;margin-top:5px" oninput="_watermarkText=this.value">
+  </div>
+
+  <div class="mbtns"><button class="mbt ok" onclick="closeM('m-display')">✓ Fertig</button></div>
+</div>
+</div>
+
+<!-- ROOM GROUPS -->
+<div class="mover" id="m-groups">
+<div class="modal" style="max-width:440px">
+  <h2>📦 Räume gruppieren</h2>
+  <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Fasse mehrere Räume zu einem Bereich zusammen (z.B. "Ausgabe-Zone", "Personal-Bereich").</p>
+  <div style="display:flex;gap:6px;margin-bottom:10px">
+    <input id="grp-name" placeholder="Bereichsname" style="flex:1;padding:6px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:12px">
+    <input type="color" id="grp-color" value="#4ade80" style="width:38px;height:34px;cursor:pointer;border:1px solid var(--bd);border-radius:4px">
+    <button class="mbt ok" onclick="createRoomGroup()">＋</button>
+  </div>
+  <div id="group-list" style="max-height:250px;overflow-y:auto"></div>
+  <div class="mbtns"><button class="mbt" onclick="closeM('m-groups')">Schließen</button></div>
+</div>
+</div>
+
+<!-- KI CHATVERLÄUFE -->
+<div class="mover" id="m-aichats">
+<div class="modal" style="max-width:500px">
+  <h2>💬 Gespeicherte KI-Gespräche</h2>
+  <div id="aichat-list" style="max-height:380px;overflow-y:auto"></div>
+  <div class="mbtns">
+    <button class="mbt" onclick="clearAIChats()">🗑 Alle löschen</button>
+    <button class="mbt ok" onclick="closeM('m-aichats')">Schließen</button>
+  </div>
+</div>
+</div>
+
+<!-- NORTH ARROW SVG (absolute in canvas-wrap) -->
+<svg id="north-arrow" width="44" height="44" viewBox="0 0 44 44">
+  <circle cx="22" cy="22" r="20" fill="rgba(0,0,0,0.6)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  <polygon id="north-arrow-poly" points="22,5 27,30 22,25 17,30" fill="white"/>
+  <text x="22" y="40" text-anchor="middle" font-size="10" fill="white" font-weight="bold" font-family="sans-serif">N</text>
+</svg>
+
 <!-- STEP-BY-STEP GUIDE -->
 <div id="guide-overlay">
 <div id="guide-box">
@@ -1428,6 +1621,19 @@ var SB_KEY       = '';     // Supabase anon key
 var grab3d       = false;  // 3D grab mode active
 var grab3dLast   = null;   // last mouse pos during grab
 var _wallExclusions = [];    // room wall segments excluded from render
+var _layers = {furniture:true, walls:true, tech:true, smarthome:true, security:true, measures:true};
+var _snapGrid = 0.1;           // grid snap in meters (0.05/0.1/0.25/0.5)
+var _collisionWarn = true;     // show red when objects overlap
+var _northAngle = 0;           // north arrow rotation
+var _showNorth = false;
+var _showShadows2D = true;
+var _darkMode = true;          // true=dark, false=light
+var _labelFont = 'system-ui';  // custom font for labels
+var _labelSize = 13;           // label font size
+var _watermarkText = '';       // watermark on exports
+var _roomGroups = [];          // [{id,name,color,roomIds:[]}]
+var _aiChatHistory = [];       // saved KI conversations
+var _swRegistered = false;
 var _sunAnimActive = false; // day/night animation running
 var _sunAnimTimer  = null;  // animation interval
 var _heatmapActive = false; // heatmap overlay active
@@ -1562,6 +1768,8 @@ const BUILTIN = [
   {id:'netzwerk-sw', cat:'Technik', icon:'📡',name:'Netzwerkswitch',        w:0.44,d:0.25,h:0.06,col:0x1a1a1a},
   {id:'ups',         cat:'Technik', icon:'🔋',name:'USV (Notstrom)',        w:0.6,d:0.3,h:0.5,  col:0x2a2a2a},
   {id:'klimaanlage', cat:'Technik', icon:'❄️',name:'Klimagerät Wand',       w:0.9,d:0.22,h:0.3, col:0xeeeeee},
+  // Personen (Maßstab)
+  {id:'person',cat:'Sonstiges',icon:'🧍',name:'Person (Maßstab)',w:0.5,d:0.3,h:1.75,col:0x4a4a6a},
   // WC
   {id:'wc-klo',     cat:'WC',       icon:'🚽',name:'WC',             w:0.4,d:0.7, h:0.8,  col:0xeeeeee},
   {id:'wc-beck',    cat:'WC',       icon:'🚿',name:'Waschbecken',    w:0.6,d:0.5, h:0.85, col:0xeeeeee},
@@ -2890,7 +3098,7 @@ function doPrint(){
     +'td,th{border:1px solid #ddd;padding:4px 6px;text-align:left}th{background:#f5f5f5}'
     +'@media print{body{padding:8px}}</style></head><body>'
     +'<h1>🌿 '+d.name+'</h1>'
-    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.17 · '+new Date().toLocaleDateString('de-DE')+'</div>'
+    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.18 · '+new Date().toLocaleDateString('de-DE')+'</div>'
     +'<img src="'+img+'">'
     +'<div class=grid>'
     +'<div class=box><h3>Räume ('+d.rooms.length+')</h3>'
@@ -4719,7 +4927,7 @@ function pickKallaxColor(id, part){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// KALLAX PRO EDITOR — Extended (v3.17)
+// KALLAX PRO EDITOR — Extended (v3.18)
 // ════════════════════════════════════════════════════════════════════════
 
 // Additional color palettes
@@ -5991,7 +6199,7 @@ function rebuild3DThrottled(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// NEW FEATURES v3.17
+// NEW FEATURES v3.18
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. RAUM-SNAP beim Platzieren ─────────────────────────────────────
@@ -6381,7 +6589,7 @@ function showCSCPanel(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// INTERAKTIVE ANLEITUNG v3.17
+// INTERAKTIVE ANLEITUNG v3.18
 // ════════════════════════════════════════════════════════════════════════
 function openHelp(page){
   document.getElementById('help-overlay').classList.add('open');
@@ -6522,7 +6730,7 @@ function renderTutStep(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.17 — ALLE NEUEN FEATURES
+// v3.18 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. KI MÖBELANORDNUNG ─────────────────────────────────────────────
@@ -7174,7 +7382,7 @@ function removeWallCtxMenu(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.17 — ALLE NEUEN FEATURES
+// v3.18 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── FURNITURE PRICES DATABASE ────────────────────────────────────────
@@ -7720,7 +7928,7 @@ const _origAddRoom = addRoom;
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.17 — DROPDOWN MENU SYSTEM + NEW FEATURES
+// v3.18 — DROPDOWN MENU SYSTEM + NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── DROPDOWN MENU SYSTEM ─────────────────────────────────────────────
@@ -8068,6 +8276,454 @@ function renderComparePane(side, data){
   });
 }
 
+
+// ════════════════════════════════════════════════════════════════════════
+// v3.18 — ALL NEW FEATURES
+// ════════════════════════════════════════════════════════════════════════
+
+// ── 1. DARK/LIGHT MODE ───────────────────────────────────────────────
+function setColorMode(dark){
+  _darkMode = dark;
+  document.body.classList.toggle('light-mode', !dark);
+  localStorage.setItem('csc-darkmode', dark?'1':'0');
+  const btnD=document.getElementById('btn-dark');
+  const btnL=document.getElementById('btn-light');
+  if(btnD) btnD.className='mbt'+(dark?' ok':'');
+  if(btnL) btnL.className='mbt'+(!dark?' ok':'');
+}
+function loadColorMode(){
+  const saved=localStorage.getItem('csc-darkmode');
+  if(saved==='0') setColorMode(false);
+}
+
+// ── 2. LAYER SYSTEM ──────────────────────────────────────────────────
+function toggleLayerPanel(){
+  document.getElementById('layer-panel')?.classList.toggle('vis');
+}
+function toggleLayer(name){
+  _layers[name] = !_layers[name];
+  const cb=document.getElementById('lyr-'+name);
+  if(cb) cb.checked=_layers[name];
+  draw2D(); rebuild3D();
+}
+function isLayerVisible(obj){
+  const it=findItem(obj?.typeId)||{};
+  if(it.arch==='security') return _layers.security;
+  if(it.arch==='light') return _layers.tech;
+  if(it.arch==='door'||it.arch==='window') return _layers.walls;
+  if(it.cat==='Technik') return _layers.tech;
+  return _layers.furniture;
+}
+
+// ── 3. KOLLISIONS-WARNUNG ─────────────────────────────────────────────
+function checkCollisions(){
+  if(!_collisionWarn) return new Set();
+  const colliding=new Set();
+  for(let i=0;i<objects.length;i++){
+    const a=objects[i]; const ia=findItem(a.typeId)||{};
+    const ax1=a.x, ax2=a.x+(a.w||ia.w||1);
+    const ay1=a.y, ay2=a.y+(a.d||ia.d||1);
+    for(let j=i+1;j<objects.length;j++){
+      const b=objects[j]; const ib=findItem(b.typeId)||{};
+      const bx1=b.x, bx2=b.x+(b.w||ib.w||1);
+      const by1=b.y, by2=b.y+(b.d||ib.d||1);
+      if(ax1<bx2-0.05&&ax2>bx1+0.05&&ay1<by2-0.05&&ay2>by1+0.05){
+        colliding.add(a.id); colliding.add(b.id);
+      }
+    }
+  }
+  return colliding;
+}
+
+// ── 4. SNAP GRID ─────────────────────────────────────────────────────
+// Override existing snapM to use _snapGrid
+function snapM(v){ return Math.round(v/_snapGrid)*_snapGrid; }
+
+function setSnapGrid(v, btn){
+  _snapGrid=v;
+  document.querySelectorAll('.snap-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  toast('Grid-Snap: '+(v*100)+'cm','b');
+}
+
+// ── 5. UNDO VORSCHAU ─────────────────────────────────────────────────
+function showUndoPreview(){
+  if(undoIdx<=0) return;
+  const prev=JSON.parse(undoStack[undoIdx-1]||'{}');
+  const curr=JSON.parse(undoStack[undoIdx]||'{}');
+  const rDiff=(curr.rooms||[]).length-(prev.rooms||[]).length;
+  const oDiff=(curr.objects||[]).length-(prev.objects||[]).length;
+  const msgs=[];
+  if(rDiff>0) msgs.push('+'+rDiff+' Raum');
+  if(rDiff<0) msgs.push(Math.abs(rDiff)+' Raum gelöscht');
+  if(oDiff>0) msgs.push('+'+oDiff+' Objekt');
+  if(oDiff<0) msgs.push(Math.abs(oDiff)+' Objekt gelöscht');
+  const tip=document.getElementById('undo-preview');
+  if(tip){
+    tip.textContent='Rückgängig: '+(msgs.join(', ')||'letzte Änderung');
+    tip.style.display='block';
+    const btn=document.getElementById('undo-btn');
+    if(btn){const r=btn.getBoundingClientRect();tip.style.left=r.left+'px';tip.style.top=(r.bottom+4)+'px';}
+  }
+}
+function hideUndoPreview(){
+  const tip=document.getElementById('undo-preview');
+  if(tip) tip.style.display='none';
+}
+
+// ── 6. RÄUME GRUPPIEREN ──────────────────────────────────────────────
+function createRoomGroup(){
+  const name=document.getElementById('grp-name')?.value.trim();
+  const color=document.getElementById('grp-color')?.value||'#4ade80';
+  if(!name){ toast('Bitte Namen eingeben','r'); return; }
+  const selected=rooms.filter(r=>(r.floorId||'eg')===curFloor).map(r=>r.id);
+  _roomGroups.push({id:'grp'+Date.now(),name,color,roomIds:selected.slice(0,4)});
+  saveRoomGroups(); renderGroupList();
+  toast('📦 Gruppe "'+name+'" erstellt','g');
+}
+function renderGroupList(){
+  const el=document.getElementById('group-list'); if(!el) return;
+  el.innerHTML=_roomGroups.map(g=>'<div style="display:flex;align-items:center;gap:8px;padding:6px;background:var(--bg3);border-radius:5px;margin-bottom:5px">'
+    +'<div style="width:16px;height:16px;border-radius:3px;background:'+g.color+';flex-shrink:0"></div>'
+    +'<div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--tx)">'+g.name+'</div>'
+    +'<div style="font-size:10px;color:var(--tx3)">'+g.roomIds.length+' Räume</div></div>'
+    +'<button onclick="deleteRoomGroup(\''+g.id+'\')" style="background:none;border:none;color:var(--rd);cursor:pointer">🗑</button></div>'
+  ).join('') || '<div style="font-size:11px;color:var(--tx3);padding:8px">Noch keine Gruppen.</div>';
+}
+function deleteRoomGroup(id){ _roomGroups=_roomGroups.filter(g=>g.id!==id); saveRoomGroups(); renderGroupList(); }
+function saveRoomGroups(){ try{localStorage.setItem('csc-groups',JSON.stringify(_roomGroups));}catch(e){} }
+function loadRoomGroups(){ try{const s=localStorage.getItem('csc-groups');if(s)_roomGroups=JSON.parse(s);}catch(e){} }
+
+// ── 7. LABEL FONT ────────────────────────────────────────────────────
+function setLabelFont(font, el){
+  _labelFont=font;
+  document.querySelectorAll('.font-sample').forEach(e=>e.classList.remove('active'));
+  if(el) el.classList.add('active');
+  draw2D();
+}
+
+// ── 8. NORTH ARROW ──────────────────────────────────────────────────
+function renderNorthArrow(){
+  const el=document.getElementById('north-arrow');
+  const poly=document.getElementById('north-arrow-poly');
+  if(!el) return;
+  el.classList.toggle('vis',_showNorth);
+  if(poly) poly.style.transform='rotate('+_northAngle+'deg)';
+  if(poly) poly.style.transformOrigin='22px 22px';
+}
+
+// ── 9. MÖBEL-SCHATTEN 2D ─────────────────────────────────────────────
+function drawObjShadow2D(ctx, o){
+  if(!_showShadows2D) return;
+  const it=findItem(o.typeId)||{};
+  const x=wx2cx(o.x), y=wy2cy(o.y);
+  const w=(o.w||it.w||1)*vpZoom, d=(o.d||it.d||1)*vpZoom;
+  ctx.save();
+  ctx.translate(x+w/2, y+d/2);
+  ctx.rotate(((o.rot||0))*Math.PI/180);
+  ctx.shadowColor='rgba(0,0,0,0.3)';
+  ctx.shadowBlur=6; ctx.shadowOffsetX=3; ctx.shadowOffsetY=4;
+  ctx.fillStyle='transparent';
+  ctx.fillRect(-w/2,-d/2,w,d);
+  ctx.restore();
+}
+
+// ── 10. PERSONENSILHOUETTEN 3D ───────────────────────────────────────
+function addPersonSilhouette(x,y,roomId){
+  const r=rooms.find(r=>r.id===roomId)||rooms[0]; if(!r) return;
+  addObject({typeId:'person',x:x||r.x+r.w/2-0.2,y:y||r.y+r.d/2,
+    w:0.5,d:0.3,h:1.75,rot:0,py:0,floorId:curFloor});
+  rebuild3D();
+}
+
+// Build person 3D geometry
+function buildPerson3D(g, item, o){
+  const mat=new THREE.MeshStandardMaterial({color:0x4a4a6a,roughness:0.8});
+  // Body
+  const body=new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.12,0.7,8),mat);
+  body.position.y=0.9; g.add(body);
+  // Head
+  const head=new THREE.Mesh(new THREE.SphereGeometry(0.13,8,6),mat);
+  head.position.y=1.55; g.add(head);
+  // Legs
+  const legMat=new THREE.MeshStandardMaterial({color:0x2a2a4a,roughness:0.8});
+  [[-0.09,0],[0.09,0]].forEach(([lx])=>{
+    const leg=new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.05,0.55,6),legMat);
+    leg.position.set(lx,0.275,0); g.add(leg);
+  });
+  // Arms
+  [[-0.2,1.1],[0.2,1.1]].forEach(([ax,ay])=>{
+    const arm=new THREE.Mesh(new THREE.CylinderGeometry(0.04,0.035,0.45,6),mat);
+    arm.position.set(ax,ay,0); arm.rotation.z=ax<0?0.4:-0.4; g.add(arm);
+  });
+}
+
+// ── 11. WARTEZEIT-SIMULATION ─────────────────────────────────────────
+function runWaittimeSim(){
+  const members  = +(document.getElementById('wt-members')?.value||50);
+  const counters = +(document.getElementById('wt-counters')?.value||2);
+  const service  = +(document.getElementById('wt-service')?.value||3); // minutes
+  const arrival  = +(document.getElementById('wt-arrival')?.value||20); // per hour
+
+  // Erlang C formula
+  const lambda = arrival / 60; // per minute
+  const mu     = 1 / service;  // per minute
+  const rho    = lambda / (counters * mu); // utilization
+
+  let result='';
+  if(rho>=1){
+    result='<div class="wt-result" style="border-left:3px solid #f87171">'
+      +'<div style="color:#f87171;font-weight:700">⚠️ System überlastet!</div>'
+      +'<div style="color:var(--tx2);margin-top:4px">Die Auslastung beträgt '+Math.round(rho*100)+'% — Warteschlange wächst unbegrenzt.</div>'
+      +'<div style="color:var(--tx3);margin-top:4px">→ Mehr Ausgabeplätze oder kürzere Ausgabedauer erforderlich.</div></div>';
+  } else {
+    // Erlang C probability
+    let erlangC=0;
+    let sum=0;
+    for(let k=0;k<counters;k++) sum+=(Math.pow(counters*rho,k)/factorial(k));
+    const erlangNum=Math.pow(counters*rho,counters)/factorial(counters)*(1/(1-rho));
+    erlangC=erlangNum/(sum+erlangNum);
+
+    const avgWait  = (erlangC/(counters*mu*(1-rho))).toFixed(1); // minutes
+    const avgQueue = (+avgWait*lambda).toFixed(1);
+    const util     = Math.round(rho*100);
+    const color    = util<70?'#4ade80':util<85?'#fbbf24':'#f87171';
+
+    result='<div class="wt-result">'
+      +'<div style="font-size:11px;font-weight:700;color:var(--tx);margin-bottom:8px">Simulationsergebnis</div>'
+      +wtBar('⏱ Ø Wartezeit','#38bdf8',Math.min(100,+avgWait/10*100),avgWait+' Min.')
+      +wtBar('📊 Auslastung',color,util,util+'%')
+      +wtBar('👥 Ø Wartende','#fbbf24',Math.min(100,+avgQueue/10*100),avgQueue+' Personen')
+      +'<div style="margin-top:8px;font-size:10px;color:var(--tx3)">'
+      +counters+' Platz/Plätze · '+service+' Min./Ausgabe · '+arrival+'/Std. Ankunft</div>'
+      +(util>80?'<div style="margin-top:6px;font-size:10px;color:#fbbf24">💡 Empfehlung: '+(util>90?'Dringend einen weiteren Ausgabeplatz einrichten!':'Einen weiteren Ausgabeplatz in Stoßzeiten öffnen.')+'</div>':'')
+      +'</div>';
+  }
+  const el=document.getElementById('wt-result');
+  if(el) el.innerHTML=result;
+}
+
+function wtBar(label,color,pct,val){
+  return '<div style="margin:5px 0">'
+    +'<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--tx3);margin-bottom:2px"><span>'+label+'</span><span style="color:'+color+';font-weight:700">'+val+'</span></div>'
+    +'<div style="background:var(--bg4);border-radius:3px;height:12px;overflow:hidden">'
+    +'<div class="wt-bar" style="width:'+Math.max(2,pct)+'%;background:'+color+'"></div></div></div>';
+}
+
+function factorial(n){ return n<=1?1:n*factorial(n-1); }
+
+// ── 12. KI ERWEITERUNGEN ────────────────────────────────────────────
+async function aiDescribeRoom(){
+  const r=rooms.find(r=>r.id===selId);
+  if(!r){ toast('Bitte einen Raum auswählen','b'); return; }
+  const k=getKey(); if(!k) return;
+  const objs=objects.filter(o=>o.x>=r.x&&o.x<=r.x+r.w&&o.y>=r.y&&o.y<=r.y+r.d)
+    .map(o=>(findItem(o.typeId)||{}).name||o.typeId).join(', ');
+  showRight('ai');
+  addMsg('🔮 KI beschreibt Raum "'+r.name+'"…','sys');
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,messages:[{role:'user',content:
+        'Beschreibe wie dieser Raum wirkt und was die Atmosphäre ausmacht:\n'
+        +'Raum: '+r.name+' ('+r.w+'×'+r.d+'m, Höhe '+r.h+'m)\n'
+        +'Einrichtung: '+objs+'\n'
+        +'Wandfarbe: '+r.wallColor+', Boden: '+r.floorColor+'\n\n'
+        +'Antworte auf Deutsch, 3-4 Sätze, bildhaft und stimmungsvoll.'}]})
+    });
+    const d=await resp.json();
+    addMsg('🔮 '+((d.content?.[0]?.text)||'Keine Antwort'),'ai');
+  }catch(e){ addMsg('Fehler: '+e.message,'sys'); }
+}
+
+async function aiSecurityAudit(){
+  const k=getKey(); if(!k) return;
+  showRight('ai');
+  addMsg('🔐 KI führt Sicherheits-Audit durch…','sys');
+  const secObjs=objects.filter(o=>{const it=findItem(o.typeId);return it&&it.arch==='security';});
+  const secList=secObjs.map(o=>(findItem(o.typeId)||{}).name||o.typeId).join(', ');
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:
+        'Führe einen detaillierten Sicherheits-Audit für eine CSC-Ausgabestelle durch.\n\n'
+        +'Räume: '+JSON.stringify(rooms.map(r=>r.name))+'\n'
+        +'Sicherheitsausstattung: '+(secList||'keine')+'\n'
+        +'Gesamtfläche: '+rooms.reduce((s,r)=>s+r.w*r.d,0).toFixed(0)+'m²\n\n'
+        +'Erstelle einen strukturierten Audit-Bericht auf Deutsch mit:\n'
+        +'1. Vorhandene Sicherheitsmaßnahmen (Bewertung)\n'
+        +'2. Kritische Lücken (nach KCanG)\n'
+        +'3. Konkrete Handlungsempfehlungen\n'
+        +'4. Prioritätsliste (sofort/kurzfristig/langfristig)'}]})
+    });
+    const d=await resp.json();
+    addMsg('🔐 Sicherheits-Audit:\n\n'+((d.content?.[0]?.text)||'Keine Antwort'),'ai');
+  }catch(e){ addMsg('Fehler: '+e.message,'sys'); }
+}
+
+async function aiAccessibleRebuild(){
+  const r=rooms.find(r=>r.id===selId);
+  if(!r){ toast('Bitte einen Raum auswählen','b'); return; }
+  const k=getKey(); if(!k) return;
+  showRight('ai');
+  addMsg('♿ KI plant barrierefreien Umbau für "'+r.name+'"…','sys');
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,messages:[{role:'user',content:
+        'Plane konkrete Umbaumaßnahmen für barrierefreie Zugänglichkeit.\n\n'
+        +'Raum: '+r.name+' ('+r.w+'×'+r.d+'m)\n'
+        +'Vorhandene Türen: '+objects.filter(o=>o.x>=r.x&&o.x<=r.x+r.w&&o.y>=r.y&&o.y<=r.y+r.d&&findItem(o.typeId)?.arch==='door').length+'\n\n'
+        +'Antworte auf Deutsch mit konkreten Maßnahmen nach DIN 18040:\n'
+        +'- Türbreiten, Bewegungsflächen, Rampen, Bodenmarkierungen\n'
+        +'- Was muss geändert werden?\n'
+        +'- Schätze grobe Kosten pro Maßnahme'}]})
+    });
+    const d=await resp.json();
+    addMsg('♿ Umbauplan:\n\n'+((d.content?.[0]?.text)||'Keine Antwort'),'ai');
+  }catch(e){ addMsg('Fehler: '+e.message,'sys'); }
+}
+
+// ── 13. KI CHATVERLÄUFE SPEICHERN ───────────────────────────────────
+function saveCurrentAIChat(){
+  const msgs=document.querySelectorAll('.amsg');
+  if(!msgs.length){ toast('Kein Chat zum Speichern','b'); return; }
+  const content=Array.from(msgs).map(m=>({
+    type:m.classList.contains('usr')?'user':m.classList.contains('ai')?'ai':'sys',
+    text:m.textContent.trim()
+  })).filter(m=>m.text);
+  _aiChatHistory.push({
+    id:'ch'+Date.now(),
+    label:new Date().toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}),
+    project:projName, messages:content
+  });
+  if(_aiChatHistory.length>20) _aiChatHistory.shift();
+  try{localStorage.setItem('csc-aichats',JSON.stringify(_aiChatHistory));}catch(e){}
+  toast('💬 Chat gespeichert','g');
+}
+
+function loadAIChatHistory(){
+  try{const s=localStorage.getItem('csc-aichats');if(s)_aiChatHistory=JSON.parse(s);}catch(e){}
+}
+
+function showAIChatHistory(){
+  loadAIChatHistory();
+  const el=document.getElementById('aichat-list'); if(!el) return;
+  if(!_aiChatHistory.length){
+    el.innerHTML='<div style="padding:12px;font-size:11px;color:var(--tx3)">Noch keine gespeicherten Gespräche.</div>';
+  } else {
+    el.innerHTML=_aiChatHistory.map((c,i)=>'<div style="padding:8px;border-bottom:1px solid var(--bd)">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center">'
+      +'<div style="font-size:12px;font-weight:600;color:var(--tx)">'+c.label+' · '+c.project+'</div>'
+      +'<div style="display:flex;gap:4px">'
+      +'<button onclick="restoreAIChat('+i+')" style="background:none;border:1px solid var(--bd);border-radius:3px;padding:2px 6px;font-size:10px;color:var(--bl);cursor:pointer">📂 Laden</button>'
+      +'<button onclick="deleteAIChat('+i+')" style="background:none;border:none;color:var(--rd);cursor:pointer;font-size:11px">🗑</button>'
+      +'</div></div>'
+      +'<div style="font-size:10px;color:var(--tx3);margin-top:2px">'+c.messages.length+' Nachrichten</div>'
+      +'</div>'
+    ).join('');
+  }
+  openM('m-aichats');
+}
+
+function restoreAIChat(i){
+  const chat=_aiChatHistory[i]; if(!chat) return;
+  const msgs=document.getElementById('ai-msgs'); if(!msgs) return;
+  msgs.innerHTML='';
+  chat.messages.forEach(m=>addMsg(m.text,m.type));
+  closeM('m-aichats'); showRight('ai');
+  toast('💬 Gespräch geladen','g');
+}
+
+function deleteAIChat(i){
+  _aiChatHistory.splice(i,1);
+  try{localStorage.setItem('csc-aichats',JSON.stringify(_aiChatHistory));}catch(e){}
+  showAIChatHistory();
+}
+
+function clearAIChats(){
+  _aiChatHistory=[];
+  try{localStorage.removeItem('csc-aichats');}catch(e){}
+  showAIChatHistory();
+}
+
+// ── 14. OFFLINE / SERVICE WORKER ────────────────────────────────────
+function registerServiceWorker(){
+  if(!('serviceWorker' in navigator)) return;
+  // Inline SW as blob
+  const swCode=`
+    const CACHE='csc-v3.18';
+    self.addEventListener('install',e=>e.waitUntil(
+      caches.open(CACHE).then(c=>c.add('/'))
+    ));
+    self.addEventListener('fetch',e=>e.respondWith(
+      caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{
+        if(res.ok){const c=res.clone();caches.open(CACHE).then(cache=>cache.put(e.request,c));}
+        return res;
+      }))
+    ));
+  `;
+  const blob=new Blob([swCode],{type:'application/javascript'});
+  const url=URL.createObjectURL(blob);
+  navigator.serviceWorker.register(url).then(()=>{
+    _swRegistered=true;
+    toast('📴 Offline-Modus aktiviert','g');
+  }).catch(e=>console.warn('SW:',e));
+}
+
+// ── 15. TOUCH SUPPORT ────────────────────────────────────────────────
+(function initTouch(){
+  let lastDist=0, lastCx=0, lastCy=0;
+
+  fpCv.addEventListener('touchstart',e=>{
+    if(e.touches.length===2){
+      lastDist=Math.hypot(
+        e.touches[0].clientX-e.touches[1].clientX,
+        e.touches[0].clientY-e.touches[1].clientY
+      );
+      lastCx=(e.touches[0].clientX+e.touches[1].clientX)/2;
+      lastCy=(e.touches[0].clientY+e.touches[1].clientY)/2;
+    }
+    e.preventDefault();
+  },{passive:false});
+
+  fpCv.addEventListener('touchmove',e=>{
+    if(e.touches.length===2){
+      // Pinch zoom
+      const dist=Math.hypot(
+        e.touches[0].clientX-e.touches[1].clientX,
+        e.touches[0].clientY-e.touches[1].clientY
+      );
+      const scale=dist/lastDist;
+      vpZoom=Math.max(15,Math.min(200,vpZoom*scale));
+      // Pan (midpoint movement)
+      const cx=(e.touches[0].clientX+e.touches[1].clientX)/2;
+      const cy=(e.touches[0].clientY+e.touches[1].clientY)/2;
+      vpX+=cx-lastCx; vpY+=cy-lastCy;
+      lastDist=dist; lastCx=cx; lastCy=cy;
+      draw2D();
+      e.preventDefault();
+    } else if(e.touches.length===1 && tool2d==='pan'){
+      // Single finger pan when in pan mode
+    }
+  },{passive:false});
+
+  // Swipe left/right on mobile = switch tabs
+  let touchStartX=0;
+  document.addEventListener('touchstart',e=>{touchStartX=e.touches[0].clientX;},{passive:true});
+  document.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-touchStartX;
+    if(Math.abs(dx)<50) return;
+    // Only on left sidebar
+    if(e.target.closest('#left-panel')){
+      const modes=['rooms','furn','arch','security','custom'];
+      const cur=modes.indexOf(leftMode);
+      const next=modes[(cur+(dx<0?1:-1)+modes.length)%modes.length];
+      showLeft(next);
+    }
+  },{passive:true});
+})();
+
 // ════════════════════════════════════════════════════════════════════════
 // ANIMATION LOOP
 // ════════════════════════════════════════════════════════════════════════
@@ -8097,6 +8753,11 @@ loadNotes();
 loadChangelog();
 loadSHItems();
 loadTimeline();
+loadColorMode();
+loadRoomGroups();
+loadAIChatHistory();
+renderNorthArrow();
+setTimeout(registerServiceWorker,1000);
 setTimeout(initLiveCollaboration, 2000);
 loadSharedProject();
 loadVisionShare();
@@ -8143,7 +8804,7 @@ draw2D();
 
 renderFloorTabs();
 initUndoSystem();
-setTimeout(()=>toast('🌿 v3.17 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
+setTimeout(()=>toast('🌿 v3.18 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
 
 
 
@@ -8171,7 +8832,7 @@ function initAutoSave(){
   // Enable auto-saving from now on
   _autoSaveReady = true;
   renderVersionHistory();
-  toast('🌿 v3.17 | Auto-Save aktiv','g');
+  toast('🌿 v3.18 | Auto-Save aktiv','g');
 }
 
 
@@ -8492,7 +9153,7 @@ function build3DObj(o){
   const metal = o.metalness !== undefined ? o.metalness : (item.arch==='window'?0.0: item.arch==='door'?0.05:['Lager','Info'].includes(item.cat)?0.55:0.04);
 
   if(item.isKallax || (item.id&&item.id.startsWith('kallax'))){
-    buildKallax3DPro(g, item, o); // v3.17 Pro
+    buildKallax3DPro(g, item, o); // v3.18 Pro
   } else if(item.arch==='security'){
     buildSecurity3D(g, item, o);
   } else if(item.arch==='foil'){
@@ -8783,7 +9444,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
 
   <div style="padding:12px 20px;border-bottom:1px solid #1a2a1a;display:flex;align-items:center;gap:14px;flex-shrink:0">
     <div style="font-size:16px;font-weight:800;color:#4ade80">🌿 CSC Raumplaner — Vollständige Anleitung</div>
-    <div style="font-size:11px;color:#555">v3.17</div>
+    <div style="font-size:11px;color:#555">v3.18</div>
     <div style="flex:1"></div>
     <button class="tbt" onclick="startTutorial()" style="border-color:var(--gr);color:var(--gr);padding:6px 14px">▶ Tutorial starten</button>
     <button class="tbt" onclick="closeHelp()" style="padding:6px 14px">Schließen</button>
