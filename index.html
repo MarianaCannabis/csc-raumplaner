@@ -456,7 +456,7 @@ canvas{display:block}
 #help-close:hover{color:#e8e4d8;background:#1a1a1a}
 
 
-/* ══ NEW FEATURES v3.16 ═══════════════════════════════════════════ */
+/* ══ NEW FEATURES v3.17 ═══════════════════════════════════════════ */
 
 /* Heatmap canvas */
 #heatmap-canvas{position:absolute;inset:0;pointer-events:none;opacity:0.55;display:none;z-index:8}
@@ -495,7 +495,7 @@ canvas{display:block}
 .vlink-inp{width:100%;padding:7px;background:var(--bg);border:1px solid var(--bd2);border-radius:4px;color:var(--tx);font-family:monospace;font-size:10px;margin:5px 0}
 
 
-/* ══ v3.16 FEATURES ══════════════════════════════════════════════ */
+/* ══ v3.17 FEATURES ══════════════════════════════════════════════ */
 /* Budget Tracker */
 #budget-panel{position:fixed;top:50px;right:360px;width:300px;background:var(--bg2);border:1px solid var(--bd2);border-radius:10px;z-index:200;display:none;box-shadow:0 4px 20px rgba(0,0,0,.6)}
 #budget-panel.vis{display:block}
@@ -527,6 +527,57 @@ canvas{display:block}
 /* Ruler */
 .ruler-line{stroke:#fbbf24;stroke-width:2;stroke-dasharray:5,3;fill:none}
 .ruler-text{fill:#fbbf24;font-size:11px;font-weight:700;font-family:monospace}
+
+
+/* ══ DROPDOWN MENU SYSTEM v3.17 ══════════════════════════════════ */
+.tb-menu-group{display:flex;align-items:center;gap:2px}
+.tbm{position:relative}
+.tbm-btn{padding:4px 9px;background:transparent;border:1px solid transparent;border-radius:var(--r4);font-size:11px;cursor:pointer;color:var(--tx2);transition:.12s;white-space:nowrap;display:flex;align-items:center;gap:3px}
+.tbm-btn:hover{background:var(--bg3);border-color:var(--bd);color:var(--tx)}
+.tbm-btn.open{background:var(--bg4);border-color:var(--bd2);color:var(--tx)}
+.tbm-arr{font-size:8px;opacity:.5}
+.tbm-drop{position:absolute;top:calc(100% + 3px);left:0;min-width:220px;background:var(--bg2);border:1px solid var(--bd2);border-radius:var(--r8);z-index:300;display:none;box-shadow:0 6px 24px rgba(0,0,0,.6);padding:4px 0;max-height:80vh;overflow-y:auto}
+.tbm-drop.open{display:block}
+.tbm-item{padding:7px 14px;font-size:12px;color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:.1s;white-space:nowrap}
+.tbm-item:hover{background:var(--bg3);color:var(--tx)}
+.tbm-item.active{color:var(--gr)}
+.tbm-sep{height:1px;background:var(--bd);margin:4px 8px}
+.tbm-label{padding:5px 14px 2px;font-size:9px;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+.tbm-kbd{font-size:9px;background:var(--bg4);border:1px solid var(--bd);border-radius:3px;padding:1px 5px;color:var(--tx3);font-family:monospace}
+
+/* Icon-only buttons */
+.icon-btn{padding:4px 7px!important;min-width:28px}
+
+/* Topbar compact */
+#topbar{height:40px;padding:0 8px;gap:4px}
+.logo{font-size:13px}
+.vbadge{font-size:9px}
+.tbt{padding:4px 8px;font-size:11px}
+
+/* Active state indicators for menu items */
+.tbm-item.toggled::before{content:'✓ ';color:var(--gr)}
+
+/* ══ NEW FEATURE MODALS ═══════════════════════════════════════════ */
+/* Material Calculator */
+.mat-row{display:grid;grid-template-columns:1fr 80px 80px 90px;gap:6px;align-items:center;padding:5px 0;border-bottom:1px solid var(--bd);font-size:11px}
+.mat-row:last-child{border:none}
+
+/* Smart Home */
+.sh-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bd);font-size:11px;cursor:pointer}
+.sh-item:hover{background:var(--bg3)}
+.sh-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+
+/* Timeline */
+.tl-row{display:grid;grid-template-columns:140px 100px 100px 1fr;gap:6px;align-items:center;padding:5px 0;border-bottom:1px solid var(--bd);font-size:11px}
+.tl-bar{height:18px;border-radius:3px;display:flex;align-items:center;padding:0 5px;font-size:9px;color:#fff;font-weight:600;white-space:nowrap;overflow:hidden}
+
+/* Comparison */
+#compare-panel{position:fixed;inset:0;background:var(--bg);z-index:400;display:none;flex-direction:column}
+#compare-panel.vis{display:flex}
+.compare-panes{display:grid;grid-template-columns:1fr 1fr;flex:1;gap:0;overflow:hidden}
+.compare-pane{overflow:hidden;position:relative;border-right:2px solid var(--gr)}
+.compare-pane:last-child{border:none}
+.compare-label{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);color:var(--gr);font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;z-index:10}
 
 /* TOAST */
 .toast{position:fixed;bottom:62px;left:50%;transform:translateX(-50%);padding:7px 16px;border-radius:var(--r6);font-size:12px;z-index:9999;transition:opacity .35s;white-space:nowrap;pointer-events:none}
@@ -617,53 +668,130 @@ canvas{display:block}
 
 <!-- TOPBAR -->
 <div id="topbar">
-  <span class="logo">🌿 CSC <em>Raumplaner</em></span><span class="vbadge">v3.16</span>
+  <!-- LOGO -->
+  <span class="logo">🌿 CSC <em>Raumplaner</em></span>
+  <span class="vbadge">v3.17</span>
   <div class="tsep"></div>
-  <button class="tbt" id="undo-btn" onclick="undo()" disabled title="Rückgängig (Ctrl+Z)" style="letter-spacing:.5px">↩ Undo</button>
-  <button class="tbt" id="redo-btn" onclick="redo()" disabled title="Wiederholen (Ctrl+Y)" style="letter-spacing:.5px">↪ Redo</button>
+
+  <!-- UNDO/REDO -->
+  <button class="tbt icon-btn" id="undo-btn" onclick="undo()" disabled title="Rückgängig (Ctrl+Z)">↩</button>
+  <button class="tbt icon-btn" id="redo-btn" onclick="redo()" disabled title="Wiederholen (Ctrl+Y)">↪</button>
   <div class="tsep"></div>
-  <button class="tbt" onclick="newProj()">🆕 Neu</button>
-  <button class="tbt g" onclick="saveProj()">💾 Speichern</button>
-  <button class="tbt" onclick="showRight('save')">📂 Öffnen</button>
-  <button class="tbt" onclick="dlJSON()">📥 Export</button>
-  <button class="tbt" onclick="doPrint()">🖨 Drucken</button>
-  <button class="tbt" onclick="showStats()" title="Raumstatistik">📊</button>
-  <button class="tbt" onclick="showAreaChart()" title="Flächendiagramm">🥧 Fläche</button>
-  <button class="tbt" onclick="toggleBudget()" title="Möbelbudget">💰 Budget</button>
-  <button class="tbt" id="btn-ruler" onclick="toggleRuler()" title="Lineal-Werkzeug">📐 Lineal</button>
-  <button class="tbt" id="btn-notes" onclick="toggleNoteMode()" title="Notizen pinnen">📌 Notiz</button>
-  <button class="tbt" id="btn-sound" onclick="toggleSoundHeatmap()" title="Schallschutz-Analyse">🔊 Schall</button>
-  <button class="tbt" id="btn-lightsim" onclick="toggleLightSim()" title="Lichteinfall">☀️ Licht</button>
-  <button class="tbt" id="btn-all-floors" onclick="toggleAllFloors()" title="Alle Etagen anzeigen" style="display:none">🏢 Alle</button>
-  <button class="tbt" id="btn-ceiling" onclick="toggleCeiling()" title="Decke ein/ausblenden">⬜ Offen</button>
-  <button class="tbt" onclick="toggleSliceView()" title="Schnittansicht">✂️ Schnitt</button>
-  <button class="tbt" onclick="showCSCPanel()" title="CSC Status & Kapazität" style="color:var(--gr);border-color:var(--gr3)">🌿 CSC</button>
-  <button class="tbt" onclick="openVisionBoard()" title="Visions-Board" style="color:#c084fc">🎨 Vision</button>
-  <button class="tbt" onclick="openTemplates()" title="Raumvorlagen">🏗 Vorlagen</button>
-  <button class="tbt" id="btn-sun-anim" onclick="toggleSunAnimation()" title="Tag/Nacht Animation">🌅 Animation</button>
-  <button class="tbt" id="btn-heatmap" onclick="toggleHeatmap()" title="Heatmap Laufwege">🌡 Heatmap</button>
-  <button class="tbt" onclick="toggleDimensions()" title="Maßketten ein/aus">📏 Maße</button>
-  <button class="tbt" onclick="shareProject()" title="Projekt teilen">🔗 Teilen</button>
-  <button class="tbt" onclick="generateQRCode()" title="QR-Code">📱 QR</button>
-  <span id="view-hint-3d" style="font-size:10px;color:var(--tx3);display:none">3D: Klick=Auswählen · Ziehen=Verschieben · Del=Löschen · Pfeiltasten=Feinpos. · Rechts=Orbit</span>
+
+  <!-- DROPDOWN MENUS -->
+  <div class="tb-menu-group">
+
+    <!-- 📁 DATEI -->
+    <div class="tbm" id="tbm-file">
+      <button class="tbm-btn" onclick="toggleTBMenu('file')">📁 Datei <span class="tbm-arr">▾</span></button>
+      <div class="tbm-drop" id="tbmd-file">
+        <div class="tbm-item" onclick="newProj();closeTBMenu()">🆕 Neues Projekt</div>
+        <div class="tbm-item" onclick="saveProj();closeTBMenu()">💾 Speichern <span class="tbm-kbd">Ctrl+S</span></div>
+        <div class="tbm-item" onclick="showRight('save');closeTBMenu()">📂 Projekte öffnen</div>
+        <div class="tbm-sep"></div>
+        <div class="tbm-item" onclick="dlJSON();closeTBMenu()">📥 Export .json</div>
+        <div class="tbm-item" onclick="exportFurnitureCSV();closeTBMenu()">📊 Möbelliste .csv</div>
+        <div class="tbm-item" onclick="exportBudgetCSV();closeTBMenu()">💰 Budget .csv</div>
+        <div class="tbm-item" onclick="exportGLTF();closeTBMenu()">🏗 3D-Modell .gltf</div>
+        <div class="tbm-item" onclick="exportDXF();closeTBMenu()">📐 Grundriss .dxf</div>
+        <div class="tbm-sep"></div>
+        <div class="tbm-item" onclick="doPrint();closeTBMenu()">🖨 Drucken / PDF</div>
+        <div class="tbm-item" onclick="exportEvacuationPlan();closeTBMenu()">🚨 Flucht- & Rettungsplan</div>
+      </div>
+    </div>
+
+    <!-- 👁 ANSICHT -->
+    <div class="tbm" id="tbm-view">
+      <button class="tbm-btn" onclick="toggleTBMenu('view')">👁 Ansicht <span class="tbm-arr">▾</span></button>
+      <div class="tbm-drop" id="tbmd-view">
+        <div class="tbm-label">3D-Optionen</div>
+        <div class="tbm-item" onclick="toggleCeiling();closeTBMenu()" id="mi-ceiling">⬜ Decke ein/aus</div>
+        <div class="tbm-item" onclick="toggleSliceView();closeTBMenu()">✂️ Schnittansicht</div>
+        <div class="tbm-item" id="mi-allfloors" onclick="toggleAllFloors();closeTBMenu()" style="display:none">🏢 Alle Etagen</div>
+        <div class="tbm-item" onclick="toggleSunAnimation();closeTBMenu()" id="mi-sunanim">🌅 Tag/Nacht Animation</div>
+        <div class="tbm-sep"></div>
+        <div class="tbm-label">2D-Overlays</div>
+        <div class="tbm-item" onclick="toggleDimensions();closeTBMenu()" id="mi-dims">📏 Maßketten</div>
+        <div class="tbm-item" onclick="toggleHeatmap();closeTBMenu()" id="mi-heatmap">🌡 Laufwege-Heatmap</div>
+        <div class="tbm-item" onclick="toggleSoundHeatmap();closeTBMenu()" id="mi-sound">🔊 Schallschutz</div>
+        <div class="tbm-item" onclick="toggleLightSim();closeTBMenu()" id="mi-light">☀️ Lichteinfall</div>
+        <div class="tbm-item" onclick="toggleRuler();closeTBMenu()" id="mi-ruler">📐 Lineal</div>
+        <div class="tbm-item" onclick="toggleNoteMode();closeTBMenu()" id="mi-notes">📌 Notizen</div>
+        <div class="tbm-sep"></div>
+        <div class="tbm-item" onclick="openLayoutComparison();closeTBMenu()">🔀 Lageplan vergleichen</div>
+      </div>
+    </div>
+
+    <!-- 📊 ANALYSE -->
+    <div class="tbm" id="tbm-analyse">
+      <button class="tbm-btn" onclick="toggleTBMenu('analyse')">📊 Analyse <span class="tbm-arr">▾</span></button>
+      <div class="tbm-drop" id="tbmd-analyse">
+        <div class="tbm-item" onclick="showStats();closeTBMenu()">📊 Raumstatistik <span class="tbm-kbd">I</span></div>
+        <div class="tbm-item" onclick="showAreaChart();closeTBMenu()">🥧 Flächenaufteilung</div>
+        <div class="tbm-item" onclick="toggleBudget();closeTBMenu()">💰 Möbelbudget</div>
+        <div class="tbm-item" onclick="openMaterialCalc();closeTBMenu()">🧱 Materialmengen</div>
+        <div class="tbm-sep"></div>
+        <div class="tbm-item" onclick="showCSCPanel();closeTBMenu()">🌿 CSC Checkliste</div>
+        <div class="tbm-item" onclick="checkAccessibility();closeTBMenu()">♿ Barrierefreiheit</div>
+        <div class="tbm-item" onclick="estimateCosts();closeTBMenu()">💰 Kosten schätzen</div>
+        <div class="tbm-item" onclick="optimizeLayout();closeTBMenu()">🔍 KI: Grundriss optimieren</div>
+        <div class="tbm-sep"></div>
+        <div class="tbm-item" onclick="openSmartHome();closeTBMenu()">🏠 Smart Home Planung</div>
+        <div class="tbm-item" onclick="openTimeline();closeTBMenu()">📅 Zeitplan</div>
+        <div class="tbm-item" onclick="startAR();closeTBMenu()">🔮 Augmented Reality</div>
+      </div>
+    </div>
+
+    <!-- 🤝 TEILEN -->
+    <div class="tbm" id="tbm-share">
+      <button class="tbm-btn" onclick="toggleTBMenu('share')">🔗 Teilen <span class="tbm-arr">▾</span></button>
+      <div class="tbm-drop" id="tbmd-share">
+        <div class="tbm-item" onclick="shareProject();closeTBMenu()">🔗 Projekt-Link teilen</div>
+        <div class="tbm-item" onclick="openVisionBoard();closeTBMenu()">🎨 Visions-Board</div>
+        <div class="tbm-item" onclick="generateQRCode();closeTBMenu()">📱 QR-Code generieren</div>
+        <div class="tbm-sep"></div>
+        <div class="tbm-item" onclick="showChangelog();closeTBMenu()">📋 Änderungsprotokoll</div>
+        <div class="tbm-item" onclick="saveVersion();closeTBMenu()">📌 Version merken</div>
+      </div>
+    </div>
+
+    <!-- 🏗 VORLAGEN -->
+    <div class="tbm" id="tbm-tpl">
+      <button class="tbm-btn" onclick="openTemplates();closeTBMenu()" style="color:var(--bl)">🏗 Vorlagen</button>
+    </div>
+
+  </div><!-- .tb-menu-group -->
+
   <div class="tsep"></div>
-  <button class="tbt" onclick="toggleMoodPanel()" style="color:var(--yw);border-color:#3a3000;background:#1a1800">🌅 Stimmung</button>
-  <button class="tbt" onclick="openM('m-wizard')" style="color:var(--pu);border-color:#3a2a4a;background:#1a0d2a">🤖 KI-Möbel</button>
+
+  <!-- MOOD + KI — immer sichtbar -->
+  <button class="tbt" onclick="toggleMoodPanel()" style="color:var(--yw);border-color:#3a3000;background:#1a1800" title="Stimmung/Beleuchtung">🌅</button>
+  <button class="tbt" onclick="openM('m-wizard')" style="color:var(--pu);border-color:#3a2a4a;background:#1a0d2a" title="KI Möbel-Assistent">🤖</button>
+  <button class="tbt" onclick="openHelp()" style="color:var(--or)" title="Anleitung (H/F1)">❓</button>
   <div class="tsep"></div>
-  <div class="tsep"></div>
+
+  <!-- ETAGEN -->
   <div id="floor-tabs-wrap">
     <div id="floor-tabs"></div>
-    <button class="ftab-add" onclick="openM('m-floor')" title="Etage hinzufügen">＋ Etage</button>
+    <button class="ftab-add" onclick="openM('m-floor')" title="Etage hinzufügen">＋</button>
   </div>
   <div class="tsep"></div>
+
+  <!-- ANSICHT UMSCHALTEN -->
   <div class="view-toggle">
-    <button class="vt active" id="vt-2d" onclick="setView('2d')">⊞ Grundriss 2D</button>
-    <button class="vt" id="vt-3d" onclick="setView('3d')">⬛ 3D Ansicht</button>
-    <button class="vt" id="vt-walk" onclick="setView('walk')">🚶 Durchgehen</button>
+    <button class="vt active" id="vt-2d" onclick="setView('2d')" title="2D Grundriss">⊞ 2D</button>
+    <button class="vt" id="vt-3d" onclick="setView('3d')" title="3D Ansicht">⬛ 3D</button>
+    <button class="vt" id="vt-walk" onclick="setView('walk')" title="Durchgehen">🚶</button>
   </div>
+
   <div class="tgap"></div>
-  <span id="proj-lbl">Neue Ausgabestelle</span>
-  <button class="tbt" onclick="openM('m-rename')" style="padding:5px 8px">✏️</button>
+
+  <!-- PROJEKT NAME -->
+  <span id="proj-lbl" style="font-size:11px;color:var(--tx2);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Neue Ausgabestelle</span>
+  <button class="tbt icon-btn" onclick="openM('m-rename')" title="Umbenennen">✏️</button>
+
+  <!-- 3D Hint -->
+  <span id="view-hint-3d" style="font-size:10px;color:var(--tx3);display:none;margin-left:8px">Klick=Wählen · G=Verschieben · Del=Löschen · RMB=Orbit</span>
 </div>
 
 <!-- ICONBAR -->
@@ -1011,6 +1139,98 @@ canvas{display:block}
   <div id="area-legend" style="margin-top:12px"></div>
   <div class="mbtns"><button class="mbt ok" onclick="closeM('m-area')">Schließen</button></div>
 </div>
+</div>
+
+
+<!-- MATERIAL CALCULATOR -->
+<div class="mover" id="m-matcalc">
+<div class="modal" style="max-width:500px">
+  <h2>🧱 Materialmengen-Rechner</h2>
+  <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Berechnet Bodenfliesen, Wandfarbe und Bodenbelag basierend auf deinen Räumen.</p>
+  <div id="matcalc-content"></div>
+  <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--bd)">
+    <div style="font-size:10px;color:var(--tx3);margin-bottom:6px">VERSCHNITT</div>
+    <div style="display:flex;gap:10px;align-items:center;font-size:11px">
+      <label>Fliesen: <input type="number" id="mc-tile-waste" value="10" min="0" max="50" style="width:50px;padding:3px;background:var(--bg3);border:1px solid var(--bd);border-radius:3px;color:var(--tx)"> %</label>
+      <label>Farbe: <input type="number" id="mc-paint-waste" value="15" min="0" max="50" style="width:50px;padding:3px;background:var(--bg3);border:1px solid var(--bd);border-radius:3px;color:var(--tx)"> %</label>
+      <button class="mbt ok" onclick="calcMaterials()" style="margin-left:auto">Berechnen</button>
+    </div>
+  </div>
+  <div class="mbtns"><button class="mbt" onclick="closeM('m-matcalc')">Schließen</button><button class="mbt ok" onclick="exportMaterialsCSV()">📥 CSV</button></div>
+</div>
+</div>
+
+<!-- SMART HOME PLANER -->
+<div class="mover" id="m-smarthome">
+<div class="modal" style="max-width:480px">
+  <h2>🏠 Smart Home Planung</h2>
+  <p style="font-size:11px;color:var(--tx3);margin-bottom:8px">Steckdosen, LAN, WLAN und KNX auf dem Grundriss markieren.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px" id="sh-legend">
+    <div class="sh-btn" onclick="setSHMode('socket')" data-mode="socket" style="display:flex;align-items:center;gap:5px;padding:5px 10px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;cursor:pointer;font-size:11px">
+      <div style="width:10px;height:10px;border-radius:2px;background:#fbbf24"></div>🔌 Steckdose
+    </div>
+    <div class="sh-btn" onclick="setSHMode('lan')" data-mode="lan" style="display:flex;align-items:center;gap:5px;padding:5px 10px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;cursor:pointer;font-size:11px">
+      <div style="width:10px;height:10px;border-radius:2px;background:#38bdf8"></div>🌐 LAN-Dose
+    </div>
+    <div class="sh-btn" onclick="setSHMode('wifi')" data-mode="wifi" style="display:flex;align-items:center;gap:5px;padding:5px 10px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;cursor:pointer;font-size:11px">
+      <div style="width:10px;height:10px;border-radius:50%;background:#4ade80"></div>📶 WLAN-AP
+    </div>
+    <div class="sh-btn" onclick="setSHMode('camera_ip')" data-mode="camera_ip" style="display:flex;align-items:center;gap:5px;padding:5px 10px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;cursor:pointer;font-size:11px">
+      <div style="width:10px;height:10px;border-radius:50%;background:#f87171"></div>📷 IP-Kamera
+    </div>
+    <div class="sh-btn" onclick="setSHMode('sensor')" data-mode="sensor" style="display:flex;align-items:center;gap:5px;padding:5px 10px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;cursor:pointer;font-size:11px">
+      <div style="width:10px;height:10px;border-radius:50%;background:#c084fc"></div>🌡 Sensor
+    </div>
+    <div class="sh-btn" onclick="setSHMode('switch')" data-mode="switch" style="display:flex;align-items:center;gap:5px;padding:5px 10px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;cursor:pointer;font-size:11px">
+      <div style="width:10px;height:10px;border-radius:2px;background:#fb923c"></div>💡 Schalter
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--tx3);margin-bottom:8px">Klicke auf den Grundriss um Elemente zu setzen. Rechtsklick auf Markierung = löschen.</div>
+  <div id="sh-list" style="max-height:180px;overflow-y:auto;font-size:11px"></div>
+  <div class="mbtns">
+    <button class="mbt" onclick="clearSmartHome()">🗑 Alle löschen</button>
+    <button class="mbt ok" onclick="closeM('m-smarthome');_shMode=null">✓ Fertig</button>
+  </div>
+</div>
+</div>
+
+<!-- ZEITPLAN -->
+<div class="mover" id="m-timeline">
+<div class="modal" style="max-width:560px">
+  <h2>📅 Zeitplan — Umbaumaßnahmen</h2>
+  <div style="display:flex;gap:6px;margin-bottom:10px">
+    <input id="tl-task" placeholder="Aufgabe (z.B. Bodenverlegung)" style="flex:1;padding:6px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:11px">
+    <input id="tl-start" type="date" style="width:120px;padding:6px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:11px">
+    <input id="tl-end" type="date" style="width:120px;padding:6px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:11px">
+    <button class="mbt ok" onclick="addTimelineTask()">＋</button>
+  </div>
+  <div id="timeline-chart" style="margin-bottom:10px"></div>
+  <div class="mbtns">
+    <button class="mbt" onclick="exportTimelineCSV()">📥 CSV</button>
+    <button class="mbt ok" onclick="closeM('m-timeline')">Schließen</button>
+  </div>
+</div>
+</div>
+
+<!-- LAGEPLAN VERGLEICH -->
+<div id="compare-panel">
+  <div style="padding:8px 14px;background:var(--bg2);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;flex-shrink:0">
+    <div style="font-size:13px;font-weight:700;color:var(--gr)">🔀 Lageplan-Vergleich</div>
+    <button class="tbt" onclick="loadCompareSnapshot()" style="font-size:11px">📂 Vergleich laden</button>
+    <input type="file" id="compare-file" accept=".json" style="display:none" onchange="loadCompareFile(event)">
+    <div style="flex:1"></div>
+    <button class="tbt" onclick="closeComparison()">✕ Schließen</button>
+  </div>
+  <div class="compare-panes">
+    <div class="compare-pane">
+      <div class="compare-label">🔵 Aktuell</div>
+      <canvas id="compare-cv-a" style="width:100%;height:100%"></canvas>
+    </div>
+    <div class="compare-pane">
+      <div class="compare-label">🟠 Vergleich</div>
+      <canvas id="compare-cv-b" style="width:100%;height:100%"></canvas>
+    </div>
+  </div>
 </div>
 
 <!-- STEP-BY-STEP GUIDE -->
@@ -1730,6 +1950,8 @@ fpCv.addEventListener('mousedown', e => {
 
   if(tool2d==='pan'){ isPanning=true; return; }
 
+  // Smart Home placement
+  if(_shMode && document.getElementById('m-smarthome') && !document.getElementById('m-smarthome').style.display && e.button===0){ placeSHItem(wx,wy); return; }
   // Ruler mode
   if(_rulerMode && e.button===0){ handleRulerClick(wx,wy); return; }
   // Note mode
@@ -2668,7 +2890,7 @@ function doPrint(){
     +'td,th{border:1px solid #ddd;padding:4px 6px;text-align:left}th{background:#f5f5f5}'
     +'@media print{body{padding:8px}}</style></head><body>'
     +'<h1>🌿 '+d.name+'</h1>'
-    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.16 · '+new Date().toLocaleDateString('de-DE')+'</div>'
+    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.17 · '+new Date().toLocaleDateString('de-DE')+'</div>'
     +'<img src="'+img+'">'
     +'<div class=grid>'
     +'<div class=box><h3>Räume ('+d.rooms.length+')</h3>'
@@ -4497,7 +4719,7 @@ function pickKallaxColor(id, part){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// KALLAX PRO EDITOR — Extended (v3.16)
+// KALLAX PRO EDITOR — Extended (v3.17)
 // ════════════════════════════════════════════════════════════════════════
 
 // Additional color palettes
@@ -5769,7 +5991,7 @@ function rebuild3DThrottled(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// NEW FEATURES v3.16
+// NEW FEATURES v3.17
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. RAUM-SNAP beim Platzieren ─────────────────────────────────────
@@ -6159,7 +6381,7 @@ function showCSCPanel(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// INTERAKTIVE ANLEITUNG v3.16
+// INTERAKTIVE ANLEITUNG v3.17
 // ════════════════════════════════════════════════════════════════════════
 function openHelp(page){
   document.getElementById('help-overlay').classList.add('open');
@@ -6300,7 +6522,7 @@ function renderTutStep(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.16 — ALLE NEUEN FEATURES
+// v3.17 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. KI MÖBELANORDNUNG ─────────────────────────────────────────────
@@ -6952,7 +7174,7 @@ function removeWallCtxMenu(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.16 — ALLE NEUEN FEATURES
+// v3.17 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── FURNITURE PRICES DATABASE ────────────────────────────────────────
@@ -7496,6 +7718,356 @@ const _origAddRoom = addRoom;
 // Note: can't re-declare, use monkey-patch approach via snapshot
 // Instead hook into snapshot
 
+
+// ════════════════════════════════════════════════════════════════════════
+// v3.17 — DROPDOWN MENU SYSTEM + NEW FEATURES
+// ════════════════════════════════════════════════════════════════════════
+
+// ── DROPDOWN MENU SYSTEM ─────────────────────────────────────────────
+let _openMenu = null;
+
+function toggleTBMenu(id){
+  const drop = document.getElementById('tbmd-'+id);
+  const btn  = document.querySelector('#tbm-'+id+' .tbm-btn');
+  if(!drop) return;
+  if(_openMenu === id){
+    closeTBMenu(); return;
+  }
+  closeTBMenu();
+  _openMenu = id;
+  drop.classList.add('open');
+  if(btn) btn.classList.add('open');
+  // Update active states for toggle items
+  updateMenuActiveStates();
+}
+
+function closeTBMenu(){
+  document.querySelectorAll('.tbm-drop.open').forEach(d=>d.classList.remove('open'));
+  document.querySelectorAll('.tbm-btn.open').forEach(b=>b.classList.remove('open'));
+  _openMenu = null;
+}
+
+function updateMenuActiveStates(){
+  const map = {
+    'mi-ceiling':  ()=>_showCeiling,
+    'mi-allfloors':()=>_show3DAllFloors,
+    'mi-sunanim':  ()=>_sunAnimActive,
+    'mi-dims':     ()=>_dimVisible,
+    'mi-heatmap':  ()=>_heatmapActive,
+    'mi-sound':    ()=>_soundHeatActive,
+    'mi-light':    ()=>_lightSimActive,
+    'mi-ruler':    ()=>_rulerMode,
+    'mi-notes':    ()=>_noteMode,
+  };
+  Object.entries(map).forEach(([id,fn])=>{
+    const el=document.getElementById(id);
+    if(el) el.classList.toggle('active', !!fn());
+  });
+  // Show/hide all-floors button
+  const af=document.getElementById('mi-allfloors');
+  if(af) af.style.display=floors.length>1?'block':'none';
+}
+
+// Close menu when clicking outside
+document.addEventListener('click', e=>{
+  if(!e.target.closest('.tbm')) closeTBMenu();
+}, true);
+
+// ── AR / WEBXR ────────────────────────────────────────────────────
+async function startAR(){
+  if(!navigator.xr){
+    toast('WebXR nicht verfügbar — bitte Chrome/Edge auf Android nutzen','r'); return;
+  }
+  const supported = await navigator.xr.isSessionSupported('immersive-ar').catch(()=>false);
+  if(!supported){
+    toast('AR nicht unterstützt auf diesem Gerät','r'); return;
+  }
+  toast('🔮 AR wird gestartet…','b');
+  try{
+    const session = await navigator.xr.requestSession('immersive-ar',{
+      requiredFeatures:['hit-test','dom-overlay'],
+      domOverlay:{root:document.body}
+    });
+    // Use existing Three.js renderer
+    rend3.xr.enabled = true;
+    rend3.xr.setSession(session);
+    // Show AR overlay UI
+    showAROverlay(session);
+    session.addEventListener('end',()=>{
+      rend3.xr.enabled=false;
+      document.getElementById('ar-overlay')?.remove();
+      toast('AR beendet','b');
+    });
+  }catch(e){ toast('AR Fehler: '+e.message,'r'); }
+}
+
+function showAROverlay(session){
+  const div=document.createElement('div');
+  div.id='ar-overlay';
+  div.style.cssText='position:fixed;bottom:60px;left:50%;transform:translateX(-50%);z-index:500;display:flex;gap:8px';
+  div.innerHTML='<button onclick="session.end()" style="padding:10px 20px;background:#166534;color:#fff;border:none;border-radius:20px;font-size:14px;cursor:pointer">✕ AR beenden</button>';
+  document.body.appendChild(div);
+}
+
+// ── MATERIAL CALCULATOR ──────────────────────────────────────────
+function openMaterialCalc(){
+  calcMaterials();
+  openM('m-matcalc');
+}
+
+function calcMaterials(){
+  const tileWaste = 1 + (+(document.getElementById('mc-tile-waste')?.value||10))/100;
+  const paintWaste= 1 + (+(document.getElementById('mc-paint-waste')?.value||15))/100;
+  const content = document.getElementById('matcalc-content'); if(!content) return;
+  
+  let rows = '<div class="mat-row" style="font-weight:700;color:var(--tx3);font-size:10px;text-transform:uppercase">'
+    +'<span>Raum</span><span>Fläche</span><span>Wand m²</span><span>Material</span></div>';
+  
+  let totalFloor=0, totalWall=0, totalPaint=0;
+  
+  rooms.forEach(r=>{
+    const floorArea = r.w * r.d;
+    const wallArea  = 2*(r.w+r.d)*r.h;
+    const tilesNeeded= (floorArea * tileWaste).toFixed(1);
+    const paintNeeded= (wallArea * paintWaste / 10).toFixed(1); // 10m²/L
+    totalFloor += floorArea * tileWaste;
+    totalWall  += wallArea;
+    totalPaint += wallArea * paintWaste / 10;
+    rows+='<div class="mat-row">'
+      +'<span style="color:var(--tx2)">'+r.name+'</span>'
+      +'<span style="color:var(--gr)">'+floorArea.toFixed(1)+'m²</span>'
+      +'<span style="color:var(--bl)">'+wallArea.toFixed(1)+'m²</span>'
+      +'<span style="font-size:10px;color:var(--tx3)">'+tilesNeeded+'m² Boden · '+paintNeeded+'L Farbe</span>'
+      +'</div>';
+  });
+  
+  rows+='<div class="mat-row" style="font-weight:700;margin-top:4px;border-top:2px solid var(--gr);padding-top:6px">'
+    +'<span>GESAMT</span>'
+    +'<span style="color:var(--gr)">'+totalFloor.toFixed(1)+'m²</span>'
+    +'<span style="color:var(--bl)">'+totalWall.toFixed(1)+'m²</span>'
+    +'<span style="font-size:10px;color:var(--yw)">inkl. '+((tileWaste-1)*100).toFixed(0)+'% Verschnitt · '
+    +totalPaint.toFixed(0)+'L Farbe</span></div>';
+  
+  content.innerHTML = rows;
+}
+
+function exportMaterialsCSV(){
+  const rows=['\uFEFFRaum,Boden m²,Wand m²,Fliesen m² (m. Verschnitt),Farbe Liter'];
+  const tileWaste=1+(+(document.getElementById('mc-tile-waste')?.value||10))/100;
+  const paintWaste=1+(+(document.getElementById('mc-paint-waste')?.value||15))/100;
+  rooms.forEach(r=>{
+    rows.push(['"'+r.name+'"',r.w*r.d,(2*(r.w+r.d)*r.h).toFixed(1),
+      (r.w*r.d*tileWaste).toFixed(1),(2*(r.w+r.d)*r.h*paintWaste/10).toFixed(1)].join(','));
+  });
+  const blob=new Blob([rows.join('\n')],{type:'text/csv;charset=utf-8'});
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:'materialien.csv'});
+  a.click();
+  toast('📥 Materialien exportiert','g');
+}
+
+// ── SMART HOME ───────────────────────────────────────────────────
+var _shItems=[];
+var _shMode=null;
+const SH_COLORS={socket:'#fbbf24',lan:'#38bdf8',wifi:'#4ade80',camera_ip:'#f87171',sensor:'#c084fc',switch:'#fb923c'};
+const SH_ICONS ={socket:'🔌',lan:'🌐',wifi:'📶',camera_ip:'📷',sensor:'🌡',switch:'💡'};
+const SH_LABELS={socket:'Steckdose',lan:'LAN-Dose',wifi:'WLAN-AP',camera_ip:'IP-Kamera',sensor:'Sensor',switch:'Schalter'};
+
+function openSmartHome(){
+  loadSHItems();
+  renderSHList();
+  openM('m-smarthome');
+  // Enable click placement
+  _shMode='socket';
+  setSHMode('socket');
+}
+
+function setSHMode(mode){
+  _shMode=mode;
+  document.querySelectorAll('.sh-btn').forEach(b=>{
+    b.style.borderColor=b.getAttribute('data-mode')===mode?SH_COLORS[mode]:'var(--bd)';
+    b.style.color=b.getAttribute('data-mode')===mode?SH_COLORS[mode]:'var(--tx2)';
+  });
+}
+
+function placeSHItem(wx,wy){
+  if(!_shMode) return;
+  _shItems.push({id:'sh'+Date.now(),type:_shMode,wx,wy,floorId:curFloor,label:''});
+  saveSHItems(); renderSHList(); draw2D();
+}
+
+function renderSHList(){
+  const el=document.getElementById('sh-list'); if(!el) return;
+  const cur=_shItems.filter(i=>i.floorId===curFloor);
+  el.innerHTML=cur.length?cur.map(i=>
+    '<div style="display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid var(--bd)">'
+    +'<span style="color:'+SH_COLORS[i.type]+'">'+SH_ICONS[i.type]+'</span>'
+    +'<span style="flex:1;font-size:11px;color:var(--tx2)">'+SH_LABELS[i.type]
+    +' ('+i.wx.toFixed(1)+'m, '+i.wy.toFixed(1)+'m)</span>'
+    +'<button onclick="deleteSHItem(\''+i.id+'\')" style="background:none;border:none;color:var(--rd);cursor:pointer;font-size:11px">🗑</button>'
+    +'</div>'
+  ).join(''):'<div style="color:var(--tx3);padding:8px;font-size:11px">Noch keine Elemente gesetzt.</div>';
+}
+
+function deleteSHItem(id){
+  _shItems=_shItems.filter(i=>i.id!==id);
+  saveSHItems(); renderSHList(); draw2D();
+}
+
+function clearSmartHome(){
+  _shItems=_shItems.filter(i=>i.floorId!==curFloor);
+  saveSHItems(); renderSHList(); draw2D();
+}
+
+function saveSHItems(){ try{localStorage.setItem('csc-sh',JSON.stringify(_shItems));}catch(e){} }
+function loadSHItems(){ try{const s=localStorage.getItem('csc-sh');if(s)_shItems=JSON.parse(s);}catch(e){} }
+
+function drawSmartHome(ctx){
+  if(!_shItems.length) return;
+  ctx.save();
+  _shItems.filter(i=>i.floorId===curFloor).forEach(i=>{
+    const px=wx2cx(i.wx), py=wy2cy(i.wy);
+    const col=SH_COLORS[i.type]||'#888';
+    ctx.fillStyle=col; ctx.strokeStyle='#fff'; ctx.lineWidth=1.5;
+    ctx.beginPath();
+    if(i.type==='wifi'){ctx.arc(px,py,7,0,Math.PI*2);}
+    else{ctx.roundRect(px-7,py-7,14,14,3);}
+    ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#fff'; ctx.font='9px sans-serif';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(SH_ICONS[i.type],px,py);
+  });
+  ctx.restore();
+}
+
+// ── ZEITPLAN / TIMELINE ──────────────────────────────────────────
+var _timeline=[];
+
+function openTimeline(){
+  loadTimeline();
+  renderTimeline();
+  openM('m-timeline');
+}
+
+function addTimelineTask(){
+  const task=document.getElementById('tl-task')?.value.trim();
+  const start=document.getElementById('tl-start')?.value;
+  const end=document.getElementById('tl-end')?.value;
+  if(!task||!start||!end){ toast('Bitte alle Felder ausfüllen','r'); return; }
+  const COLORS=['#4ade80','#38bdf8','#fbbf24','#f87171','#c084fc','#fb923c','#34d399'];
+  _timeline.push({id:'tl'+Date.now(),task,start,end,color:COLORS[_timeline.length%COLORS.length]});
+  saveTimeline(); renderTimeline();
+  document.getElementById('tl-task').value='';
+}
+
+function renderTimeline(){
+  const el=document.getElementById('timeline-chart'); if(!el) return;
+  if(!_timeline.length){ el.innerHTML='<div style="font-size:11px;color:var(--tx3);padding:12px;text-align:center">Noch keine Aufgaben. Felder oben ausfüllen und + klicken.</div>'; return; }
+  
+  // Find date range
+  const dates=_timeline.flatMap(t=>[new Date(t.start),new Date(t.end)]);
+  const minD=new Date(Math.min(...dates)), maxD=new Date(Math.max(...dates));
+  const totalDays=(maxD-minD)/86400000||1;
+  
+  let h='<div style="font-size:9px;color:var(--tx3);margin-bottom:6px">'+minD.toLocaleDateString('de-DE')+' → '+maxD.toLocaleDateString('de-DE')+'</div>';
+  
+  _timeline.forEach((t,i)=>{
+    const s=new Date(t.start), e=new Date(t.end);
+    const left=((s-minD)/86400000/totalDays*100).toFixed(1);
+    const width=Math.max(3,((e-s)/86400000/totalDays*100)).toFixed(1);
+    h+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">'
+      +'<div style="width:140px;font-size:11px;color:var(--tx2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0">'+t.task+'</div>'
+      +'<div style="flex:1;background:var(--bg3);border-radius:3px;height:20px;position:relative;overflow:hidden">'
+      +'<div style="position:absolute;left:'+left+'%;width:'+width+'%;height:100%;background:'+t.color+';border-radius:3px;display:flex;align-items:center;padding:0 5px">'
+      +'<span style="font-size:9px;color:#fff;overflow:hidden;white-space:nowrap">'+t.task+'</span></div></div>'
+      +'<button onclick="deleteTLTask(\''+t.id+'\')" style="background:none;border:none;color:var(--rd);cursor:pointer;font-size:11px;flex-shrink:0">🗑</button>'
+      +'</div>';
+  });
+  el.innerHTML=h;
+}
+
+function deleteTLTask(id){ _timeline=_timeline.filter(t=>t.id!==id); saveTimeline(); renderTimeline(); }
+function saveTimeline(){ try{localStorage.setItem('csc-timeline',JSON.stringify(_timeline));}catch(e){} }
+function loadTimeline(){ try{const s=localStorage.getItem('csc-timeline');if(s)_timeline=JSON.parse(s);}catch(e){} }
+function exportTimelineCSV(){
+  const rows=['\uFEFFAufgabe,Start,Ende,Dauer(Tage)'];
+  _timeline.forEach(t=>rows.push(['"'+t.task+'"',t.start,t.end,Math.round((new Date(t.end)-new Date(t.start))/86400000)].join(',')));
+  const blob=new Blob([rows.join('\n')],{type:'text/csv;charset=utf-8'});
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:'zeitplan.csv'});
+  a.click();
+}
+
+// ── LAGEPLAN VERGLEICH ────────────────────────────────────────────
+var _compareData=null;
+
+function openLayoutComparison(){
+  document.getElementById('compare-panel').classList.add('vis');
+  renderComparePane('a', getPD()); // current
+  if(_compareData) renderComparePane('b', _compareData);
+  else document.getElementById('compare-file').click();
+}
+
+function closeComparison(){
+  document.getElementById('compare-panel').classList.remove('vis');
+}
+
+function loadCompareSnapshot(){
+  document.getElementById('compare-file').click();
+}
+
+function loadCompareFile(e){
+  const f=e.target.files[0]; if(!f) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      _compareData=JSON.parse(ev.target.result);
+      renderComparePane('b',_compareData);
+      document.getElementById('compare-panel').classList.add('vis');
+      renderComparePane('a',getPD());
+      toast('🔀 Vergleich geladen!','g');
+    }catch(err){ toast('Ungültige Datei','r'); }
+  };
+  reader.readAsText(f);
+  e.target.value='';
+}
+
+function renderComparePane(side, data){
+  const cv=document.getElementById('compare-cv-'+side); if(!cv) return;
+  const wrap=cv.parentElement;
+  cv.width=wrap.offsetWidth||600; cv.height=wrap.offsetHeight||400;
+  const ctx=cv.getContext('2d');
+  ctx.clearRect(0,0,cv.width,cv.height);
+  ctx.fillStyle='#111'; ctx.fillRect(0,0,cv.width,cv.height);
+  if(!data?.rooms?.length){ ctx.fillStyle='#555'; ctx.font='14px sans-serif'; ctx.textAlign='center'; ctx.fillText('Keine Daten',cv.width/2,cv.height/2); return; }
+  // Auto-fit scale
+  const allX=data.rooms.flatMap(r=>[r.x,r.x+r.w]);
+  const allY=data.rooms.flatMap(r=>[r.y,r.y+r.d]);
+  const minX=Math.min(...allX), maxX=Math.max(...allX);
+  const minY=Math.min(...allY), maxY=Math.max(...allY);
+  const pw=cv.width-40, ph=cv.height-40;
+  const scaleX=pw/(maxX-minX||1), scaleY=ph/(maxY-minY||1);
+  const scale=Math.min(scaleX,scaleY)*0.85;
+  const offX=20+(pw-((maxX-minX)*scale))/2;
+  const offY=20+(ph-((maxY-minY)*scale))/2;
+  const wx2=x=>(x-minX)*scale+offX;
+  const wy2=y=>(y-minY)*scale+offY;
+  // Draw rooms
+  data.rooms.forEach(r=>{
+    ctx.fillStyle=r.floorColor||'#c4b08a';
+    ctx.strokeStyle=r.wallColor||'#888'; ctx.lineWidth=2;
+    ctx.fillRect(wx2(r.x),wy2(r.y),r.w*scale,r.d*scale);
+    ctx.strokeRect(wx2(r.x),wy2(r.y),r.w*scale,r.d*scale);
+    ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.font='bold '+Math.max(8,Math.min(13,scale*0.8))+'px sans-serif';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(r.name,wx2(r.x+r.w/2),wy2(r.y+r.d/2));
+  });
+  // Draw objects as dots
+  (data.objects||[]).slice(0,50).forEach(o=>{
+    const it=data.objects.find?.(x=>x.typeId===o.typeId)||{};
+    ctx.fillStyle='rgba(74,222,128,0.5)';
+    ctx.beginPath(); ctx.arc(wx2(o.x),wy2(o.y),3,0,Math.PI*2); ctx.fill();
+  });
+}
+
 // ════════════════════════════════════════════════════════════════════════
 // ANIMATION LOOP
 // ════════════════════════════════════════════════════════════════════════
@@ -7523,6 +8095,8 @@ loadVisionBoards();
 loadWallExclusions();
 loadNotes();
 loadChangelog();
+loadSHItems();
+loadTimeline();
 setTimeout(initLiveCollaboration, 2000);
 loadSharedProject();
 loadVisionShare();
@@ -7569,7 +8143,7 @@ draw2D();
 
 renderFloorTabs();
 initUndoSystem();
-setTimeout(()=>toast('🌿 v3.16 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
+setTimeout(()=>toast('🌿 v3.17 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
 
 
 
@@ -7597,7 +8171,7 @@ function initAutoSave(){
   // Enable auto-saving from now on
   _autoSaveReady = true;
   renderVersionHistory();
-  toast('🌿 v3.16 | Auto-Save aktiv','g');
+  toast('🌿 v3.17 | Auto-Save aktiv','g');
 }
 
 
@@ -7918,7 +8492,7 @@ function build3DObj(o){
   const metal = o.metalness !== undefined ? o.metalness : (item.arch==='window'?0.0: item.arch==='door'?0.05:['Lager','Info'].includes(item.cat)?0.55:0.04);
 
   if(item.isKallax || (item.id&&item.id.startsWith('kallax'))){
-    buildKallax3DPro(g, item, o); // v3.16 Pro
+    buildKallax3DPro(g, item, o); // v3.17 Pro
   } else if(item.arch==='security'){
     buildSecurity3D(g, item, o);
   } else if(item.arch==='foil'){
@@ -8209,7 +8783,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
 
   <div style="padding:12px 20px;border-bottom:1px solid #1a2a1a;display:flex;align-items:center;gap:14px;flex-shrink:0">
     <div style="font-size:16px;font-weight:800;color:#4ade80">🌿 CSC Raumplaner — Vollständige Anleitung</div>
-    <div style="font-size:11px;color:#555">v3.16</div>
+    <div style="font-size:11px;color:#555">v3.17</div>
     <div style="flex:1"></div>
     <button class="tbt" onclick="startTutorial()" style="border-color:var(--gr);color:var(--gr);padding:6px 14px">▶ Tutorial starten</button>
     <button class="tbt" onclick="closeHelp()" style="padding:6px 14px">Schließen</button>
