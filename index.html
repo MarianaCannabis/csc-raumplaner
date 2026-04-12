@@ -461,7 +461,7 @@ canvas{display:block}
 #help-close:hover{color:#e8e4d8;background:#1a1a1a}
 
 
-/* ══ NEW FEATURES v3.23 ═══════════════════════════════════════════ */
+/* ══ NEW FEATURES v3.24 ═══════════════════════════════════════════ */
 
 /* Heatmap canvas */
 #heatmap-canvas{position:absolute;inset:0;pointer-events:none;opacity:0.55;display:none;z-index:8}
@@ -500,7 +500,7 @@ canvas{display:block}
 .vlink-inp{width:100%;padding:7px;background:var(--bg);border:1px solid var(--bd2);border-radius:4px;color:var(--tx);font-family:monospace;font-size:10px;margin:5px 0}
 
 
-/* ══ v3.23 FEATURES ══════════════════════════════════════════════ */
+/* ══ v3.24 FEATURES ══════════════════════════════════════════════ */
 /* Budget Tracker */
 #budget-panel{position:fixed;top:50px;right:360px;width:300px;background:var(--bg2);border:1px solid var(--bd2);border-radius:10px;z-index:200;display:none;box-shadow:0 4px 20px rgba(0,0,0,.6)}
 #budget-panel.vis{display:block}
@@ -534,7 +534,7 @@ canvas{display:block}
 .ruler-text{fill:#fbbf24;font-size:11px;font-weight:700;font-family:monospace}
 
 
-/* ══ DROPDOWN MENU SYSTEM v3.23 ══════════════════════════════════ */
+/* ══ DROPDOWN MENU SYSTEM v3.24 ══════════════════════════════════ */
 .tb-menu-group{display:flex;align-items:center;gap:2px}
 .tbm{position:relative}
 .tbm-btn{padding:4px 9px;background:transparent;border:1px solid transparent;border-radius:var(--r4);font-size:11px;cursor:pointer;color:var(--tx2);transition:.12s;white-space:nowrap;display:flex;align-items:center;gap:3px}
@@ -585,7 +585,7 @@ canvas{display:block}
 .compare-label{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);color:var(--gr);font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;z-index:10}
 
 
-/* ══ v3.23 ════════════════════════════════════════════════════════ */
+/* ══ v3.24 ════════════════════════════════════════════════════════ */
 /* Light mode */
 body.light-mode{--bg:#f5f5f0;--bg2:#ffffff;--bg3:#ebebeb;--bg4:#e0e0d8;
   --tx:#111;--tx2:#333;--tx3:#777;--bd:#ccc;--bd2:#aaa;
@@ -640,7 +640,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .font-sample:hover,.font-sample.active{border-color:var(--gr);color:var(--gr)}
 
 
-/* ══ v3.23 ════════════════════════════════════════════════════════ */
+/* ══ v3.24 ════════════════════════════════════════════════════════ */
 /* Inventory */
 .inv-row{display:grid;grid-template-columns:2fr 1.2fr 1.5fr 0.7fr;gap:6px;align-items:center;
   padding:5px 0;border-bottom:1px solid var(--bd);font-size:11px}
@@ -680,7 +680,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .fire-ok{color:#4ade80}.fire-warn{color:#f87171}.fire-info{color:#fbbf24}
 
 
-/* ══ v3.23 ════════════════════════════════════════════════════════ */
+/* ══ v3.24 ════════════════════════════════════════════════════════ */
 
 /* Command Palette */
 #cmd-palette{position:fixed;top:15%;left:50%;transform:translateX(-50%);
@@ -800,7 +800,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   cursor:pointer;min-width:60px;text-align:center}
 
 
-/* ══ v3.23 ════════════════════════════════════════════════════════ */
+/* ══ v3.24 ════════════════════════════════════════════════════════ */
 /* Badges */
 .badge-popup{position:fixed;top:60px;right:16px;background:#0d2010;
   border:1px solid #4ade80;border-radius:10px;padding:12px 16px;z-index:500;
@@ -828,7 +828,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   display:none;align-items:center;justify-content:center}
 #onboarding-overlay.vis{display:flex}
 #onboarding-box{background:var(--bg2);border:1px solid var(--gr3);border-radius:14px;
-  width:480px;max-width:95vw;padding:28px;text-align:center}
+  width:540px;max-width:96vw;padding:20px 24px;text-align:center;max-height:92vh;overflow-y:auto}
 .ob-icon{font-size:56px;margin-bottom:12px}
 .ob-title{font-size:20px;font-weight:800;color:var(--gr);margin-bottom:8px}
 .ob-text{font-size:12px;color:var(--tx2);line-height:1.8;margin-bottom:20px}
@@ -885,7 +885,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   border-radius:3px;padding:1px 6px;color:var(--tx3);font-family:monospace}
 
 
-/* ══ v3.23 ════════════════════════════════════════════════════════ */
+/* ══ v3.24 ════════════════════════════════════════════════════════ */
 
 /* Minimap */
 #minimap{position:absolute;bottom:8px;right:8px;width:140px;height:100px;
@@ -1060,7 +1060,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 <div id="topbar">
   <!-- LOGO -->
   <span class="logo">🌿 CSC <em>Raumplaner</em></span>
-  <span class="vbadge">v3.23</span>
+  <span class="vbadge">v3.24</span>
   <div class="tsep"></div>
 
   <!-- UNDO/REDO -->
@@ -3990,7 +3990,7 @@ function doPrint(){
     +'td,th{border:1px solid #ddd;padding:4px 6px;text-align:left}th{background:#f5f5f5}'
     +'@media print{body{padding:8px}}</style></head><body>'
     +'<h1>🌿 '+d.name+'</h1>'
-    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.23 · '+new Date().toLocaleDateString('de-DE')+'</div>'
+    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.24 · '+new Date().toLocaleDateString('de-DE')+'</div>'
     +'<img src="'+img+'">'
     +'<div class=grid>'
     +'<div class=box><h3>Räume ('+d.rooms.length+')</h3>'
@@ -5829,7 +5829,7 @@ function pickKallaxColor(id, part){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// KALLAX PRO EDITOR — Extended (v3.23)
+// KALLAX PRO EDITOR — Extended (v3.24)
 // ════════════════════════════════════════════════════════════════════════
 
 // Additional color palettes
@@ -7101,7 +7101,7 @@ function rebuild3DThrottled(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// NEW FEATURES v3.23
+// NEW FEATURES v3.24
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. RAUM-SNAP beim Platzieren ─────────────────────────────────────
@@ -7491,7 +7491,7 @@ function showCSCPanel(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// INTERAKTIVE ANLEITUNG v3.23
+// INTERAKTIVE ANLEITUNG v3.24
 // ════════════════════════════════════════════════════════════════════════
 function openHelp(page){
   document.getElementById('help-overlay').classList.add('open');
@@ -7632,7 +7632,7 @@ function renderTutStep(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.23 — ALLE NEUEN FEATURES
+// v3.24 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. KI MÖBELANORDNUNG ─────────────────────────────────────────────
@@ -8284,7 +8284,7 @@ function removeWallCtxMenu(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.23 — ALLE NEUEN FEATURES
+// v3.24 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── FURNITURE PRICES DATABASE ────────────────────────────────────────
@@ -8830,7 +8830,7 @@ const _origAddRoom = addRoom;
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.23 — DROPDOWN MENU SYSTEM + NEW FEATURES
+// v3.24 — DROPDOWN MENU SYSTEM + NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── DROPDOWN MENU SYSTEM ─────────────────────────────────────────────
@@ -9180,7 +9180,7 @@ function renderComparePane(side, data){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.23 — ALL NEW FEATURES
+// v3.24 — ALL NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. DARK/LIGHT MODE ───────────────────────────────────────────────
@@ -9555,7 +9555,7 @@ function registerServiceWorker(){
   if(!location.protocol.startsWith('http')){ console.log('SW: nur auf https verfügbar'); return; }
   // Inline SW as blob
   const swCode=`
-    const CACHE='csc-v3.23';
+    const CACHE='csc-v3.24';
     self.addEventListener('install',e=>e.waitUntil(
       caches.open(CACHE).then(c=>c.add('/'))
     ));
@@ -9629,7 +9629,7 @@ function registerServiceWorker(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.23 — BRANDSCHUTZ / AKUSTIK / ENERGIE / REINIGUNG / INVENTAR /
+// v3.24 — BRANDSCHUTZ / AKUSTIK / ENERGIE / REINIGUNG / INVENTAR /
 //          HEATMAP MITGLIEDER / LIEFERWEGE / BARCODE
 // ════════════════════════════════════════════════════════════════════════
 
@@ -10042,7 +10042,7 @@ function drawRoutes(ctx){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.23 — ALLE AUTOMATISIERUNGS-FEATURES
+// v3.24 — ALLE AUTOMATISIERUNGS-FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -10808,7 +10808,7 @@ function addDashWidget(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.23 — ALLE NEUEN FEATURES
+// v3.24 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -10832,18 +10832,277 @@ function initPWA(){
 // 2. ONBOARDING
 // ════════════════════════════════════════════════════════════════════════
 const OB_STEPS=[
-  {icon:'🌿',title:'Willkommen beim CSC Raumplaner!',
-   text:'Der professionelle Planungs-Assistent für deine Cannabis Social Club Ausgabestelle. In 2 Minuten bist du startklar.'},
-  {icon:'🏗',title:'Schritt 1: Räume einzeichnen',
-   text:'Klicke auf <b>⬜ Raum zeichnen</b> oben und ziehe diagonal auf dem Grundriss. Oder nutze <b>🏗 Vorlagen</b> für fertige Layouts in einem Klick!'},
-  {icon:'🛋',title:'Schritt 2: Einrichten',
-   text:'Links unter <b>🛋 Möbel</b> findest du über 80 Objekte. Einfach anklicken oder auf den Grundriss ziehen. Türen und Fenster schneiden automatisch Öffnungen.'},
-  {icon:'🤖',title:'Schritt 3: KI nutzen!',
-   text:'Tippe rechts im <b>🤖 KI-Assistent</b>: <i>"Erstelle eine vollständige CSC-Ausgabestelle"</i> — die KI plant alles automatisch für dich!'},
-  {icon:'⌨',title:'Tipp: Strg+K',
-   text:'Öffnet die <b>Befehlspalette</b> — suche nach jeder Funktion ohne scrollen. Oder drücke <b>?</b> für alle Tastenkürzel.'},
-  {icon:'🌿',title:'Fertig! Los geht\'s.',
-   text:'Dein Projekt wird automatisch gespeichert. Klicke <b>🌿 CSC</b> für die Checkliste, <b>🖥 Dashboard</b> für den Überblick.'},
+  {
+    icon:'🌿',
+    title:'Willkommen beim CSC Raumplaner Pro!',
+    text:'Dein professioneller Planungs-Assistent für Cannabis Social Club Ausgabestellen. Lass uns gemeinsam loslegen — in ca. 2 Minuten kannst du deinen ersten Plan erstellen.',
+    img:`<svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:8px;margin:10px 0">
+  <rect width="460" height="200" fill="#0a0f0a" rx="8"/>
+  <!-- Topbar -->
+  <rect x="0" y="0" width="460" height="32" fill="#111" rx="8"/>
+  <rect x="0" y="20" width="460" height="12" fill="#111"/>
+  <text x="12" y="20" fill="#4ade80" font-size="11" font-weight="bold" font-family="sans-serif">🌿 CSC Raumplaner</text>
+  <rect x="190" y="8" width="50" height="16" fill="#1a3a1a" rx="3"/>
+  <text x="215" y="19" fill="#4ade80" font-size="9" text-anchor="middle" font-family="sans-serif">📁 Datei</text>
+  <rect x="245" y="8" width="50" height="16" fill="#1a3a1a" rx="3"/>
+  <text x="270" y="19" fill="#4ade80" font-size="9" text-anchor="middle" font-family="sans-serif">👁 Ansicht</text>
+  <rect x="300" y="8" width="52" height="16" fill="#1a3a1a" rx="3"/>
+  <text x="326" y="19" fill="#4ade80" font-size="9" text-anchor="middle" font-family="sans-serif">📊 Analyse</text>
+  <!-- Left panel -->
+  <rect x="0" y="32" width="52" height="168" fill="#111" rx="0"/>
+  <text x="26" y="58" fill="#4ade80" font-size="14" text-anchor="middle">📐</text>
+  <text x="26" y="72" fill="#666" font-size="7" text-anchor="middle" font-family="sans-serif">Räume</text>
+  <text x="26" y="98" fill="#888" font-size="14" text-anchor="middle">🛋</text>
+  <text x="26" y="112" fill="#666" font-size="7" text-anchor="middle" font-family="sans-serif">Möbel</text>
+  <text x="26" y="138" fill="#888" font-size="14" text-anchor="middle">🏗</text>
+  <text x="26" y="152" fill="#666" font-size="7" text-anchor="middle" font-family="sans-serif">Bau</text>
+  <text x="26" y="178" fill="#888" font-size="14" text-anchor="middle">🔒</text>
+  <!-- Canvas -->
+  <rect x="52" y="32" width="280" height="168" fill="#1a1e26"/>
+  <!-- Grid -->
+  <line x1="52" y1="72" x2="332" y2="72" stroke="#222" stroke-width="0.5"/>
+  <line x1="52" y1="112" x2="332" y2="112" stroke="#222" stroke-width="0.5"/>
+  <line x1="52" y1="152" x2="332" y2="152" stroke="#222" stroke-width="0.5"/>
+  <line x1="132" y1="32" x2="132" y2="200" stroke="#222" stroke-width="0.5"/>
+  <line x1="212" y1="32" x2="212" y2="200" stroke="#222" stroke-width="0.5"/>
+  <line x1="292" y1="32" x2="292" y2="200" stroke="#222" stroke-width="0.5"/>
+  <!-- Rooms -->
+  <rect x="70" y="48" width="140" height="90" fill="#c4b08a" fill-opacity="0.4" stroke="#ddd4be" stroke-width="2" rx="1"/>
+  <text x="140" y="92" fill="#e8e4d8" font-size="9" text-anchor="middle" font-family="sans-serif">Empfang &amp; Ausgabe</text>
+  <rect x="215" y="48" width="90" height="90" fill="#8a9a7c" fill-opacity="0.4" stroke="#c4ccb8" stroke-width="2" rx="1"/>
+  <text x="260" y="92" fill="#e8e4d8" font-size="9" text-anchor="middle" font-family="sans-serif">Sozialbereich</text>
+  <rect x="70" y="143" width="60" height="48" fill="#cccccc" fill-opacity="0.3" stroke="#e0e0e0" stroke-width="2" rx="1"/>
+  <text x="100" y="170" fill="#e8e4d8" font-size="8" text-anchor="middle" font-family="sans-serif">WC</text>
+  <!-- Right panel -->
+  <rect x="332" y="32" width="128" height="168" fill="#111"/>
+  <rect x="332" y="32" width="128" height="22" fill="#1a1a1a"/>
+  <text x="360" y="45" fill="#4ade80" font-size="10" font-family="sans-serif">🤖 KI-Assistent</text>
+  <rect x="340" y="62" width="110" height="50" fill="#0d2010" rx="4"/>
+  <text x="395" y="78" fill="#9a9288" font-size="7" text-anchor="middle" font-family="sans-serif">Schreibe was du</text>
+  <text x="395" y="88" fill="#9a9288" font-size="7" text-anchor="middle" font-family="sans-serif">brauchst...</text>
+  <rect x="340" y="120" width="110" height="16" fill="#1a3a1a" rx="8"/>
+  <text x="395" y="131" fill="#4ade80" font-size="7" text-anchor="middle" font-family="sans-serif">🌿 Komplette CSC erstellen</text>
+  <rect x="340" y="140" width="110" height="16" fill="#1a3a1a" rx="8"/>
+  <text x="395" y="151" fill="#4ade80" font-size="7" text-anchor="middle" font-family="sans-serif">⚡ Auto-Optimierung</text>
+  <rect x="340" y="160" width="110" height="16" fill="#1a3a1a" rx="8"/>
+  <text x="395" y="171" fill="#4ade80" font-size="7" text-anchor="middle" font-family="sans-serif">🔍 Grundriss analysieren</text>
+</svg>`
+  },
+  {
+    icon:'⬜',
+    title:'Schritt 1: Räume einzeichnen',
+    text:'Klicke auf <b>⬜ Raum zeichnen</b> in der Toolbar und ziehe diagonal auf dem Grundriss. Oder nutze <b>🏗 Vorlagen</b> für ein fertiges CSC-Layout in einem einzigen Klick!',
+    img:`<svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:8px;margin:10px 0">
+  <rect width="460" height="200" fill="#1a1e26" rx="8"/>
+  <!-- Step indicator -->
+  <rect x="0" y="0" width="460" height="28" fill="#111" rx="8"/>
+  <rect x="0" y="18" width="460" height="10" fill="#111"/>
+  <rect x="10" y="6" width="100" height="16" fill="#4ade80" rx="3"/>
+  <text x="60" y="17" fill="#111" font-size="9" text-anchor="middle" font-weight="bold" font-family="sans-serif">⬜ Raum zeichnen</text>
+  <rect x="120" y="6" width="80" height="16" fill="#1a3a1a" rx="3"/>
+  <text x="160" y="17" fill="#4ade80" font-size="9" text-anchor="middle" font-family="sans-serif">🏗 Vorlagen</text>
+  <!-- Canvas with animation hint -->
+  <rect x="30" y="40" width="240" height="140" fill="#0d2010" stroke="#4ade80" stroke-width="2" stroke-dasharray="6,3" rx="4"/>
+  <text x="150" y="85" fill="#4ade80" font-size="11" text-anchor="middle" font-family="sans-serif">Klick hier</text>
+  <text x="150" y="98" fill="#4ade80" font-size="11" text-anchor="middle" font-family="sans-serif">↘ diagonal ziehen</text>
+  <!-- Cursor arrows -->
+  <polygon points="50,55 58,55 54,63" fill="#4ade80" opacity="0.9"/>
+  <line x1="54" y1="63" x2="254" y2="163" stroke="#4ade80" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.6"/>
+  <polygon points="250,163 258,163 254,171" fill="#4ade80" opacity="0.9"/>
+  <!-- Result preview -->
+  <rect x="290" y="40" width="150" height="140" fill="#222" rx="4"/>
+  <text x="365" y="60" fill="#666" font-size="8" text-anchor="middle" font-family="sans-serif">Ergebnis:</text>
+  <rect x="305" y="70" width="120" height="90" fill="#c4b08a" fill-opacity="0.5" stroke="#ddd4be" stroke-width="2" rx="1"/>
+  <text x="365" y="112" fill="#e8e4d8" font-size="9" text-anchor="middle" font-family="sans-serif">Empfang</text>
+  <text x="365" y="123" fill="#9a9" font-size="8" text-anchor="middle" font-family="sans-serif">9 × 7 m</text>
+  <text x="365" y="175" fill="#555" font-size="8" text-anchor="middle" font-family="sans-serif">Doppelklick = Namen ändern</text>
+  <!-- Shortcut hint -->
+  <rect x="30" y="185" width="240" height="12" fill="rgba(0,0,0,.4)" rx="3"/>
+  <text x="150" y="193" fill="#4ade80" font-size="7" text-anchor="middle" font-family="sans-serif">💡 Tipp: 🏗 Vorlagen = fertiges CSC-Layout in 1 Klick</text>
+</svg>`
+  },
+  {
+    icon:'🛋',
+    title:'Schritt 2: Möbel & Ausstattung',
+    text:'Linke Sidebar → <b>🛋 Möbel</b>: Über 170 Objekte in ausklappbaren Kategorien. Klicken oder ziehen zum Platzieren. <b>Rechtsklick</b> auf jedes Objekt öffnet ein Kontextmenü.',
+    img:`<svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:8px;margin:10px 0">
+  <rect width="460" height="200" fill="#1a1e26" rx="8"/>
+  <!-- Left panel catalog -->
+  <rect x="0" y="0" width="130" height="200" fill="#111" rx="8"/>
+  <rect x="110" y="0" width="20" height="200" fill="#111"/>
+  <!-- Category headers -->
+  <rect x="5" y="5" width="120" height="18" fill="#1a3a1a" rx="3"/>
+  <text x="65" y="16" fill="#4ade80" font-size="9" text-anchor="middle" font-family="sans-serif">🏪 Empfang (10) ▾</text>
+  <!-- Items grid -->
+  <rect x="5" y="28" width="55" height="42" fill="#1a2a1a" stroke="#1a3a1a" stroke-width="1" rx="3"/>
+  <text x="32" y="46" fill="#e8e4d8" font-size="14" text-anchor="middle">🏪</text>
+  <text x="32" y="62" fill="#9a9288" font-size="6" text-anchor="middle" font-family="sans-serif">Empfangs-theke</text>
+  <rect x="65" y="28" width="55" height="42" fill="#1a2a1a" stroke="#1a3a1a" stroke-width="1" rx="3"/>
+  <text x="92" y="46" fill="#e8e4d8" font-size="14" text-anchor="middle">🪑</text>
+  <text x="92" y="62" fill="#9a9288" font-size="6" text-anchor="middle" font-family="sans-serif">Warte-Sofa</text>
+  <rect x="5" y="75" width="55" height="42" fill="#1a2a1a" stroke="#1a3a1a" stroke-width="1" rx="3"/>
+  <text x="32" y="92" fill="#e8e4d8" font-size="14" text-anchor="middle">🛋</text>
+  <text x="32" y="107" fill="#9a9288" font-size="6" text-anchor="middle" font-family="sans-serif">L-Sofa</text>
+  <rect x="65" y="75" width="55" height="42" fill="#1a2a1a" stroke="#1a3a1a" stroke-width="1" rx="3"/>
+  <text x="92" y="92" fill="#e8e4d8" font-size="14" text-anchor="middle">📱</text>
+  <text x="92" y="107" fill="#9a9288" font-size="6" text-anchor="middle" font-family="sans-serif">Scanner</text>
+  <!-- Collapsed category -->
+  <rect x="5" y="122" width="120" height="18" fill="#151f15" rx="3"/>
+  <text x="65" y="133" fill="#555" font-size="9" text-anchor="middle" font-family="sans-serif">🛋 Sozial (16) ▸</text>
+  <rect x="5" y="144" width="120" height="18" fill="#151f15" rx="3"/>
+  <text x="65" y="155" fill="#555" font-size="9" text-anchor="middle" font-family="sans-serif">🍳 Küche (10) ▸</text>
+  <rect x="5" y="166" width="120" height="18" fill="#151f15" rx="3"/>
+  <text x="65" y="177" fill="#555" font-size="9" text-anchor="middle" font-family="sans-serif">🔒 Sicherheit (12) ▸</text>
+  <!-- Arrow from catalog to canvas -->
+  <path d="M132,50 Q160,50 165,55" stroke="#4ade80" stroke-width="1.5" fill="none" stroke-dasharray="3,2" marker-end="url(#arr)"/>
+  <!-- Canvas with placed items -->
+  <rect x="130" y="0" width="330" height="200" fill="#1a1e26"/>
+  <rect x="145" y="20" width="200" height="160" fill="#c4b08a" fill-opacity="0.3" stroke="#ddd4be" stroke-width="2" rx="1"/>
+  <!-- Placed furniture -->
+  <rect x="155" y="30" width="60" height="20" fill="#b86c1a" fill-opacity="0.7" rx="2"/>
+  <text x="185" y="43" fill="#fff" font-size="7" text-anchor="middle" font-family="sans-serif">Theke</text>
+  <rect x="155" y="60" width="55" height="22" fill="#2d5e50" fill-opacity="0.7" rx="2"/>
+  <text x="182" y="74" fill="#fff" font-size="7" text-anchor="middle" font-family="sans-serif">Sofa</text>
+  <rect x="220" y="60" width="40" height="22" fill="#4a4a6a" fill-opacity="0.7" rx="2"/>
+  <text x="240" y="74" fill="#fff" font-size="7" text-anchor="middle" font-family="sans-serif">Tisch</text>
+  <!-- Ghost preview -->
+  <rect x="270" y="30" width="30" height="25" fill="rgba(74,222,128,0.15)" stroke="#4ade80" stroke-width="1.5" stroke-dasharray="3,2" rx="2"/>
+  <text x="285" y="47" fill="#4ade80" font-size="11" text-anchor="middle">🛋</text>
+  <text x="285" y="15" fill="#4ade80" font-size="8" text-anchor="middle" font-family="sans-serif">← Ghost-Vorschau</text>
+  <!-- Right-click menu -->
+  <rect x="355" y="60" width="95" height="110" fill="#1a1a1a" stroke="#333" stroke-width="1" rx="4"/>
+  <text x="402" y="74" fill="#555" font-size="7" text-anchor="middle" font-family="sans-serif">🛋 Sofa</text>
+  <line x1="360" y1="78" x2="445" y2="78" stroke="#333"/>
+  <text x="367" y="90" fill="#9a9288" font-size="8" font-family="sans-serif">✏️ Eigenschaften</text>
+  <text x="367" y="103" fill="#9a9288" font-size="8" font-family="sans-serif">📋 Kopieren</text>
+  <text x="367" y="116" fill="#9a9288" font-size="8" font-family="sans-serif">🔄 Drehen</text>
+  <text x="367" y="129" fill="#9a9288" font-size="8" font-family="sans-serif">📌 Anpinnen</text>
+  <line x1="360" y1="134" x2="445" y2="134" stroke="#333"/>
+  <text x="367" y="146" fill="#f87171" font-size="8" font-family="sans-serif">🗑 Löschen</text>
+  <text x="367" y="162" fill="#555" font-size="7" font-family="sans-serif">Rechtsklick = Menü</text>
+</svg>`
+  },
+  {
+    icon:'🤖',
+    title:'Schritt 3: KI macht alles automatisch',
+    text:'Rechte Sidebar → <b>🤖 KI-Assistent</b>. Schreibe einfach was du brauchst — die KI plant, platziert und optimiert alles für dich. Kein manuelles Zeichnen nötig!',
+    img:`<svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:8px;margin:10px 0">
+  <rect width="460" height="200" fill="#0a0f0a" rx="8"/>
+  <!-- Chat messages -->
+  <rect x="10" y="10" width="440" height="180" fill="#111" rx="8"/>
+  <!-- User message -->
+  <rect x="200" y="20" width="230" height="35" fill="#1a3a1a" rx="6"/>
+  <text x="315" y="34" fill="#4ade80" font-size="8" text-anchor="middle" font-family="sans-serif">Erstelle eine vollständige</text>
+  <text x="315" y="45" fill="#4ade80" font-size="8" text-anchor="middle" font-family="sans-serif">CSC-Ausgabestelle 100m²</text>
+  <!-- AI response bubble -->
+  <rect x="20" y="65" width="290" height="90" fill="#0d2010" stroke="#1a4020" stroke-width="1" rx="6"/>
+  <text x="35" y="80" fill="#4ade80" font-size="8" font-family="sans-serif">🤖 KI plant deine Ausgabestelle...</text>
+  <rect x="30" y="88" width="270" height="8" fill="#1a4020" rx="2"/>
+  <text x="35" y="95" fill="#9a9288" font-size="7" font-family="sans-serif">✓ Empfang 9×7m erstellt</text>
+  <text x="35" y="107" fill="#9a9288" font-size="7" font-family="sans-serif">✓ Lagerraum 5×6m erstellt</text>
+  <text x="35" y="119" fill="#9a9288" font-size="7" font-family="sans-serif">✓ Sozialbereich 8×7m eingerichtet</text>
+  <text x="35" y="131" fill="#9a9288" font-size="7" font-family="sans-serif">✓ 23 Möbel platziert</text>
+  <text x="35" y="143" fill="#9a9288" font-size="7" font-family="sans-serif">✓ Sicherheitsausstattung installiert</text>
+  <text x="35" y="155" fill="#4ade80" font-size="7" font-family="sans-serif">✅ Fertig! 8/12 KCanG-Punkte erfüllt</text>
+  <!-- Input box -->
+  <rect x="20" y="162" width="330" height="22" fill="#111" stroke="#1a3a1a" stroke-width="1" rx="4"/>
+  <text x="30" y="176" fill="#555" font-size="8" font-family="sans-serif">Schreibe einen Befehl...</text>
+  <rect x="355" y="162" width="65" height="22" fill="#166534" rx="4"/>
+  <text x="387" y="176" fill="#fff" font-size="8" text-anchor="middle" font-family="sans-serif">▶ Senden</text>
+  <!-- KI chips -->
+  <rect x="20" y="188" width="80" height="10" fill="#0d2010" stroke="#1a3a1a" stroke-width="0.5" rx="5"/>
+  <text x="60" y="195" fill="#4ade80" font-size="6" text-anchor="middle" font-family="sans-serif">🌿 CSC erstellen</text>
+  <rect x="105" y="188" width="70" height="10" fill="#0d2010" stroke="#1a3a1a" stroke-width="0.5" rx="5"/>
+  <text x="140" y="195" fill="#4ade80" font-size="6" text-anchor="middle" font-family="sans-serif">⚡ Optimieren</text>
+  <rect x="180" y="188" width="70" height="10" fill="#0d2010" stroke="#1a3a1a" stroke-width="0.5" rx="5"/>
+  <text x="215" y="195" fill="#4ade80" font-size="6" text-anchor="middle" font-family="sans-serif">💰 Kosten</text>
+</svg>`
+  },
+  {
+    icon:'⌨',
+    title:'Schritt 4: Alles blitzschnell finden',
+    text:'Drücke <b>Strg+K</b> für die Befehlspalette — suche nach jeder Funktion in Sekunden. Drücke <b>?</b> um alle Tastenkürzel zu sehen. <b>F</b> = Ansicht einpassen.',
+    img:`<svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:8px;margin:10px 0">
+  <rect width="460" height="200" fill="rgba(0,0,0,.85)" rx="8"/>
+  <!-- Command palette box -->
+  <rect x="60" y="20" width="340" height="170" fill="#111" stroke="#4ade80" stroke-width="1.5" rx="8"/>
+  <!-- Search bar -->
+  <rect x="70" y="30" width="320" height="30" fill="#0a0f0a" rx="4"/>
+  <text x="82" y="48" fill="#555" font-size="11" font-family="sans-serif">🔍 Funktion suchen... (Strg+K)</text>
+  <line x1="70" y1="62" x2="390" y2="62" stroke="#1a2a1a"/>
+  <!-- Results -->
+  <rect x="70" y="65" width="320" height="22" fill="#0d2010" rx="3"/>
+  <text x="82" y="79" fill="#4ade80" font-size="10" font-family="sans-serif">⚡ Auto-Optimierung</text>
+  <text x="370" y="79" fill="#555" font-size="9" text-anchor="end" font-family="sans-serif">Enter ↵</text>
+
+  <text x="82" y="101" fill="#9a9288" font-size="10" font-family="sans-serif">💰 Budget anzeigen</text>
+  <text x="82" y="121" fill="#9a9288" font-size="10" font-family="sans-serif">🧯 Brandschutz berechnen</text>
+  <text x="82" y="141" fill="#9a9288" font-size="10" font-family="sans-serif">📋 KCanG-Checkliste</text>
+  <text x="82" y="161" fill="#9a9288" font-size="10" font-family="sans-serif">🔗 Projekt teilen</text>
+  <!-- Shortcut hints -->
+  <text x="70" y="185" fill="#4ade80" font-size="8" font-family="sans-serif">↑↓ navigieren · Enter = ausführen · Esc = schließen · ? = alle Shortcuts</text>
+  <!-- Keyboard shortcuts overlay hint -->
+  <rect x="360" y="65" width="30" height="14" fill="#1a1a1a" stroke="#333" stroke-width="1" rx="2"/>
+  <text x="375" y="74" fill="#888" font-size="7" text-anchor="middle" font-family="monospace">?</text>
+</svg>`
+  },
+  {
+    icon:'🖥',
+    title:'Fertig! Dein Dashboard wartet.',
+    text:'Das <b>🖥 Dashboard</b> zeigt alle wichtigen Kennzahlen: Kapazität, Budget, KCanG-Status, Aufgaben und Projektphase. Klicke auf <b>🌿 CSC</b> für die Checkliste.',
+    img:`<svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:8px;margin:10px 0">
+  <rect width="460" height="200" fill="#111" rx="8"/>
+  <!-- Header -->
+  <rect x="0" y="0" width="460" height="28" fill="#0a0f0a" rx="8"/>
+  <rect x="0" y="16" width="460" height="12" fill="#0a0f0a"/>
+  <text x="14" y="18" fill="#4ade80" font-size="11" font-weight="bold" font-family="sans-serif">🌿 Dashboard</text>
+  <!-- Phase bar -->
+  <rect x="200" y="6" width="30" height="14" fill="#0d2010" stroke="#4ade80" stroke-width="1" rx="2"/>
+  <text x="215" y="15" fill="#4ade80" font-size="7" text-anchor="middle" font-family="sans-serif">📐 Planung</text>
+  <text x="235" y="15" fill="#555" font-size="9">›</text>
+  <rect x="240" y="6" width="42" height="14" fill="#111" stroke="#333" stroke-width="1" rx="2"/>
+  <text x="261" y="15" fill="#555" font-size="7" text-anchor="middle" font-family="sans-serif">📋 Genehmigung</text>
+  <!-- Widgets -->
+  <rect x="8" y="34" width="100" height="75" fill="#0a0f0a" stroke="#1a3a1a" stroke-width="1" rx="5"/>
+  <text x="58" y="50" fill="#555" font-size="7" text-anchor="middle" font-family="sans-serif">👥 KAPAZITÄT</text>
+  <text x="58" y="78" fill="#4ade80" font-size="28" text-anchor="middle" font-weight="bold" font-family="sans-serif">47</text>
+  <text x="58" y="95" fill="#555" font-size="7" text-anchor="middle" font-family="sans-serif">Personen gleichzeitig</text>
+
+  <rect x="114" y="34" width="100" height="75" fill="#0a0f0a" stroke="#1a3a1a" stroke-width="1" rx="5"/>
+  <text x="164" y="50" fill="#555" font-size="7" text-anchor="middle" font-family="sans-serif">💰 BUDGET</text>
+  <text x="164" y="74" fill="#4ade80" font-size="18" text-anchor="middle" font-weight="bold" font-family="sans-serif">24.850</text>
+  <text x="164" y="87" fill="#4ade80" font-size="9" text-anchor="middle" font-family="sans-serif">€</text>
+  <text x="164" y="100" fill="#555" font-size="7" text-anchor="middle" font-family="sans-serif">geschätzte Kosten</text>
+
+  <rect x="220" y="34" width="100" height="75" fill="#0a0f0a" stroke="#1a3a1a" stroke-width="1" rx="5"/>
+  <text x="270" y="50" fill="#555" font-size="7" text-anchor="middle" font-family="sans-serif">🌿 KCanG</text>
+  <text x="270" y="78" fill="#4ade80" font-size="28" text-anchor="middle" font-weight="bold" font-family="sans-serif">10</text>
+  <text x="270" y="95" fill="#555" font-size="7" text-anchor="middle" font-family="sans-serif">/ 12 Punkte ✓</text>
+  <rect x="228" y="100" width="84" height="5" fill="#1a1a1a" rx="2"/>
+  <rect x="228" y="100" width="70" height="5" fill="#4ade80" rx="2"/>
+
+  <rect x="326" y="34" width="126" height="75" fill="#0a0f0a" stroke="#1a3a1a" stroke-width="1" rx="5"/>
+  <text x="389" y="50" fill="#555" font-size="7" text-anchor="middle" font-family="sans-serif">✅ AUFGABEN</text>
+  <text x="389" y="75" fill="#fbbf24" font-size="24" text-anchor="middle" font-weight="bold" font-family="sans-serif">3</text>
+  <text x="389" y="90" fill="#555" font-size="7" text-anchor="middle" font-family="sans-serif">offen · 1 überfällig</text>
+  <text x="339" y="103" fill="#555" font-size="7" font-family="sans-serif">⬜ Feuerlöscher kaufen</text>
+
+  <!-- Bottom widgets -->
+  <rect x="8" y="116" width="212" height="75" fill="#0a0f0a" stroke="#1a3a1a" stroke-width="1" rx="5"/>
+  <text x="114" y="130" fill="#555" font-size="7" text-anchor="middle" font-family="sans-serif">🏠 RÄUME (5)</text>
+  <text x="20" y="144" fill="#9a9288" font-size="7" font-family="sans-serif">Empfang &amp; Ausgabe    9×7m</text>
+  <text x="20" y="155" fill="#9a9288" font-size="7" font-family="sans-serif">Lagerraum              5×6m</text>
+  <text x="20" y="166" fill="#9a9288" font-size="7" font-family="sans-serif">Sozialbereich          8×7m</text>
+  <text x="20" y="177" fill="#9a9288" font-size="7" font-family="sans-serif">WC                     3×3m</text>
+
+  <rect x="226" y="116" width="226" height="75" fill="#0a0f0a" stroke="#1a3a1a" stroke-width="1" rx="5"/>
+  <text x="339" y="130" fill="#555" font-size="7" text-anchor="middle" font-family="sans-serif">📌 PROJEKTPHASE</text>
+  <text x="339" y="152" fill="#4ade80" font-size="14" text-anchor="middle" font-weight="bold" font-family="sans-serif">📐 Planung</text>
+  <rect x="236" y="160" width="206" height="6" fill="#1a1a1a" rx="3"/>
+  <rect x="236" y="160" width="55" height="6" fill="#4ade80" rx="3"/>
+  <text x="339" y="183" fill="#555" font-size="7" text-anchor="middle" font-family="sans-serif">Schritt 1 von 4</text>
+</svg>`
+  },
 ];
 var _obStep=0;
 
@@ -10867,6 +11126,16 @@ function renderObStep(){
   document.getElementById('ob-icon').textContent=s.icon;
   document.getElementById('ob-title').textContent=s.title;
   document.getElementById('ob-text').innerHTML=s.text;
+  // Show image if available
+  let imgEl=document.getElementById('ob-img');
+  if(!imgEl){
+    imgEl=document.createElement('div');
+    imgEl.id='ob-img';
+    imgEl.style.cssText='margin:8px 0;overflow:hidden;border-radius:8px;line-height:0';
+    const tt=document.getElementById('ob-text');
+    tt.parentNode.insertBefore(imgEl,tt);
+  }
+  imgEl.innerHTML=s.img||'';
   const dots=document.getElementById('ob-dots');
   dots.innerHTML=OB_STEPS.map((_,i)=>'<div class="ob-dot'+(i===_obStep?' cur':'')+'" onclick="_obStep='+i+';renderObStep()"></div>').join('');
   const btn=document.getElementById('ob-next');
@@ -11354,7 +11623,7 @@ function showGrowthPlan(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.23 — MINIMAP / SNAP / GUIDED / UNDO-TL / GROUPS / SEASONS / MORE
+// v3.24 — MINIMAP / SNAP / GUIDED / UNDO-TL / GROUPS / SEASONS / MORE
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -11885,7 +12154,7 @@ function addTooltip(el,text){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// EXTRA FEATURES v3.23
+// EXTRA FEATURES v3.24
 // ════════════════════════════════════════════════════════════════════════
 
 // ── PRINT PREVIEW ────────────────────────────────────────────────────
@@ -12151,7 +12420,7 @@ draw2D();
 
 renderFloorTabs();
 initUndoSystem();
-setTimeout(()=>toast('🌿 v3.23 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
+setTimeout(()=>toast('🌿 v3.24 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
 
 
 
@@ -12179,7 +12448,7 @@ function initAutoSave(){
   // Enable auto-saving from now on
   _autoSaveReady = true;
   renderVersionHistory();
-  toast('🌿 v3.23 | Auto-Save aktiv','g');
+  toast('🌿 v3.24 | Auto-Save aktiv','g');
 }
 
 
@@ -12500,7 +12769,7 @@ function build3DObj(o){
   const metal = o.metalness !== undefined ? o.metalness : (item.arch==='window'?0.0: item.arch==='door'?0.05:['Lager','Info'].includes(item.cat)?0.55:0.04);
 
   if(item.isKallax || (item.id&&item.id.startsWith('kallax'))){
-    buildKallax3DPro(g, item, o); // v3.23 Pro
+    buildKallax3DPro(g, item, o); // v3.24 Pro
   } else if(item.arch==='security'){
     buildSecurity3D(g, item, o);
   } else if(item.arch==='foil'){
@@ -12791,9 +13060,10 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
 
   <div style="padding:12px 20px;border-bottom:1px solid #1a2a1a;display:flex;align-items:center;gap:14px;flex-shrink:0">
     <div style="font-size:16px;font-weight:800;color:#4ade80">🌿 CSC Raumplaner — Vollständige Anleitung</div>
-    <div style="font-size:11px;color:#555">v3.23</div>
+    <div style="font-size:11px;color:#555">v3.24</div>
     <div style="flex:1"></div>
-    <button class="tbt" onclick="startTutorial()" style="border-color:var(--gr);color:var(--gr);padding:6px 14px">▶ Tutorial starten</button>
+    <button class="tbt" onclick="startOnboarding()" style="border-color:var(--gr);color:var(--gr);padding:6px 14px">▶ Illustriertes Intro</button>
+    <button class="tbt" onclick="startTutorial()" style="padding:6px 14px">🎯 Interaktives Tutorial</button>
     <button class="tbt" onclick="closeHelp()" style="padding:6px 14px">Schließen</button>
   </div>
 
@@ -12945,6 +13215,34 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
       <div class="help-page" id="hp-rooms">
         <h1>⬜ Räume zeichnen</h1>
         <div class="subtitle">Grundriss aufbauen mit Räumen</div>
+<div style="margin:10px 0;border-radius:8px;overflow:hidden"><svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:8px;margin:10px 0">
+  <rect width="460" height="200" fill="#1a1e26" rx="8"/>
+  <!-- Step indicator -->
+  <rect x="0" y="0" width="460" height="28" fill="#111" rx="8"/>
+  <rect x="0" y="18" width="460" height="10" fill="#111"/>
+  <rect x="10" y="6" width="100" height="16" fill="#4ade80" rx="3"/>
+  <text x="60" y="17" fill="#111" font-size="9" text-anchor="middle" font-weight="bold" font-family="sans-serif">⬜ Raum zeichnen</text>
+  <rect x="120" y="6" width="80" height="16" fill="#1a3a1a" rx="3"/>
+  <text x="160" y="17" fill="#4ade80" font-size="9" text-anchor="middle" font-family="sans-serif">🏗 Vorlagen</text>
+  <!-- Canvas with animation hint -->
+  <rect x="30" y="40" width="240" height="140" fill="#0d2010" stroke="#4ade80" stroke-width="2" stroke-dasharray="6,3" rx="4"/>
+  <text x="150" y="85" fill="#4ade80" font-size="11" text-anchor="middle" font-family="sans-serif">Klick hier</text>
+  <text x="150" y="98" fill="#4ade80" font-size="11" text-anchor="middle" font-family="sans-serif">↘ diagonal ziehen</text>
+  <!-- Cursor arrows -->
+  <polygon points="50,55 58,55 54,63" fill="#4ade80" opacity="0.9"/>
+  <line x1="54" y1="63" x2="254" y2="163" stroke="#4ade80" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.6"/>
+  <polygon points="250,163 258,163 254,171" fill="#4ade80" opacity="0.9"/>
+  <!-- Result preview -->
+  <rect x="290" y="40" width="150" height="140" fill="#222" rx="4"/>
+  <text x="365" y="60" fill="#666" font-size="8" text-anchor="middle" font-family="sans-serif">Ergebnis:</text>
+  <rect x="305" y="70" width="120" height="90" fill="#c4b08a" fill-opacity="0.5" stroke="#ddd4be" stroke-width="2" rx="1"/>
+  <text x="365" y="112" fill="#e8e4d8" font-size="9" text-anchor="middle" font-family="sans-serif">Empfang</text>
+  <text x="365" y="123" fill="#9a9" font-size="8" text-anchor="middle" font-family="sans-serif">9 × 7 m</text>
+  <text x="365" y="175" fill="#555" font-size="8" text-anchor="middle" font-family="sans-serif">Doppelklick = Namen ändern</text>
+  <!-- Shortcut hint -->
+  <rect x="30" y="185" width="240" height="12" fill="rgba(0,0,0,.4)" rx="3"/>
+  <text x="150" y="193" fill="#4ade80" font-size="7" text-anchor="middle" font-family="sans-serif">💡 Tipp: 🏗 Vorlagen = fertiges CSC-Layout in 1 Klick</text>
+</svg></div>
         <h2>Raum erstellen</h2>
         <div class="help-step"><div class="help-step-num">1</div><div class="help-step-body">Oben auf <b>⬜ Raum zeichnen</b> klicken (oder Taste R).</div></div>
         <div class="help-step"><div class="help-step-num">2</div><div class="help-step-body">Auf den Grundriss klicken und diagonal ziehen — beim Loslassen entsteht der Raum. Mindestgröße: 1×1m.</div></div>
@@ -13132,6 +13430,37 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
       <div class="help-page" id="hp-ai-basic">
         <h1>🤖 KI-Assistent: Grundfunktionen</h1>
         <div class="subtitle">Chat mit Claude AI — keine Grenzen</div>
+<div style="margin:10px 0;border-radius:8px;overflow:hidden"><svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:8px;margin:10px 0">
+  <rect width="460" height="200" fill="#0a0f0a" rx="8"/>
+  <!-- Chat messages -->
+  <rect x="10" y="10" width="440" height="180" fill="#111" rx="8"/>
+  <!-- User message -->
+  <rect x="200" y="20" width="230" height="35" fill="#1a3a1a" rx="6"/>
+  <text x="315" y="34" fill="#4ade80" font-size="8" text-anchor="middle" font-family="sans-serif">Erstelle eine vollständige</text>
+  <text x="315" y="45" fill="#4ade80" font-size="8" text-anchor="middle" font-family="sans-serif">CSC-Ausgabestelle 100m²</text>
+  <!-- AI response bubble -->
+  <rect x="20" y="65" width="290" height="90" fill="#0d2010" stroke="#1a4020" stroke-width="1" rx="6"/>
+  <text x="35" y="80" fill="#4ade80" font-size="8" font-family="sans-serif">🤖 KI plant deine Ausgabestelle...</text>
+  <rect x="30" y="88" width="270" height="8" fill="#1a4020" rx="2"/>
+  <text x="35" y="95" fill="#9a9288" font-size="7" font-family="sans-serif">✓ Empfang 9×7m erstellt</text>
+  <text x="35" y="107" fill="#9a9288" font-size="7" font-family="sans-serif">✓ Lagerraum 5×6m erstellt</text>
+  <text x="35" y="119" fill="#9a9288" font-size="7" font-family="sans-serif">✓ Sozialbereich 8×7m eingerichtet</text>
+  <text x="35" y="131" fill="#9a9288" font-size="7" font-family="sans-serif">✓ 23 Möbel platziert</text>
+  <text x="35" y="143" fill="#9a9288" font-size="7" font-family="sans-serif">✓ Sicherheitsausstattung installiert</text>
+  <text x="35" y="155" fill="#4ade80" font-size="7" font-family="sans-serif">✅ Fertig! 8/12 KCanG-Punkte erfüllt</text>
+  <!-- Input box -->
+  <rect x="20" y="162" width="330" height="22" fill="#111" stroke="#1a3a1a" stroke-width="1" rx="4"/>
+  <text x="30" y="176" fill="#555" font-size="8" font-family="sans-serif">Schreibe einen Befehl...</text>
+  <rect x="355" y="162" width="65" height="22" fill="#166534" rx="4"/>
+  <text x="387" y="176" fill="#fff" font-size="8" text-anchor="middle" font-family="sans-serif">▶ Senden</text>
+  <!-- KI chips -->
+  <rect x="20" y="188" width="80" height="10" fill="#0d2010" stroke="#1a3a1a" stroke-width="0.5" rx="5"/>
+  <text x="60" y="195" fill="#4ade80" font-size="6" text-anchor="middle" font-family="sans-serif">🌿 CSC erstellen</text>
+  <rect x="105" y="188" width="70" height="10" fill="#0d2010" stroke="#1a3a1a" stroke-width="0.5" rx="5"/>
+  <text x="140" y="195" fill="#4ade80" font-size="6" text-anchor="middle" font-family="sans-serif">⚡ Optimieren</text>
+  <rect x="180" y="188" width="70" height="10" fill="#0d2010" stroke="#1a3a1a" stroke-width="0.5" rx="5"/>
+  <text x="215" y="195" fill="#4ade80" font-size="6" text-anchor="middle" font-family="sans-serif">💰 Kosten</text>
+</svg></div>
         <h2>KI-Chat nutzen</h2>
         <div class="help-step"><div class="help-step-num">1</div><div class="help-step-body">Rechts oben auf <b>🤖 KI-Assistent</b> klicken → Chat öffnet sich.</div></div>
         <div class="help-step"><div class="help-step-num">2</div><div class="help-step-body">Text eingeben → <kbd>Enter</kbd> oder Pfeil-Taste zum Senden.</div></div>
