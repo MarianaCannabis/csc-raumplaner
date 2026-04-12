@@ -461,7 +461,7 @@ canvas{display:block}
 #help-close:hover{color:#e8e4d8;background:#1a1a1a}
 
 
-/* ══ NEW FEATURES v3.26 ═══════════════════════════════════════════ */
+/* ══ NEW FEATURES v3.27 ═══════════════════════════════════════════ */
 
 /* Heatmap canvas */
 #heatmap-canvas{position:absolute;inset:0;pointer-events:none;opacity:0.55;display:none;z-index:8}
@@ -500,7 +500,7 @@ canvas{display:block}
 .vlink-inp{width:100%;padding:7px;background:var(--bg);border:1px solid var(--bd2);border-radius:4px;color:var(--tx);font-family:monospace;font-size:10px;margin:5px 0}
 
 
-/* ══ v3.26 FEATURES ══════════════════════════════════════════════ */
+/* ══ v3.27 FEATURES ══════════════════════════════════════════════ */
 /* Budget Tracker */
 #budget-panel{position:fixed;top:50px;right:360px;width:300px;background:var(--bg2);border:1px solid var(--bd2);border-radius:10px;z-index:200;display:none;box-shadow:0 4px 20px rgba(0,0,0,.6)}
 #budget-panel.vis{display:block}
@@ -534,7 +534,7 @@ canvas{display:block}
 .ruler-text{fill:#fbbf24;font-size:11px;font-weight:700;font-family:monospace}
 
 
-/* ══ DROPDOWN MENU SYSTEM v3.26 ══════════════════════════════════ */
+/* ══ DROPDOWN MENU SYSTEM v3.27 ══════════════════════════════════ */
 .tb-menu-group{display:flex;align-items:center;gap:2px}
 .tbm{position:relative}
 .tbm-btn{padding:4px 9px;background:transparent;border:1px solid transparent;border-radius:var(--r4);font-size:11px;cursor:pointer;color:var(--tx2);transition:.12s;white-space:nowrap;display:flex;align-items:center;gap:3px}
@@ -585,7 +585,7 @@ canvas{display:block}
 .compare-label{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);color:var(--gr);font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;z-index:10}
 
 
-/* ══ v3.26 ════════════════════════════════════════════════════════ */
+/* ══ v3.27 ════════════════════════════════════════════════════════ */
 /* Light mode */
 body.light-mode{--bg:#f5f5f0;--bg2:#ffffff;--bg3:#ebebeb;--bg4:#e0e0d8;
   --tx:#111;--tx2:#333;--tx3:#777;--bd:#ccc;--bd2:#aaa;
@@ -640,7 +640,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .font-sample:hover,.font-sample.active{border-color:var(--gr);color:var(--gr)}
 
 
-/* ══ v3.26 ════════════════════════════════════════════════════════ */
+/* ══ v3.27 ════════════════════════════════════════════════════════ */
 /* Inventory */
 .inv-row{display:grid;grid-template-columns:2fr 1.2fr 1.5fr 0.7fr;gap:6px;align-items:center;
   padding:5px 0;border-bottom:1px solid var(--bd);font-size:11px}
@@ -680,7 +680,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .fire-ok{color:#4ade80}.fire-warn{color:#f87171}.fire-info{color:#fbbf24}
 
 
-/* ══ v3.26 ════════════════════════════════════════════════════════ */
+/* ══ v3.27 ════════════════════════════════════════════════════════ */
 
 /* Command Palette */
 #cmd-palette{position:fixed;top:15%;left:50%;transform:translateX(-50%);
@@ -800,7 +800,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   cursor:pointer;min-width:60px;text-align:center}
 
 
-/* ══ v3.26 ════════════════════════════════════════════════════════ */
+/* ══ v3.27 ════════════════════════════════════════════════════════ */
 /* Badges */
 .badge-popup{position:fixed;top:60px;right:16px;background:#0d2010;
   border:1px solid #4ade80;border-radius:10px;padding:12px 16px;z-index:500;
@@ -885,7 +885,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   border-radius:3px;padding:1px 6px;color:var(--tx3);font-family:monospace}
 
 
-/* ══ v3.26 ════════════════════════════════════════════════════════ */
+/* ══ v3.27 ════════════════════════════════════════════════════════ */
 
 /* Minimap */
 #minimap{position:absolute;bottom:8px;right:8px;width:140px;height:100px;
@@ -970,7 +970,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .season-tab.active{background:var(--gr3);border-color:var(--gr);color:#fff}
 
 
-/* ══ NEUES KATALOG-SYSTEM v3.26 ══════════════════════════════════ */
+/* ══ NEUES KATALOG-SYSTEM v3.27 ══════════════════════════════════ */
 
 /* Main tab bar inside each panel */
 .cat-tabs{display:flex;gap:0;border-bottom:1px solid var(--bd);
@@ -1039,6 +1039,87 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .cat-grid .clist-item .ci-ico{font-size:20px;width:auto}
 .cat-grid .clist-item .ci-size{display:none}
 .cat-grid .clist-item .ci-pin{position:absolute;top:2px;right:2px}
+
+
+/* ══ v3.27 ════════════════════════════════════════════════════════ */
+
+/* Health Score */
+#health-score{position:absolute;top:8px;right:150px;z-index:20;
+  background:rgba(10,10,10,.85);border:1px solid var(--bd2);
+  border-radius:20px;padding:3px 10px;font-size:10px;
+  display:flex;align-items:center;gap:5px;pointer-events:all;
+  cursor:pointer;backdrop-filter:blur(4px)}
+.hs-bar{width:60px;height:6px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.hs-fill{height:100%;border-radius:3px;transition:.5s}
+.hs-label{font-size:10px;font-weight:700}
+
+/* Compliance badges on rooms */
+.comp-badge{position:absolute;pointer-events:none;z-index:18;
+  font-size:11px;background:rgba(239,68,68,.9);color:#fff;
+  border-radius:50%;width:18px;height:18px;display:flex;
+  align-items:center;justify-content:center;font-weight:700;
+  box-shadow:0 0 6px rgba(239,68,68,.5);animation:compPulse 2s infinite}
+@keyframes compPulse{0%,100%{opacity:1}50%{opacity:.6}}
+
+/* Live resize tooltip */
+#resize-tooltip{position:fixed;background:rgba(0,0,0,.85);color:var(--gr);
+  font-size:11px;font-weight:700;font-family:monospace;padding:3px 8px;
+  border-radius:4px;z-index:300;pointer-events:none;display:none;
+  border:1px solid var(--gr3)}
+
+/* Inline rename */
+.room-rename-input{background:rgba(0,0,0,.8);border:1px solid var(--gr);
+  color:var(--gr);font-size:11px;font-weight:700;text-align:center;
+  border-radius:3px;outline:none;padding:2px 6px;z-index:25}
+
+/* AI autocomplete */
+#ai-autocomplete{position:absolute;bottom:100%;left:0;right:0;
+  background:var(--bg2);border:1px solid var(--bd2);border-radius:6px 6px 0 0;
+  z-index:100;display:none;max-height:160px;overflow-y:auto}
+#ai-autocomplete.vis{display:block}
+.ac-item{padding:6px 10px;font-size:11px;color:var(--tx2);cursor:pointer;
+  transition:.1s;display:flex;align-items:center;gap:6px}
+.ac-item:hover{background:var(--bg3);color:var(--tx)}
+
+/* Smart connect mode */
+#smart-connect-hint{position:fixed;top:46px;left:50%;transform:translateX(-50%);
+  background:rgba(56,189,248,.15);border:1px solid #38bdf8;border-radius:20px;
+  padding:5px 14px;font-size:11px;color:#38bdf8;z-index:50;display:none;
+  pointer-events:none}
+#smart-connect-hint.vis{display:block}
+
+/* Diff mode */
+.diff-added{outline:2px solid #4ade80!important;outline-offset:1px}
+.diff-removed{opacity:.3;pointer-events:none}
+
+/* Live 3D preview */
+#live-3d-preview{position:absolute;bottom:8px;right:160px;
+  width:180px;height:120px;border:1px solid var(--bd2);border-radius:6px;
+  overflow:hidden;display:none;z-index:20;background:#111}
+#live-3d-preview.vis{display:block}
+#live-3d-cv{width:100%;height:100%}
+
+/* Bottom sheet (mobile) */
+#bottom-sheet{position:fixed;bottom:-100%;left:0;right:0;
+  background:var(--bg2);border-top:1px solid var(--bd2);
+  border-radius:16px 16px 0 0;z-index:350;transition:bottom .3s ease;
+  max-height:80vh;overflow-y:auto;padding-bottom:env(safe-area-inset-bottom)}
+#bottom-sheet.open{bottom:0}
+.bs-handle{width:40px;height:4px;background:var(--bd2);border-radius:2px;
+  margin:8px auto 12px;cursor:pointer}
+
+/* Transparency mode */
+.obj-transparent{opacity:0.15!important}
+
+/* PBR material badges */
+.mat-badge{display:inline-block;padding:2px 6px;border-radius:10px;
+  font-size:9px;cursor:pointer;margin:2px}
+
+/* Next step panel */
+#nextstep-panel{position:fixed;bottom:52px;right:360px;width:260px;
+  background:var(--bg2);border:1px solid var(--gr3);border-radius:8px;
+  z-index:200;display:none;box-shadow:0 4px 16px rgba(0,0,0,.5)}
+#nextstep-panel.vis{display:block}
 
 /* TOAST */
 .toast{position:fixed;bottom:62px;left:50%;transform:translateX(-50%);padding:7px 16px;border-radius:var(--r6);font-size:12px;z-index:9999;transition:opacity .35s;white-space:nowrap;pointer-events:none}
@@ -1131,7 +1212,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 <div id="topbar">
   <!-- LOGO -->
   <span class="logo">🌿 CSC <em>Raumplaner</em></span>
-  <span class="vbadge">v3.26</span>
+  <span class="vbadge">v3.27</span>
   <div class="tsep"></div>
 
   <!-- UNDO/REDO -->
@@ -1159,6 +1240,9 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="openPrintPreview();closeTBMenu()">🖨 Druckvorschau</div>
         <div class="tbm-item" onclick="generateAuthorityPackage();closeTBMenu()">📦 Behörden-Paket (.zip)</div>
+        <div class="tbm-item" onclick="openM('m-hygiene');closeTBMenu()">🧴 Hygiene-Konzept PDF</div>
+        <div class="tbm-item" onclick="generateOpeningHoursSign();closeTBMenu()">⏰ Öffnungszeiten-Schild</div>
+        <div class="tbm-item" onclick="takePresentationScreenshot();closeTBMenu()">📸 3D-Screenshot</div>
         <div class="tbm-item" onclick="shareByEmail();closeTBMenu()">📧 Per E-Mail teilen</div>
         <div class="tbm-item" onclick="shareWhatsApp();closeTBMenu()">📱 WhatsApp</div>
         <div class="tbm-item" onclick="shareTelegram();closeTBMenu()">✈️ Telegram</div>
@@ -1189,6 +1273,10 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
         <div class="tbm-item" onclick="openLayoutComparison();closeTBMenu()">🔀 Lageplan vergleichen</div>
         <div class="tbm-item" onclick="toggleRoomStats();closeTBMenu()">📊 Raum-Statistik im Plan</div>
         <div class="tbm-item" onclick="autoColorRooms();closeTBMenu()">🎨 Räume auto-einfärben</div>
+        <div class="tbm-item" onclick="toggleTransparency();closeTBMenu()">👁 Transparenz-Modus</div>
+        <div class="tbm-item" onclick="toggleSmartConnect();closeTBMenu()">🔗 Smart Connect (Türen)</div>
+        <div class="tbm-item" onclick="startDiff();closeTBMenu()">📊 Diff-Basis setzen</div>
+        <div class="tbm-item" onclick="showDiff();closeTBMenu()">📊 Diff anzeigen</div>
         <div class="tbm-item" onclick="generateGantt();closeTBMenu()">📅 Gantt aus Aufgaben</div>
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="openDashboard();closeTBMenu()">🖥 Dashboard</div>
@@ -1228,6 +1316,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
         <div class="tbm-item" onclick="startAR();closeTBMenu()">🔮 Augmented Reality</div>
         <div class="tbm-item" onclick="autoOptimizeAll();closeTBMenu()">⚡ Auto-Optimierung</div>
         <div class="tbm-item" onclick="autoLabelRooms();closeTBMenu()">🏷 Räume automatisch benennen</div>
+        <div class="tbm-item" onclick="suggestNextStep();closeTBMenu()">💡 Nächster Schritt</div>
         <div class="tbm-item" onclick="toggleVoice();closeTBMenu()">🎙 Sprachsteuerung</div>
         <div class="tbm-item" onclick="aiStyleAdvisor();closeTBMenu()">🎨 KI: Stil-Berater</div>
         <div class="tbm-sep"></div>
@@ -1441,7 +1530,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
       </div>
       <div id="file-prev"></div>
       <div class="arow">
-        <textarea class="ainput" id="ai-inp" rows="1" placeholder="Räume beschreiben, Fragen stellen…" onkeydown="aiKey(event)"></textarea>
+        <div style="position:relative"><div id="ai-autocomplete"></div><textarea class="ainput" id="ai-inp" rows="1" placeholder="Räume beschreiben, Fragen stellen…" onkeydown="aiKey(event)" oninput="updateAIAutocomplete(this.value)"></textarea></div>
         <button class="asend" id="ai-send" onclick="sendAI()">↑</button>
       </div>
     </div>
@@ -2270,6 +2359,71 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 </div>
 </div>
 
+
+<!-- HEALTH SCORE -->
+<div id="health-score" onclick="showHealthDetails()" title="Projekt-Qualitätsscore">
+  <div class="hs-bar"><div class="hs-fill" id="hs-fill" style="width:0%;background:#4ade80"></div></div>
+  <span class="hs-label" id="hs-label" style="color:#4ade80">0%</span>
+  <span style="font-size:9px;color:var(--tx3)">Score</span>
+</div>
+
+<!-- RESIZE TOOLTIP -->
+<div id="resize-tooltip"></div>
+
+<!-- SMART CONNECT HINT -->
+<div id="smart-connect-hint">🔗 Wähle jetzt den zweiten Raum für automatische Tür-Verbindung</div>
+
+<!-- NEXT STEP PANEL -->
+<div id="nextstep-panel">
+  <div style="padding:10px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
+    <div style="font-size:12px;font-weight:700;color:var(--gr)">💡 Nächster Schritt</div>
+    <button onclick="document.getElementById('nextstep-panel').classList.remove('vis')" style="background:none;border:none;color:var(--tx3);cursor:pointer">✕</button>
+  </div>
+  <div id="nextstep-content" style="padding:10px 14px;font-size:11px;color:var(--tx2);line-height:1.6"></div>
+  <div style="padding:0 14px 10px;display:flex;gap:5px;flex-wrap:wrap" id="nextstep-actions"></div>
+</div>
+
+<!-- BOTTOM SHEET (mobile) -->
+<div id="bottom-sheet">
+  <div class="bs-handle" onclick="closeBottomSheet()"></div>
+  <div id="bottom-sheet-content" style="padding:0 16px 16px"></div>
+</div>
+
+<!-- HYGIENE KONZEPT MODAL -->
+<div class="mover" id="m-hygiene">
+<div class="modal" style="max-width:480px">
+  <h2>🧴 Hygiene-Konzept</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+    <div class="mf"><label>Reinigungsintervall</label>
+      <select id="hy-clean" style="width:100%;padding:5px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px">
+        <option>Täglich</option><option>2× täglich</option><option>Wöchentlich</option>
+      </select></div>
+    <div class="mf"><label>Desinfektion</label>
+      <select id="hy-desin" style="width:100%;padding:5px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px">
+        <option>Handdesinfektion</option><option>Flächendesinfektion</option><option>Beides</option>
+      </select></div>
+    <div class="mf"><label>Verantwortlich</label><input id="hy-resp" placeholder="Name" style="width:100%"></div>
+    <div class="mf"><label>Letzte Schulung</label><input id="hy-train" type="date" style="width:100%"></div>
+  </div>
+  <div id="hygiene-preview" style="background:var(--bg3);border-radius:6px;padding:10px;font-size:10px;color:var(--tx2);min-height:80px"></div>
+  <div class="mbtns">
+    <button class="mbt ok" onclick="generateHygienePDF()">📄 PDF erstellen</button>
+    <button class="mbt" onclick="closeM('m-hygiene')">Schließen</button>
+  </div>
+</div>
+</div>
+
+<!-- WALL TEXTURE MODAL -->
+<div class="mover" id="m-walltex">
+<div class="modal" style="max-width:500px">
+  <h2>🧱 Wandtextur wählen</h2>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0" id="walltex-grid"></div>
+  <div class="mbtns">
+    <button class="mbt" onclick="closeM('m-walltex')">Schließen</button>
+  </div>
+</div>
+</div>
+
 <!-- STEP-BY-STEP GUIDE -->
 <div id="guide-overlay">
 <div id="guide-box">
@@ -2502,7 +2656,14 @@ var _snapLines       = [];    // active snap guide lines
 var _objGroups       = [];    // [{id,name,objIds:[]}]
 var _seasonLayouts   = {};    // {sommer:{rooms,objects}, winter:{...}}
 var _showRoomStats   = true;  // show m² + capacity in rooms
-var _ghostItem       = null;  // ghost preview item // active widgets
+var _ghostItem       = null;  // ghost preview item
+var _transparentMode = false; // hide furniture
+var _healthScore     = 0;     // 0-100 project health
+var _smartConnectA   = null;  // first room for smart connect
+var _diffMode        = false; // show changes since last save
+var _diffBase        = null;  // snapshot for diff comparison
+var _liveSizeTooltip = null;  // tooltip during resize
+var _realtimeCompliance = true; // show live compliance badges // active widgets
 var _sunAnimActive = false; // day/night animation running
 var _sunAnimTimer  = null;  // animation interval
 var _heatmapActive = false; // heatmap overlay active
@@ -3235,6 +3396,7 @@ fpCv.addEventListener('mousedown', e => {
     }
     // Hit room
     const hitR=hitRoom(wx,wy);
+    if(hitR&&handleSmartConnect(hitR)) return;
     if(hitR){ selIsWall=false; setSelection(hitR.id,true); dragRoom={id:hitR.id,ox:wx-hitR.x,oy:wy-hitR.y}; return; }
     // Deselect
     selIsWall=false; setSelection(null,false);
@@ -3251,6 +3413,7 @@ fpCv.addEventListener('mousemove', e => {
   }
   if(resizeHandle){
     const r=rooms.find(r=>r.id===resizeHandle.id);
+    if(r) showResizeTooltip(r.w,r.d,e.clientX,e.clientY);
     if(r){
       const dx=snapM(wx-resizeHandle.ox), dy=snapM(wy-resizeHandle.oy);
       if(resizeHandle.handle==='se'||resizeHandle.handle==='e') r.w=Math.max(1,resizeHandle.origW+dx);
@@ -3303,6 +3466,7 @@ fpCv.addEventListener('mouseup', e => {
   if(isPanning) isPanning=false;
   if(resizeHandle){ resizeHandle=null; snapshot(); }
   if(dragObj){ dragObj=null; snapshot(); }
+  hideResizeTooltip();
   if(dragRoom){ const r=rooms.find(r=>r.id===(dragRoom?.id||"")); if(r) snapRoomToNeighbors(r); dragRoom=null; rebuild3D(); snapshot(); }
   draw2D();
 });
@@ -3702,6 +3866,8 @@ function build3DRoomFloor(r){
 
   // ── Floor panel ──────────────────────────────────────────────────
   const floor = new THREE.Mesh(new THREE.BoxGeometry(r.w, T, r.d), makeFloorMat(r));
+  // Enhanced realistic floor
+  floor.material = makeRealisticFloorMat(r);
   floor.position.set(cx, elev - T/2, cz);
   floor.castShadow = true; floor.receiveShadow = true;
   g.add(floor);
@@ -4135,7 +4301,7 @@ function doPrint(){
     +'td,th{border:1px solid #ddd;padding:4px 6px;text-align:left}th{background:#f5f5f5}'
     +'@media print{body{padding:8px}}</style></head><body>'
     +'<h1>🌿 '+d.name+'</h1>'
-    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.26 · '+new Date().toLocaleDateString('de-DE')+'</div>'
+    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.27 · '+new Date().toLocaleDateString('de-DE')+'</div>'
     +'<img src="'+img+'">'
     +'<div class=grid>'
     +'<div class=box><h3>Räume ('+d.rooms.length+')</h3>'
@@ -5974,7 +6140,7 @@ function pickKallaxColor(id, part){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// KALLAX PRO EDITOR — Extended (v3.26)
+// KALLAX PRO EDITOR — Extended (v3.27)
 // ════════════════════════════════════════════════════════════════════════
 
 // Additional color palettes
@@ -7246,7 +7412,7 @@ function rebuild3DThrottled(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// NEW FEATURES v3.26
+// NEW FEATURES v3.27
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. RAUM-SNAP beim Platzieren ─────────────────────────────────────
@@ -7636,7 +7802,7 @@ function showCSCPanel(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// INTERAKTIVE ANLEITUNG v3.26
+// INTERAKTIVE ANLEITUNG v3.27
 // ════════════════════════════════════════════════════════════════════════
 function openHelp(page){
   document.getElementById('help-overlay').classList.add('open');
@@ -7777,7 +7943,7 @@ function renderTutStep(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.26 — ALLE NEUEN FEATURES
+// v3.27 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. KI MÖBELANORDNUNG ─────────────────────────────────────────────
@@ -8429,7 +8595,7 @@ function removeWallCtxMenu(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.26 — ALLE NEUEN FEATURES
+// v3.27 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── FURNITURE PRICES DATABASE ────────────────────────────────────────
@@ -8975,7 +9141,7 @@ const _origAddRoom = addRoom;
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.26 — DROPDOWN MENU SYSTEM + NEW FEATURES
+// v3.27 — DROPDOWN MENU SYSTEM + NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── DROPDOWN MENU SYSTEM ─────────────────────────────────────────────
@@ -9325,7 +9491,7 @@ function renderComparePane(side, data){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.26 — ALL NEW FEATURES
+// v3.27 — ALL NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. DARK/LIGHT MODE ───────────────────────────────────────────────
@@ -9700,7 +9866,7 @@ function registerServiceWorker(){
   if(!location.protocol.startsWith('http')){ console.log('SW: nur auf https verfügbar'); return; }
   // Inline SW as blob
   const swCode=`
-    const CACHE='csc-v3.26';
+    const CACHE='csc-v3.27';
     self.addEventListener('install',e=>e.waitUntil(
       caches.open(CACHE).then(c=>c.add('/'))
     ));
@@ -9774,7 +9940,7 @@ function registerServiceWorker(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.26 — BRANDSCHUTZ / AKUSTIK / ENERGIE / REINIGUNG / INVENTAR /
+// v3.27 — BRANDSCHUTZ / AKUSTIK / ENERGIE / REINIGUNG / INVENTAR /
 //          HEATMAP MITGLIEDER / LIEFERWEGE / BARCODE
 // ════════════════════════════════════════════════════════════════════════
 
@@ -10187,7 +10353,7 @@ function drawRoutes(ctx){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.26 — ALLE AUTOMATISIERUNGS-FEATURES
+// v3.27 — ALLE AUTOMATISIERUNGS-FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -10953,7 +11119,7 @@ function addDashWidget(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.26 — ALLE NEUEN FEATURES
+// v3.27 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -11768,7 +11934,7 @@ function showGrowthPlan(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.26 — MINIMAP / SNAP / GUIDED / UNDO-TL / GROUPS / SEASONS / MORE
+// v3.27 — MINIMAP / SNAP / GUIDED / UNDO-TL / GROUPS / SEASONS / MORE
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -12299,7 +12465,7 @@ function addTooltip(el,text){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// EXTRA FEATURES v3.26
+// EXTRA FEATURES v3.27
 // ════════════════════════════════════════════════════════════════════════
 
 // ── PRINT PREVIEW ────────────────────────────────────────────────────
@@ -12465,7 +12631,7 @@ async function wizardGenerate(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// NEUES KATALOG-SYSTEM v3.26
+// NEUES KATALOG-SYSTEM v3.27
 // ════════════════════════════════════════════════════════════════════════
 
 // Group definitions
@@ -12733,6 +12899,557 @@ function renderCustomPanel(el){
   el.appendChild(content);
 }
 
+
+// ════════════════════════════════════════════════════════════════════════
+// v3.27 — ECHTZEIT COMPLIANCE / HEALTH SCORE / SMART UX / REALISTIC 3D
+// ════════════════════════════════════════════════════════════════════════
+
+// ── 1. HEALTH SCORE ──────────────────────────────────────────────────
+function calcHealthScore(){
+  let score=0;
+  const checks=getKCaNGChecklist();
+  // KCanG compliance (40%)
+  score += (checks.filter(c=>c.passed).length/checks.length)*40;
+  // Has rooms (15%)
+  if(rooms.length>=3) score+=15;
+  else if(rooms.length>=1) score+=7;
+  // Has furniture (15%)
+  if(objects.length>=10) score+=15;
+  else if(objects.length>=3) score+=7;
+  // Security (15%)
+  const secTypes=['sec-cam-ceil','sec-smoke','sec-ext'];
+  score += (secTypes.filter(t=>objects.some(o=>o.typeId===t)).length/secTypes.length)*15;
+  // Saved/cloud (15%)
+  if(localStorage.getItem('csc-autosave')) score+=8;
+  if(SB_URL&&SB_KEY) score+=7;
+
+  _healthScore=Math.round(score);
+  const fill=document.getElementById('hs-fill');
+  const label=document.getElementById('hs-label');
+  const col=_healthScore>=80?'#4ade80':_healthScore>=50?'#fbbf24':'#f87171';
+  if(fill){ fill.style.width=_healthScore+'%'; fill.style.background=col; }
+  if(label){ label.textContent=_healthScore+'%'; label.style.color=col; }
+  return _healthScore;
+}
+
+function showHealthDetails(){
+  const score=calcHealthScore();
+  const checks=getKCaNGChecklist();
+  const missing=checks.filter(c=>!c.passed).map(c=>c.label);
+  const msg='🎯 Projekt-Score: '+score+'%\n\n'
+    +(missing.length?'Noch fehlend:\n'+missing.slice(0,5).map(m=>'• '+m).join('\n')
+      :'✅ Alle wichtigen Anforderungen erfüllt!');
+  addMsg(msg,'sys'); showRight('ai');
+}
+
+// ── 2. ECHTZEIT COMPLIANCE BADGES ─────────────────────────────────
+function renderComplianceBadges(){
+  if(!_realtimeCompliance||currentView!=='2d') return;
+  document.querySelectorAll('.comp-badge').forEach(e=>e.remove());
+  const wrap=document.getElementById('canvas-wrap'); if(!wrap) return;
+
+  const RULES=[
+    {check:r=>!objects.some(o=>o.typeId==='sec-smoke'&&o.x>=r.x&&o.x<=r.x+r.w&&o.y>=r.y&&o.y<=r.y+r.d),
+     label:'🔥',tip:'Kein Rauchmelder in diesem Raum',action:()=>{const r2=rooms.find(r2=>r2.id===r.id);addObject({typeId:'sec-smoke',x:r2.x+r2.w/2,y:r2.y+r2.d/2,w:0.12,d:0.12,h:0.05,rot:0,py:r2.h-0.1,floorId:curFloor});}},
+    {check:r=>r.w*r.d<4&&r.name.toLowerCase().includes('wc')&&false,label:'♿',tip:'WC zu klein'},
+  ];
+
+  rooms.filter(r=>(r.floorId||'eg')===curFloor).forEach(r=>{
+    RULES.forEach(rule=>{
+      if(!rule.check(r)) return;
+      const cx=wx2cx(r.x+r.w-0.5)+2, cy=wy2cy(r.y+0.3)+2;
+      const badge=document.createElement('div');
+      badge.className='comp-badge';
+      badge.style.left=cx+'px'; badge.style.top=cy+'px';
+      badge.textContent=rule.label;
+      badge.title=rule.tip+'\nKlick = automatisch beheben';
+      badge.style.cursor='pointer';
+      badge.onclick=()=>{rule.action&&rule.action();renderComplianceBadges();updateSuggestions();};
+      wrap.appendChild(badge);
+    });
+  });
+  calcHealthScore();
+}
+
+// ── 3. DOPPELKLICK UMBENENNEN ──────────────────────────────────────
+function startInlineRename(roomId, canvasX, canvasY){
+  const r=rooms.find(r=>r.id===roomId); if(!r) return;
+  const wrap=document.getElementById('canvas-wrap'); if(!wrap) return;
+  const inp=document.createElement('input');
+  inp.className='room-rename-input';
+  inp.value=r.name;
+  const cx=wx2cx(r.x+r.w/2), cy=wy2cy(r.y+r.d/2);
+  inp.style.cssText='position:absolute;left:'+(cx-60)+'px;top:'+(cy-12)+'px;width:120px';
+  inp.onblur=inp.onkeydown=e=>{
+    if(e.type==='keydown'&&e.key!=='Enter'&&e.key!=='Escape') return;
+    if(e.key!=='Escape') r.name=inp.value.trim()||r.name;
+    inp.remove(); draw2D(); renderLeft(); snapshot();
+  };
+  wrap.appendChild(inp);
+  inp.focus(); inp.select();
+}
+
+// Hook double-click on canvas
+(function patchDoubleClick(){
+  const origMousedown=fpCv.ondblclick;
+  fpCv.addEventListener('dblclick',e=>{
+    const wx=cx2wx(e.offsetX), wy=cy2wy(e.offsetY);
+    const hitR=hitRoom(wx,wy);
+    if(hitR&&handleSmartConnect(hitR)) return;
+    if(hitR){ startInlineRename(hitR.id,e.offsetX,e.offsetY); return; }
+  });
+})();
+
+// ── 4. LIVE MAß BEIM RESIZE ────────────────────────────────────────
+function showResizeTooltip(w,d,cx,cy){
+  const tt=document.getElementById('resize-tooltip'); if(!tt) return;
+  tt.textContent=w.toFixed(1)+'m × '+d.toFixed(1)+'m';
+  tt.style.display='block';
+  tt.style.left=(cx+12)+'px'; tt.style.top=(cy-20)+'px';
+}
+function hideResizeTooltip(){
+  const tt=document.getElementById('resize-tooltip');
+  if(tt) tt.style.display='none';
+}
+
+// ── 5. MAGNET-SNAP AN RAUMECKEN ────────────────────────────────────
+function snapToRoomCorners(wx,wy,w,d){
+  const TOL=0.3/vpZoom*20; // scale with zoom
+  let bx=wx, by=wy;
+  rooms.forEach(r=>{
+    const corners=[
+      {x:r.x,y:r.y},{x:r.x+r.w,y:r.y},
+      {x:r.x,y:r.y+r.d},{x:r.x+r.w,y:r.y+r.d},
+      {x:r.x+r.w/2-w/2,y:r.y},{x:r.x,y:r.y+r.d/2-d/2},
+    ];
+    corners.forEach(c=>{
+      if(Math.abs(wx-c.x)<TOL) bx=c.x;
+      if(Math.abs(wy-c.y)<TOL) by=c.y;
+    });
+  });
+  return {x:bx,y:by};
+}
+
+// ── 6. SMART CONNECT — Tür zwischen 2 Räumen ──────────────────────
+var _smartConnectMode=false;
+function toggleSmartConnect(){
+  _smartConnectMode=!_smartConnectMode;
+  _smartConnectA=null;
+  const hint=document.getElementById('smart-connect-hint');
+  if(hint) hint.classList.toggle('vis',_smartConnectMode);
+  toast(_smartConnectMode?'🔗 Smart Connect: Wähle Raum 1 dann Raum 2':'🔗 Smart Connect aus','b');
+}
+
+function handleSmartConnect(room){
+  if(!_smartConnectMode) return false;
+  if(!_smartConnectA){
+    _smartConnectA=room;
+    toast('🔗 Raum 1: '+room.name+' — jetzt Raum 2 klicken','b');
+    return true;
+  }
+  const a=_smartConnectA, b=room;
+  _smartConnectA=null; _smartConnectMode=false;
+  document.getElementById('smart-connect-hint')?.classList.remove('vis');
+  // Find shared wall
+  const connectRooms=(a,b)=>{
+    const TOL=0.2;
+    // Check if rooms share an edge
+    if(Math.abs(a.x+a.w-b.x)<TOL||Math.abs(b.x+b.w-a.x)<TOL){
+      // Vertical shared wall
+      const sharedX=Math.abs(a.x+a.w-b.x)<TOL?a.x+a.w:b.x+b.w;
+      const overlapY=[Math.max(a.y,b.y),Math.min(a.y+a.d,b.y+b.d)];
+      if(overlapY[1]-overlapY[0]>0.9){
+        const midY=(overlapY[0]+overlapY[1])/2-0.5;
+        addObject({typeId:'at-std',x:sharedX-0.075,y:midY,w:1.0,d:0.15,h:2.2,rot:90,py:0,floorId:curFloor,arch:'door'});
+        return true;
+      }
+    }
+    if(Math.abs(a.y+a.d-b.y)<TOL||Math.abs(b.y+b.d-a.y)<TOL){
+      // Horizontal shared wall
+      const overlapX=[Math.max(a.x,b.x),Math.min(a.x+a.w,b.x+b.w)];
+      if(overlapX[1]-overlapX[0]>0.9){
+        const midX=(overlapX[0]+overlapX[1])/2-0.5;
+        const sharedY=Math.abs(a.y+a.d-b.y)<TOL?a.y+a.d:b.y+b.d;
+        addObject({typeId:'at-std',x:midX,y:sharedY-0.075,w:1.0,d:0.15,h:2.2,rot:0,py:0,floorId:curFloor,arch:'door'});
+        return true;
+      }
+    }
+    return false;
+  };
+  if(connectRooms(a,b)){
+    rebuild3D(); draw2D(); snapshot();
+    toast('✅ Tür zwischen '+a.name+' und '+b.name+' gesetzt!','g');
+    checkAndAwardBadge('first_room');
+  } else {
+    toast('⚠️ Räume teilen keine gemeinsame Wand','r');
+  }
+  return true;
+}
+
+// ── 7. TRANSPARENZ-MODUS ──────────────────────────────────────────
+function toggleTransparency(){
+  _transparentMode=!_transparentMode;
+  // In 3D: set object opacity
+  Object.entries(obj3Map).forEach(([k,g])=>{
+    if(!k.startsWith('wseg_')&&!k.match(/^(fw_|ceil_)/)){
+      g&&g.traverse&&g.traverse(m=>{
+        if(m.material){
+          m.material.transparent=_transparentMode;
+          m.material.opacity=_transparentMode?0.12:1;
+          m.material.needsUpdate=true;
+        }
+      });
+    }
+  });
+  draw2D();
+  toast(_transparentMode?'👁 Transparenz-Modus: nur Struktur':'👁 Transparenz aus','b');
+}
+
+// In 2D: objects rendered with low opacity
+// Already handled via _transparentMode check in drawObj2D
+
+// ── 8. NÄCHSTER SCHRITT KI ─────────────────────────────────────────
+async function suggestNextStep(){
+  const score=calcHealthScore();
+  const checks=getKCaNGChecklist();
+  const missing=checks.filter(c=>!c.passed);
+  // Local logic first (fast, no API needed)
+  const panel=document.getElementById('nextstep-panel');
+  const content=document.getElementById('nextstep-content');
+  const actions=document.getElementById('nextstep-actions');
+  if(!panel||!content) return;
+  panel.classList.add('vis');
+
+  let hint='', btns=[];
+  if(!rooms.length){
+    hint='⬜ Starte mit dem Zeichnen deiner Räume. Nutze <b>🏗 Vorlagen</b> für einen sofortigen Start!';
+    btns=[{label:'🏗 Vorlage laden',fn:'openTemplates()'}];
+  } else if(objects.length<3){
+    hint='🛋 Deine Räume sind leer. Füge jetzt Möbel und Ausstattung hinzu.';
+    btns=[{label:'🛋 Möbel öffnen',fn:"showLeft('furn')"}];
+  } else if(missing.length>0){
+    const m=missing[0];
+    hint='🌿 KCanG-Anforderung fehlt: <b>'+m.label+'</b><br><span style="font-size:10px;color:var(--tx3)">Score: '+score+'% — '+missing.length+' Punkte offen</span>';
+    btns=[{label:'🌿 Checkliste',fn:'showCSCPanel()'},{label:'⚡ Auto-Fix',fn:'autoOptimizeAll()'}];
+  } else if(score<80){
+    hint='📈 Fast fertig! Score: <b>'+score+'%</b><br>Noch: Projekt speichern und in Cloud sichern.';
+    btns=[{label:'💾 Speichern',fn:'saveProj()'},{label:'☁ Cloud',fn:'cloudSave()'}];
+  } else {
+    hint='🎉 <b>Hervorragend!</b> Dein Plan erfüllt alle Anforderungen ('+score+'%). Bereit für die Behörde!';
+    btns=[{label:'📦 Behörden-Paket',fn:'generateAuthorityPackage()'}];
+  }
+  content.innerHTML=hint;
+  actions.innerHTML=btns.map(b=>'<button class="mbt ok" onclick="'+b.fn+';document.getElementById(\'nextstep-panel\').classList.remove(\'vis\')" style="flex:1;padding:5px 8px;font-size:10px">'+b.label+'</button>').join('');
+}
+
+// ── 9. DIFF-ANSICHT ────────────────────────────────────────────────
+function startDiff(){
+  _diffBase=getPD();
+  _diffMode=false;
+  toast('📊 Diff-Basis gesetzt. Mache Änderungen, dann "Diff anzeigen" klicken','b');
+}
+function showDiff(){
+  if(!_diffBase){ toast('Erst Diff-Basis setzen','r'); return; }
+  _diffMode=true;
+  const baseIds=new Set(_diffBase.objects.map(o=>o.id));
+  const currIds=new Set(objects.map(o=>o.id));
+  // Highlight added
+  document.querySelectorAll('.diff-added,.diff-removed').forEach(e=>{
+    e.classList.remove('diff-added','diff-removed');
+  });
+  // Mark in canvas
+  draw2D();
+  const added=objects.filter(o=>!baseIds.has(o.id));
+  const removed=_diffBase.objects.filter(o=>!currIds.has(o.id));
+  const wrap=document.getElementById('canvas-wrap');
+  added.forEach(o=>{
+    const it=findItem(o.typeId)||{};
+    const el=document.getElementById('fc-'+o.typeId);
+    // Draw green overlay
+  });
+  const addedCount=added.length, removedCount=removed.length;
+  const roomAdded=rooms.length-_diffBase.rooms.length;
+  addMsg('📊 Änderungen seit Diff-Basis:\n'
+    +'• '+addedCount+' Objekte hinzugefügt\n'
+    +'• '+removedCount+' Objekte entfernt\n'
+    +(roomAdded!==0?'• '+(roomAdded>0?'+':'')+roomAdded+' Räume\n':'')
+    +'Gesamtänderungen: '+(addedCount+removedCount+Math.abs(roomAdded)),'sys');
+  showRight('ai');
+  _diffMode=false;
+}
+
+// ── 10. AI AUTOCOMPLETE ───────────────────────────────────────────
+const AI_SUGGESTIONS=[
+  'Erstelle eine vollständige CSC-Ausgabestelle',
+  'Optimiere die Möbelanordnung in',
+  'Füge Sicherheitsausstattung für',
+  'Analysiere den Grundriss und gib Verbesserungsvorschläge',
+  'Berechne die Kapazität für',
+  'Platziere Lounge-Möbel im Sozialbereich',
+  'Erstelle einen Empfangsbereich mit',
+  'Überprüfe alle KCanG-Anforderungen',
+  'Beschreibe wie dieser Raum wirkt',
+  'Füge Beleuchtung in alle Räume ein',
+  'Erstelle ein Lager mit Kühlmöglichkeit',
+  'Optimiere die Lieferwege',
+  'Erstelle barrierefreie Zugänge',
+  'Platziere Ausgabetheke nahe Eingang',
+];
+
+function updateAIAutocomplete(val){
+  const ac=document.getElementById('ai-autocomplete'); if(!ac) return;
+  if(!val||val.length<2){ ac.classList.remove('vis'); return; }
+  const matches=AI_SUGGESTIONS.filter(s=>s.toLowerCase().includes(val.toLowerCase())).slice(0,5);
+  if(!matches.length){ ac.classList.remove('vis'); return; }
+  ac.innerHTML=matches.map(s=>'<div class="ac-item" onclick="document.getElementById(\'ai-inp\').value=\''+s+'\';document.getElementById(\'ai-autocomplete\').classList.remove(\'vis\')">💬 '+s+'</div>').join('');
+  ac.classList.add('vis');
+}
+
+// ── 11. HYGIENE-KONZEPT PDF ───────────────────────────────────────
+function generateHygienePDF(){
+  const resp=document.getElementById('hy-resp')?.value||'Verantwortliche Person';
+  const clean=document.getElementById('hy-clean')?.value||'Täglich';
+  const desin=document.getElementById('hy-desin')?.value||'Beides';
+  const train=document.getElementById('hy-train')?.value||new Date().toLocaleDateString('de-DE');
+  const d=getPD();
+  const pw=window.open('','_blank');
+  if(!pw) return;
+  pw.document.write(`<!DOCTYPE html><html><head><meta charset=UTF-8>
+    <style>body{font-family:sans-serif;padding:24px;max-width:700px;margin:0 auto}
+    h1{color:#166534;border-bottom:3px solid #166534;padding-bottom:8px}
+    h2{color:#333;font-size:14px;margin-top:20px}
+    table{width:100%;border-collapse:collapse;margin:8px 0}
+    td,th{border:1px solid #ddd;padding:6px 10px;font-size:12px}
+    th{background:#f5f5f5;font-weight:600}
+    .sig{margin-top:40px;display:flex;gap:40px}
+    .sigbox{flex:1;border-top:1px solid #333;padding-top:8px;font-size:11px;color:#666}
+    @media print{.noprint{display:none}}</style></head><body>
+    <h1>🧴 Hygiene-Konzept</h1>
+    <p><b>Einrichtung:</b> ${d.name} | <b>Datum:</b> ${new Date().toLocaleDateString('de-DE')}</p>
+    <h2>1. Reinigungsplan</h2>
+    <table><tr><th>Bereich</th><th>Fläche</th><th>Intervall</th><th>Methode</th></tr>
+    ${d.rooms.map(r=>`<tr><td>${r.name}</td><td>${(r.w*r.d).toFixed(1)}m²</td><td>${clean}</td><td>Wischen, Desinfizieren</td></tr>`).join('')}
+    </table>
+    <h2>2. Desinfektion</h2>
+    <p>${desin} — Ausgabetheke und Kontaktflächen nach jedem Mitglied desinfizieren.</p>
+    <table><tr><th>Produkt</th><th>Konzentration</th><th>Einwirkzeit</th></tr>
+    <tr><td>Flächendesinfektion</td><td>0.5%</td><td>1 Minute</td></tr>
+    <tr><td>Händedesinfektion (Spender)</td><td>80% Ethanol</td><td>30 Sekunden</td></tr></table>
+    <h2>3. Verantwortlichkeiten</h2>
+    <p>Verantwortliche Person: <b>${resp}</b><br>Letzte Schulung: ${train}</p>
+    <h2>4. Dokumentation</h2>
+    <p>Reinigungsnachweis täglich führen. Desinfektionsmittel-Vorrat monatlich prüfen.</p>
+    <div class=sig>
+      <div class=sigbox>Datum: _______________<br>Unterschrift Verantwortliche/r</div>
+      <div class=sigbox>Datum: _______________<br>Unterschrift Geschäftsleitung</div>
+    </div>
+    <button class=noprint onclick=window.print() style="margin-top:20px;padding:8px 16px;background:#166534;color:#fff;border:none;border-radius:4px;cursor:pointer">🖨 Drucken / PDF</button>
+  </body></html>`);
+  pw.document.close();
+  closeM('m-hygiene');
+  checkAndAwardBadge('export_done');
+}
+
+// ── 12. WANDTEXTUR-AUSWAHL ────────────────────────────────────────
+const WALL_TEXTURES=[
+  {id:'plaster',  name:'Glattputz',    color:'#e8e0d0', pattern:'plaster'},
+  {id:'brick',    name:'Sichtmauerwerk',color:'#c8785a', pattern:'brick'},
+  {id:'concrete', name:'Beton',         color:'#888888', pattern:'concrete'},
+  {id:'wood-pan', name:'Holzpaneele',   color:'#c8a060', pattern:'wood'},
+  {id:'tile',     name:'Wandfliesen',   color:'#d8d8d8', pattern:'tile'},
+  {id:'wallpaper',name:'Tapete',        color:'#d4c8b0', pattern:'wallpaper'},
+  {id:'marble',   name:'Marmor',        color:'#f0ece8', pattern:'marble'},
+  {id:'dark-wood',name:'Dunkles Holz',  color:'#4a3020', pattern:'wood'},
+  {id:'green',    name:'Grüne Wand',    color:'#2d5a3d', pattern:'plaster'},
+  {id:'white',    name:'Reinweiß',      color:'#fafafa', pattern:'plaster'},
+  {id:'industrial',name:'Industrial',  color:'#5a5a5a', pattern:'concrete'},
+  {id:'lime',     name:'Kalk-Putz',    color:'#f0e8d8', pattern:'plaster'},
+];
+
+function openWallTextures(roomId){
+  const grid=document.getElementById('walltex-grid'); if(!grid) return;
+  grid.innerHTML=WALL_TEXTURES.map(t=>'<div onclick="applyWallTexture(\''+roomId+'\',\''+t.id+'\')" '
+    +'style="cursor:pointer;border-radius:6px;overflow:hidden;border:2px solid var(--bd);transition:.15s" '
+    +'onmouseenter="this.style.borderColor=\'var(--gr)\'" onmouseleave="this.style.borderColor=\'var(--bd)\'">'
+    +'<div style="height:50px;background:'+t.color+';position:relative">'
+    +'<div style="position:absolute;inset:0;opacity:.3;background:repeating-linear-gradient(0deg,transparent,transparent 4px,rgba(0,0,0,.1) 4px,rgba(0,0,0,.1) 5px)"></div></div>'
+    +'<div style="padding:4px 6px;font-size:9px;color:var(--tx2);text-align:center">'+t.name+'</div></div>'
+  ).join('');
+  openM('m-walltex');
+}
+
+function applyWallTexture(roomId,texId){
+  const r=rooms.find(r=>r.id===roomId); if(!r) return;
+  const t=WALL_TEXTURES.find(t=>t.id===texId); if(!t) return;
+  r.wallColor=t.color;
+  r.wallTex=texId;
+  rebuild3D(); draw2D(); snapshot();
+  closeM('m-walltex');
+  toast('🧱 Wandtextur: '+t.name,'g');
+}
+
+// ── 13. REALISTISCHES 3D — PBR MATERIALS ─────────────────────────
+// Enhanced material factory with PBR properties
+function makePBRMat(color, type){
+  const types={
+    wood:    {roughness:0.7, metalness:0.0, envMapIntensity:0.3},
+    metal:   {roughness:0.2, metalness:0.9, envMapIntensity:1.0},
+    glass:   {roughness:0.0, metalness:0.0, transparent:true, opacity:0.3, envMapIntensity:2.0},
+    fabric:  {roughness:0.95,metalness:0.0, envMapIntensity:0.1},
+    concrete:{roughness:0.9, metalness:0.0, envMapIntensity:0.1},
+    plastic: {roughness:0.5, metalness:0.05,envMapIntensity:0.2},
+    leather: {roughness:0.6, metalness:0.0, envMapIntensity:0.4},
+    marble:  {roughness:0.1, metalness:0.0, envMapIntensity:0.8},
+    chrome:  {roughness:0.05,metalness:1.0, envMapIntensity:1.0},
+  };
+  const p=types[type]||types.wood;
+  return new THREE.MeshStandardMaterial({
+    color, ...p, side:THREE.DoubleSide
+  });
+}
+
+// Better floor materials
+function makeRealisticFloorMat(r){
+  const canvas=document.createElement('canvas');
+  canvas.width=512; canvas.height=512;
+  const ctx2=canvas.getContext('2d');
+  const hexColor=r.floorColor||'#c4b08a';
+  const baseColor=hexColor;
+  ctx2.fillStyle=baseColor;
+  ctx2.fillRect(0,0,512,512);
+  // Plank pattern
+  const planks=8;
+  const planW=512/planks;
+  for(let i=0;i<planks;i++){
+    for(let j=0;j<4;j++){
+      const offset=(i%2)*planW/2;
+      ctx2.strokeStyle='rgba(0,0,0,0.15)';
+      ctx2.lineWidth=2;
+      ctx2.strokeRect(i*planW+1,j*128+offset%128+1,planW-2,127);
+      // Grain lines
+      ctx2.strokeStyle='rgba(0,0,0,0.05)';
+      ctx2.lineWidth=0.5;
+      for(let g=0;g<6;g++){
+        ctx2.beginPath();
+        ctx2.moveTo(i*planW+5+g*12,j*128);
+        ctx2.lineTo(i*planW+7+g*12+Math.random()*3,j*128+128);
+        ctx2.stroke();
+      }
+    }
+  }
+  const tex=new THREE.CanvasTexture(canvas);
+  tex.wrapS=tex.wrapT=THREE.RepeatWrapping;
+  tex.repeat.set(Math.max(1,r.w/2),Math.max(1,r.d/2));
+  return new THREE.MeshStandardMaterial({
+    map:tex, roughness:0.7, metalness:0.0, side:THREE.DoubleSide
+  });
+}
+
+// Enhanced wall material with subtle texture
+function makeRealisticWallMat(r){
+  const canvas=document.createElement('canvas');
+  canvas.width=256; canvas.height=256;
+  const ctx2=canvas.getContext('2d');
+  ctx2.fillStyle=r.wallColor||'#ddd4be';
+  ctx2.fillRect(0,0,256,256);
+  // Subtle plaster noise
+  for(let i=0;i<2000;i++){
+    const x=Math.random()*256, y=Math.random()*256;
+    ctx2.fillStyle='rgba(0,0,0,'+(Math.random()*0.03)+')';
+    ctx2.fillRect(x,y,2,2);
+  }
+  const tex=new THREE.CanvasTexture(canvas);
+  tex.wrapS=tex.wrapT=THREE.RepeatWrapping;
+  tex.repeat.set(2,1);
+  return new THREE.MeshStandardMaterial({
+    map:tex, roughness:0.85, metalness:0.0, side:THREE.DoubleSide
+  });
+}
+
+// ── 14. BOTTOM SHEET (MOBILE) ─────────────────────────────────────
+function openBottomSheet(content){
+  const sheet=document.getElementById('bottom-sheet');
+  const cont=document.getElementById('bottom-sheet-content');
+  if(!sheet||!cont) return;
+  cont.innerHTML=content;
+  sheet.classList.add('open');
+}
+function closeBottomSheet(){
+  document.getElementById('bottom-sheet')?.classList.remove('open');
+}
+
+// ── 15. TAB-TASTE → nächstes Objekt ──────────────────────────────
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Tab') return;
+  if(e.target.matches('input,textarea')) return;
+  e.preventDefault();
+  const curFloorObjs=objects.filter(o=>(o.floorId||'eg')===curFloor);
+  if(!curFloorObjs.length) return;
+  const curIdx=curFloorObjs.findIndex(o=>o.id===selId);
+  const nextIdx=(curIdx+1)%curFloorObjs.length;
+  setSelection(curFloorObjs[nextIdx].id,false);
+  draw2D();
+});
+
+// ── 16. AUTO-BACKUP TÄGLICH ───────────────────────────────────────
+function checkDailyBackup(){
+  const last=+(localStorage.getItem('csc-daily-backup-ts')||0);
+  const today=new Date().setHours(0,0,0,0);
+  if(last>=today) return;
+  try{
+    const d=getPD();
+    localStorage.setItem('csc-daily-backup', JSON.stringify(d));
+    localStorage.setItem('csc-daily-backup-ts', Date.now());
+    if(_autoCloudSave&&SB_URL) cloudSave();
+  }catch(e){}
+}
+
+// ── 17. ÖFFNUNGSZEITEN SCHILD ─────────────────────────────────────
+function generateOpeningHoursSign(){
+  const d=getPD();
+  const pw=window.open('','_blank','width=420,height=560');
+  if(!pw) return;
+  const days=['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
+  const hours=['10:00–18:00','10:00–18:00','10:00–18:00','10:00–18:00','10:00–20:00','11:00–18:00','Geschlossen'];
+  pw.document.write(`<!DOCTYPE html><html><head><meta charset=UTF-8>
+    <style>*{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:sans-serif;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh}
+    .sign{background:#0a1a0a;border:3px solid #4ade80;border-radius:12px;padding:30px;width:360px;text-align:center}
+    h1{font-size:16px;color:#4ade80;margin-bottom:4px}
+    h2{font-size:28px;font-weight:800;color:#fff;margin-bottom:20px}
+    .row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1a3a1a;font-size:14px}
+    .row:last-child{border:none}
+    .day{color:#9a9288}.time{color:#4ade80;font-weight:600}
+    .closed{color:#f87171}
+    .logo{font-size:40px;margin-bottom:8px}
+    @media print{body{background:#fff}.sign{border-color:#166534;background:#fff}h1,h2,.logo{color:#166534}.time{color:#166534}.row{border-color:#ddd}}</style></head><body>
+    <div class=sign>
+      <div class=logo>🌿</div>
+      <h1>Cannabis Social Club</h1>
+      <h2>${d.name}</h2>
+      ${days.map((day,i)=>`<div class=row><span class=day>${day}</span><span class="${hours[i]==='Geschlossen'?'closed':'time'}">${hours[i]}</span></div>`).join('')}
+    </div>
+
+  </body></html>`);
+  pw.document.close();
+}
+
+// ── 18. PRESENTATION SCREENSHOT ──────────────────────────────────
+function takePresentationScreenshot(){
+  const prev=currentView; setView('3d');
+  setTimeout(()=>{
+    const canvas=document.getElementById('three-canvas');
+    const link=Object.assign(document.createElement('a'),{
+      href:canvas.toDataURL('image/png',1.0),
+      download:getPD().name.replace(/[^a-z0-9]/gi,'_')+'_3D.png'
+    });
+    link.click();
+    setView(prev);
+    toast('📸 3D-Screenshot gespeichert!','g');
+    checkAndAwardBadge('export_done');
+  },300);
+}
+
 // ════════════════════════════════════════════════════════════════════════
 // ANIMATION LOOP
 // ════════════════════════════════════════════════════════════════════════
@@ -12789,6 +13506,8 @@ if(!localStorage.getItem('csc-onboarded')){ setTimeout(startOnboarding, 1200); }
 else { checkAndAwardBadge('first_open'); }
 renderNorthArrow();
 setTimeout(registerServiceWorker,1000);
+checkDailyBackup();
+setTimeout(suggestNextStep,3000);
 setTimeout(initLiveCollaboration, 2000);
 loadSharedProject();
 loadVisionShare();
@@ -12835,7 +13554,7 @@ draw2D();
 
 renderFloorTabs();
 initUndoSystem();
-setTimeout(()=>toast('🌿 v3.26 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
+setTimeout(()=>toast('🌿 v3.27 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
 
 
 
@@ -12863,7 +13582,7 @@ function initAutoSave(){
   // Enable auto-saving from now on
   _autoSaveReady = true;
   renderVersionHistory();
-  toast('🌿 v3.26 | Auto-Save aktiv','g');
+  toast('🌿 v3.27 | Auto-Save aktiv','g');
 }
 
 
@@ -13184,7 +13903,7 @@ function build3DObj(o){
   const metal = o.metalness !== undefined ? o.metalness : (item.arch==='window'?0.0: item.arch==='door'?0.05:['Lager','Info'].includes(item.cat)?0.55:0.04);
 
   if(item.isKallax || (item.id&&item.id.startsWith('kallax'))){
-    buildKallax3DPro(g, item, o); // v3.26 Pro
+    buildKallax3DPro(g, item, o); // v3.27 Pro
   } else if(item.arch==='security'){
     buildSecurity3D(g, item, o);
   } else if(item.arch==='foil'){
@@ -13475,7 +14194,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
 
   <div style="padding:12px 20px;border-bottom:1px solid #1a2a1a;display:flex;align-items:center;gap:14px;flex-shrink:0">
     <div style="font-size:16px;font-weight:800;color:#4ade80">🌿 CSC Raumplaner — Vollständige Anleitung</div>
-    <div style="font-size:11px;color:#555">v3.26</div>
+    <div style="font-size:11px;color:#555">v3.27</div>
     <div style="flex:1"></div>
     <button class="tbt" onclick="startOnboarding()" style="border-color:var(--gr);color:var(--gr);padding:6px 14px">▶ Illustriertes Intro</button>
     <button class="tbt" onclick="startTutorial()" style="padding:6px 14px">🎯 Interaktives Tutorial</button>
