@@ -12541,7 +12541,7 @@ function renderFurnPanel(el){
     const items=catalog.filter(i=>cats.includes(i.cat));
     if(!items.length) return;
     const secId='fgrp_'+grpName.replace(/[^a-z0-9]/gi,'_');
-    const closed=localStorage.getItem('fg-closed-'+grpName)==='1';
+    const closed=localStorage.getItem('fg-closed-'+grpName)!=='0';
     // Section header
     const hdr=document.createElement('div');
     hdr.className='catsec'+(closed?' closed':'');
@@ -12550,7 +12550,7 @@ function renderFurnPanel(el){
     hdr.onclick=()=>{
       const isClosed=hdr.classList.toggle('closed');
       body.style.display=isClosed?'none':'block';
-      localStorage.setItem('fg-closed-'+grpName,isClosed?'1':'0');
+      if(isClosed) localStorage.removeItem('fg-closed-'+grpName); else localStorage.setItem('fg-closed-'+grpName,'0');
     };
     content.appendChild(hdr);
     // Items
@@ -12601,14 +12601,14 @@ function renderBauPanel(el){
   Object.entries(groups).forEach(([grpName,cats])=>{
     const items=catalog.filter(i=>cats.includes(i.cat));
     if(!items.length) return;
-    const closed=localStorage.getItem('fb-closed-'+grpName)==='1';
+    const closed=localStorage.getItem('fb-closed-'+grpName)!=='0';
     const hdr=document.createElement('div');
     hdr.className='catsec'+(closed?' closed':'');
     hdr.innerHTML='<span>'+grpName+' <span class="cat-count">'+items.length+'</span></span><span class="catsec-arrow">▾</span>';
     const body=document.createElement('div');
     body.style.display=closed?'none':'block';
     if(_catViewMode==='grid') body.className='cat-grid';
-    hdr.onclick=()=>{ const c=hdr.classList.toggle('closed'); body.style.display=c?'none':'block'; localStorage.setItem('fb-closed-'+grpName,c?'1':'0'); };
+    hdr.onclick=()=>{ const c=hdr.classList.toggle('closed'); body.style.display=c?'none':'block'; if(c) localStorage.removeItem('fb-closed-'+grpName); else localStorage.setItem('fb-closed-'+grpName,'0'); };
     items.forEach(item=>body.appendChild(makeCatalogItem(item,true)));
     content.appendChild(hdr); content.appendChild(body);
   });
@@ -12649,14 +12649,14 @@ function renderSecPanel(el){
   Object.entries(groups).forEach(([grpName,cats])=>{
     const items=catalog.filter(i=>cats.includes(i.cat));
     if(!items.length) return;
-    const closed=localStorage.getItem('fs-closed-'+grpName)==='1';
+    const closed=localStorage.getItem('fs-closed-'+grpName)!=='0';
     const hdr=document.createElement('div');
     hdr.className='catsec'+(closed?' closed':'');
     hdr.innerHTML='<span>'+grpName+' <span class="cat-count">'+items.length+'</span></span><span class="catsec-arrow">▾</span>';
     const body=document.createElement('div');
     body.style.display=closed?'none':'block';
     if(_catViewMode==='grid') body.className='cat-grid';
-    hdr.onclick=()=>{ const c=hdr.classList.toggle('closed'); body.style.display=c?'none':'block'; localStorage.setItem('fs-closed-'+grpName,c?'1':'0'); };
+    hdr.onclick=()=>{ const c=hdr.classList.toggle('closed'); body.style.display=c?'none':'block'; if(c) localStorage.removeItem('fs-closed-'+grpName); else localStorage.setItem('fs-closed-'+grpName,'0'); };
     items.forEach(item=>body.appendChild(makeCatalogItem(item,false,true)));
     content.appendChild(hdr); content.appendChild(body);
   });
