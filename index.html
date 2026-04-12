@@ -456,7 +456,7 @@ canvas{display:block}
 #help-close:hover{color:#e8e4d8;background:#1a1a1a}
 
 
-/* ══ NEW FEATURES v3.19 ═══════════════════════════════════════════ */
+/* ══ NEW FEATURES v3.20 ═══════════════════════════════════════════ */
 
 /* Heatmap canvas */
 #heatmap-canvas{position:absolute;inset:0;pointer-events:none;opacity:0.55;display:none;z-index:8}
@@ -495,7 +495,7 @@ canvas{display:block}
 .vlink-inp{width:100%;padding:7px;background:var(--bg);border:1px solid var(--bd2);border-radius:4px;color:var(--tx);font-family:monospace;font-size:10px;margin:5px 0}
 
 
-/* ══ v3.19 FEATURES ══════════════════════════════════════════════ */
+/* ══ v3.20 FEATURES ══════════════════════════════════════════════ */
 /* Budget Tracker */
 #budget-panel{position:fixed;top:50px;right:360px;width:300px;background:var(--bg2);border:1px solid var(--bd2);border-radius:10px;z-index:200;display:none;box-shadow:0 4px 20px rgba(0,0,0,.6)}
 #budget-panel.vis{display:block}
@@ -529,7 +529,7 @@ canvas{display:block}
 .ruler-text{fill:#fbbf24;font-size:11px;font-weight:700;font-family:monospace}
 
 
-/* ══ DROPDOWN MENU SYSTEM v3.19 ══════════════════════════════════ */
+/* ══ DROPDOWN MENU SYSTEM v3.20 ══════════════════════════════════ */
 .tb-menu-group{display:flex;align-items:center;gap:2px}
 .tbm{position:relative}
 .tbm-btn{padding:4px 9px;background:transparent;border:1px solid transparent;border-radius:var(--r4);font-size:11px;cursor:pointer;color:var(--tx2);transition:.12s;white-space:nowrap;display:flex;align-items:center;gap:3px}
@@ -580,7 +580,7 @@ canvas{display:block}
 .compare-label{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);color:var(--gr);font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;z-index:10}
 
 
-/* ══ v3.19 ════════════════════════════════════════════════════════ */
+/* ══ v3.20 ════════════════════════════════════════════════════════ */
 /* Light mode */
 body.light-mode{--bg:#f5f5f0;--bg2:#ffffff;--bg3:#ebebeb;--bg4:#e0e0d8;
   --tx:#111;--tx2:#333;--tx3:#777;--bd:#ccc;--bd2:#aaa;
@@ -635,7 +635,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .font-sample:hover,.font-sample.active{border-color:var(--gr);color:var(--gr)}
 
 
-/* ══ v3.19 ════════════════════════════════════════════════════════ */
+/* ══ v3.20 ════════════════════════════════════════════════════════ */
 /* Inventory */
 .inv-row{display:grid;grid-template-columns:2fr 1.2fr 1.5fr 0.7fr;gap:6px;align-items:center;
   padding:5px 0;border-bottom:1px solid var(--bd);font-size:11px}
@@ -673,6 +673,126 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 
 /* Fire safety */
 .fire-ok{color:#4ade80}.fire-warn{color:#f87171}.fire-info{color:#fbbf24}
+
+
+/* ══ v3.20 ════════════════════════════════════════════════════════ */
+
+/* Command Palette */
+#cmd-palette{position:fixed;top:15%;left:50%;transform:translateX(-50%);
+  width:520px;max-width:95vw;background:var(--bg2);border:1px solid var(--gr);
+  border-radius:10px;z-index:600;display:none;box-shadow:0 8px 32px rgba(0,0,0,.7)}
+#cmd-palette.vis{display:block}
+#cmd-input{width:100%;padding:14px 16px;background:transparent;border:none;
+  border-bottom:1px solid var(--bd2);color:var(--tx);font-size:14px;outline:none}
+#cmd-results{max-height:360px;overflow-y:auto;padding:4px 0}
+.cmd-item{padding:9px 16px;cursor:pointer;display:flex;align-items:center;gap:10px;
+  transition:.1s;border-radius:0}
+.cmd-item:hover,.cmd-item.sel{background:var(--bg3)}
+.cmd-item .ci-icon{font-size:16px;width:22px;flex-shrink:0;text-align:center}
+.cmd-item .ci-main{flex:1}
+.cmd-item .ci-label{font-size:12px;color:var(--tx)}
+.cmd-item .ci-sub{font-size:10px;color:var(--tx3)}
+.cmd-item .ci-kbd{font-size:10px;background:var(--bg4);border:1px solid var(--bd);
+  border-radius:3px;padding:1px 5px;color:var(--tx3);font-family:monospace}
+.cmd-section{padding:5px 16px 2px;font-size:9px;color:var(--tx3);
+  text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+
+/* Smart Suggestions */
+#suggestions-bar{position:fixed;bottom:52px;left:260px;right:360px;
+  z-index:25;pointer-events:none;display:flex;gap:6px;flex-wrap:wrap;
+  padding:0 8px;transition:.3s}
+.sug-chip{pointer-events:all;padding:5px 10px;background:rgba(10,30,10,.88);
+  border:1px solid var(--gr3);border-radius:20px;font-size:10px;color:var(--gr);
+  cursor:pointer;backdrop-filter:blur(8px);transition:.15s;
+  display:flex;align-items:center;gap:5px;animation:sugIn .3s ease}
+.sug-chip:hover{background:var(--gr4);border-color:var(--gr)}
+.sug-chip .sug-x{color:var(--tx3);font-size:9px;margin-left:2px}
+@keyframes sugIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* Voice indicator */
+#voice-indicator{position:fixed;bottom:60px;right:370px;
+  background:rgba(239,68,68,.15);border:1px solid #f87171;
+  border-radius:20px;padding:6px 12px;font-size:11px;color:#f87171;
+  display:none;align-items:center;gap:6px;z-index:100;animation:pulse 1s infinite}
+#voice-indicator.vis{display:flex}
+.voice-dot{width:8px;height:8px;background:#f87171;border-radius:50%;animation:pulse 1s infinite}
+
+/* Pinboard */
+#pin-bar{display:flex;gap:4px;padding:4px 6px;background:var(--bg2);
+  border-bottom:1px solid var(--bd);min-height:36px;align-items:center;
+  flex-wrap:wrap;flex-shrink:0}
+.pin-item{display:flex;align-items:center;gap:3px;padding:3px 7px;
+  background:var(--bg3);border:1px solid var(--bd);border-radius:4px;
+  cursor:pointer;font-size:10px;color:var(--tx2);transition:.12s;position:relative}
+.pin-item:hover{border-color:var(--gr);color:var(--gr)}
+.pin-item .unpin{position:absolute;top:-5px;right:-5px;background:#f87171;
+  color:#fff;border:none;border-radius:50%;width:12px;height:12px;font-size:8px;
+  cursor:pointer;display:none;align-items:center;justify-content:center;z-index:1}
+.pin-item:hover .unpin{display:flex}
+.pin-add-hint{font-size:10px;color:var(--tx3);padding:0 6px}
+
+/* Recent items */
+.recent-label{font-size:9px;color:var(--tx3);padding:3px 8px;
+  text-transform:uppercase;letter-spacing:.4px}
+
+/* Phase bar */
+#phase-bar{display:flex;align-items:center;gap:0;padding:0 12px;
+  height:28px;background:var(--bg3);border-bottom:1px solid var(--bd);
+  flex-shrink:0;overflow:hidden}
+.phase-step{display:flex;align-items:center;gap:5px;padding:0 10px;
+  font-size:10px;color:var(--tx3);cursor:pointer;height:100%;
+  border-right:1px solid var(--bd);transition:.12s;white-space:nowrap}
+.phase-step:hover{background:var(--bg4)}
+.phase-step.active{color:var(--gr);background:var(--gr4);font-weight:700}
+.phase-step.done{color:var(--tx3);text-decoration:line-through}
+.phase-dot{width:8px;height:8px;border-radius:50%;background:var(--bd);flex-shrink:0}
+.phase-step.active .phase-dot{background:var(--gr)}
+.phase-step.done .phase-dot{background:var(--tx3)}
+
+/* Todo */
+.todo-item{display:flex;align-items:center;gap:7px;padding:6px 10px;
+  border-bottom:1px solid var(--bd);font-size:11px}
+.todo-item.done-item .todo-text{text-decoration:line-through;color:var(--tx3)}
+.todo-cb{accent-color:var(--gr);width:14px;height:14px;cursor:pointer}
+.todo-text{flex:1;color:var(--tx2)}
+.todo-assignee{font-size:9px;color:var(--tx3);background:var(--bg4);
+  padding:1px 5px;border-radius:10px}
+.todo-remind{font-size:9px;color:var(--yw)}
+
+/* Dashboard */
+#dashboard-overlay{position:fixed;inset:0;background:var(--bg);z-index:400;
+  display:none;flex-direction:column;overflow:auto}
+#dashboard-overlay.vis{display:flex}
+.dash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+  padding:16px;flex:1}
+.dash-widget{background:var(--bg2);border:1px solid var(--bd2);
+  border-radius:10px;padding:14px;position:relative;overflow:hidden}
+.dash-widget h3{font-size:11px;color:var(--tx3);text-transform:uppercase;
+  letter-spacing:.4px;margin-bottom:10px;font-weight:600}
+.dash-big-num{font-size:36px;font-weight:800;color:var(--gr);line-height:1}
+.dash-sub{font-size:11px;color:var(--tx3);margin-top:4px}
+.dash-remove{position:absolute;top:8px;right:8px;background:none;border:none;
+  color:var(--tx3);cursor:pointer;font-size:12px;opacity:0;transition:.15s}
+.dash-widget:hover .dash-remove{opacity:.6}
+
+/* Checklist wizard */
+#checklist-wizard{position:fixed;right:16px;bottom:60px;width:280px;
+  background:var(--bg2);border:1px solid var(--gr3);border-radius:10px;
+  z-index:200;display:none;box-shadow:0 4px 20px rgba(0,0,0,.6)}
+#checklist-wizard.vis{display:block}
+.cwiz-step{padding:10px 14px;border-bottom:1px solid var(--bd)}
+.cwiz-step.done-step{opacity:.5}
+.cwiz-step.active-step{background:var(--gr4)}
+.cwiz-num{font-size:10px;color:var(--tx3);margin-bottom:2px}
+.cwiz-task{font-size:12px;color:var(--tx);font-weight:600}
+.cwiz-hint{font-size:10px;color:var(--tx3);margin-top:2px;line-height:1.5}
+
+/* Shortcut editor */
+.sc-edit-row{display:flex;align-items:center;gap:8px;padding:5px 0;
+  border-bottom:1px solid var(--bd);font-size:11px}
+.sc-capture{padding:4px 8px;background:var(--bg3);border:1px solid var(--bl);
+  border-radius:4px;font-family:monospace;font-size:11px;color:var(--bl);
+  cursor:pointer;min-width:60px;text-align:center}
 
 /* TOAST */
 .toast{position:fixed;bottom:62px;left:50%;transform:translateX(-50%);padding:7px 16px;border-radius:var(--r6);font-size:12px;z-index:9999;transition:opacity .35s;white-space:nowrap;pointer-events:none}
@@ -765,7 +885,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 <div id="topbar">
   <!-- LOGO -->
   <span class="logo">🌿 CSC <em>Raumplaner</em></span>
-  <span class="vbadge">v3.19</span>
+  <span class="vbadge">v3.20</span>
   <div class="tsep"></div>
 
   <!-- UNDO/REDO -->
@@ -816,6 +936,9 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="openLayoutComparison();closeTBMenu()">🔀 Lageplan vergleichen</div>
         <div class="tbm-sep"></div>
+        <div class="tbm-item" onclick="openDashboard();closeTBMenu()">🖥 Dashboard</div>
+        <div class="tbm-item" onclick="openChecklistWizard();closeTBMenu()">📋 Einrichtungs-Assistent</div>
+        <div class="tbm-sep"></div>
         <div class="tbm-label">Einstellungen</div>
         <div class="tbm-item" onclick="toggleLayerPanel();closeTBMenu()">📚 Ebenen (Layer)</div>
         <div class="tbm-item" onclick="openM('m-display');closeTBMenu()">🎨 Darstellung</div>
@@ -848,6 +971,14 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
         <div class="tbm-item" onclick="openSmartHome();closeTBMenu()">🏠 Smart Home Planung</div>
         <div class="tbm-item" onclick="openTimeline();closeTBMenu()">📅 Zeitplan</div>
         <div class="tbm-item" onclick="startAR();closeTBMenu()">🔮 Augmented Reality</div>
+        <div class="tbm-item" onclick="autoOptimizeAll();closeTBMenu()">⚡ Auto-Optimierung</div>
+        <div class="tbm-item" onclick="autoLabelRooms();closeTBMenu()">🏷 Räume automatisch benennen</div>
+        <div class="tbm-item" onclick="toggleVoice();closeTBMenu()">🎙 Sprachsteuerung</div>
+        <div class="tbm-sep"></div>
+        <div class="tbm-item" onclick="openM('m-todos');closeTBMenu()">✅ Aufgaben</div>
+        <div class="tbm-item" onclick="openM('m-prompts');closeTBMenu()">💬 Eigene KI-Befehle</div>
+        <div class="tbm-item" onclick="openShortcutEditor();closeTBMenu()">⌨ Tastenkürzel</div>
+        <div class="tbm-item" onclick="enableAutoCloudSave(!_autoCloudSave);closeTBMenu()" id="mi-autocloudsvae">☁ Auto-Cloud-Save</div>
         <div class="tbm-item" onclick="openM('m-waittime');closeTBMenu()">⏱ Wartezeit-Simulation</div>
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="aiDescribeRoom();closeTBMenu()">🔮 KI: Raum beschreiben</div>
@@ -884,6 +1015,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   <!-- MOOD + KI — immer sichtbar -->
   <button class="tbt" onclick="toggleMoodPanel()" style="color:var(--yw);border-color:#3a3000;background:#1a1800" title="Stimmung/Beleuchtung">🌅</button>
   <button class="tbt" onclick="openM('m-wizard')" style="color:var(--pu);border-color:#3a2a4a;background:#1a0d2a" title="KI Möbel-Assistent">🤖</button>
+  <button class="tbt" onclick="openCmdPalette()" title="Befehlspalette (Ctrl+K)" style="color:var(--bl)">⌨</button>
   <button class="tbt" onclick="openHelp()" style="color:var(--or)" title="Anleitung (H/F1)">❓</button>
   <div class="tsep"></div>
 
@@ -940,6 +1072,8 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
     <button class="mpill" id="pill-pan" onclick="set2DTool('pan')">✋ Verschieben</button>
   </div>
 
+  <div id="phase-bar" onclick="openDashboard()"></div>
+  <div id="pin-bar"><span class="pin-add-hint">📌 Rechtsklick auf Möbel → Anpinnen</span></div>
   <div id="fp-walk"><div id="walk-box" onclick="requestWalkLock()">
     <h3>🚶 Durchgehen-Modus</h3>
     <p>Klicken zum Aktivieren<br>WASD = Bewegen · Shift = Schnell<br>Maus = Umschauen · ESC beenden</p>
@@ -1010,6 +1144,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
         📐 <b>Grundriss hochladen</b> → ich erkenne alle Räume, Maße, Türen, Fenster und richte alles automatisch ein.<br>
         💬 <b>Beschreiben</b> → «Empfangsraum 8×6m mit Ausgabetheke»<br>
         🔄 <b>Anpassen</b> → «Mach den Lagerraum größer»
+        <div id="custom-prompt-chips" style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px"></div>
         <div class="ai-chips">
           <span class="chip" onclick="qmsg('Erstelle eine vollständige CSC-Ausgabestelle: Empfang, Ausgabe, Lager, Sozialbereich und WC')">🌿 Komplette CSC-Anlage</span>
           <span class="chip" onclick="qmsg('Erstelle einen Empfangsraum 8x6m mit Ausgabetheke, Scanner und Wartezone')">📐 Empfangsraum</span>
@@ -1585,6 +1720,96 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 </div>
 </div>
 
+
+<!-- COMMAND PALETTE -->
+<div id="cmd-palette">
+  <input id="cmd-input" placeholder="🔍 Befehl oder Funktion suchen… (Strg+K)" autocomplete="off"
+    oninput="filterCommands(this.value)" onkeydown="cmdKeyNav(event)">
+  <div id="cmd-results"></div>
+</div>
+
+<!-- SMART SUGGESTIONS BAR -->
+<div id="suggestions-bar"></div>
+
+<!-- VOICE INDICATOR -->
+<div id="voice-indicator">
+  <div class="voice-dot"></div>
+  <span id="voice-text">Höre zu…</span>
+  <button onclick="stopVoice()" style="background:none;border:none;color:#f87171;cursor:pointer;font-size:12px">✕</button>
+</div>
+
+<!-- CHECKLIST WIZARD -->
+<div id="checklist-wizard">
+  <div style="padding:10px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--bd)">
+    <div style="font-size:12px;font-weight:700;color:var(--gr)">📋 Einrichtungs-Assistent</div>
+    <button onclick="document.getElementById('checklist-wizard').classList.remove('vis')" style="background:none;border:none;color:var(--tx3);cursor:pointer">✕</button>
+  </div>
+  <div id="cwiz-steps" style="max-height:340px;overflow-y:auto"></div>
+  <div style="padding:8px 12px;border-top:1px solid var(--bd)">
+    <button class="mbt ok" onclick="cwizNextStep()" style="width:100%" id="cwiz-btn">Weiter →</button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard-overlay">
+  <div style="padding:12px 16px;background:var(--bg2);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;flex-shrink:0">
+    <div style="font-size:15px;font-weight:800;color:var(--gr)">🌿 Dashboard — Projektübersicht</div>
+    <div style="flex:1"></div>
+    <select id="phase-select" onchange="setProjectPhase(this.value)" style="padding:5px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px">
+      <option value="planning">📐 Planung</option>
+      <option value="approval">📋 Genehmigung</option>
+      <option value="construction">🔨 Umbau/Bau</option>
+      <option value="operation">✅ Betrieb</option>
+    </select>
+    <button class="tbt" onclick="closeDashboard()">✕ Schließen</button>
+  </div>
+  <div id="dash-grid" class="dash-grid"></div>
+</div>
+
+<!-- TODOS MODAL -->
+<div class="mover" id="m-todos">
+<div class="modal" style="max-width:500px">
+  <h2>✅ Aufgaben</h2>
+  <div style="display:flex;gap:6px;margin-bottom:8px">
+    <input id="todo-inp" placeholder="Neue Aufgabe…" style="flex:1;padding:6px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:11px" onkeydown="if(event.key==='Enter')addTodo()">
+    <input id="todo-assign" placeholder="Verantwortl." style="width:100px;padding:6px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:11px">
+    <input id="todo-remind" type="date" style="width:120px;padding:6px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:11px">
+    <button class="mbt ok" onclick="addTodo()">＋</button>
+  </div>
+  <div id="todo-list" style="max-height:350px;overflow-y:auto"></div>
+  <div class="mbtns">
+    <button class="mbt" onclick="exportTodosCSV()">📥 CSV</button>
+    <button class="mbt ok" onclick="closeM('m-todos')">Schließen</button>
+  </div>
+</div>
+</div>
+
+<!-- CUSTOM PROMPTS -->
+<div class="mover" id="m-prompts">
+<div class="modal" style="max-width:480px">
+  <h2>💬 Eigene KI-Befehle</h2>
+  <div style="display:flex;gap:6px;margin-bottom:8px">
+    <input id="prompt-label" placeholder="Name (z.B. 'Sicherheit prüfen')" style="width:140px;padding:6px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:11px">
+    <input id="prompt-text" placeholder="Dein KI-Befehl…" style="flex:1;padding:6px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:11px" onkeydown="if(event.key==='Enter')saveCustomPrompt()">
+    <button class="mbt ok" onclick="saveCustomPrompt()">＋</button>
+  </div>
+  <div id="prompts-list" style="max-height:300px;overflow-y:auto"></div>
+  <div class="mbtns"><button class="mbt ok" onclick="closeM('m-prompts')">Schließen</button></div>
+</div>
+</div>
+
+<!-- SHORTCUTS EDITOR -->
+<div class="mover" id="m-shortcuts">
+<div class="modal" style="max-width:460px">
+  <h2>⌨ Tastenkürzel anpassen</h2>
+  <div id="shortcuts-list" style="max-height:380px;overflow-y:auto"></div>
+  <div class="mbtns">
+    <button class="mbt" onclick="resetShortcuts()">↺ Zurücksetzen</button>
+    <button class="mbt ok" onclick="closeM('m-shortcuts')">Schließen</button>
+  </div>
+</div>
+</div>
+
 <!-- STEP-BY-STEP GUIDE -->
 <div id="guide-overlay">
 <div id="guide-box">
@@ -1796,6 +2021,16 @@ var _swRegistered    = false;
 var _inventory       = [];   // [{id,objId,serial,notes,date}]
 var _memberHeatData  = [];   // heatmap points from member movement
 var _memberHeatActive= false;
+var _favItems        = [];   // pinned catalog items
+var _recentItems     = [];   // last 5 used typeIds
+var _todos           = [];   // [{id,text,assignee,done,reminder,phase}]
+var _projectPhase    = 'planning'; // planning|approval|construction|operation
+var _customPrompts   = [];   // [{id,label,text}]
+var _customShortcuts = {};   // {key: fnName}
+var _suggestions     = [];   // current smart suggestions
+var _voiceActive     = false;
+var _autoCloudSave   = false;
+var _dashWidgets     = ['capacity','budget','checklist','tasks','phase']; // active widgets
 var _sunAnimActive = false; // day/night animation running
 var _sunAnimTimer  = null;  // animation interval
 var _heatmapActive = false; // heatmap overlay active
@@ -3260,7 +3495,7 @@ function doPrint(){
     +'td,th{border:1px solid #ddd;padding:4px 6px;text-align:left}th{background:#f5f5f5}'
     +'@media print{body{padding:8px}}</style></head><body>'
     +'<h1>🌿 '+d.name+'</h1>'
-    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.19 · '+new Date().toLocaleDateString('de-DE')+'</div>'
+    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.20 · '+new Date().toLocaleDateString('de-DE')+'</div>'
     +'<img src="'+img+'">'
     +'<div class=grid>'
     +'<div class=box><h3>Räume ('+d.rooms.length+')</h3>'
@@ -3322,6 +3557,8 @@ function snapshot(){
   undoIdx = undoStack.length - 1;
   _updUndoBtns();
   // Auto-save to localStorage on every change (skip during init)
+  updateSuggestions();
+  triggerAutoCloudSave();
   if(_autoSaveReady) {
     // Log the change
     const prev = undoIdx > 0 ? JSON.parse(undoStack[undoIdx-1]||'{}') : {};
@@ -5089,7 +5326,7 @@ function pickKallaxColor(id, part){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// KALLAX PRO EDITOR — Extended (v3.19)
+// KALLAX PRO EDITOR — Extended (v3.20)
 // ════════════════════════════════════════════════════════════════════════
 
 // Additional color palettes
@@ -6361,7 +6598,7 @@ function rebuild3DThrottled(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// NEW FEATURES v3.19
+// NEW FEATURES v3.20
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. RAUM-SNAP beim Platzieren ─────────────────────────────────────
@@ -6751,7 +6988,7 @@ function showCSCPanel(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// INTERAKTIVE ANLEITUNG v3.19
+// INTERAKTIVE ANLEITUNG v3.20
 // ════════════════════════════════════════════════════════════════════════
 function openHelp(page){
   document.getElementById('help-overlay').classList.add('open');
@@ -6892,7 +7129,7 @@ function renderTutStep(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.19 — ALLE NEUEN FEATURES
+// v3.20 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. KI MÖBELANORDNUNG ─────────────────────────────────────────────
@@ -7544,7 +7781,7 @@ function removeWallCtxMenu(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.19 — ALLE NEUEN FEATURES
+// v3.20 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── FURNITURE PRICES DATABASE ────────────────────────────────────────
@@ -8090,7 +8327,7 @@ const _origAddRoom = addRoom;
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.19 — DROPDOWN MENU SYSTEM + NEW FEATURES
+// v3.20 — DROPDOWN MENU SYSTEM + NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── DROPDOWN MENU SYSTEM ─────────────────────────────────────────────
@@ -8440,7 +8677,7 @@ function renderComparePane(side, data){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.19 — ALL NEW FEATURES
+// v3.20 — ALL NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. DARK/LIGHT MODE ───────────────────────────────────────────────
@@ -8815,7 +9052,7 @@ function registerServiceWorker(){
   if(!location.protocol.startsWith('http')){ console.log('SW: nur auf https verfügbar'); return; }
   // Inline SW as blob
   const swCode=`
-    const CACHE='csc-v3.19';
+    const CACHE='csc-v3.20';
     self.addEventListener('install',e=>e.waitUntil(
       caches.open(CACHE).then(c=>c.add('/'))
     ));
@@ -8889,7 +9126,7 @@ function registerServiceWorker(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.19 — BRANDSCHUTZ / AKUSTIK / ENERGIE / REINIGUNG / INVENTAR /
+// v3.20 — BRANDSCHUTZ / AKUSTIK / ENERGIE / REINIGUNG / INVENTAR /
 //          HEATMAP MITGLIEDER / LIEFERWEGE / BARCODE
 // ════════════════════════════════════════════════════════════════════════
 
@@ -9300,6 +9537,764 @@ function drawRoutes(ctx){
   ctx.restore();
 }
 
+
+// ════════════════════════════════════════════════════════════════════════
+// v3.20 — ALLE AUTOMATISIERUNGS-FEATURES
+// ════════════════════════════════════════════════════════════════════════
+
+// ════════════════════════════════════════════════════════════════════════
+// 1. COMMAND PALETTE (Ctrl+K)
+// ════════════════════════════════════════════════════════════════════════
+const COMMANDS = [
+  // Rooms
+  {icon:'⬜',label:'Raum zeichnen',sub:'Neuen Raum auf dem Grundriss zeichnen',fn:()=>set2DTool('room'),kbd:'R'},
+  {icon:'🧱',label:'Wand zeichnen',sub:'Freie Wand zeichnen',fn:()=>set2DTool('wall'),kbd:'W'},
+  {icon:'📐',label:'Maß setzen',sub:'Distanz messen',fn:()=>set2DTool('measure'),kbd:'M'},
+  // Views
+  {icon:'⊞',label:'2D Ansicht',sub:'Grundriss 2D',fn:()=>setView('2d'),kbd:'1'},
+  {icon:'⬛',label:'3D Ansicht',sub:'3D Rendering',fn:()=>setView('3d'),kbd:'2'},
+  {icon:'🚶',label:'Durchgehen',sub:'Egoperspektive',fn:()=>setView('walk'),kbd:'3'},
+  // Analysis
+  {icon:'📊',label:'Statistik',sub:'Raumstatistik anzeigen',fn:()=>showStats(),kbd:'I'},
+  {icon:'💰',label:'Budget',sub:'Möbelkosten anzeigen',fn:()=>toggleBudget()},
+  {icon:'🥧',label:'Flächendiagramm',sub:'Flächenaufteilung',fn:()=>showAreaChart()},
+  {icon:'🧯',label:'Brandschutz',sub:'DIN-Berechnung',fn:()=>{calcFireSafety();openM('m-fire')}},
+  {icon:'⚡',label:'Energie',sub:'Verbrauchscheck',fn:()=>{calcEnergy();openM('m-energy')}},
+  {icon:'🧹',label:'Reinigungsplan',sub:'Zeitaufwand berechnen',fn:()=>openCleaning()},
+  {icon:'⏱',label:'Wartezeit',sub:'Simulation starten',fn:()=>openM('m-waittime')},
+  {icon:'📋',label:'Inventar',sub:'Objektliste öffnen',fn:()=>openInventory()},
+  {icon:'🚚',label:'Lieferwege',sub:'Routen berechnen',fn:()=>{calcRoutes();openM('m-routes')}},
+  // Save/Share
+  {icon:'💾',label:'Speichern',sub:'Projekt speichern',fn:()=>saveProj(),kbd:'Ctrl+S'},
+  {icon:'☁',label:'Cloud speichern',sub:'In Supabase speichern',fn:()=>cloudSave()},
+  {icon:'🔗',label:'Teilen',sub:'Link kopieren',fn:()=>shareProject()},
+  {icon:'📥',label:'Export JSON',sub:'Datei herunterladen',fn:()=>dlJSON()},
+  {icon:'📊',label:'CSV Möbel',sub:'Möbelliste exportieren',fn:()=>exportFurnitureCSV()},
+  {icon:'🏗',label:'GLTF Export',sub:'3D-Modell exportieren',fn:()=>exportGLTF()},
+  {icon:'📐',label:'DXF Export',sub:'CAD-Datei exportieren',fn:()=>exportDXF()},
+  // Tools
+  {icon:'📏',label:'Maßketten',sub:'Ein/ausblenden',fn:()=>toggleDimensions()},
+  {icon:'🌡',label:'Heatmap',sub:'Laufwege anzeigen',fn:()=>toggleHeatmap()},
+  {icon:'☀️',label:'Lichteinfall',sub:'Simulation',fn:()=>toggleLightSim()},
+  {icon:'📌',label:'Notiz setzen',sub:'Notiz auf Grundriss',fn:()=>toggleNoteMode()},
+  {icon:'📐',label:'Lineal',sub:'Abstände messen',fn:()=>toggleRuler()},
+  {icon:'⬜',label:'Decke',sub:'Ein/ausblenden',fn:()=>toggleCeiling()},
+  {icon:'✂️',label:'Schnitt',sub:'Schnittansicht',fn:()=>toggleSliceView()},
+  {icon:'🏗',label:'Vorlagen',sub:'Raumlayout-Vorlagen',fn:()=>openTemplates()},
+  {icon:'🌅',label:'Animation',sub:'Tag/Nacht',fn:()=>toggleSunAnimation()},
+  // AI
+  {icon:'🤖',label:'KI: Optimieren',sub:'Grundriss analysieren',fn:()=>optimizeLayout()},
+  {icon:'🔍',label:'KI: Möbel optimieren',sub:'Im ausgewählten Raum',fn:()=>optimizeFurnitureInRoom()},
+  {icon:'🔐',label:'KI: Sicherheits-Audit',sub:'Detaillierter Bericht',fn:()=>aiSecurityAudit()},
+  {icon:'🔮',label:'KI: Raum beschreiben',sub:'Atmosphäre',fn:()=>aiDescribeRoom()},
+  {icon:'♿',label:'KI: Barrierefrei',sub:'Umbauplan',fn:()=>aiAccessibleRebuild()},
+  {icon:'💰',label:'KI: Kosten schätzen',sub:'Einrichtungskosten',fn:()=>estimateCosts()},
+  {icon:'🤖',label:'Auto-Optimierung',sub:'Alles auf einmal prüfen',fn:()=>autoOptimizeAll()},
+  // Settings
+  {icon:'🎨',label:'Darstellung',sub:'Farben, Schrift, Grid',fn:()=>openM('m-display')},
+  {icon:'📚',label:'Ebenen',sub:'Layer ein/ausblenden',fn:()=>toggleLayerPanel()},
+  {icon:'📦',label:'Gruppen',sub:'Räume gruppieren',fn:()=>openM('m-groups')},
+  {icon:'✅',label:'Aufgaben',sub:'Todo-Liste',fn:()=>openM('m-todos')},
+  {icon:'📋',label:'Checkliste',sub:'Schritt-für-Schritt',fn:()=>openChecklistWizard()},
+  {icon:'🌿',label:'CSC Status',sub:'Checkliste + Kapazität',fn:()=>showCSCPanel()},
+  {icon:'❓',label:'Anleitung',sub:'Hilfe öffnen',fn:()=>openHelp(),kbd:'H'},
+  {icon:'🎙',label:'Sprachsteuerung',sub:'Aktivieren/Deaktivieren',fn:()=>toggleVoice()},
+  {icon:'🖥',label:'Dashboard',sub:'Projektübersicht',fn:()=>openDashboard()},
+];
+
+let _cmdIdx = 0;
+let _cmdFiltered = [...COMMANDS];
+
+function openCmdPalette(){
+  document.getElementById('cmd-palette').classList.add('vis');
+  const inp=document.getElementById('cmd-input');
+  if(inp){ inp.value=''; inp.focus(); }
+  filterCommands('');
+}
+function closeCmdPalette(){
+  document.getElementById('cmd-palette').classList.remove('vis');
+}
+
+function filterCommands(q){
+  const all=q?COMMANDS.filter(c=>
+    c.label.toLowerCase().includes(q.toLowerCase())||
+    c.sub.toLowerCase().includes(q.toLowerCase())
+  ):COMMANDS;
+  _cmdFiltered=all; _cmdIdx=0;
+  renderCmdResults(all);
+}
+
+function renderCmdResults(items){
+  const el=document.getElementById('cmd-results'); if(!el) return;
+  if(!items.length){
+    el.innerHTML='<div style="padding:12px 16px;font-size:11px;color:var(--tx3)">Keine Ergebnisse.</div>';
+    return;
+  }
+  el.innerHTML=items.slice(0,12).map((c,i)=>
+    '<div class="cmd-item'+(i===_cmdIdx?' sel':'')+'" onclick="execCmd('+i+')" data-idx="'+i+'">'
+    +'<div class="ci-icon">'+c.icon+'</div>'
+    +'<div class="ci-main"><div class="ci-label">'+c.label+'</div>'
+    +'<div class="ci-sub">'+c.sub+'</div></div>'
+    +(c.kbd?'<div class="ci-kbd">'+c.kbd+'</div>':'')
+    +'</div>'
+  ).join('');
+}
+
+function cmdKeyNav(e){
+  const len=Math.min(_cmdFiltered.length,12);
+  if(e.key==='ArrowDown'){_cmdIdx=Math.min(len-1,_cmdIdx+1);renderCmdResults(_cmdFiltered);e.preventDefault();}
+  else if(e.key==='ArrowUp'){_cmdIdx=Math.max(0,_cmdIdx-1);renderCmdResults(_cmdFiltered);e.preventDefault();}
+  else if(e.key==='Enter'){ execCmd(_cmdIdx); }
+  else if(e.key==='Escape'){ closeCmdPalette(); }
+}
+
+function execCmd(idx){
+  const c=_cmdFiltered[idx]; if(!c) return;
+  closeCmdPalette();
+  c.fn();
+}
+
+// Ctrl+K global shortcut
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();openCmdPalette();}
+  if(e.key==='Escape') closeCmdPalette();
+  // Custom shortcuts
+  const cKey=e.key.toLowerCase();
+  if(!e.ctrlKey&&!e.metaKey&&!e.altKey&&!e.target.matches('input,textarea')){
+    if(_customShortcuts[cKey]){
+      const fn=window[_customShortcuts[cKey]];
+      if(typeof fn==='function') fn();
+    }
+  }
+});
+
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#cmd-palette')) closeCmdPalette();
+});
+
+// ════════════════════════════════════════════════════════════════════════
+// 2. SMART SUGGESTIONS
+// ════════════════════════════════════════════════════════════════════════
+const SUGGESTION_RULES = [
+  {
+    id:'no-smoke',
+    check:()=>rooms.length>0&&!objects.some(o=>o.typeId==='sec-smoke'),
+    text:'🔥 Kein Rauchmelder!',
+    action:()=>{ rooms.forEach(r=>addObject({typeId:'sec-smoke',x:r.x+r.w/2,y:r.y+r.d/2,w:0.12,d:0.12,h:0.05,rot:0,py:r.h-0.05,floorId:curFloor})); toast('✓ Rauchmelder platziert','g'); }
+  },
+  {
+    id:'no-exit',
+    check:()=>rooms.length>0&&!objects.some(o=>o.typeId==='sec-sign-exit'),
+    text:'🚪 Kein Notausgang',
+    action:()=>qmsg('Platziere Notausgang-Schilder an allen Ausgängen')
+  },
+  {
+    id:'no-fire-ext',
+    check:()=>rooms.reduce((s,r)=>s+r.w*r.d,0)>50&&!objects.some(o=>o.typeId==='sec-ext'),
+    text:'🧯 Feuerlöscher fehlt',
+    action:()=>{ const r=rooms[0]; if(r) addObject({typeId:'sec-ext',x:r.x+0.2,y:r.y+0.2,w:0.15,d:0.15,h:0.5,rot:0,py:0,floorId:curFloor}); }
+  },
+  {
+    id:'no-lager',
+    check:()=>rooms.length>0&&!rooms.some(r=>r.name.toLowerCase().includes('lager')),
+    text:'📦 Kein Lagerraum',
+    action:()=>qmsg('Füge einen Lagerraum neben dem Empfang hinzu')
+  },
+  {
+    id:'no-wc',
+    check:()=>rooms.length>1&&!rooms.some(r=>r.name.toLowerCase().includes('wc')),
+    text:'🚽 Kein WC vorhanden',
+    action:()=>qmsg('Füge ein WC hinzu (mind. 2.5×2.5m)')
+  },
+  {
+    id:'low-capacity',
+    check:()=>calcCapacity().total<10&&rooms.length>0,
+    text:'👥 Kapazität unter 10',
+    action:()=>showCSCPanel()
+  },
+  {
+    id:'no-cam',
+    check:()=>rooms.length>0&&!objects.some(o=>o.typeId&&o.typeId.startsWith('sec-cam')),
+    text:'📷 Keine Kamera',
+    action:()=>addObject({typeId:'sec-cam-ceil',x:rooms[0].x+0.3,y:rooms[0].y+0.3,w:0.15,d:0.15,h:0.12,rot:0,py:rooms[0].h-0.15,floorId:curFloor})
+  },
+];
+
+function updateSuggestions(){
+  const bar=document.getElementById('suggestions-bar'); if(!bar) return;
+  const active=SUGGESTION_RULES.filter(r=>r.check());
+  bar.innerHTML=active.slice(0,4).map(s=>
+    '<div class="sug-chip" onclick="'+
+    'SUGGESTION_RULES.find(r=>r.id===\''+s.id+'\').action();updateSuggestions()">'
+    +s.text+'<span class="sug-x" onclick="event.stopPropagation();this.parentNode.remove()">✕</span></div>'
+  ).join('');
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 3. VOICE CONTROL
+// ════════════════════════════════════════════════════════════════════════
+let _speechRecog=null;
+function toggleVoice(){
+  if(_voiceActive) stopVoice(); else startVoice();
+}
+
+function startVoice(){
+  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){
+    toast('Sprachsteuerung nicht verfügbar in diesem Browser (Chrome empfohlen)','r'); return;
+  }
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  _speechRecog=new SR();
+  _speechRecog.lang='de-DE'; _speechRecog.continuous=true; _speechRecog.interimResults=false;
+  _speechRecog.onresult=e=>{
+    const text=e.results[e.results.length-1][0].transcript.toLowerCase().trim();
+    document.getElementById('voice-text').textContent='"'+text+'"';
+    processVoiceCommand(text);
+  };
+  _speechRecog.onerror=()=>stopVoice();
+  _speechRecog.onend=()=>{ if(_voiceActive) _speechRecog.start(); };
+  _speechRecog.start();
+  _voiceActive=true;
+  document.getElementById('voice-indicator').classList.add('vis');
+  toast('🎙 Sprachsteuerung aktiv — Sage "Hey CSC, …"','g');
+}
+
+function stopVoice(){
+  if(_speechRecog) _speechRecog.stop();
+  _voiceActive=false;
+  document.getElementById('voice-indicator').classList.remove('vis');
+}
+
+function processVoiceCommand(text){
+  // Wake word check
+  if(!text.includes('hey csc')&&!text.includes('csc')) return;
+  const cmd=text.replace(/hey\s*csc[,\s]*/,'').trim();
+  addMsg('🎙 "'+cmd+'"','user');
+
+  // Direct commands
+  if(cmd.includes('raum')&&(cmd.includes('zeichen')||cmd.includes('neu')||cmd.includes('hinzufügen'))) { set2DTool('room'); toast('✓ Raumzeichnen aktiviert','g'); return; }
+  if(cmd.includes('wand')) { set2DTool('wall'); toast('✓ Wandzeichnen aktiviert','g'); return; }
+  if(cmd.includes('3d')) { setView('3d'); return; }
+  if(cmd.includes('grundriss')||cmd.includes('2d')) { setView('2d'); return; }
+  if(cmd.includes('speicher')) { saveProj(); return; }
+  if(cmd.includes('rückgängig')) { undo(); return; }
+  if(cmd.includes('budget')) { toggleBudget(); return; }
+  if(cmd.includes('brandschutz')) { calcFireSafety(); openM('m-fire'); return; }
+  if(cmd.includes('optimier')) { autoOptimizeAll(); return; }
+  if(cmd.includes('dashboard')) { openDashboard(); return; }
+  // Fallback: send to AI
+  const inp=document.getElementById('ai-inp');
+  if(inp){ inp.value=cmd; showRight('ai'); sendAI(); }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 4. AUTO-OPTIMIERUNG
+// ════════════════════════════════════════════════════════════════════════
+async function autoOptimizeAll(){
+  const k=getKey(); if(!k){ toast('Kein API Key','r'); return; }
+  showRight('ai');
+  addMsg('⚡ Auto-Optimierung läuft… (prüft Sicherheit, Kapazität, Möbel, KCanG)','sys');
+  const issues=[];
+
+  // 1. Sicherheits-Check
+  if(!objects.some(o=>o.typeId==='sec-smoke')){
+    issues.push('Rauchmelder fehlen');
+    rooms.forEach(r=>addObject({typeId:'sec-smoke',x:r.x+r.w/2-0.05,y:r.y+r.d/2,
+      w:0.12,d:0.12,h:0.05,rot:0,py:(r.h||2.8)-0.1,floorId:r.floorId||'eg'}));
+  }
+  if(!objects.some(o=>o.typeId==='sec-sign-exit')){
+    issues.push('Notausgang-Schilder fehlen');
+    if(rooms.length>0){
+      const r=rooms[0];
+      addObject({typeId:'sec-sign-exit',x:r.x+0.2,y:r.y,w:0.4,d:0.06,h:0.2,rot:0,py:r.h-0.25,floorId:r.floorId||'eg'});
+    }
+  }
+  const totalArea=rooms.reduce((s,r)=>s+r.w*r.d,0);
+  const needed=Math.ceil(totalArea/200);
+  const have=objects.filter(o=>o.typeId==='sec-ext').length;
+  if(have<needed){
+    issues.push((needed-have)+' Feuerlöscher fehlen');
+    for(let i=have;i<needed;i++){
+      const r=rooms[i%rooms.length];
+      addObject({typeId:'sec-ext',x:r.x+0.2,y:r.y+0.2,w:0.15,d:0.15,h:0.5,rot:0,py:0,floorId:r.floorId||'eg'});
+    }
+  }
+
+  // 2. Beleuchtung
+  rooms.filter(r=>(r.floorId||'eg')===curFloor).forEach(r=>{
+    const hasLight=objects.some(o=>{
+      const it=findItem(o.typeId); return it&&it.arch==='light'&&
+        o.x>=r.x&&o.x<=r.x+r.w&&o.y>=r.y&&o.y<=r.y+r.d;
+    });
+    if(!hasLight){
+      addObject({typeId:'al-str',x:r.x+r.w/2-0.3,y:r.y+r.d/2-0.3,
+        w:0.6,d:0.6,h:0.08,rot:0,py:(r.h||2.8)-0.05,floorId:r.floorId||'eg'});
+      issues.push('Licht in '+r.name+' hinzugefügt');
+    }
+  });
+
+  // 3. KI für Möbel-Optimierung
+  if(objects.length>3){
+    try{
+      const resp=await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+        body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,
+          messages:[{role:'user',content:
+            'Gib 3 konkrete Verbesserungshinweise für diese CSC-Planung in einem Satz je:\n'
+            +'Räume: '+rooms.map(r=>r.name).join(', ')+'\n'
+            +'Objekte: '+objects.length+' gesamt\n'
+            +'KCanG-Status: '+(getKCaNGChecklist().filter(c=>c.passed).length)+'/'+getKCaNGChecklist().length+' erfüllt\n'
+            +'Antworte NUR mit: ["Hinweis1","Hinweis2","Hinweis3"]'}]
+        })
+      });
+      const d=await resp.json();
+      const hints=JSON.parse((d.content?.[0]?.text||'[]').match(/\[[\s\S]*\]/)?.[0]||'[]');
+      hints.forEach(h=>issues.push('💡 '+h));
+    }catch(e){}
+  }
+
+  rebuild3D(); draw2D(); snapshot(); updateSuggestions();
+  addMsg('⚡ Auto-Optimierung abgeschlossen!\n\nDurchgeführt:\n'
+    +issues.map(i=>'• '+i).join('\n')+(issues.length?'':'\n✅ Alles bereits optimal!'),'ai');
+  toast('⚡ '+issues.length+' Verbesserungen durchgeführt','g');
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 5. PINBOARD & RECENTLY USED
+// ════════════════════════════════════════════════════════════════════════
+function togglePin(typeId){
+  const idx=_favItems.indexOf(typeId);
+  if(idx>=0) _favItems.splice(idx,1); else _favItems.push(typeId);
+  savePins(); renderPinBar();
+}
+
+function savePins(){ try{localStorage.setItem('csc-pins',JSON.stringify(_favItems));}catch(e){} }
+function loadPins(){ try{const s=localStorage.getItem('csc-pins');if(s)_favItems=JSON.parse(s);}catch(e){} }
+
+function addToRecent(typeId){
+  _recentItems=_recentItems.filter(i=>i!==typeId);
+  _recentItems.unshift(typeId);
+  if(_recentItems.length>5) _recentItems.pop();
+  try{localStorage.setItem('csc-recent',JSON.stringify(_recentItems));}catch(e){}
+}
+
+function loadRecent(){ try{const s=localStorage.getItem('csc-recent');if(s)_recentItems=JSON.parse(s);}catch(e){} }
+
+function renderPinBar(){
+  const bar=document.getElementById('pin-bar'); if(!bar) return;
+  if(!_favItems.length&&!_recentItems.length){
+    bar.innerHTML='<span class="pin-add-hint">📌 Rechtsklick auf Möbel → Anpinnen · Zuletzt: —</span>';
+    return;
+  }
+  let h='';
+  if(_favItems.length){
+    h+='<span style="font-size:9px;color:var(--tx3);margin-right:3px">📌</span>';
+    _favItems.forEach(id=>{
+      const it=findItem(id)||{};
+      h+='<div class="pin-item" onclick="placeFromCatalog(\''+id+'\')" title="'+it.name+'">'
+        +(it.icon||'📦')+' <span>'+((it.name||id).slice(0,12))+'</span>'
+        +'<button class="unpin" onclick="togglePin(\''+id+'\');event.stopPropagation()">✕</button></div>';
+    });
+    h+='<span style="width:1px;background:var(--bd);height:20px;margin:0 4px"></span>';
+  }
+  if(_recentItems.length){
+    h+='<span style="font-size:9px;color:var(--tx3);margin-right:3px">🕐</span>';
+    _recentItems.slice(0,5).forEach(id=>{
+      const it=findItem(id)||{};
+      h+='<div class="pin-item" onclick="placeFromCatalog(\''+id+'\')" title="Zuletzt: '+it.name+'" style="opacity:.7">'
+        +(it.icon||'📦')+' <span style="color:var(--tx3)">'+((it.name||id).slice(0,10))+'</span></div>';
+    });
+  }
+  bar.innerHTML=h;
+}
+
+// Hook recent into placeFromCatalog
+const _origPlaceFC = placeFromCatalog;
+function placeFromCatalog(typeId){
+  addToRecent(typeId);
+  renderPinBar();
+  _origPlaceFC(typeId);
+}
+
+// Right-click on catalog item → pin
+function catalogItemCtx(e, typeId){
+  e.preventDefault();
+  togglePin(typeId);
+  toast(('')+' '+(findItem(typeId)?.name||typeId)+(_favItems.includes(typeId)?' angepinnt':' entfernt'),'b');
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 6. DRAG FROM ANYWHERE (Image/PDF drop onto canvas)
+// ════════════════════════════════════════════════════════════════════════
+(function initDragDrop(){
+  const cv=document.getElementById('canvas-wrap')||document.body;
+  cv.addEventListener('dragover',e=>{e.preventDefault();e.dataTransfer.dropEffect='copy';});
+  cv.addEventListener('drop',async e=>{
+    e.preventDefault();
+    const files=Array.from(e.dataTransfer.files||[]);
+    if(!files.length) return;
+    toast('📂 Datei wird verarbeitet…','b');
+    clearUpload();
+    for(const f of files){
+      const ext=f.name.split('.').pop().toLowerCase();
+      try{
+        if(['jpg','jpeg','png','gif','webp'].includes(ext)) await uploadImg(f);
+        else if(ext==='pdf') await uploadPDF(f);
+        else if(['docx','doc'].includes(ext)) await uploadDOCX(f);
+      }catch(err){ toast('Fehler: '+err.message,'r'); }
+    }
+    if(uploadedPages.length>0){
+      addMsg(uploadedPages.length+' Datei(en) geladen. KI analysiert…','sys');
+      showRight('ai');
+      sendAI();
+    }
+  });
+})();
+
+// ════════════════════════════════════════════════════════════════════════
+// 7. CHECKLIST WIZARD
+// ════════════════════════════════════════════════════════════════════════
+const CWIZ_STEPS = [
+  {id:'rooms',task:'Räume einzeichnen',hint:'Erstelle alle Räume: Empfang, Ausgabe, Lager, Sozial, WC. Tipp: 🏗 Vorlagen nutzen!',check:()=>rooms.length>=3},
+  {id:'doors',task:'Türen einsetzen',hint:'Setze Türen zwischen alle Räume (Bau-Tab → Türen → auf Wand klicken)',check:()=>objects.some(o=>findItem(o.typeId)?.arch==='door')},
+  {id:'furniture',task:'Ausgabe einrichten',hint:'Platziere Ausgabetheke, Scanner und Beratungsplatz im Ausgabebereich',check:()=>objects.some(o=>['aus-theke','aus-theke-l'].includes(o.typeId))},
+  {id:'social',task:'Sozialbereich einrichten',hint:'Sofa, Tisch und Stühle im Sozialbereich platzieren',check:()=>objects.some(o=>o.typeId&&o.typeId.includes('sofa'))},
+  {id:'security',task:'Sicherheit installieren',hint:'Mind. 1 Kamera, Rauchmelder, Feuerlöscher und Notausgang-Schild',check:()=>objects.some(o=>o.typeId&&o.typeId.startsWith('sec-cam'))&&objects.some(o=>o.typeId==='sec-smoke')},
+  {id:'lighting',task:'Beleuchtung setzen',hint:'Deckenleuchten in jeden Raum (Bau-Tab → Beleuchtung)',check:()=>objects.some(o=>findItem(o.typeId)?.arch==='light')},
+  {id:'save',task:'Projekt speichern',hint:'💾 Speichern klicken und als Cloud-Backup hochladen',check:()=>!!localStorage.getItem('csc-saves3')},
+];
+var _cwizStep=0;
+
+function openChecklistWizard(){
+  _cwizStep=0; renderCwiz();
+  document.getElementById('checklist-wizard').classList.add('vis');
+}
+
+function renderCwiz(){
+  const el=document.getElementById('cwiz-steps'); if(!el) return;
+  el.innerHTML=CWIZ_STEPS.map((s,i)=>{
+    const done=s.check();
+    const active=i===_cwizStep&&!done;
+    return '<div class="cwiz-step'+(done?' done-step':active?' active-step':'')+'">'
+      +'<div class="cwiz-num">Schritt '+(i+1)+'/'+CWIZ_STEPS.length+(done?' ✅':'')+' </div>'
+      +'<div class="cwiz-task">'+s.task+'</div>'
+      +(active?'<div class="cwiz-hint">'+s.hint+'</div>':'')
+      +'</div>';
+  }).join('');
+  const btn=document.getElementById('cwiz-btn');
+  const allDone=CWIZ_STEPS.every(s=>s.check());
+  if(btn) btn.textContent=allDone?'🎉 Fertig! Dashboard öffnen':'Weiter →';
+}
+
+function cwizNextStep(){
+  const allDone=CWIZ_STEPS.every(s=>s.check());
+  if(allDone){ document.getElementById('checklist-wizard').classList.remove('vis'); openDashboard(); return; }
+  // Jump to first uncompleted step
+  _cwizStep=CWIZ_STEPS.findIndex((s,i)=>!s.check()&&i>=_cwizStep);
+  if(_cwizStep<0) _cwizStep=CWIZ_STEPS.findIndex(s=>!s.check());
+  renderCwiz();
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 8. AUTO-BESCHRIFTUNG
+// ════════════════════════════════════════════════════════════════════════
+async function autoLabelRooms(){
+  const k=getKey(); if(!k){ toast('Kein API Key','r'); return; }
+  toast('🏷 KI benennt Räume…','b');
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,
+        messages:[{role:'user',content:
+          'Benenne diese Räume für eine CSC-Ausgabestelle sinnvoll auf Deutsch.\n'
+          +'Räume:\n'+rooms.map((r,i)=>(i+1)+'. '+r.w+'×'+r.d+'m ('+r.name+')').join('\n')+'\n\n'
+          +'Antworte NUR mit JSON-Array (gleiche Reihenfolge): ["Name1","Name2",...]'}]
+      })
+    });
+    const d=await resp.json();
+    const names=JSON.parse((d.content?.[0]?.text||'[]').match(/\[[\s\S]*\]/)?.[0]||'[]');
+    names.forEach((name,i)=>{ if(rooms[i]&&name) rooms[i].name=name; });
+    rebuild3D(); draw2D(); renderLeft();
+    toast('✅ Räume umbenannt','g');
+  }catch(e){ toast('Fehler: '+e.message,'r'); }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 9. PROJEKT-PHASEN
+// ════════════════════════════════════════════════════════════════════════
+const PHASES=[
+  {id:'planning',label:'📐 Planung',desc:'Räume, Möbel, Design'},
+  {id:'approval',label:'📋 Genehmigung',desc:'Behörden, KCanG-Check'},
+  {id:'construction',label:'🔨 Umbau',desc:'Bauleistungen, Montage'},
+  {id:'operation',label:'✅ Betrieb',desc:'Laufender Betrieb'},
+];
+
+function setProjectPhase(phase){
+  _projectPhase=phase;
+  renderPhaseBar();
+  try{localStorage.setItem('csc-phase',phase);}catch(e){}
+  const p=PHASES.find(p=>p.id===phase);
+  if(p) toast('📌 Phase: '+p.label,'b');
+}
+
+function renderPhaseBar(){
+  const bar=document.getElementById('phase-bar'); if(!bar) return;
+  const cur=PHASES.findIndex(p=>p.id===_projectPhase);
+  bar.innerHTML=PHASES.map((p,i)=>'<div class="phase-step'+(i===cur?' active':i<cur?' done':'')+'" onclick="setProjectPhase(\''+p.id+'\')">'
+    +'<div class="phase-dot"></div>'+p.label+'</div>'
+  ).join('<span style="color:var(--tx3);font-size:10px;margin:0 2px">›</span>');
+  const sel=document.getElementById('phase-select');
+  if(sel) sel.value=_projectPhase;
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 10. AUFGABEN (TODOS)
+// ════════════════════════════════════════════════════════════════════════
+function addTodo(){
+  const text=document.getElementById('todo-inp')?.value.trim();
+  if(!text) return;
+  _todos.push({id:'t'+Date.now(),text,
+    assignee:document.getElementById('todo-assign')?.value.trim()||'',
+    reminder:document.getElementById('todo-remind')?.value||'',
+    done:false, phase:_projectPhase, created:Date.now()});
+  document.getElementById('todo-inp').value='';
+  saveTodos(); renderTodos();
+}
+
+function renderTodos(){
+  const el=document.getElementById('todo-list'); if(!el) return;
+  const sorted=[..._todos].sort((a,b)=>a.done-b.done);
+  el.innerHTML=sorted.map(t=>'<div class="todo-item'+(t.done?' done-item':'')+'">'
+    +'<input class="todo-cb" type="checkbox" '+(t.done?'checked':'')+' onchange="toggleTodo(\''+t.id+'\')">'
+    +'<div class="todo-text">'+t.text+'</div>'
+    +(t.assignee?'<div class="todo-assignee">'+t.assignee+'</div>':'')
+    +(t.reminder?'<div class="todo-remind">⏰ '+t.reminder+'</div>':'')
+    +'<button onclick="deleteTodo(\''+t.id+'\')" style="background:none;border:none;color:var(--rd);cursor:pointer;font-size:11px">🗑</button>'
+    +'</div>'
+  ).join('') || '<div style="padding:12px;font-size:11px;color:var(--tx3)">Keine Aufgaben.</div>';
+}
+
+function toggleTodo(id){ const t=_todos.find(t=>t.id===id); if(t) t.done=!t.done; saveTodos(); renderTodos(); }
+function deleteTodo(id){ _todos=_todos.filter(t=>t.id!==id); saveTodos(); renderTodos(); }
+function saveTodos(){ try{localStorage.setItem('csc-todos',JSON.stringify(_todos));}catch(e){} }
+function loadTodos(){ try{const s=localStorage.getItem('csc-todos');if(s)_todos=JSON.parse(s);}catch(e){} }
+function exportTodosCSV(){
+  const rows=['\uFEFFAufgabe,Verantwortl.,Erinnerung,Erledigt,Phase'];
+  _todos.forEach(t=>rows.push(['"'+t.text+'"','"'+t.assignee+'"',t.reminder,t.done?'Ja':'Nein',t.phase].join(',')));
+  const blob=new Blob([rows.join('\n')],{type:'text/csv;charset=utf-8'});
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:'aufgaben.csv'});
+  a.click();
+}
+
+// Check reminders on startup
+function checkReminders(){
+  const today=new Date().toISOString().slice(0,10);
+  const due=_todos.filter(t=>!t.done&&t.reminder&&t.reminder<=today);
+  if(due.length) toast('⏰ '+due.length+' fällige Aufgabe(n)! (Aufgaben öffnen)','r');
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 11. AUTO-SAVE TO CLOUD
+// ════════════════════════════════════════════════════════════════════════
+var _cloudSaveTimer=null;
+function enableAutoCloudSave(on){
+  _autoCloudSave=on;
+  try{localStorage.setItem('csc-auto-cloud',on?'1':'0');}catch(e){}
+  toast(on?'☁ Auto-Cloud-Save aktiviert':'☁ Auto-Cloud-Save deaktiviert','b');
+}
+
+function triggerAutoCloudSave(){
+  if(!_autoCloudSave||!SB_URL||!SB_KEY) return;
+  clearTimeout(_cloudSaveTimer);
+  _cloudSaveTimer=setTimeout(()=>{ cloudSave(); },3000); // debounce 3s
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 12. CUSTOM PROMPTS
+// ════════════════════════════════════════════════════════════════════════
+function saveCustomPrompt(){
+  const label=document.getElementById('prompt-label')?.value.trim();
+  const text=document.getElementById('prompt-text')?.value.trim();
+  if(!label||!text){ toast('Label und Text erforderlich','r'); return; }
+  _customPrompts.push({id:'p'+Date.now(),label,text});
+  try{localStorage.setItem('csc-prompts',JSON.stringify(_customPrompts));}catch(e){}
+  renderPromptsList();
+  document.getElementById('prompt-label').value='';
+  document.getElementById('prompt-text').value='';
+  toast('💬 Befehl "'+label+'" gespeichert','g');
+}
+
+function renderPromptsList(){
+  const el=document.getElementById('prompts-list'); if(!el) return;
+  el.innerHTML=_customPrompts.map(p=>'<div style="display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid var(--bd)">'
+    +'<button class="mbt ok" onclick="qmsg(\''+p.text.replace(/'/g,"\\'")+'\')" style="flex:0;padding:3px 8px;font-size:10px">▶</button>'
+    +'<div style="flex:1"><div style="font-size:11px;font-weight:600;color:var(--tx)">'+p.label+'</div>'
+    +'<div style="font-size:10px;color:var(--tx3)">'+p.text.slice(0,50)+'…</div></div>'
+    +'<button onclick="deleteCustomPrompt(\''+p.id+'\')" style="background:none;border:none;color:var(--rd);cursor:pointer">🗑</button>'
+    +'</div>'
+  ).join('') || '<div style="padding:10px;font-size:11px;color:var(--tx3)">Noch keine eigenen Befehle.</div>';
+  // Also add chips to AI panel
+  renderCustomPromptChips();
+}
+
+function deleteCustomPrompt(id){ _customPrompts=_customPrompts.filter(p=>p.id!==id); try{localStorage.setItem('csc-prompts',JSON.stringify(_customPrompts));}catch(e){} renderPromptsList(); }
+function loadCustomPrompts(){ try{const s=localStorage.getItem('csc-prompts');if(s)_customPrompts=JSON.parse(s);}catch(e){} }
+
+function renderCustomPromptChips(){
+  const chips=document.getElementById('custom-prompt-chips');
+  if(!chips) return;
+  chips.innerHTML=_customPrompts.map(p=>
+    '<span class="chip" onclick="qmsg(\''+p.text.replace(/'/g,"\\'")+'\')">⭐ '+p.label+'</span>'
+  ).join('');
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 13. CUSTOM SHORTCUTS
+// ════════════════════════════════════════════════════════════════════════
+const DEFAULT_SHORTCUTS = {
+  'h':'openHelp','i':'showStats','z':'zoomToSelection',
+  'g':'(function(){if(selId&&!selIsRoom){grab3d=true;toast("G: Maus bewegen","b")}})()',
+};
+
+function loadCustomShortcuts(){
+  try{const s=localStorage.getItem('csc-shortcuts');if(s) Object.assign(_customShortcuts,JSON.parse(s));}catch(e){}
+  Object.assign(_customShortcuts, DEFAULT_SHORTCUTS);
+}
+
+function openShortcutEditor(){
+  const el=document.getElementById('shortcuts-list'); if(!el) return;
+  const entries=[
+    {key:'h',fn:'openHelp',label:'Anleitung öffnen'},
+    {key:'i',fn:'showStats',label:'Statistik'},
+    {key:'z',fn:'zoomToSelection',label:'Zoom auf Auswahl'},
+    {key:'g',fn:'grab3d',label:'3D Grab-Modus'},
+    {key:'r',fn:'rotateSel',label:'Objekt drehen'},
+  ];
+  el.innerHTML='<div style="font-size:10px;color:var(--tx3);padding:8px;margin-bottom:4px">Klicke auf eine Taste-Zelle um neu zu belegen. Dann Taste drücken.</div>'
+    +entries.map(e=>'<div class="sc-edit-row">'
+      +'<span style="flex:1;color:var(--tx2)">'+e.label+'</span>'
+      +'<div class="sc-capture" id="sc-'+e.fn+'" onclick="captureShortcut(\''+e.fn+'\',this)">'
+      +(_customShortcuts[e.fn]||e.key||'—')+'</div>'
+      +'</div>'
+    ).join('');
+  openM('m-shortcuts');
+}
+
+let _capturingFor=null;
+function captureShortcut(fn, el){
+  _capturingFor=fn;
+  el.textContent='Taste drücken…'; el.style.color='var(--yw)';
+  const handler=e=>{
+    if(['Escape','Enter'].includes(e.key)){el.textContent='—';}
+    else{
+      const key=e.key.toLowerCase();
+      _customShortcuts[key]=fn;
+      el.textContent=key;
+      try{localStorage.setItem('csc-shortcuts',JSON.stringify(_customShortcuts));}catch(err){}
+    }
+    el.style.color='var(--bl)';
+    _capturingFor=null;
+    document.removeEventListener('keydown',handler);
+    e.preventDefault();
+  };
+  document.addEventListener('keydown',handler,{once:true});
+}
+
+function resetShortcuts(){
+  _customShortcuts={...DEFAULT_SHORTCUTS};
+  try{localStorage.removeItem('csc-shortcuts');}catch(e){}
+  openShortcutEditor();
+  toast('↺ Shortcuts zurückgesetzt','b');
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 14. WIDGET DASHBOARD
+// ════════════════════════════════════════════════════════════════════════
+function openDashboard(){
+  renderPhaseBar();
+  renderDashboard();
+  document.getElementById('dashboard-overlay').classList.add('vis');
+  document.getElementById('phase-select').value=_projectPhase;
+}
+function closeDashboard(){
+  document.getElementById('dashboard-overlay').classList.remove('vis');
+}
+
+function renderDashboard(){
+  const grid=document.getElementById('dash-grid'); if(!grid) return;
+  const cap=calcCapacity();
+  const budget=objects.reduce((s,o)=>s+getObjPrice(o.typeId),0);
+  const checks=getKCaNGChecklist();
+  const passed=checks.filter(c=>c.passed).length;
+  const todos_due=_todos.filter(t=>!t.done&&t.reminder&&t.reminder<=new Date().toISOString().slice(0,10)).length;
+  const phase=PHASES.find(p=>p.id===_projectPhase)||PHASES[0];
+  const phaseIdx=PHASES.findIndex(p=>p.id===_projectPhase);
+
+  const widgets = {
+    capacity: `<div class="dash-widget">
+      <h3>👥 Kapazität</h3>
+      <div class="dash-big-num">${cap.total}</div>
+      <div class="dash-sub">Personen gleichzeitig (2m²/P.)</div>
+      <div style="margin-top:8px">${cap.details.slice(0,3).map(d=>`<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--tx3);padding:2px 0"><span>${d.name}</span><span style="color:var(--gr)">${d.cap} P.</span></div>`).join('')}</div>
+      <button class="dash-remove" onclick="removeDashWidget('capacity')">✕</button></div>`,
+
+    budget: `<div class="dash-widget">
+      <h3>💰 Budget</h3>
+      <div class="dash-big-num">${budget.toLocaleString('de-DE')}</div>
+      <div class="dash-sub">€ geschätzte Einrichtungskosten</div>
+      <div style="margin-top:8px;font-size:10px;color:var(--tx3)">${objects.length} Objekte</div>
+      <button class="dash-remove" onclick="removeDashWidget('budget')">✕</button></div>`,
+
+    checklist: `<div class="dash-widget">
+      <h3>🌿 KCanG Status</h3>
+      <div class="dash-big-num" style="color:${passed>=10?'#4ade80':'#f87171'}">${passed}/${checks.length}</div>
+      <div class="dash-sub">Anforderungen erfüllt</div>
+      <div style="margin-top:8px;background:var(--bg4);border-radius:3px;height:8px;overflow:hidden">
+        <div style="width:${Math.round(passed/checks.length*100)}%;height:100%;background:${passed>=10?'#4ade80':'#f87171'};border-radius:3px"></div></div>
+      <button class="dash-remove" onclick="removeDashWidget('checklist')">✕</button></div>`,
+
+    tasks: `<div class="dash-widget">
+      <h3>✅ Aufgaben</h3>
+      <div class="dash-big-num" style="color:${todos_due?'#f87171':'#4ade80'}">${_todos.filter(t=>!t.done).length}</div>
+      <div class="dash-sub">offen${todos_due?' · '+todos_due+' überfällig':''}</div>
+      <div style="margin-top:8px">${_todos.slice(0,3).map(t=>`<div style="font-size:10px;color:var(--tx3);padding:2px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.done?'✅':'⬜'} ${t.text}</div>`).join('')}</div>
+      <button onclick="openM('m-todos')" style="margin-top:6px;width:100%;padding:4px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx2);font-size:10px;cursor:pointer">Alle anzeigen</button>
+      <button class="dash-remove" onclick="removeDashWidget('tasks')">✕</button></div>`,
+
+    phase: `<div class="dash-widget">
+      <h3>📌 Projektphase</h3>
+      <div style="font-size:20px;font-weight:800;color:var(--gr);margin-bottom:4px">${phase.label}</div>
+      <div class="dash-sub">${phase.desc}</div>
+      <div style="margin-top:10px;display:flex;gap:4px">
+        ${PHASES.map((p,i)=>`<div style="flex:1;height:6px;border-radius:3px;background:${i<=phaseIdx?'var(--gr)':'var(--bg4)'}"></div>`).join('')}
+      </div>
+      <div style="font-size:10px;color:var(--tx3);margin-top:4px">Schritt ${phaseIdx+1} von ${PHASES.length}</div>
+      <button class="dash-remove" onclick="removeDashWidget('phase')">✕</button></div>`,
+
+    rooms_overview: `<div class="dash-widget">
+      <h3>🏠 Räume (${rooms.length})</h3>
+      ${rooms.slice(0,5).map(r=>`<div style="display:flex;justify-content:space-between;font-size:10px;padding:3px 0;border-bottom:1px solid var(--bd);color:var(--tx2)"><span>${r.name}</span><span style="color:var(--gr)">${r.w}×${r.d}m</span></div>`).join('')}
+      <button class="dash-remove" onclick="removeDashWidget('rooms_overview')">✕</button></div>`,
+  };
+
+  grid.innerHTML=_dashWidgets.filter(w=>widgets[w]).map(w=>widgets[w]).join('')
+    +'<div class="dash-widget" style="border-style:dashed;cursor:pointer;display:flex;align-items:center;justify-content:center;min-height:120px" onclick="addDashWidget()">'
+    +'<div style="text-align:center;color:var(--tx3)"><div style="font-size:24px">＋</div><div style="font-size:11px;margin-top:4px">Widget hinzufügen</div></div></div>';
+}
+
+function removeDashWidget(id){
+  _dashWidgets=_dashWidgets.filter(w=>w!==id);
+  renderDashboard();
+}
+function addDashWidget(){
+  const opts=['capacity','budget','checklist','tasks','phase','rooms_overview'];
+  const avail=opts.filter(o=>!_dashWidgets.includes(o));
+  if(!avail.length){ toast('Alle Widgets bereits aktiv','b'); return; }
+  _dashWidgets.push(avail[0]);
+  renderDashboard();
+}
+
 // ════════════════════════════════════════════════════════════════════════
 // ANIMATION LOOP
 // ════════════════════════════════════════════════════════════════════════
@@ -9333,6 +10328,17 @@ loadColorMode();
 loadRoomGroups();
 loadAIChatHistory();
 loadInventory();
+loadPins();
+loadRecent();
+renderPinBar();
+loadTodos();
+checkReminders();
+loadCustomPrompts();
+renderPromptsList();
+loadCustomShortcuts();
+try{const ph=localStorage.getItem("csc-phase");if(ph)_projectPhase=ph;}catch(e){}
+renderPhaseBar();
+updateSuggestions();
 renderNorthArrow();
 setTimeout(registerServiceWorker,1000);
 setTimeout(initLiveCollaboration, 2000);
@@ -9381,7 +10387,7 @@ draw2D();
 
 renderFloorTabs();
 initUndoSystem();
-setTimeout(()=>toast('🌿 v3.19 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
+setTimeout(()=>toast('🌿 v3.20 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
 
 
 
@@ -9409,7 +10415,7 @@ function initAutoSave(){
   // Enable auto-saving from now on
   _autoSaveReady = true;
   renderVersionHistory();
-  toast('🌿 v3.19 | Auto-Save aktiv','g');
+  toast('🌿 v3.20 | Auto-Save aktiv','g');
 }
 
 
@@ -9730,7 +10736,7 @@ function build3DObj(o){
   const metal = o.metalness !== undefined ? o.metalness : (item.arch==='window'?0.0: item.arch==='door'?0.05:['Lager','Info'].includes(item.cat)?0.55:0.04);
 
   if(item.isKallax || (item.id&&item.id.startsWith('kallax'))){
-    buildKallax3DPro(g, item, o); // v3.19 Pro
+    buildKallax3DPro(g, item, o); // v3.20 Pro
   } else if(item.arch==='security'){
     buildSecurity3D(g, item, o);
   } else if(item.arch==='foil'){
@@ -10021,7 +11027,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
 
   <div style="padding:12px 20px;border-bottom:1px solid #1a2a1a;display:flex;align-items:center;gap:14px;flex-shrink:0">
     <div style="font-size:16px;font-weight:800;color:#4ade80">🌿 CSC Raumplaner — Vollständige Anleitung</div>
-    <div style="font-size:11px;color:#555">v3.19</div>
+    <div style="font-size:11px;color:#555">v3.20</div>
     <div style="flex:1"></div>
     <button class="tbt" onclick="startTutorial()" style="border-color:var(--gr);color:var(--gr);padding:6px 14px">▶ Tutorial starten</button>
     <button class="tbt" onclick="closeHelp()" style="padding:6px 14px">Schließen</button>
