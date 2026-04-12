@@ -461,7 +461,7 @@ canvas{display:block}
 #help-close:hover{color:#e8e4d8;background:#1a1a1a}
 
 
-/* ══ NEW FEATURES v3.24 ═══════════════════════════════════════════ */
+/* ══ NEW FEATURES v3.25 ═══════════════════════════════════════════ */
 
 /* Heatmap canvas */
 #heatmap-canvas{position:absolute;inset:0;pointer-events:none;opacity:0.55;display:none;z-index:8}
@@ -500,7 +500,7 @@ canvas{display:block}
 .vlink-inp{width:100%;padding:7px;background:var(--bg);border:1px solid var(--bd2);border-radius:4px;color:var(--tx);font-family:monospace;font-size:10px;margin:5px 0}
 
 
-/* ══ v3.24 FEATURES ══════════════════════════════════════════════ */
+/* ══ v3.25 FEATURES ══════════════════════════════════════════════ */
 /* Budget Tracker */
 #budget-panel{position:fixed;top:50px;right:360px;width:300px;background:var(--bg2);border:1px solid var(--bd2);border-radius:10px;z-index:200;display:none;box-shadow:0 4px 20px rgba(0,0,0,.6)}
 #budget-panel.vis{display:block}
@@ -534,7 +534,7 @@ canvas{display:block}
 .ruler-text{fill:#fbbf24;font-size:11px;font-weight:700;font-family:monospace}
 
 
-/* ══ DROPDOWN MENU SYSTEM v3.24 ══════════════════════════════════ */
+/* ══ DROPDOWN MENU SYSTEM v3.25 ══════════════════════════════════ */
 .tb-menu-group{display:flex;align-items:center;gap:2px}
 .tbm{position:relative}
 .tbm-btn{padding:4px 9px;background:transparent;border:1px solid transparent;border-radius:var(--r4);font-size:11px;cursor:pointer;color:var(--tx2);transition:.12s;white-space:nowrap;display:flex;align-items:center;gap:3px}
@@ -585,7 +585,7 @@ canvas{display:block}
 .compare-label{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);color:var(--gr);font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;z-index:10}
 
 
-/* ══ v3.24 ════════════════════════════════════════════════════════ */
+/* ══ v3.25 ════════════════════════════════════════════════════════ */
 /* Light mode */
 body.light-mode{--bg:#f5f5f0;--bg2:#ffffff;--bg3:#ebebeb;--bg4:#e0e0d8;
   --tx:#111;--tx2:#333;--tx3:#777;--bd:#ccc;--bd2:#aaa;
@@ -640,7 +640,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .font-sample:hover,.font-sample.active{border-color:var(--gr);color:var(--gr)}
 
 
-/* ══ v3.24 ════════════════════════════════════════════════════════ */
+/* ══ v3.25 ════════════════════════════════════════════════════════ */
 /* Inventory */
 .inv-row{display:grid;grid-template-columns:2fr 1.2fr 1.5fr 0.7fr;gap:6px;align-items:center;
   padding:5px 0;border-bottom:1px solid var(--bd);font-size:11px}
@@ -680,7 +680,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .fire-ok{color:#4ade80}.fire-warn{color:#f87171}.fire-info{color:#fbbf24}
 
 
-/* ══ v3.24 ════════════════════════════════════════════════════════ */
+/* ══ v3.25 ════════════════════════════════════════════════════════ */
 
 /* Command Palette */
 #cmd-palette{position:fixed;top:15%;left:50%;transform:translateX(-50%);
@@ -800,7 +800,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   cursor:pointer;min-width:60px;text-align:center}
 
 
-/* ══ v3.24 ════════════════════════════════════════════════════════ */
+/* ══ v3.25 ════════════════════════════════════════════════════════ */
 /* Badges */
 .badge-popup{position:fixed;top:60px;right:16px;background:#0d2010;
   border:1px solid #4ade80;border-radius:10px;padding:12px 16px;z-index:500;
@@ -885,7 +885,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   border-radius:3px;padding:1px 6px;color:var(--tx3);font-family:monospace}
 
 
-/* ══ v3.24 ════════════════════════════════════════════════════════ */
+/* ══ v3.25 ════════════════════════════════════════════════════════ */
 
 /* Minimap */
 #minimap{position:absolute;bottom:8px;right:8px;width:140px;height:100px;
@@ -1060,7 +1060,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 <div id="topbar">
   <!-- LOGO -->
   <span class="logo">🌿 CSC <em>Raumplaner</em></span>
-  <span class="vbadge">v3.24</span>
+  <span class="vbadge">v3.25</span>
   <div class="tsep"></div>
 
   <!-- UNDO/REDO -->
@@ -2671,6 +2671,83 @@ const ARCH = [
   {id:'ac-col',  cat:'Sonstiges', icon:'🏛️',name:'Säule',              w:0.3, d:0.3, h:3.0, col:0xddddcc,arch:'column'},
   {id:'ac-wall', cat:'Sonstiges', icon:'🧱',name:'Trennwand',           w:3.0, d:0.15,h:2.8, col:0xddccbb,arch:'wall'},
   {id:'ac-step', cat:'Sonstiges', icon:'🪜',name:'Treppenabgang',       w:2.0, d:1.0, h:0.1, col:0xaaaaaa,arch:'stairs'},
+
+  // ── Türen ERWEITERT ───────────────────────────────────────────
+  {id:'at-schiebe',  cat:'Türen', icon:'🚪',name:'Schiebetür (1.2m)',     w:1.2,d:0.08,h:2.2, col:0x8a6030,arch:'door', doorStyle:'slide'},
+  {id:'at-dbl-glas', cat:'Türen', icon:'🚪',name:'Doppel-Glastür (2m)',   w:2.0,d:0.12,h:2.4, col:0x88ccff,arch:'door', doorStyle:'glass'},
+  {id:'at-notaus',   cat:'Türen', icon:'🚨',name:'Notausgang (1.0m)',      w:1.0,d:0.15,h:2.2, col:0xcc3333,arch:'door', doorStyle:'emergency'},
+  {id:'at-karussel', cat:'Türen', icon:'🔄',name:'Drehtür/Karusselltür',   w:2.2,d:2.2,h:2.4, col:0x88ccff,arch:'door', doorStyle:'revolving'},
+  {id:'at-falttuer', cat:'Türen', icon:'🚪',name:'Falttür (1.6m)',         w:1.6,d:0.1, h:2.2, col:0xc8a060,arch:'door', doorStyle:'fold'},
+  {id:'at-stahl-gr', cat:'Türen', icon:'🔒',name:'Stahltür RC3 (Lager)',   w:1.0,d:0.22,h:2.2, col:0x2a2a2a,arch:'door', doorStyle:'security'},
+  {id:'at-barriere', cat:'Türen', icon:'♿',name:'Automatiktür (1.4m)',    w:1.4,d:0.15,h:2.2, col:0x88ccff,arch:'door', doorStyle:'auto'},
+  {id:'at-eingang',  cat:'Türen', icon:'🏪',name:'Ladentür mit Rahmen',    w:1.2,d:0.15,h:2.4, col:0xc8a060,arch:'door', doorStyle:'shop'},
+
+  // ── Fenster ERWEITERT ─────────────────────────────────────────
+  {id:'aw-kipp',     cat:'Fenster', icon:'🪟',name:'Kippfenster (0.6m)',   w:0.6,d:0.12,h:0.6, col:0x88ccff,arch:'window', winStyle:'tilt'},
+  {id:'aw-dach',     cat:'Fenster', icon:'🪟',name:'Dachfenster/Oberlicht',w:0.8,d:0.08,h:0.4, col:0x88ccff,arch:'window', winStyle:'roof'},
+  {id:'aw-rund',     cat:'Fenster', icon:'⭕',name:'Rundfenster (Ø 0.6m)', w:0.6,d:0.12,h:0.6, col:0x88ccff,arch:'window', winStyle:'round'},
+  {id:'aw-fest',     cat:'Fenster', icon:'🔲',name:'Festverglasung (1.8m)',w:1.8,d:0.12,h:1.6, col:0x88ccff,arch:'window', winStyle:'fixed'},
+  {id:'aw-milchgl',  cat:'Fenster', icon:'🔳',name:'Milchglas-Fenster',    w:1.0,d:0.12,h:1.0, col:0xddddee,arch:'window', winStyle:'frosted'},
+
+  // ── Schaufenster ERWEITERT ────────────────────────────────────
+  {id:'aw-sf-eck',   cat:'Schaufenster', icon:'🪟',name:'Eckfenster (2×2m)',w:2.0,d:2.0,h:2.4, col:0x88ccff,arch:'window', winStyle:'corner'},
+  {id:'aw-sf-xl',    cat:'Schaufenster', icon:'🪟',name:'Schaufenster 5m',  w:5.0,d:0.12,h:2.8, col:0x88ccff,arch:'window', winStyle:'shopfront'},
+  {id:'aw-sf-mitte', cat:'Schaufenster', icon:'🪟',name:'SF mit Mittelsteg',w:3.0,d:0.14,h:2.6, col:0x88ccff,arch:'window', winStyle:'shopfront'},
+
+  // ── Folierung ERWEITERT ───────────────────────────────────────
+  {id:'aw-foil-logo',cat:'Folierung', icon:'🎨',name:'Logo/Beschriftung',   w:1.0,d:0.01,h:0.5, col:0xffffff,arch:'foil',foilColor:'#4ade80',foilOpacity:0.9},
+  {id:'aw-foil-geom',cat:'Folierung', icon:'🎨',name:'Geometriemuster',     w:1.0,d:0.01,h:1.0, col:0x1a3a1a,arch:'foil',foilColor:'#166534',foilOpacity:0.6},
+  {id:'aw-foil-priv',cat:'Folierung', icon:'🎨',name:'Privatsphäre-Film',   w:1.0,d:0.01,h:0.8, col:0xcccccc,arch:'foil',foilColor:'#cccccc',foilOpacity:0.4},
+  {id:'aw-jalous',   cat:'Folierung', icon:'🎨',name:'Jalousie/Raffrollo',  w:1.0,d:0.05,h:0.1, col:0xc8c8a0,arch:'foil',foilColor:'#c8c8a0',foilOpacity:0.7},
+
+  // ── Beleuchtung ERWEITERT ─────────────────────────────────────
+  {id:'al-led-strip',cat:'Beleuchtung', icon:'💡',name:'LED-Streifen',      w:2.0,d:0.05,h:0.04,col:0xffd700,arch:'light'},
+  {id:'al-spot',     cat:'Beleuchtung', icon:'💡',name:'Spot/Einbaustrahler',w:0.15,d:0.15,h:0.08,col:0xffffff,arch:'light'},
+  {id:'al-pendelleuchte',cat:'Beleuchtung',icon:'💡',name:'Pendelleuchte',  w:0.4,d:0.4,h:0.4, col:0xffe0a0,arch:'light'},
+  {id:'al-neon',     cat:'Beleuchtung', icon:'✨',name:'Neon-Schild',       w:1.0,d:0.05,h:0.3, col:0x4ade80,arch:'light'},
+  {id:'al-floor',    cat:'Beleuchtung', icon:'💡',name:'Bodeneinbauleuchte',w:0.2,d:0.2,h:0.05, col:0xffffaa,arch:'light'},
+  {id:'al-notlicht', cat:'Beleuchtung', icon:'🚨',name:'Notleuchte',        w:0.3,d:0.12,h:0.12,col:0x00ff00,arch:'light'},
+
+  // ── Sonstiges BAU ERWEITERT ───────────────────────────────────
+  {id:'ac-saule-rnd',cat:'Sonstiges', icon:'🏛',name:'Runde Säule (Ø30cm)', w:0.3,d:0.3,h:3.0, col:0xddddcc,arch:'column'},
+  {id:'ac-bruestung', cat:'Sonstiges',icon:'🧱',name:'Brüstung/Geländer',   w:3.0,d:0.1,h:1.1, col:0x888888,arch:'wall'},
+  {id:'ac-theke-wand',cat:'Sonstiges',icon:'🧱',name:'Thekenrückwand',      w:3.0,d:0.12,h:1.5, col:0xddccbb,arch:'wall'},
+  {id:'ac-bogen',     cat:'Sonstiges',icon:'⭕',name:'Torbogen',            w:1.8,d:0.2,h:2.4, col:0xddccbb,arch:'arch'},
+  {id:'ac-nische',    cat:'Sonstiges',icon:'▫',name:'Wandnische',           w:1.2,d:0.3,h:2.0, col:0xccccbb,arch:'wall'},
+  {id:'ac-treppe-auf',cat:'Sonstiges',icon:'🪜',name:'Treppe aufwärts',    w:1.2,d:3.0,h:0.1, col:0xaaaaaa,arch:'stairs'},
+  {id:'ac-podest',    cat:'Sonstiges',icon:'⬛',name:'Podest/Bühne',       w:3.0,d:2.0,h:0.4, col:0x8a6a4a,arch:'platform'},
+
+  // ── SICHERHEIT ERWEITERT ──────────────────────────────────────
+  // Kameras
+  {id:'sec-cam-ptz',  cat:'Kameras', icon:'📷',name:'PTZ-Kamera schwenkbar',w:0.2,d:0.2,h:0.2, col:0x111111,arch:'security',secType:'camera_ptz'},
+  {id:'sec-cam-aussen',cat:'Kameras',icon:'📷',name:'Außenkamera IP67',     w:0.15,d:0.25,h:0.15,col:0x333333,arch:'security',secType:'camera_outdoor'},
+  {id:'sec-cam-mini', cat:'Kameras', icon:'📷',name:'Mini-Kamera verdeckt', w:0.05,d:0.05,h:0.05,col:0x111111,arch:'security',secType:'camera_hidden'},
+  {id:'sec-nvr',      cat:'Kameras', icon:'🖥',name:'NVR Aufzeichnungsgerät',w:0.44,d:0.3,h:0.055,col:0x1a1a1a,arch:'security',secType:'nvr'},
+  {id:'sec-monitor-sv',cat:'Kameras',icon:'🖥',name:'Überwachungsmonitor',   w:0.55,d:0.1,h:0.35,col:0x1a1a1a,arch:'security',secType:'monitor'},
+  // Alarm
+  {id:'sec-alarmsirene',cat:'Alarm', icon:'🔔',name:'Außensirene',          w:0.2,d:0.15,h:0.2, col:0xdd3333,arch:'security',secType:'siren_outdoor'},
+  {id:'sec-glasbruch', cat:'Alarm',  icon:'🔔',name:'Glasbruchmelder',      w:0.06,d:0.06,h:0.02,col:0xeeeeee,arch:'security',secType:'glass_break'},
+  {id:'sec-magnetkont',cat:'Alarm',  icon:'🔔',name:'Magnetkontakt Tür',   w:0.07,d:0.02,h:0.02,col:0xcccccc,arch:'security',secType:'magnetic'},
+  {id:'sec-erschutter',cat:'Alarm',  icon:'🔔',name:'Erschütterungsmelder', w:0.08,d:0.08,h:0.02,col:0xcccccc,arch:'security',secType:'vibration'},
+  {id:'sec-panik',     cat:'Alarm',  icon:'🆘',name:'Paniktaster',         w:0.08,d:0.08,h:0.04,col:0xdd3333,arch:'security',secType:'panic_button'},
+  // Brandschutz
+  {id:'sec-sprinkler', cat:'Brandschutz',icon:'💧',name:'Sprinklerkopf',    w:0.1,d:0.1,h:0.1, col:0xcc4444,arch:'security',secType:'sprinkler'},
+  {id:'sec-rwa',       cat:'Brandschutz',icon:'💨',name:'RWA Klappenlüfter',w:0.6,d:0.6,h:0.2, col:0x888888,arch:'security',secType:'rwa'},
+  {id:'sec-loeschanlage',cat:'Brandschutz',icon:'🧯',name:'CO₂-Löschanlage',w:0.4,d:0.4,h:0.6, col:0xcc4444,arch:'security',secType:'co2'},
+  {id:'sec-feuerwehrplan',cat:'Brandschutz',icon:'📋',name:'Feuerwehr-Plan Kasten',w:0.4,d:0.08,h:0.5,col:0xdd3333,arch:'security',secType:'fire_plan'},
+  {id:'sec-feuermelder',cat:'Brandschutz',icon:'🔴',name:'Handfeuermelder', w:0.1,d:0.06,h:0.15,col:0xdd3333,arch:'security',secType:'manual_alarm'},
+  // Zutrittskontrolle
+  {id:'sec-codeschloss',cat:'Sicherung',icon:'🔢',name:'Codeschloss/Tastatur',w:0.1,d:0.05,h:0.15,col:0x2a2a2a,arch:'security',secType:'keypad'},
+  {id:'sec-fingerprint',cat:'Sicherung',icon:'👆',name:'Fingerabdruckleser', w:0.08,d:0.05,h:0.12,col:0x1a1a1a,arch:'security',secType:'fingerprint'},
+  {id:'sec-intercom',   cat:'Sicherung',icon:'📞',name:'Türklingel/Intercom',w:0.1,d:0.05,h:0.15,col:0x333333,arch:'security',secType:'intercom'},
+  {id:'sec-schleuse',   cat:'Sicherung',icon:'🔒',name:'Luftschleuse/Eingang',w:2.0,d:2.0,h:2.4, col:0x4a5568,arch:'security',secType:'airlock'},
+  {id:'sec-zaun',       cat:'Sicherung',icon:'🚧',name:'Sicherheitszaun',   w:3.0,d:0.1,h:2.0, col:0x888888,arch:'security',secType:'fence'},
+  {id:'sec-spiegel',    cat:'Sicherung',icon:'⭕',name:'Überwachungsspiegel',w:0.4,d:0.05,h:0.4, col:0x88ccff,arch:'security',secType:'mirror'},
+  // Notfall
+  {id:'sec-verbandskasten',cat:'Notfall',icon:'🏥',name:'Verbandskasten',  w:0.35,d:0.1,h:0.25,col:0xffffff,arch:'security',secType:'firstaid'},
+  {id:'sec-aed',        cat:'Notfall', icon:'💊',name:'Defibrillator (AED)',w:0.3,d:0.1,h:0.4, col:0xffcc00,arch:'security',secType:'aed'},
+  {id:'sec-notruf',     cat:'Notfall', icon:'📞',name:'Notruftelefon',     w:0.1,d:0.05,h:0.2, col:0xdd3333,arch:'security',secType:'emergency_phone'},
+  {id:'sec-abschirmung',cat:'Notfall', icon:'🟡',name:'Sammelstelle-Schild',w:0.3,d:0.05,h:0.4, col:0xffcc00,arch:'security',secType:'assembly_point'},
   // ── Sicherheit ───────────────────────────────────────────────────────
   {id:'sec-cam-ceil', cat:'Kameras',    icon:'📷',name:'Deckenkamera (Dome)',   w:0.15,d:0.15,h:0.12,col:0x222222,arch:'security',secType:'camera_ceiling'},
   {id:'sec-cam-wall', cat:'Kameras',    icon:'📷',name:'Wandkamera',            w:0.12,d:0.18,h:0.12,col:0x222222,arch:'security',secType:'camera_wall'},
@@ -3683,7 +3760,7 @@ function renderLeft(){
     renderCatalogPanel(catEl, getCatalog());
   }
   else if(leftMode==='arch') renderCatalogPanel(el, getArchCatalog(), true);
-  else if(leftMode==='security') renderCatalogPanel(el, getSecurityCatalog(), true, 'security');
+  else if(leftMode==='security') renderCatalogPanel(el, getSecurityCatalog(), true, 'sec');
   else renderCustomPanel(el);
 }
 
@@ -3990,7 +4067,7 @@ function doPrint(){
     +'td,th{border:1px solid #ddd;padding:4px 6px;text-align:left}th{background:#f5f5f5}'
     +'@media print{body{padding:8px}}</style></head><body>'
     +'<h1>🌿 '+d.name+'</h1>'
-    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.24 · '+new Date().toLocaleDateString('de-DE')+'</div>'
+    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.25 · '+new Date().toLocaleDateString('de-DE')+'</div>'
     +'<img src="'+img+'">'
     +'<div class=grid>'
     +'<div class=box><h3>Räume ('+d.rooms.length+')</h3>'
@@ -5829,7 +5906,7 @@ function pickKallaxColor(id, part){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// KALLAX PRO EDITOR — Extended (v3.24)
+// KALLAX PRO EDITOR — Extended (v3.25)
 // ════════════════════════════════════════════════════════════════════════
 
 // Additional color palettes
@@ -7101,7 +7178,7 @@ function rebuild3DThrottled(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// NEW FEATURES v3.24
+// NEW FEATURES v3.25
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. RAUM-SNAP beim Platzieren ─────────────────────────────────────
@@ -7491,7 +7568,7 @@ function showCSCPanel(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// INTERAKTIVE ANLEITUNG v3.24
+// INTERAKTIVE ANLEITUNG v3.25
 // ════════════════════════════════════════════════════════════════════════
 function openHelp(page){
   document.getElementById('help-overlay').classList.add('open');
@@ -7632,7 +7709,7 @@ function renderTutStep(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.24 — ALLE NEUEN FEATURES
+// v3.25 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. KI MÖBELANORDNUNG ─────────────────────────────────────────────
@@ -8284,7 +8361,7 @@ function removeWallCtxMenu(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.24 — ALLE NEUEN FEATURES
+// v3.25 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── FURNITURE PRICES DATABASE ────────────────────────────────────────
@@ -8830,7 +8907,7 @@ const _origAddRoom = addRoom;
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.24 — DROPDOWN MENU SYSTEM + NEW FEATURES
+// v3.25 — DROPDOWN MENU SYSTEM + NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── DROPDOWN MENU SYSTEM ─────────────────────────────────────────────
@@ -9180,7 +9257,7 @@ function renderComparePane(side, data){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.24 — ALL NEW FEATURES
+// v3.25 — ALL NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. DARK/LIGHT MODE ───────────────────────────────────────────────
@@ -9555,7 +9632,7 @@ function registerServiceWorker(){
   if(!location.protocol.startsWith('http')){ console.log('SW: nur auf https verfügbar'); return; }
   // Inline SW as blob
   const swCode=`
-    const CACHE='csc-v3.24';
+    const CACHE='csc-v3.25';
     self.addEventListener('install',e=>e.waitUntil(
       caches.open(CACHE).then(c=>c.add('/'))
     ));
@@ -9629,7 +9706,7 @@ function registerServiceWorker(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.24 — BRANDSCHUTZ / AKUSTIK / ENERGIE / REINIGUNG / INVENTAR /
+// v3.25 — BRANDSCHUTZ / AKUSTIK / ENERGIE / REINIGUNG / INVENTAR /
 //          HEATMAP MITGLIEDER / LIEFERWEGE / BARCODE
 // ════════════════════════════════════════════════════════════════════════
 
@@ -10042,7 +10119,7 @@ function drawRoutes(ctx){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.24 — ALLE AUTOMATISIERUNGS-FEATURES
+// v3.25 — ALLE AUTOMATISIERUNGS-FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -10808,7 +10885,7 @@ function addDashWidget(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.24 — ALLE NEUEN FEATURES
+// v3.25 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -11623,7 +11700,7 @@ function showGrowthPlan(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.24 — MINIMAP / SNAP / GUIDED / UNDO-TL / GROUPS / SEASONS / MORE
+// v3.25 — MINIMAP / SNAP / GUIDED / UNDO-TL / GROUPS / SEASONS / MORE
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -12154,7 +12231,7 @@ function addTooltip(el,text){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// EXTRA FEATURES v3.24
+// EXTRA FEATURES v3.25
 // ════════════════════════════════════════════════════════════════════════
 
 // ── PRINT PREVIEW ────────────────────────────────────────────────────
@@ -12420,7 +12497,7 @@ draw2D();
 
 renderFloorTabs();
 initUndoSystem();
-setTimeout(()=>toast('🌿 v3.24 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
+setTimeout(()=>toast('🌿 v3.25 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
 
 
 
@@ -12448,7 +12525,7 @@ function initAutoSave(){
   // Enable auto-saving from now on
   _autoSaveReady = true;
   renderVersionHistory();
-  toast('🌿 v3.24 | Auto-Save aktiv','g');
+  toast('🌿 v3.25 | Auto-Save aktiv','g');
 }
 
 
@@ -12769,7 +12846,7 @@ function build3DObj(o){
   const metal = o.metalness !== undefined ? o.metalness : (item.arch==='window'?0.0: item.arch==='door'?0.05:['Lager','Info'].includes(item.cat)?0.55:0.04);
 
   if(item.isKallax || (item.id&&item.id.startsWith('kallax'))){
-    buildKallax3DPro(g, item, o); // v3.24 Pro
+    buildKallax3DPro(g, item, o); // v3.25 Pro
   } else if(item.arch==='security'){
     buildSecurity3D(g, item, o);
   } else if(item.arch==='foil'){
@@ -13060,7 +13137,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
 
   <div style="padding:12px 20px;border-bottom:1px solid #1a2a1a;display:flex;align-items:center;gap:14px;flex-shrink:0">
     <div style="font-size:16px;font-weight:800;color:#4ade80">🌿 CSC Raumplaner — Vollständige Anleitung</div>
-    <div style="font-size:11px;color:#555">v3.24</div>
+    <div style="font-size:11px;color:#555">v3.25</div>
     <div style="flex:1"></div>
     <button class="tbt" onclick="startOnboarding()" style="border-color:var(--gr);color:var(--gr);padding:6px 14px">▶ Illustriertes Intro</button>
     <button class="tbt" onclick="startTutorial()" style="padding:6px 14px">🎯 Interaktives Tutorial</button>
