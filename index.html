@@ -456,7 +456,7 @@ canvas{display:block}
 #help-close:hover{color:#e8e4d8;background:#1a1a1a}
 
 
-/* ══ NEW FEATURES v3.18 ═══════════════════════════════════════════ */
+/* ══ NEW FEATURES v3.19 ═══════════════════════════════════════════ */
 
 /* Heatmap canvas */
 #heatmap-canvas{position:absolute;inset:0;pointer-events:none;opacity:0.55;display:none;z-index:8}
@@ -495,7 +495,7 @@ canvas{display:block}
 .vlink-inp{width:100%;padding:7px;background:var(--bg);border:1px solid var(--bd2);border-radius:4px;color:var(--tx);font-family:monospace;font-size:10px;margin:5px 0}
 
 
-/* ══ v3.18 FEATURES ══════════════════════════════════════════════ */
+/* ══ v3.19 FEATURES ══════════════════════════════════════════════ */
 /* Budget Tracker */
 #budget-panel{position:fixed;top:50px;right:360px;width:300px;background:var(--bg2);border:1px solid var(--bd2);border-radius:10px;z-index:200;display:none;box-shadow:0 4px 20px rgba(0,0,0,.6)}
 #budget-panel.vis{display:block}
@@ -529,7 +529,7 @@ canvas{display:block}
 .ruler-text{fill:#fbbf24;font-size:11px;font-weight:700;font-family:monospace}
 
 
-/* ══ DROPDOWN MENU SYSTEM v3.18 ══════════════════════════════════ */
+/* ══ DROPDOWN MENU SYSTEM v3.19 ══════════════════════════════════ */
 .tb-menu-group{display:flex;align-items:center;gap:2px}
 .tbm{position:relative}
 .tbm-btn{padding:4px 9px;background:transparent;border:1px solid transparent;border-radius:var(--r4);font-size:11px;cursor:pointer;color:var(--tx2);transition:.12s;white-space:nowrap;display:flex;align-items:center;gap:3px}
@@ -580,7 +580,7 @@ canvas{display:block}
 .compare-label{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);color:var(--gr);font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;z-index:10}
 
 
-/* ══ v3.18 ════════════════════════════════════════════════════════ */
+/* ══ v3.19 ════════════════════════════════════════════════════════ */
 /* Light mode */
 body.light-mode{--bg:#f5f5f0;--bg2:#ffffff;--bg3:#ebebeb;--bg4:#e0e0d8;
   --tx:#111;--tx2:#333;--tx3:#777;--bd:#ccc;--bd2:#aaa;
@@ -633,6 +633,46 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .font-sample{font-size:13px;padding:4px 8px;cursor:pointer;border-radius:3px;
   border:1px solid var(--bd);margin:2px;background:var(--bg3)}
 .font-sample:hover,.font-sample.active{border-color:var(--gr);color:var(--gr)}
+
+
+/* ══ v3.19 ════════════════════════════════════════════════════════ */
+/* Inventory */
+.inv-row{display:grid;grid-template-columns:2fr 1.2fr 1.5fr 0.7fr;gap:6px;align-items:center;
+  padding:5px 0;border-bottom:1px solid var(--bd);font-size:11px}
+.inv-inp{padding:4px 6px;background:var(--bg3);border:1px solid var(--bd);
+  border-radius:3px;color:var(--tx);font-size:10px;width:100%}
+
+/* Route visualization */
+.route-step{display:flex;align-items:center;gap:6px;padding:5px 0;
+  border-bottom:1px solid var(--bd);font-size:11px}
+.route-icon{font-size:16px;flex-shrink:0}
+.route-arrow{color:var(--tx3);font-size:10px;margin:0 4px}
+
+/* Heatmap member */
+#member-heat-canvas{position:absolute;inset:0;pointer-events:none;
+  opacity:0.6;display:none;z-index:9}
+#member-heat-canvas.vis{display:block}
+
+/* Energy bars */
+.energy-row{margin:6px 0}
+.energy-label{font-size:10px;color:var(--tx3);margin-bottom:2px;
+  display:flex;justify-content:space-between}
+.energy-bar-wrap{background:var(--bg4);border-radius:3px;height:14px;overflow:hidden}
+.energy-bar-fill{height:100%;border-radius:3px;transition:.4s;
+  display:flex;align-items:center;padding:0 5px}
+
+/* Cleaning plan */
+.clean-row{display:flex;align-items:center;gap:8px;padding:5px 0;
+  border-bottom:1px solid var(--bd);font-size:11px}
+.clean-minutes{font-weight:700;color:var(--gr);width:55px;text-align:right;flex-shrink:0}
+
+/* Acoustic */
+.acoustic-bar{height:18px;border-radius:3px;margin:4px 0;
+  display:flex;align-items:center;padding:0 8px;font-size:10px;
+  color:#fff;font-weight:600;transition:.4s}
+
+/* Fire safety */
+.fire-ok{color:#4ade80}.fire-warn{color:#f87171}.fire-info{color:#fbbf24}
 
 /* TOAST */
 .toast{position:fixed;bottom:62px;left:50%;transform:translateX(-50%);padding:7px 16px;border-radius:var(--r6);font-size:12px;z-index:9999;transition:opacity .35s;white-space:nowrap;pointer-events:none}
@@ -725,7 +765,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 <div id="topbar">
   <!-- LOGO -->
   <span class="logo">🌿 CSC <em>Raumplaner</em></span>
-  <span class="vbadge">v3.18</span>
+  <span class="vbadge">v3.19</span>
   <div class="tsep"></div>
 
   <!-- UNDO/REDO -->
@@ -791,6 +831,14 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
         <div class="tbm-item" onclick="showAreaChart();closeTBMenu()">🥧 Flächenaufteilung</div>
         <div class="tbm-item" onclick="toggleBudget();closeTBMenu()">💰 Möbelbudget</div>
         <div class="tbm-item" onclick="openMaterialCalc();closeTBMenu()">🧱 Materialmengen</div>
+        <div class="tbm-item" onclick="calcFireSafety();openM('m-fire');closeTBMenu()">🧯 Brandschutz (DIN)</div>
+        <div class="tbm-item" onclick="openAcoustic();closeTBMenu()">🔊 Akustik-Planung</div>
+        <div class="tbm-item" onclick="calcEnergy();openM('m-energy');closeTBMenu()">⚡ Energie-Check</div>
+        <div class="tbm-item" onclick="openCleaning();closeTBMenu()">🧹 Reinigungsplan</div>
+        <div class="tbm-item" onclick="calcRoutes();openM('m-routes');closeTBMenu()">🚚 Lieferwege</div>
+        <div class="tbm-sep"></div>
+        <div class="tbm-item" onclick="openInventory();closeTBMenu()">📋 Inventarliste</div>
+        <div class="tbm-item" onclick="toggleMemberHeatmap();closeTBMenu()" id="mi-memberheat">👥 Mitglieder-Heatmap</div>
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="showCSCPanel();closeTBMenu()">🌿 CSC Checkliste</div>
         <div class="tbm-item" onclick="checkAccessibility();closeTBMenu()">♿ Barrierefreiheit</div>
@@ -1426,6 +1474,117 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   <text x="22" y="40" text-anchor="middle" font-size="10" fill="white" font-weight="bold" font-family="sans-serif">N</text>
 </svg>
 
+
+<!-- BRANDSCHUTZ -->
+<div class="mover" id="m-fire">
+<div class="modal" style="max-width:460px">
+  <h2>🧯 Brandschutz-Berechnung</h2>
+  <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Nach DIN EN 3 / ASR A2.2 — automatisch basierend auf deinen Räumen.</p>
+  <div id="fire-result"></div>
+  <div class="mbtns">
+    <button class="mbt ok" onclick="calcFireSafety()">🔄 Neu berechnen</button>
+    <button class="mbt" onclick="closeM('m-fire')">Schließen</button>
+  </div>
+</div>
+</div>
+
+<!-- AKUSTIK -->
+<div class="mover" id="m-acoustic">
+<div class="modal" style="max-width:460px">
+  <h2>🔊 Akustik-Planung</h2>
+  <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Nachhallzeit nach Sabine-Formel schätzen.</p>
+  <div style="margin-bottom:10px">
+    <div class="psh" style="font-size:10px;margin-bottom:6px">Bodenbelag je Raum</div>
+    <div id="acoustic-floors"></div>
+  </div>
+  <div id="acoustic-result"></div>
+  <div class="mbtns">
+    <button class="mbt ok" onclick="calcAcoustics()">🔄 Berechnen</button>
+    <button class="mbt" onclick="closeM('m-acoustic')">Schließen</button>
+  </div>
+</div>
+</div>
+
+<!-- ENERGIE -->
+<div class="mover" id="m-energy">
+<div class="modal" style="max-width:460px">
+  <h2>⚡ Energie-Check</h2>
+  <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Stromverbrauch, Heizungsbedarf und Einsparungen.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+    <div class="mf"><label>Beleuchtungstyp</label>
+      <select id="en-light" style="width:100%;padding:5px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px">
+        <option value="led">LED (8W/m²)</option>
+        <option value="halogen">Halogen (35W/m²)</option>
+        <option value="mixed">Gemischt</option>
+      </select>
+    </div>
+    <div class="mf"><label>Betriebsstd./Tag</label>
+      <input id="en-hours" type="number" value="8" min="1" max="24" style="width:100%">
+    </div>
+    <div class="mf"><label>Heiztyp</label>
+      <select id="en-heat" style="width:100%;padding:5px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px">
+        <option value="gas">Gas (0.08€/kWh)</option>
+        <option value="heat_pump">Wärmepumpe (0.22€/kWh)</option>
+        <option value="electric">Elektrisch (0.32€/kWh)</option>
+        <option value="district">Fernwärme (0.12€/kWh)</option>
+      </select>
+    </div>
+    <div class="mf"><label>Strom €/kWh</label>
+      <input id="en-price" type="number" value="0.32" step="0.01" style="width:100%">
+    </div>
+  </div>
+  <div id="energy-result"></div>
+  <div class="mbtns">
+    <button class="mbt ok" onclick="calcEnergy()">⚡ Berechnen</button>
+    <button class="mbt" onclick="closeM('m-energy')">Schließen</button>
+  </div>
+</div>
+</div>
+
+<!-- REINIGUNGSPLAN -->
+<div class="mover" id="m-cleaning">
+<div class="modal" style="max-width:460px">
+  <h2>🧹 Reinigungsplan</h2>
+  <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Zeitaufwand und Häufigkeit basierend auf Raumtyp und Fläche.</p>
+  <div id="cleaning-result"></div>
+  <div id="cleaning-total" style="margin-top:8px;padding:8px;background:var(--bg3);border-radius:6px"></div>
+  <div class="mbtns">
+    <button class="mbt ok" onclick="exportCleaningCSV()">📥 CSV</button>
+    <button class="mbt" onclick="closeM('m-cleaning')">Schließen</button>
+  </div>
+</div>
+</div>
+
+<!-- INVENTARLISTE -->
+<div class="mover" id="m-inventory">
+<div class="modal" style="max-width:580px">
+  <h2>📋 Inventarliste</h2>
+  <div style="display:flex;gap:6px;margin-bottom:8px">
+    <input id="inv-search" placeholder="🔍 Suche…" style="flex:1;padding:5px 8px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:11px" oninput="renderInventory(this.value)">
+    <button class="mbt ok" onclick="exportInventoryCSV()">📥 CSV</button>
+    <button class="mbt" onclick="generateInventoryQR()">📱 QR alle</button>
+  </div>
+  <div class="inv-row" style="font-weight:700;font-size:10px;color:var(--tx3);text-transform:uppercase;border-bottom:2px solid var(--bd2)">
+    <span>Objekt</span><span>Seriennummer</span><span>Notizen</span><span></span>
+  </div>
+  <div id="inventory-list" style="max-height:350px;overflow-y:auto"></div>
+  <div class="mbtns"><button class="mbt" onclick="closeM('m-inventory')">Schließen</button></div>
+</div>
+</div>
+
+<!-- LIEFERWEGE -->
+<div class="mover" id="m-routes">
+<div class="modal" style="max-width:440px">
+  <h2>🚚 Lieferwege & Raumrouten</h2>
+  <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Optimale Route vom Lager zur Ausgabe und Versorgungswege.</p>
+  <div id="routes-result"></div>
+  <div class="mbtns">
+    <button class="mbt ok" onclick="calcRoutes()">🔄 Neu berechnen</button>
+    <button class="mbt" onclick="closeM('m-routes')">Schließen</button>
+  </div>
+</div>
+</div>
+
 <!-- STEP-BY-STEP GUIDE -->
 <div id="guide-overlay">
 <div id="guide-box">
@@ -1633,7 +1792,10 @@ var _labelSize = 13;           // label font size
 var _watermarkText = '';       // watermark on exports
 var _roomGroups = [];          // [{id,name,color,roomIds:[]}]
 var _aiChatHistory = [];       // saved KI conversations
-var _swRegistered = false;
+var _swRegistered    = false;
+var _inventory       = [];   // [{id,objId,serial,notes,date}]
+var _memberHeatData  = [];   // heatmap points from member movement
+var _memberHeatActive= false;
 var _sunAnimActive = false; // day/night animation running
 var _sunAnimTimer  = null;  // animation interval
 var _heatmapActive = false; // heatmap overlay active
@@ -3098,7 +3260,7 @@ function doPrint(){
     +'td,th{border:1px solid #ddd;padding:4px 6px;text-align:left}th{background:#f5f5f5}'
     +'@media print{body{padding:8px}}</style></head><body>'
     +'<h1>🌿 '+d.name+'</h1>'
-    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.18 · '+new Date().toLocaleDateString('de-DE')+'</div>'
+    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.19 · '+new Date().toLocaleDateString('de-DE')+'</div>'
     +'<img src="'+img+'">'
     +'<div class=grid>'
     +'<div class=box><h3>Räume ('+d.rooms.length+')</h3>'
@@ -4927,7 +5089,7 @@ function pickKallaxColor(id, part){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// KALLAX PRO EDITOR — Extended (v3.18)
+// KALLAX PRO EDITOR — Extended (v3.19)
 // ════════════════════════════════════════════════════════════════════════
 
 // Additional color palettes
@@ -6199,7 +6361,7 @@ function rebuild3DThrottled(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// NEW FEATURES v3.18
+// NEW FEATURES v3.19
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. RAUM-SNAP beim Platzieren ─────────────────────────────────────
@@ -6589,7 +6751,7 @@ function showCSCPanel(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// INTERAKTIVE ANLEITUNG v3.18
+// INTERAKTIVE ANLEITUNG v3.19
 // ════════════════════════════════════════════════════════════════════════
 function openHelp(page){
   document.getElementById('help-overlay').classList.add('open');
@@ -6730,7 +6892,7 @@ function renderTutStep(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.18 — ALLE NEUEN FEATURES
+// v3.19 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. KI MÖBELANORDNUNG ─────────────────────────────────────────────
@@ -7382,7 +7544,7 @@ function removeWallCtxMenu(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.18 — ALLE NEUEN FEATURES
+// v3.19 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── FURNITURE PRICES DATABASE ────────────────────────────────────────
@@ -7928,7 +8090,7 @@ const _origAddRoom = addRoom;
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.18 — DROPDOWN MENU SYSTEM + NEW FEATURES
+// v3.19 — DROPDOWN MENU SYSTEM + NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── DROPDOWN MENU SYSTEM ─────────────────────────────────────────────
@@ -8278,7 +8440,7 @@ function renderComparePane(side, data){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.18 — ALL NEW FEATURES
+// v3.19 — ALL NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. DARK/LIGHT MODE ───────────────────────────────────────────────
@@ -8650,9 +8812,10 @@ function clearAIChats(){
 // ── 14. OFFLINE / SERVICE WORKER ────────────────────────────────────
 function registerServiceWorker(){
   if(!('serviceWorker' in navigator)) return;
+  if(!location.protocol.startsWith('http')){ console.log('SW: nur auf https verfügbar'); return; }
   // Inline SW as blob
   const swCode=`
-    const CACHE='csc-v3.18';
+    const CACHE='csc-v3.19';
     self.addEventListener('install',e=>e.waitUntil(
       caches.open(CACHE).then(c=>c.add('/'))
     ));
@@ -8724,6 +8887,419 @@ function registerServiceWorker(){
   },{passive:true});
 })();
 
+
+// ════════════════════════════════════════════════════════════════════════
+// v3.19 — BRANDSCHUTZ / AKUSTIK / ENERGIE / REINIGUNG / INVENTAR /
+//          HEATMAP MITGLIEDER / LIEFERWEGE / BARCODE
+// ════════════════════════════════════════════════════════════════════════
+
+// ── 1. BRANDSCHUTZ ───────────────────────────────────────────────────
+function calcFireSafety(){
+  const el=document.getElementById('fire-result'); if(!el) return;
+  const totalArea=rooms.reduce((s,r)=>s+r.w*r.d,0);
+  // DIN EN 3 / ASR A2.2: 1 Löscher pro 200m² (mind. 1 pro Brandabschnitt)
+  const needed=Math.max(rooms.length,Math.ceil(totalArea/200));
+  const have=objects.filter(o=>o.typeId==='sec-ext').length;
+  const smoke=objects.filter(o=>o.typeId==='sec-smoke').length;
+  const needSmoke=rooms.length;
+  const exits=objects.filter(o=>o.typeId==='sec-sign-exit').length;
+  const emlight=objects.filter(o=>o.typeId==='sec-emlight').length;
+
+  const row=(icon,label,val,ok,hint)=>
+    '<div style="display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--bd)">'
+    +'<span style="font-size:16px;flex-shrink:0">'+icon+'</span>'
+    +'<div style="flex:1"><div style="font-size:12px;color:var(--tx)">'+label+'</div>'
+    +(hint?'<div style="font-size:10px;color:var(--tx3)">'+hint+'</div>':'')+'</div>'
+    +'<div style="font-size:11px;font-weight:700;'+(ok?'color:#4ade80':'color:#f87171')+'">'+val+'</div></div>';
+
+  el.innerHTML=
+    row('🧯','Feuerlöscher',have+' / '+needed+' Stk.',have>=needed,
+      'ASR A2.2: 1 Löscher pro 200m² ('+totalArea.toFixed(0)+'m² gesamt)')
+    +row('🔥','Rauchmelder',smoke+' / '+needSmoke+' Stk.',smoke>=needSmoke,
+      'Mind. 1 pro Raum (§15 MBO)')
+    +row('🚨','Notausgang-Schilder',exits+' Stk.',exits>=1,
+      'Mind. 1 sichtbar am Ausgang')
+    +row('💡','Notbeleuchtung',emlight+' Stk.',emlight>=1,
+      'ASR A3.4/3: alle Fluchtwege beleuchtet')
+    +'<div style="margin-top:8px;padding:8px;background:var(--bg3);border-radius:6px;font-size:11px">'
+    +'<div style="font-weight:700;color:'+(have>=needed&&smoke>=needSmoke?'#4ade80':'#f87171')
+    +'">'+( have>=needed&&smoke>=needSmoke?'✅ Brandschutz erfüllt':'⚠️ Mängel vorhanden')+'</div>'
+    +(have<needed?'<div style="color:#f87171;margin-top:4px">→ '+(needed-have)+' weiterer Feuerlöscher erforderlich</div>':'')
+    +(smoke<needSmoke?'<div style="color:#f87171;margin-top:4px">→ '+(needSmoke-smoke)+' weiterer Rauchmelder erforderlich</div>':'')
+    +'</div>';
+}
+
+// ── 2. AKUSTIK ───────────────────────────────────────────────────────
+const ABSORPTION={
+  'carpet':   {name:'Teppich',  alpha:0.35, color:'#8a6030'},
+  'tile':     {name:'Fliesen',  alpha:0.02, color:'#aaaaaa'},
+  'parquet':  {name:'Parkett',  alpha:0.05, color:'#c8a060'},
+  'concrete': {name:'Beton',    alpha:0.02, color:'#888888'},
+  'linoleum': {name:'Linoleum', alpha:0.10, color:'#4a6a8a'},
+};
+
+function openAcoustic(){
+  const el=document.getElementById('acoustic-floors'); if(!el) return;
+  el.innerHTML=rooms.filter(r=>(r.floorId||'eg')===curFloor).map(r=>{
+    const opts=Object.entries(ABSORPTION).map(([k,v])=>
+      '<option value="'+k+'" '+(k==='tile'?'selected':'')+'>'+v.name+'</option>'
+    ).join('');
+    return '<div style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:11px">'
+      +'<span style="flex:1;color:var(--tx2)">'+r.name+'</span>'
+      +'<select id="ac-floor-'+r.id+'" style="padding:3px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:3px;font-size:10px">'+opts+'</select>'
+      +'</div>';
+  }).join('');
+  openM('m-acoustic');
+}
+
+function calcAcoustics(){
+  const el=document.getElementById('acoustic-result'); if(!el) return;
+  let html='';
+  rooms.filter(r=>(r.floorId||'eg')===curFloor).forEach(r=>{
+    const sel=document.getElementById('ac-floor-'+r.id);
+    const mat=sel?sel.value:'tile';
+    const abs=ABSORPTION[mat]||ABSORPTION.tile;
+    const V=r.w*r.d*r.h; // volume m³
+    const A=r.w*r.d*abs.alpha; // floor absorption
+    // Add wall absorption (~0.05 for plaster)
+    const Awall=(2*(r.w+r.d)*r.h)*0.05;
+    const Atotal=A+Awall;
+    const T60=(0.161*V/Atotal).toFixed(2); // Sabine formula
+    const rating=+T60<0.6?'Sehr gut':+T60<1.0?'Gut':+T60<1.5?'Akzeptabel':'Zu hallig';
+    const color=+T60<0.6?'#4ade80':+T60<1.0?'#86efac':+T60<1.5?'#fbbf24':'#f87171';
+    const pct=Math.min(100,(+T60/3)*100);
+    html+='<div style="margin-bottom:8px">'
+      +'<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px">'
+      +'<span style="color:var(--tx2)">'+r.name+' ('+abs.name+')</span>'
+      +'<span style="color:'+color+';font-weight:700">T₆₀ = '+T60+'s — '+rating+'</span></div>'
+      +'<div style="background:var(--bg4);border-radius:3px;height:14px;overflow:hidden">'
+      +'<div class="acoustic-bar" style="width:'+pct+'%;background:'+color+'">'+T60+'s</div></div>'
+      +'</div>';
+  });
+  el.innerHTML=html||'<div style="color:var(--tx3);font-size:11px">Keine Räume vorhanden.</div>';
+}
+
+// ── 3. ENERGIE-CHECK ─────────────────────────────────────────────────
+function calcEnergy(){
+  const el=document.getElementById('energy-result'); if(!el) return;
+  const lightType=document.getElementById('en-light')?.value||'led';
+  const hours=+(document.getElementById('en-hours')?.value||8);
+  const heatType=document.getElementById('en-heat')?.value||'gas';
+  const priceEl=+(document.getElementById('en-price')?.value||0.32);
+  const totalArea=rooms.reduce((s,r)=>s+r.w*r.d,0);
+  const totalVol=rooms.reduce((s,r)=>s+r.w*r.d*r.h,0);
+
+  const wPerM2={led:8,halogen:35,mixed:20}[lightType]||8;
+  const heatCost={gas:0.08,heat_pump:0.22,electric:0.32,district:0.12}[heatType]||0.08;
+
+  const lightKwh=(totalArea*wPerM2/1000)*hours*365;
+  const lightCost=lightKwh*priceEl;
+  const lightSaving=lightType==='led'?0:(totalArea*(35-8)/1000)*hours*365*priceEl;
+
+  // Heizung: ~50W/m² für Gewerbe
+  const heatKwh=(totalVol*50/1000)*2000; // 2000 Heizdegreedays
+  const heatCostYear=heatKwh*heatCost;
+
+  const totalYear=lightCost+heatCostYear;
+
+  const bar=(label,kwh,cost,color)=>'<div class="energy-row">'
+    +'<div class="energy-label"><span>'+label+'</span>'
+    +'<span>'+Math.round(kwh)+' kWh/a · '+Math.round(cost)+' €/a</span></div>'
+    +'<div class="energy-bar-wrap"><div class="energy-bar-fill" style="width:'+Math.min(100,cost/totalYear*100)+'%;background:'+color+'"></div></div></div>';
+
+  el.innerHTML=
+    bar('💡 Beleuchtung ('+lightType.toUpperCase()+')',lightKwh,lightCost,'#fbbf24')
+    +bar('🌡 Heizung ('+heatType+')',heatKwh,heatCostYear,'#f87171')
+    +'<div style="margin-top:10px;padding:8px;background:var(--bg3);border-radius:6px">'
+    +'<div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700">'
+    +'<span>Gesamt/Jahr</span><span style="color:var(--gr)">'+Math.round(totalYear).toLocaleString('de-DE')+' €</span></div>'
+    +(lightSaving>0?'<div style="font-size:10px;color:#4ade80;margin-top:4px">💡 LED-Umstieg spart ~'+Math.round(lightSaving)+'€/Jahr</div>':'')
+    +'<div style="font-size:10px;color:var(--tx3);margin-top:4px">Basis: '+totalArea.toFixed(0)+'m² · '+hours+'h/Tag · Strom '+priceEl+'€/kWh</div>'
+    +'</div>';
+}
+
+// ── 4. REINIGUNGSPLAN ─────────────────────────────────────────────────
+const CLEANING_TIMES={
+  'Empfang':     {daily:15, weekly:30, icon:'🏪', freq:'täglich'},
+  'Ausgabe':     {daily:20, weekly:45, icon:'🌿', freq:'täglich'},
+  'Lager':       {daily:5,  weekly:40, icon:'📦', freq:'wöchentlich'},
+  'Sozial':      {daily:20, weekly:60, icon:'🛋', freq:'täglich'},
+  'WC':          {daily:15, weekly:30, icon:'🚽', freq:'täglich'},
+  'Büro':        {daily:10, weekly:30, icon:'🖥', freq:'täglich'},
+  'Küche':       {daily:25, weekly:60, icon:'🍳', freq:'täglich'},
+  'Sonstiges':   {daily:5,  weekly:20, icon:'🏠', freq:'wöchentlich'},
+};
+
+function openCleaning(){
+  calcCleaning();
+  openM('m-cleaning');
+}
+
+function calcCleaning(){
+  const el=document.getElementById('cleaning-result'); if(!el) return;
+  const total=document.getElementById('cleaning-total');
+  let dailyMin=0,weeklyMin=0,html='';
+  rooms.forEach(r=>{
+    const cat=getRoomCategory(r.name);
+    const t=CLEANING_TIMES[cat]||CLEANING_TIMES['Sonstiges'];
+    const factor=r.w*r.d/20; // more time for larger rooms
+    const d=Math.round(t.daily*factor);
+    const w=Math.round(t.weekly*factor);
+    dailyMin+=d; weeklyMin+=w;
+    html+='<div class="clean-row">'
+      +'<span>'+t.icon+'</span>'
+      +'<div style="flex:1"><div style="color:var(--tx)">'+r.name+'</div>'
+      +'<div style="font-size:9px;color:var(--tx3)">'+r.w.toFixed(0)+'×'+r.d.toFixed(0)+'m · '+t.freq+'</div></div>'
+      +'<div style="text-align:right;font-size:10px;color:var(--tx3)">'
+      +'<div>tägl. '+d+' Min.</div>'
+      +'<div>wöch. '+w+' Min.</div></div></div>';
+  });
+  el.innerHTML=html;
+  if(total) total.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">'
+    +'<div style="text-align:center"><div style="font-size:18px;font-weight:800;color:var(--gr)">'+dailyMin+'</div><div style="color:var(--tx3)">Min./Tag</div></div>'
+    +'<div style="text-align:center"><div style="font-size:18px;font-weight:800;color:var(--bl)">'+Math.round(weeklyMin/60*10)/10+'</div><div style="color:var(--tx3)">Std./Woche</div></div>'
+    +'<div style="grid-column:1/-1;font-size:10px;color:var(--tx3);text-align:center">≈ '+Math.round(dailyMin/60*22)+' Std./Monat · '+Math.round(dailyMin/60*22*15)+' €/Monat (15€/h)</div></div>';
+}
+
+function exportCleaningCSV(){
+  const rows=['\uFEFFRaum,Kategorie,täglich(Min),wöchentlich(Min)'];
+  rooms.forEach(r=>{
+    const cat=getRoomCategory(r.name);
+    const t=CLEANING_TIMES[cat]||CLEANING_TIMES['Sonstiges'];
+    const f=r.w*r.d/20;
+    rows.push(['"'+r.name+'"',cat,Math.round(t.daily*f),Math.round(t.weekly*f)].join(','));
+  });
+  const blob=new Blob([rows.join('\n')],{type:'text/csv;charset=utf-8'});
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:'reinigungsplan.csv'});
+  a.click();
+}
+
+// ── 5. INVENTARLISTE ─────────────────────────────────────────────────
+function openInventory(){
+  // Sync objects to inventory
+  objects.forEach(o=>{
+    if(!_inventory.find(i=>i.objId===o.id)){
+      const it=findItem(o.typeId)||{};
+      _inventory.push({id:'inv'+o.id,objId:o.id,name:it.name||o.typeId,
+        serial:'',notes:'',date:new Date().toLocaleDateString('de-DE'),
+        cat:it.cat||''});
+    }
+  });
+  // Remove deleted objects
+  _inventory=_inventory.filter(i=>objects.find(o=>o.id===i.objId));
+  saveInventory();
+  renderInventory('');
+  openM('m-inventory');
+}
+
+function renderInventory(filter){
+  const el=document.getElementById('inventory-list'); if(!el) return;
+  const items=_inventory.filter(i=>!filter||i.name.toLowerCase().includes(filter.toLowerCase()));
+  el.innerHTML=items.map(i=>'<div class="inv-row">'
+    +'<div><div style="color:var(--tx);font-size:11px">'+i.name+'</div>'
+    +'<div style="font-size:9px;color:var(--tx3)">'+i.cat+' · '+i.date+'</div></div>'
+    +'<input class="inv-inp" placeholder="Seriennummer" value="'+i.serial+'" '
+    +'onchange="updateInvItem(\''+i.id+'\',\'serial\',this.value)">'
+    +'<input class="inv-inp" placeholder="Notizen" value="'+i.notes+'" '
+    +'onchange="updateInvItem(\''+i.id+'\',\'notes\',this.value)">'
+    +'<button onclick="generateItemQR(\''+i.id+'\')" title="QR-Code" style="background:none;border:1px solid var(--bd);border-radius:3px;cursor:pointer;font-size:12px;padding:2px 5px">📱</button>'
+    +'</div>'
+  ).join('') || '<div style="color:var(--tx3);padding:12px;font-size:11px">Keine Objekte vorhanden.</div>';
+}
+
+function updateInvItem(id,prop,val){
+  const i=_inventory.find(i=>i.id===id); if(i){i[prop]=val; saveInventory();}
+}
+
+function saveInventory(){ try{localStorage.setItem('csc-inventory',JSON.stringify(_inventory));}catch(e){} }
+function loadInventory(){ try{const s=localStorage.getItem('csc-inventory');if(s)_inventory=JSON.parse(s);}catch(e){} }
+
+function exportInventoryCSV(){
+  const rows=['\uFEFFObjekt,Kategorie,Seriennummer,Notizen,Datum'];
+  _inventory.forEach(i=>rows.push(['"'+i.name+'"','"'+i.cat+'"','"'+i.serial+'"','"'+i.notes+'"',i.date].join(',')));
+  const blob=new Blob([rows.join('\n')],{type:'text/csv;charset=utf-8'});
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:'inventar.csv'});
+  a.click();
+}
+
+function generateItemQR(invId){
+  const item=_inventory.find(i=>i.id===invId); if(!item) return;
+  const data=JSON.stringify({name:item.name,serial:item.serial,notes:item.notes,date:item.date});
+  const url='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+encodeURIComponent(data);
+  const win=window.open('','_blank','width=280,height=320');
+  if(win) win.document.write('<html><body style="margin:0;text-align:center;font-family:sans-serif;padding:12px">'
+    +'<h3 style="font-size:13px;color:#166534">'+item.name+'</h3>'
+    +(item.serial?'<p style="font-size:11px;color:#666">S/N: '+item.serial+'</p>':'')
+    +'<img src="'+url+'" style="width:180px"><br>'
+    +'<p style="font-size:9px;color:#aaa">'+item.date+'</p></body></html>');
+}
+
+function generateInventoryQR(){
+  const url='https://api.qrserver.com/v1/create-qr-code/?size=300x300&data='
+    +encodeURIComponent('CSC Inventar: '+_inventory.length+' Objekte\n'+projName+'\n'+new Date().toLocaleDateString('de-DE'));
+  const win=window.open('','_blank','width=360,height=400');
+  if(win) win.document.write('<html><body style="margin:0;text-align:center;font-family:sans-serif;padding:16px">'
+    +'<h3 style="color:#166534">'+projName+' — Inventar</h3>'
+    +'<img src="'+url+'" style="width:250px">'
+    +'<p style="font-size:11px;color:#666">'+_inventory.length+' Objekte · '+new Date().toLocaleDateString('de-DE')+'</p>'
+    +'</body></html>');
+}
+
+// ── 6. MITGLIEDER-HEATMAP ────────────────────────────────────────────
+function toggleMemberHeatmap(){
+  _memberHeatActive=!_memberHeatActive;
+  if(_memberHeatActive && !_memberHeatData.length) generateMemberHeatData();
+  const cv=document.getElementById('member-heat-canvas');
+  const btn=document.getElementById('btn-memberheat');
+  if(cv) cv.classList.toggle('vis',_memberHeatActive);
+  if(btn){btn.style.color=_memberHeatActive?'#c084fc':'';btn.style.borderColor=_memberHeatActive?'#c084fc':'';}
+  if(_memberHeatActive) renderMemberHeatmap();
+  toast(_memberHeatActive?'👥 Mitglieder-Heatmap aktiv':'👥 Heatmap aus','b');
+}
+
+function generateMemberHeatData(){
+  // Simulate member movement patterns based on room types
+  _memberHeatData=[];
+  rooms.filter(r=>(r.floorId||'eg')===curFloor).forEach(r=>{
+    const cat=getRoomCategory(r.name);
+    const density={Empfang:0.8,Ausgabe:1.0,Sozial:0.7,Küche:0.4,Lager:0.05,WC:0.2,Büro:0.1,Sonstiges:0.3}[cat]||0.3;
+    const points=Math.round(r.w*r.d*density*8);
+    for(let i=0;i<points;i++){
+      // Weighted towards entrances (low y for south-facing rooms)
+      const wx=r.x+Math.random()*r.w;
+      const wy=r.y+Math.random()*r.d;
+      _memberHeatData.push({wx,wy,weight:density});
+    }
+  });
+  // Extra density near ausgabe counters
+  objects.filter(o=>o.typeId&&(o.typeId.includes('aus-theke')||o.typeId==='kasse')).forEach(o=>{
+    for(let i=0;i<15;i++){
+      _memberHeatData.push({wx:o.x+(Math.random()-0.5)*2,wy:o.y+(Math.random()-0.5)*2,weight:1.5});
+    }
+  });
+}
+
+function renderMemberHeatmap(){
+  const wrap=document.getElementById('canvas-wrap'); if(!wrap) return;
+  let cv=document.getElementById('member-heat-canvas');
+  if(!cv){
+    cv=document.createElement('canvas');
+    cv.id='member-heat-canvas';
+    cv.style.cssText='position:absolute;inset:0;pointer-events:none;opacity:0.55;z-index:9;display:none';
+    wrap.appendChild(cv);
+  }
+  cv.width=fpCv.width; cv.height=fpCv.height;
+  const ctx=cv.getContext('2d');
+  ctx.clearRect(0,0,cv.width,cv.height);
+  _memberHeatData.forEach(p=>{
+    const px=wx2cx(p.wx), py=wy2cy(p.wy);
+    const r=Math.max(15,vpZoom*0.8);
+    const grad=ctx.createRadialGradient(px,py,0,px,py,r);
+    grad.addColorStop(0,'rgba(180,0,255,'+Math.min(0.4,p.weight*0.15)+')');
+    grad.addColorStop(1,'rgba(180,0,255,0)');
+    ctx.fillStyle=grad;
+    ctx.beginPath(); ctx.arc(px,py,r,0,Math.PI*2); ctx.fill();
+  });
+  cv.classList.toggle('vis',_memberHeatActive);
+}
+
+// ── 7. LIEFERWEGE ────────────────────────────────────────────────────
+function calcRoutes(){
+  const el=document.getElementById('routes-result'); if(!el) return;
+  const lager=rooms.find(r=>getRoomCategory(r.name)==='Lager');
+  const ausgabe=rooms.find(r=>getRoomCategory(r.name)==='Ausgabe'||r.name.toLowerCase().includes('ausgabe'));
+  const empfang=rooms.find(r=>getRoomCategory(r.name)==='Empfang');
+
+  if(!lager&&!ausgabe){ el.innerHTML='<div style="color:var(--tx3);font-size:11px;padding:8px">Lager- und Ausgaberaum benennen für Routenberechnung.</div>'; return; }
+
+  const roomCenter=r=>({x:r.x+r.w/2,y:r.y+r.d/2});
+  const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y).toFixed(1);
+
+  let html='';
+  const routes=[];
+  if(lager&&ausgabe){
+    const d=dist(roomCenter(lager),roomCenter(ausgabe));
+    routes.push({from:'📦 '+lager.name,to:'🌿 '+ausgabe.name,dist:d,type:'Versorgung'});
+  }
+  if(empfang&&ausgabe){
+    const d=dist(roomCenter(empfang),roomCenter(ausgabe));
+    routes.push({from:'🚶 Eingang/Empfang',to:'🌿 '+ausgabe.name,dist:d,type:'Kundenlaufweg'});
+  }
+  rooms.filter(r=>getRoomCategory(r.name)==='WC').forEach(wc=>{
+    if(empfang){
+      const d=dist(roomCenter(empfang),roomCenter(wc));
+      routes.push({from:'🚶 Eingang',to:'🚽 '+wc.name,dist:d,type:'Sanitärweg'});
+    }
+  });
+
+  if(!routes.length){ el.innerHTML='<div style="color:var(--tx3);font-size:11px;padding:8px">Mehr Räume benennen für Routenanalyse.</div>'; return; }
+
+  routes.sort((a,b)=>+a.dist-+b.dist);
+  html=routes.map(r=>'<div class="route-step">'
+    +'<div style="flex:1">'
+    +'<div style="font-size:11px;font-weight:600;color:var(--tx)">'+r.from+' → '+r.to+'</div>'
+    +'<div style="font-size:10px;color:var(--tx3)">'+r.type+'</div></div>'
+    +'<div style="text-align:right">'
+    +'<div style="font-size:12px;font-weight:700;color:var(--gr)">'+r.dist+'m</div>'
+    +'<div style="font-size:9px;color:var(--tx3)">'+Math.round(+r.dist/1.2*60)+'s Laufzeit</div>'
+    +'</div></div>'
+  ).join('');
+
+  // Recommendation
+  const longRoutes=routes.filter(r=>+r.dist>10);
+  if(longRoutes.length){
+    html+='<div style="margin-top:8px;padding:8px;background:var(--bg3);border-radius:6px;font-size:10px;color:var(--yw)">'
+      +'⚠️ Lange Wege: '+longRoutes.map(r=>r.type).join(', ')
+      +' (>10m) — Lager näher zur Ausgabe platzieren empfohlen.</div>';
+  } else {
+    html+='<div style="margin-top:8px;padding:8px;background:var(--gr4);border-radius:6px;font-size:10px;color:var(--gr)">✅ Gute Raumaufteilung — kurze Versorgungswege.</div>';
+  }
+  el.innerHTML=html;
+  // Visualize on 2D map
+  visualizeRoutes(routes);
+}
+
+function visualizeRoutes(routes){
+  draw2D();
+  // Routes are drawn in draw2D via _routeLines
+  _routeLines=routes;
+  draw2D();
+}
+var _routeLines=[];
+
+function drawRoutes(ctx){
+  if(!_routeLines.length) return;
+  const getCenter=name=>{
+    const r=rooms.find(r=>r.name.includes(name.replace(/[🚶📦🌿🚽]/g,'').trim()));
+    if(r) return {wx:r.x+r.w/2,wy:r.y+r.d/2};
+    return null;
+  };
+  ctx.save();
+  ctx.strokeStyle='rgba(74,222,128,0.7)'; ctx.lineWidth=3;
+  ctx.setLineDash([6,4]);
+  _routeLines.forEach(route=>{
+    // Simple: draw line between room centers based on stored dist
+    const from=rooms.find(r=>route.from.includes(r.name));
+    const to  =rooms.find(r=>route.to.includes(r.name));
+    if(!from||!to) return;
+    ctx.beginPath();
+    ctx.moveTo(wx2cx(from.x+from.w/2),wy2cy(from.y+from.d/2));
+    ctx.lineTo(wx2cx(to.x+to.w/2),wy2cy(to.y+to.d/2));
+    ctx.stroke();
+    // Distance label
+    const mx=wx2cx((from.x+from.w/2+to.x+to.w/2)/2);
+    const my=wy2cy((from.y+from.d/2+to.y+to.d/2)/2);
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(0,0,0,0.75)'; ctx.beginPath();
+    ctx.roundRect(mx-18,my-9,36,14,3); ctx.fill();
+    ctx.fillStyle='#4ade80'; ctx.font='bold 9px monospace';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(route.dist+'m',mx,my);
+    ctx.setLineDash([6,4]);
+  });
+  ctx.restore();
+}
+
 // ════════════════════════════════════════════════════════════════════════
 // ANIMATION LOOP
 // ════════════════════════════════════════════════════════════════════════
@@ -8756,6 +9332,7 @@ loadTimeline();
 loadColorMode();
 loadRoomGroups();
 loadAIChatHistory();
+loadInventory();
 renderNorthArrow();
 setTimeout(registerServiceWorker,1000);
 setTimeout(initLiveCollaboration, 2000);
@@ -8804,7 +9381,7 @@ draw2D();
 
 renderFloorTabs();
 initUndoSystem();
-setTimeout(()=>toast('🌿 v3.18 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
+setTimeout(()=>toast('🌿 v3.19 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
 
 
 
@@ -8832,7 +9409,7 @@ function initAutoSave(){
   // Enable auto-saving from now on
   _autoSaveReady = true;
   renderVersionHistory();
-  toast('🌿 v3.18 | Auto-Save aktiv','g');
+  toast('🌿 v3.19 | Auto-Save aktiv','g');
 }
 
 
@@ -9153,7 +9730,7 @@ function build3DObj(o){
   const metal = o.metalness !== undefined ? o.metalness : (item.arch==='window'?0.0: item.arch==='door'?0.05:['Lager','Info'].includes(item.cat)?0.55:0.04);
 
   if(item.isKallax || (item.id&&item.id.startsWith('kallax'))){
-    buildKallax3DPro(g, item, o); // v3.18 Pro
+    buildKallax3DPro(g, item, o); // v3.19 Pro
   } else if(item.arch==='security'){
     buildSecurity3D(g, item, o);
   } else if(item.arch==='foil'){
@@ -9444,7 +10021,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
 
   <div style="padding:12px 20px;border-bottom:1px solid #1a2a1a;display:flex;align-items:center;gap:14px;flex-shrink:0">
     <div style="font-size:16px;font-weight:800;color:#4ade80">🌿 CSC Raumplaner — Vollständige Anleitung</div>
-    <div style="font-size:11px;color:#555">v3.18</div>
+    <div style="font-size:11px;color:#555">v3.19</div>
     <div style="flex:1"></div>
     <button class="tbt" onclick="startTutorial()" style="border-color:var(--gr);color:var(--gr);padding:6px 14px">▶ Tutorial starten</button>
     <button class="tbt" onclick="closeHelp()" style="padding:6px 14px">Schließen</button>
