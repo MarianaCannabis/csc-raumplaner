@@ -8300,43 +8300,53 @@ var _tutStep = 0;
 const TUT_STEPS = [
   {
     target: null,
-    title: '👋 Willkommen beim CSC Raumplaner!',
-    text: 'In diesem kurzen Tutorial lernst du die wichtigsten Funktionen kennen. Du kannst das Tutorial jederzeit beenden — es dauert ca. 2 Minuten.',
-  },
-  {
-    target: '#left-panel',
-    title: '📋 Linke Sidebar — Werkzeuge',
-    text: 'Hier findest du alle Werkzeuge: Räume verwalten, Möbel auswählen, Bauelemente und Sicherheit. Klicke auf die Icons um zwischen den Kategorien zu wechseln.',
-  },
-  {
-    target: '.rtabs',
-    title: '🔧 Rechte Sidebar — KI & Design',
-    text: 'Hier ist der KI-Assistent, Design-Editor, Beleuchtungssteuerung und Projektverwaltung. Der wichtigste Tab: 🤖 KI-Assistent für automatische Grundriss-Erstellung.',
-  },
-  {
-    target: '#topbar',
-    title: '🛠 Toolbar — Häufige Aktionen',
-    text: 'Undo/Redo, Speichern, Ansicht wechseln, und viele Spezialfunktionen. Wichtig: 🌿 CSC Panel für die KCanG-Checkliste und ✂️ Schnitt für die Schnittansicht.',
-  },
-  {
-    target: '#vt-2d',
-    title: '📐 2D-Grundriss',
-    text: 'Die Standardansicht zum Zeichnen und Einrichten. Linksklick+Ziehen = Objekte verschieben. Rechtsklick auf Objekt = Kontextmenü.',
-  },
-  {
-    target: '#vt-3d',
-    title: '🏗 3D-Ansicht',
-    text: 'Realistisches 3D-Rendering deiner Planung. Linksklick+Ziehen = Kamera drehen. Scroll = Zoom. G-Taste = Objekt in 3D verschieben.',
-  },
-  {
-    target: '#rpanel-ai',
-    title: '🤖 KI-Assistent — dein wichtigstes Werkzeug',
-    text: 'Schreibe einfach was du brauchst: "Erstelle eine CSC-Ausgabestelle mit Empfang, Lager und Sozialbereich" — die KI baut alles automatisch. Du kannst auch Grundrisse als PDF/Bild hochladen.',
+    title: '📸 Hauptworkflow: Foto → Ausgabestelle',
+    text: '<b>Der schnellste Weg zur eingerichteten Ausgabestelle:</b><br><br>'
+      + '1️⃣ <b>Datei → "🤖 KI: Grundriss aus Foto"</b><br>'
+      + '&nbsp;&nbsp;→ Grundriss-Foto oder PDF hochladen<br><br>'
+      + '2️⃣ KI erkennt alle Räume automatisch (10–30 Sek.)<br><br>'
+      + '3️⃣ <b>Rechtsklick auf Raum → Möbel auto-anordnen</b><br><br>'
+      + '4️⃣ <b>Ansicht → Türen automatisch setzen</b><br><br>'
+      + '✅ Fertige, eingerichtete Ausgabestelle!',
   },
   {
     target: null,
-    title: '✅ Tutorial abgeschlossen!',
-    text: 'Du kennst jetzt die wichtigsten Bereiche. Für detaillierte Hilfe zu jeder Funktion: ❓ Button in der Toolbar oder F1-Taste drücken. Viel Erfolg beim Planen! 🌿',
+    title: '⬜ Alternativ: Räume selbst zeichnen',
+    text: '<b>Kein Foto? Kein Problem:</b><br><br>'
+      + '• <b>⬜ Raum zeichnen</b> → diagonal ziehen<br>'
+      + '• <b>Quick-Rooms-Bar</b> über dem Grundriss: Empfang, Ausgabe, Lager mit einem Klick<br>'
+      + '• <b>KI-Chat:</b> "Erstelle CSC mit Empfang 8×6m, Ausgabe 6×5m, Lager 5×4m"<br><br>'
+      + '💡 Tipp: Rechtsklick auf Raum → Möbel auto-anordnen richtet jeden Raum passend ein!',
+  },
+  {
+    target: '#left-panel',
+    title: '🛋 Möbel & Katalog',
+    text: 'Linke Sidebar → 🛋 <b>Möbel</b><br><br>'
+      + '• Kategorien anklicken zum Aufklappen<br>'
+      + '• Suchfeld: z.B. "Sofa" oder "Kamera" tippen<br>'
+      + '• Objekt klicken → Ghost-Preview folgt Maus → auf Plan platzieren<br><br>'
+      + '🔒 <b>Sicherheit-Tab</b> → Kamera setzen → blaues Sichtfeld erscheint im Grundriss.',
+  },
+  {
+    target: null,
+    title: '🤖 KI-Assistent',
+    text: 'Rechts → 🤖 KI öffnen.<br><br>'
+      + '<b>Beispiel-Befehle:</b><br>'
+      + '• "Erstelle eine vollständige CSC-Ausgabestelle"<br>'
+      + '• "Richte den Empfang mit Wartezone ein"<br>'
+      + '• "Was fehlt für die KCanG-Anforderungen?"<br>'
+      + '• "Mache eine 3D-Tour durch den Plan"<br><br>'
+      + '📸 Oder Grundriss-Foto hochladen → KI analysiert und baut auf!',
+  },
+  {
+    target: null,
+    title: "✅ Los geht's!",
+    text: '<b>Empfohlener Start:</b><br><br>'
+      + '1. <b>Datei → KI: Grundriss aus Foto</b> — falls du einen Grundriss hast<br>'
+      + '2. Oder: KI-Chat → "Erstelle CSC" für Schnellstart<br>'
+      + '3. Oder: Quick-Rooms-Bar → Räume klicken<br><br>'
+      + '📖 <b>❓ Hilfe</b> → "📸 Foto → Ausgabestelle" für die vollständige Anleitung.<br><br>'
+      + '🌿 Viel Erfolg mit deinem Cannabis Social Club!',
   },
 ];
 
@@ -11965,21 +11975,23 @@ function checkAutoBadges(){
 // 4. TIP OF DAY
 // ════════════════════════════════════════════════════════════════════════
 const TIPS=[
-  '💡 Strg+K öffnet die Befehlspalette — finde jede Funktion in Sekunden',
-  '🎙 Sage "Hey CSC, erstelle einen Empfangsraum" für Sprachsteuerung',
-  '⚡ Auto-Optimierung (Analyse-Menü) prüft und verbessert alles auf einmal',
-  '📌 Rechtsklick auf Möbel → Anpinnen für schnellen Zugriff',
-  '🏗 Vorlagen-Menü bietet 4 fertige CSC-Layouts zum Einsetzen',
-  '🌿 KCanG-Checkliste unter 🌿 CSC zeigt was noch fehlt',
-  '📂 Grundriss-PDF einfach auf den Grundriss ziehen → KI analysiert automatisch',
-  '📏 F-Taste zentriert die Ansicht auf alle Räume',
-  '🔵 Shift+Klick wählt mehrere Objekte gleichzeitig aus',
-  '🤖 "Beschreibe wie dieser Raum wirkt" gibt KI-Atmosphärenbeschreibung',
-  '💾 Projekt wird nach jeder Änderung automatisch gespeichert',
-  '🌅 Tag/Nacht Animation zeigt wie der Raum zu verschiedenen Tageszeiten wirkt',
-  '♿ KI kann deinen Raum automatisch barrierefrei umplanen',
-  '📊 Dashboard zeigt alle wichtigen Kennzahlen auf einen Blick',
-  '🔗 Teilen-Link enthält das gesamte Projekt — kein Konto nötig',
+  '📸 Hauptworkflow: Datei → "KI: Grundriss aus Foto" → Bild hochladen → Räume werden automatisch erkannt!',
+  '🌿 In 5 Min zur Ausgabestelle: 1) Foto hochladen 2) KI erkennt Räume 3) Rechtsklick → Möbel auto-anordnen ✅',
+  '📷 Tipp Grundriss-Erkennung: Senkrecht fotografieren, Beschriftungen sichtbar, Türbreite ≈ 1m als Maßstab.',
+  '🤖 KI-Chat: Schreibe "Erstelle CSC mit Empfang, Ausgabe, Lager und Sozialbereich" für vollen Auto-Aufbau.',
+  '⚡ Quick-Rooms-Bar: Die Buttons über dem Grundriss fügen vordefinierte Räume mit einem Klick ein.',
+  '🚪 Türen auto-setzen: Ansicht → Türen automatisch setzen verbindet alle angrenzenden Räume.',
+  '📏 Maßketten: D-Taste zeigt/versteckt CAD-Bemaßung. Zeigt Breite, Tiefe und Fläche.',
+  '💡 Lux-Analyse: Analyse → Lux-Berechnung → Lux-Karte zeigt Helligkeit als Farboverlay.',
+  '🌡 Heizlast: Analyse → Heizlast berechnet Watt-Bedarf nach DIN EN 12831.',
+  '🎨 Material Studio: Ansicht → Material & Textur Studio für Boden-, Wand- und Deckenstile.',
+  '🎬 3D-Rundgang: Ansicht → 3D-Rundgang startet eine automatische Kamerafahrt durch alle Räume.',
+  '📌 Annotations: Ansicht → Annotations-Modus → in 3D klicken = Kommentar setzen.',
+  '🏷 Versionen: Datei → Version benennen speichert Snapshots — Badge klicken = wiederherstellen.',
+  '🔍 Katalog-Suche: Einfach tippen — z.B. "Sofa" oder "Kamera" filtert den Katalog sofort.',
+  '💡 Strg+K öffnet die Befehlspalette — finde jede Funktion in Sekunden.',
+  '🎙 Sage "Hey CSC, erstelle einen Empfangsraum" für Sprachsteuerung.',
+  '⚡ Auto-Optimierung (Analyse-Menü) prüft und verbessert alles auf einmal.',
 ];
 
 function showTipOfDay(){
@@ -16439,14 +16451,16 @@ async function calcAISecurityScore(){
   showFloatingPanel('KI-Sicherheit',h);
   if(total<90){
     callAI('Gib 2 kurze Sicherheitstipps fuer einen CSC (Score '+total+'/100). Antworte NUR: ["Tipp1","Tipp2"]',
-      {maxTokens:150,system:'Antworte ausschließlich als JSON Array.'}).then(res=>{
+      {maxTokens:150,system:'Antworte ausschließlich als JSON Array.'})
+    .then(res=>{
       if(!res) return;
       try{
         const tips=JSON.parse(res.text.match(/\[.*?\]/s)?.[0]||'[]');
         const el=document.getElementById('ai-sec-tip');
         if(el&&tips.length) el.innerHTML=tips.map(t=>'<div style="padding:2px 0;color:var(--gr)">💡 '+t+'</div>').join('');
-      }catch(e){}
-    });
+      }catch(e){ console.warn('secTips parse:',e); }
+    })
+    .catch(e=>{ console.warn('calcAISecurityScore:',e); });
   }
 }
 
@@ -19003,7 +19017,9 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
   <div id="help-container">
     <!-- SIDEBAR -->
     <div id="help-sidebar">
-      <div class="help-cat">Erste Schritte</div>
+      <div class="help-cat">🔥 Schnellstart</div>
+      <div class="help-item active" onclick="showHelpPage('foto-plan')" data-page="foto-plan" style="background:var(--gr4);border-left:3px solid var(--gr)"><span class="hi">📸</span><b>Foto → Ausgabestelle</b></div>
+      <div class="help-cat">Grundlagen</div>
       <div class="help-item active" onclick="showHelpPage('start')" data-page="start"><span class="hi">🚀</span>Schnellstart</div>
       <div class="help-item" onclick="showHelpPage('interface')" data-page="interface"><span class="hi">🖥</span>Oberfläche</div>
       <div class="help-item" onclick="showHelpPage('keys')" data-page="keys"><span class="hi">⌨</span>Tastenkürzel</div>
@@ -19045,6 +19061,63 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
 
     <!-- CONTENT -->
     <div id="help-content">
+
+
+      <!-- FOTO → PLAN (NEU, PROMINENT) -->
+      <div class="help-page" id="hp-foto-plan">
+        <h1>📸 Foto → Fertige Ausgabestelle</h1>
+        <div class="subtitle">Der schnellste Weg — KI erkennt deinen Grundriss automatisch</div>
+
+        <div style="background:var(--gr4);border:1px solid var(--gr3);border-radius:8px;padding:14px;margin:12px 0">
+          <div style="font-size:13px;font-weight:800;color:var(--gr);margin-bottom:8px">⚡ In 5 Minuten zur fertigen Ausgabestelle</div>
+          <div class="help-step"><div class="help-step-num">1</div>
+            <div class="help-step-body"><b>Grundriss fotografieren oder als PDF haben</b><br>
+            Kann ein Foto des Bauplans, ein Screenshot, eine Handskizze oder ein PDF sein.
+            Je klarer, desto besser die Erkennung.</div></div>
+          <div class="help-step"><div class="help-step-num">2</div>
+            <div class="help-step-body"><b>Datei-Menü → "🤖 KI: Grundriss aus Foto"</b><br>
+            Bild per Drag & Drop einwerfen oder auf das Feld klicken.
+            Maßstab auswählen (oder "Automatisch") → Gebäudetyp "CSC / Ausgabestelle".</div></div>
+          <div class="help-step"><div class="help-step-num">3</div>
+            <div class="help-step-body"><b>"Möbel automatisch platzieren" anhaken → Erkennen klicken</b><br>
+            Die KI analysiert das Bild und erstellt alle Räume mit realistischen Maßen (10–30 Sek.).</div></div>
+          <div class="help-step"><div class="help-step-num">4</div>
+            <div class="help-step-body"><b>Ansicht → "Türen automatisch setzen"</b><br>
+            Verbindet alle angrenzenden Räume mit Türen.</div></div>
+          <div class="help-step"><div class="help-step-num">5</div>
+            <div class="help-step-body"><b>Rechtsklick auf einzelne Räume → "Möbel auto-anordnen"</b><br>
+            KI möbliert jeden Raum passend zur Raumfunktion (Ausgabe, Lager, Sozial…)</div></div>
+        </div>
+
+        <h2>Was die KI erkennt</h2>
+        <ul>
+          <li>Alle <b>Räume mit Maßen</b> (Türbreite ≈ 1m als Maßstab)</li>
+          <li><b>Raumfunktionen</b> aus Beschriftungen oder typischen Proportionen</li>
+          <li><b>Eingänge, Treppen, Sanitärräume</b> aus dem Grundriss</li>
+          <li><b>Fensterpositionen</b> wenn sichtbar</li>
+        </ul>
+
+        <h2>Tipps für beste Erkennung</h2>
+        <ul>
+          <li>✅ <b>Gerade fotografieren</b> — nicht schräg, kein Schatten</li>
+          <li>✅ <b>Beschriftungen sichtbar</b> lassen (Maße, Raumnamen)</li>
+          <li>✅ <b>Maßstab angeben</b> wenn bekannt (z.B. 1:100)</li>
+          <li>✅ <b>PDF direkt</b> ist besser als Foto vom Bildschirm</li>
+          <li>⚠️ Bei Handskizzen: deutliche Linien, Raummaße draufschreiben</li>
+        </ul>
+
+        <h2>Nach der Erkennung</h2>
+        <ul>
+          <li>Räume können per Doppelklick umbenannt werden</li>
+          <li>Größen per Drag an den Ecken anpassen</li>
+          <li>Zusätzliche Räume über Quick-Rooms-Bar hinzufügen</li>
+          <li>KI-Chat für weitere Einrichtung nutzen</li>
+        </ul>
+
+        <div class="help-tip">💡 <b>Alternativ ohne Foto:</b> KI-Chat → schreibe
+        <i>"Erstelle eine CSC-Ausgabestelle: Empfang 8×6m, Ausgabe 6×5m, Lager 5×4m, Sozial 10×8m, WC 3×3m"</i>
+        — alles wird sofort aufgebaut.</div>
+      </div>
 
       <!-- SCHNELLSTART -->
       <div class="help-page active" id="hp-start">
