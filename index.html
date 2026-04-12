@@ -3824,14 +3824,11 @@ function showLeft(m){
 
 function renderLeft(){
   const el=document.getElementById('left-body');
-  if(leftMode==='rooms') renderRoomsPanel(el);
-  else if(leftMode==='furn'){
-    el.innerHTML='<input id="cat-s" class="api-inp" placeholder="🔍 Möbel suchen…" style="margin:5px;width:calc(100% - 10px)" oninput="filterCatalog(this.value)">';
-    const catEl=document.createElement('div'); catEl.id='left-panel-content'; el.appendChild(catEl);
-    renderCatalogPanel(catEl, getCatalog());
-  }
-  else if(leftMode==='arch') renderCatalogPanel(el, getArchCatalog(), true);
-  else if(leftMode==='security') renderCatalogPanel(el, getSecurityCatalog(), true, 'sec');
+  el.style.cssText='display:flex;flex-direction:column;overflow:hidden;height:100%';
+  if(leftMode==='rooms')    renderRoomsPanel(el);
+  else if(leftMode==='furn')     renderFurnPanel(el);
+  else if(leftMode==='arch')     renderBauPanel(el);
+  else if(leftMode==='security') renderSecPanel(el);
   else renderCustomPanel(el);
 }
 
