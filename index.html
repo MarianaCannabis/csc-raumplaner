@@ -2,7 +2,12 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#111111">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="CSC Planer">
+  <link rel="manifest" id="pwa-manifest">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>CSC Raumplaner v3 🌿</title>
 <style>
 :root{
@@ -456,7 +461,7 @@ canvas{display:block}
 #help-close:hover{color:#e8e4d8;background:#1a1a1a}
 
 
-/* ══ NEW FEATURES v3.20 ═══════════════════════════════════════════ */
+/* ══ NEW FEATURES v3.22 ═══════════════════════════════════════════ */
 
 /* Heatmap canvas */
 #heatmap-canvas{position:absolute;inset:0;pointer-events:none;opacity:0.55;display:none;z-index:8}
@@ -495,7 +500,7 @@ canvas{display:block}
 .vlink-inp{width:100%;padding:7px;background:var(--bg);border:1px solid var(--bd2);border-radius:4px;color:var(--tx);font-family:monospace;font-size:10px;margin:5px 0}
 
 
-/* ══ v3.20 FEATURES ══════════════════════════════════════════════ */
+/* ══ v3.22 FEATURES ══════════════════════════════════════════════ */
 /* Budget Tracker */
 #budget-panel{position:fixed;top:50px;right:360px;width:300px;background:var(--bg2);border:1px solid var(--bd2);border-radius:10px;z-index:200;display:none;box-shadow:0 4px 20px rgba(0,0,0,.6)}
 #budget-panel.vis{display:block}
@@ -529,7 +534,7 @@ canvas{display:block}
 .ruler-text{fill:#fbbf24;font-size:11px;font-weight:700;font-family:monospace}
 
 
-/* ══ DROPDOWN MENU SYSTEM v3.20 ══════════════════════════════════ */
+/* ══ DROPDOWN MENU SYSTEM v3.22 ══════════════════════════════════ */
 .tb-menu-group{display:flex;align-items:center;gap:2px}
 .tbm{position:relative}
 .tbm-btn{padding:4px 9px;background:transparent;border:1px solid transparent;border-radius:var(--r4);font-size:11px;cursor:pointer;color:var(--tx2);transition:.12s;white-space:nowrap;display:flex;align-items:center;gap:3px}
@@ -580,7 +585,7 @@ canvas{display:block}
 .compare-label{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);color:var(--gr);font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;z-index:10}
 
 
-/* ══ v3.20 ════════════════════════════════════════════════════════ */
+/* ══ v3.22 ════════════════════════════════════════════════════════ */
 /* Light mode */
 body.light-mode{--bg:#f5f5f0;--bg2:#ffffff;--bg3:#ebebeb;--bg4:#e0e0d8;
   --tx:#111;--tx2:#333;--tx3:#777;--bd:#ccc;--bd2:#aaa;
@@ -635,7 +640,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .font-sample:hover,.font-sample.active{border-color:var(--gr);color:var(--gr)}
 
 
-/* ══ v3.20 ════════════════════════════════════════════════════════ */
+/* ══ v3.22 ════════════════════════════════════════════════════════ */
 /* Inventory */
 .inv-row{display:grid;grid-template-columns:2fr 1.2fr 1.5fr 0.7fr;gap:6px;align-items:center;
   padding:5px 0;border-bottom:1px solid var(--bd);font-size:11px}
@@ -675,7 +680,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .fire-ok{color:#4ade80}.fire-warn{color:#f87171}.fire-info{color:#fbbf24}
 
 
-/* ══ v3.20 ════════════════════════════════════════════════════════ */
+/* ══ v3.22 ════════════════════════════════════════════════════════ */
 
 /* Command Palette */
 #cmd-palette{position:fixed;top:15%;left:50%;transform:translateX(-50%);
@@ -794,6 +799,176 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   border-radius:4px;font-family:monospace;font-size:11px;color:var(--bl);
   cursor:pointer;min-width:60px;text-align:center}
 
+
+/* ══ v3.22 ════════════════════════════════════════════════════════ */
+/* Badges */
+.badge-popup{position:fixed;top:60px;right:16px;background:#0d2010;
+  border:1px solid #4ade80;border-radius:10px;padding:12px 16px;z-index:500;
+  display:none;animation:badgeIn .4s cubic-bezier(.175,.885,.32,1.275)}
+.badge-popup.vis{display:block}
+@keyframes badgeIn{from{opacity:0;transform:scale(.5) translateY(-20px)}to{opacity:1;transform:none}}
+.badge-icon{font-size:32px;text-align:center;display:block;margin-bottom:4px}
+.badge-title{font-size:13px;font-weight:700;color:#4ade80;text-align:center}
+.badge-sub{font-size:10px;color:var(--tx3);text-align:center}
+
+/* Multi-select */
+.multi-sel-bar{position:fixed;bottom:52px;left:50%;transform:translateX(-50%);
+  background:var(--bg2);border:1px solid var(--bl);border-radius:20px;
+  padding:5px 12px;z-index:30;display:none;align-items:center;gap:8px;
+  font-size:11px;box-shadow:0 2px 10px rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+.multi-sel-bar.vis{display:flex}
+
+/* ROI */
+.roi-row{display:flex;justify-content:space-between;padding:5px 0;
+  border-bottom:1px solid var(--bd);font-size:11px}
+.roi-val{font-weight:600;color:var(--gr);font-family:monospace}
+
+/* Onboarding */
+#onboarding-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:700;
+  display:none;align-items:center;justify-content:center}
+#onboarding-overlay.vis{display:flex}
+#onboarding-box{background:var(--bg2);border:1px solid var(--gr3);border-radius:14px;
+  width:480px;max-width:95vw;padding:28px;text-align:center}
+.ob-icon{font-size:56px;margin-bottom:12px}
+.ob-title{font-size:20px;font-weight:800;color:var(--gr);margin-bottom:8px}
+.ob-text{font-size:12px;color:var(--tx2);line-height:1.8;margin-bottom:20px}
+.ob-dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.ob-dot{width:8px;height:8px;border-radius:50%;background:var(--bd2)}
+.ob-dot.cur{background:var(--gr);width:20px;border-radius:4px}
+
+/* Tip of day */
+#tip-bar{background:#0a1a0a;border-bottom:1px solid #1a3a1a;
+  padding:5px 14px;display:flex;align-items:center;gap:8px;
+  font-size:11px;color:var(--tx3);flex-shrink:0}
+#tip-bar.hidden{display:none}
+.tip-icon{font-size:14px}
+.tip-close{background:none;border:none;color:var(--tx3);cursor:pointer;
+  margin-left:auto;font-size:12px;padding:0 4px}
+
+/* Alignment bar */
+.align-bar{position:fixed;top:46px;left:50%;transform:translateX(-50%);
+  background:var(--bg2);border:1px solid var(--bd2);border-radius:6px;
+  padding:3px 6px;z-index:200;display:none;gap:3px}
+.align-bar.vis{display:flex}
+.align-btn{padding:3px 7px;background:var(--bg3);border:1px solid var(--bd);
+  border-radius:3px;font-size:11px;cursor:pointer;transition:.1s}
+.align-btn:hover{border-color:var(--gr);color:var(--gr)}
+
+/* Breadcrumb */
+#breadcrumb{position:absolute;bottom:4px;left:8px;z-index:20;
+  font-size:9px;color:var(--tx3);pointer-events:none;
+  background:rgba(0,0,0,.5);padding:2px 6px;border-radius:3px}
+
+/* Catalog search */
+#cat-search{width:100%;padding:6px 8px;background:var(--bg3);
+  border:0 0 1px 0 solid var(--bd);border-bottom:1px solid var(--bd);
+  color:var(--tx);font-size:11px;outline:none}
+#cat-search:focus{border-color:var(--gr)}
+
+/* Climate heatmap */
+#climate-canvas{position:absolute;inset:0;pointer-events:none;
+  opacity:0.45;display:none;z-index:10}
+#climate-canvas.vis{display:block}
+
+/* Keyboard overlay */
+#kbd-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:600;
+  display:none;align-items:center;justify-content:center}
+#kbd-overlay.vis{display:flex}
+.kbd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  max-width:680px;padding:20px}
+.kbd-card{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:12px}
+.kbd-card h4{font-size:10px;color:var(--tx3);text-transform:uppercase;
+  letter-spacing:.4px;margin-bottom:8px;font-weight:700}
+.kbd-row{display:flex;justify-content:space-between;align-items:center;
+  padding:3px 0;font-size:11px;color:var(--tx2)}
+.kbd-key{font-size:10px;background:var(--bg4);border:1px solid var(--bd2);
+  border-radius:3px;padding:1px 6px;color:var(--tx3);font-family:monospace}
+
+
+/* ══ v3.22 ════════════════════════════════════════════════════════ */
+
+/* Minimap */
+#minimap{position:absolute;bottom:8px;right:8px;width:140px;height:100px;
+  background:rgba(10,10,10,.85);border:1px solid var(--bd2);border-radius:5px;
+  z-index:20;overflow:hidden;cursor:pointer;backdrop-filter:blur(4px)}
+#minimap canvas{width:100%;height:100%}
+#minimap-viewport{position:absolute;border:1px solid var(--gr);border-radius:2px;
+  background:rgba(74,222,128,.08);pointer-events:none}
+
+/* Snap lines */
+.snap-h{position:absolute;left:0;right:0;height:1px;background:#38bdf8;
+  opacity:.7;pointer-events:none;z-index:15}
+.snap-v{position:absolute;top:0;bottom:0;width:1px;background:#38bdf8;
+  opacity:.7;pointer-events:none;z-index:15}
+
+/* Ghost preview */
+.ghost-obj{position:absolute;border:2px dashed #4ade80;border-radius:3px;
+  background:rgba(74,222,128,.1);pointer-events:none;z-index:14;
+  display:flex;align-items:center;justify-content:center;font-size:16px}
+
+/* Quick-add chips */
+.qa-chip{position:absolute;background:rgba(10,30,10,.9);border:1px solid var(--gr3);
+  border-radius:12px;padding:3px 8px;font-size:9px;color:var(--gr);cursor:pointer;
+  z-index:16;white-space:nowrap;transition:.15s;pointer-events:all}
+.qa-chip:hover{background:var(--gr4);border-color:var(--gr)}
+
+/* Zoom controls */
+#zoom-ctrl{position:absolute;bottom:8px;left:8px;z-index:20;
+  display:flex;flex-direction:column;gap:2px}
+.zoom-btn{width:28px;height:28px;background:rgba(20,20,20,.85);
+  border:1px solid var(--bd2);border-radius:4px;color:var(--tx2);
+  font-size:14px;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;transition:.12s;backdrop-filter:blur(4px)}
+.zoom-btn:hover{background:var(--bg3);color:var(--tx);border-color:var(--gr)}
+.zoom-pct{font-size:9px;color:var(--tx3);text-align:center;padding:2px 0}
+
+/* Guided mode */
+#guided-panel{position:fixed;right:0;top:40px;bottom:0;width:300px;
+  background:var(--bg2);border-left:1px solid var(--bd2);z-index:100;
+  display:none;flex-direction:column;overflow-y:auto}
+#guided-panel.vis{display:flex}
+.gp-section{padding:12px;border-bottom:1px solid var(--bd)}
+.gp-btn{width:100%;padding:10px;background:var(--bg3);border:1px solid var(--bd);
+  border-radius:6px;color:var(--tx2);font-size:12px;cursor:pointer;
+  text-align:left;margin-bottom:5px;transition:.12s;display:flex;align-items:center;gap:8px}
+.gp-btn:hover{border-color:var(--gr);color:var(--tx);background:var(--bg4)}
+.gp-btn .gp-icon{font-size:18px;width:24px;flex-shrink:0}
+
+/* Undo timeline */
+#undo-timeline{position:fixed;bottom:52px;left:260px;width:280px;
+  background:var(--bg2);border:1px solid var(--bd2);border-radius:8px;
+  z-index:200;display:none;max-height:260px;overflow-y:auto;
+  box-shadow:0 4px 16px rgba(0,0,0,.5)}
+#undo-timeline.vis{display:block}
+.ut-item{padding:6px 10px;border-bottom:1px solid var(--bd);
+  font-size:10px;color:var(--tx3);cursor:pointer;transition:.1s;
+  display:flex;align-items:center;gap:6px}
+.ut-item:hover{background:var(--bg3);color:var(--tx2)}
+.ut-item.current{background:var(--gr4);color:var(--gr);font-weight:600}
+.ut-dot{width:6px;height:6px;border-radius:50%;background:var(--bd2);flex-shrink:0}
+.ut-item.current .ut-dot{background:var(--gr)}
+
+/* Wheelchair view */
+#wheelchair-bar{position:fixed;top:42px;left:0;right:0;background:rgba(239,68,68,.2);
+  border-bottom:2px solid #f87171;padding:4px 16px;font-size:11px;color:#f87171;
+  display:none;align-items:center;gap:8px;z-index:50}
+#wheelchair-bar.vis{display:flex}
+
+/* Room stats overlay */
+.room-stat-badge{pointer-events:none}
+
+/* Tooltip on shortcuts */
+[data-shortcut]:after{content:attr(data-shortcut);position:absolute;
+  bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);
+  background:#000;color:#aaa;font-size:9px;padding:2px 5px;border-radius:3px;
+  white-space:nowrap;opacity:0;transition:.15s;pointer-events:none;z-index:500}
+[data-shortcut]:hover:after{opacity:1}
+
+/* Season tabs */
+.season-tab{padding:4px 10px;background:var(--bg3);border:1px solid var(--bd);
+  border-radius:3px;font-size:10px;cursor:pointer;transition:.12s}
+.season-tab.active{background:var(--gr3);border-color:var(--gr);color:#fff}
+
 /* TOAST */
 .toast{position:fixed;bottom:62px;left:50%;transform:translateX(-50%);padding:7px 16px;border-radius:var(--r6);font-size:12px;z-index:9999;transition:opacity .35s;white-space:nowrap;pointer-events:none}
 .toast.g{background:var(--gr3);color:var(--gr);border:1px solid var(--gr)}
@@ -885,7 +1060,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 <div id="topbar">
   <!-- LOGO -->
   <span class="logo">🌿 CSC <em>Raumplaner</em></span>
-  <span class="vbadge">v3.20</span>
+  <span class="vbadge">v3.22</span>
   <div class="tsep"></div>
 
   <!-- UNDO/REDO -->
@@ -912,6 +1087,12 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
         <div class="tbm-item" onclick="exportDXF();closeTBMenu()">📐 Grundriss .dxf</div>
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="doPrint();closeTBMenu()">🖨 Drucken / PDF</div>
+        <div class="tbm-item" onclick="generateAuthorityPackage();closeTBMenu()">📦 Behörden-Paket (.zip)</div>
+        <div class="tbm-item" onclick="shareByEmail();closeTBMenu()">📧 Per E-Mail teilen</div>
+        <div class="tbm-item" onclick="shareWhatsApp();closeTBMenu()">📱 WhatsApp</div>
+        <div class="tbm-item" onclick="shareTelegram();closeTBMenu()">✈️ Telegram</div>
+        <div class="tbm-item" onclick="exportToGoogleDrive();closeTBMenu()">📂 Google Drive</div>
+        <div class="tbm-item" onclick="generateSessionProtocol();closeTBMenu()">📋 Sitzungsprotokoll</div>
         <div class="tbm-item" onclick="exportEvacuationPlan();closeTBMenu()">🚨 Flucht- & Rettungsplan</div>
       </div>
     </div>
@@ -935,6 +1116,8 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
         <div class="tbm-item" onclick="toggleNoteMode();closeTBMenu()" id="mi-notes">📌 Notizen</div>
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="openLayoutComparison();closeTBMenu()">🔀 Lageplan vergleichen</div>
+        <div class="tbm-item" onclick="toggleRoomStats();closeTBMenu()">📊 Raum-Statistik im Plan</div>
+        <div class="tbm-item" onclick="autoColorRooms();closeTBMenu()">🎨 Räume auto-einfärben</div>
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="openDashboard();closeTBMenu()">🖥 Dashboard</div>
         <div class="tbm-item" onclick="openChecklistWizard();closeTBMenu()">📋 Einrichtungs-Assistent</div>
@@ -974,12 +1157,21 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
         <div class="tbm-item" onclick="autoOptimizeAll();closeTBMenu()">⚡ Auto-Optimierung</div>
         <div class="tbm-item" onclick="autoLabelRooms();closeTBMenu()">🏷 Räume automatisch benennen</div>
         <div class="tbm-item" onclick="toggleVoice();closeTBMenu()">🎙 Sprachsteuerung</div>
+        <div class="tbm-item" onclick="aiStyleAdvisor();closeTBMenu()">🎨 KI: Stil-Berater</div>
+        <div class="tbm-sep"></div>
+        <div class="tbm-item" onclick="fitViewToRooms();closeTBMenu()">🎯 Ansicht einpassen (F)</div>
+        <div class="tbm-item" onclick="openBadges();closeTBMenu()">🏆 Errungenschaften</div>
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="openM('m-todos');closeTBMenu()">✅ Aufgaben</div>
         <div class="tbm-item" onclick="openM('m-prompts');closeTBMenu()">💬 Eigene KI-Befehle</div>
         <div class="tbm-item" onclick="openShortcutEditor();closeTBMenu()">⌨ Tastenkürzel</div>
         <div class="tbm-item" onclick="enableAutoCloudSave(!_autoCloudSave);closeTBMenu()" id="mi-autocloudsvae">☁ Auto-Cloud-Save</div>
         <div class="tbm-item" onclick="openM('m-waittime');closeTBMenu()">⏱ Wartezeit-Simulation</div>
+        <div class="tbm-item" onclick="calcROI();openM('m-roi');closeTBMenu()">📈 ROI-Rechner</div>
+        <div class="tbm-item" onclick="showGrowthPlan();closeTBMenu()">📊 Wachstumsplanung</div>
+        <div class="tbm-item" onclick="toggleClimate();closeTBMenu()" id="btn-climate">🌡 Raumklima-Simulation</div>
+        <div class="tbm-item" onclick="toggleWheelchair();closeTBMenu()">♿ Rollstuhl-Simulator</div>
+        <div class="tbm-item" onclick="openM('m-seasons');closeTBMenu()">🍂 Saison-Layouts</div>
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="aiDescribeRoom();closeTBMenu()">🔮 KI: Raum beschreiben</div>
         <div class="tbm-item" onclick="aiSecurityAudit();closeTBMenu()">🔐 KI: Sicherheits-Audit</div>
@@ -1015,6 +1207,8 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   <!-- MOOD + KI — immer sichtbar -->
   <button class="tbt" onclick="toggleMoodPanel()" style="color:var(--yw);border-color:#3a3000;background:#1a1800" title="Stimmung/Beleuchtung">🌅</button>
   <button class="tbt" onclick="openM('m-wizard')" style="color:var(--pu);border-color:#3a2a4a;background:#1a0d2a" title="KI Möbel-Assistent">🤖</button>
+  <button class="tbt" id="btn-guided" onclick="toggleGuidedMode()" title="Geführter Modus">🧭</button>
+  <button class="tbt" onclick="toggleUndoTimeline()" title="Verlauf" id="btn-undotl">🕐</button>
   <button class="tbt" onclick="openCmdPalette()" title="Befehlspalette (Ctrl+K)" style="color:var(--bl)">⌨</button>
   <button class="tbt" onclick="openHelp()" style="color:var(--or)" title="Anleitung (H/F1)">❓</button>
   <div class="tsep"></div>
@@ -1072,8 +1266,18 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
     <button class="mpill" id="pill-pan" onclick="set2DTool('pan')">✋ Verschieben</button>
   </div>
 
+  <div id="tip-bar"><span class="tip-icon">💡</span><span id="tip-text"></span><button class="tip-close" onclick="document.getElementById('tip-bar').classList.add('hidden')">✕</button></div>
   <div id="phase-bar" onclick="openDashboard()"></div>
   <div id="pin-bar"><span class="pin-add-hint">📌 Rechtsklick auf Möbel → Anpinnen</span></div>
+  <div id="breadcrumb"></div>
+  <div id="minimap"><canvas id="minimap-cv"></canvas><div id="minimap-viewport"></div></div>
+  <div id="zoom-ctrl">
+    <button class="zoom-btn" onclick="vpZoom=Math.min(200,vpZoom*1.25);draw2D()" title="Zoom +">+</button>
+    <div class="zoom-pct" id="zoom-pct">100%</div>
+    <button class="zoom-btn" onclick="vpZoom=Math.max(10,vpZoom*0.8);draw2D()" title="Zoom -">−</button>
+    <button class="zoom-btn" onclick="fitViewToRooms()" title="Einpassen (F)" style="font-size:10px">⊞</button>
+  </div>
+  <canvas id="climate-canvas" style="position:absolute;inset:0;pointer-events:none;display:none;z-index:10"></canvas>
   <div id="fp-walk"><div id="walk-box" onclick="requestWalkLock()">
     <h3>🚶 Durchgehen-Modus</h3>
     <p>Klicken zum Aktivieren<br>WASD = Bewegen · Shift = Schnell<br>Maus = Umschauen · ESC beenden</p>
@@ -1810,6 +2014,169 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 </div>
 </div>
 
+
+<!-- ONBOARDING -->
+<div id="onboarding-overlay">
+<div id="onboarding-box">
+  <div id="ob-icon" class="ob-icon">🌿</div>
+  <div id="ob-title" class="ob-title">Willkommen!</div>
+  <div id="ob-text" class="ob-text"></div>
+  <div class="ob-dots" id="ob-dots"></div>
+  <div style="display:flex;gap:8px;justify-content:center">
+    <button class="mbt" id="ob-skip" onclick="finishOnboarding()">Überspringen</button>
+    <button class="mbt ok" id="ob-next" onclick="obNext()">Weiter →</button>
+  </div>
+</div>
+</div>
+
+<!-- BADGE POPUP -->
+<div class="badge-popup" id="badge-popup">
+  <span class="badge-icon" id="badge-icon">🏆</span>
+  <div class="badge-title" id="badge-title">Badge freigeschaltet!</div>
+  <div class="badge-sub" id="badge-sub"></div>
+</div>
+
+<!-- TIP OF DAY BAR (injected into layout) -->
+
+<!-- MULTI-SELECT BAR -->
+<div class="multi-sel-bar" id="multi-sel-bar">
+  <span id="multi-sel-count" style="color:var(--bl);font-weight:700">0</span>
+  <span style="color:var(--tx3)">ausgewählt</span>
+  <button class="align-btn" onclick="alignSelected('left')">⬅</button>
+  <button class="align-btn" onclick="alignSelected('right')">➡</button>
+  <button class="align-btn" onclick="alignSelected('top')">⬆</button>
+  <button class="align-btn" onclick="alignSelected('bottom')">⬇</button>
+  <button class="align-btn" onclick="alignSelected('centerH')">↔</button>
+  <button class="align-btn" onclick="alignSelected('centerV')">↕</button>
+  <button class="align-btn" onclick="groupCopySelected()" title="Kopieren">📋</button>
+  <button class="align-btn" onclick="deleteAllSelected()" title="Löschen" style="color:var(--rd)">🗑</button>
+  <button class="align-btn" onclick="clearMultiSel()">✕</button>
+</div>
+
+<!-- KEYBOARD SHORTCUT OVERLAY -->
+<div id="kbd-overlay" onclick="document.getElementById('kbd-overlay').classList.remove('vis')">
+<div class="kbd-grid" onclick="event.stopPropagation()">
+  <div style="grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+    <div style="font-size:15px;font-weight:700;color:var(--gr)">⌨ Alle Tastenkürzel</div>
+    <button onclick="document.getElementById('kbd-overlay').classList.remove('vis')" style="background:none;border:none;color:var(--tx3);cursor:pointer;font-size:16px">✕</button>
+  </div>
+  <div class="kbd-card"><h4>Allgemein</h4>
+    <div class="kbd-row"><span>Befehlspalette</span><kbd class="kbd-key">Ctrl+K</kbd></div>
+    <div class="kbd-row"><span>Anleitung</span><kbd class="kbd-key">H</kbd></div>
+    <div class="kbd-row"><span>Statistik</span><kbd class="kbd-key">I</kbd></div>
+    <div class="kbd-row"><span>Diese Übersicht</span><kbd class="kbd-key">?</kbd></div>
+    <div class="kbd-row"><span>Rückgängig</span><kbd class="kbd-key">Ctrl+Z</kbd></div>
+    <div class="kbd-row"><span>Wiederholen</span><kbd class="kbd-key">Ctrl+Y</kbd></div>
+    <div class="kbd-row"><span>Speichern</span><kbd class="kbd-key">Ctrl+S</kbd></div>
+    <div class="kbd-row"><span>Kopieren</span><kbd class="kbd-key">Ctrl+C</kbd></div>
+    <div class="kbd-row"><span>Einfügen</span><kbd class="kbd-key">Ctrl+V</kbd></div>
+  </div>
+  <div class="kbd-card"><h4>Werkzeuge</h4>
+    <div class="kbd-row"><span>Auswählen</span><kbd class="kbd-key">V</kbd></div>
+    <div class="kbd-row"><span>Raum zeichnen</span><kbd class="kbd-key">R</kbd></div>
+    <div class="kbd-row"><span>Wand zeichnen</span><kbd class="kbd-key">W</kbd></div>
+    <div class="kbd-row"><span>Maß setzen</span><kbd class="kbd-key">M</kbd></div>
+    <div class="kbd-row"><span>Lineal</span><kbd class="kbd-key">L</kbd></div>
+    <div class="kbd-row"><span>Notiz</span><kbd class="kbd-key">N</kbd></div>
+    <div class="kbd-row"><span>Einpassen (Fit)</span><kbd class="kbd-key">F</kbd></div>
+  </div>
+  <div class="kbd-card"><h4>Objekte</h4>
+    <div class="kbd-row"><span>Drehen</span><kbd class="kbd-key">R</kbd></div>
+    <div class="kbd-row"><span>Löschen</span><kbd class="kbd-key">Del</kbd></div>
+    <div class="kbd-row"><span>Zoom auf Auswahl</span><kbd class="kbd-key">Z</kbd></div>
+    <div class="kbd-row"><span>Fein verschieben</span><kbd class="kbd-key">↑↓←→</kbd></div>
+    <div class="kbd-row"><span>Grob verschieben</span><kbd class="kbd-key">Shift+↑↓</kbd></div>
+    <div class="kbd-row"><span>Multi-Select</span><kbd class="kbd-key">Shift+Klick</kbd></div>
+    <div class="kbd-row"><span>3D Grab</span><kbd class="kbd-key">G</kbd></div>
+  </div>
+</div>
+</div>
+
+<!-- BADGE LIST MODAL -->
+<div class="mover" id="m-badges">
+<div class="modal" style="max-width:460px">
+  <h2>🏆 Errungenschaften</h2>
+  <div id="badge-list-content" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0"></div>
+  <div class="mbtns"><button class="mbt ok" onclick="closeM('m-badges')">Schließen</button></div>
+</div>
+</div>
+
+<!-- ROI RECHNER -->
+<div class="mover" id="m-roi">
+<div class="modal" style="max-width:440px">
+  <h2>📈 ROI-Rechner</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+    <div class="mf"><label>Mitglieder gesamt</label><input id="roi-members" type="number" value="100" style="width:100%"></div>
+    <div class="mf"><label>Mitgliedsbeitrag €/Mon.</label><input id="roi-fee" type="number" value="35" style="width:100%"></div>
+    <div class="mf"><label>Miete €/Mon.</label><input id="roi-rent" type="number" value="1200" style="width:100%"></div>
+    <div class="mf"><label>Personal €/Mon.</label><input id="roi-staff" type="number" value="2000" style="width:100%"></div>
+    <div class="mf"><label>Sonstige Kosten €/Mon.</label><input id="roi-other" type="number" value="500" style="width:100%"></div>
+    <div class="mf"><label>Einrichtungskosten €</label><input id="roi-setup" type="number" value="" placeholder="Auto" style="width:100%"></div>
+  </div>
+  <div id="roi-result"></div>
+  <div class="mbtns">
+    <button class="mbt ok" onclick="calcROI()">📈 Berechnen</button>
+    <button class="mbt" onclick="closeM('m-roi')">Schließen</button>
+  </div>
+</div>
+</div>
+
+
+<!-- UNDO TIMELINE -->
+<div id="undo-timeline"></div>
+
+<!-- WHEELCHAIR BAR -->
+<div id="wheelchair-bar">
+  <span>♿ Rollstuhl-Ansicht aktiv (Sichtfeld +90cm Bodenhöhe)</span>
+  <button onclick="toggleWheelchair()" style="margin-left:auto;background:none;border:1px solid #f87171;color:#f87171;border-radius:4px;padding:2px 8px;cursor:pointer;font-size:10px">✕ Beenden</button>
+</div>
+
+<!-- GUIDED MODE PANEL -->
+<div id="guided-panel">
+  <div style="padding:12px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
+    <div style="font-size:13px;font-weight:700;color:var(--gr)">🧭 Geführter Modus</div>
+    <button onclick="toggleGuidedMode()" style="background:none;border:none;color:var(--tx3);cursor:pointer;font-size:14px">✕</button>
+  </div>
+  <div class="gp-section">
+    <div style="font-size:10px;color:var(--tx3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px">1. Räume</div>
+    <button class="gp-btn" onclick="set2DTool('room');toggleGuidedMode()"><span class="gp-icon">⬜</span><div><div style="font-weight:600">Raum zeichnen</div><div style="font-size:9px;color:var(--tx3)">Ziehe auf dem Grundriss</div></div></button>
+    <button class="gp-btn" onclick="openTemplates();toggleGuidedMode()"><span class="gp-icon">🏗</span><div><div style="font-weight:600">Vorlage laden</div><div style="font-size:9px;color:var(--tx3)">Fertiges CSC-Layout</div></div></button>
+    <button class="gp-btn" onclick="qmsg('Erstelle eine vollständige CSC-Ausgabestelle');toggleGuidedMode()"><span class="gp-icon">🤖</span><div><div style="font-weight:600">KI alles erstellen lassen</div><div style="font-size:9px;color:var(--tx3)">Automatisch planen</div></div></button>
+  </div>
+  <div class="gp-section">
+    <div style="font-size:10px;color:var(--tx3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px">2. Einrichten</div>
+    <button class="gp-btn" onclick="showLeft('furn');toggleGuidedMode()"><span class="gp-icon">🛋</span><div><div style="font-weight:600">Möbel hinzufügen</div><div style="font-size:9px;color:var(--tx3)">Aus Katalog wählen</div></div></button>
+    <button class="gp-btn" onclick="showLeft('arch');toggleGuidedMode()"><span class="gp-icon">🚪</span><div><div style="font-weight:600">Türen & Fenster</div><div style="font-size:9px;color:var(--tx3)">Öffnungen einsetzen</div></div></button>
+    <button class="gp-btn" onclick="showLeft('security');toggleGuidedMode()"><span class="gp-icon">🔒</span><div><div style="font-weight:600">Sicherheit</div><div style="font-size:9px;color:var(--tx3)">Kameras, Alarm, Melder</div></div></button>
+  </div>
+  <div class="gp-section">
+    <div style="font-size:10px;color:var(--tx3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px">3. Prüfen & Teilen</div>
+    <button class="gp-btn" onclick="showCSCPanel();toggleGuidedMode()"><span class="gp-icon">🌿</span><div><div style="font-weight:600">KCanG-Checkliste</div><div style="font-size:9px;color:var(--tx3)">Alle Anforderungen prüfen</div></div></button>
+    <button class="gp-btn" onclick="autoOptimizeAll();toggleGuidedMode()"><span class="gp-icon">⚡</span><div><div style="font-weight:600">Auto-Optimierung</div><div style="font-size:9px;color:var(--tx3)">Alles automatisch prüfen</div></div></button>
+    <button class="gp-btn" onclick="shareProject();toggleGuidedMode()"><span class="gp-icon">🔗</span><div><div style="font-weight:600">Projekt teilen</div><div style="font-size:9px;color:var(--tx3)">Link kopieren</div></div></button>
+    <button class="gp-btn" onclick="generateAuthorityPackage();toggleGuidedMode()"><span class="gp-icon">📦</span><div><div style="font-weight:600">Behörden-Paket</div><div style="font-size:9px;color:var(--tx3)">Alle Dokumente als ZIP</div></div></button>
+  </div>
+</div>
+
+<!-- SEASON MODAL -->
+<div class="mover" id="m-seasons">
+<div class="modal" style="max-width:440px">
+  <h2>🍂 Saison-Layouts</h2>
+  <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Speichere unterschiedliche Layouts für verschiedene Saisons oder Szenarien.</p>
+  <div style="display:flex;gap:6px;margin-bottom:12px" id="season-tabs">
+    <button class="season-tab active" onclick="selectSeason('standard',this)">📋 Standard</button>
+    <button class="season-tab" onclick="selectSeason('sommer',this)">☀️ Sommer</button>
+    <button class="season-tab" onclick="selectSeason('winter',this)">❄️ Winter</button>
+    <button class="season-tab" onclick="selectSeason('event',this)">🎉 Event</button>
+  </div>
+  <div id="season-content" style="min-height:80px;font-size:11px;color:var(--tx3)"></div>
+  <div class="mbtns">
+    <button class="mbt" onclick="saveSeason()">💾 Aktuell speichern</button>
+    <button class="mbt ok" onclick="closeM('m-seasons')">Schließen</button>
+  </div>
+</div>
+</div>
+
 <!-- STEP-BY-STEP GUIDE -->
 <div id="guide-overlay">
 <div id="guide-box">
@@ -1995,6 +2362,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/GLTFExporter.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 'use strict';
 
@@ -2030,7 +2398,18 @@ var _customShortcuts = {};   // {key: fnName}
 var _suggestions     = [];   // current smart suggestions
 var _voiceActive     = false;
 var _autoCloudSave   = false;
-var _dashWidgets     = ['capacity','budget','checklist','tasks','phase']; // active widgets
+var _dashWidgets     = ['capacity','budget','checklist','tasks','phase'];
+var _badges          = {};    // earned badges {id:timestamp}
+var _multiSel        = [];    // multi-selected object ids
+var _clipboard       = null;  // copied object/room
+var _onboardingDone  = false;
+var _todayTip        = 0;     // tip index
+var _guidedMode      = false; // simplified UI
+var _snapLines       = [];    // active snap guide lines
+var _objGroups       = [];    // [{id,name,objIds:[]}]
+var _seasonLayouts   = {};    // {sommer:{rooms,objects}, winter:{...}}
+var _showRoomStats   = true;  // show m² + capacity in rooms
+var _ghostItem       = null;  // ghost preview item // active widgets
 var _sunAnimActive = false; // day/night animation running
 var _sunAnimTimer  = null;  // animation interval
 var _heatmapActive = false; // heatmap overlay active
@@ -2589,6 +2968,7 @@ fpCv.addEventListener('mousedown', e => {
     // Hit object
     const hitO=hitObj(wx,wy);
     if(hitO){
+      if(e.shiftKey){ addToMultiSel(hitO.id); return; }
       selIsWall=false;
       setSelection(hitO.id,false);
       dragObj={id:hitO.id,ox:wx-hitO.x,oy:wy-hitO.y}; return;
@@ -2792,6 +3172,9 @@ function setSelection(id, isRoom){
   selId=id; selIsRoom=isRoom;
   updateSelBotBar();
   renderLeft(); draw2D();
+  updateBreadcrumb();
+  checkAutoBadges();
+  if(selIsRoom){ const r=rooms.find(r=>r.id===selId); showQuickAdd(r); } else { document.querySelectorAll('.qa-chip').forEach(e=>e.remove()); }
   // Auto-open prop panel for objects (rooms use inline props in sidebar)
   if(id && !isRoom){
     openPropPanel(id, false);
@@ -3187,7 +3570,11 @@ function showLeft(m){
 function renderLeft(){
   const el=document.getElementById('left-body');
   if(leftMode==='rooms') renderRoomsPanel(el);
-  else if(leftMode==='furn') renderCatalogPanel(el, getCatalog());
+  else if(leftMode==='furn'){
+    el.innerHTML='<input id="cat-s" class="api-inp" placeholder="🔍 Möbel suchen…" style="margin:5px;width:calc(100% - 10px)" oninput="filterCatalog(this.value)">';
+    const catEl=document.createElement('div'); catEl.id='left-panel-content'; el.appendChild(catEl);
+    renderCatalogPanel(catEl, getCatalog());
+  }
   else if(leftMode==='arch') renderCatalogPanel(el, getArchCatalog(), true);
   else if(leftMode==='security') renderCatalogPanel(el, getSecurityCatalog(), true, 'security');
   else renderCustomPanel(el);
@@ -3495,7 +3882,7 @@ function doPrint(){
     +'td,th{border:1px solid #ddd;padding:4px 6px;text-align:left}th{background:#f5f5f5}'
     +'@media print{body{padding:8px}}</style></head><body>'
     +'<h1>🌿 '+d.name+'</h1>'
-    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.20 · '+new Date().toLocaleDateString('de-DE')+'</div>'
+    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.22 · '+new Date().toLocaleDateString('de-DE')+'</div>'
     +'<img src="'+img+'">'
     +'<div class=grid>'
     +'<div class=box><h3>Räume ('+d.rooms.length+')</h3>'
@@ -3558,6 +3945,12 @@ function snapshot(){
   _updUndoBtns();
   // Auto-save to localStorage on every change (skip during init)
   updateSuggestions();
+initPWA();
+loadBadges();
+showTipOfDay();
+// Onboarding for first-time users
+if(!localStorage.getItem('csc-onboarded')){ setTimeout(startOnboarding, 1200); }
+else { checkAndAwardBadge('first_open'); }
   triggerAutoCloudSave();
   if(_autoSaveReady) {
     // Log the change
@@ -5326,7 +5719,7 @@ function pickKallaxColor(id, part){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// KALLAX PRO EDITOR — Extended (v3.20)
+// KALLAX PRO EDITOR — Extended (v3.22)
 // ════════════════════════════════════════════════════════════════════════
 
 // Additional color palettes
@@ -6598,7 +6991,7 @@ function rebuild3DThrottled(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// NEW FEATURES v3.20
+// NEW FEATURES v3.22
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. RAUM-SNAP beim Platzieren ─────────────────────────────────────
@@ -6988,7 +7381,7 @@ function showCSCPanel(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// INTERAKTIVE ANLEITUNG v3.20
+// INTERAKTIVE ANLEITUNG v3.22
 // ════════════════════════════════════════════════════════════════════════
 function openHelp(page){
   document.getElementById('help-overlay').classList.add('open');
@@ -7129,7 +7522,7 @@ function renderTutStep(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.20 — ALLE NEUEN FEATURES
+// v3.22 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. KI MÖBELANORDNUNG ─────────────────────────────────────────────
@@ -7781,7 +8174,7 @@ function removeWallCtxMenu(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.20 — ALLE NEUEN FEATURES
+// v3.22 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── FURNITURE PRICES DATABASE ────────────────────────────────────────
@@ -8327,7 +8720,7 @@ const _origAddRoom = addRoom;
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.20 — DROPDOWN MENU SYSTEM + NEW FEATURES
+// v3.22 — DROPDOWN MENU SYSTEM + NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── DROPDOWN MENU SYSTEM ─────────────────────────────────────────────
@@ -8677,7 +9070,7 @@ function renderComparePane(side, data){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.20 — ALL NEW FEATURES
+// v3.22 — ALL NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. DARK/LIGHT MODE ───────────────────────────────────────────────
@@ -9052,7 +9445,7 @@ function registerServiceWorker(){
   if(!location.protocol.startsWith('http')){ console.log('SW: nur auf https verfügbar'); return; }
   // Inline SW as blob
   const swCode=`
-    const CACHE='csc-v3.20';
+    const CACHE='csc-v3.22';
     self.addEventListener('install',e=>e.waitUntil(
       caches.open(CACHE).then(c=>c.add('/'))
     ));
@@ -9126,7 +9519,7 @@ function registerServiceWorker(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.20 — BRANDSCHUTZ / AKUSTIK / ENERGIE / REINIGUNG / INVENTAR /
+// v3.22 — BRANDSCHUTZ / AKUSTIK / ENERGIE / REINIGUNG / INVENTAR /
 //          HEATMAP MITGLIEDER / LIEFERWEGE / BARCODE
 // ════════════════════════════════════════════════════════════════════════
 
@@ -9539,7 +9932,7 @@ function drawRoutes(ctx){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.20 — ALLE AUTOMATISIERUNGS-FEATURES
+// v3.22 — ALLE AUTOMATISIERUNGS-FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -9854,6 +10247,12 @@ async function autoOptimizeAll(){
   }
 
   rebuild3D(); draw2D(); snapshot(); updateSuggestions();
+initPWA();
+loadBadges();
+showTipOfDay();
+// Onboarding for first-time users
+if(!localStorage.getItem('csc-onboarded')){ setTimeout(startOnboarding, 1200); }
+else { checkAndAwardBadge('first_open'); }
   addMsg('⚡ Auto-Optimierung abgeschlossen!\n\nDurchgeführt:\n'
     +issues.map(i=>'• '+i).join('\n')+(issues.length?'':'\n✅ Alles bereits optimal!'),'ai');
   toast('⚡ '+issues.length+' Verbesserungen durchgeführt','g');
@@ -10295,6 +10694,902 @@ function addDashWidget(){
   renderDashboard();
 }
 
+
+// ════════════════════════════════════════════════════════════════════════
+// v3.22 — ALLE NEUEN FEATURES
+// ════════════════════════════════════════════════════════════════════════
+
+// ════════════════════════════════════════════════════════════════════════
+// 1. PWA MANIFEST
+// ════════════════════════════════════════════════════════════════════════
+function initPWA(){
+  const manifest={
+    name:'CSC Raumplaner Pro',short_name:'CSC Planer',
+    start_url:location.pathname,display:'standalone',
+    background_color:'#111111',theme_color:'#111111',
+    icons:[{src:'https://api.qrserver.com/v1/create-qr-code/?size=192x192&data=CSC',
+      sizes:'192x192',type:'image/png'}]
+  };
+  const blob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const link=document.getElementById('pwa-manifest');
+  if(link){ link.rel='manifest'; link.href=url; }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 2. ONBOARDING
+// ════════════════════════════════════════════════════════════════════════
+const OB_STEPS=[
+  {icon:'🌿',title:'Willkommen beim CSC Raumplaner!',
+   text:'Der professionelle Planungs-Assistent für deine Cannabis Social Club Ausgabestelle. In 2 Minuten bist du startklar.'},
+  {icon:'🏗',title:'Schritt 1: Räume einzeichnen',
+   text:'Klicke auf <b>⬜ Raum zeichnen</b> oben und ziehe diagonal auf dem Grundriss. Oder nutze <b>🏗 Vorlagen</b> für fertige Layouts in einem Klick!'},
+  {icon:'🛋',title:'Schritt 2: Einrichten',
+   text:'Links unter <b>🛋 Möbel</b> findest du über 80 Objekte. Einfach anklicken oder auf den Grundriss ziehen. Türen und Fenster schneiden automatisch Öffnungen.'},
+  {icon:'🤖',title:'Schritt 3: KI nutzen!',
+   text:'Tippe rechts im <b>🤖 KI-Assistent</b>: <i>"Erstelle eine vollständige CSC-Ausgabestelle"</i> — die KI plant alles automatisch für dich!'},
+  {icon:'⌨',title:'Tipp: Strg+K',
+   text:'Öffnet die <b>Befehlspalette</b> — suche nach jeder Funktion ohne scrollen. Oder drücke <b>?</b> für alle Tastenkürzel.'},
+  {icon:'🌿',title:'Fertig! Los geht\'s.',
+   text:'Dein Projekt wird automatisch gespeichert. Klicke <b>🌿 CSC</b> für die Checkliste, <b>🖥 Dashboard</b> für den Überblick.'},
+];
+var _obStep=0;
+
+function startOnboarding(){
+  _obStep=0; renderObStep();
+  document.getElementById('onboarding-overlay').classList.add('vis');
+}
+function finishOnboarding(){
+  document.getElementById('onboarding-overlay').classList.remove('vis');
+  _onboardingDone=true;
+  try{localStorage.setItem('csc-onboarded','1');}catch(e){}
+  checkAndAwardBadge('first_open');
+}
+function obNext(){
+  _obStep++;
+  if(_obStep>=OB_STEPS.length){ finishOnboarding(); return; }
+  renderObStep();
+}
+function renderObStep(){
+  const s=OB_STEPS[_obStep];
+  document.getElementById('ob-icon').textContent=s.icon;
+  document.getElementById('ob-title').textContent=s.title;
+  document.getElementById('ob-text').innerHTML=s.text;
+  const dots=document.getElementById('ob-dots');
+  dots.innerHTML=OB_STEPS.map((_,i)=>'<div class="ob-dot'+(i===_obStep?' cur':'')+'" onclick="_obStep='+i+';renderObStep()"></div>').join('');
+  const btn=document.getElementById('ob-next');
+  if(btn) btn.textContent=_obStep<OB_STEPS.length-1?'Weiter →':'🌿 Loslegen!';
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 3. BADGES / ACHIEVEMENTS
+// ════════════════════════════════════════════════════════════════════════
+const BADGE_DEFS=[
+  {id:'first_open',    icon:'🌱',name:'Erste Schritte',     desc:'App zum ersten Mal geöffnet'},
+  {id:'first_room',    icon:'⬜',name:'Raumplaner',          desc:'Ersten Raum erstellt'},
+  {id:'five_rooms',    icon:'🏠',name:'Architekt',           desc:'5 Räume erstellt'},
+  {id:'first_ai',      icon:'🤖',name:'KI-Nutzer',           desc:'KI-Assistenten verwendet'},
+  {id:'kcang_complete',icon:'🌿',name:'KCanG-Profi',         desc:'Alle KCanG-Anforderungen erfüllt'},
+  {id:'security_done', icon:'🔒',name:'Sicherheitsexperte',  desc:'Vollständige Sicherheitsausstattung'},
+  {id:'first_save',    icon:'💾',name:'Sicher gespeichert',  desc:'Projekt zum ersten Mal gespeichert'},
+  {id:'cloud_save',    icon:'☁', name:'Cloud-Nutzer',        desc:'Projekt in der Cloud gespeichert'},
+  {id:'first_3d',      icon:'⬛',name:'3D-Enthusiast',       desc:'3D-Ansicht geöffnet'},
+  {id:'auto_optimize', icon:'⚡',name:'Optimierer',           desc:'Auto-Optimierung genutzt'},
+  {id:'template_used', icon:'🏗',name:'Vorlagen-Fan',         desc:'Raumvorlage verwendet'},
+  {id:'voice_used',    icon:'🎙',name:'Sprachsteuerung',      desc:'Sprachsteuerung aktiviert'},
+  {id:'shared_project',icon:'🔗',name:'Teiler',              desc:'Projekt geteilt'},
+  {id:'export_done',   icon:'📤',name:'Exporteur',            desc:'Projekt exportiert'},
+  {id:'big_project',   icon:'🏢',name:'Großplaner',           desc:'Projekt mit 10+ Räumen'},
+];
+
+function checkAndAwardBadge(id){
+  if(_badges[id]) return;
+  const def=BADGE_DEFS.find(b=>b.id===id); if(!def) return;
+  _badges[id]=Date.now();
+  try{localStorage.setItem('csc-badges',JSON.stringify(_badges));}catch(e){}
+  showBadgePopup(def);
+}
+function loadBadges(){ try{const s=localStorage.getItem('csc-badges');if(s)_badges=JSON.parse(s);}catch(e){} }
+function showBadgePopup(def){
+  const p=document.getElementById('badge-popup');
+  if(!p) return;
+  document.getElementById('badge-icon').textContent=def.icon;
+  document.getElementById('badge-title').textContent='🏆 '+def.name;
+  document.getElementById('badge-sub').textContent=def.desc;
+  p.classList.add('vis');
+  setTimeout(()=>p.classList.remove('vis'),3500);
+}
+function openBadges(){
+  loadBadges();
+  const el=document.getElementById('badge-list-content'); if(!el) return;
+  el.innerHTML=BADGE_DEFS.map(b=>{
+    const earned=!!_badges[b.id];
+    return '<div style="background:var(--bg3);border:1px solid '+(earned?'var(--gr)':'var(--bd)')+';border-radius:8px;padding:10px;opacity:'+(earned?1:0.4)+';text-align:center">'
+      +'<div style="font-size:24px">'+b.icon+'</div>'
+      +'<div style="font-size:11px;font-weight:700;color:var(--tx);margin:3px 0">'+b.name+'</div>'
+      +'<div style="font-size:9px;color:var(--tx3)">'+b.desc+'</div>'
+      +(earned?'<div style="font-size:9px;color:var(--gr);margin-top:3px">✓ Verdient</div>':'')
+      +'</div>';
+  }).join('');
+  openM('m-badges');
+}
+
+// Auto-check badges after actions
+function checkAutoBadges(){
+  if(rooms.length>=1) checkAndAwardBadge('first_room');
+  if(rooms.length>=5) checkAndAwardBadge('five_rooms');
+  if(rooms.length>=10) checkAndAwardBadge('big_project');
+  const checks=getKCaNGChecklist();
+  if(checks.every(c=>c.passed)) checkAndAwardBadge('kcang_complete');
+  const secTypes=['sec-cam-ceil','sec-alarm','sec-smoke','sec-ext','sec-sign-exit'];
+  if(secTypes.every(t=>objects.some(o=>o.typeId===t))) checkAndAwardBadge('security_done');
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 4. TIP OF DAY
+// ════════════════════════════════════════════════════════════════════════
+const TIPS=[
+  '💡 Strg+K öffnet die Befehlspalette — finde jede Funktion in Sekunden',
+  '🎙 Sage "Hey CSC, erstelle einen Empfangsraum" für Sprachsteuerung',
+  '⚡ Auto-Optimierung (Analyse-Menü) prüft und verbessert alles auf einmal',
+  '📌 Rechtsklick auf Möbel → Anpinnen für schnellen Zugriff',
+  '🏗 Vorlagen-Menü bietet 4 fertige CSC-Layouts zum Einsetzen',
+  '🌿 KCanG-Checkliste unter 🌿 CSC zeigt was noch fehlt',
+  '📂 Grundriss-PDF einfach auf den Grundriss ziehen → KI analysiert automatisch',
+  '📏 F-Taste zentriert die Ansicht auf alle Räume',
+  '🔵 Shift+Klick wählt mehrere Objekte gleichzeitig aus',
+  '🤖 "Beschreibe wie dieser Raum wirkt" gibt KI-Atmosphärenbeschreibung',
+  '💾 Projekt wird nach jeder Änderung automatisch gespeichert',
+  '🌅 Tag/Nacht Animation zeigt wie der Raum zu verschiedenen Tageszeiten wirkt',
+  '♿ KI kann deinen Raum automatisch barrierefrei umplanen',
+  '📊 Dashboard zeigt alle wichtigen Kennzahlen auf einen Blick',
+  '🔗 Teilen-Link enthält das gesamte Projekt — kein Konto nötig',
+];
+
+function showTipOfDay(){
+  const last=+(localStorage.getItem('csc-tip-date')||0);
+  const today=new Date().setHours(0,0,0,0);
+  if(last>=today) return; // already shown today
+  const idx=Math.floor(Date.now()/86400000)%TIPS.length;
+  const bar=document.getElementById('tip-bar');
+  const txt=document.getElementById('tip-text');
+  if(bar&&txt){ txt.innerHTML=TIPS[idx]; bar.classList.remove('hidden'); }
+  try{localStorage.setItem('csc-tip-date',today);}catch(e){}
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 5. BEHÖRDEN-PAKET ZIP
+// ════════════════════════════════════════════════════════════════════════
+async function generateAuthorityPackage(){
+  if(typeof JSZip==='undefined'){ toast('JSZip nicht geladen','r'); return; }
+  toast('📦 Behörden-Paket wird erstellt…','b');
+  const zip=new JSZip();
+  const d=getPD();
+
+  // 1. Grundriss als SVG
+  const svgW=800, svgH=600;
+  let svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+svgW+'" height="'+svgH+'" style="background:#fff">';
+  const allX=d.rooms.flatMap(r=>[r.x,r.x+r.w]);
+  const allY=d.rooms.flatMap(r=>[r.y,r.y+r.d]);
+  const minX=Math.min(...allX), maxX=Math.max(...allX);
+  const minY=Math.min(...allY), maxY=Math.max(...allY);
+  const sc=Math.min((svgW-60)/(maxX-minX||1),(svgH-60)/(maxY-minY||1));
+  const ox=30, oy=30;
+  d.rooms.forEach(r=>{
+    const rx=(r.x-minX)*sc+ox, ry=(r.y-minY)*sc+oy;
+    const rw=r.w*sc, rh=r.d*sc;
+    svg+='<rect x="'+rx+'" y="'+ry+'" width="'+rw+'" height="'+rh+'" fill="'+r.floorColor+'" stroke="#333" stroke-width="2"/>';
+    svg+='<text x="'+(rx+rw/2)+'" y="'+(ry+rh/2)+'" text-anchor="middle" font-size="11" fill="#333">'+r.name+'</text>';
+    svg+='<text x="'+(rx+rw/2)+'" y="'+(ry+rh/2+14)+'" text-anchor="middle" font-size="9" fill="#666">'+r.w+'×'+r.d+'m</text>';
+  });
+  svg+='<text x="10" y="'+( svgH-10)+'" font-size="9" fill="#999">'+d.name+' · '+new Date().toLocaleDateString('de-DE')+'</text>';
+  svg+='</svg>';
+  zip.file('grundriss.svg', svg);
+
+  // 2. KCanG Checkliste als HTML
+  const checks=getKCaNGChecklist();
+  const checkHtml='<!DOCTYPE html><html><head><meta charset=UTF-8><style>body{font-family:sans-serif;padding:20px}h1{color:#166534}.ok{color:green}.fail{color:red}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;padding:6px}th{background:#f5f5f5}</style></head><body>'
+    +'<h1>🌿 KCanG-Checkliste: '+d.name+'</h1><p>Stand: '+new Date().toLocaleDateString('de-DE')+'</p>'
+    +'<table><tr><th>Anforderung</th><th>Status</th></tr>'
+    +checks.map(c=>'<tr><td>'+c.label+'</td><td class="'+(c.passed?'ok':'fail')+'">'+(c.passed?'✓ Erfüllt':'✗ Fehlt')+'</td></tr>').join('')
+    +'</table><p><b>Ergebnis: '+checks.filter(c=>c.passed).length+'/'+checks.length+' Anforderungen erfüllt</b></p></body></html>';
+  zip.file('kcang_checkliste.html', checkHtml);
+
+  // 3. Inventarliste CSV
+  const invRows=['\uFEFFObjekt,Kategorie,Seriennummer,Notizen'];
+  _inventory.forEach(i=>invRows.push(['"'+i.name+'"','"'+i.cat+'"','"'+i.serial+'"','"'+i.notes+'"'].join(',')));
+  zip.file('inventarliste.csv', invRows.join('\n'));
+
+  // 4. Brandschutz-Nachweis
+  const totalArea=d.rooms.reduce((s,r)=>s+r.w*r.d,0);
+  const needed=Math.ceil(totalArea/200);
+  const have=objects.filter(o=>o.typeId==='sec-ext').length;
+  const fireHtml='<!DOCTYPE html><html><head><meta charset=UTF-8><style>body{font-family:sans-serif;padding:20px}h1{color:#cc0000}</style></head><body>'
+    +'<h1>🧯 Brandschutz-Nachweis: '+d.name+'</h1>'
+    +'<p>Gesamtfläche: '+totalArea.toFixed(0)+'m² | Feuerlöscher vorhanden: '+have+' | Erforderlich: '+needed+'</p>'
+    +'<p>Rauchmelder: '+objects.filter(o=>o.typeId==='sec-smoke').length+' Stk.</p>'
+    +'<p>Notausgänge: '+objects.filter(o=>o.typeId==='sec-sign-exit').length+' Stk.</p>'
+    +'<p><b>Status: '+(have>=needed?'✅ Anforderungen erfüllt':'⚠️ Mängel vorhanden')+'</b></p>'
+    +'<p style="font-size:11px;color:#888">nach ASR A2.2 / DIN EN 3 | '+new Date().toLocaleDateString('de-DE')+'</p></body></html>';
+  zip.file('brandschutz_nachweis.html', fireHtml);
+
+  // 5. Projekt JSON
+  zip.file('projekt.json', JSON.stringify(d, null, 2));
+
+  // Generate and download
+  const blob=await zip.generateAsync({type:'blob'});
+  const a=Object.assign(document.createElement('a'),{
+    href:URL.createObjectURL(blob),
+    download:d.name.replace(/[^a-z0-9]/gi,'_')+'_behoerdenpaket.zip'
+  });
+  a.click();
+  toast('📦 Behörden-Paket heruntergeladen!','g');
+  checkAndAwardBadge('export_done');
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 6. MULTI-SELECT & ALIGNMENT
+// ════════════════════════════════════════════════════════════════════════
+function addToMultiSel(id){
+  if(!_multiSel.includes(id)) _multiSel.push(id);
+  updateMultiSelBar();
+}
+function clearMultiSel(){
+  _multiSel=[]; updateMultiSelBar(); draw2D();
+}
+function updateMultiSelBar(){
+  const bar=document.getElementById('multi-sel-bar');
+  const cnt=document.getElementById('multi-sel-count');
+  if(bar) bar.classList.toggle('vis',_multiSel.length>1);
+  if(cnt) cnt.textContent=_multiSel.length;
+  draw2D();
+}
+function alignSelected(dir){
+  const objs=_multiSel.map(id=>objects.find(o=>o.id===id)).filter(Boolean);
+  if(objs.length<2) return;
+  const xs=objs.map(o=>o.x), ys=objs.map(o=>o.y);
+  const minX=Math.min(...xs), maxX=Math.max(...xs);
+  const minY=Math.min(...ys), maxY=Math.max(...ys);
+  objs.forEach(o=>{
+    const it=findItem(o.typeId)||{};
+    if(dir==='left')    o.x=minX;
+    if(dir==='right')   o.x=maxX;
+    if(dir==='top')     o.y=minY;
+    if(dir==='bottom')  o.y=maxY;
+    if(dir==='centerH') o.x=(minX+maxX)/2-(o.w||it.w||1)/2;
+    if(dir==='centerV') o.y=(minY+maxY)/2-(o.d||it.d||1)/2;
+  });
+  rebuild3D(); draw2D(); snapshot();
+}
+function groupCopySelected(){
+  const base=objects.filter(o=>_multiSel.includes(o.id));
+  base.forEach(o=>{
+    addObject({...o, id:null, x:o.x+0.5, y:o.y+0.5});
+  });
+  snapshot(); toast('📋 '+base.length+' Objekte kopiert','g');
+}
+function deleteAllSelected(){
+  objects=objects.filter(o=>!_multiSel.includes(o.id));
+  clearMultiSel(); rebuild3D(); draw2D(); snapshot();
+}
+
+// Hook Shift+Click for multi-select
+// (injected into mousedown in draw2D section)
+
+// ════════════════════════════════════════════════════════════════════════
+// 7. COPY/PASTE (Ctrl+C / Ctrl+V)
+// ════════════════════════════════════════════════════════════════════════
+document.addEventListener('keydown', e=>{
+  if(!e.ctrlKey&&!e.metaKey) return;
+  if(e.target.matches('input,textarea')) return;
+  if(e.key==='c'&&selId&&!selIsRoom){
+    _clipboard=JSON.parse(JSON.stringify(objects.find(o=>o.id===selId)||{}));
+    toast('📋 Kopiert: '+((findItem(_clipboard.typeId)||{}).name||'Objekt'),'b');
+  }
+  if(e.key==='v'&&_clipboard){
+    addObject({..._clipboard, id:null, x:_clipboard.x+0.3, y:_clipboard.y+0.3});
+    snapshot(); toast('📋 Eingefügt','b');
+  }
+  if(e.key==='a'){ // Ctrl+A = select all
+    e.preventDefault();
+    _multiSel=objects.filter(o=>(o.floorId||'eg')===curFloor).map(o=>o.id);
+    updateMultiSelBar();
+  }
+  if(e.key==='s'){ e.preventDefault(); saveProj(); checkAndAwardBadge('first_save'); }
+  if(e.key==='z'&&!e.shiftKey){ e.preventDefault(); undo(); }
+  if(e.key==='y'||( e.key==='z'&&e.shiftKey)){ e.preventDefault(); redo(); }
+});
+
+// ? key = keyboard overlay
+document.addEventListener('keydown', e=>{
+  if(e.target.matches('input,textarea')) return;
+  if(e.key==='?'||e.key==='Shift+/'){ document.getElementById('kbd-overlay')?.classList.add('vis'); }
+  if(e.key==='f'||e.key==='F'){ fitViewToRooms(); } // F = fit
+  if(e.key==='v'||e.key==='V'){ set2DTool('sel'); }
+  if(e.key==='l'||e.key==='L'){ toggleRuler(); }
+  if(e.key==='n'&&!e.ctrlKey){ toggleNoteMode(); }
+});
+
+// ════════════════════════════════════════════════════════════════════════
+// 8. FIT VIEW
+// ════════════════════════════════════════════════════════════════════════
+function fitViewToRooms(){
+  if(!rooms.length) return;
+  const allX=rooms.flatMap(r=>[r.x,r.x+r.w]);
+  const allY=rooms.flatMap(r=>[r.y,r.y+r.d]);
+  const minX=Math.min(...allX)-1, maxX=Math.max(...allX)+1;
+  const minY=Math.min(...allY)-1, maxY=Math.max(...allY)+1;
+  const pw=fpCv.width-60, ph=fpCv.height-60;
+  vpZoom=Math.min(pw/(maxX-minX), ph/(maxY-minY), 80);
+  vpX=fpCv.width/2-(minX+maxX)/2*vpZoom;
+  vpY=fpCv.height/2-(minY+maxY)/2*vpZoom;
+  draw2D(); toast('🎯 Ansicht angepasst','b');
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 9. ROI RECHNER
+// ════════════════════════════════════════════════════════════════════════
+function calcROI(){
+  const members=+(document.getElementById('roi-members')?.value||100);
+  const fee=+(document.getElementById('roi-fee')?.value||35);
+  const rent=+(document.getElementById('roi-rent')?.value||1200);
+  const staff=+(document.getElementById('roi-staff')?.value||2000);
+  const other=+(document.getElementById('roi-other')?.value||500);
+  const setup=+(document.getElementById('roi-setup')?.value||0) ||
+    objects.reduce((s,o)=>s+getObjPrice(o.typeId),0);
+  const revenue=members*fee;
+  const costs=rent+staff+other;
+  const profit=revenue-costs;
+  const roiMonths=profit>0?Math.ceil(setup/profit):999;
+  const el=document.getElementById('roi-result'); if(!el) return;
+  const row=(l,v,c)=>'<div class="roi-row"><span>'+l+'</span><span class="roi-val" style="color:'+c+'">'+v+'</span></div>';
+  el.innerHTML='<div style="background:var(--bg3);border-radius:6px;padding:10px;margin-top:4px">'
+    +row('Monatliche Einnahmen',revenue.toLocaleString('de-DE')+'€','#4ade80')
+    +row('Monatliche Kosten',costs.toLocaleString('de-DE')+'€','#f87171')
+    +row('Monatlicher Gewinn',(profit>=0?'+':'')+profit.toLocaleString('de-DE')+'€',profit>=0?'#4ade80':'#f87171')
+    +row('Einrichtungskosten',setup.toLocaleString('de-DE')+'€','#fbbf24')
+    +row('Amortisation',roiMonths<999?roiMonths+' Monate':'nie','#38bdf8')
+    +'<div style="margin-top:8px;font-size:10px;color:var(--tx3)">Jahresgewinn: '+(profit*12).toLocaleString('de-DE')+'€</div>'
+    +(profit<0?'<div style="margin-top:4px;font-size:10px;color:#f87171">⚠️ Aktuell unwirtschaftlich — mehr Mitglieder oder niedrigere Kosten erforderlich</div>':'')
+    +'</div>';
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 10. RAUMKLIMA-SIMULATION
+// ════════════════════════════════════════════════════════════════════════
+var _climateActive=false;
+function toggleClimate(){
+  _climateActive=!_climateActive;
+  const btn=document.getElementById('btn-climate');
+  if(btn){btn.style.color=_climateActive?'#38bdf8':'';btn.style.borderColor=_climateActive?'#38bdf8':'';}
+  if(_climateActive) renderClimate();
+  else { const cv=document.getElementById('climate-canvas'); if(cv) cv.style.display='none'; }
+  toast(_climateActive?'🌡 Klimasimulation aktiv (Blau=kalt, Rot=warm)':'🌡 Klimasimulation aus','b');
+}
+
+function renderClimate(){
+  const cv=document.getElementById('climate-canvas'); if(!cv) return;
+  cv.width=fpCv.width; cv.height=fpCv.height;
+  cv.style.display=_climateActive?'block':'none';
+  const ctx=cv.getContext('2d');
+  ctx.clearRect(0,0,cv.width,cv.height);
+  // Heat sources: people gather, windows = cold, heaters warm
+  rooms.filter(r=>(r.floorId||'eg')===curFloor).forEach(r=>{
+    const cx=wx2cx(r.x+r.w/2), cy=wy2cy(r.y+r.d/2);
+    const sz=Math.max(r.w,r.d)*vpZoom;
+    // Base room temperature gradient
+    const grad=ctx.createRadialGradient(cx,cy,sz*0.1,cx,cy,sz);
+    grad.addColorStop(0,'rgba(255,100,50,0.2)');
+    grad.addColorStop(1,'rgba(50,100,255,0.1)');
+    ctx.fillStyle=grad;
+    ctx.beginPath(); ctx.ellipse(cx,cy,sz*0.7,sz*0.5,0,0,Math.PI*2); ctx.fill();
+  });
+  // Windows = cold drafts
+  objects.filter(o=>{ const it=findItem(o.typeId); return it&&it.arch==='window'; }).forEach(o=>{
+    const it=findItem(o.typeId)||{};
+    const px=wx2cx(o.x+(o.w||it.w||1)/2), py=wy2cy(o.y);
+    const grad=ctx.createRadialGradient(px,py,0,px,py,vpZoom*3);
+    grad.addColorStop(0,'rgba(100,150,255,0.4)');
+    grad.addColorStop(1,'rgba(100,150,255,0)');
+    ctx.fillStyle=grad;
+    ctx.beginPath(); ctx.arc(px,py,vpZoom*3,0,Math.PI*2); ctx.fill();
+  });
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 11. KI STILBERATER
+// ════════════════════════════════════════════════════════════════════════
+async function aiStyleAdvisor(){
+  const q1=prompt('Welche Atmosphäre soll dein CSC haben?\n1=Entspannt & Lounge\n2=Modern & Clean\n3=Rustikal & Warm\n4=Industrial & Urban','1');
+  const q2=prompt('Hauptzielgruppe?\n1=Junge Erwachsene\n2=Mittleres Alter\n3=Gemischt','3');
+  const q3=prompt('Budget für Design?\n1=Günstig\n2=Mittel\n3=Premium','2');
+  if(!q1) return;
+  const k=getKey(); if(!k) return;
+  showRight('ai');
+  addMsg('🎨 KI analysiert deinen Stil…','sys');
+  const styles=['Entspannt & Lounge','Modern & Clean','Rustikal & Warm','Industrial & Urban'];
+  const targets=['Junge Erwachsene (18-30)','Mittleres Alter (30-50)','Gemischte Altersgruppen'];
+  const budgets=['Günstig (<5.000€)','Mittel (5.000-20.000€)','Premium (>20.000€)'];
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content:
+        'Gib konkrete Stil-Empfehlungen für einen CSC:\n'
+        +'Atmosphäre: '+(styles[(+q1||1)-1])+'\nZielgruppe: '+(targets[(+q2||3)-1])+'\nBudget: '+(budgets[(+q3||2)-1])+'\n\n'
+        +'Empfehle: Farbpalette, Möbelstil, Beleuchtung, 3 konkrete Möbelstücke, Besonderheit. Auf Deutsch, knapp und umsetzbar.'}]})
+    });
+    const d=await resp.json();
+    addMsg('🎨 Stil-Empfehlung:\n\n'+((d.content?.[0]?.text)||''),'ai');
+  }catch(e){ addMsg('Fehler: '+e.message,'sys'); }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 12. KI SITZUNGS-PROTOKOLL
+// ════════════════════════════════════════════════════════════════════════
+async function generateSessionProtocol(){
+  const k=getKey(); if(!k) return;
+  toast('📋 Protokoll wird erstellt…','b');
+  const d=getPD();
+  const changes=_changelog.slice(0,10).map(c=>c.msg).join('\n');
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,messages:[{role:'user',content:
+        'Erstelle ein kurzes Planungsprotokoll auf Deutsch:\n'
+        +'Projekt: '+d.name+'\nRäume: '+d.rooms.length+' ('+d.rooms.map(r=>r.name).join(', ')+')\n'
+        +'Objekte: '+d.objects.length+'\nÄnderungen: '+changes+'\n\n'
+        +'Format: Datum, Zusammenfassung (3-4 Sätze), nächste Schritte'}]})
+    });
+    const text=(await resp.json()).content?.[0]?.text||'';
+    const pw=window.open('','_blank');
+    if(pw) pw.document.write('<!DOCTYPE html><html><head><meta charset=UTF-8><style>body{font-family:sans-serif;padding:24px;max-width:600px;margin:0 auto}</style></head><body>'
+      +'<h2>📋 Planungsprotokoll: '+d.name+'</h2><p style="white-space:pre-wrap">'+text+'</p>'
+      +'<button onclick=window.print() style="padding:8px 16px;background:#166534;color:#fff;border:none;border-radius:4px;cursor:pointer;margin-top:16px">🖨 Drucken</button>'
+      +'</body></html>');
+    addMsg('📋 Protokoll erstellt:\n\n'+text,'ai');
+    showRight('ai');
+  }catch(e){ toast('Fehler: '+e.message,'r'); }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 13. BREADCRUMB
+// ════════════════════════════════════════════════════════════════════════
+function updateBreadcrumb(){
+  const el=document.getElementById('breadcrumb'); if(!el) return;
+  const floor=floors.find(f=>f.id===curFloor)||{label:'EG'};
+  let crumb=floor.label||'EG';
+  if(selId&&selIsRoom){ const r=rooms.find(r=>r.id===selId); if(r) crumb+=' › '+r.name; }
+  else if(selId&&!selIsRoom){
+    const o=objects.find(o=>o.id===selId);
+    if(o){
+      const it=findItem(o.typeId)||{};
+      const r=rooms.find(r=>o.x>=r.x&&o.x<=r.x+r.w&&o.y>=r.y&&o.y<=r.y+r.d);
+      if(r) crumb+=' › '+r.name;
+      crumb+=' › '+(it.name||o.typeId);
+    }
+  }
+  el.textContent=crumb;
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 14. CATALOG SEARCH
+// ════════════════════════════════════════════════════════════════════════
+function filterCatalog(q){
+  const allItems=[...getCatalog(),...getArchCatalog(),...getSecurityCatalog()];
+  if(!q){ renderLeft(); return; }
+  const filtered=allItems.filter(i=>
+    i.name.toLowerCase().includes(q.toLowerCase())||
+    (i.cat||'').toLowerCase().includes(q.toLowerCase())
+  );
+  const el=document.getElementById('left-panel-content'); if(!el) return;
+  let h='<div style="padding:6px 10px;font-size:10px;color:var(--tx3)">'+filtered.length+' Treffer für "'+q+'"</div>';
+  h+=filtered.map(item=>'<div class="citem" onclick="placeFromCatalog(\''+item.id+'\')" '
+    +'oncontextmenu="catalogItemCtx(event,\''+item.id+'\');return false" '
+    +'title="'+item.name+(item.w?' ('+item.w+'×'+item.d+'m)':'')+'">'
+    +'<span class="ci-ico">'+item.icon+'</span>'
+    +'<span class="ci-nm">'+item.name+'</span></div>'
+  ).join('');
+  el.innerHTML=h;
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 15. EMAIL SHARE
+// ════════════════════════════════════════════════════════════════════════
+function shareByEmail(){
+  const d=getPD();
+  const subject=encodeURIComponent('CSC Raumplan: '+d.name);
+  const link=window.location.href;
+  const body=encodeURIComponent(
+    'Hallo,\n\nichsende dir meinen CSC Raumplan.\n\n'
+    +'Projekt: '+d.name+'\nRäume: '+d.rooms.length+'\nObjekte: '+d.objects.length+'\n\n'
+    +'Link zum Projekt (automatisch laden):\n'+link+'\n\n'
+    +'Zum Öffnen: Link im Browser aufrufen → Projekt wird automatisch geladen.\n\n'
+    +'Erstellt mit CSC Raumplaner Pro'
+  );
+  window.open('mailto:?subject='+subject+'&body='+body);
+  checkAndAwardBadge('shared_project');
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 16. WACHSTUMSPLANUNG
+// ════════════════════════════════════════════════════════════════════════
+function showGrowthPlan(){
+  const cap=calcCapacity();
+  const scenarios=[0.5,1.0,1.5,2.0];
+  const current=cap.total;
+  let h='<div style="padding:12px;max-height:360px;overflow-y:auto">';
+  h+='<div style="font-size:12px;font-weight:700;color:var(--gr);margin-bottom:8px">📈 Wachstumsplanung</div>';
+  h+='<div style="font-size:11px;color:var(--tx2);margin-bottom:10px">Aktuell: <b>'+current+' Personen</b> Kapazität</div>';
+  scenarios.forEach(s=>{
+    const target=Math.round(current*s);
+    const need=Math.max(0,target-current);
+    const extraRooms=need>0?Math.ceil(need*2/30):0;
+    const color=s<=1?'#4ade80':s<=1.5?'#fbbf24':'#f87171';
+    h+='<div style="background:var(--bg3);border-radius:6px;padding:8px;margin-bottom:6px;border-left:3px solid '+color+'">'
+      +'<div style="font-size:11px;font-weight:700;color:'+color+'">'+Math.round(s*100)+'% → '+target+' Personen</div>'
+      +(need>0?'<div style="font-size:10px;color:var(--tx3);margin-top:2px">+'+(need)+' Personen benötigt · ca. '+extraRooms+' zusätzliche Räume</div>':'<div style="font-size:10px;color:#4ade80;margin-top:2px">✓ Aktuelle Planung reicht aus</div>')
+      +'</div>';
+  });
+  h+='<button class="mbt ok" onclick="this.closest(\'div[id]\').remove();qmsg(\'Plane Erweiterung für 50% mehr Mitglieder\')" style="width:100%;margin-top:8px">🤖 KI: Erweiterung planen</button>';
+  h+='</div>';
+  const div=document.createElement('div');
+  div.id='growth-popup'; div.setAttribute('id','growth-popup');
+  div.style.cssText='position:fixed;top:50px;right:360px;width:280px;background:var(--bg2);border:1px solid var(--gr);border-radius:8px;z-index:200;box-shadow:0 4px 20px rgba(0,0,0,.5)';
+  div.innerHTML=h;
+  document.getElementById('growth-popup')?.remove();
+  document.body.appendChild(div);
+}
+
+
+// ════════════════════════════════════════════════════════════════════════
+// v3.22 — MINIMAP / SNAP / GUIDED / UNDO-TL / GROUPS / SEASONS / MORE
+// ════════════════════════════════════════════════════════════════════════
+
+// ════════════════════════════════════════════════════════════════════════
+// 1. MINIMAP
+// ════════════════════════════════════════════════════════════════════════
+function renderMinimap(){
+  const cv=document.getElementById('minimap-cv'); if(!cv) return;
+  const mm=document.getElementById('minimap'); if(!mm) return;
+  cv.width=mm.offsetWidth*2; cv.height=mm.offsetHeight*2;
+  const ctx=cv.getContext('2d');
+  ctx.clearRect(0,0,cv.width,cv.height);
+  ctx.fillStyle='#111'; ctx.fillRect(0,0,cv.width,cv.height);
+  if(!rooms.length) return;
+  const allX=rooms.flatMap(r=>[r.x,r.x+r.w]);
+  const allY=rooms.flatMap(r=>[r.y,r.y+r.d]);
+  const minX=Math.min(...allX)-1,maxX=Math.max(...allX)+1;
+  const minY=Math.min(...allY)-1,maxY=Math.max(...allY)+1;
+  const scX=cv.width/(maxX-minX||1), scY=cv.height/(maxY-minY||1);
+  const sc=Math.min(scX,scY)*0.85;
+  const ox=(cv.width-(maxX-minX)*sc)/2, oy=(cv.height-(maxY-minY)*sc)/2;
+  const tx=x=>(x-minX)*sc+ox, ty=y=>(y-minY)*sc+oy;
+  rooms.filter(r=>(r.floorId||'eg')===curFloor).forEach(r=>{
+    ctx.fillStyle=r.floorColor||'#c4b08a';
+    ctx.strokeStyle=r.wallColor||'#888'; ctx.lineWidth=1;
+    ctx.fillRect(tx(r.x),ty(r.y),r.w*sc,r.d*sc);
+    ctx.strokeRect(tx(r.x),ty(r.y),r.w*sc,r.d*sc);
+  });
+  objects.filter(o=>(o.floorId||'eg')===curFloor).forEach(o=>{
+    const it=findItem(o.typeId)||{};
+    ctx.fillStyle='rgba(74,222,128,0.6)';
+    ctx.fillRect(tx(o.x),ty(o.y),(o.w||it.w||1)*sc,(o.d||it.d||1)*sc);
+  });
+  // Viewport indicator
+  const vx=tx(cx2wx(0)), vy=ty(cy2wy(0));
+  const vw=(fpCv.width/vpZoom)*sc, vh=(fpCv.height/vpZoom)*sc;
+  const vp=document.getElementById('minimap-viewport');
+  if(vp){
+    const ratio=mm.offsetWidth/cv.width;
+    vp.style.left=(vx*ratio)+'px'; vp.style.top=(vy*ratio)+'px';
+    vp.style.width=(vw*ratio)+'px'; vp.style.height=(vh*ratio)+'px';
+  }
+  // Update zoom pct
+  const zpct=document.getElementById('zoom-pct');
+  if(zpct) zpct.textContent=Math.round(vpZoom)+'%';
+}
+
+// Click minimap to navigate
+document.getElementById('minimap')?.addEventListener('click',e=>{
+  const mm=document.getElementById('minimap-cv'); if(!mm) return;
+  const rect=document.getElementById('minimap').getBoundingClientRect();
+  const px=(e.clientX-rect.left)/rect.width;
+  const py=(e.clientY-rect.top)/rect.height;
+  if(!rooms.length) return;
+  const allX=rooms.flatMap(r=>[r.x,r.x+r.w]);
+  const allY=rooms.flatMap(r=>[r.y,r.y+r.d]);
+  const minX=Math.min(...allX)-1,maxX=Math.max(...allX)+1;
+  const minY=Math.min(...allY)-1,maxY=Math.max(...allY)+1;
+  const worldX=minX+px*(maxX-minX);
+  const worldY=minY+py*(maxY-minY);
+  vpX=fpCv.width/2-worldX*vpZoom;
+  vpY=fpCv.height/2-worldY*vpZoom;
+  draw2D();
+});
+
+// ════════════════════════════════════════════════════════════════════════
+// 2. SNAP ALIGNMENT LINES
+// ════════════════════════════════════════════════════════════════════════
+function calcSnapLines(movingObj){
+  const lines=[]; if(!movingObj) return lines;
+  const it=findItem(movingObj.typeId)||{};
+  const mw=movingObj.w||it.w||1, md=movingObj.d||it.d||1;
+  const mx1=movingObj.x, mx2=movingObj.x+mw;
+  const my1=movingObj.y, my2=movingObj.y+md;
+  const TOL=0.15;
+  objects.filter(o=>o.id!==movingObj.id).forEach(o=>{
+    const oi=findItem(o.typeId)||{};
+    const ow=o.w||oi.w||1, od=o.d||oi.d||1;
+    // Left align
+    if(Math.abs(mx1-o.x)<TOL)       lines.push({type:'v',x:o.x});
+    if(Math.abs(mx2-(o.x+ow))<TOL)  lines.push({type:'v',x:o.x+ow});
+    if(Math.abs(mx1-(o.x+ow))<TOL)  lines.push({type:'v',x:o.x+ow});
+    // Top align
+    if(Math.abs(my1-o.y)<TOL)       lines.push({type:'h',y:o.y});
+    if(Math.abs(my2-(o.y+od))<TOL)  lines.push({type:'h',y:o.y+od});
+    if(Math.abs(my1-(o.y+od))<TOL)  lines.push({type:'h',y:o.y+od});
+  });
+  return lines;
+}
+
+function drawSnapLines(ctx, lines){
+  if(!lines||!lines.length) return;
+  ctx.save();
+  ctx.strokeStyle='#38bdf8'; ctx.lineWidth=1;
+  ctx.setLineDash([4,3]);
+  lines.forEach(l=>{
+    if(l.type==='h'){ const cy2=wy2cy(l.y); ctx.beginPath();ctx.moveTo(0,cy2);ctx.lineTo(fpCv.width,cy2);ctx.stroke(); }
+    if(l.type==='v'){ const cx2=wx2cx(l.x); ctx.beginPath();ctx.moveTo(cx2,0);ctx.lineTo(cx2,fpCv.height);ctx.stroke(); }
+  });
+  ctx.restore();
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 3. GUIDED MODE
+// ════════════════════════════════════════════════════════════════════════
+function toggleGuidedMode(){
+  _guidedMode=!_guidedMode;
+  document.getElementById('guided-panel').classList.toggle('vis',_guidedMode);
+  const btn=document.getElementById('btn-guided');
+  if(btn){btn.style.color=_guidedMode?'var(--gr)':'';btn.style.borderColor=_guidedMode?'var(--gr3)':'';}
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 4. UNDO TIMELINE
+// ════════════════════════════════════════════════════════════════════════
+function toggleUndoTimeline(){
+  const el=document.getElementById('undo-timeline');
+  if(!el) return;
+  const vis=el.classList.toggle('vis');
+  if(vis) renderUndoTimeline();
+}
+
+function renderUndoTimeline(){
+  const el=document.getElementById('undo-timeline'); if(!el) return;
+  if(!undoStack||!undoStack.length){
+    el.innerHTML='<div style="padding:12px;font-size:11px;color:var(--tx3)">Keine Aktionen aufgezeichnet.</div>';
+    return;
+  }
+  const header='<div style="padding:6px 10px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">'
+    +'<div style="font-size:10px;font-weight:700;color:var(--tx2)">Verlauf ('+undoStack.length+')</div>'
+    +'<button onclick="document.getElementById(\'undo-timeline\').classList.remove(\'vis\')" style="background:none;border:none;color:var(--tx3);cursor:pointer;font-size:12px">✕</button></div>';
+  const items=undoStack.slice().reverse().map((snap,ri)=>{
+    const i=undoStack.length-1-ri;
+    const s=JSON.parse(snap||'{}');
+    const isCur=i===undoIdx;
+    const label=(s.rooms||[]).length+'R '+(s.objects||[]).length+'O';
+    const ts=s.ts?new Date(s.ts).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'}):'';
+    return '<div class="ut-item'+(isCur?' current':'')+'" onclick="jumpToUndo('+i+')">'
+      +'<div class="ut-dot"></div>'
+      +'<div style="flex:1"><div style="font-size:10px;color:var(--tx'+(isCur?'':'3')+')">'+label+'</div></div>'
+      +'<div style="font-size:9px;color:var(--tx3)">'+ts+'</div></div>';
+  }).join('');
+  el.innerHTML=header+items;
+}
+
+function jumpToUndo(idx){
+  if(typeof undoIdx!=='undefined'&&typeof undoStack!=='undefined'){
+    undoIdx=idx;
+    _restoreSnapshot(undoStack[undoIdx]);
+    renderUndoTimeline();
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 5. OBJECT GROUPS
+// ════════════════════════════════════════════════════════════════════════
+function createObjGroup(name, objIds){
+  _objGroups.push({id:'og'+Date.now(),name:name||'Gruppe',objIds:[...(objIds||_multiSel)]});
+  saveObjGroups();
+  toast('📦 Gruppe "'+name+'" erstellt ('+(_multiSel.length)+' Objekte)','g');
+  clearMultiSel();
+}
+function moveObjGroup(groupId, dx, dy){
+  const g=_objGroups.find(g=>g.id===groupId); if(!g) return;
+  g.objIds.forEach(id=>{
+    const o=objects.find(o=>o.id===id); if(o){o.x+=dx;o.y+=dy;}
+  });
+  rebuild3D(); draw2D(); snapshot();
+}
+function saveObjGroups(){try{localStorage.setItem('csc-objgroups',JSON.stringify(_objGroups));}catch(e){}}
+function loadObjGroups(){try{const s=localStorage.getItem('csc-objgroups');if(s)_objGroups=JSON.parse(s);}catch(e){}}
+
+// ════════════════════════════════════════════════════════════════════════
+// 6. WHATSAPP / TELEGRAM SHARE
+// ════════════════════════════════════════════════════════════════════════
+function shareWhatsApp(){
+  try{
+    const url=window.location.href;
+    const text=encodeURIComponent('🌿 Schau dir meinen CSC Raumplan an: '+url);
+    window.open('https://wa.me/?text='+text,'_blank');
+    checkAndAwardBadge('shared_project');
+  }catch(e){ toast('Fehler: '+e.message,'r'); }
+}
+function shareTelegram(){
+  try{
+    const url=encodeURIComponent(window.location.href);
+    const text=encodeURIComponent('🌿 Mein CSC Raumplan');
+    window.open('https://t.me/share/url?url='+url+'&text='+text,'_blank');
+    checkAndAwardBadge('shared_project');
+  }catch(e){ toast('Fehler: '+e.message,'r'); }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 7. SAISON-LAYOUTS
+// ════════════════════════════════════════════════════════════════════════
+var _currentSeason='standard';
+
+function selectSeason(name, btn){
+  _currentSeason=name;
+  document.querySelectorAll('.season-tab').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  const el=document.getElementById('season-content'); if(!el) return;
+  const saved=_seasonLayouts[name];
+  if(saved){
+    el.innerHTML='<div style="background:var(--bg3);border-radius:5px;padding:8px;margin-bottom:8px">'
+      +'<div style="font-size:11px;color:var(--tx)">Gespeichert: '+saved.rooms.length+' Räume, '+saved.objects.length+' Objekte</div>'
+      +'<div style="font-size:10px;color:var(--tx3)">'+new Date(saved.ts).toLocaleDateString('de-DE')+'</div></div>'
+      +'<button class="mbt ok" onclick="loadSeason(\''+name+'\')" style="width:100%">📂 Laden</button>';
+  } else {
+    el.innerHTML='<div style="color:var(--tx3);margin-bottom:8px">Kein gespeichertes Layout für diese Saison.</div>';
+  }
+}
+
+function saveSeason(){
+  const d=getPD();
+  _seasonLayouts[_currentSeason]={rooms:d.rooms,objects:d.objects,ts:Date.now()};
+  try{localStorage.setItem('csc-seasons',JSON.stringify(_seasonLayouts));}catch(e){}
+  selectSeason(_currentSeason, null);
+  toast('💾 Layout für "'+_currentSeason+'" gespeichert','g');
+}
+
+function loadSeason(name){
+  const saved=_seasonLayouts[name]; if(!saved) return;
+  if(!confirm('Layout "'+name+'" laden? Aktuelle Änderungen gehen verloren.')) return;
+  rooms=[...saved.rooms]; objects=[...saved.objects];
+  rebuild3D(); draw2D(); renderLeft(); snapshot();
+  closeM('m-seasons');
+  toast('🔄 Saison-Layout "'+name+'" geladen','g');
+}
+
+function loadSeasons(){try{const s=localStorage.getItem('csc-seasons');if(s)_seasonLayouts=JSON.parse(s);}catch(e){}}
+
+// ════════════════════════════════════════════════════════════════════════
+// 8. WHEELCHAIR SIMULATOR
+// ════════════════════════════════════════════════════════════════════════
+var _wheelchairActive=false;
+function toggleWheelchair(){
+  _wheelchairActive=!_wheelchairActive;
+  document.getElementById('wheelchair-bar').classList.toggle('vis',_wheelchairActive);
+  if(_wheelchairActive){
+    // Switch to walk mode at wheelchair height
+    setView('walk');
+    fpCam3.position.y=0.9; // wheelchair eye height
+    toast('♿ Rollstuhl-Ansicht: Sichtfeld aus 90cm Höhe','b');
+  } else {
+    fpCam3.position.y=1.7; // normal eye height
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 9. AUTO-COLOR ROOMS BY FUNCTION
+// ════════════════════════════════════════════════════════════════════════
+const AUTO_COLORS={
+  Empfang:  {floor:'#c4b08a',wall:'#ddd4be'},
+  Ausgabe:  {floor:'#c4a870',wall:'#ddd0b0'},
+  Lager:    {floor:'#888888',wall:'#aaaaaa'},
+  Sozial:   {floor:'#8a9a7c',wall:'#c4ccb8'},
+  WC:       {floor:'#cccccc',wall:'#e0e0e0'},
+  Büro:     {floor:'#a0b0c0',wall:'#c8d8e8'},
+  Küche:    {floor:'#c8b09a',wall:'#ddd4c8'},
+  Sonstiges:{floor:'#b0a090',wall:'#ccc0b0'},
+};
+function autoColorRooms(){
+  rooms.forEach(r=>{
+    const cat=getRoomCategory(r.name);
+    const cols=AUTO_COLORS[cat]||AUTO_COLORS.Sonstiges;
+    r.floorColor=cols.floor; r.wallColor=cols.wall;
+  });
+  rebuild3D(); draw2D(); snapshot();
+  toast('🎨 Räume automatisch eingefärbt','g');
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 10. ROOM STATS IN CANVAS
+// ════════════════════════════════════════════════════════════════════════
+function toggleRoomStats(){
+  _showRoomStats=!_showRoomStats;
+  draw2D();
+  toast(_showRoomStats?'📊 Raum-Statistik eingeblendet':'📊 Raum-Statistik ausgeblendet','b');
+}
+
+function drawRoomStats(ctx, r){
+  if(!_showRoomStats) return;
+  const area=(r.w*r.d).toFixed(1);
+  const cap=Math.floor(r.w*r.d/2);
+  const cx=wx2cx(r.x+r.w/2), cy=wy2cy(r.y+r.d/2);
+  ctx.save();
+  ctx.fillStyle='rgba(0,0,0,0.55)';
+  ctx.beginPath(); ctx.roundRect(cx-28,cy+10,56,18,3); ctx.fill();
+  ctx.fillStyle='rgba(74,222,128,0.9)';
+  ctx.font='8px monospace'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(area+'m² · '+cap+'P',cx,cy+19);
+  ctx.restore();
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 11. QUICK-ADD CONTEXT BUTTONS (appear near selected room)
+// ════════════════════════════════════════════════════════════════════════
+const QUICK_ADD_MAP={
+  Empfang:  [{typeId:'w-stuhl',label:'+ Stuhl'},{typeId:'w-sofa',label:'+ Sofa'},{typeId:'pflanze-gr',label:'+ Pflanze'}],
+  Ausgabe:  [{typeId:'aus-theke',label:'+ Theke'},{typeId:'scanner',label:'+ Scanner'},{typeId:'locker',label:'+ Schließfach'}],
+  Sozial:   [{typeId:'l-sofa',label:'+ L-Sofa'},{typeId:'etisch',label:'+ Tisch'},{typeId:'kaffeemsch',label:'+ Kaffee'}],
+  Lager:    [{typeId:'regal',label:'+ Regal'},{typeId:'kuehlschr',label:'+ Kühlschrank'},{typeId:'tresor',label:'+ Tresor'}],
+  WC:       [{typeId:'wc-klo',label:'+ WC'},{typeId:'waschbcken',label:'+ Waschbecken'}],
+  Büro:     [{typeId:'schreibtisch',label:'+ Schreibtisch'},{typeId:'buero-stuhl',label:'+ Stuhl'}],
+};
+function showQuickAdd(room){
+  document.querySelectorAll('.qa-chip').forEach(e=>e.remove());
+  if(!room) return;
+  const cat=getRoomCategory(room.name);
+  const items=QUICK_ADD_MAP[cat]||[];
+  if(!items.length) return;
+  const wrap=document.getElementById('canvas-wrap'); if(!wrap) return;
+  items.forEach((item,i)=>{
+    const px=wx2cx(room.x)+10;
+    const py=wy2cy(room.y+room.d)+8+i*22;
+    const chip=document.createElement('div');
+    chip.className='qa-chip';
+    chip.style.left=px+'px'; chip.style.top=py+'px';
+    chip.textContent=item.label;
+    chip.onclick=()=>{
+      const it=findItem(item.typeId)||{};
+      addObject({typeId:item.typeId,x:room.x+0.3+i*1.2,y:room.y+room.d*0.3,
+        w:it.w||1,d:it.d||1,h:it.h||1,rot:0,py:0,floorId:curFloor});
+      chip.remove(); rebuild3D(); draw2D(); snapshot();
+    };
+    wrap.appendChild(chip);
+  });
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 12. GOOGLE DRIVE EXPORT (link-based, no auth needed)
+// ════════════════════════════════════════════════════════════════════════
+function exportToGoogleDrive(){
+  // Export JSON and open Google Drive upload page
+  dlJSON();
+  setTimeout(()=>{
+    window.open('https://drive.google.com/drive/my-drive','_blank');
+    toast('📂 JSON heruntergeladen — jetzt in Google Drive hochladen','b');
+  },500);
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// DRAW2D HOOKS
+// ════════════════════════════════════════════════════════════════════════
+// Room stats are drawn in the room rendering loop
+// Snap lines drawn during drag
+
 // ════════════════════════════════════════════════════════════════════════
 // ANIMATION LOOP
 // ════════════════════════════════════════════════════════════════════════
@@ -10335,10 +11630,18 @@ loadTodos();
 checkReminders();
 loadCustomPrompts();
 renderPromptsList();
+loadObjGroups();
+loadSeasons();
 loadCustomShortcuts();
 try{const ph=localStorage.getItem("csc-phase");if(ph)_projectPhase=ph;}catch(e){}
 renderPhaseBar();
 updateSuggestions();
+initPWA();
+loadBadges();
+showTipOfDay();
+// Onboarding for first-time users
+if(!localStorage.getItem('csc-onboarded')){ setTimeout(startOnboarding, 1200); }
+else { checkAndAwardBadge('first_open'); }
 renderNorthArrow();
 setTimeout(registerServiceWorker,1000);
 setTimeout(initLiveCollaboration, 2000);
@@ -10387,7 +11690,7 @@ draw2D();
 
 renderFloorTabs();
 initUndoSystem();
-setTimeout(()=>toast('🌿 v3.20 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
+setTimeout(()=>toast('🌿 v3.22 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
 
 
 
@@ -10415,7 +11718,7 @@ function initAutoSave(){
   // Enable auto-saving from now on
   _autoSaveReady = true;
   renderVersionHistory();
-  toast('🌿 v3.20 | Auto-Save aktiv','g');
+  toast('🌿 v3.22 | Auto-Save aktiv','g');
 }
 
 
@@ -10736,7 +12039,7 @@ function build3DObj(o){
   const metal = o.metalness !== undefined ? o.metalness : (item.arch==='window'?0.0: item.arch==='door'?0.05:['Lager','Info'].includes(item.cat)?0.55:0.04);
 
   if(item.isKallax || (item.id&&item.id.startsWith('kallax'))){
-    buildKallax3DPro(g, item, o); // v3.20 Pro
+    buildKallax3DPro(g, item, o); // v3.22 Pro
   } else if(item.arch==='security'){
     buildSecurity3D(g, item, o);
   } else if(item.arch==='foil'){
@@ -11027,7 +12330,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
 
   <div style="padding:12px 20px;border-bottom:1px solid #1a2a1a;display:flex;align-items:center;gap:14px;flex-shrink:0">
     <div style="font-size:16px;font-weight:800;color:#4ade80">🌿 CSC Raumplaner — Vollständige Anleitung</div>
-    <div style="font-size:11px;color:#555">v3.20</div>
+    <div style="font-size:11px;color:#555">v3.22</div>
     <div style="flex:1"></div>
     <button class="tbt" onclick="startTutorial()" style="border-color:var(--gr);color:var(--gr);padding:6px 14px">▶ Tutorial starten</button>
     <button class="tbt" onclick="closeHelp()" style="padding:6px 14px">Schließen</button>
