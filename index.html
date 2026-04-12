@@ -461,7 +461,7 @@ canvas{display:block}
 #help-close:hover{color:#e8e4d8;background:#1a1a1a}
 
 
-/* ══ NEW FEATURES v3.22 ═══════════════════════════════════════════ */
+/* ══ NEW FEATURES v3.23 ═══════════════════════════════════════════ */
 
 /* Heatmap canvas */
 #heatmap-canvas{position:absolute;inset:0;pointer-events:none;opacity:0.55;display:none;z-index:8}
@@ -500,7 +500,7 @@ canvas{display:block}
 .vlink-inp{width:100%;padding:7px;background:var(--bg);border:1px solid var(--bd2);border-radius:4px;color:var(--tx);font-family:monospace;font-size:10px;margin:5px 0}
 
 
-/* ══ v3.22 FEATURES ══════════════════════════════════════════════ */
+/* ══ v3.23 FEATURES ══════════════════════════════════════════════ */
 /* Budget Tracker */
 #budget-panel{position:fixed;top:50px;right:360px;width:300px;background:var(--bg2);border:1px solid var(--bd2);border-radius:10px;z-index:200;display:none;box-shadow:0 4px 20px rgba(0,0,0,.6)}
 #budget-panel.vis{display:block}
@@ -534,7 +534,7 @@ canvas{display:block}
 .ruler-text{fill:#fbbf24;font-size:11px;font-weight:700;font-family:monospace}
 
 
-/* ══ DROPDOWN MENU SYSTEM v3.22 ══════════════════════════════════ */
+/* ══ DROPDOWN MENU SYSTEM v3.23 ══════════════════════════════════ */
 .tb-menu-group{display:flex;align-items:center;gap:2px}
 .tbm{position:relative}
 .tbm-btn{padding:4px 9px;background:transparent;border:1px solid transparent;border-radius:var(--r4);font-size:11px;cursor:pointer;color:var(--tx2);transition:.12s;white-space:nowrap;display:flex;align-items:center;gap:3px}
@@ -585,7 +585,7 @@ canvas{display:block}
 .compare-label{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);color:var(--gr);font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;z-index:10}
 
 
-/* ══ v3.22 ════════════════════════════════════════════════════════ */
+/* ══ v3.23 ════════════════════════════════════════════════════════ */
 /* Light mode */
 body.light-mode{--bg:#f5f5f0;--bg2:#ffffff;--bg3:#ebebeb;--bg4:#e0e0d8;
   --tx:#111;--tx2:#333;--tx3:#777;--bd:#ccc;--bd2:#aaa;
@@ -640,7 +640,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .font-sample:hover,.font-sample.active{border-color:var(--gr);color:var(--gr)}
 
 
-/* ══ v3.22 ════════════════════════════════════════════════════════ */
+/* ══ v3.23 ════════════════════════════════════════════════════════ */
 /* Inventory */
 .inv-row{display:grid;grid-template-columns:2fr 1.2fr 1.5fr 0.7fr;gap:6px;align-items:center;
   padding:5px 0;border-bottom:1px solid var(--bd);font-size:11px}
@@ -680,7 +680,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .fire-ok{color:#4ade80}.fire-warn{color:#f87171}.fire-info{color:#fbbf24}
 
 
-/* ══ v3.22 ════════════════════════════════════════════════════════ */
+/* ══ v3.23 ════════════════════════════════════════════════════════ */
 
 /* Command Palette */
 #cmd-palette{position:fixed;top:15%;left:50%;transform:translateX(-50%);
@@ -800,7 +800,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   cursor:pointer;min-width:60px;text-align:center}
 
 
-/* ══ v3.22 ════════════════════════════════════════════════════════ */
+/* ══ v3.23 ════════════════════════════════════════════════════════ */
 /* Badges */
 .badge-popup{position:fixed;top:60px;right:16px;background:#0d2010;
   border:1px solid #4ade80;border-radius:10px;padding:12px 16px;z-index:500;
@@ -885,7 +885,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   border-radius:3px;padding:1px 6px;color:var(--tx3);font-family:monospace}
 
 
-/* ══ v3.22 ════════════════════════════════════════════════════════ */
+/* ══ v3.23 ════════════════════════════════════════════════════════ */
 
 /* Minimap */
 #minimap{position:absolute;bottom:8px;right:8px;width:140px;height:100px;
@@ -1060,7 +1060,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 <div id="topbar">
   <!-- LOGO -->
   <span class="logo">🌿 CSC <em>Raumplaner</em></span>
-  <span class="vbadge">v3.22</span>
+  <span class="vbadge">v3.23</span>
   <div class="tsep"></div>
 
   <!-- UNDO/REDO -->
@@ -1086,7 +1086,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
         <div class="tbm-item" onclick="exportGLTF();closeTBMenu()">🏗 3D-Modell .gltf</div>
         <div class="tbm-item" onclick="exportDXF();closeTBMenu()">📐 Grundriss .dxf</div>
         <div class="tbm-sep"></div>
-        <div class="tbm-item" onclick="doPrint();closeTBMenu()">🖨 Drucken / PDF</div>
+        <div class="tbm-item" onclick="openPrintPreview();closeTBMenu()">🖨 Druckvorschau</div>
         <div class="tbm-item" onclick="generateAuthorityPackage();closeTBMenu()">📦 Behörden-Paket (.zip)</div>
         <div class="tbm-item" onclick="shareByEmail();closeTBMenu()">📧 Per E-Mail teilen</div>
         <div class="tbm-item" onclick="shareWhatsApp();closeTBMenu()">📱 WhatsApp</div>
@@ -1118,6 +1118,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
         <div class="tbm-item" onclick="openLayoutComparison();closeTBMenu()">🔀 Lageplan vergleichen</div>
         <div class="tbm-item" onclick="toggleRoomStats();closeTBMenu()">📊 Raum-Statistik im Plan</div>
         <div class="tbm-item" onclick="autoColorRooms();closeTBMenu()">🎨 Räume auto-einfärben</div>
+        <div class="tbm-item" onclick="generateGantt();closeTBMenu()">📅 Gantt aus Aufgaben</div>
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="openDashboard();closeTBMenu()">🖥 Dashboard</div>
         <div class="tbm-item" onclick="openChecklistWizard();closeTBMenu()">📋 Einrichtungs-Assistent</div>
@@ -1349,6 +1350,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
         💬 <b>Beschreiben</b> → «Empfangsraum 8×6m mit Ausgabetheke»<br>
         🔄 <b>Anpassen</b> → «Mach den Lagerraum größer»
         <div id="custom-prompt-chips" style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px"></div>
+        <div style="margin-bottom:4px"><div onclick="document.getElementById('ki-fn-list').style.display=document.getElementById('ki-fn-list').style.display==='none'?'block':'none'" style="padding:5px 10px;background:var(--bg4);border:1px solid var(--bd);border-radius:4px;font-size:10px;color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:space-between">🤖 Alle KI-Funktionen <span>▾</span></div><div id="ki-fn-list" style="display:none;border:1px solid var(--bd);border-radius:0 0 4px 4px;background:var(--bg3)"></div></div>
         <div class="ai-chips">
           <span class="chip" onclick="qmsg('Erstelle eine vollständige CSC-Ausgabestelle: Empfang, Ausgabe, Lager, Sozialbereich und WC')">🌿 Komplette CSC-Anlage</span>
           <span class="chip" onclick="qmsg('Erstelle einen Empfangsraum 8x6m mit Ausgabetheke, Scanner und Wartezone')">📐 Empfangsraum</span>
@@ -2177,6 +2179,26 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 </div>
 </div>
 
+
+<!-- PRINT PREVIEW -->
+<div class="mover" id="m-printpreview">
+<div class="modal" style="max-width:620px">
+  <h2>🖨 Druckvorschau</h2>
+  <div style="display:flex;gap:10px;margin-bottom:10px;font-size:11px">
+    <label><input type="checkbox" id="pp-3d" checked> 3D Screenshot</label>
+    <label><input type="checkbox" id="pp-2d" checked> Grundriss 2D</label>
+    <label><input type="checkbox" id="pp-list" checked> Raumliste</label>
+    <label><input type="checkbox" id="pp-obj" checked> Möbelliste</label>
+    <label><input type="checkbox" id="pp-budget"> Budget</label>
+  </div>
+  <div id="print-preview-content" style="background:#fff;border:1px solid #ddd;border-radius:4px;padding:16px;max-height:400px;overflow-y:auto;color:#111"></div>
+  <div class="mbtns">
+    <button class="mbt ok" onclick="executePrint()">🖨 Drucken</button>
+    <button class="mbt" onclick="closeM('m-printpreview')">Schließen</button>
+  </div>
+</div>
+</div>
+
 <!-- STEP-BY-STEP GUIDE -->
 <div id="guide-overlay">
 <div id="guide-box">
@@ -2550,6 +2572,77 @@ const BUILTIN = [
   {id:'wc-klo',     cat:'WC',       icon:'🚽',name:'WC',             w:0.4,d:0.7, h:0.8,  col:0xeeeeee},
   {id:'wc-beck',    cat:'WC',       icon:'🚿',name:'Waschbecken',    w:0.6,d:0.5, h:0.85, col:0xeeeeee},
   {id:'wc-kab',     cat:'WC',       icon:'🚪',name:'WC-Kabine',      w:1.0,d:1.2, h:2.2,  col:0xcccccc},
+
+  // ── EMPFANG ERWEITERT ──────────────────────────────────────────
+  {id:'emp-theke-rund',cat:'Empfang', icon:'⭕',name:'Runde Empfangstheke',  w:2.0,d:2.0,h:1.0,col:0x8a5c2a},
+  {id:'emp-theke-glas',cat:'Empfang', icon:'🔷',name:'Glastheke Empfang',    w:2.4,d:0.6,h:1.1,col:0x88ccff},
+  {id:'w-bank-2',      cat:'Empfang', icon:'🪑',name:'Wartesitzbank 2er',    w:1.2,d:0.5,h:0.45,col:0x4a5568},
+  {id:'w-bank-3',      cat:'Empfang', icon:'🪑',name:'Wartesitzbank 3er',    w:1.8,d:0.5,h:0.45,col:0x4a5568},
+  {id:'nummerndisp',   cat:'Empfang', icon:'🔢',name:'Nummernausgabe',        w:0.3,d:0.3,h:1.5,col:0x2d3748},
+  {id:'absperrpfosten',cat:'Empfang', icon:'🚧',name:'Absperrpfosten',        w:0.1,d:0.1,h:1.0,col:0xc0a020},
+  {id:'rollstuhlrampe',cat:'Empfang', icon:'♿',name:'Rollstuhlrampe',        w:1.2,d:1.5,h:0.1,col:0xcccccc},
+  {id:'emp-monitor',   cat:'Empfang', icon:'🖥',name:'Info-Monitor Wand',     w:1.2,d:0.1,h:0.7,col:0x1a1a2e},
+  {id:'garderobenst',  cat:'Empfang', icon:'🧥',name:'Garderobenständer',     w:0.5,d:0.5,h:1.8,col:0x8b7355},
+  // ── AUSGABE ERWEITERT ──────────────────────────────────────────
+  {id:'aus-theke-u',   cat:'Ausgabe', icon:'🌿',name:'Ausgabetheke U-Form',  w:3.0,d:2.5,h:1.0,col:0x166534},
+  {id:'wieggeraet',    cat:'Ausgabe', icon:'⚖', name:'Präzisionswaage',       w:0.3,d:0.3,h:0.1,col:0x4a5568},
+  {id:'etikdrucker',   cat:'Ausgabe', icon:'🖨',name:'Etikettendrucker',      w:0.2,d:0.3,h:0.2,col:0x2d3748},
+  {id:'kasse-ipad',    cat:'Ausgabe', icon:'📱',name:'iPad-Kasse',            w:0.25,d:0.2,h:0.5,col:0x1a1a2e},
+  {id:'ausgabe-tresor',cat:'Ausgabe', icon:'🔐',name:'Ausgabe-Tresor',        w:0.6,d:0.5,h:0.8,col:0x2d3748},
+  {id:'produktdisp',   cat:'Ausgabe', icon:'🌿',name:'Produktdisplay',        w:0.8,d:0.4,h:1.5,col:0x1a3320},
+  {id:'altersverif',   cat:'Ausgabe', icon:'🪪',name:'Ausweisscanner',        w:0.25,d:0.15,h:0.15,col:0x2d3748},
+  // ── LAGER ERWEITERT ────────────────────────────────────────────
+  {id:'regal-modul',   cat:'Lager',   icon:'🗄', name:'Lagerregal Modul',    w:1.0,d:0.5,h:2.2,col:0x888888},
+  {id:'kuehlvitrine',  cat:'Lager',   icon:'❄', name:'Kühlvitrine',          w:1.2,d:0.7,h:2.0,col:0x4a8a9a},
+  {id:'kuehlzelle',    cat:'Lager',   icon:'🧊',name:'Kühlzelle 2x2m',       w:2.0,d:2.0,h:2.5,col:0x2a5a7a},
+  {id:'hubwagen',      cat:'Lager',   icon:'🛒',name:'Hubwagen',              w:0.8,d:1.2,h:1.2,col:0xc0a020},
+  {id:'verpackungsst', cat:'Lager',   icon:'📦',name:'Verpackungsstation',    w:1.5,d:0.7,h:0.9,col:0xc8a870},
+  {id:'abfallcont',    cat:'Lager',   icon:'🗑', name:'Abfallcontainer',      w:0.6,d:0.6,h:1.0,col:0x444444},
+  // ── SOZIAL ERWEITERT ───────────────────────────────────────────
+  {id:'couch-2',       cat:'Sozial',  icon:'🛋',name:'2er Couch',            w:1.6,d:0.85,h:0.75,col:0x4a6a5a},
+  {id:'couch-3',       cat:'Sozial',  icon:'🛋',name:'3er Couch',            w:2.2,d:0.85,h:0.75,col:0x4a6a5a},
+  {id:'sessel',        cat:'Sozial',  icon:'🪑',name:'Lounge-Sessel',        w:0.85,d:0.85,h:0.85,col:0x5a4a8a},
+  {id:'hocker-bar',    cat:'Sozial',  icon:'🪑',name:'Barhocker',            w:0.4,d:0.4,h:0.75,col:0x7a5a3a},
+  {id:'stehtisch',     cat:'Sozial',  icon:'🪑',name:'Stehtisch',            w:0.7,d:0.7,h:1.1,col:0x8a6a4a},
+  {id:'pool-tisch',    cat:'Sozial',  icon:'🎱',name:'Billardtisch',         w:2.5,d:1.4,h:0.85,col:0x1a5a2a},
+  {id:'darts',         cat:'Sozial',  icon:'🎯',name:'Dartscheibe',          w:0.5,d:0.1,h:0.5,col:0x2a2a2a},
+  {id:'flipper',       cat:'Sozial',  icon:'🎮',name:'Flipper/Arcade',        w:0.7,d:1.5,h:2.0,col:0x2a3a8a},
+  {id:'jukebox',       cat:'Sozial',  icon:'🎵',name:'Jukebox',              w:0.7,d:0.4,h:1.6,col:0x8a2a6a},
+  {id:'pflanze-haeng', cat:'Sozial',  icon:'🪴',name:'Hängepflanze',         w:0.4,d:0.4,h:0.6,col:0x2d6a3a},
+  {id:'trennwand',     cat:'Sozial',  icon:'🪟',name:'Trennwand/Paravent',   w:1.8,d:0.05,h:1.8,col:0xc8a870},
+  {id:'teppich-gr',    cat:'Sozial',  icon:'🟫',name:'Teppich groß',         w:3.0,d:2.0,h:0.01,col:0x8a5a3a},
+  {id:'sideboard',     cat:'Sozial',  icon:'🗄', name:'Sideboard',            w:1.6,d:0.45,h:0.8,col:0x6a5a4a},
+  {id:'aquarium',      cat:'Sozial',  icon:'🐠',name:'Aquarium',             w:1.2,d:0.5,h:0.6,col:0x1a4a6a},
+  // ── KÜCHE ERWEITERT ────────────────────────────────────────────
+  {id:'kueche-l-form', cat:'Küche',   icon:'🍳',name:'Küchenzeile L-Form',  w:3.0,d:3.0,h:0.9,col:0x9a8a7a},
+  {id:'getr-kuehl',    cat:'Küche',   icon:'🍺',name:'Getränkekühlschrank', w:0.6,d:0.6,h:1.85,col:0x2a4a6a},
+  {id:'wasserspender',  cat:'Küche',  icon:'💧',name:'Wasserspender',        w:0.3,d:0.3,h:1.5,col:0x4a8abb},
+  {id:'snack-auto',    cat:'Küche',   icon:'🍪',name:'Snack-Automat',       w:0.9,d:0.8,h:1.8,col:0x4a4a6a},
+  {id:'getr-auto',     cat:'Küche',   icon:'🥤',name:'Getränkeautomat',     w:0.8,d:0.7,h:1.9,col:0x3a3a5a},
+  {id:'geschirrsp',    cat:'Küche',   icon:'🫧',name:'Geschirrspüler',      w:0.6,d:0.6,h:0.85,col:0x9a9a9a},
+  // ── BÜRO ───────────────────────────────────────────────────────
+  {id:'besprtisch',    cat:'Büro',    icon:'📋',name:'Besprechungstisch',   w:2.4,d:1.2,h:0.75,col:0x8a7a5a},
+  {id:'aktenwand',     cat:'Büro',    icon:'📁',name:'Aktenwand',           w:2.0,d:0.4,h:2.2,col:0x6a5a4a},
+  {id:'flipchart',     cat:'Büro',    icon:'📊',name:'Flipchart',           w:0.7,d:0.6,h:1.8,col:0xffffff},
+  {id:'beamer',        cat:'Büro',    icon:'📽', name:'Beamer',              w:0.3,d:0.3,h:0.15,col:0x2a2a3a},
+  {id:'leinwand',      cat:'Büro',    icon:'⬜',name:'Leinwand',            w:2.0,d:0.05,h:1.5,col:0xfafafa},
+  {id:'aktenvernichter',cat:'Büro',   icon:'🗑', name:'Aktenvernichter',     w:0.3,d:0.3,h:0.6,col:0x4a4a4a},
+  // ── TECHNIK ERWEITERT ──────────────────────────────────────────
+  {id:'netzwerkschr',  cat:'Technik', icon:'🖥',name:'Netzwerkschrank',     w:0.6,d:0.8,h:2.0,col:0x1a1a2a},
+  {id:'klimasplit',    cat:'Technik', icon:'❄', name:'Split-Klimaanlage',   w:1.0,d:0.25,h:0.3,col:0xdddddd},
+  {id:'wlan-ap',       cat:'Technik', icon:'📶',name:'WLAN Access Point',   w:0.25,d:0.25,h:0.05,col:0xffffff},
+  {id:'ups-anlage',    cat:'Technik', icon:'🔋',name:'USV Anlage',          w:0.6,d:0.4,h:0.6,col:0x2a2a4a},
+  {id:'strom-verteiler',cat:'Technik',icon:'⚡',name:'Stromverteiler',      w:0.4,d:0.2,h:0.6,col:0x3a3a4a},
+  // ── AUSSENBEREICHE ─────────────────────────────────────────────
+  {id:'aussenst',      cat:'Außen',   icon:'🪑',name:'Außenstuhl',          w:0.5,d:0.5,h:0.85,col:0x8a6a4a},
+  {id:'aussentisch',   cat:'Außen',   icon:'🪵',name:'Außentisch',          w:1.2,d:0.8,h:0.75,col:0x8a6a4a},
+  {id:'sonnenschirm',  cat:'Außen',   icon:'⛱', name:'Sonnenschirm',        w:2.5,d:2.5,h:2.5,col:0xf0c030},
+  {id:'fahrradst',     cat:'Außen',   icon:'🚲',name:'Fahrradständer',      w:2.0,d:0.5,h:1.0,col:0x888888},
+  {id:'blumenkuebel',  cat:'Außen',   icon:'🌸',name:'Blumenkübel groß',    w:0.6,d:0.6,h:0.5,col:0x8a5a3a},
+  // ── PERSONEN (Maßstab) ─────────────────────────────────────────
+  {id:'person-sit',    cat:'Sonstiges',icon:'🧍',name:'Person sitzend',     w:0.5,d:0.5,h:1.2,col:0x4a4a6a},
+  {id:'person-roll',   cat:'Sonstiges',icon:'♿',name:'Rollstuhlfahrer',    w:0.65,d:1.0,h:1.2,col:0x3a5a8a},
+  {id:'person-gehe',   cat:'Sonstiges',icon:'🚶',name:'Person gehend',      w:0.5,d:0.8,h:1.75,col:0x5a4a6a},
 ];
 
 const ARCH = [
@@ -2598,6 +2691,18 @@ const ARCH = [
 function getCatalog(){ return [...BUILTIN,...customObjs.map(o=>({...o,custom:true}))];}
 function getArchCatalog(){ return ARCH.filter(i=>i.cat!=='Kameras'&&i.cat!=='Alarm'&&i.cat!=='Brandschutz'&&i.cat!=='Sicherung'&&i.cat!=='Notfall'); }
 function getSecurityCatalog(){ return ARCH.filter(i=>['Kameras','Alarm','Brandschutz','Sicherung','Notfall'].includes(i.cat)); }
+function toggleCatGroup(id){
+  const el=document.getElementById(id);
+  const arr=document.getElementById(id+'_arr');
+  const cat=id.replace('fcat_','').replace(/_/g,' ');
+  if(!el) return;
+  const open=el.style.display!=='none';
+  el.style.display=open?'none':'grid';
+  if(arr) arr.textContent=open?'▸':'▾';
+  if(open) localStorage.setItem('fcat-closed-'+cat,'1');
+  else localStorage.removeItem('fcat-closed-'+cat);
+}
+
 function findItem(id){ return [...BUILTIN,...ARCH,...customObjs].find(x=>x.id===id); }
 
 // ════════════════════════════════════════════════════════════════════════
@@ -3067,15 +3172,16 @@ fpCv.addEventListener('wheel', e=>{
 fpCv.addEventListener('contextmenu',e=>{
   e.preventDefault();
   const wx=cx2wx(e.offsetX), wy=cy2wy(e.offsetY);
-  // Try to hit a room wall segment for deletion
-  const hitSeg = hitRoomWallSeg(wx, wy);
-  if(hitSeg){
-    showWallCtxMenu(e.clientX, e.clientY, hitSeg);
-    return;
-  }
-  // Also handle free wall context menu
-  const hitW = hitFreeWall(wx,wy);
-  if(hitW){ selId=hitW.id; selIsWall=true; openWallPropPanel(hitW.id); return; }
+  // Comprehensive context menu
+  const hitSeg=hitRoomWallSeg(wx,wy);
+  if(hitSeg){ showWallCtxMenu(e.clientX,e.clientY,hitSeg); return; }
+  const hitW=hitFreeWall(wx,wy);
+  if(hitW){ showFreeWallCtxMenu(e.clientX,e.clientY,hitW); return; }
+  const hitO=hitObj(wx,wy);
+  if(hitO){ showObjCtxMenu(e.clientX,e.clientY,hitO); return; }
+  const hitR=hitRoom(wx,wy);
+  if(hitR){ showRoomCtxMenu(e.clientX,e.clientY,hitR); return; }
+  showCanvasCtxMenu(e.clientX,e.clientY,wx,wy);
   // Could show context menu
 });
 
@@ -3501,6 +3607,7 @@ tCv.addEventListener('mousemove',e=>{
   if(grab3d) { _doGrab3dMove(e); return; }
   // Orbit / pan
   _lastMouseWX=cx2wx(e.offsetX||0); _lastMouseWY=cy2wy(e.offsetY||0);
+  if(_ghostTypeId) moveGhostPreview(e.offsetX,e.offsetY);
   if(oDrg){
     const dx=e.clientX-lmx, dy=e.clientY-lmy;
     lmx=e.clientX; lmy=e.clientY;
@@ -3631,7 +3738,8 @@ function renderCatalogPanel(el, catalog, isArch=false, secLayer=null){
     h+=`<div class="fcat"><div class="fcath">${cat}</div><div class="fgrid">`;
     items.forEach(item=>{
       const cls=item.arch?'arch-item':item.custom?'custom-item':'';
-      const secCls = secLayer?'sec':''; // security items get red styling
+      const secCls = secLayer?'sec':'';
+      const tooltip=item.name+(item.w?' ('+item.w+'x'+item.d+'m)':'')+(item.cat?' - '+item.cat:'');
     h+=`<div class="fitem ${cls} ${secCls}" id="fc-${item.id}"
         draggable="true"
         ondragstart="onFurnDragStart(event,'${item.id}')"
@@ -3882,7 +3990,7 @@ function doPrint(){
     +'td,th{border:1px solid #ddd;padding:4px 6px;text-align:left}th{background:#f5f5f5}'
     +'@media print{body{padding:8px}}</style></head><body>'
     +'<h1>🌿 '+d.name+'</h1>'
-    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.22 · '+new Date().toLocaleDateString('de-DE')+'</div>'
+    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.23 · '+new Date().toLocaleDateString('de-DE')+'</div>'
     +'<img src="'+img+'">'
     +'<div class=grid>'
     +'<div class=box><h3>Räume ('+d.rooms.length+')</h3>'
@@ -3946,6 +4054,8 @@ function snapshot(){
   // Auto-save to localStorage on every change (skip during init)
   updateSuggestions();
 initPWA();
+setTimeout(initTooltips,500);
+setTimeout(renderKIDropdown,200);
 loadBadges();
 showTipOfDay();
 // Onboarding for first-time users
@@ -5719,7 +5829,7 @@ function pickKallaxColor(id, part){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// KALLAX PRO EDITOR — Extended (v3.22)
+// KALLAX PRO EDITOR — Extended (v3.23)
 // ════════════════════════════════════════════════════════════════════════
 
 // Additional color palettes
@@ -6991,7 +7101,7 @@ function rebuild3DThrottled(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// NEW FEATURES v3.22
+// NEW FEATURES v3.23
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. RAUM-SNAP beim Platzieren ─────────────────────────────────────
@@ -7381,7 +7491,7 @@ function showCSCPanel(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// INTERAKTIVE ANLEITUNG v3.22
+// INTERAKTIVE ANLEITUNG v3.23
 // ════════════════════════════════════════════════════════════════════════
 function openHelp(page){
   document.getElementById('help-overlay').classList.add('open');
@@ -7522,7 +7632,7 @@ function renderTutStep(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.22 — ALLE NEUEN FEATURES
+// v3.23 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. KI MÖBELANORDNUNG ─────────────────────────────────────────────
@@ -8174,7 +8284,7 @@ function removeWallCtxMenu(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.22 — ALLE NEUEN FEATURES
+// v3.23 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── FURNITURE PRICES DATABASE ────────────────────────────────────────
@@ -8720,7 +8830,7 @@ const _origAddRoom = addRoom;
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.22 — DROPDOWN MENU SYSTEM + NEW FEATURES
+// v3.23 — DROPDOWN MENU SYSTEM + NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── DROPDOWN MENU SYSTEM ─────────────────────────────────────────────
@@ -9070,7 +9180,7 @@ function renderComparePane(side, data){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.22 — ALL NEW FEATURES
+// v3.23 — ALL NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. DARK/LIGHT MODE ───────────────────────────────────────────────
@@ -9445,7 +9555,7 @@ function registerServiceWorker(){
   if(!location.protocol.startsWith('http')){ console.log('SW: nur auf https verfügbar'); return; }
   // Inline SW as blob
   const swCode=`
-    const CACHE='csc-v3.22';
+    const CACHE='csc-v3.23';
     self.addEventListener('install',e=>e.waitUntil(
       caches.open(CACHE).then(c=>c.add('/'))
     ));
@@ -9519,7 +9629,7 @@ function registerServiceWorker(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.22 — BRANDSCHUTZ / AKUSTIK / ENERGIE / REINIGUNG / INVENTAR /
+// v3.23 — BRANDSCHUTZ / AKUSTIK / ENERGIE / REINIGUNG / INVENTAR /
 //          HEATMAP MITGLIEDER / LIEFERWEGE / BARCODE
 // ════════════════════════════════════════════════════════════════════════
 
@@ -9932,7 +10042,7 @@ function drawRoutes(ctx){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.22 — ALLE AUTOMATISIERUNGS-FEATURES
+// v3.23 — ALLE AUTOMATISIERUNGS-FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -10248,6 +10358,8 @@ async function autoOptimizeAll(){
 
   rebuild3D(); draw2D(); snapshot(); updateSuggestions();
 initPWA();
+setTimeout(initTooltips,500);
+setTimeout(renderKIDropdown,200);
 loadBadges();
 showTipOfDay();
 // Onboarding for first-time users
@@ -10696,7 +10808,7 @@ function addDashWidget(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.22 — ALLE NEUEN FEATURES
+// v3.23 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -11242,7 +11354,7 @@ function showGrowthPlan(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.22 — MINIMAP / SNAP / GUIDED / UNDO-TL / GROUPS / SEASONS / MORE
+// v3.23 — MINIMAP / SNAP / GUIDED / UNDO-TL / GROUPS / SEASONS / MORE
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -11590,6 +11702,353 @@ function exportToGoogleDrive(){
 // Room stats are drawn in the room rendering loop
 // Snap lines drawn during drag
 
+
+// ════════════════════════════════════════════════════════════════════════
+// COMPREHENSIVE CONTEXT MENUS
+// ════════════════════════════════════════════════════════════════════════
+function _ctxMenu(x,y,title,items){
+  removeCtxMenu();
+  const div=document.createElement('div');
+  div.id='ctx-menu';
+  div.style.cssText='position:fixed;left:'+Math.min(x,window.innerWidth-210)+'px;top:'+Math.min(y,window.innerHeight-300)+'px;background:var(--bg2);border:1px solid var(--bd2);border-radius:6px;z-index:500;min-width:190px;box-shadow:0 4px 16px rgba(0,0,0,.6);overflow:hidden;user-select:none';
+  let h='<div style="padding:5px 12px 4px;font-size:9px;color:var(--tx3);border-bottom:1px solid var(--bd);font-weight:700;text-transform:uppercase;letter-spacing:.4px">'+title+'</div>';
+  items.forEach(item=>{
+    if(item===null){ h+='<div style="height:1px;background:var(--bd);margin:2px 0"></div>'; return; }
+    const [icon,label,fn,color=''] = item;
+    h+='<div onclick="removeCtxMenu();('+fn+')()" style="padding:7px 12px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:7px;color:'+(color||'var(--tx2)')+';transition:.1s" onmouseenter="this.style.background=\'var(--bg3)\'" onmouseleave="this.style.background=\'\'">'+
+      '<span style="width:18px;text-align:center">'+icon+'</span><span>'+label+'</span></div>';
+  });
+  div.innerHTML=h;
+  document.body.appendChild(div);
+  setTimeout(()=>document.addEventListener('click',removeCtxMenu,{once:true}),10);
+}
+function removeCtxMenu(){ document.getElementById('ctx-menu')?.remove(); }
+
+function showObjCtxMenu(x,y,obj){
+  selId=obj.id; selIsRoom=false; selIsWall=false;
+  setSelection(obj.id,false);
+  const it=findItem(obj.typeId)||{};
+  _ctxMenu(x,y,'🛋 '+( it.name||obj.typeId),[
+    ['✏️','Eigenschaften',`()=>openPropPanel('${obj.id}',false)`],
+    ['📋','Kopieren',`()=>{_clipboard=JSON.parse(JSON.stringify(objects.find(o=>o.id==='${obj.id}')||{}));toast('📋 Kopiert','b')}`],
+    ['🪞','Horizontal spiegeln',`()=>{const o=objects.find(o=>o.id==='${obj.id}');if(o){o.rot=(180-(o.rot||0)+360)%360;rebuild3D();draw2D();snapshot();}}`],
+    ['🔄','Drehen 90°',`()=>{rotateSel();}`],
+    ['⬆','In Vordergrund',`()=>{objects.push(objects.splice(objects.findIndex(o=>o.id==='${obj.id}'),1)[0]);draw2D();}`],
+    null,
+    ['📌','Anpinnen',`()=>togglePin('${obj.typeId}')`],
+    ['📦','Zu Gruppe',`()=>{if(_multiSel.length>1)createObjGroup('Gruppe',_multiSel);else{_multiSel=['${obj.id}'];updateMultiSelBar();}}`],
+    null,
+    ['🗑','Löschen',`()=>{objects=objects.filter(o=>o.id!=='${obj.id}');rebuild3D();draw2D();snapshot();}`,`'#f87171'`],
+  ]);
+}
+
+function showRoomCtxMenu(x,y,room){
+  selId=room.id; selIsRoom=true;
+  setSelection(room.id,true);
+  _ctxMenu(x,y,'⬜ '+room.name,[
+    ['✏️','Eigenschaften',`()=>openPropPanel('${room.id}',true)`],
+    ['📋','Raum kopieren',`()=>duplicateRoom('${room.id}',false)`],
+    ['🪞','Raum spiegeln',`()=>duplicateRoom('${room.id}',true)`],
+    ['🎨','Auto-Farbe',`()=>{const r=rooms.find(r=>r.id==='${room.id}');if(r){const c=AUTO_COLORS[getRoomCategory(r.name)]||AUTO_COLORS.Sonstiges;r.floorColor=c.floor;r.wallColor=c.wall;rebuild3D();draw2D();}}`],
+    null,
+    ['🛋','Alle Möbel auswählen',`()=>{const r=rooms.find(r=>r.id==='${room.id}');if(r){_multiSel=objects.filter(o=>o.x>=r.x&&o.x<=r.x+r.w&&o.y>=r.y&&o.y<=r.y+r.d).map(o=>o.id);updateMultiSelBar();}}`],
+    ['🗑','Alle Möbel löschen',`()=>{if(!confirm('Alle Möbel in ${room.name} löschen?'))return;const r=rooms.find(r=>r.id==='${room.id}');if(r){objects=objects.filter(o=>!(o.x>=r.x&&o.x<=r.x+r.w&&o.y>=r.y&&o.y<=r.y+r.d));rebuild3D();draw2D();snapshot();}}`],
+    ['🪄','KI: Möbel optimieren',`()=>optimizeFurnitureInRoom('${room.id}')`],
+    null,
+    ['🗑','Raum löschen',`()=>removeRoom('${room.id}')`,`'#f87171'`],
+  ]);
+}
+
+function showFreeWallCtxMenu(x,y,wall){
+  selId=wall.id; selIsWall=true;
+  _ctxMenu(x,y,'🧱 Freie Wand',[
+    ['✏️','Eigenschaften',`()=>openWallPropPanel('${wall.id}')`],
+    ['✂️','Wand teilen',`()=>splitWallAt('${wall.id}')`],
+    ['📋','Wand kopieren',`()=>duplicateWall('${wall.id}')`],
+    null,
+    ['🗑','Wand löschen',`()=>removeFreeWall('${wall.id}')`,`'#f87171'`],
+  ]);
+}
+
+function showCanvasCtxMenu(x,y,wx,wy){
+  _ctxMenu(x,y,'📐 Grundriss',[
+    ['⬜','Raum hier zeichnen',`()=>{set2DTool('room');drawRoomStart={cx:${Math.round(x)},cy:${Math.round(y)},wx:${wx.toFixed(1)},wy:${wy.toFixed(1)}};}`],
+    ['🧱','Wand hier beginnen',`()=>{set2DTool('wall');wallDrawStart={wx:${wx.toFixed(1)},wz:${wy.toFixed(1)}};}`],
+    ['📌','Notiz setzen',`()=>addNote(${wx.toFixed(1)},${wy.toFixed(1)})`],
+    null,
+    ['📋','Einfügen',`()=>{if(_clipboard){addObject({..._clipboard,id:null,x:${wx.toFixed(1)},y:${wy.toFixed(1)}});snapshot();}}`],
+    null,
+    ['🎯','Ansicht einpassen',`()=>fitViewToRooms()`],
+    ['📐','Maßketten',`()=>toggleDimensions()`],
+  ]);
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// GHOST PREVIEW
+// ════════════════════════════════════════════════════════════════════════
+let _ghostTypeId=null;
+let _ghostEl=null;
+
+function showGhostPreview(typeId, cx, cy){
+  _ghostTypeId=typeId;
+  const it=findItem(typeId); if(!it) return;
+  let el=document.getElementById('ghost-preview');
+  if(!el){
+    el=document.createElement('div');
+    el.id='ghost-preview';
+    el.style.cssText='position:absolute;pointer-events:none;z-index:30;transition:left .05s,top .05s;display:flex;align-items:center;justify-content:center';
+    document.getElementById('canvas-wrap').appendChild(el);
+  }
+  const w=it.w*vpZoom, h=it.d*vpZoom;
+  el.style.width=w+'px'; el.style.height=h+'px';
+  el.style.left=(cx-w/2)+'px'; el.style.top=(cy-h/2)+'px';
+  el.style.border='2px dashed #4ade80';
+  el.style.background='rgba(74,222,128,0.12)';
+  el.style.borderRadius='3px';
+  el.innerHTML='<span style="font-size:'+Math.max(10,Math.min(20,w/3))+'px;opacity:.7">'+it.icon+'</span>';
+}
+
+function hideGhostPreview(){
+  _ghostTypeId=null;
+  document.getElementById('ghost-preview')?.remove();
+}
+
+function moveGhostPreview(cx,cy){
+  if(!_ghostTypeId) return;
+  const el=document.getElementById('ghost-preview'); if(!el) return;
+  const wx=snapM(cx2wx(cx)), wy=snapM(cy2wy(cy));
+  const px=wx2cx(wx), py=wy2cy(wy);
+  const it=findItem(_ghostTypeId)||{};
+  el.style.left=(px)+'px'; el.style.top=(py)+'px';
+  el.style.width=(it.w*vpZoom)+'px'; el.style.height=(it.d*vpZoom)+'px';
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// TOOLTIP SYSTEM
+// ════════════════════════════════════════════════════════════════════════
+const TOOLTIPS = {
+  'btn-dark':     'Dunkles Theme aktivieren',
+  'btn-light':    'Helles Theme aktivieren',
+  'btn-ceiling':  'Decke in 3D ein-/ausblenden\nNützlich für Draufsicht ohne Deckenpanel',
+  'btn-guided':   'Geführter Modus\nVereinfachte Schritt-für-Schritt Anleitung',
+  'btn-undotl':   'Verlauf anzeigen\nAlle gespeicherten Zustände, anklickbar',
+  'btn-climate':  'Raumklima-Simulation\nWärme- und Kälteverteilung visualisieren',
+  'btn-sound':    'Schallschutz-Analyse\nLärmquellen im Grundriss anzeigen',
+  'btn-lightsim': 'Lichteinfall-Simulation\nZeigt Tageslicht durch Fenster',
+  'btn-heatmap':  'Laufwege-Heatmap\nEngestellen und Durchgangsbereiche',
+  'btn-memberheat':'Mitglieder-Heatmap\nSimuliert Aufenthaltsverteilung',
+  'btn-ruler':    'Lineal-Werkzeug\nKlick Start → Klick Ende = Abstand messen',
+  'btn-notes':    'Notiz-Modus\nKlick auf Grundriss = Haftnotiz setzen',
+  'btn-sunanim':  'Tag/Nacht Animation\nSonnenstand läuft automatisch durch',
+  'vt-2d':        '2D Grundriss\nZeichnenmodus mit allen Werkzeugen',
+  'vt-3d':        '3D Ansicht\nRealistisches Rendering\nMaus drehen + Zoom',
+  'vt-walk':      'Durchgehen\nEgoperspektive (WASD + Maus)',
+  'undo-btn':     'Rückgängig (Strg+Z)\nLetzten Schritt widerrufen',
+  'redo-btn':     'Wiederholen (Strg+Y)',
+};
+
+function initTooltips(){
+  // Use MutationObserver to add tooltips dynamically
+  Object.entries(TOOLTIPS).forEach(([id,text])=>{
+    const el=document.getElementById(id); if(!el) return;
+    addTooltip(el,text);
+  });
+  // Also for data-tip attribute
+  document.querySelectorAll('[data-tip]').forEach(el=>addTooltip(el,el.dataset.tip));
+}
+
+let _tipTimeout=null;
+let _tipEl=null;
+
+function addTooltip(el,text){
+  if(!el||!text) return;
+  el.addEventListener('mouseenter',()=>{
+    _tipTimeout=setTimeout(()=>{
+      let tip=document.getElementById('global-tooltip');
+      if(!tip){
+        tip=document.createElement('div');
+        tip.id='global-tooltip';
+        tip.style.cssText='position:fixed;background:rgba(0,0,0,.9);color:#e8e4d8;font-size:10px;padding:5px 8px;border-radius:5px;z-index:600;max-width:200px;line-height:1.5;pointer-events:none;white-space:pre-line;border:1px solid var(--bd2)';
+        document.body.appendChild(tip);
+      }
+      const r=el.getBoundingClientRect();
+      tip.textContent=text;
+      tip.style.display='block';
+      tip.style.left=r.left+'px';
+      tip.style.top=(r.bottom+4)+'px';
+    },600);
+  });
+  el.addEventListener('mouseleave',()=>{
+    clearTimeout(_tipTimeout);
+    document.getElementById('global-tooltip')?.remove();
+  });
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// EXTRA FEATURES v3.23
+// ════════════════════════════════════════════════════════════════════════
+
+// ── PRINT PREVIEW ────────────────────────────────────────────────────
+function openPrintPreview(){
+  const el=document.getElementById('print-preview-content'); if(!el) return;
+  const prev=currentView; setView('2d'); draw2D();
+  const img2d=fpCv.toDataURL('image/png');
+  const d=getPD();
+  let html='<h2 style="color:#166534;margin-bottom:4px">🌿 '+d.name+'</h2>';
+  html+='<p style="color:#888;font-size:11px">'+new Date().toLocaleDateString('de-DE')+'</p>';
+  if(document.getElementById('pp-2d')?.checked) html+='<img src="'+img2d+'" style="width:100%;border:1px solid #ddd;margin:8px 0">';
+  if(document.getElementById('pp-list')?.checked){
+    html+='<h3 style="font-size:13px">Räume</h3><table style="width:100%;border-collapse:collapse;font-size:11px">';
+    html+='<tr style="background:#f5f5f5"><th style="border:1px solid #ddd;padding:4px">Name</th><th style="border:1px solid #ddd;padding:4px">Größe</th><th style="border:1px solid #ddd;padding:4px">Fläche</th><th style="border:1px solid #ddd;padding:4px">Kapazität</th></tr>';
+    d.rooms.forEach(r=>html+='<tr><td style="border:1px solid #ddd;padding:4px">'+r.name+'</td><td style="border:1px solid #ddd;padding:4px">'+r.w+'×'+r.d+'m</td><td style="border:1px solid #ddd;padding:4px">'+(r.w*r.d).toFixed(1)+'m²</td><td style="border:1px solid #ddd;padding:4px">'+Math.floor(r.w*r.d/2)+' P.</td></tr>');
+    html+='</table>';
+  }
+  if(document.getElementById('pp-budget')?.checked){
+    const total=objects.reduce((s,o)=>s+getObjPrice(o.typeId),0);
+    html+='<h3 style="font-size:13px">Budget: '+total.toLocaleString('de-DE')+'€</h3>';
+  }
+  el.innerHTML=html;
+  setView(prev);
+  openM('m-printpreview');
+}
+
+function executePrint(){
+  const el=document.getElementById('print-preview-content'); if(!el) return;
+  const pw=window.open('','_blank');
+  if(pw){ pw.document.write('<html><head><meta charset=UTF-8><style>body{font-family:sans-serif;padding:20px}@media print{.noprint{display:none}}</style></head><body>'+el.innerHTML+'<button class=noprint onclick=window.print() style="padding:8px 16px;background:#166534;color:#fff;border:none;border-radius:4px;cursor:pointer;margin-top:16px">Drucken</button></body></html>'); pw.document.close(); }
+}
+
+// ── NOTE COLORS ──────────────────────────────────────────────────────
+const NOTE_COLORS=['#ffd700','#ff9999','#99ff99','#99ccff','#ffcc99','#cc99ff','#99ffff'];
+
+function addNoteColored(wx,wy){
+  const text=prompt('Notiz:',''); if(!text) return;
+  const colorEl=document.createElement('div');
+  colorEl.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:600;background:var(--bg2);border:1px solid var(--bd2);border-radius:8px;padding:12px;display:flex;gap:6px;align-items:center';
+  colorEl.innerHTML='<span style="font-size:11px;color:var(--tx3)">Farbe:</span>'
+    +NOTE_COLORS.map(c=>'<div onclick="document.getElementById(\'notecol-sel\').value=\''+c+'\';this.parentNode.remove()" style="width:20px;height:20px;border-radius:50%;background:'+c+';cursor:pointer;border:2px solid transparent" onmouseenter="this.style.border=\'2px solid #fff\'" onmouseleave="this.style.border=\'2px solid transparent\'"></div>').join('')
+    +'<input id="notecol-sel" type="hidden" value="#ffd700">';
+  document.body.appendChild(colorEl);
+  setTimeout(()=>{
+    if(document.body.contains(colorEl)){
+      const col=document.getElementById('notecol-sel')?.value||'#ffd700';
+      colorEl.remove();
+      _notes.push({id:'n'+Date.now(),wx,wy,text,color:col,floorId:curFloor});
+      saveNotes(); renderNotes();
+    }
+  },10000);
+  // Click anywhere else to close
+  document.addEventListener('click',function h(e){
+    if(!colorEl.contains(e.target)){
+      const col=document.getElementById('notecol-sel')?.value||'#ffd700';
+      colorEl.remove();
+      _notes.push({id:'n'+Date.now(),wx,wy,text,color:col,floorId:curFloor});
+      saveNotes(); renderNotes();
+      document.removeEventListener('click',h);
+    }
+  });
+}
+
+// Override addNote to use colored version
+function addNote(wx,wy){ addNoteColored(wx,wy); }
+
+// ── GANTT FROM TODOS ─────────────────────────────────────────────────
+function generateGantt(){
+  const todosWithDate=_todos.filter(t=>t.reminder);
+  if(!todosWithDate.length){ toast('Keine Aufgaben mit Datum für Gantt','b'); return; }
+  const pw=window.open('','_blank','width=900,height=500');
+  if(!pw) return;
+  const dates=todosWithDate.map(t=>new Date(t.reminder));
+  const minD=new Date(Math.min(...dates)); const maxD=new Date(Math.max(...dates));
+  const totalDays=Math.max(1,(maxD-minD)/86400000);
+  const rows=todosWithDate.map((t,i)=>{
+    const start=new Date(t.reminder); const left=((start-minD)/86400000/totalDays*100).toFixed(1);
+    const COLORS=['#4ade80','#38bdf8','#fbbf24','#f87171','#c084fc','#fb923c'];
+    return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+      <div style="width:180px;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:${t.done?'#888':'#333'}">${t.done?'✅ ':''+ t.text}</div>
+      <div style="flex:1;background:#eee;height:22px;border-radius:3px;position:relative">
+        <div style="position:absolute;left:${left}%;width:${Math.max(3,100/totalDays*1)}%;height:100%;background:${COLORS[i%COLORS.length]};border-radius:3px;display:flex;align-items:center;padding:0 5px;font-size:9px;color:#fff;font-weight:600;overflow:hidden;white-space:nowrap">${t.text}</div>
+      </div>
+      <div style="width:80px;font-size:10px;color:#888">${start.toLocaleDateString('de-DE')}</div>
+    </div>`;
+  }).join('');
+  pw.document.write(`<!DOCTYPE html><html><head><meta charset=UTF-8><style>body{font-family:sans-serif;padding:20px}h2{color:#166534}</style></head><body>
+    <h2>📅 Projektplan: ${getPD().name}</h2>
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:#888;margin-bottom:8px">
+      <span>${minD.toLocaleDateString('de-DE')}</span><span>${maxD.toLocaleDateString('de-DE')}</span></div>
+    ${rows}
+    <button onclick=window.print() style="margin-top:16px;padding:8px 16px;background:#166534;color:#fff;border:none;border-radius:4px;cursor:pointer">🖨 Drucken</button>
+  </body></html>`);
+  pw.document.close();
+}
+
+// ── WALL THICKNESS IN 2D ─────────────────────────────────────────────
+// Already walls have thickness but room walls are thin lines.
+// Enhance drawRoom2D to show actual wall thickness
+function drawRoomWallsThick(ctx, r){
+  const T=(r.wallThick||0.15)*vpZoom;
+  const x1=wx2cx(r.x), y1=wy2cy(r.y);
+  const x2=wx2cx(r.x+r.w), y2=wy2cy(r.y+r.d);
+  ctx.save();
+  ctx.fillStyle=r.wallColor||'#8a9a8a';
+  // North wall
+  ctx.fillRect(x1-T/2, y1-T/2, x2-x1+T, T);
+  // South wall
+  ctx.fillRect(x1-T/2, y2-T/2, x2-x1+T, T);
+  // West wall
+  ctx.fillRect(x1-T/2, y1+T/2, T, y2-y1-T);
+  // East wall
+  ctx.fillRect(x2-T/2, y1+T/2, T, y2-y1-T);
+  ctx.restore();
+}
+
+// ── KI FUNCTIONS DROPDOWN in right panel ─────────────────────────────
+function renderKIDropdown(){
+  const el=document.getElementById('ki-fn-list'); if(!el) return;
+  const kiFunctions=[
+    {icon:'⚡',label:'Auto-Optimierung',fn:'autoOptimizeAll()'},
+    {icon:'🔍',label:'Grundriss analysieren',fn:"qmsg('Analysiere den Grundriss und gib Verbesserungsvorschläge')"},
+    {icon:'🪄',label:'Möbel optimieren',fn:'optimizeFurnitureInRoom()'},
+    {icon:'🔐',label:'Sicherheits-Audit',fn:'aiSecurityAudit()'},
+    {icon:'🔮',label:'Raum beschreiben',fn:'aiDescribeRoom()'},
+    {icon:'♿',label:'Barrierefrei-Umbau',fn:'aiAccessibleRebuild()'},
+    {icon:'💰',label:'Kosten schätzen',fn:'estimateCosts()'},
+    {icon:'🏷',label:'Räume benennen',fn:'autoLabelRooms()'},
+    {icon:'🎨',label:'Stil-Berater',fn:'aiStyleAdvisor()'},
+    {icon:'📋',label:'Sitzungsprotokoll',fn:'generateSessionProtocol()'},
+    {icon:'📈',label:'ROI berechnen',fn:"calcROI();openM('m-roi')"},
+    {icon:'🌿',label:'KCanG-Check',fn:'showCSCPanel()'},
+  ];
+  el.innerHTML=kiFunctions.map(fn=>
+    '<div onclick="'+fn.fn+'" style="padding:6px 10px;font-size:11px;color:var(--tx2);cursor:pointer;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--bd);transition:.1s" onmouseenter="this.style.background=\'var(--bg3)\'" onmouseleave="this.style.background=\'\'">'
+    +'<span>'+fn.icon+'</span><span>'+fn.label+'</span></div>'
+  ).join('');
+}
+
+// ── SAVE AI-CREATED OBJECTS TO CATALOG ───────────────────────────────
+function saveAIObjToCatalog(typeId, name, cat, icon, w, d, h, col){
+  // Check if already exists
+  if(customObjs.find(o=>o.id===typeId)) return;
+  const newItem={id:typeId,cat:cat||'KI-Erstellt',icon:icon||'🤖',name,w:+w||1,d:+d||1,h:+h||1,col:col||0x888888,custom:true,aiCreated:true};
+  customObjs.push(newItem);
+  saveCustom();
+  if(leftMode==='custom') renderLeft();
+  toast('✅ KI-Objekt "'+name+'" in Katalog gespeichert','g');
+}
+
+// Hook into wizardGenerate to auto-save created objects
+const _origWizardGenerate=wizardGenerate;
+async function wizardGenerate(){
+  await _origWizardGenerate();
+  // After generation, find newly created custom objects and offer to save
+  const newObjs=customObjs.filter(o=>o.aiCreated&&!o.savedToCatalog);
+  newObjs.forEach(o=>{
+    o.savedToCatalog=true;
+    toast('✅ KI-Möbel "'+o.name+'" → Katalog "KI-Erstellt"','g');
+  });
+  saveCustom();
+}
+
 // ════════════════════════════════════════════════════════════════════════
 // ANIMATION LOOP
 // ════════════════════════════════════════════════════════════════════════
@@ -11637,6 +12096,8 @@ try{const ph=localStorage.getItem("csc-phase");if(ph)_projectPhase=ph;}catch(e){
 renderPhaseBar();
 updateSuggestions();
 initPWA();
+setTimeout(initTooltips,500);
+setTimeout(renderKIDropdown,200);
 loadBadges();
 showTipOfDay();
 // Onboarding for first-time users
@@ -11690,7 +12151,7 @@ draw2D();
 
 renderFloorTabs();
 initUndoSystem();
-setTimeout(()=>toast('🌿 v3.22 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
+setTimeout(()=>toast('🌿 v3.23 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
 
 
 
@@ -11718,7 +12179,7 @@ function initAutoSave(){
   // Enable auto-saving from now on
   _autoSaveReady = true;
   renderVersionHistory();
-  toast('🌿 v3.22 | Auto-Save aktiv','g');
+  toast('🌿 v3.23 | Auto-Save aktiv','g');
 }
 
 
@@ -12039,7 +12500,7 @@ function build3DObj(o){
   const metal = o.metalness !== undefined ? o.metalness : (item.arch==='window'?0.0: item.arch==='door'?0.05:['Lager','Info'].includes(item.cat)?0.55:0.04);
 
   if(item.isKallax || (item.id&&item.id.startsWith('kallax'))){
-    buildKallax3DPro(g, item, o); // v3.22 Pro
+    buildKallax3DPro(g, item, o); // v3.23 Pro
   } else if(item.arch==='security'){
     buildSecurity3D(g, item, o);
   } else if(item.arch==='foil'){
@@ -12330,7 +12791,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
 
   <div style="padding:12px 20px;border-bottom:1px solid #1a2a1a;display:flex;align-items:center;gap:14px;flex-shrink:0">
     <div style="font-size:16px;font-weight:800;color:#4ade80">🌿 CSC Raumplaner — Vollständige Anleitung</div>
-    <div style="font-size:11px;color:#555">v3.22</div>
+    <div style="font-size:11px;color:#555">v3.23</div>
     <div style="flex:1"></div>
     <button class="tbt" onclick="startTutorial()" style="border-color:var(--gr);color:var(--gr);padding:6px 14px">▶ Tutorial starten</button>
     <button class="tbt" onclick="closeHelp()" style="padding:6px 14px">Schließen</button>
