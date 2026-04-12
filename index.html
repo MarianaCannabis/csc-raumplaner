@@ -461,7 +461,7 @@ canvas{display:block}
 #help-close:hover{color:#e8e4d8;background:#1a1a1a}
 
 
-/* ══ NEW FEATURES v3.25 ═══════════════════════════════════════════ */
+/* ══ NEW FEATURES v3.26 ═══════════════════════════════════════════ */
 
 /* Heatmap canvas */
 #heatmap-canvas{position:absolute;inset:0;pointer-events:none;opacity:0.55;display:none;z-index:8}
@@ -500,7 +500,7 @@ canvas{display:block}
 .vlink-inp{width:100%;padding:7px;background:var(--bg);border:1px solid var(--bd2);border-radius:4px;color:var(--tx);font-family:monospace;font-size:10px;margin:5px 0}
 
 
-/* ══ v3.25 FEATURES ══════════════════════════════════════════════ */
+/* ══ v3.26 FEATURES ══════════════════════════════════════════════ */
 /* Budget Tracker */
 #budget-panel{position:fixed;top:50px;right:360px;width:300px;background:var(--bg2);border:1px solid var(--bd2);border-radius:10px;z-index:200;display:none;box-shadow:0 4px 20px rgba(0,0,0,.6)}
 #budget-panel.vis{display:block}
@@ -534,7 +534,7 @@ canvas{display:block}
 .ruler-text{fill:#fbbf24;font-size:11px;font-weight:700;font-family:monospace}
 
 
-/* ══ DROPDOWN MENU SYSTEM v3.25 ══════════════════════════════════ */
+/* ══ DROPDOWN MENU SYSTEM v3.26 ══════════════════════════════════ */
 .tb-menu-group{display:flex;align-items:center;gap:2px}
 .tbm{position:relative}
 .tbm-btn{padding:4px 9px;background:transparent;border:1px solid transparent;border-radius:var(--r4);font-size:11px;cursor:pointer;color:var(--tx2);transition:.12s;white-space:nowrap;display:flex;align-items:center;gap:3px}
@@ -585,7 +585,7 @@ canvas{display:block}
 .compare-label{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);color:var(--gr);font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;z-index:10}
 
 
-/* ══ v3.25 ════════════════════════════════════════════════════════ */
+/* ══ v3.26 ════════════════════════════════════════════════════════ */
 /* Light mode */
 body.light-mode{--bg:#f5f5f0;--bg2:#ffffff;--bg3:#ebebeb;--bg4:#e0e0d8;
   --tx:#111;--tx2:#333;--tx3:#777;--bd:#ccc;--bd2:#aaa;
@@ -640,7 +640,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .font-sample:hover,.font-sample.active{border-color:var(--gr);color:var(--gr)}
 
 
-/* ══ v3.25 ════════════════════════════════════════════════════════ */
+/* ══ v3.26 ════════════════════════════════════════════════════════ */
 /* Inventory */
 .inv-row{display:grid;grid-template-columns:2fr 1.2fr 1.5fr 0.7fr;gap:6px;align-items:center;
   padding:5px 0;border-bottom:1px solid var(--bd);font-size:11px}
@@ -680,7 +680,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .fire-ok{color:#4ade80}.fire-warn{color:#f87171}.fire-info{color:#fbbf24}
 
 
-/* ══ v3.25 ════════════════════════════════════════════════════════ */
+/* ══ v3.26 ════════════════════════════════════════════════════════ */
 
 /* Command Palette */
 #cmd-palette{position:fixed;top:15%;left:50%;transform:translateX(-50%);
@@ -800,7 +800,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   cursor:pointer;min-width:60px;text-align:center}
 
 
-/* ══ v3.25 ════════════════════════════════════════════════════════ */
+/* ══ v3.26 ════════════════════════════════════════════════════════ */
 /* Badges */
 .badge-popup{position:fixed;top:60px;right:16px;background:#0d2010;
   border:1px solid #4ade80;border-radius:10px;padding:12px 16px;z-index:500;
@@ -885,7 +885,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   border-radius:3px;padding:1px 6px;color:var(--tx3);font-family:monospace}
 
 
-/* ══ v3.25 ════════════════════════════════════════════════════════ */
+/* ══ v3.26 ════════════════════════════════════════════════════════ */
 
 /* Minimap */
 #minimap{position:absolute;bottom:8px;right:8px;width:140px;height:100px;
@@ -968,6 +968,77 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .season-tab{padding:4px 10px;background:var(--bg3);border:1px solid var(--bd);
   border-radius:3px;font-size:10px;cursor:pointer;transition:.12s}
 .season-tab.active{background:var(--gr3);border-color:var(--gr);color:#fff}
+
+
+/* ══ NEUES KATALOG-SYSTEM v3.26 ══════════════════════════════════ */
+
+/* Main tab bar inside each panel */
+.cat-tabs{display:flex;gap:0;border-bottom:1px solid var(--bd);
+  overflow-x:auto;flex-shrink:0;background:var(--bg2)}
+.cat-tabs::-webkit-scrollbar{height:2px}
+.cat-tab{padding:6px 10px;font-size:10px;color:var(--tx3);cursor:pointer;
+  white-space:nowrap;border-bottom:2px solid transparent;transition:.12s;flex-shrink:0}
+.cat-tab:hover{color:var(--tx2);background:var(--bg3)}
+.cat-tab.active{color:var(--gr);border-bottom-color:var(--gr);font-weight:600}
+
+/* Category section header */
+.catsec{padding:5px 8px 3px;font-size:9px;color:var(--tx3);
+  font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+  display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;user-select:none;background:var(--bg2);
+  position:sticky;top:0;z-index:1;border-bottom:1px solid var(--bd)}
+.catsec:hover{background:var(--bg3)}
+.catsec-arrow{font-size:9px;color:var(--tx3);transition:transform .15s}
+.catsec.closed .catsec-arrow{transform:rotate(-90deg)}
+
+/* List item (compact) */
+.clist-item{display:flex;align-items:center;gap:8px;padding:6px 8px;
+  cursor:pointer;transition:.1s;border-bottom:1px solid var(--bd);
+  font-size:11px;color:var(--tx2);position:relative}
+.clist-item:hover{background:var(--bg4);color:var(--tx)}
+.clist-item:active{background:var(--gr4)}
+.clist-item .ci-ico{font-size:16px;width:22px;text-align:center;flex-shrink:0}
+.clist-item .ci-info{flex:1;min-width:0}
+.clist-item .ci-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.clist-item .ci-size{font-size:9px;color:var(--tx3)}
+.clist-item .ci-pin{font-size:10px;color:var(--tx3);padding:2px 4px;
+  border-radius:3px;border:1px solid var(--bd);display:none;flex-shrink:0}
+.clist-item:hover .ci-pin{display:block}
+.clist-item.pinned{background:rgba(74,222,128,.06)}
+.clist-item.pinned .ci-pin{display:block;color:var(--gr);border-color:var(--gr)}
+
+/* Arch/Security special colors */
+.clist-item.arch{border-left:2px solid var(--bl)}
+.clist-item.sec{border-left:2px solid #f87171}
+.clist-item.custom{border-left:2px solid var(--pu)}
+
+/* Category count badge */
+.cat-count{font-size:9px;background:var(--bg3);border:1px solid var(--bd);
+  border-radius:10px;padding:1px 5px;color:var(--tx3);margin-left:4px}
+
+/* Search within panel */
+.panel-search{position:sticky;top:0;z-index:2;background:var(--bg2);
+  padding:5px;border-bottom:1px solid var(--bd)}
+.panel-search input{width:100%;padding:5px 8px;background:var(--bg3);
+  border:1px solid var(--bd);border-radius:4px;color:var(--tx);
+  font-size:11px;outline:none}
+.panel-search input:focus{border-color:var(--gr)}
+
+/* View toggle (grid vs list) */
+.view-toggle-btns{display:flex;gap:2px;margin-left:auto}
+.vtb{padding:2px 6px;background:var(--bg3);border:1px solid var(--bd);
+  border-radius:3px;font-size:10px;cursor:pointer;color:var(--tx3)}
+.vtb.active{background:var(--gr4);border-color:var(--gr);color:var(--gr)}
+
+/* Grid mode (kept for backward compat) */
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;
+  padding:4px 4px}
+.cat-grid .clist-item{flex-direction:column;padding:8px 4px;
+  text-align:center;border-bottom:none;border:1px solid var(--bd);
+  border-radius:6px;gap:3px}
+.cat-grid .clist-item .ci-ico{font-size:20px;width:auto}
+.cat-grid .clist-item .ci-size{display:none}
+.cat-grid .clist-item .ci-pin{position:absolute;top:2px;right:2px}
 
 /* TOAST */
 .toast{position:fixed;bottom:62px;left:50%;transform:translateX(-50%);padding:7px 16px;border-radius:var(--r6);font-size:12px;z-index:9999;transition:opacity .35s;white-space:nowrap;pointer-events:none}
@@ -1060,7 +1131,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 <div id="topbar">
   <!-- LOGO -->
   <span class="logo">🌿 CSC <em>Raumplaner</em></span>
-  <span class="vbadge">v3.25</span>
+  <span class="vbadge">v3.26</span>
   <div class="tsep"></div>
 
   <!-- UNDO/REDO -->
@@ -4067,7 +4138,7 @@ function doPrint(){
     +'td,th{border:1px solid #ddd;padding:4px 6px;text-align:left}th{background:#f5f5f5}'
     +'@media print{body{padding:8px}}</style></head><body>'
     +'<h1>🌿 '+d.name+'</h1>'
-    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.25 · '+new Date().toLocaleDateString('de-DE')+'</div>'
+    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.26 · '+new Date().toLocaleDateString('de-DE')+'</div>'
     +'<img src="'+img+'">'
     +'<div class=grid>'
     +'<div class=box><h3>Räume ('+d.rooms.length+')</h3>'
@@ -5906,7 +5977,7 @@ function pickKallaxColor(id, part){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// KALLAX PRO EDITOR — Extended (v3.25)
+// KALLAX PRO EDITOR — Extended (v3.26)
 // ════════════════════════════════════════════════════════════════════════
 
 // Additional color palettes
@@ -7178,7 +7249,7 @@ function rebuild3DThrottled(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// NEW FEATURES v3.25
+// NEW FEATURES v3.26
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. RAUM-SNAP beim Platzieren ─────────────────────────────────────
@@ -7568,7 +7639,7 @@ function showCSCPanel(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// INTERAKTIVE ANLEITUNG v3.25
+// INTERAKTIVE ANLEITUNG v3.26
 // ════════════════════════════════════════════════════════════════════════
 function openHelp(page){
   document.getElementById('help-overlay').classList.add('open');
@@ -7709,7 +7780,7 @@ function renderTutStep(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.25 — ALLE NEUEN FEATURES
+// v3.26 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. KI MÖBELANORDNUNG ─────────────────────────────────────────────
@@ -8361,7 +8432,7 @@ function removeWallCtxMenu(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.25 — ALLE NEUEN FEATURES
+// v3.26 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── FURNITURE PRICES DATABASE ────────────────────────────────────────
@@ -8907,7 +8978,7 @@ const _origAddRoom = addRoom;
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.25 — DROPDOWN MENU SYSTEM + NEW FEATURES
+// v3.26 — DROPDOWN MENU SYSTEM + NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── DROPDOWN MENU SYSTEM ─────────────────────────────────────────────
@@ -9257,7 +9328,7 @@ function renderComparePane(side, data){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.25 — ALL NEW FEATURES
+// v3.26 — ALL NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. DARK/LIGHT MODE ───────────────────────────────────────────────
@@ -9632,7 +9703,7 @@ function registerServiceWorker(){
   if(!location.protocol.startsWith('http')){ console.log('SW: nur auf https verfügbar'); return; }
   // Inline SW as blob
   const swCode=`
-    const CACHE='csc-v3.25';
+    const CACHE='csc-v3.26';
     self.addEventListener('install',e=>e.waitUntil(
       caches.open(CACHE).then(c=>c.add('/'))
     ));
@@ -9706,7 +9777,7 @@ function registerServiceWorker(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.25 — BRANDSCHUTZ / AKUSTIK / ENERGIE / REINIGUNG / INVENTAR /
+// v3.26 — BRANDSCHUTZ / AKUSTIK / ENERGIE / REINIGUNG / INVENTAR /
 //          HEATMAP MITGLIEDER / LIEFERWEGE / BARCODE
 // ════════════════════════════════════════════════════════════════════════
 
@@ -10119,7 +10190,7 @@ function drawRoutes(ctx){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.25 — ALLE AUTOMATISIERUNGS-FEATURES
+// v3.26 — ALLE AUTOMATISIERUNGS-FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -10885,7 +10956,7 @@ function addDashWidget(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.25 — ALLE NEUEN FEATURES
+// v3.26 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -11700,7 +11771,7 @@ function showGrowthPlan(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.25 — MINIMAP / SNAP / GUIDED / UNDO-TL / GROUPS / SEASONS / MORE
+// v3.26 — MINIMAP / SNAP / GUIDED / UNDO-TL / GROUPS / SEASONS / MORE
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -12231,7 +12302,7 @@ function addTooltip(el,text){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// EXTRA FEATURES v3.25
+// EXTRA FEATURES v3.26
 // ════════════════════════════════════════════════════════════════════════
 
 // ── PRINT PREVIEW ────────────────────────────────────────────────────
@@ -12395,6 +12466,276 @@ async function wizardGenerate(){
   saveCustom();
 }
 
+
+// ════════════════════════════════════════════════════════════════════════
+// NEUES KATALOG-SYSTEM v3.26
+// ════════════════════════════════════════════════════════════════════════
+
+// Group definitions
+const FURN_GROUPS = {
+  "🏪 Kundenbereich":  ["Empfang","Ausgabe"],
+  "🛋 Aufenthalt":     ["Sozial","Küche"],
+  "📦 Infrastruktur":  ["Lager","Büro"],
+  "🚽 Sanitär":        ["WC"],
+  "🌿 Außen & Deko":   ["Außen","Info"],
+  "⚙ Technik":         ["Technik","Sonstiges"],
+  "🤖 KI-Erstellt":    ["KI-Erstellt"],
+};
+const BAU_GROUPS = {
+  "🚪 Türen & Zugänge":      ["Türen"],
+  "🪟 Fenster & Verglasung":  ["Fenster","Schaufenster"],
+  "🎨 Folierung & Film":      ["Folierung"],
+  "💡 Beleuchtung":           ["Beleuchtung"],
+  "🏛 Bauelemente":           ["Sonstiges"],
+};
+const SEC_GROUPS = {
+  "📷 Videoüberwachung":     ["Kameras"],
+  "🔔 Einbruch & Alarm":     ["Alarm"],
+  "🧯 Brandschutz":          ["Brandschutz"],
+  "🔒 Zutrittskontrolle":    ["Sicherung"],
+  "🚨 Notfall & Erste Hilfe":["Notfall"],
+};
+
+var _catViewMode  = 'list';   // 'list' or 'grid'
+var _activeFurnGrp= null;     // null = show all
+var _activeBauGrp = null;
+var _activeSecGrp = null;
+var _catSearch    = {};       // {panel: query}
+
+function renderFurnPanel(el){
+  const query=_catSearch.furn||'';
+  let catalog=[...getCatalog()];
+  if(query) catalog=catalog.filter(i=>
+    i.name.toLowerCase().includes(query.toLowerCase())||
+    (i.cat||'').toLowerCase().includes(query.toLowerCase())
+  );
+  el.innerHTML='';
+  // Search bar
+  const sb=document.createElement('div');
+  sb.className='panel-search';
+  sb.innerHTML='<div style="display:flex;align-items:center;gap:4px">'
+    +'<input id="furn-search" placeholder="🔍 Möbel suchen…" value="'+query+'"'
+    +' oninput="_catSearch.furn=this.value;renderFurnPanel(document.getElementById(\'left-body\'))">'
+    +'<div class="view-toggle-btns">'
+    +'<button class="vtb'+(_catViewMode==='list'?' active':'')+'" onclick="_catViewMode=\'list\';renderFurnPanel(document.getElementById(\'left-body\'))">☰</button>'
+    +'<button class="vtb'+(_catViewMode==='grid'?' active':'')+'" onclick="_catViewMode=\'grid\';renderFurnPanel(document.getElementById(\'left-body\'))">⊞</button>'
+    +'</div></div>';
+  el.appendChild(sb);
+
+  // Tabs
+  const tabsEl=document.createElement('div');
+  tabsEl.className='cat-tabs';
+  tabsEl.innerHTML='<div class="cat-tab'+(!_activeFurnGrp?' active':'')+'" onclick="_activeFurnGrp=null;renderFurnPanel(document.getElementById(\'left-body\'))">Alle</div>'
+    +Object.entries(FURN_GROUPS).filter(([g,cats])=>
+      catalog.some(i=>cats.includes(i.cat))
+    ).map(([g,cats])=>{
+      const count=catalog.filter(i=>cats.includes(i.cat)).length;
+      const active=_activeFurnGrp===g;
+      return '<div class="cat-tab'+(active?' active':'')+'" onclick="_activeFurnGrp=\''+g.replace(/'/g,"\\'")+'\''+
+        ';renderFurnPanel(document.getElementById(\'left-body\'))">'+g+'<span class="cat-count">'+count+'</span></div>';
+    }).join('');
+  el.appendChild(tabsEl);
+
+  // Content
+  const content=document.createElement('div');
+  content.style.cssText='overflow-y:auto;flex:1';
+  const groups=_activeFurnGrp? {[_activeFurnGrp]:FURN_GROUPS[_activeFurnGrp]} : FURN_GROUPS;
+  Object.entries(groups).forEach(([grpName,cats])=>{
+    const items=catalog.filter(i=>cats.includes(i.cat));
+    if(!items.length) return;
+    const secId='fgrp_'+grpName.replace(/[^a-z0-9]/gi,'_');
+    const closed=localStorage.getItem('fg-closed-'+grpName)==='1';
+    // Section header
+    const hdr=document.createElement('div');
+    hdr.className='catsec'+(closed?' closed':'');
+    hdr.innerHTML='<span>'+grpName+' <span class="cat-count">'+items.length+'</span></span>'
+      +'<span class="catsec-arrow">▾</span>';
+    hdr.onclick=()=>{
+      const isClosed=hdr.classList.toggle('closed');
+      body.style.display=isClosed?'none':'block';
+      localStorage.setItem('fg-closed-'+grpName,isClosed?'1':'0');
+    };
+    content.appendChild(hdr);
+    // Items
+    const body=document.createElement('div');
+    body.id=secId;
+    body.style.display=closed?'none':'block';
+    if(_catViewMode==='grid') body.className='cat-grid';
+    items.forEach(item=>body.appendChild(makeCatalogItem(item,false)));
+    content.appendChild(body);
+  });
+  el.appendChild(content);
+}
+
+function renderBauPanel(el){
+  const query=_catSearch.bau||'';
+  let catalog=getArchCatalog().filter(i=>
+    !['Kameras','Alarm','Brandschutz','Sicherung','Notfall'].includes(i.cat)
+  );
+  if(query) catalog=catalog.filter(i=>
+    i.name.toLowerCase().includes(query.toLowerCase())||
+    (i.cat||'').toLowerCase().includes(query.toLowerCase())
+  );
+  el.innerHTML='';
+  const sb=document.createElement('div');
+  sb.className='panel-search';
+  sb.innerHTML='<div style="display:flex;align-items:center;gap:4px">'
+    +'<input placeholder="🔍 Bauelemente suchen…" value="'+query+'"'
+    +' oninput="_catSearch.bau=this.value;renderBauPanel(document.getElementById(\'left-body\'))">'
+    +'<div class="view-toggle-btns">'
+    +'<button class="vtb'+(_catViewMode==='list'?' active':'')+'" onclick="_catViewMode=\'list\';renderBauPanel(document.getElementById(\'left-body\'))">☰</button>'
+    +'<button class="vtb'+(_catViewMode==='grid'?' active':'')+'" onclick="_catViewMode=\'grid\';renderBauPanel(document.getElementById(\'left-body\'))">⊞</button>'
+    +'</div></div>';
+  el.appendChild(sb);
+  // Tabs
+  const tabsEl=document.createElement('div');
+  tabsEl.className='cat-tabs';
+  tabsEl.innerHTML='<div class="cat-tab'+(!_activeBauGrp?' active':'')+'" onclick="_activeBauGrp=null;renderBauPanel(document.getElementById(\'left-body\'))">Alle</div>'
+    +Object.entries(BAU_GROUPS).filter(([g,cats])=>catalog.some(i=>cats.includes(i.cat)))
+    .map(([g,cats])=>{
+      const count=catalog.filter(i=>cats.includes(i.cat)).length;
+      return '<div class="cat-tab'+(_activeBauGrp===g?' active':'')+'" onclick="_activeBauGrp=\''+g.replace(/'/g,"\\'")+'\''+
+        ';renderBauPanel(document.getElementById(\'left-body\'))">'+g+'<span class="cat-count">'+count+'</span></div>';
+    }).join('');
+  el.appendChild(tabsEl);
+  const content=document.createElement('div');
+  content.style.cssText='overflow-y:auto;flex:1';
+  const groups=_activeBauGrp?{[_activeBauGrp]:BAU_GROUPS[_activeBauGrp]}:BAU_GROUPS;
+  Object.entries(groups).forEach(([grpName,cats])=>{
+    const items=catalog.filter(i=>cats.includes(i.cat));
+    if(!items.length) return;
+    const closed=localStorage.getItem('fb-closed-'+grpName)==='1';
+    const hdr=document.createElement('div');
+    hdr.className='catsec'+(closed?' closed':'');
+    hdr.innerHTML='<span>'+grpName+' <span class="cat-count">'+items.length+'</span></span><span class="catsec-arrow">▾</span>';
+    const body=document.createElement('div');
+    body.style.display=closed?'none':'block';
+    if(_catViewMode==='grid') body.className='cat-grid';
+    hdr.onclick=()=>{ const c=hdr.classList.toggle('closed'); body.style.display=c?'none':'block'; localStorage.setItem('fb-closed-'+grpName,c?'1':'0'); };
+    items.forEach(item=>body.appendChild(makeCatalogItem(item,true)));
+    content.appendChild(hdr); content.appendChild(body);
+  });
+  el.appendChild(content);
+}
+
+function renderSecPanel(el){
+  const query=_catSearch.sec||'';
+  let catalog=getSecurityCatalog();
+  if(query) catalog=catalog.filter(i=>
+    i.name.toLowerCase().includes(query.toLowerCase())||
+    (i.cat||'').toLowerCase().includes(query.toLowerCase())
+  );
+  el.innerHTML='';
+  const sb=document.createElement('div');
+  sb.className='panel-search';
+  sb.innerHTML='<div style="display:flex;align-items:center;gap:4px">'
+    +'<input placeholder="🔍 Sicherheitstechnik suchen…" value="'+query+'"'
+    +' oninput="_catSearch.sec=this.value;renderSecPanel(document.getElementById(\'left-body\'))">'
+    +'<div class="view-toggle-btns">'
+    +'<button class="vtb'+(_catViewMode==='list'?' active':'')+'" onclick="_catViewMode=\'list\';renderSecPanel(document.getElementById(\'left-body\'))">☰</button>'
+    +'<button class="vtb'+(_catViewMode==='grid'?' active':'')+'" onclick="_catViewMode=\'grid\';renderSecPanel(document.getElementById(\'left-body\'))">⊞</button>'
+    +'</div></div>';
+  el.appendChild(sb);
+  const tabsEl=document.createElement('div');
+  tabsEl.className='cat-tabs';
+  tabsEl.innerHTML='<div class="cat-tab'+(!_activeSecGrp?' active':'')+'" onclick="_activeSecGrp=null;renderSecPanel(document.getElementById(\'left-body\'))">Alle</div>'
+    +Object.entries(SEC_GROUPS).filter(([g,cats])=>catalog.some(i=>cats.includes(i.cat)))
+    .map(([g,cats])=>{
+      const count=catalog.filter(i=>cats.includes(i.cat)).length;
+      return '<div class="cat-tab'+(_activeSecGrp===g?' active':'')+'" onclick="_activeSecGrp=\''+g.replace(/'/g,"\\'")+'\''+
+        ';renderSecPanel(document.getElementById(\'left-body\'))">'+g+'<span class="cat-count">'+count+'</span></div>';
+    }).join('');
+  el.appendChild(tabsEl);
+  const content=document.createElement('div');
+  content.style.cssText='overflow-y:auto;flex:1';
+  const groups=_activeSecGrp?{[_activeSecGrp]:SEC_GROUPS[_activeSecGrp]}:SEC_GROUPS;
+  Object.entries(groups).forEach(([grpName,cats])=>{
+    const items=catalog.filter(i=>cats.includes(i.cat));
+    if(!items.length) return;
+    const closed=localStorage.getItem('fs-closed-'+grpName)==='1';
+    const hdr=document.createElement('div');
+    hdr.className='catsec'+(closed?' closed':'');
+    hdr.innerHTML='<span>'+grpName+' <span class="cat-count">'+items.length+'</span></span><span class="catsec-arrow">▾</span>';
+    const body=document.createElement('div');
+    body.style.display=closed?'none':'block';
+    if(_catViewMode==='grid') body.className='cat-grid';
+    hdr.onclick=()=>{ const c=hdr.classList.toggle('closed'); body.style.display=c?'none':'block'; localStorage.setItem('fs-closed-'+grpName,c?'1':'0'); };
+    items.forEach(item=>body.appendChild(makeCatalogItem(item,false,true)));
+    content.appendChild(hdr); content.appendChild(body);
+  });
+  el.appendChild(content);
+}
+
+// Shared item renderer
+function makeCatalogItem(item, isArch, isSec){
+  const el=document.createElement('div');
+  const isPinned=_favItems.includes(item.id);
+  el.className='clist-item'+(isArch?' arch':isSec?' sec':item.custom?' custom':'')+(isPinned?' pinned':'');
+  el.id='fc-'+item.id;
+  el.draggable=true;
+  const sizeTxt=item.w?(item.w+'×'+item.d+'m'):'';
+  if(_catViewMode==='grid'){
+    el.innerHTML='<span class="ci-ico">'+item.icon+'</span>'
+      +'<span class="ci-name" style="font-size:9px;color:var(--tx2)">'+item.name.slice(0,14)+(item.name.length>14?'…':'')+'</span>';
+  } else {
+    el.innerHTML='<span class="ci-ico">'+item.icon+'</span>'
+      +'<div class="ci-info">'
+        +'<div class="ci-name">'+item.name+'</div>'
+        +(sizeTxt?'<div class="ci-size">'+sizeTxt+'</div>':'')
+      +'</div>'
+      +(item.custom?'<button class="ci-pin" onclick="delCustom(\''+item.id+'\');event.stopPropagation()" title="Löschen" style="color:var(--rd)">🗑</button>'
+        :'<button class="ci-pin" onclick="togglePin(\''+item.id+'\');this.closest(\'.clist-item\').classList.toggle(\'pinned\');event.stopPropagation()" title="Anpinnen">'+(isPinned?'📌':'📌')+'</button>');
+  }
+  el.title=item.name+(sizeTxt?' ('+sizeTxt+')':'')+(item.cat?' · '+item.cat:'');
+  el.addEventListener('dragstart',e=>onFurnDragStart(e,item.id));
+  el.addEventListener('click',()=>{
+    addToRecent(item.id); renderPinBar();
+    startCatalogDrag(item.id);
+  });
+  el.addEventListener('contextmenu',e=>{
+    e.preventDefault();
+    catalogItemCtx(e,item.id);
+  });
+  // Show ghost on hover
+  el.addEventListener('mouseenter',()=>{ _ghostTypeId=item.id; });
+  el.addEventListener('mouseleave',()=>{ if(!dragObj) hideGhostPreview(); _ghostTypeId=null; });
+  return el;
+}
+
+// Custom objects panel
+function renderCustomPanel(el){
+  el.innerHTML='';
+  const sb=document.createElement('div');
+  sb.className='panel-search';
+  sb.innerHTML='<div style="display:flex;align-items:center;gap:6px;padding:5px">'
+    +'<span style="font-size:11px;color:var(--tx2)">✏️ Eigene Objekte</span>'
+    +'<button onclick="openM(\'m-custom\')" class="vtb" style="margin-left:auto">＋ Neu</button></div>';
+  el.appendChild(sb);
+  if(!customObjs.length){
+    const em=document.createElement('div');
+    em.style.cssText='padding:20px;text-align:center;font-size:11px;color:var(--tx3)';
+    em.innerHTML='Noch keine eigenen Objekte.<br><br>'
+      +'<button class="mbt ok" onclick="openM(\'m-custom\')" style="font-size:11px">＋ Eigenes Objekt erstellen</button><br><br>'
+      +'<button class="mbt" onclick="openM(\'m-wizard\')" style="font-size:11px">🤖 KI-Möbel erstellen</button>';
+    el.appendChild(em); return;
+  }
+  // Group by cat
+  const cats=[...new Set(customObjs.map(o=>o.cat||'Eigene'))];
+  const content=document.createElement('div');
+  content.style.cssText='overflow-y:auto;flex:1';
+  cats.forEach(cat=>{
+    const items=customObjs.filter(o=>(o.cat||'Eigene')===cat);
+    const hdr=document.createElement('div');
+    hdr.className='catsec';
+    hdr.innerHTML='<span>'+cat+' <span class="cat-count">'+items.length+'</span></span><span class="catsec-arrow">▾</span>';
+    const body=document.createElement('div');
+    hdr.onclick=()=>{ const c=hdr.classList.toggle('closed'); body.style.display=c?'none':'block'; };
+    items.forEach(item=>body.appendChild(makeCatalogItem(item,false,false)));
+    content.appendChild(hdr); content.appendChild(body);
+  });
+  el.appendChild(content);
+}
+
 // ════════════════════════════════════════════════════════════════════════
 // ANIMATION LOOP
 // ════════════════════════════════════════════════════════════════════════
@@ -12497,7 +12838,7 @@ draw2D();
 
 renderFloorTabs();
 initUndoSystem();
-setTimeout(()=>toast('🌿 v3.25 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
+setTimeout(()=>toast('🌿 v3.26 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
 
 
 
@@ -12525,7 +12866,7 @@ function initAutoSave(){
   // Enable auto-saving from now on
   _autoSaveReady = true;
   renderVersionHistory();
-  toast('🌿 v3.25 | Auto-Save aktiv','g');
+  toast('🌿 v3.26 | Auto-Save aktiv','g');
 }
 
 
@@ -12846,7 +13187,7 @@ function build3DObj(o){
   const metal = o.metalness !== undefined ? o.metalness : (item.arch==='window'?0.0: item.arch==='door'?0.05:['Lager','Info'].includes(item.cat)?0.55:0.04);
 
   if(item.isKallax || (item.id&&item.id.startsWith('kallax'))){
-    buildKallax3DPro(g, item, o); // v3.25 Pro
+    buildKallax3DPro(g, item, o); // v3.26 Pro
   } else if(item.arch==='security'){
     buildSecurity3D(g, item, o);
   } else if(item.arch==='foil'){
@@ -13137,7 +13478,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
 
   <div style="padding:12px 20px;border-bottom:1px solid #1a2a1a;display:flex;align-items:center;gap:14px;flex-shrink:0">
     <div style="font-size:16px;font-weight:800;color:#4ade80">🌿 CSC Raumplaner — Vollständige Anleitung</div>
-    <div style="font-size:11px;color:#555">v3.25</div>
+    <div style="font-size:11px;color:#555">v3.26</div>
     <div style="flex:1"></div>
     <button class="tbt" onclick="startOnboarding()" style="border-color:var(--gr);color:var(--gr);padding:6px 14px">▶ Illustriertes Intro</button>
     <button class="tbt" onclick="startTutorial()" style="padding:6px 14px">🎯 Interaktives Tutorial</button>
