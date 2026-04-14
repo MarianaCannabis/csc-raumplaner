@@ -1899,14 +1899,14 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
     <div class="spanel-body">
       <div class="api-box">
         <label>🔑 KI-Assistent</label>
-        <div class="api-st ok" id="api-st" style="margin-bottom:6px">✓ API Key aktiv — KI-Funktionen verfügbar</div>
-        <details style="margin-top:4px">
-          <summary style="font-size:10px;color:var(--tx3);cursor:pointer">Eigenen Key verwenden (optional)</summary>
+        <div class="api-st ok" id="api-st" style="margin-bottom:6px">⬜ Kein API Key — Key oben eingeben</div>
+        <details open style="margin-top:4px">
+          <summary style="font-size:10px;color:var(--gr);cursor:pointer;font-weight:700">🔑 API Key eingeben (erforderlich für KI)</summary>
           <div class="api-row" style="margin-top:5px">
-            <input class="api-inp" id="api-inp" type="password" placeholder="sk-ant-api03-…" autocomplete="off">
-            <button class="api-save" onclick="doSaveKey()">OK</button>
+            <input class="api-inp" id="api-inp" type="password" placeholder="sk-ant-api03-… (von console.anthropic.com)" autocomplete="off">
+            <button class="api-save" onclick="doSaveKey()">💾 Speichern</button><button class="api-save" onclick="testAIConnection()" style="margin-left:4px;background:var(--bg3)">🔌 Test</button>
           </div>
-          <div style="font-size:9px;color:var(--tx3);margin-top:3px">Eigener Key überschreibt den eingebetteten</div>
+          <div style="font-size:9px;color:var(--tx3);margin-top:3px">Key kostenlos auf <a href="https://console.anthropic.com" target="_blank" style="color:var(--bl)">console.anthropic.com</a> — ohne Key keine KI</div>
         </details>
       </div>
       <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px">
@@ -4584,7 +4584,13 @@ function doSaveKey(){
 function updateApiSt(){
   const k=getKey();const st=document.getElementById('api-st');
   if(!st)return;
-  st.textContent=k?'✓ Key aktiv ('+k.slice(0,12)+'…)':'Kein Key gespeichert';
+  if(k){
+    st.style.color='var(--gr)';
+    st.textContent='✅ Key aktiv ('+k.slice(0,12)+'…)';
+  } else {
+    st.style.color='var(--rd)';
+    st.textContent='❌ Kein Key — bitte eingeben';
+  }
   st.className='api-st '+(k?'ok':'none');
   const inp=document.getElementById('api-inp');if(inp&&k)inp.value=k;
   const btn=document.getElementById('ai-key-btn');if(btn)btn.style.display=k?'none':'flex';
