@@ -1418,13 +1418,107 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 /* Nächster Schritt — anchored right of canvas */
 #nextstep-panel{position:fixed!important;bottom:60px!important;right:8px!important;top:auto!important;width:260px;z-index:26;}
 /* ══════════════════════════════════════════════════════════════ */
-#quick-rooms-bar{flex-shrink:0!important;z-index:10;position:relative}
 
-/* v3.43 explicit grid placements */
-#iconbar{grid-column:1;grid-row:2}
-#left   {grid-column:2;grid-row:2;min-height:0;overflow:hidden}
-#canvas-wrap{grid-column:3;grid-row:2;min-height:0;position:relative;overflow:hidden;background:#1a1e26}
-#right  {grid-column:4;grid-row:2;min-height:0;overflow:hidden}
+
+
+/* ══ v3.43 CLEAN LAYOUT ════════════════════════════════════════ */
+
+/* Props panel — fixed, right side, under health score, NOT in canvas */
+#props-panel{
+  position:fixed;
+  top:55px;
+  right:308px;
+  width:240px;
+  background:var(--bg2);
+  border:1px solid var(--gr3);
+  border-radius:10px;
+  z-index:200;
+  display:none;
+  box-shadow:0 4px 20px rgba(0,0,0,.6);
+  font-size:11px;
+}
+#props-panel.vis{display:block}
+#props-panel .pp-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:7px 10px;background:var(--bg3);
+  border-bottom:1px solid var(--bd);border-radius:10px 10px 0 0;
+  cursor:grab;
+}
+#props-panel .pp-title{font-size:11px;font-weight:700;color:var(--gr)}
+#props-panel .pp-close{background:none;border:none;color:var(--tx3);cursor:pointer;font-size:16px}
+
+/* Right info panel — slides in over the right edge of canvas */
+#info-panel{
+  position:fixed;
+  top:54px;
+  right:308px;
+  width:260px;
+  max-height:calc(100vh - 120px);
+  overflow-y:auto;
+  background:var(--bg2);
+  border:1px solid var(--gr3);
+  border-radius:10px;
+  z-index:200;
+  display:none;
+  box-shadow:0 4px 20px rgba(0,0,0,.6);
+}
+#info-panel.vis{display:block}
+#info-panel .ip-head{
+  position:sticky;top:0;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:7px 10px;background:var(--bg3);
+  border-bottom:1px solid var(--bd);border-radius:10px 10px 0 0;
+  z-index:1;cursor:grab;
+}
+#info-panel .ip-title{font-size:11px;font-weight:700;color:var(--gr)}
+#info-panel .ip-close{background:none;border:none;color:var(--tx3);cursor:pointer;font-size:16px}
+#info-panel .ip-body{padding:0}
+
+/* Nächster Schritt — fixed bottom right of canvas */
+#nextstep-panel{
+  position:fixed !important;
+  bottom:60px !important;
+  right:8px !important;
+  top:auto !important;
+  left:auto !important;
+  width:260px;
+  z-index:150;
+}
+
+/* KI dropdown */
+#ki-dropdown-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  background:linear-gradient(135deg,#0d3d1a,#1a5c2a);
+  border:1px solid var(--gr);border-radius:20px;
+  padding:5px 12px;cursor:pointer;color:var(--gr);font-size:11px;
+  font-weight:700;transition:.15s;white-space:nowrap;
+}
+#ki-dropdown-btn:hover{background:linear-gradient(135deg,#1a5c2a,#256b35);box-shadow:0 0 8px rgba(74,222,128,.3)}
+#ki-dropdown-menu{position:fixed;z-index:500;background:var(--bg2);border:1px solid var(--gr3);
+  border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.7);min-width:260px;display:none}
+#ki-dropdown-menu.vis{display:block;animation:fadeSlide .15s ease}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.ki-menu-item{display:flex;align-items:center;gap:8px;padding:9px 14px;cursor:pointer;
+  transition:.1s;border-bottom:1px solid rgba(255,255,255,.04);font-size:11px;color:var(--tx2)}
+.ki-menu-item:hover{background:var(--gr4);color:var(--tx)}
+.ki-menu-item .ki-icon{font-size:14px;width:20px;flex-shrink:0}
+.ki-menu-section{padding:5px 14px 3px;font-size:9px;color:var(--tx3);
+  text-transform:uppercase;letter-spacing:.5px;background:var(--bg3)}
+
+/* Draggable panels */
+.drag-panel{position:fixed;z-index:300;cursor:default;user-select:none;
+  background:var(--bg2);border:1px solid var(--gr3);border-radius:10px;
+  box-shadow:0 4px 20px rgba(0,0,0,.7)}
+.drag-panel .dp-head{cursor:grab;display:flex;align-items:center;justify-content:space-between;
+  padding:7px 10px;background:var(--bg3);border-bottom:1px solid var(--bd);
+  border-radius:10px 10px 0 0}
+.drag-panel .dp-head:active{cursor:grabbing}
+.drag-panel .dp-title{font-size:11px;font-weight:700;color:var(--gr);flex:1}
+.drag-panel .dp-close{background:none;border:none;color:var(--tx3);cursor:pointer;font-size:16px;padding:0 2px}
+.drag-panel .dp-close:hover{color:var(--rd)}
+.drag-panel .dp-body{padding:0;overflow-y:auto;max-height:70vh}
+
+/* ══════════════════════════════════════════════════════════════ */
 
 /* TOAST */
 .toast{position:fixed;bottom:62px;left:50%;transform:translateX(-50%);padding:7px 16px;border-radius:var(--r6);font-size:12px;z-index:9999;transition:opacity .35s;white-space:nowrap;pointer-events:none}
@@ -1799,24 +1893,6 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 
 <!-- CANVAS AREA -->
 <div id="canvas-wrap">
-  <!-- PROPERTIES TILE (under health score, shown when object selected) -->
-  <div id="props-tile">
-    <div class="pt-head">
-      <span class="pt-title" id="pt-title">Objekt</span>
-      <button class="pt-close" onclick="closePropsTile()">✕</button>
-    </div>
-    <div id="pt-body"></div>
-  </div>
-
-  <!-- SIDE INFO PANEL (slides in from right, for analysis results) -->
-  <div id="side-info">
-    <div class="si-head">
-      <span class="si-title" id="si-title">Info</span>
-      <button class="si-close" onclick="closeSideInfo()">✕</button>
-    </div>
-    <div class="si-body" id="si-body"></div>
-  </div>
-
 <div id="health-score" onclick="showHealthDetails()" title="Projekt-Qualitätsscore">
   <div class="hs-bar"><div class="hs-fill" id="hs-fill" style="width:0%;background:#4ade80"></div>
   <div id="quick-rooms-bar" style="display:flex;padding:3px 6px;background:var(--bg2);border-bottom:1px solid var(--bd);flex-shrink:0;gap:4px;flex-wrap:wrap;overflow-x:auto;min-height:32px"><span style="font-size:9px;color:var(--tx3);padding:4px">⏳</span></div>
@@ -4156,7 +4232,7 @@ function setSelection(id, isRoom){
   renderLeft(); draw2D();
   updateBreadcrumb();
   checkAutoBadges();
-  setTimeout(updatePropsTile,30);
+  setTimeout(updatePropsPanel,30);
   if(selIsRoom){ const r=rooms.find(r=>r.id===selId); showQuickAdd(r); } else { document.querySelectorAll('.qa-chip').forEach(e=>e.remove()); }
   // Auto-open prop panel for objects (rooms use inline props in sidebar)
   if(id && !isRoom){
@@ -15773,7 +15849,7 @@ function runEmergencyScenario(){
 }
 
 // ── SHARED FLOATING PANEL ────────────────────────────────────────────
-// old showFloatingPanel removed
+
 
 // ── ANALYSE-DASHBOARD ────────────────────────────────────────────────
 function openAnalysisDashboard(){
@@ -18351,119 +18427,6 @@ document.addEventListener('keydown', e=>{
 // v3.43 — KI DROPDOWN / SIDE PANELS / LAYOUT
 // ════════════════════════════════════════════════════════════════════════
 
-// ── KI FUNCTIONS DROPDOWN ────────────────────────────────────────────
-const KI_MENU = [
-  {section: '🔍 Analysieren & Verstehen'},
-  {icon:'🏷',label:'Räume automatisch benennen',fn:'autoLabelRooms()'},
-  {icon:'📝',label:'Raum beschreiben (KI)',fn:'aiDescribeRoom()'},
-  {icon:'🎨',label:'Stil-Berater',fn:'aiStyleAdvisor()'},
-  {icon:'🔐',label:'Sicherheits-Audit',fn:'aiSecurityAudit()'},
-  {icon:'♿',label:'Barrierefreiheit verbessern',fn:'aiAccessibleRebuild()'},
-  {section: '🏗 Planen & Einrichten'},
-  {icon:'⚡',label:'Auto-Optimierung (alles)',fn:'autoOptimizeAll()'},
-  {icon:'🪑',label:'Layout optimieren',fn:'optimizeLayout()'},
-  {icon:'🌿',label:'Smart Lighting platzieren',fn:'placeSmartLighting()'},
-  {icon:'📸',label:'Grundriss aus Foto erkennen',fn:"openFloorPlanRecognizer()"},
-  {section: '📊 Berichte & Export'},
-  {icon:'📋',label:'Vollständiger KI-Bericht',fn:'generateFullReport()'},
-  {icon:'📓',label:'Sitzungsprotokoll',fn:'generateSessionProtocol()'},
-  {icon:'💰',label:'Kosten schätzen',fn:'estimateCosts()'},
-  {section: '🔌 Verbindung'},
-  {icon:'🔌',label:'KI-Verbindung testen',fn:'testAIConnection()'},
-];
-
-function buildKIDropdown(){
-  const menu = document.getElementById('ki-dropdown-menu');
-  if(!menu) return;
-  menu.innerHTML = KI_MENU.map(item => {
-    if(item.section) return `<div class="ki-menu-section">${item.section}</div>`;
-    return `<div class="ki-menu-item" onclick="closeKIDropdown();${item.fn}">
-      <span class="ki-icon">${item.icon}</span>
-      <span>${item.label}</span>
-    </div>`;
-  }).join('');
-}
-
-function toggleKIDropdown(btn){
-  const menu = document.getElementById('ki-dropdown-menu');
-  if(!menu) return;
-  if(!menu.innerHTML) buildKIDropdown();
-  const open = menu.classList.toggle('vis');
-  btn.classList.toggle('open', open);
-  if(open){
-    // Position below button
-    const rect = btn.getBoundingClientRect();
-    menu.style.top  = (rect.bottom+4)+'px';
-    menu.style.left = rect.left+'px';
-    // Close on outside click
-    setTimeout(()=>document.addEventListener('click', closeKIDropdown, {once:true}), 10);
-  }
-}
-function closeKIDropdown(){
-  const menu=document.getElementById('ki-dropdown-menu');
-  menu?.classList.remove('vis');
-  document.getElementById('ki-dropdown-btn')?.classList.remove('open');
-}
-
-// ── PROPERTIES TILE (under health score) ────────────────────────────
-function showPropsTile(title, html){
-  const tile=document.getElementById('props-tile');
-  const titleEl=document.getElementById('pt-title');
-  const bodyEl=document.getElementById('pt-body');
-  if(!tile||!bodyEl) return;
-  if(titleEl) titleEl.textContent=title;
-  bodyEl.innerHTML=html;
-  tile.classList.add('vis');
-}
-function closePropsTile(){
-  document.getElementById('props-tile')?.classList.remove('vis');
-}
-
-// Show props tile when object is selected
-function updatePropsTile(){
-  if(!selId){ closePropsTile(); return; }
-  if(selIsRoom){
-    const r=rooms.find(r=>r.id===selId); if(!r) return;
-    showPropsTile(r.name,
-      `<div style="font-size:10px;color:var(--tx2);line-height:1.8">
-       📐 ${r.w}×${r.d}m · H: ${r.h||2.8}m<br>
-       📏 Fläche: ${(r.w*r.d).toFixed(1)}m²<br>
-       <button onclick="openRoomEdit(rooms.find(r=>r.id==='${r.id}'))" style="margin-top:6px;width:100%;padding:4px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx2);border-radius:4px;cursor:pointer;font-size:10px">⚙ Eigenschaften</button>
-       </div>`
-    );
-  } else {
-    const o=objects.find(o=>o.id===selId); if(!o) return;
-    const it=findItem(o.typeId)||{};
-    showPropsTile(it.name||o.typeId,
-      `<div style="font-size:10px;color:var(--tx2);line-height:1.8">
-       📐 ${(o.w||it.w||1).toFixed(2)}×${(o.d||it.d||1).toFixed(2)}m<br>
-       🔄 ${o.rot||0}° Rotation<br>
-       <div style="display:flex;gap:4px;margin-top:6px">
-         <button onclick="setObjRot((objects.find(o=>o.id==='${o.id}')||{}),((o.rot||0)+90)%360)" style="flex:1;padding:3px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx2);border-radius:3px;cursor:pointer;font-size:10px">↻ 90°</button>
-         <button onclick="deleteObj('${o.id}')" style="flex:1;padding:3px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#f87171;border-radius:3px;cursor:pointer;font-size:10px">🗑 Löschen</button>
-       </div>
-       </div>`
-    );
-  }
-}
-
-// ── SIDE INFO PANEL ──────────────────────────────────────────────────
-function showSideInfo(title, html){
-  const panel=document.getElementById('side-info');
-  const titleEl=document.getElementById('si-title');
-  const bodyEl=document.getElementById('si-body');
-  if(!panel||!bodyEl) return;
-  if(titleEl) titleEl.textContent=title;
-  bodyEl.innerHTML=html;
-  panel.classList.add('vis');
-}
-function closeSideInfo(){
-  document.getElementById('side-info')?.classList.remove('vis');
-}
-
-// showFloatingPanel replaced by draggable version in v3.43
-
-
 // ════════════════════════════════════════════════════════════════════════
 // DRAGGABLE PANELS — universal drag-to-move
 // ════════════════════════════════════════════════════════════════════════
@@ -18494,38 +18457,185 @@ function makeDraggable(el, handle){
 }
 
 // Override showFloatingPanel to create DRAGGABLE panels
-function showFloatingPanel(title, content, opts={}){
-  const id='dp-'+(title.replace(/[^a-zA-Z0-9]/g,'_'));
-  document.getElementById(id)?.remove();
-  const div=document.createElement('div');
-  div.id=id;
-  div.className='drag-panel';
-  div.style.cssText='position:fixed;top:60px;right:310px;width:280px;'
-    +'background:var(--bg2);border:1px solid var(--gr3);border-radius:10px;z-index:300;';
-  const closeId='dpclose-'+id;
-  div.innerHTML=
-    '<div class="dp-titlebar">'
-    +'<span class="dp-title">'+title+'</span>'
-    +'<button class="dp-close" id="'+closeId+'">✕</button>'
-    +'</div>'
-    +'<div class="dp-body">'+content+'</div>';
-  document.body.appendChild(div);
-  // Close button
-  setTimeout(()=>{
-    const cb=document.getElementById(closeId);
-    if(cb) cb.onclick=()=>div.remove();
-  },0);
-  // Make draggable
-  makeDraggable(div);
-  return div;
+
+
+
+
+
+
+// ════════════════════════════════════════════════════════════════════════
+// v3.43 CLEAN — PANEL FUNCTIONS + KI DROPDOWN + DRAGGABLE
+// ════════════════════════════════════════════════════════════════════════
+
+// ── UNIVERSAL DRAG ───────────────────────────────────────────────────
+function makeDraggable(el){
+  const handle = el.querySelector('.pp-head,.ip-head,.dp-head,.drag-handle') || el;
+  if(handle._drag) return;
+  handle._drag = true;
+  let startX, startY, origL, origT;
+  handle.addEventListener('mousedown', e=>{
+    if(e.target.closest('button,input,select')) return;
+    e.preventDefault();
+    const r=el.getBoundingClientRect();
+    origL=r.left; origT=r.top;
+    startX=e.clientX; startY=e.clientY;
+    el.style.left=origL+'px'; el.style.top=origT+'px';
+    el.style.right='auto'; el.style.bottom='auto';
+    const move=e=>{
+      el.style.left=(origL+e.clientX-startX)+'px';
+      el.style.top =(origT+e.clientY-startY)+'px';
+    };
+    const up=()=>{document.removeEventListener('mousemove',move);document.removeEventListener('mouseup',up);};
+    document.addEventListener('mousemove',move);
+    document.addEventListener('mouseup',up);
+  });
 }
 
-// Also make side-info and props-tile draggable on init
-function initDraggables(){
-  const si=document.getElementById('side-info');
-  if(si) makeDraggable(si);
-  const pt=document.getElementById('props-tile');
-  if(pt) makeDraggable(pt);
+// ── PROPS PANEL ─────────────────────────────────────────────────────
+function showPropPanel(title, html){
+  const p=document.getElementById('props-panel');
+  const t=document.getElementById('pp-title');
+  const b=document.getElementById('pp-body');
+  if(!p||!b) return;
+  if(t) t.textContent=title;
+  b.innerHTML=html;
+  p.classList.add('vis');
+  makeDraggable(p);
+}
+function closePropPanel(){
+  document.getElementById('props-panel')?.classList.remove('vis');
+}
+function updatePropsPanel(){
+  if(!selId){ closePropPanel(); return; }
+  if(selIsRoom){
+    const r=rooms.find(r=>r.id===selId); if(!r) return;
+    showPropPanel(r.name,
+      '<div style="padding:10px">'
+      +'<div style="font-size:10px;color:var(--tx2);margin-bottom:8px">'
+      +'📐 '+r.w+'×'+r.d+'m · H: '+(r.h||2.8)+'m<br>'
+      +'📏 Fläche: '+(r.w*r.d).toFixed(1)+'m²</div>'
+      +'<button onclick="openRoomEdit(rooms.find(r=>r.id===\''+r.id+'\'))" '
+      +'style="width:100%;padding:5px;background:var(--bg3);border:1px solid var(--bd);'
+      +'color:var(--tx2);border-radius:4px;cursor:pointer;font-size:10px;margin-bottom:4px">'
+      +'⚙ Eigenschaften bearbeiten</button>'
+      +'<button onclick="rechtsklickRaum(rooms.find(r=>r.id===\''+r.id+'\'))" '
+      +'style="width:100%;padding:5px;background:var(--bg3);border:1px solid var(--bd);'
+      +'color:var(--tx2);border-radius:4px;cursor:pointer;font-size:10px">'
+      +'🪑 Möbel auto-anordnen</button>'
+      +'</div>'
+    );
+  } else {
+    const o=objects.find(o=>o.id===selId); if(!o) return;
+    const it=findItem(o.typeId)||{};
+    const w=(o.w||it.w||1).toFixed(2), d=(o.d||it.d||1).toFixed(2);
+    showPropPanel(it.name||o.typeId,
+      '<div style="padding:10px">'
+      +'<div style="font-size:10px;color:var(--tx2);margin-bottom:8px">'
+      +'📐 '+w+'×'+d+'m<br>'
+      +'🔄 '+(o.rot||0)+'° Rotation</div>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">'
+      +'<button onclick="rotObj90(\''+o.id+'\')" '
+      +'style="padding:5px;background:var(--bg3);border:1px solid var(--bd);'
+      +'color:var(--tx2);border-radius:4px;cursor:pointer;font-size:10px">↻ 90°</button>'
+      +'<button onclick="duplicateObj(\''+o.id+'\')" '
+      +'style="padding:5px;background:var(--bg3);border:1px solid var(--bd);'
+      +'color:var(--tx2);border-radius:4px;cursor:pointer;font-size:10px">⧉ Kopieren</button>'
+      +'</div>'
+      +'<button onclick="deleteObj(\''+o.id+'\');closePropPanel()" '
+      +'style="width:100%;margin-top:5px;padding:5px;background:rgba(248,113,113,.1);'
+      +'border:1px solid rgba(248,113,113,.3);color:#f87171;border-radius:4px;cursor:pointer;font-size:10px">'
+      +'🗑 Löschen</button>'
+      +'</div>'
+    );
+  }
+}
+
+// ── INFO PANEL (for analysis results, tips) ─────────────────────────
+function showInfoPanel(title, html){
+  const p=document.getElementById('info-panel');
+  const t=document.getElementById('ip-title');
+  const b=document.getElementById('ip-body');
+  if(!p||!b) return;
+  if(t) t.textContent=title;
+  b.innerHTML=html;
+  p.classList.add('vis');
+  makeDraggable(p);
+}
+function closeInfoPanel(){
+  document.getElementById('info-panel')?.classList.remove('vis');
+}
+
+// Override showFloatingPanel → use info-panel
+function showFloatingPanel(title, content){
+  showInfoPanel(title, content);
+}
+
+// ── KI DROPDOWN ─────────────────────────────────────────────────────
+const KI_MENU=[
+  {section:'🔍 Analysieren & Verstehen'},
+  {icon:'🏷',label:'Räume automatisch benennen',fn:'autoLabelRooms()'},
+  {icon:'📝',label:'Raum beschreiben',fn:'aiDescribeRoom()'},
+  {icon:'🎨',label:'Stil-Berater',fn:'aiStyleAdvisor()'},
+  {icon:'🔐',label:'Sicherheits-Audit',fn:'aiSecurityAudit()'},
+  {icon:'♿',label:'Barrierefreiheit',fn:'aiAccessibleRebuild()'},
+  {section:'🏗 Planen & Einrichten'},
+  {icon:'⚡',label:'Auto-Optimierung',fn:'autoOptimizeAll()'},
+  {icon:'🪑',label:'Layout optimieren',fn:'optimizeLayout()'},
+  {icon:'💡',label:'Smart Lighting',fn:'placeSmartLighting()'},
+  {icon:'📸',label:'Grundriss aus Foto',fn:'openFloorPlanRecognizer()'},
+  {section:'📊 Berichte'},
+  {icon:'📋',label:'Vollständiger KI-Bericht',fn:'generateFullReport()'},
+  {icon:'💰',label:'Kosten schätzen',fn:'estimateCosts()'},
+  {section:'🔌 Verbindung'},
+  {icon:'🔌',label:'KI-Verbindung testen',fn:'testAIConnection();showRight(\'ai\')'},
+];
+
+function buildKIDropdown(){
+  const menu=document.getElementById('ki-dropdown-menu');
+  if(!menu||menu.innerHTML) return;
+  menu.innerHTML=KI_MENU.map(item=>{
+    if(item.section) return '<div class="ki-menu-section">'+item.section+'</div>';
+    return '<div class="ki-menu-item" onclick="closeKIDropdown();'+item.fn+'">'
+      +'<span class="ki-icon">'+item.icon+'</span><span>'+item.label+'</span></div>';
+  }).join('');
+}
+
+function toggleKIDropdown(btn){
+  const menu=document.getElementById('ki-dropdown-menu');
+  if(!menu) return;
+  buildKIDropdown();
+  const open=menu.classList.toggle('vis');
+  if(open){
+    const r=btn.getBoundingClientRect();
+    menu.style.top=(r.bottom+4)+'px';
+    menu.style.left=r.left+'px';
+    setTimeout(()=>document.addEventListener('click',closeKIDropdown,{once:true}),50);
+  }
+}
+function closeKIDropdown(){
+  document.getElementById('ki-dropdown-menu')?.classList.remove('vis');
+}
+
+// Helper: rotate object by id
+function rotObj90(id){
+  const o=objects.find(o=>o.id===id); if(!o) return;
+  o.rot=((o.rot||0)+90)%360;
+  rebuild3D(); draw2D(); snapshot();
+  updatePropsPanel();
+}
+// Helper: duplicate object
+function duplicateObj(id){
+  const o=objects.find(o=>o.id===id); if(!o) return;
+  const n={...o,id:'o'+(oid++),x:o.x+0.2,y:o.y+0.2};
+  objects.push(n); setSelection(n.id,false);
+  rebuild3D(); draw2D(); snapshot();
+}
+// Helper: delete object
+function deleteObj(id){
+  objects=objects.filter(o=>o.id!==id);
+  if(selId===id){selId=null;selIsRoom=false;}
+  rebuild3D(); draw2D(); snapshot();
+  closePropPanel();
 }
 
 // ════════════════════════════════════════════════════════════════════════
@@ -18610,8 +18720,8 @@ loadNamedVersions();setTimeout(renderVersionBadges,800);
 try{Object.keys(localStorage).filter(k=>k.startsWith('fg-closed-')||k.startsWith('fb-closed-')||k.startsWith('fs-closed-')).forEach(k=>localStorage.removeItem(k));}catch(e){}
 setTimeout(calcHealthScore,1000);
 setTimeout(renderQuickRoomsBar,200);
-setTimeout(buildKIDropdown,500);
-setTimeout(initDraggables,800);
+setTimeout(buildKIDropdown,300);
+setTimeout(()=>{makeDraggable(document.getElementById('props-panel'));makeDraggable(document.getElementById('info-panel'));},500);
 loadAnnotations();
 setTimeout(()=>{hookAnnotationClick();rebuildAnnotationMeshes();},1000);
 checkDailyBackup();
@@ -19304,6 +19414,25 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
 
 <!-- KI DROPDOWN MENU (populated by JS) -->
 <div id="ki-dropdown-menu"></div>
+
+<!-- PROPS PANEL (fixed, right side, shown when selecting objects/rooms) -->
+<div id="props-panel">
+  <div class="pp-head" id="props-panel-head">
+    <span class="pp-title" id="pp-title">Eigenschaften</span>
+    <button class="pp-close" onclick="closePropPanel()">✕</button>
+  </div>
+  <div id="pp-body" style="padding:10px;max-height:70vh;overflow-y:auto"></div>
+</div>
+
+<!-- INFO PANEL (analysis results, tips, hints) -->
+<div id="info-panel">
+  <div class="ip-head" id="info-panel-head">
+    <span class="ip-title" id="ip-title">Info</span>
+    <button class="ip-close" onclick="closeInfoPanel()">✕</button>
+  </div>
+  <div class="ip-body" id="ip-body"></div>
+</div>
+
 <!-- ══ END OF MODALS ══ -->
 
 <!-- 3D TOUR CONTROLS -->
