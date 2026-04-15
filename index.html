@@ -554,7 +554,6 @@ canvas{display:block}
 .icon-btn{padding:4px 7px!important;min-width:28px}
 
 /* Topbar compact */
-#topbar{height:40px;padding:0 8px;gap:4px}
 .logo{font-size:13px}
 .vbadge{font-size:9px}
 .tbt{padding:4px 8px;font-size:11px}
@@ -1588,7 +1587,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 #left{width:270px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden}
 #canvas-wrap{flex:1;min-width:0;min-height:0;position:relative;overflow:hidden;background:#1a1e26}
 #right{width:300px;flex-shrink:0;background:var(--bg2);border-left:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden}
-#topbar{flex-shrink:0;height:50px;background:#0c0c0c;border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 8px;gap:4px;overflow:hidden}
+#topbar{flex-shrink:0;height:50px;background:#0c0c0c;border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 8px;gap:4px;overflow:visible}
 #botbar{flex-shrink:0;height:54px;background:#0c0c0c;border-top:1px solid var(--bd);display:flex;align-items:center;padding:0 8px;gap:6px}
 /* ═══════════════════════════════════════════════════════════════ */
 .qana-btn{width:100%;padding:7px 10px;text-align:left;background:var(--bg3);border:1px solid var(--bd);color:var(--tx2);border-radius:5px;cursor:pointer;font-size:11px;transition:.12s}
@@ -1623,6 +1622,8 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 /* Remove old conflicting right panel rules */
 /* ═══════════════════════════════════════════════════════════════ */
 
+.qa-item{padding:7px 14px;font-size:11px;color:var(--tx2);cursor:pointer;border-bottom:1px solid rgba(255,255,255,.03);transition:.1s;display:flex;align-items:center;gap:6px}
+.qa-item:hover{background:var(--bg4);color:var(--tx);padding-left:18px}
 /* TOAST */
 .toast{position:fixed;bottom:62px;left:50%;transform:translateX(-50%);padding:7px 16px;border-radius:var(--r6);font-size:12px;z-index:9999;transition:opacity .35s;white-space:nowrap;pointer-events:none}
 .toast.g{background:var(--gr3);color:var(--gr);border:1px solid var(--gr)}
@@ -1970,9 +1971,6 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
     <span>🤖</span><span>KI-Funktionen</span><span class="ki-arrow">▾</span>
   </button>
 
-  <button class="tbt" onclick="showRight('design')" title="Design & Material" style="font-size:10px;padding:4px 8px;border-radius:12px;border:1px solid var(--bd);background:var(--bg3)">🎨 Design</button>
-  <button class="tbt" onclick="showRight('light')" title="Licht & Atmosphäre" style="font-size:10px;padding:4px 8px;border-radius:12px;border:1px solid var(--bd);background:var(--bg3)">🌅 Licht</button>
-  <button class="tbt" onclick="showRight('save')" title="Projekte & Speichern" style="font-size:10px;padding:4px 8px;border-radius:12px;border:1px solid var(--bd);background:var(--bg3)">💾 Projekt</button>
   <div class="tsep" style="margin:0 8px"></div>
   <div class="tgap"></div>
 
@@ -2084,40 +2082,181 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 
 <!-- RIGHT PANEL -->
 <div id="right">
-  <!-- EIGENSCHAFTEN: always shown, no tabs -->
-  <div id="right-panel-title" style="padding:8px 12px;background:var(--bg3);border-bottom:1px solid var(--bd);font-size:11px;font-weight:700;color:var(--gr);flex-shrink:0;display:flex;align-items:center;justify-content:space-between">
-    <span id="right-title-txt">⚙ Eigenschaften</span>
-  </div>
-  <div id="right-content" style="flex:1;overflow-y:auto;min-height:0">
-    <!-- Default: analyses list -->
-    <div id="props-default-view">
-      <div style="padding:8px 10px;font-size:10px;color:var(--tx3);border-bottom:1px solid var(--bd)">
-        Klicke ein Objekt oder Raum an
+  <div class="rtabs">
+    <div class="rtab" id="rtab-ai" onclick="showRight('ai')">🤖 KI-Assistent</div>
+    <div class="rtab" id="rtab-design" onclick="showRight('design')">🎨 Design</div>
+    <div class="rtab" id="rtab-light" onclick="showRight('light')">🌅 Licht</div>
+    <div class="rtab" id="rtab-save" onclick="showRight('save')">💾 Projekte</div>
+    <div class="rtab active" id="rtab-props" onclick="showRight('props')">⚙ Eigenschaften</div>
+  
+  <!-- EIGENSCHAFTEN PANEL -->
+  <div class="rpanel active" id="rpanel-props">
+    <div id="rpanel-props-content">
+      <div id="props-default-view">
+        <div style="padding:8px 10px;font-size:10px;color:var(--tx3);border-bottom:1px solid var(--bd)">
+          Klicke ein Objekt oder Raum an
+        </div>
+        <div id="quick-analyses" style="padding:4px 0">
+          <div class="qa-item" onclick="openAnalysisDashboard()">📊 Analyse-Dashboard</div>
+          <div class="qa-item" onclick="calcHeatLoad()">🌡 Heizlast-Berechnung</div>
+          <div class="qa-item" onclick="analyzeLux()">💡 Lux-Berechnung</div>
+          <div class="qa-item" onclick="calcBreakEven()">📈 Break-Even-Rechner</div>
+          <div class="qa-item" onclick="calcFireSafety()">🧯 Brandschutz</div>
+          <div class="qa-item" onclick="calcAccessibilityScore()">♿ Barrierefreiheit</div>
+          <div class="qa-item" onclick="showShiftGantt()">📅 Schichtplan</div>
+          <div class="qa-item" onclick="generateMaintenanceCalendar()">🗓 Wartungskalender</div>
+          <div class="qa-item" onclick="analyzeWaitQueue()">⏱ Warteschlange</div>
+          <div class="qa-item" onclick="calcAISecurityScore()">🔐 Sicherheitsbewertung</div>
+          <div class="qa-item" onclick="calcROI()">💰 ROI-Rechner</div>
+          <div class="qa-item" onclick="analyzeEscapeRoutes()">🚪 Fluchtweg-Analyse</div>
+        </div>
       </div>
-      <div id="quick-analyses" style="padding:6px 0">
-        <div class="qa-item" onclick="openAnalysisDashboard()">📊 Analyse-Dashboard</div>
-        <div class="qa-item" onclick="calcHeatLoad()">🌡 Heizlast-Berechnung</div>
-        <div class="qa-item" onclick="analyzeLux()">💡 Lux-Berechnung</div>
-        <div class="qa-item" onclick="calcBreakEven()">📈 Break-Even-Rechner</div>
-        <div class="qa-item" onclick="calcFireSafety()">🧯 Brandschutz</div>
-        <div class="qa-item" onclick="calcAccessibilityScore()">♿ Barrierefreiheit</div>
-        <div class="qa-item" onclick="showShiftGantt()">📅 Schichtplan (Gantt)</div>
-        <div class="qa-item" onclick="generateMaintenanceCalendar()">🗓 Wartungskalender</div>
-        <div class="qa-item" onclick="analyzeWaitQueue()">⏱ Warteschlangen-Analyse</div>
-        <div class="qa-item" onclick="analyzeDaylight()">☀️ Tageslichtsimulation</div>
-        <div class="qa-item" onclick="calcCO2Footprint()">🌿 CO₂-Fußabdruck</div>
-        <div class="qa-item" onclick="calcAISecurityScore()">🔐 KI-Sicherheitsbewertung</div>
-        <div class="qa-item" onclick="analyzeEscapeRoutes()">🚪 Fluchtweg-Analyse</div>
-        <div class="qa-item" onclick="calcROI()">💰 ROI-Rechner</div>
+      <div id="props-obj-view" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+  <!-- AI PANEL -->
+  <div class="rpanel" id="rpanel-ai">
+    <div id="ai-msgs">
+      <div class="amsg ai">
+        <div class="ailbl">🌿 KI-Assistent</div>
+        Willkommen! Ich bin euer vollautomatischer Raumplaner.<br><br>
+        📐 <b>Grundriss hochladen</b> → ich erkenne alle Räume, Maße, Türen, Fenster und richte alles automatisch ein.<br>
+        💬 <b>Beschreiben</b> → «Empfangsraum 8×6m mit Ausgabetheke»<br>
+        🔄 <b>Anpassen</b> → «Mach den Lagerraum größer»
+        <div id="custom-prompt-chips" style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px"></div>
+        <div style="margin-bottom:4px"><div onclick="document.getElementById('ki-fn-list').style.display=document.getElementById('ki-fn-list').style.display==='none'?'block':'none'" style="padding:5px 10px;background:var(--bg4);border:1px solid var(--bd);border-radius:4px;font-size:10px;color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:space-between">🤖 Alle KI-Funktionen <span>▾</span></div><div id="ki-fn-list" style="display:none;border:1px solid var(--bd);border-radius:0 0 4px 4px;background:var(--bg3)"></div></div>
+        <div class="ai-chips">
+          <span class="chip" onclick="qmsg('Erstelle eine vollständige CSC-Ausgabestelle: Empfang, Ausgabe, Lager, Sozialbereich und WC')">🌿 Komplette CSC-Anlage</span>
+          <span class="chip" onclick="qmsg('Erstelle einen Empfangsraum 8x6m mit Ausgabetheke, Scanner und Wartezone')">📐 Empfangsraum</span>
+          <span class="chip" onclick="qmsg('Erstelle einen Sozialbereich 7x7m mit Lounge, Tischen und Kaffeebar')">🛋️ Sozialbereich</span>
+          <span class="chip" onclick="qmsg('Analysiere den hochgeladenen Grundriss und richte alles ein')">🖼️ Grundriss analysieren</span>
+          <span class="chip" onclick="optimizeLayout()">🔍 Grundriss optimieren</span>
+          <span class="chip" onclick="estimateCosts()">💰 Kosten schätzen</span>
+          <span class="chip" onclick="checkAccessibility()">♿ Barrierefrei prüfen</span>
+        </div>
       </div>
     </div>
-    <!-- Object/room properties (shown when selected) -->
-    <div id="props-obj-view" style="display:none"></div>
-    <!-- Hidden panels for KI/Design/Licht/Projekte (opened from toolbar) -->
-    <div id="rpanel-ai" class="rpanel" style="display:none"></div>
-    <div id="rpanel-design" class="rpanel" style="display:none"></div>
-    <div id="rpanel-light" class="rpanel" style="display:none"></div>
-    <div id="rpanel-save" class="rpanel" style="display:none"></div>
+    <div class="ai-foot">
+      <div class="upl-row">
+        <button class="uplbtn" onclick="document.getElementById('fp-upload').click()">📎 Dateien (max. 10)</button>
+        <input type="file" id="fp-upload" accept="image/*,.pdf,.docx,.doc" multiple style="display:none" onchange="handleFileUpload(event)">
+        <div id="upl-prog"><div class="pg-bar"><div class="pg-fill" id="pgfill" style="width:0%"></div></div><span id="upl-txt">…</span></div>
+      </div>
+      <div id="file-prev"></div>
+      <div class="arow">
+        <div style="position:relative"><div id="ai-autocomplete"></div><textarea class="ainput" id="ai-inp" rows="1" placeholder="Räume beschreiben, Fragen stellen…" onkeydown="aiKey(event)" oninput="updateAIAutocomplete(this.value)"></textarea></div>
+        <button class="asend" id="ai-send" onclick="sendAI()">↑</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- LIGHT PANEL (Phase 4) -->
+  <div class="rpanel" id="rpanel-light">
+    <div class="lp-body">
+      <div class="sh">Stimmungs-Presets</div>
+      <div class="mood-grid">
+        <div class="mbtn active" id="lmbtn-day" onclick="applyMoodFull('day')"><span class="mic">☀️</span>Tag</div>
+        <div class="mbtn" id="lmbtn-golden" onclick="applyMoodFull('golden')"><span class="mic">🌇</span>Golden</div>
+        <div class="mbtn" id="lmbtn-eve" onclick="applyMoodFull('eve')"><span class="mic">🌆</span>Abend</div>
+        <div class="mbtn" id="lmbtn-night" onclick="applyMoodFull('night')"><span class="mic">🌙</span>Nacht</div>
+        <div class="mbtn" id="lmbtn-cozy" onclick="applyMoodFull('cozy')"><span class="mic">🕯️</span>Gemütlich</div>
+        <div class="mbtn" id="lmbtn-prof" onclick="applyMoodFull('prof')"><span class="mic">💼</span>Professionell</div>
+      </div>
+      <button class="add-btn" style="border-color:var(--yw);color:var(--yw);margin-bottom:10px" onclick="aiLightPrompt()">✨ KI-Stimmung beschreiben</button>
+
+      <div class="sh">Sonne</div>
+      <div class="lp-sect">
+        <div class="lp-row"><label>Ein</label><input type="checkbox" id="sun-on" checked onchange="applyLightSliders()"><input type="color" id="sun-color" value="#fff5e0" onchange="applyLightSliders()"><label style="width:auto;margin-left:4px">Farbe</label></div>
+        <div class="lp-row"><label>Stärke</label><input type="range" id="sun-str" min="0" max="4" step="0.05" value="1.8" oninput="this.nextSibling.textContent=(+this.value).toFixed(2);applyLightSliders()"><span>1.80</span></div>
+        <div class="lp-row"><label>Azimut</label><input type="range" id="sun-az" min="0" max="360" step="1" value="210" oninput="this.nextSibling.textContent=this.value+'°';applyLightSliders()"><span>210°</span></div>
+        <div class="lp-row"><label>Höhe</label><input type="range" id="sun-el" min="5" max="85" step="1" value="55" oninput="this.nextSibling.textContent=this.value+'°';applyLightSliders()"><span>55°</span></div>
+        <div class="lp-row"><label>Schatten</label><input type="checkbox" id="sun-shad" checked onchange="applyLightSliders()"></div>
+      </div>
+
+      <div class="sh">Umgebungslicht</div>
+      <div class="lp-sect">
+        <div class="lp-row"><label>Ein</label><input type="checkbox" id="hemi-on" checked onchange="applyLightSliders()"><input type="color" id="hemi-sky" value="#c8e0ff" onchange="applyLightSliders()"><input type="color" id="hemi-gnd" value="#d4c09a" onchange="applyLightSliders()"></div>
+        <div class="lp-row"><label>Stärke</label><input type="range" id="hemi-str" min="0" max="2" step="0.05" value="0.65" oninput="this.nextSibling.textContent=(+this.value).toFixed(2);applyLightSliders()"><span>0.65</span></div>
+      </div>
+
+      <div class="sh">Fülllicht</div>
+      <div class="lp-sect">
+        <div class="lp-row"><label>Ein</label><input type="checkbox" id="fill-on" checked onchange="applyLightSliders()"><input type="color" id="fill-color" value="#9ab8d8" onchange="applyLightSliders()"></div>
+        <div class="lp-row"><label>Stärke</label><input type="range" id="fill-str" min="0" max="2" step="0.05" value="0.4" oninput="this.nextSibling.textContent=(+this.value).toFixed(2);applyLightSliders()"><span>0.40</span></div>
+      </div>
+
+      <div class="sh">Raumlichter &amp; Rendering</div>
+      <div class="lp-sect">
+        <div class="lp-row"><label>Raumlicht</label><input type="range" id="room-str" min="0" max="3" step="0.05" value="0.85" oninput="this.nextSibling.textContent=(+this.value).toFixed(2);applyLightSliders()"><span>0.85</span></div>
+        <div class="lp-row"><label>Lichtfarbe</label><input type="color" id="room-col" value="#fff5e0" onchange="applyLightSliders()"></div>
+        <div class="lp-row"><label>Belichtung</label><input type="range" id="exposure" min="0.3" max="2.5" step="0.05" value="1.1" oninput="this.nextSibling.textContent=(+this.value).toFixed(2);applyLightSliders()"><span>1.10</span></div>
+        <div class="lp-row"><label>Nebel</label><input type="range" id="fog-dens" min="0" max="0.06" step="0.001" value="0.013" oninput="this.nextSibling.textContent=(+this.value).toFixed(3);applyLightSliders()"><span>0.013</span></div>
+        <div class="lp-row"><label>Himmel</label><input type="color" id="sky-color" value="#c8dff0" onchange="applyLightSliders()"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESIGN PANEL (Phase 6) -->
+  <div class="rpanel" id="rpanel-design">
+    <div class="dc-panel" id="design-panel-body">
+      <!-- Populated by renderDesignPanel() -->
+    </div>
+  </div>
+  <!-- SAVE PANEL -->
+  <div class="rpanel" id="rpanel-save">
+    <div class="spanel-body">
+      <div class="api-box">
+        <label>🔑 KI-Assistent</label>
+        <div class="api-st ok" id="api-st" style="margin-bottom:6px">⬜ Kein API Key — Key oben eingeben</div>
+        <details open style="margin-top:4px">
+          <summary style="font-size:10px;color:var(--gr);cursor:pointer;font-weight:700">🔑 API Key eingeben (erforderlich für KI)</summary>
+          <div class="api-row" style="margin-top:5px">
+            <input class="api-inp" id="api-inp" type="password" placeholder="sk-ant-api03-… (von console.anthropic.com)" autocomplete="off">
+            <button class="api-save" onclick="doSaveKey()">💾 Speichern</button><button class="api-save" onclick="testAIConnection()" style="margin-left:4px;background:var(--bg3)">🔌 Test</button>
+          </div>
+          <div style="font-size:9px;color:var(--tx3);margin-top:3px">Key kostenlos auf <a href="https://console.anthropic.com" target="_blank" style="color:var(--bl)">console.anthropic.com</a> — ohne Key keine KI</div>
+        </details>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px">
+        <button class="tbt g" style="padding:9px" onclick="saveProj()">💾 Projekt speichern</button>
+        <button class="tbt" style="padding:9px" onclick="dlJSON()">📥 Als .json exportieren</button>
+        <button class="tbt" style="padding:9px" onclick="exportFurnitureCSV()">📊 Möbelliste (.csv)</button>
+        <button class="tbt" style="padding:9px" onclick="exportBudgetCSV()">💰 Budget (.csv)</button>
+        <button class="tbt" style="padding:9px" onclick="exportGLTF()">🏗 3D-Modell (.gltf)</button>
+        <button class="tbt" style="padding:9px" onclick="exportDXF()">📐 Grundriss (.dxf)</button>
+        <button class="tbt" style="padding:9px" onclick="showChangelog()">📋 Änderungsprotokoll</button>
+        <button class="tbt" style="padding:9px" onclick="document.getElementById('json-up').click()">📤 .json laden</button>
+        <input type="file" id="json-up" accept=".json" style="display:none" onchange="loadJSONFile(event)">
+      </div>
+      <div style="height:1px;background:var(--bd);margin:8px 0"></div>
+      <!-- SUPABASE CLOUD -->
+      <div style="font-size:9px;font-weight:700;color:#38bdf8;text-transform:uppercase;letter-spacing:.4px;margin:14px 0 5px">☁️ Cloud-Speicher</div>
+      <div class="api-box" style="border-color:#38bdf8;margin-top:0;background:#0a1520" id="supabase-box">
+        <label style="color:#38bdf8">☁️ Cloud-Speicher (Supabase)</label>
+        <div id="sb-status" style="font-size:10px;color:var(--tx3);margin-bottom:6px">Nicht verbunden</div>
+        <div style="font-size:10px;color:#4ade80;margin:4px 0">✓ Verbunden mit: krqmbqkzclpixjhoxamd.supabase.co</div>
+        <div style="font-size:9px;color:var(--tx3)">Projekte werden automatisch in der Cloud gespeichert.</div>
+        <!-- Hidden inputs needed for JS compatibility -->
+        <input id="sb-url" type="hidden" value="https://krqmbqkzclpixjhoxamd.supabase.co">
+        <input id="sb-key" type="hidden" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtycW1icWt6Y2xwaXhqaG94YW1kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU3MTg4OTUsImV4cCI6MjA4MTI5NDg5NX0.h-sQZvIzGiP1ENWKNDUp90T8ZLngDvCsGuZ6ZRIGGBE">
+      </div>
+      <div style="display:flex;gap:5px;margin-bottom:6px">
+        <button class="tbt" id="sb-save-btn" style="flex:1;padding:8px;border-color:#38bdf8;color:#38bdf8;display:none" onclick="cloudSave()">☁️ Cloud speichern</button>
+        <button class="tbt" id="sb-load-btn" style="flex:1;padding:8px;display:none" onclick="showCloudProjects()">📂 Cloud laden</button>
+      </div>
+      <div id="cloud-list" style="margin-bottom:8px"></div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+        <div class="sh" style="margin:0">Versionen</div>
+        <button class="tbt" onclick="saveVersion()" style="padding:3px 8px;font-size:10px">📌 Merken</button>
+      </div>
+      <div id="version-list" style="margin-bottom:12px"></div>
+      <div class="sh">Lokal gespeicherte Projekte</div>
+      <div id="saved-list"></div>
+    </div>
   </div>
 </div>
 
@@ -18719,6 +18858,7 @@ function animate(t){
 window.addEventListener('resize',()=>{resizeCv();resize3D();draw2D();});
 resizeCv();resize3D();
 updateApiSt();
+setTimeout(()=>showRight('props'),150);
 
 // ResizeObserver — canvas always has correct size
 if(typeof ResizeObserver !== 'undefined'){
@@ -18973,6 +19113,7 @@ async function applyAIMood(){
 function closePropPanel(){ document.getElementById('prop-panel')?.classList.remove('vis'); }
 
 function openPropPanel(targetId, isRoom){
+  showRight('props');
   if(isRoom) renderRoomProps(targetId);
   else       renderObjProps(targetId);
   _syncPropsToRight();
