@@ -1562,14 +1562,6 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 #theme-toggle:hover{border-color:var(--gr);color:var(--gr)}
 
 /* Eigenschaften tab */
-.qana-btn{
-  width:100%;padding:7px 10px;text-align:left;
-  background:var(--bg3);border:1px solid var(--bd);
-  color:var(--tx2);border-radius:5px;cursor:pointer;
-  font-size:11px;transition:.12s;
-}
-.qana-btn:hover{background:var(--bg4);border-color:var(--gr3);color:var(--gr)}
-/* Eigenschaften tab */
 #rpanel-props{font-size:11px}
 #rpanel-props .pp-section{padding:0 10px 10px}
 #rpanel-props .pp-sh{
@@ -1599,6 +1591,8 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 #topbar{flex-shrink:0;height:50px;background:#0c0c0c;border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 8px;gap:4px;overflow:hidden}
 #botbar{flex-shrink:0;height:54px;background:#0c0c0c;border-top:1px solid var(--bd);display:flex;align-items:center;padding:0 8px;gap:6px}
 /* ═══════════════════════════════════════════════════════════════ */
+.qana-btn{width:100%;padding:7px 10px;text-align:left;background:var(--bg3);border:1px solid var(--bd);color:var(--tx2);border-radius:5px;cursor:pointer;font-size:11px;transition:.12s}
+.qana-btn:hover{background:var(--bg4);border-color:var(--gr3);color:var(--gr)}
 /* TOAST */
 .toast{position:fixed;bottom:62px;left:50%;transform:translateX(-50%);padding:7px 16px;border-radius:var(--r6);font-size:12px;z-index:9999;transition:opacity .35s;white-space:nowrap;pointer-events:none}
 .toast.g{background:var(--gr3);color:var(--gr);border:1px solid var(--gr)}
@@ -1976,29 +1970,9 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
   <div class="lph" id="left-title">📐 Räume</div>
   <div class="lpb" id="left-body"></div>
   <!-- EIGENSCHAFTEN PANEL -->
-  <  <!-- EIGENSCHAFTEN PANEL -->
-  <div class="rpanel active" id="rpanel-props">
-    <div id="rpanel-props-content">
-      <div id="props-default-view">
-        <div style="padding:8px 12px;background:var(--bg3);border-bottom:1px solid var(--bd);font-size:10px;color:var(--tx3)">
-          💡 Objekt oder Raum anklicken für Eigenschaften
-        </div>
-        <div style="padding:10px;display:grid;gap:4px">
-          <button class="qana-btn" onclick="openAnalysisDashboard()">📊 Analyse-Dashboard</button>
-          <button class="qana-btn" onclick="calcHeatLoad()">🌡 Heizlast</button>
-          <button class="qana-btn" onclick="analyzeLux()">💡 Lux-Berechnung</button>
-          <button class="qana-btn" onclick="calcBreakEven()">📈 Break-Even</button>
-          <button class="qana-btn" onclick="calcFireSafety()">🧯 Brandschutz</button>
-          <button class="qana-btn" onclick="calcAccessibilityScore()">♿ Barrierefreiheit</button>
-          <button class="qana-btn" onclick="showShiftGantt()">📅 Schichtplan</button>
-          <button class="qana-btn" onclick="generateMaintenanceCalendar()">🗓 Wartungskalender</button>
-          <button class="qana-btn" onclick="analyzeWaitQueue()">⏱ Warteschlange</button>
-          <button class="qana-btn" onclick="calcAISecurityScore()">🔐 Sicherheitsbewertung</button>
-        </div>
-      </div>
-      <div id="props-obj-view" style="display:none"></div>
-    </div>
-  </div>
+  
+
+</div>
 
 <!-- CANVAS AREA -->
 <div id="canvas-wrap">
@@ -2086,7 +2060,33 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
     <div class="rtab" id="rtab-light" onclick="showRight('light')">🌅 Licht</div>
     <div class="rtab" id="rtab-save" onclick="showRight('save')">💾 Projekte</div>
     <div class="rtab active" id="rtab-props" onclick="showRight('props')">⚙ Eigenschaften</div>
+  
+<div class="rpanel active" id="rpanel-props">
+    <div style="padding:10px 12px;border-bottom:1px solid var(--bd);font-size:11px;color:var(--tx3);font-style:italic">
+      Klicke ein Objekt oder einen Raum an
+    </div>
+    <div id="rpanel-props-content">
+      <div id="props-default-view">
+        <div style="padding:8px 12px;background:var(--bg3);border-bottom:1px solid var(--bd);font-size:10px;color:var(--tx3)">
+          💡 Objekt oder Raum anklicken für Eigenschaften
+        </div>
+        <div style="padding:10px;display:grid;gap:4px">
+          <button class="qana-btn" onclick="openAnalysisDashboard()">📊 Analyse-Dashboard</button>
+          <button class="qana-btn" onclick="calcHeatLoad()">🌡 Heizlast</button>
+          <button class="qana-btn" onclick="analyzeLux()">💡 Lux-Berechnung</button>
+          <button class="qana-btn" onclick="calcBreakEven()">📈 Break-Even</button>
+          <button class="qana-btn" onclick="calcFireSafety()">🧯 Brandschutz</button>
+          <button class="qana-btn" onclick="calcAccessibilityScore()">♿ Barrierefreiheit</button>
+          <button class="qana-btn" onclick="showShiftGantt()">📅 Schichtplan</button>
+          <button class="qana-btn" onclick="generateMaintenanceCalendar()">🗓 Wartungskalender</button>
+          <button class="qana-btn" onclick="analyzeWaitQueue()">⏱ Warteschlange</button>
+          <button class="qana-btn" onclick="calcAISecurityScore()">🔐 Sicherheitsbewertung</button>
+        </div>
+      </div>
+      <div id="props-obj-view" style="display:none"></div>
+    </div>
   </div>
+</div>
 
   <!-- AI PANEL -->
   <div class="rpanel" id="rpanel-ai">
@@ -4336,13 +4336,7 @@ function setSelection(id, isRoom){
   renderLeft(); draw2D();
   updateBreadcrumb();
   checkAutoBadges();
-  // If deselecting, show analyses; if selecting, openPropPanel handles it
-  if(!id){
-    const dstEl  = document.getElementById('props-obj-view');
-    const defView= document.getElementById('props-default-view');
-    if(dstEl)   dstEl.style.display='none';
-    if(defView) defView.style.display='block';
-  }
+  /* props shown in right panel via openPropPanel */
   if(selIsRoom){ const r=rooms.find(r=>r.id===selId); showQuickAdd(r); } else { document.querySelectorAll('.qa-chip').forEach(e=>e.remove()); }
   // Auto-open prop panel for objects (rooms use inline props in sidebar)
   if(id && !isRoom){
@@ -18862,7 +18856,6 @@ setTimeout(calcHealthScore,1000);
 setTimeout(renderQuickRoomsBar,200);
 initTheme();
 setTimeout(buildKIDropdown,300);
-setTimeout(()=>showRight('props'),100);
 setTimeout(()=>{makeDraggable(document.getElementById('props-panel'));makeDraggable(document.getElementById('info-panel'));makeDraggable(document.getElementById('prop-panel'));},500);
 loadAnnotations();
 setTimeout(()=>{hookAnnotationClick();rebuildAnnotationMeshes();},1000);
@@ -19056,45 +19049,29 @@ async function applyAIMood(){
 function closePropPanel(){ document.getElementById('prop-panel').classList.remove('vis'); }
 
 function openPropPanel(targetId, isRoom){
-  // Always switch to Eigenschaften tab
+  // Show in RIGHT PANEL Eigenschaften tab
   showRight('props');
-  // Populate the properties view
-  if(isRoom) renderRoomProps(targetId);
-  else       renderObjProps(targetId);
-  _syncPropsToRight();
+  const content = document.getElementById('rpanel-props-content');
+  if(content){
+    if(isRoom) { renderRoomProps(targetId); _syncPropsToRight(); }
+    else       { renderObjProps(targetId);  _syncPropsToRight(); }
+  }
   // Keep floating panel hidden
   const pp = document.getElementById('prop-panel');
   if(pp) pp.classList.remove('vis');
 }
 
 function _syncPropsToRight(){
-  // Copy from pp-content (hidden) into props-obj-view
-  const srcEl    = document.getElementById('pp-content');
-  const dstEl    = document.getElementById('props-obj-view');
-  const defView  = document.getElementById('props-default-view');
-  const titleEl  = document.getElementById('pp-title-txt');
-  if(!srcEl||!dstEl) return;
-  const titleHtml =
-    '<div style="padding:8px 12px;background:var(--bg3);border-bottom:1px solid var(--bd);'
-    +'display:flex;align-items:center;justify-content:space-between">'
-    +'<div style="font-size:11px;font-weight:700;color:var(--gr)">'
-    +(titleEl?titleEl.textContent:'Eigenschaften')+'</div>'
-    +'<button onclick="clearPropsPanel()" style="background:none;border:none;color:var(--tx3);'
-    +'cursor:pointer;font-size:14px">✕</button></div>';
-  dstEl.innerHTML = titleHtml + srcEl.innerHTML;
-  // Show obj view, hide default
-  dstEl.style.display='block';
-  if(defView) defView.style.display='none';
-}
-
-function clearPropsPanel(){
-  // Deselect + show default analyses view
-  selId=null; selIsRoom=false;
-  const dstEl   = document.getElementById('props-obj-view');
-  const defView = document.getElementById('props-default-view');
-  if(dstEl)    dstEl.style.display='none';
-  if(defView)  defView.style.display='block';
-  draw2D();
+  // Copy content from pp-content to rpanel-props-content
+  const src_el = document.getElementById('pp-content');
+  const dst_el = document.getElementById('rpanel-props-content');
+  const title_el = document.getElementById('pp-title-txt');
+  if(src_el && dst_el){
+    // Add title
+    const titleHtml = '<div style="padding:8px 12px;background:var(--bg3);border-bottom:1px solid var(--bd);font-size:11px;font-weight:700;color:var(--gr)">'
+      + (title_el ? title_el.textContent : 'Eigenschaften') + '</div>';
+    dst_el.innerHTML = titleHtml + src_el.innerHTML;
+  }
 }
 
 function openPropPanel3D(){
