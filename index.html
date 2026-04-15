@@ -4389,9 +4389,9 @@ function setSelection(id, isRoom){
   checkAutoBadges();
   /* props shown in right panel via openPropPanel */
   if(selIsRoom){ const r=rooms.find(r=>r.id===selId); showQuickAdd(r); } else { document.querySelectorAll('.qa-chip').forEach(e=>e.remove()); }
-  // Auto-open prop panel for objects (rooms use inline props in sidebar)
-  if(id && !isRoom){
-    openPropPanel(id, false);
+  // Auto-open prop panel for both objects and rooms
+  if(id){
+    openPropPanel(id, !!isRoom);
     // Also refresh design panel if it's visible
     const dp=document.getElementById('rpanel-design');
     if(dp&&dp.classList.contains('active')) renderDesignPanelFull(id);
@@ -18826,6 +18826,17 @@ function openAIPanel(){
   if(ov) ov.style.display='flex';
 }
 
+
+// ── PROPERTIES PANEL SYNC ──────────────────────────────────────────
+function clearPropsPanel(){
+  selId=null; selIsRoom=false;
+  const d  = document.getElementById('props-obj-view');
+  const df = document.getElementById('props-default-view');
+  if(d)  { d.style.display='none'; d.innerHTML=''; }
+  if(df) { df.style.display='block'; }
+  draw2D();
+}
+
 // ════════════════════════════════════════════════════════════════════════
 // ANIMATION LOOP
 // ════════════════════════════════════════════════════════════════════════
@@ -19121,16 +19132,21 @@ function openPropPanel(targetId, isRoom){
 }
 
 function _syncPropsToRight(){
-  // Copy content from pp-content to rpanel-props-content
-  const src_el = document.getElementById('pp-content');
-  const dst_el = document.getElementById('props-obj-view');
-  const title_el = document.getElementById('pp-title-txt');
-  if(src_el && dst_el){
-    // Add title
-    const titleHtml = '<div style="padding:8px 12px;background:var(--bg3);border-bottom:1px solid var(--bd);font-size:11px;font-weight:700;color:var(--gr)">'
-      + (title_el ? title_el.textContent : 'Eigenschaften') + '</div>';
-    dst_el.innerHTML = titleHtml + src_el.innerHTML;
-  }
+  const srcEl = document.getElementById('pp-content');
+  const dstEl = document.getElementById('props-obj-view');
+  const defEl = document.getElementById('props-default-view');
+  const titEl = document.getElementById('pp-title-txt');
+  if(!srcEl || !dstEl) return;
+  const name = titEl ? titEl.textContent : 'Eigenschaften';
+  dstEl.innerHTML =
+    '<div style="padding:8px 12px;background:var(--bg3);border-bottom:1px solid var(--bd);'
+    +'display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:700;color:var(--gr)">'
+    +name
+    +'<button onclick="clearPropsPanel()" style="background:none;border:none;color:var(--tx3);cursor:pointer;font-size:16px;line-height:1">✕</button>'
+    +'</div>'
+    + srcEl.innerHTML;
+  dstEl.style.display = 'block';
+  if(defEl) defEl.style.display = 'none';
 }
 
 function openPropPanel3D(){
