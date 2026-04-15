@@ -89,7 +89,7 @@ input,textarea,select,button{font-family:inherit}
 .dragging-furn{position:fixed;pointer-events:none;z-index:9999;opacity:.7;background:var(--bg3);border:2px solid var(--gr);border-radius:var(--r6);padding:6px 10px;font-size:12px;white-space:nowrap;transform:translate(-50%,-50%)}
 
 /* ─ CANVAS AREA ─────────────────────────────────────────── */
-#canvas-wrap{position:relative;overflow:hidden;background:#1a1e26;min-height:0;grid-column:3;grid-row:2}
+#canvas-wrap{position:relative;overflow:hidden;background:#1a1e26;grid-column:3;grid-row:2;height:100%;width:100%}
 canvas{display:block}
 
 /* 2D Floor plan canvas */
@@ -461,7 +461,7 @@ canvas{display:block}
 #help-close:hover{color:#e8e4d8;background:#1a1a1a}
 
 
-/* ══ NEW FEATURES v3.44 ═══════════════════════════════════════════ */
+/* ══ NEW FEATURES v3.45 ═══════════════════════════════════════════ */
 
 /* Heatmap canvas */
 #heatmap-canvas{position:absolute;inset:0;pointer-events:none;opacity:0.55;display:none;z-index:8}
@@ -500,7 +500,7 @@ canvas{display:block}
 .vlink-inp{width:100%;padding:7px;background:var(--bg);border:1px solid var(--bd2);border-radius:4px;color:var(--tx);font-family:monospace;font-size:10px;margin:5px 0}
 
 
-/* ══ v3.44 FEATURES ══════════════════════════════════════════════ */
+/* ══ v3.45 FEATURES ══════════════════════════════════════════════ */
 /* Budget Tracker */
 #budget-panel{position:fixed;top:50px;right:360px;width:300px;background:var(--bg2);border:1px solid var(--bd2);border-radius:10px;z-index:200;display:none;box-shadow:0 4px 20px rgba(0,0,0,.6)}
 #budget-panel.vis{display:block}
@@ -534,7 +534,7 @@ canvas{display:block}
 .ruler-text{fill:#fbbf24;font-size:11px;font-weight:700;font-family:monospace}
 
 
-/* ══ DROPDOWN MENU SYSTEM v3.44 ══════════════════════════════════ */
+/* ══ DROPDOWN MENU SYSTEM v3.45 ══════════════════════════════════ */
 .tb-menu-group{display:flex;align-items:center;gap:2px}
 .tbm{position:relative}
 .tbm-btn{padding:4px 9px;background:transparent;border:1px solid transparent;border-radius:var(--r4);font-size:11px;cursor:pointer;color:var(--tx2);transition:.12s;white-space:nowrap;display:flex;align-items:center;gap:3px}
@@ -585,7 +585,7 @@ canvas{display:block}
 .compare-label{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);color:var(--gr);font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;z-index:10}
 
 
-/* ══ v3.44 ════════════════════════════════════════════════════════ */
+/* ══ v3.45 ════════════════════════════════════════════════════════ */
 /* Light mode */
 body.light-mode{--bg:#f5f5f0;--bg2:#ffffff;--bg3:#ebebeb;--bg4:#e0e0d8;
   --tx:#111;--tx2:#333;--tx3:#777;--bd:#ccc;--bd2:#aaa;
@@ -640,7 +640,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .font-sample:hover,.font-sample.active{border-color:var(--gr);color:var(--gr)}
 
 
-/* ══ v3.44 ════════════════════════════════════════════════════════ */
+/* ══ v3.45 ════════════════════════════════════════════════════════ */
 /* Inventory */
 .inv-row{display:grid;grid-template-columns:2fr 1.2fr 1.5fr 0.7fr;gap:6px;align-items:center;
   padding:5px 0;border-bottom:1px solid var(--bd);font-size:11px}
@@ -680,7 +680,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .fire-ok{color:#4ade80}.fire-warn{color:#f87171}.fire-info{color:#fbbf24}
 
 
-/* ══ v3.44 ════════════════════════════════════════════════════════ */
+/* ══ v3.45 ════════════════════════════════════════════════════════ */
 
 /* Command Palette */
 #cmd-palette{position:fixed;top:15%;left:50%;transform:translateX(-50%);
@@ -800,7 +800,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   cursor:pointer;min-width:60px;text-align:center}
 
 
-/* ══ v3.44 ════════════════════════════════════════════════════════ */
+/* ══ v3.45 ════════════════════════════════════════════════════════ */
 /* Badges */
 .badge-popup{position:fixed;top:60px;right:16px;background:#0d2010;
   border:1px solid #4ade80;border-radius:10px;padding:12px 16px;z-index:500;
@@ -885,7 +885,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   border-radius:3px;padding:1px 6px;color:var(--tx3);font-family:monospace}
 
 
-/* ══ v3.44 ════════════════════════════════════════════════════════ */
+/* ══ v3.45 ════════════════════════════════════════════════════════ */
 
 /* Minimap */
 #minimap{position:absolute;bottom:8px;right:8px;width:140px;height:100px;
@@ -970,7 +970,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .season-tab.active{background:var(--gr3);border-color:var(--gr);color:#fff}
 
 
-/* ══ NEUES KATALOG-SYSTEM v3.44 ══════════════════════════════════ */
+/* ══ NEUES KATALOG-SYSTEM v3.45 ══════════════════════════════════ */
 
 /* Main tab bar inside each panel */
 .cat-tabs{display:flex;gap:0;border-bottom:1px solid var(--bd);
@@ -1041,7 +1041,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .cat-grid .clist-item .ci-pin{position:absolute;top:2px;right:2px}
 
 
-/* ══ v3.44 ════════════════════════════════════════════════════════ */
+/* ══ v3.45 ════════════════════════════════════════════════════════ */
 
 /* Health Score */
 #health-score{position:absolute;top:8px;right:8px;z-index:20;
@@ -1122,7 +1122,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 #nextstep-panel.vis{display:block}
 
 
-/* ══ v3.44 REALISTIC ═════════════════════════════════════════════ */
+/* ══ v3.45 REALISTIC ═════════════════════════════════════════════ */
 /* Material picker */
 .mat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}
 .mat-card{border-radius:8px;overflow:hidden;cursor:pointer;
@@ -1150,11 +1150,11 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 /* Glow toggle */
 #glow-toggle.on{color:#ffd700;border-color:#d4a000}
 
-/* ══ v3.44 ════════════════════════════════════════════════════════ */
+/* ══ v3.45 ════════════════════════════════════════════════════════ */
 .weather-btn{padding:4px 8px;background:var(--bg3);border:1px solid var(--bd);
   border-radius:4px;font-size:10px;cursor:pointer;transition:.12s}
 .weather-btn.active{background:var(--bl2);border-color:var(--bl);color:var(--bl)}
-/* ══ v3.44 POST-FX ══════════════════════════════════════════════ */
+/* ══ v3.45 POST-FX ══════════════════════════════════════════════ */
 #postfx-canvas{position:absolute;inset:0;pointer-events:none;z-index:11;
   opacity:1;mix-blend-mode:screen}
 #vignette-overlay{position:absolute;inset:0;pointer-events:none;z-index:12;
@@ -1164,7 +1164,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .fx-btn{padding:3px 8px;font-size:10px;background:var(--bg3);
   border:1px solid var(--bd);border-radius:3px;cursor:pointer;transition:.12s}
 .fx-btn.on{background:var(--gr4);border-color:var(--gr);color:var(--gr)}
-/* ══ v3.44 ════════════════════════════════════════════════════════ */
+/* ══ v3.45 ════════════════════════════════════════════════════════ */
 /* Visitor flow canvas */
 #visitor-canvas{position:absolute;inset:0;pointer-events:none;
   z-index:17;display:none}
@@ -1179,7 +1179,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   overflow:hidden;margin:3px 0}
 .clean-eff-fill{height:100%;border-radius:5px;transition:.5s}
 
-/* ══ v3.44 ════════════════════════════════════════════════════════ */
+/* ══ v3.45 ════════════════════════════════════════════════════════ */
 /* Presentation */
 #present-overlay{position:fixed;inset:0;background:#000;z-index:800;
   display:none;flex-direction:column;align-items:center;justify-content:center}
@@ -1232,7 +1232,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .sec-score-ring .score-text{position:absolute;inset:0;display:flex;align-items:center;
   justify-content:center;flex-direction:column}
 
-/* ══ v3.44 ════════════════════════════════════════════════════════ */
+/* ══ v3.45 ════════════════════════════════════════════════════════ */
 /* 3D Annotation */
 .ann-bubble{position:absolute;pointer-events:all;z-index:22;
   background:rgba(10,20,10,.92);border:1px solid var(--gr3);
@@ -1262,7 +1262,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .recog-preview{max-width:100%;border-radius:6px;margin-top:10px;
   max-height:200px;object-fit:contain}
 
-/* ══ v3.44 ════════════════════════════════════════════════════════ */
+/* ══ v3.45 ════════════════════════════════════════════════════════ */
 /* Collision highlight */
 .collision-warn{outline:2px solid #f87171!important;outline-offset:1px;
   box-shadow:0 0 8px rgba(248,113,113,.4)}
@@ -1292,7 +1292,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .cost-total{display:flex;justify-content:space-between;padding:6px 0;
   font-size:13px;font-weight:700;color:var(--gr);border-top:2px solid var(--gr)}
 
-/* ══ v3.44 ════════════════════════════════════════════════════════ */
+/* ══ v3.45 ════════════════════════════════════════════════════════ */
 /* Camera coverage */
 .cam-cone{position:absolute;pointer-events:none;z-index:16;opacity:0.3}
 /* Tour controls */
@@ -1321,7 +1321,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .be-chart{width:100%;height:120px;position:relative;margin:10px 0}
 .be-bar{position:absolute;bottom:0;border-radius:2px 2px 0 0;transition:.4s}
 
-/* ══ v3.44 ════════════════════════════════════════════════════════ */
+/* ══ v3.45 ════════════════════════════════════════════════════════ */
 
 /* CAD Dimension lines */
 .dim-line{position:absolute;pointer-events:none;z-index:19}
@@ -1353,7 +1353,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .heat-med{border-color:#fbbf24;background:rgba(251,191,36,.08)}
 .heat-high{border-color:#f87171;background:rgba(248,113,113,.08)}
 
-/* ══ v3.44 LAYOUT OVERHAUL ════════════════════════════════════ */
+/* ══ v3.45 LAYOUT OVERHAUL ════════════════════════════════════ */
 /* Properties tile under score */
 #props-tile{
   position:absolute;top:42px;right:8px;z-index:25;
@@ -1421,7 +1421,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 
 
 
-/* ══ v3.44 CLEAN LAYOUT ════════════════════════════════════════ */
+/* ══ v3.45 CLEAN LAYOUT ════════════════════════════════════════ */
 
 /* Props panel — fixed, right side, under health score, NOT in canvas */
 #props-panel{
@@ -1523,19 +1523,43 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 
 /* ── LIGHT MODE ──────────────────────────────────────────────── */
 body.light-mode{
-  --bg:#f5f5f0; --bg2:#ffffff; --bg3:#f0efe8; --bg4:#e8e6df;
-  --tx:#1a1a14; --tx2:#4a4a40; --tx3:#8a8a80;
-  --bd:#d0cec5; --bd2:#c0beb5;
-  --gr:#166534; --gr3:#a7d7b3; --gr4:rgba(22,101,52,.08);
-  --rd:#dc2626; --yw:#d97706; --bl:#0369a1;
-  --or:#c2410c;
+  --bg:#f0ede4; --bg2:#ffffff; --bg3:#e8e5dc; --bg4:#dedad0;
+  --tx:#111108; --tx2:#2c2c1c; --tx3:#666655;
+  --bd:#b8b5a8; --bd2:#a0a090;
+  --gr:#14532d; --gr3:#86efac; --gr4:rgba(20,83,45,.1);
+  --rd:#b91c1c; --yw:#b45309; --bl:#1d4ed8;
+  --or:#c2410c; --r12:10px;
+  color-scheme: light;
 }
-body.light-mode #app{ background:#f5f5f0; }
-body.light-mode #topbar,body.light-mode #botbar{ background:#ffffff; border-color:#d0cec5; }
-body.light-mode #left,body.light-mode #right{ background:#ffffff; }
-body.light-mode #canvas-wrap{ background:#e8e8e0; }
-body.light-mode .amsg.ai{ background:#e8f5e9; }
-body.light-mode .amsg.user{ background:#fff8e1; }
+body.light-mode #app{ background:#e8e5dc; }
+body.light-mode #topbar{ background:#fff; border-color:#b8b5a8; color:#111 }
+body.light-mode #botbar{ background:#fff; border-color:#b8b5a8; }
+body.light-mode #left{ background:#f5f4ee; border-color:#b8b5a8; }
+body.light-mode #iconbar{ background:#e8e5dc; border-color:#b8b5a8; }
+body.light-mode #right{ background:#f5f4ee; border-color:#b8b5a8; }
+body.light-mode #canvas-wrap{ background:#c8c4b0; }
+body.light-mode .rtab{ background:#e8e5dc; color:#2c2c1c; border-color:#b8b5a8; }
+body.light-mode .rtab.active{ background:#fff; color:#14532d; }
+body.light-mode .rpanel{ background:#f5f4ee; }
+body.light-mode .mover{ background:#fff; border-color:#b8b5a8; }
+body.light-mode .tbt{ color:#2c2c1c; }
+body.light-mode .tbt:hover{ background:#e0ddd4; }
+body.light-mode .amsg.ai{ background:#e8f5e9; color:#111; border-color:#86efac; }
+body.light-mode .amsg.user{ background:#fef9c3; color:#111; border-color:#fde68a; }
+body.light-mode .lph{ background:#e8e5dc; border-color:#b8b5a8; color:#14532d; }
+body.light-mode .ib{ color:#2c2c1c; }
+body.light-mode .ib:hover,.ib.active{ color:#14532d; background:#e8f5e9; }
+body.light-mode .tbm{ background:#fff; border-color:#b8b5a8; }
+body.light-mode .tbm-item:hover{ background:#e8f5e9; color:#14532d; }
+body.light-mode .rtab{ border-color:#b8b5a8; }
+body.light-mode .amsg{ border-color:#b8b5a8; }
+body.light-mode input,body.light-mode textarea,body.light-mode select{
+  background:#fff !important;color:#111 !important;border-color:#b8b5a8 !important;
+}
+body.light-mode .ainput{ background:#f5f4ee !important; color:#111 !important; }
+body.light-mode .asend{ background:#14532d !important; }
+body.light-mode #health-score{ background:rgba(255,255,255,.9); }
+body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 
 /* Toggle button */
 #theme-toggle{
@@ -1553,7 +1577,7 @@ body.light-mode .amsg.user{ background:#fff8e1; }
 .toast.r{background:#3f1111;color:var(--rd);border:1px solid var(--rd)}
 .toast.b{background:#0c2230;color:var(--bl);border:1px solid var(--bl)}
 /* ── PROPERTIES PANEL ─────────────────────────────────────────────────── */
-#prop-panel{position:fixed;top:55px;left:270px;width:240px;background:var(--bg2);border:1px solid var(--gr3);border-radius:10px;padding:0;display:none;z-index:250;box-shadow:0 4px 20px rgba(0,0,0,.8);max-height:calc(100vh - 120px);overflow-y:auto}
+#prop-panel{position:fixed;top:54px;left:335px;width:240px;background:var(--bg2);border:1px solid var(--gr3);border-radius:10px;padding:0;display:none;z-index:250;box-shadow:0 4px 20px rgba(0,0,0,.8);max-height:calc(100vh - 120px);overflow-y:auto}
 #prop-panel.vis{display:block}
 .pp-title{font-size:11px;font-weight:700;color:var(--gr);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
 .pp-close{background:none;border:none;color:var(--tx3);cursor:pointer;font-size:14px;padding:0}
@@ -1638,7 +1662,7 @@ body.light-mode .amsg.user{ background:#fff8e1; }
 <div id="topbar">
   <!-- LOGO -->
   <span class="logo">🌿 CSC <em>Raumplaner</em></span>
-  <span class="vbadge">v3.44</span>
+  <span class="vbadge">v3.45</span>
   <div class="tsep"></div>
 
   <!-- UNDO/REDO -->
@@ -1893,6 +1917,10 @@ body.light-mode .amsg.user{ background:#fff8e1; }
   <button id="ki-dropdown-btn" onclick="toggleKIDropdown(this)" title="Alle KI-Funktionen">
     <span>🤖</span><span>KI-Funktionen</span><span class="ki-arrow">▾</span>
   </button>
+
+  <button class="tbt" onclick="showRight('design')" title="Design & Material" style="font-size:10px;padding:4px 8px;border-radius:12px;border:1px solid var(--bd);background:var(--bg3)">🎨 Design</button>
+  <button class="tbt" onclick="showRight('light')" title="Licht & Atmosphäre" style="font-size:10px;padding:4px 8px;border-radius:12px;border:1px solid var(--bd);background:var(--bg3)">🌅 Licht</button>
+  <button class="tbt" onclick="showRight('save')" title="Projekte & Speichern" style="font-size:10px;padding:4px 8px;border-radius:12px;border:1px solid var(--bd);background:var(--bg3)">💾 Projekt</button>
   <div class="tsep" style="margin:0 8px"></div>
   <div class="tgap"></div>
 
@@ -4569,7 +4597,7 @@ function build3DRoomFloor(r){
     cord.position.set(lx, ly-0.35, cz); g.add(cord);
   }
 
-  // ── v3.44/31 realism hooks ──────────────────────────────────────
+  // ── v3.45/31 realism hooks ──────────────────────────────────────
   addAmbientOcclusion(r, g, elev);
   addFloorDirt(r, g, elev);
   addCrownMolding(r, g, elev);
@@ -5046,7 +5074,7 @@ function doPrint(){
     +'td,th{border:1px solid #ddd;padding:4px 6px;text-align:left}th{background:#f5f5f5}'
     +'@media print{body{padding:8px}}</style></head><body>'
     +'<h1>🌿 '+d.name+'</h1>'
-    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.44 · '+new Date().toLocaleDateString('de-DE')+'</div>'
+    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.45 · '+new Date().toLocaleDateString('de-DE')+'</div>'
     +'<img src="'+img+'">'
     +'<div class=grid>'
     +'<div class=box><h3>Räume ('+d.rooms.length+')</h3>'
@@ -6890,7 +6918,7 @@ function pickKallaxColor(id, part){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// KALLAX PRO EDITOR — Extended (v3.44)
+// KALLAX PRO EDITOR — Extended (v3.45)
 // ════════════════════════════════════════════════════════════════════════
 
 // Additional color palettes
@@ -8162,7 +8190,7 @@ function rebuild3DThrottled(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// NEW FEATURES v3.44
+// NEW FEATURES v3.45
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. RAUM-SNAP beim Platzieren ─────────────────────────────────────
@@ -8553,7 +8581,7 @@ function showCSCPanel(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// INTERAKTIVE ANLEITUNG v3.44
+// INTERAKTIVE ANLEITUNG v3.45
 // ════════════════════════════════════════════════════════════════════════
 function openHelp(page){
   document.getElementById('help-overlay').classList.add('open');
@@ -8704,7 +8732,7 @@ function renderTutStep(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.44 — ALLE NEUEN FEATURES
+// v3.45 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. KI MÖBELANORDNUNG ─────────────────────────────────────────────
@@ -9356,7 +9384,7 @@ function removeWallCtxMenu(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.44 — ALLE NEUEN FEATURES
+// v3.45 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── FURNITURE PRICES DATABASE ────────────────────────────────────────
@@ -9882,7 +9910,7 @@ const _origAddRoom = addRoom;
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.44 — DROPDOWN MENU SYSTEM + NEW FEATURES
+// v3.45 — DROPDOWN MENU SYSTEM + NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── DROPDOWN MENU SYSTEM ─────────────────────────────────────────────
@@ -10232,7 +10260,7 @@ function renderComparePane(side, data){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.44 — ALL NEW FEATURES
+// v3.45 — ALL NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. DARK/LIGHT MODE ───────────────────────────────────────────────
@@ -10607,7 +10635,7 @@ function registerServiceWorker(){
   if(!location.protocol.startsWith('http')){ /* SW only on https - not an error */; return; }
   // Inline SW as blob
   const swCode=`
-    const CACHE='csc-v3.44';
+    const CACHE='csc-v3.45';
     self.addEventListener('install',e=>e.waitUntil(
       caches.open(CACHE).then(c=>c.add('/'))
     ));
@@ -10681,7 +10709,7 @@ function registerServiceWorker(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.44 — BRANDSCHUTZ / AKUSTIK / ENERGIE / REINIGUNG / INVENTAR /
+// v3.45 — BRANDSCHUTZ / AKUSTIK / ENERGIE / REINIGUNG / INVENTAR /
 //          HEATMAP MITGLIEDER / LIEFERWEGE / BARCODE
 // ════════════════════════════════════════════════════════════════════════
 
@@ -11094,7 +11122,7 @@ function drawRoutes(ctx){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.44 — ALLE AUTOMATISIERUNGS-FEATURES
+// v3.45 — ALLE AUTOMATISIERUNGS-FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -11860,7 +11888,7 @@ function addDashWidget(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.44 — ALLE NEUEN FEATURES
+// v3.45 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -12678,7 +12706,7 @@ function showGrowthPlan(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.44 — MINIMAP / SNAP / GUIDED / UNDO-TL / GROUPS / SEASONS / MORE
+// v3.45 — MINIMAP / SNAP / GUIDED / UNDO-TL / GROUPS / SEASONS / MORE
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -13214,7 +13242,7 @@ function addTooltip(el,text){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// EXTRA FEATURES v3.44
+// EXTRA FEATURES v3.45
 // ════════════════════════════════════════════════════════════════════════
 
 // ── PRINT PREVIEW ────────────────────────────────────────────────────
@@ -13380,7 +13408,7 @@ async function wizardGenerate(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// NEUES KATALOG-SYSTEM v3.44
+// NEUES KATALOG-SYSTEM v3.45
 // ════════════════════════════════════════════════════════════════════════
 
 // Group definitions
@@ -13652,7 +13680,7 @@ function renderCustomPanel(el){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.44 — ECHTZEIT COMPLIANCE / HEALTH SCORE / SMART UX / REALISTIC 3D
+// v3.45 — ECHTZEIT COMPLIANCE / HEALTH SCORE / SMART UX / REALISTIC 3D
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. HEALTH SCORE ──────────────────────────────────────────────────
@@ -14203,7 +14231,7 @@ function takePresentationScreenshot(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.44 — REALISTIC 3D ENGINE
+// v3.45 — REALISTIC 3D ENGINE
 // ════════════════════════════════════════════════════════════════════════
 
 // ── TEXTURE GENERATORS ───────────────────────────────────────────────
@@ -14691,7 +14719,7 @@ function openMaterialStudio(){
     +'<div class="floor-preview" style="background:'+p.preview+'"></div>'
     +'<div class="floor-name">'+p.name+'</div></div>'
   ).join('');
-  // Wall textures (reuse WALL_TEXTURES from v3.44)
+  // Wall textures (reuse WALL_TEXTURES from v3.45)
   const wg=document.getElementById('wall-tex-grid-studio');
   if(wg&&typeof WALL_TEXTURES!=='undefined') wg.innerHTML=WALL_TEXTURES.slice(0,8).map(t=>'<div onclick="applyWallTexture(\''+rooms[0]?.id+'\',\''+t.id+'\')" style="cursor:pointer;border-radius:4px;overflow:hidden;border:1px solid var(--bd)">'
     +'<div style="height:35px;background:'+t.color+'"></div>'
@@ -14730,7 +14758,7 @@ function isShelveType(typeId){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.44 — ADVANCED REALISTIC EFFECTS
+// v3.45 — ADVANCED REALISTIC EFFECTS
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. TEPPICH FASER-SHADER ──────────────────────────────────────────
@@ -15206,7 +15234,7 @@ function updateSkybox(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.44 — POST-PROCESSING / SHADOWS / MIRROR / ATMOSPHERE / DECOR
+// v3.45 — POST-PROCESSING / SHADOWS / MIRROR / ATMOSPHERE / DECOR
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. IMPROVED PCF SHADOWS ───────────────────────────────────────────
@@ -15648,7 +15676,7 @@ function addWainscoting(r, g, elev){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.44 — GROUTLINES + ANALYSEN
+// v3.45 — GROUTLINES + ANALYSEN
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. FLIESEN MIT ECHTER FUGENGEOMETRIE ─────────────────────────────
@@ -15906,7 +15934,7 @@ function dashCard(title,content,id){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.44 — BESUCHERFLUSS / REINIGUNG / SICHERHEITS-KI / TÄFELUNG FIX
+// v3.45 — BESUCHERFLUSS / REINIGUNG / SICHERHEITS-KI / TÄFELUNG FIX
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. BESUCHERFLUSS-ANIMATION ─────────────────────────────────────
@@ -16334,7 +16362,7 @@ async function generateFullReport(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.44 — PERF / MOBILE / VERSIONS / PRESENTATION / ANALYSEN / UX
+// v3.45 — PERF / MOBILE / VERSIONS / PRESENTATION / ANALYSEN / UX
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. LOD + FRUSTUM CULLING ──────────────────────────────────────────
@@ -16778,7 +16806,7 @@ async function generateFullReport(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.44 — KI-GRUNDRISS / ANNOTATIONEN 3D / ERWEITERTE FEATURES
+// v3.45 — KI-GRUNDRISS / ANNOTATIONEN 3D / ERWEITERTE FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. KI-GRUNDRISS ERKENNEN ─────────────────────────────────────────
@@ -17153,7 +17181,7 @@ function analyzeMemberGrowth(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.44 — FLOOR PATTERN 2D / COLLISION / SNAP / WIZARD / DOCS
+// v3.45 — FLOOR PATTERN 2D / COLLISION / SNAP / WIZARD / DOCS
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. BODENMUSTER IM 2D ─────────────────────────────────────────────
@@ -17529,7 +17557,7 @@ function zoomToRoom(r){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.44 — KAMERA-SICHTFELDER / BREAK-EVEN / PERSONALPLAN /
+// v3.45 — KAMERA-SICHTFELDER / BREAK-EVEN / PERSONALPLAN /
 //         WARTUNG / 3D-TOUR / EMBED / IFC / BARCODE / KI-MEMORY / OFFLINE
 // ════════════════════════════════════════════════════════════════════════
 
@@ -18028,7 +18056,7 @@ async function cloudSave(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.44 — MAßKETTEN / TÜRÖFFNUNGEN / GANTT / HEIZLAST / LUX
+// v3.45 — MAßKETTEN / TÜRÖFFNUNGEN / GANTT / HEIZLAST / LUX
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. CAD MAßKETTEN IM 2D ───────────────────────────────────────────
@@ -18445,7 +18473,7 @@ document.addEventListener('keydown', e=>{
 }, true);
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.44 — KI DROPDOWN / SIDE PANELS / LAYOUT
+// v3.45 — KI DROPDOWN / SIDE PANELS / LAYOUT
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -18485,7 +18513,7 @@ function makeDraggable(el, handle){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.44 CLEAN — PANEL FUNCTIONS + KI DROPDOWN + DRAGGABLE
+// v3.45 CLEAN — PANEL FUNCTIONS + KI DROPDOWN + DRAGGABLE
 // ════════════════════════════════════════════════════════════════════════
 
 // ── UNIVERSAL DRAG ───────────────────────────────────────────────────
@@ -18816,7 +18844,7 @@ draw2D();
 
 renderFloorTabs();
 initUndoSystem();
-setTimeout(()=>toast('🌿 v3.44 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
+setTimeout(()=>toast('🌿 v3.45 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
 
 
 
@@ -18844,7 +18872,7 @@ function initAutoSave(){
   // Enable auto-saving from now on
   _autoSaveReady = true;
   renderVersionHistory();
-  toast('🌿 v3.44 | Auto-Save aktiv','g');
+  toast('🌿 v3.45 | Auto-Save aktiv','g');
 }
 
 
@@ -19166,7 +19194,7 @@ function build3DObj(o){
   const metal = o.metalness !== undefined ? o.metalness : (item.arch==='window'?0.0: item.arch==='door'?0.05:['Lager','Info'].includes(item.cat)?0.55:0.04);
 
   if(item.isKallax || (item.id&&item.id.startsWith('kallax'))){
-    buildKallax3DPro(g, item, o); // v3.44 Pro
+    buildKallax3DPro(g, item, o); // v3.45 Pro
   } else if(item.arch==='security'){
     buildSecurity3D(g, item, o);
   } else if(item.arch==='foil'){
@@ -19586,7 +19614,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
     color:var(--rd);border-radius:4px;padding:2px 8px;cursor:pointer;font-size:10px">✕ Beenden</button>
 </div>
 
-<!-- ══ v3.44 EXTRA HTML ══ -->
+<!-- ══ v3.45 EXTRA HTML ══ -->
 <div id="mobile-left-btn" onclick="document.getElementById('left-panel').classList.toggle('mobile-open')">🛋</div>
 <div id="mobile-right-btn" onclick="document.getElementById('right-panel').classList.toggle('mobile-open')">🤖</div>
 <div id="touch-drag-hint">✋</div>
@@ -19608,7 +19636,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
 
   <div style="padding:12px 20px;border-bottom:1px solid #1a2a1a;display:flex;align-items:center;gap:14px;flex-shrink:0">
     <div style="font-size:16px;font-weight:800;color:#4ade80">🌿 CSC Raumplaner — Vollständige Anleitung</div>
-    <div style="font-size:11px;color:#555">v3.44</div>
+    <div style="font-size:11px;color:#555">v3.45</div>
     <div style="flex:1"></div>
     <button class="tbt" onclick="startOnboarding()" style="border-color:var(--gr);color:var(--gr);padding:6px 14px">▶ Illustriertes Intro</button>
     <button class="tbt" onclick="startTutorial()" style="padding:6px 14px">🎯 Interaktives Tutorial</button>
