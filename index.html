@@ -2088,33 +2088,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
     <div class="rtab" id="rtab-light" onclick="showRight('light')">🌅 Licht</div>
     <div class="rtab" id="rtab-save" onclick="showRight('save')">💾 Projekte</div>
     <div class="rtab active" id="rtab-props" onclick="showRight('props')">⚙ Eigenschaften</div>
-  
-  <!-- EIGENSCHAFTEN PANEL -->
-  <div class="rpanel active" id="rpanel-props">
-    <div id="rpanel-props-content">
-      <div id="props-default-view">
-        <div style="padding:8px 10px;font-size:10px;color:var(--tx3);border-bottom:1px solid var(--bd)">
-          Klicke ein Objekt oder Raum an
-        </div>
-        <div id="quick-analyses" style="padding:4px 0">
-          <div class="qa-item" onclick="openAnalysisDashboard()">📊 Analyse-Dashboard</div>
-          <div class="qa-item" onclick="calcHeatLoad()">🌡 Heizlast-Berechnung</div>
-          <div class="qa-item" onclick="analyzeLux()">💡 Lux-Berechnung</div>
-          <div class="qa-item" onclick="calcBreakEven()">📈 Break-Even-Rechner</div>
-          <div class="qa-item" onclick="calcFireSafety()">🧯 Brandschutz</div>
-          <div class="qa-item" onclick="calcAccessibilityScore()">♿ Barrierefreiheit</div>
-          <div class="qa-item" onclick="showShiftGantt()">📅 Schichtplan</div>
-          <div class="qa-item" onclick="generateMaintenanceCalendar()">🗓 Wartungskalender</div>
-          <div class="qa-item" onclick="analyzeWaitQueue()">⏱ Warteschlange</div>
-          <div class="qa-item" onclick="calcAISecurityScore()">🔐 Sicherheitsbewertung</div>
-          <div class="qa-item" onclick="calcROI()">💰 ROI-Rechner</div>
-          <div class="qa-item" onclick="analyzeEscapeRoutes()">🚪 Fluchtweg-Analyse</div>
-        </div>
-      </div>
-      <div id="props-obj-view" style="display:none"></div>
-    </div>
   </div>
-</div>
 
   <!-- AI PANEL -->
   <div class="rpanel" id="rpanel-ai">
@@ -2258,6 +2232,33 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
       <div id="saved-list"></div>
     </div>
   </div>
+
+  <!-- EIGENSCHAFTEN PANEL -->
+  <div class="rpanel active" id="rpanel-props">
+    <div id="rpanel-props-content" style="flex:1;overflow-y:auto">
+      <div id="props-default-view">
+        <div style="padding:8px 10px;font-size:10px;color:var(--tx3);border-bottom:1px solid var(--bd)">
+          Klicke ein Objekt oder Raum an
+        </div>
+        <div id="quick-analyses" style="padding:4px 0">
+          <div class="qa-item" onclick="openAnalysisDashboard()">📊 Analyse-Dashboard</div>
+          <div class="qa-item" onclick="calcHeatLoad()">🌡 Heizlast-Berechnung</div>
+          <div class="qa-item" onclick="analyzeLux()">💡 Lux-Berechnung</div>
+          <div class="qa-item" onclick="calcBreakEven()">📈 Break-Even-Rechner</div>
+          <div class="qa-item" onclick="calcFireSafety()">🧯 Brandschutz</div>
+          <div class="qa-item" onclick="calcAccessibilityScore()">♿ Barrierefreiheit</div>
+          <div class="qa-item" onclick="showShiftGantt()">📅 Schichtplan</div>
+          <div class="qa-item" onclick="generateMaintenanceCalendar()">🗓 Wartungskalender</div>
+          <div class="qa-item" onclick="analyzeWaitQueue()">⏱ Warteschlange</div>
+          <div class="qa-item" onclick="calcAISecurityScore()">🔐 Sicherheitsbewertung</div>
+          <div class="qa-item" onclick="calcROI()">💰 ROI-Rechner</div>
+          <div class="qa-item" onclick="analyzeEscapeRoutes()">🚪 Fluchtweg-Analyse</div>
+        </div>
+      </div>
+      <div id="props-obj-view" style="display:none"></div>
+    </div>
+  </div>
+
 </div>
 
 
@@ -18708,22 +18709,28 @@ function updatePropsPanel(){
 
 // ── INFO PANEL (for analysis results, tips) ─────────────────────────
 function showInfoPanel(title, html){
-  const p=document.getElementById('info-panel');
-  const t=document.getElementById('ip-title');
-  const b=document.getElementById('ip-body');
-  if(!p||!b) return;
-  if(t) t.textContent=title;
-  b.innerHTML=html;
-  p.classList.add('vis');
-  makeDraggable(p);
+  showFloatingPanel(title, html); // redirect to right panel
 }
 function closeInfoPanel(){
   document.getElementById('info-panel')?.classList.remove('vis');
 }
 
 // Override showFloatingPanel → use info-panel
-function showFloatingPanel(title, content){
-  showInfoPanel(title, content);
+function showFloatingPanel(title, html){
+  // Show in right panel Eigenschaften tab
+  showRight('props');
+  const dst  = document.getElementById('props-obj-view');
+  const def  = document.getElementById('props-default-view');
+  if(!dst) return;
+  dst.innerHTML =
+    '<div style="padding:8px 12px;background:var(--bg3);border-bottom:1px solid var(--bd);'
+    +'display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:700;color:var(--gr)">'
+    +title
+    +'<button onclick="clearPropsPanel()" style="background:none;border:none;color:var(--tx3);cursor:pointer;font-size:16px;line-height:1">✕</button>'
+    +'</div>'
+    +'<div style="padding:0;overflow-y:auto;flex:1">'+html+'</div>';
+  dst.style.display = 'block';
+  if(def) def.style.display = 'none';
 }
 
 // ── KI DROPDOWN ─────────────────────────────────────────────────────
