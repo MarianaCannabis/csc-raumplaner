@@ -1965,6 +1965,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
   <div class="ib" id="ib-security" onclick="showLeft('security')" style="color:#f87171"><span class="ico">🔒</span>Sicher</div>
   <div class="ibsep"></div>
   <div class="ib" id="ib-events" onclick="showLeft('events')"><span class="ico">🎭</span>Veranst.</div>
+  <div class="ib" id="ib-events" onclick="showLeft('events')"><span class="ico">🎭</span>Veranst.</div>
   <div class="ib" id="ib-custom" onclick="showLeft('custom')"><span class="ico">✏️</span>Eigene</div>
 </div>
 
@@ -3875,71 +3876,6 @@ const BUILTIN = [
   {id:'eve-werkzeugwagen',cat:'Extras',  icon:'🔧',name:'Werkzeugwagen Technik', w:0.70,d:0.45,h:0.95,col:0xf5c518},
   {id:'eve-transport-karre',cat:'Extras',icon:'🛒',name:'Transport-Sackkarre',   w:0.50,d:0.80,h:1.20,col:0x888888},
   {id:'eve-akkumulde',  cat:'Extras',    icon:'🔋',name:'Akku-Ladestation',       w:0.40,d:0.35,h:0.60,col:0x224422},
-,
-
-  // ══ BÜHNE extra ══════════════════════════════════════════
-  {id:'eve-rigpoint',    cat:'Bühne',    icon:'⚓',name:'Rigging-Punkt (Deckenhaken)',w:0.15,d:0.15,h:0.15,col:0x888888,arch:'ceil'},
-  {id:'eve-gittermast',  cat:'Bühne',    icon:'🔧',name:'Gittermast 4m',             w:0.30,d:0.30,h:4.00,col:0x888888},
-  {id:'eve-traverse-q',  cat:'Bühne',    icon:'🔧',name:'Traverse Quader 3m',        w:3.00,d:0.30,h:0.30,col:0x888888},
-  {id:'eve-bühnen-geländer',cat:'Bühne', icon:'🛡',name:'Bühnen-Geländer 2m',       w:2.00,d:0.05,h:1.10,col:0x666666},
-  {id:'eve-motorhub',    cat:'Bühne',    icon:'⬆',name:'Kettenzug/Hoist 1000kg',    w:0.30,d:0.30,h:0.25,col:0x888888,arch:'ceil'},
-  {id:'eve-bühnen-tisch',cat:'Bühne',    icon:'📋',name:'Bühnentisch für Podium',    w:1.80,d:0.60,h:0.75,col:0x222222},
-  {id:'eve-bühnenboden', cat:'Bühne',    icon:'⬛',name:'Bühnenboden-Paneel 2×1m',   w:2.00,d:1.00,h:0.02,col:0x111111},
-  {id:'eve-lichtvorhang',cat:'Bühne',    icon:'✨',name:'LED-Lichtervorhang',        w:3.00,d:0.10,h:2.50,col:0xffd700},
-  {id:'eve-projektionsleinwand-boden',cat:'Bühne',icon:'📽',name:'Frontleinwand Bodenstativ',w:3.00,d:0.15,h:2.00,col:0xffffff},
-  {id:'eve-showtreppe',  cat:'Bühne',    icon:'🌟',name:'Show-Treppe beleuchtet',    w:1.20,d:2.00,h:0.80,col:0xd4a017},
-  // ══ MESSESTAND extra ═════════════════════════════════════
-  {id:'eve-systemtheke', cat:'Messestand',icon:'🏪',name:'System-Theke Curved',      w:1.20,d:0.70,h:1.00,col:0x224422},
-  {id:'eve-showcase-beleuchtet',cat:'Messestand',icon:'💡',name:'Beleuchtete Showcase-Vitrine',w:1.00,d:0.45,h:1.80,col:0x88ccff},
-  {id:'eve-tower-display',cat:'Messestand',icon:'🗼',name:'Tower-Display 1.5m',     w:0.50,d:0.50,h:1.50,col:0x336633},
-  {id:'eve-hängedisplay',cat:'Messestand',icon:'🖼',name:'Hängedisplay (Decke)',    w:1.50,d:0.10,h:1.00,col:0x224422},
-  {id:'eve-bodenaufkleber',cat:'Messestand',icon:'⬛',name:'Boden-Branding (2×2m)', w:2.00,d:2.00,h:0.01,col:0x22442220,arch:'floor'},
-  {id:'eve-gegenlicht',  cat:'Messestand',icon:'💡',name:'Gegenlicht-Panel',        w:1.00,d:0.15,h:2.50,col:0xffffff},
-  {id:'eve-messe-regal', cat:'Messestand',icon:'📦',name:'Fachboden-Präsenter',     w:1.00,d:0.35,h:2.00,col:0x555555},
-  {id:'eve-touchscreen', cat:'Messestand',icon:'📱',name:'Interaktiver Touchscreen', w:0.55,d:0.10,h:1.50,col:0x111111},
-  {id:'eve-katalogstände',cat:'Messestand',icon:'📚',name:'Katalog-Ständer drehbar', w:0.50,d:0.50,h:1.50,col:0x888888},
-  {id:'eve-klappbox',    cat:'Messestand',icon:'📦',name:'Transport-Klappbox',       w:0.60,d:0.40,h:0.50,col:0x888888},
-  {id:'eve-zähler-messe',cat:'Messestand',icon:'👤',name:'Besucherzähler',           w:0.08,d:0.06,h:0.12,col:0x224422},
-  {id:'eve-messe-teppich',cat:'Messestand',icon:'🔲',name:'Messe-Teppich 4×4m',    w:4.00,d:4.00,h:0.01,col:0x22442240,arch:'floor'},
-  {id:'eve-messe-dach',  cat:'Messestand',icon:'🏠',name:'Messe-Standdach',         w:4.00,d:4.00,h:0.20,col:0xdddddd},
-  {id:'eve-expo-wand-bogen',cat:'Messestand',icon:'🏛',name:'Expo-Bogen/Torbogen',  w:2.50,d:0.30,h:3.00,col:0xaaaaaa},
-  {id:'eve-promotion-stand',cat:'Messestand',icon:'🎯',name:'Promotion-Stand',      w:1.00,d:1.00,h:2.20,col:0x336633},
-  // ══ TECHNIK extra ════════════════════════════════════════
-  {id:'eve-stromverteil-400',cat:'Veranst-Technik',icon:'⚡',name:'Strom-Verteiler 400V',w:0.50,d:0.35,h:0.30,col:0xff6600},
-  {id:'eve-patchbay',    cat:'Veranst-Technik',icon:'🔌',name:'Audio-Patchbay',     w:0.48,d:0.20,h:0.05,col:0x333333},
-  {id:'eve-funk-sender', cat:'Veranst-Technik',icon:'📡',name:'Funk-Mikrofon-Sender',w:0.06,d:0.06,h:0.22,col:0x333333},
-  {id:'eve-intercom',    cat:'Veranst-Technik',icon:'🎧',name:'Intercom-System',    w:0.20,d:0.15,h:0.05,col:0x333333},
-  {id:'eve-timecode',    cat:'Veranst-Technik',icon:'⏱',name:'Timecode-Generator', w:0.20,d:0.15,h:0.05,col:0x333333},
-  {id:'eve-led-ticker',  cat:'Veranst-Technik',icon:'📢',name:'LED-Laufschrift 3m', w:3.00,d:0.10,h:0.25,col:0xff6600},
-  {id:'eve-infomonitor-hängend',cat:'Veranst-Technik',icon:'📺',name:'Hänge-Monitor 43"',w:0.95,d:0.10,h:0.55,col:0x111111,arch:'ceil'},
-  {id:'eve-kiosk-terminal',cat:'Veranst-Technik',icon:'🖥',name:'Kiosk-Terminal Touchscreen',w:0.55,d:0.55,h:1.40,col:0x222222},
-  // ══ LICHT extra ══════════════════════════════════════════
-  {id:'eve-strobe',      cat:'Veranst-Licht',icon:'⚡',name:'Stroboskop',           w:0.25,d:0.20,h:0.15,col:0xffffff},
-  {id:'eve-gobo',        cat:'Veranst-Licht',icon:'🔵',name:'Gobo-Projektor',       w:0.20,d:0.20,h:0.30,col:0x3366ff},
-  {id:'eve-pixel-tube',  cat:'Veranst-Licht',icon:'🌈',name:'LED Pixel-Tube (1m)',  w:0.06,d:0.06,h:1.00,col:0xff00ff},
-  {id:'eve-lichtbalken', cat:'Veranst-Licht',icon:'💡',name:'LED-Lichtbalken 1m',   w:1.00,d:0.08,h:0.08,col:0xffd700},
-  {id:'eve-uv-licht',    cat:'Veranst-Licht',icon:'🟣',name:'UV/Schwarzlicht',      w:0.60,d:0.10,h:0.10,col:0x6600ff},
-  // ══ BESCHALLUNG extra ════════════════════════════════════
-  {id:'eve-delay-ls',    cat:'Beschallung',icon:'🔊',name:'Delay-Lautsprecher',     w:0.25,d:0.25,h:0.30,col:0x333333},
-  {id:'eve-surround-ls', cat:'Beschallung',icon:'🔊',name:'Surround-Lautsprecher',  w:0.20,d:0.20,h:0.25,col:0x333333},
-  {id:'eve-verstärker',  cat:'Beschallung',icon:'⚡',name:'Endstufe/Verstärker',    w:0.48,d:0.40,h:0.05,col:0x333333},
-  {id:'eve-rack-19',     cat:'Beschallung',icon:'🗄',name:'19"-Rack 9HE',           w:0.48,d:0.60,h:0.50,col:0x222222},
-  // ══ CATERING extra ═══════════════════════════════════════
-  {id:'eve-wein-display',cat:'Catering',   icon:'🍷',name:'Wein-Präsenter/Regal',   w:0.80,d:0.40,h:1.50,col:0x5a1a1a},
-  {id:'eve-food-truck',  cat:'Catering',   icon:'🚚',name:'Food-Truck-Fläche (3×2)',w:3.00,d:2.00,h:0.01,col:0x33660020,arch:'floor'},
-  {id:'eve-bierfass',    cat:'Catering',   icon:'🍺',name:'Bierfass (50L)',          w:0.40,d:0.40,h:0.60,col:0xd4a017},
-  {id:'eve-kassenterminal',cat:'Catering', icon:'💳',name:'Kassen-Terminal mobil',   w:0.20,d:0.15,h:0.15,col:0x224422},
-  // ══ EINGANG extra ════════════════════════════════════════
-  {id:'eve-akkreditierung',cat:'Eingang',  icon:'🏷',name:'Akkreditierungs-Tisch',  w:1.60,d:0.60,h:0.75,col:0x555555},
-  {id:'eve-bändchen',    cat:'Eingang',    icon:'🎗',name:'Bändchen-Ausgabe',        w:0.40,d:0.30,h:0.75,col:0x336633},
-  {id:'eve-sicherheitsschleuse',cat:'Eingang',icon:'🔒',name:'Sicherheitsschleuse', w:1.00,d:2.50,h:2.20,col:0x666666},
-  {id:'eve-infopoint',   cat:'Eingang',    icon:'ℹ',name:'Infopoint-Säule',          w:0.40,d:0.40,h:1.80,col:0x336633},
-  // ══ OUTDOOR extra ════════════════════════════════════════
-  {id:'eve-toilettenwagen',cat:'Outdoor',  icon:'🚻',name:'Sanitär-/Toilettenwagen',w:2.50,d:2.50,h:2.50,col:0xffffff},
-  {id:'eve-generator',   cat:'Outdoor',    icon:'⚡',name:'Stromgenerator (30kVA)', w:1.80,d:0.90,h:1.20,col:0xf5c518},
-  {id:'eve-absperrzaun-event',cat:'Outdoor',icon:'🚧',name:'Sicherheitszaun Event 2m',w:2.00,d:0.10,h:2.00,col:0x888888},
-  {id:'eve-pissoir-mobil',cat:'Outdoor',   icon:'🚹',name:'Mobiles Pissoir',         w:0.70,d:0.70,h:1.20,col:0xbbbbbb},
-  {id:'eve-flagge-fahne',cat:'Outdoor',    icon:'🚩',name:'Event-Fahne/Beachflag',   w:0.80,d:0.10,h:3.50,col:0x336633},
 ];
 
 const ARCH = [
@@ -5281,26 +5217,27 @@ function renderCustomPanel(el){
   customObjs.forEach(o=>{
     h+=`<div class="rc"><div style="font-size:18px">${o.icon||'📦'}</div>
       <div class="ri"><div class="rn">${o.name}</div><div class="rd">${o.cat} · ${o.w}×${o.d}×${o.h}m</div></div>
-      <button class="rdel" style="opacity:1" onclick="delCustom(
+      <button class="rdel" style="opacity:1" onclick="delCustom('${o.id}')">🗑</button></div>`;
+  });
+  el.innerHTML=h;
+}
 
-// ════════════════════════════════════════════════════════════
-// VERANSTALTUNGEN PANEL
-// ════════════════════════════════════════════════════════════
-const EVENTS_GROUPS = {
-  '🎭 Bühne & Podium':      ['Bühne'],
-  '🪑 Bestuhlung & Tische': ['Bestuhlung'],
-  '🖥 Technik & Medien':    ['Veranst-Technik'],
-  '💡 Licht & Effekte':     ['Veranst-Licht'],
-  '🔊 Beschallung':          ['Beschallung'],
-  '🏢 Messestand & Expo':   ['Messestand'],
-  '🍽 Catering & Service':  ['Catering'],
-  '🎨 Dekoration':           ['Dekoration'],
-  '🚧 Eingang & Ordner':    ['Eingang'],
-  '✏ Workshop & Seminar':   ['Workshop'],
-  '⛺ Outdoor & Zelte':     ['Outdoor'],
-  '⭐ Equipment & Extras':  ['Extras'],
+// ══ VERANSTALTUNGEN PANEL ════════════════════════════════════
+const EVENTS_GROUPS_EV = {
+  'Bühne & Podium':      ['Bühne'],
+  'Bestuhlung & Tische': ['Bestuhlung'],
+  'Technik & Medien':    ['Veranst-Technik'],
+  'Licht & Effekte':     ['Veranst-Licht'],
+  'Beschallung':          ['Beschallung'],
+  'Messestand & Expo':   ['Messestand'],
+  'Catering & Service':  ['Catering'],
+  'Dekoration':           ['Dekoration'],
+  'Eingang & Ordner':    ['Eingang'],
+  'Workshop & Seminar':  ['Workshop'],
+  'Outdoor & Zelte':     ['Outdoor'],
+  'Equipment & Extras':  ['Extras'],
 };
-const EVENT_CATS_LIST = Object.values(EVENTS_GROUPS).flat();
+const EVENT_CATS_LIST = Object.values(EVENTS_GROUPS_EV).flat();
 let _evSearch = '';
 const _closedEvGrp = new Set();
 
@@ -5310,48 +5247,49 @@ function toggleEvGroup(id){
 }
 
 function _evItemHtml(item){
-  return '<div class="cat-item" onclick="startCatalogDrag(\''+item.id+'\')" '
-    +'style="display:flex;align-items:center;gap:6px;padding:5px 10px;cursor:pointer;font-size:11px;border-bottom:1px solid rgba(255,255,255,.03)">'
-    +'<span style="font-size:14px">'+item.icon+'</span>'
-    +'<div><div style="color:var(--tx)">'+item.name+'</div>'
-    +'<div style="font-size:9px;color:var(--tx3)">'+item.w+'\xd7'+item.d+'m</div></div></div>';
+  const sz = item.w + 'x' + item.d + 'm';
+  return '<div class="cat-item" onclick="startCatalogDrag(\'' + item.id + '\')"'
+    + ' style="display:flex;align-items:center;gap:6px;padding:5px 10px;cursor:pointer;'
+    + 'font-size:11px;border-bottom:1px solid rgba(255,255,255,.03)">'
+    + '<span style="font-size:14px">' + item.icon + '</span>'
+    + '<div><div style="color:var(--tx)">' + item.name + '</div>'
+    + '<div style="font-size:9px;color:var(--tx3)">' + sz + '</div></div></div>';
 }
 
 function renderEventsPanel(el){
-  const catalog = getCatalog().filter(i => EVENT_CATS_LIST.includes(i.cat));
-  const q = (_evSearch||'').toLowerCase();
+  const catalog = getCatalog().filter(function(i){ return EVENT_CATS_LIST.includes(i.cat); });
+  const q = (_evSearch || '').toLowerCase();
   let h = '<div style="padding:5px 8px">'
-    +'<input id="ev-search" placeholder="🔍 Suche Veranstaltung\u2026" value="'+(_evSearch||'')+'"'
-    +' oninput="_evSearch=this.value;renderLeft()"'
-    +' style="width:100%;padding:4px 8px;background:var(--bg3);border:1px solid var(--bd);'
-    +'border-radius:4px;color:var(--tx);font-size:11px;outline:none;box-sizing:border-box"></div>';
-
+    + '<input id="ev-search" placeholder="Suche Veranstaltung..."'
+    + ' value="' + (_evSearch || '') + '"'
+    + ' oninput="_evSearch=this.value;renderLeft()"'
+    + ' style="width:100%;padding:4px 8px;background:var(--bg3);border:1px solid var(--bd);'
+    + 'border-radius:4px;color:var(--tx);font-size:11px;outline:none;box-sizing:border-box"></div>';
   if(q){
-    const res = catalog.filter(i => i.name.toLowerCase().includes(q)||i.cat.toLowerCase().includes(q));
-    h += '<div style="padding:2px 10px 4px;font-size:10px;color:var(--tx3)">'+res.length+' Treffer</div>';
-    res.forEach(i => { h += _evItemHtml(i); });
+    const res = catalog.filter(function(i){
+      return i.name.toLowerCase().includes(q) || i.cat.toLowerCase().includes(q);
+    });
+    h += '<div style="padding:2px 10px 4px;font-size:10px;color:var(--tx3)">' + res.length + ' Treffer</div>';
+    res.forEach(function(i){ h += _evItemHtml(i); });
     el.innerHTML = h; return;
   }
-
-  Object.entries(EVENTS_GROUPS).forEach(([grpName, cats]) => {
-    const items = catalog.filter(i => cats.includes(i.cat));
+  Object.entries(EVENTS_GROUPS_EV).forEach(function(entry){
+    const grpName = entry[0]; const cats = entry[1];
+    const items = catalog.filter(function(i){ return cats.includes(i.cat); });
     if(!items.length) return;
-    const gid = 'evg_'+grpName.replace(/[^\w]/g,'');
+    const gid = 'evg_' + grpName.replace(/[^a-zA-Z0-9]/g, '');
     const closed = _closedEvGrp.has(gid);
-    h += '<div class="catsec" onclick="toggleEvGroup(\''+gid+'\')">'
-      +'<span>'+grpName+' <span class="cat-count">'+items.length+'</span></span>'
-      +'<span id="'+gid+'_arr">'+(closed?'▸':'▾')+'</span></div>';
-    h += '<div id="'+gid+'" style="'+(closed?'display:none':'')+';">';
-    items.forEach(i => { h += _evItemHtml(i); });
+    h += '<div class="catsec" onclick="toggleEvGroup(\'' + gid + '\')">'
+      + '<span>' + grpName + ' <span class="cat-count">' + items.length + '</span></span>'
+      + '<span id="' + gid + '_arr">' + (closed ? '&rsaquo;' : '&darr;') + '</span></div>';
+    h += '<div id="' + gid + '" style="' + (closed ? 'display:none' : '') + '">';
+    items.forEach(function(i){ h += _evItemHtml(i); });
     h += '</div>';
   });
   el.innerHTML = h;
 }
-// ════════════════════════════════════════════════════════════
-'${o.id}')">🗑</button></div>`;
-  });
-  el.innerHTML=h;
-}
+// ══════════════════════════════════════════════════════════════
+
 
 function onFurnDragStart(e,typeId){
   e.dataTransfer.setData('typeId',typeId);
