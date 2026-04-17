@@ -1116,7 +1116,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   font-size:9px;cursor:pointer;margin:2px}
 
 /* Next step panel */
-#nextstep-panel{position:fixed!important;bottom:60px!important;right:4px!important;top:auto!important;width:290px;z-index:400}
+#nextstep-panel{flex-shrink:0;background:var(--bg3);border-top:2px solid var(--gr3);max-height:200px;overflow-y:auto}
 #nextstep-panel.vis{display:block}
 
 
@@ -1414,7 +1414,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   text-transform:uppercase;letter-spacing:.5px;background:var(--bg3)}
 
 /* Nächster Schritt — anchored right of canvas */
-#nextstep-panel{position:fixed!important;bottom:60px!important;right:4px!important;top:auto!important;width:290px;z-index:400}
+#nextstep-panel{flex-shrink:0;background:var(--bg3);border-top:2px solid var(--gr3);max-height:200px;overflow-y:auto}
 /* ══════════════════════════════════════════════════════════════ */
 
 
@@ -1473,7 +1473,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 #info-panel .ip-body{padding:0}
 
 /* Nächster Schritt — fixed bottom right of canvas */
-#nextstep-panel{position:fixed!important;bottom:60px!important;right:4px!important;top:auto!important;width:290px;z-index:400}
+#nextstep-panel{flex-shrink:0;background:var(--bg3);border-top:2px solid var(--gr3);max-height:200px;overflow-y:auto}
 
 /* KI dropdown */
 #ki-dropdown-btn{
@@ -2970,15 +2970,6 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 <!-- SMART CONNECT HINT -->
 <div id="smart-connect-hint">🔗 Wähle jetzt den zweiten Raum für automatische Tür-Verbindung</div>
 
-<!-- NEXT STEP PANEL -->
-<div id="nextstep-panel">
-  <div style="padding:10px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
-    <div style="font-size:12px;font-weight:700;color:var(--gr)">💡 Nächster Schritt</div>
-    <button onclick="document.getElementById('nextstep-panel').classList.remove('vis')" style="background:none;border:none;color:var(--tx3);cursor:pointer">✕</button>
-  </div>
-  <div id="nextstep-content" style="padding:10px 14px;font-size:11px;color:var(--tx2);line-height:1.6"></div>
-  <div style="padding:0 14px 10px;display:flex;gap:5px;flex-wrap:wrap" id="nextstep-actions"></div>
-</div>
 
 <!-- BOTTOM SHEET (mobile) -->
 <div id="bottom-sheet">
