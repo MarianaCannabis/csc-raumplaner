@@ -51,7 +51,7 @@ input,textarea,select,button{font-family:inherit}
 .ibsep{width:36px;height:1px;background:var(--bd);margin:3px 0}
 
 /* ─ LEFT PANEL ──────────────────────────────────────────── */
-/* moved to v3.49 flex rules */
+/* moved to v3.50 flex rules */
 .lph{padding:10px 12px 7px;border-bottom:1px solid var(--bd);flex-shrink:0;font-size:11px;font-weight:600;color:var(--gr)}
 .lpb{flex:1;overflow-y:auto;padding:10px 10px 0;scrollbar-width:thin;scrollbar-color:var(--bd2) transparent}
 .sh{font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;margin-top:10px}
@@ -89,7 +89,7 @@ input,textarea,select,button{font-family:inherit}
 .dragging-furn{position:fixed;pointer-events:none;z-index:9999;opacity:.7;background:var(--bg3);border:2px solid var(--gr);border-radius:var(--r6);padding:6px 10px;font-size:12px;white-space:nowrap;transform:translate(-50%,-50%)}
 
 /* ─ CANVAS AREA ─────────────────────────────────────────── */
-/* moved to v3.49 flex rules */
+/* moved to v3.50 flex rules */
 canvas{display:block}
 
 /* 2D Floor plan canvas */
@@ -120,7 +120,7 @@ canvas{display:block}
 .sel-info{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.85);border:1px solid var(--gr);border-radius:var(--r6);padding:6px 10px;font-size:11px;color:var(--gr);display:none;z-index:20;pointer-events:none}
 
 /* ─ RIGHT AI PANEL ──────────────────────────────────────── */
-/* moved to v3.49 flex rules */
+/* moved to v3.50 flex rules */
 .rtabs{display:flex;border-bottom:1px solid var(--bd);flex-shrink:0}
 .rtab{flex:1;padding:9px 4px;text-align:center;font-size:11px;cursor:pointer;color:var(--tx3);border-bottom:2px solid transparent;transition:.12s}
 .rtab.active{color:var(--gr);border-color:var(--gr)}
@@ -461,7 +461,7 @@ canvas{display:block}
 #help-close:hover{color:#e8e4d8;background:#1a1a1a}
 
 
-/* ══ NEW FEATURES v3.49 ═══════════════════════════════════════════ */
+/* ══ NEW FEATURES v3.50 ═══════════════════════════════════════════ */
 
 /* Heatmap canvas */
 #heatmap-canvas{position:absolute;inset:0;pointer-events:none;opacity:0.55;display:none;z-index:8}
@@ -500,7 +500,7 @@ canvas{display:block}
 .vlink-inp{width:100%;padding:7px;background:var(--bg);border:1px solid var(--bd2);border-radius:4px;color:var(--tx);font-family:monospace;font-size:10px;margin:5px 0}
 
 
-/* ══ v3.49 FEATURES ══════════════════════════════════════════════ */
+/* ══ v3.50 FEATURES ══════════════════════════════════════════════ */
 /* Budget Tracker */
 #budget-panel{position:fixed;top:50px;right:360px;width:300px;background:var(--bg2);border:1px solid var(--bd2);border-radius:10px;z-index:200;display:none;box-shadow:0 4px 20px rgba(0,0,0,.6)}
 #budget-panel.vis{display:block}
@@ -534,7 +534,7 @@ canvas{display:block}
 .ruler-text{fill:#fbbf24;font-size:11px;font-weight:700;font-family:monospace}
 
 
-/* ══ DROPDOWN MENU SYSTEM v3.49 ══════════════════════════════════ */
+/* ══ DROPDOWN MENU SYSTEM v3.50 ══════════════════════════════════ */
 .tb-menu-group{display:flex;align-items:center;gap:2px}
 .tbm{position:relative}
 .tbm-btn{padding:4px 9px;background:transparent;border:1px solid transparent;border-radius:var(--r4);font-size:11px;cursor:pointer;color:var(--tx2);transition:.12s;white-space:nowrap;display:flex;align-items:center;gap:3px}
@@ -585,7 +585,7 @@ canvas{display:block}
 .compare-label{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);color:var(--gr);font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;z-index:10}
 
 
-/* ══ v3.49 ════════════════════════════════════════════════════════ */
+/* ══ v3.50 ════════════════════════════════════════════════════════ */
 /* Light mode */
 body.light-mode{--bg:#f5f5f0;--bg2:#ffffff;--bg3:#ebebeb;--bg4:#e0e0d8;
   --tx:#111;--tx2:#333;--tx3:#777;--bd:#ccc;--bd2:#aaa;
@@ -640,7 +640,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .font-sample:hover,.font-sample.active{border-color:var(--gr);color:var(--gr)}
 
 
-/* ══ v3.49 ════════════════════════════════════════════════════════ */
+/* ══ v3.50 ════════════════════════════════════════════════════════ */
 /* Inventory */
 .inv-row{display:grid;grid-template-columns:2fr 1.2fr 1.5fr 0.7fr;gap:6px;align-items:center;
   padding:5px 0;border-bottom:1px solid var(--bd);font-size:11px}
@@ -680,7 +680,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .fire-ok{color:#4ade80}.fire-warn{color:#f87171}.fire-info{color:#fbbf24}
 
 
-/* ══ v3.49 ════════════════════════════════════════════════════════ */
+/* ══ v3.50 ════════════════════════════════════════════════════════ */
 
 /* Command Palette */
 #cmd-palette{position:fixed;top:15%;left:50%;transform:translateX(-50%);
@@ -800,7 +800,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   cursor:pointer;min-width:60px;text-align:center}
 
 
-/* ══ v3.49 ════════════════════════════════════════════════════════ */
+/* ══ v3.50 ════════════════════════════════════════════════════════ */
 /* Badges */
 .badge-popup{position:fixed;top:60px;right:16px;background:#0d2010;
   border:1px solid #4ade80;border-radius:10px;padding:12px 16px;z-index:500;
@@ -885,7 +885,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   border-radius:3px;padding:1px 6px;color:var(--tx3);font-family:monospace}
 
 
-/* ══ v3.49 ════════════════════════════════════════════════════════ */
+/* ══ v3.50 ════════════════════════════════════════════════════════ */
 
 /* Minimap */
 #minimap{position:absolute;bottom:8px;right:8px;width:140px;height:100px;
@@ -970,7 +970,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .season-tab.active{background:var(--gr3);border-color:var(--gr);color:#fff}
 
 
-/* ══ NEUES KATALOG-SYSTEM v3.49 ══════════════════════════════════ */
+/* ══ NEUES KATALOG-SYSTEM v3.50 ══════════════════════════════════ */
 
 /* Main tab bar inside each panel */
 .cat-tabs{display:flex;gap:0;border-bottom:1px solid var(--bd);
@@ -1041,7 +1041,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .cat-grid .clist-item .ci-pin{position:absolute;top:2px;right:2px}
 
 
-/* ══ v3.49 ════════════════════════════════════════════════════════ */
+/* ══ v3.50 ════════════════════════════════════════════════════════ */
 
 /* Health Score */
 #health-score{position:absolute;top:8px;right:8px;z-index:20;
@@ -1120,7 +1120,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 #nextstep-panel.vis{display:block}
 
 
-/* ══ v3.49 REALISTIC ═════════════════════════════════════════════ */
+/* ══ v3.50 REALISTIC ═════════════════════════════════════════════ */
 /* Material picker */
 .mat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}
 .mat-card{border-radius:8px;overflow:hidden;cursor:pointer;
@@ -1148,11 +1148,11 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 /* Glow toggle */
 #glow-toggle.on{color:#ffd700;border-color:#d4a000}
 
-/* ══ v3.49 ════════════════════════════════════════════════════════ */
+/* ══ v3.50 ════════════════════════════════════════════════════════ */
 .weather-btn{padding:4px 8px;background:var(--bg3);border:1px solid var(--bd);
   border-radius:4px;font-size:10px;cursor:pointer;transition:.12s}
 .weather-btn.active{background:var(--bl2);border-color:var(--bl);color:var(--bl)}
-/* ══ v3.49 POST-FX ══════════════════════════════════════════════ */
+/* ══ v3.50 POST-FX ══════════════════════════════════════════════ */
 #postfx-canvas{position:absolute;inset:0;pointer-events:none;z-index:11;
   opacity:1;mix-blend-mode:screen}
 #vignette-overlay{position:absolute;inset:0;pointer-events:none;z-index:12;
@@ -1162,7 +1162,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .fx-btn{padding:3px 8px;font-size:10px;background:var(--bg3);
   border:1px solid var(--bd);border-radius:3px;cursor:pointer;transition:.12s}
 .fx-btn.on{background:var(--gr4);border-color:var(--gr);color:var(--gr)}
-/* ══ v3.49 ════════════════════════════════════════════════════════ */
+/* ══ v3.50 ════════════════════════════════════════════════════════ */
 /* Visitor flow canvas */
 #visitor-canvas{position:absolute;inset:0;pointer-events:none;
   z-index:17;display:none}
@@ -1177,7 +1177,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   overflow:hidden;margin:3px 0}
 .clean-eff-fill{height:100%;border-radius:5px;transition:.5s}
 
-/* ══ v3.49 ════════════════════════════════════════════════════════ */
+/* ══ v3.50 ════════════════════════════════════════════════════════ */
 /* Presentation */
 #present-overlay{position:fixed;inset:0;background:#000;z-index:800;
   display:none;flex-direction:column;align-items:center;justify-content:center}
@@ -1230,7 +1230,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .sec-score-ring .score-text{position:absolute;inset:0;display:flex;align-items:center;
   justify-content:center;flex-direction:column}
 
-/* ══ v3.49 ════════════════════════════════════════════════════════ */
+/* ══ v3.50 ════════════════════════════════════════════════════════ */
 /* 3D Annotation */
 .ann-bubble{position:absolute;pointer-events:all;z-index:22;
   background:rgba(10,20,10,.92);border:1px solid var(--gr3);
@@ -1260,7 +1260,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .recog-preview{max-width:100%;border-radius:6px;margin-top:10px;
   max-height:200px;object-fit:contain}
 
-/* ══ v3.49 ════════════════════════════════════════════════════════ */
+/* ══ v3.50 ════════════════════════════════════════════════════════ */
 /* Collision highlight */
 .collision-warn{outline:2px solid #f87171!important;outline-offset:1px;
   box-shadow:0 0 8px rgba(248,113,113,.4)}
@@ -1290,7 +1290,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .cost-total{display:flex;justify-content:space-between;padding:6px 0;
   font-size:13px;font-weight:700;color:var(--gr);border-top:2px solid var(--gr)}
 
-/* ══ v3.49 ════════════════════════════════════════════════════════ */
+/* ══ v3.50 ════════════════════════════════════════════════════════ */
 /* Camera coverage */
 .cam-cone{position:absolute;pointer-events:none;z-index:16;opacity:0.3}
 /* Tour controls */
@@ -1319,7 +1319,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .be-chart{width:100%;height:120px;position:relative;margin:10px 0}
 .be-bar{position:absolute;bottom:0;border-radius:2px 2px 0 0;transition:.4s}
 
-/* ══ v3.49 ════════════════════════════════════════════════════════ */
+/* ══ v3.50 ════════════════════════════════════════════════════════ */
 
 /* CAD Dimension lines */
 .dim-line{position:absolute;pointer-events:none;z-index:19}
@@ -1351,7 +1351,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .heat-med{border-color:#fbbf24;background:rgba(251,191,36,.08)}
 .heat-high{border-color:#f87171;background:rgba(248,113,113,.08)}
 
-/* ══ v3.49 LAYOUT OVERHAUL ════════════════════════════════════ */
+/* ══ v3.50 LAYOUT OVERHAUL ════════════════════════════════════ */
 /* Properties tile under score */
 #props-tile{
   position:absolute;top:42px;right:8px;z-index:25;
@@ -1419,7 +1419,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 
 
 
-/* ══ v3.49 CLEAN LAYOUT ════════════════════════════════════════ */
+/* ══ v3.50 CLEAN LAYOUT ════════════════════════════════════════ */
 
 /* Props panel — fixed, right side, under health score, NOT in canvas */
 #props-panel{
@@ -1582,7 +1582,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 }
 #rpanel-props .mat-btn:hover{border-color:var(--gr);color:var(--gr)}
 #rpanel-props .mat-btn.sel{border-color:var(--gr);background:var(--gr4);color:var(--gr)}
-/* ══ v3.49 FLEX LAYOUT ══════════════════════════════════════════ */
+/* ══ v3.50 FLEX LAYOUT ══════════════════════════════════════════ */
 #main-row{display:flex;flex:1;min-height:0;overflow:hidden}
 #iconbar{width:64px;flex-shrink:0;background:#0c0c0c;border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden}
 #left{width:270px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden}
@@ -1686,7 +1686,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 <div id="topbar">
   <!-- LOGO -->
   <span class="logo">🌿 CSC <em>Raumplaner</em></span>
-  <span class="vbadge">v3.49</span>
+  <span class="vbadge">v3.50</span>
   <div class="tsep"></div>
 
   <!-- UNDO/REDO -->
@@ -1964,6 +1964,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
   <div class="ib" id="ib-arch" onclick="showLeft('arch')"><span class="ico">🏗️</span>Bau</div>
   <div class="ib" id="ib-security" onclick="showLeft('security')" style="color:#f87171"><span class="ico">🔒</span>Sicher</div>
   <div class="ibsep"></div>
+  <div class="ib" id="ib-events" onclick="showLeft('events')"><span class="ico">🎭</span>Veranst.</div>
   <div class="ib" id="ib-custom" onclick="showLeft('custom')"><span class="ico">✏️</span>Eigene</div>
 </div>
 
@@ -3692,6 +3693,253 @@ const BUILTIN = [
   {id:'tec-glasfaser',  cat:'Technik',icon:'💡',name:'Glasfaser-Verteiler', w:0.15,d:0.10,h:0.15,col:0x38bdf8,arch:'wall-item'},
   {id:'tec-smartpanel', cat:'Technik',icon:'📱',name:'Smart-Home Panel',    w:0.12,d:0.03,h:0.20,col:0x224422,arch:'wall-item'},
   {id:'tec-wlan-decke', cat:'Technik',icon:'📡',name:'WLAN Access Point Decke',w:0.20,d:0.20,h:0.04,col:0xffffff,arch:'ceil'},
+,
+
+  // ══════════════════════════════════════════════════════════════
+  // VERANSTALTUNGEN & MESSEN — 160 Objekte
+  // ══════════════════════════════════════════════════════════════
+
+  // ── BÜHNE & PODIUM ──────────────────────────────────────────
+  {id:'eve-buehne-s',   cat:'Bühne',    icon:'🎭',name:'Bühne 4×2m',           w:4.00,d:2.00,h:0.60,col:0x222222},
+  {id:'eve-buehne-m',   cat:'Bühne',    icon:'🎭',name:'Bühne 6×4m',           w:6.00,d:4.00,h:0.60,col:0x222222},
+  {id:'eve-buehne-l',   cat:'Bühne',    icon:'🎭',name:'Bühne 8×6m',           w:8.00,d:6.00,h:0.60,col:0x222222},
+  {id:'eve-podium-1',   cat:'Bühne',    icon:'🎙',name:'Rednerpult/Podium',     w:0.60,d:0.50,h:1.10,col:0x333333},
+  {id:'eve-podium-kl',  cat:'Bühne',    icon:'🎙',name:'Mini-Podest 1×1m',      w:1.00,d:1.00,h:0.40,col:0x333333},
+  {id:'eve-podest-r',   cat:'Bühne',    icon:'⬛',name:'Podest rund (Ø1.2m)',   w:1.20,d:1.20,h:0.40,col:0x444444},
+  {id:'eve-treppe-bühne',cat:'Bühne',   icon:'🪜',name:'Bühnentreppe 3-stufig', w:0.80,d:0.90,h:0.60,col:0x555555},
+  {id:'eve-catwalk',    cat:'Bühne',    icon:'👗',name:'Catwalk/Laufsteg (4m)', w:1.00,d:4.00,h:0.40,col:0x111111},
+  {id:'eve-buehnenvorhang',cat:'Bühne', icon:'🎭',name:'Bühnenvorhang',         w:3.00,d:0.10,h:3.00,col:0x8b0000},
+  {id:'eve-backdrop',   cat:'Bühne',    icon:'🖼',name:'Backdrop/Hintergrundwand',w:4.00,d:0.15,h:2.50,col:0x336633},
+  {id:'eve-kulisse',    cat:'Bühne',    icon:'🎭',name:'Kulissenelement',        w:1.00,d:0.10,h:2.50,col:0x555555},
+
+  // ── BESTUHLUNG & TISCHE ─────────────────────────────────────
+  {id:'eve-stuhlreihe-5',cat:'Bestuhlung',icon:'🪑',name:'Stuhlreihe 5er',      w:2.50,d:0.45,h:0.80,col:0x444444},
+  {id:'eve-stuhlreihe-10',cat:'Bestuhlung',icon:'🪑',name:'Stuhlreihe 10er',    w:5.00,d:0.45,h:0.80,col:0x444444},
+  {id:'eve-klappstuhl', cat:'Bestuhlung',icon:'🪑',name:'Klappstuhl Einzel',    w:0.45,d:0.45,h:0.80,col:0x888888},
+  {id:'eve-konferenzst',cat:'Bestuhlung',icon:'🪑',name:'Konferenzstuhl',        w:0.50,d:0.50,h:0.90,col:0x222266},
+  {id:'eve-vip-sessel', cat:'Bestuhlung',icon:'🛋',name:'VIP-Sessel',            w:0.70,d:0.70,h:0.85,col:0x8b2500},
+  {id:'eve-stehpult',   cat:'Bestuhlung',icon:'📋',name:'Stehpult/Hochtisch',   w:0.60,d:0.60,h:1.10,col:0x555555},
+  {id:'eve-klapptisch-1',cat:'Bestuhlung',icon:'📋',name:'Klapptisch 1.8m',     w:1.80,d:0.75,h:0.75,col:0x888888},
+  {id:'eve-klapptisch-2',cat:'Bestuhlung',icon:'📋',name:'Klapptisch Rund Ø1.2m',w:1.20,d:1.20,h:0.75,col:0x888888},
+  {id:'eve-bistrotisch', cat:'Bestuhlung',icon:'☕',name:'Bistrotisch (Ø0.6m)', w:0.60,d:0.60,h:1.05,col:0x555555},
+  {id:'eve-buffettisch', cat:'Bestuhlung',icon:'🍽',name:'Buffet-Tisch 2m',      w:2.00,d:0.75,h:0.90,col:0xffffff},
+  {id:'eve-konftisch-r', cat:'Bestuhlung',icon:'⚫',name:'Konferenztisch rund Ø2m',w:2.00,d:2.00,h:0.75,col:0x333333},
+  {id:'eve-konftisch-6', cat:'Bestuhlung',icon:'📋',name:'Konferenztisch 6-Pers.',w:3.00,d:1.20,h:0.75,col:0x222222},
+  {id:'eve-konftisch-12',cat:'Bestuhlung',icon:'📋',name:'Konferenztisch 12-Pers.',w:5.00,d:1.40,h:0.75,col:0x222222},
+  {id:'eve-banketttisch',cat:'Bestuhlung',icon:'🍽',name:'Bankettisch 3m',       w:3.00,d:0.80,h:0.75,col:0xffffff},
+  {id:'eve-barsteher',  cat:'Bestuhlung',icon:'🍸',name:'Barsteher (3er-Set)',   w:0.40,d:0.40,h:1.10,col:0x555555},
+  {id:'eve-lounge-set', cat:'Bestuhlung',icon:'🛋',name:'Lounge-Set (Sofa+Tisch)',w:2.50,d:1.80,h:0.80,col:0x2d5e50},
+  {id:'eve-tribüne-2',  cat:'Bestuhlung',icon:'🪑',name:'Tribüne 2-reihig',      w:4.00,d:2.00,h:1.20,col:0x444444},
+  {id:'eve-tribüne-4',  cat:'Bestuhlung',icon:'🪑',name:'Tribüne 4-reihig',      w:4.00,d:3.50,h:2.00,col:0x444444},
+
+  // ── TECHNIK & MEDIEN ────────────────────────────────────────
+  {id:'eve-leinwand-s', cat:'Veranst-Technik',icon:'📽',name:'Leinwand 2×1.5m',  w:2.00,d:0.10,h:1.50,col:0xffffff},
+  {id:'eve-leinwand-m', cat:'Veranst-Technik',icon:'📽',name:'Leinwand 3×2.25m', w:3.00,d:0.10,h:2.25,col:0xffffff},
+  {id:'eve-leinwand-l', cat:'Veranst-Technik',icon:'📽',name:'Leinwand 4×3m',    w:4.00,d:0.10,h:3.00,col:0xffffff},
+  {id:'eve-led-wand-s', cat:'Veranst-Technik',icon:'📺',name:'LED-Wand 4×2.5m',  w:4.00,d:0.15,h:2.50,col:0x111111},
+  {id:'eve-led-wand-m', cat:'Veranst-Technik',icon:'📺',name:'LED-Wand 8×4m',    w:8.00,d:0.20,h:4.00,col:0x111111},
+  {id:'eve-beamer-profi',cat:'Veranst-Technik',icon:'📽',name:'Profi-Beamer (auf Stativ)',w:0.40,d:0.40,h:1.40,col:0x333333},
+  {id:'eve-monitor-70', cat:'Veranst-Technik',icon:'📺',name:'70" Info-Monitor auf Stativ',w:1.60,d:0.50,h:1.50,col:0x111111},
+  {id:'eve-monitor-55', cat:'Veranst-Technik',icon:'📺',name:'55" Monitor auf Stativ',w:1.30,d:0.50,h:1.40,col:0x111111},
+  {id:'eve-kamera-video',cat:'Veranst-Technik',icon:'🎥',name:'Videokamera auf Stativ',w:0.30,d:0.30,h:1.50,col:0x333333},
+  {id:'eve-kamera-crane',cat:'Veranst-Technik',icon:'🎥',name:'Kamera-Kran',      w:0.50,d:2.00,h:1.80,col:0x444444},
+  {id:'eve-mischpult',  cat:'Veranst-Technik',icon:'🎚',name:'Ton-Mischpult',     w:1.50,d:0.80,h:0.85,col:0x222222},
+  {id:'eve-lichtkonsole',cat:'Veranst-Technik',icon:'💡',name:'Licht-Steuerpult', w:1.20,d:0.60,h:0.85,col:0x111111},
+  {id:'eve-laptop-präs',cat:'Veranst-Technik',icon:'💻',name:'Präsentations-Laptop',w:0.35,d:0.25,h:0.20,col:0x888888},
+  {id:'eve-prompter',   cat:'Veranst-Technik',icon:'📝',name:'Teleprompter',       w:0.40,d:0.40,h:1.50,col:0x333333},
+  {id:'eve-streaming',  cat:'Veranst-Technik',icon:'📡',name:'Streaming-Setup',    w:0.80,d:0.60,h:0.90,col:0x222222},
+  {id:'eve-switcher',   cat:'Veranst-Technik',icon:'🔄',name:'Video-Switcher',      w:0.50,d:0.35,h:0.10,col:0x333333},
+
+  // ── BELEUCHTUNG VERANSTALTUNG ────────────────────────────────
+  {id:'eve-scheinwerfer',cat:'Veranst-Licht',icon:'💡',name:'Scheinwerfer 500W',  w:0.30,d:0.30,h:0.40,col:0xffff00},
+  {id:'eve-moving-head', cat:'Veranst-Licht',icon:'🔆',name:'Moving Head Spot',   w:0.25,d:0.35,h:0.50,col:0xffd700},
+  {id:'eve-par-can',     cat:'Veranst-Licht',icon:'💡',name:'PAR-Scheinwerfer',   w:0.20,d:0.20,h:0.25,col:0xffaa00},
+  {id:'eve-lichtrigg-3', cat:'Veranst-Licht',icon:'🔧',name:'Lichtrigg-Traverse 3m',w:3.00,d:0.30,h:0.30,col:0x888888},
+  {id:'eve-lichtrigg-6', cat:'Veranst-Licht',icon:'🔧',name:'Lichtrigg-Traverse 6m',w:6.00,d:0.30,h:0.30,col:0x888888},
+  {id:'eve-stativ-licht',cat:'Veranst-Licht',icon:'🔦',name:'Licht-Stativ',        w:0.20,d:0.20,h:2.00,col:0x888888},
+  {id:'eve-nebelmaschine',cat:'Veranst-Licht',icon:'🌫',name:'Nebelmaschine',       w:0.40,d:0.30,h:0.20,col:0x888888},
+  {id:'eve-laser',       cat:'Veranst-Licht',icon:'🔴',name:'Laser-Show',           w:0.20,d:0.20,h:0.15,col:0xff0000},
+  {id:'eve-led-strip-bühne',cat:'Veranst-Licht',icon:'🌈',name:'LED-Strip Bühnenrand',w:4.00,d:0.05,h:0.05,col:0x00aaff},
+  {id:'eve-follow-spot', cat:'Veranst-Licht',icon:'🔦',name:'Follow-Spot Verfolgerscheinw.',w:0.35,d:0.50,h:0.40,col:0xffffff},
+
+  // ── BESCHALLUNG ─────────────────────────────────────────────
+  {id:'eve-pa-box-s',   cat:'Beschallung',icon:'🔊',name:'PA-Box klein (800W)', w:0.30,d:0.35,h:0.55,col:0x222222},
+  {id:'eve-pa-box-m',   cat:'Beschallung',icon:'🔊',name:'PA-Box mittel (1500W)',w:0.40,d:0.45,h:0.80,col:0x222222},
+  {id:'eve-pa-box-l',   cat:'Beschallung',icon:'🔊',name:'PA-Box groß (3000W)', w:0.50,d:0.55,h:1.00,col:0x222222},
+  {id:'eve-subwoofer',  cat:'Beschallung',icon:'💥',name:'Subwoofer',            w:0.60,d:0.60,h:0.60,col:0x111111},
+  {id:'eve-monitor-box',cat:'Beschallung',icon:'🔊',name:'Bühnen-Monitorbox',   w:0.50,d:0.35,h:0.25,col:0x333333},
+  {id:'eve-stativ-ls',  cat:'Beschallung',icon:'🎵',name:'Lautsprecher-Stativ', w:0.20,d:0.20,h:2.00,col:0x888888},
+  {id:'eve-mikrofon-st',cat:'Beschallung',icon:'🎤',name:'Mikrofon auf Stativ', w:0.15,d:0.15,h:1.60,col:0x333333},
+  {id:'eve-mikrofon-tisch',cat:'Beschallung',icon:'🎤',name:'Tischmikrofon',    w:0.08,d:0.08,h:0.35,col:0x333333},
+  {id:'eve-konferenz-mikro',cat:'Beschallung',icon:'🎙',name:'Konferenzmikro-Set',w:0.20,d:0.20,h:0.08,col:0x111111},
+  {id:'eve-induktiv',   cat:'Beschallung',icon:'👂',name:'Induktionsschleife',   w:5.00,d:0.02,h:0.01,col:0x888888},
+  {id:'eve-pa-rigg',    cat:'Beschallung',icon:'🔊',name:'PA-Rigg/Line-Array',  w:0.40,d:0.40,h:2.00,col:0x111111},
+
+  // ── MESSESTAND & AUSSTELLUNG ─────────────────────────────────
+  {id:'eve-messewand-s',cat:'Messestand',icon:'🖼',name:'Messewand 2×2.5m',    w:2.00,d:0.10,h:2.50,col:0x336633},
+  {id:'eve-messewand-m',cat:'Messestand',icon:'🖼',name:'Messewand 3×2.5m',    w:3.00,d:0.10,h:2.50,col:0x336633},
+  {id:'eve-messewand-l',cat:'Messestand',icon:'🖼',name:'Messewand 4×2.5m',    w:4.00,d:0.10,h:2.50,col:0x336633},
+  {id:'eve-display-t',  cat:'Messestand',icon:'🏷',name:'Roll-Up Banner 0.8m', w:0.85,d:0.10,h:2.00,col:0x336633},
+  {id:'eve-rollup-xl',  cat:'Messestand',icon:'🏷',name:'Roll-Up XL 1.5m',     w:1.50,d:0.10,h:2.20,col:0x336633},
+  {id:'eve-popup-wand', cat:'Messestand',icon:'🖼',name:'Pop-up Display (3×3)',  w:3.00,d:0.20,h:2.30,col:0x336633},
+  {id:'eve-faltwand',   cat:'Messestand',icon:'🖼',name:'Falt-Display 4-teilig',w:2.00,d:0.10,h:2.00,col:0x336633},
+  {id:'eve-theke-messe',cat:'Messestand',icon:'🏪',name:'Messe-Theke/Counter',  w:1.00,d:0.50,h:1.00,col:0x336633},
+  {id:'eve-infoständer',cat:'Messestand',icon:'📋',name:'Info-Ständer Messe',   w:0.30,d:0.30,h:1.60,col:0x888888},
+  {id:'eve-vitrine-messe',cat:'Messestand',icon:'🔲',name:'Glasvitrine Messe',  w:1.00,d:0.50,h:1.20,col:0xaaddff},
+  {id:'eve-octostand',  cat:'Messestand',icon:'⬛',name:'Oktanorm-System 2×2m', w:2.00,d:0.10,h:2.50,col:0xaaaaaa},
+  {id:'eve-octoeck',    cat:'Messestand',icon:'⬛',name:'Oktanorm-Ecke',         w:0.10,d:0.10,h:2.50,col:0xaaaaaa},
+  {id:'eve-textilwand', cat:'Messestand',icon:'🖼',name:'Textil-Spannwand 3m',  w:3.00,d:0.08,h:2.50,col:0x2d5e50},
+  {id:'eve-regalstand', cat:'Messestand',icon:'📦',name:'Messe-Regalwand',      w:2.00,d:0.40,h:2.00,col:0x888888},
+  {id:'eve-produktsockel',cat:'Messestand',icon:'⬛',name:'Produktsockel hoch', w:0.50,d:0.50,h:1.00,col:0x222222},
+  {id:'eve-produktsockel-m',cat:'Messestand',icon:'⬛',name:'Produktsockel mittel',w:0.40,d:0.40,h:0.60,col:0x333333},
+  {id:'eve-messeecke',  cat:'Messestand',icon:'🏢',name:'Messestand-Ecke 3×3m', w:3.00,d:3.00,h:2.50,col:0x336633},
+  {id:'eve-reihenstand',cat:'Messestand',icon:'🏢',name:'Reihenstand 3×2m',     w:3.00,d:2.00,h:2.50,col:0x2d5e50},
+
+  // ── CATERING & BUFFET ────────────────────────────────────────
+  {id:'eve-buffet-warm',cat:'Catering', icon:'🍲',name:'Warmhaltebuffet 2m',   w:2.00,d:0.60,h:0.90,col:0xdddddd},
+  {id:'eve-buffet-kalt',cat:'Catering', icon:'🥗',name:'Kaltbuffet/Salatbar',  w:2.00,d:0.70,h:0.90,col:0xffffff},
+  {id:'eve-getränke-bar',cat:'Catering',icon:'🥤',name:'Getränke-Bar',          w:2.50,d:0.80,h:1.05,col:0x5a3520},
+  {id:'eve-sektempfang', cat:'Catering',icon:'🥂',name:'Sektempfang-Tisch',     w:1.20,d:0.60,h:0.90,col:0xffffff},
+  {id:'eve-kaffeewagen',cat:'Catering', icon:'☕',name:'Kaffeewagen mobil',     w:0.80,d:0.60,h:1.00,col:0x5a3520},
+  {id:'eve-desserttheke',cat:'Catering',icon:'🍰',name:'Dessert-Vitrine',        w:1.20,d:0.60,h:1.20,col:0xffffff},
+  {id:'eve-servierw',   cat:'Catering', icon:'🍽',name:'Servierwagen',           w:0.70,d:0.45,h:0.85,col:0xbbbbbb},
+  {id:'eve-chafing-dish',cat:'Catering',icon:'🫕',name:'Chafing Dish (Warmhaltegefäß)',w:0.35,d:0.55,h:0.20,col:0xbbbbbb},
+  {id:'eve-sektständer',cat:'Catering', icon:'🥂',name:'Sektkühler-Ständer',    w:0.35,d:0.35,h:0.90,col:0xcccccc},
+  {id:'eve-cocktailwagen',cat:'Catering',icon:'🍹',name:'Cocktail-Wagen',        w:0.70,d:0.50,h:1.00,col:0x5a3520},
+  {id:'eve-candybar',   cat:'Catering', icon:'🍬',name:'Candy-Bar/Süßigkeitenbar',w:1.50,d:0.60,h:1.50,col:0xff9999},
+  {id:'eve-eis-stand',  cat:'Catering', icon:'🍦',name:'Eis-Stand',              w:1.00,d:0.80,h:1.20,col:0xffffff},
+
+  // ── DEKORATION & AUSSTATTUNG ─────────────────────────────────
+  {id:'eve-blumenarrang',cat:'Dekoration',icon:'💐',name:'Blumenarrangement',   w:0.50,d:0.50,h:0.60,col:0xff66aa},
+  {id:'eve-blumenbukett',cat:'Dekoration',icon:'🌸',name:'Blumenbukett Einzel', w:0.30,d:0.30,h:0.40,col:0xff66aa},
+  {id:'eve-pflanzenwand',cat:'Dekoration',icon:'🌿',name:'Pflanzenwand 2×2m',  w:2.00,d:0.20,h:2.00,col:0x336633},
+  {id:'eve-ballon-bogen',cat:'Dekoration',icon:'🎈',name:'Ballon-Bogen',        w:2.00,d:0.50,h:2.00,col:0xff6600},
+  {id:'eve-flagge-innen',cat:'Dekoration',icon:'🚩',name:'Fahnen-Standfuß',     w:0.30,d:0.30,h:2.00,col:0x336633},
+  {id:'eve-flaggen-3',  cat:'Dekoration',icon:'🏁',name:'Flaggen-Gruppe 3er',   w:1.20,d:0.30,h:2.00,col:0x336633},
+  {id:'eve-rote-teppich',cat:'Dekoration',icon:'🔴',name:'Roter Teppich 1×4m', w:1.00,d:4.00,h:0.01,col:0xcc0000},
+  {id:'eve-säule-deko', cat:'Dekoration',icon:'🏛',name:'Deko-Säule (Ø0.3m)',  w:0.30,d:0.30,h:1.80,col:0xdddddd},
+  {id:'eve-bogengestell',cat:'Dekoration',icon:'🌸',name:'Blumen-Bogen/Torbogen',w:2.00,d:0.30,h:2.30,col:0xff66aa},
+  {id:'eve-laterne',    cat:'Dekoration',icon:'🏮',name:'Papier-Laterne hängend',w:0.40,d:0.40,h:0.50,col:0xff6600},
+  {id:'eve-kerzenst',   cat:'Dekoration',icon:'🕯',name:'Kerzenständer groß',   w:0.20,d:0.20,h:1.20,col:0xd4a017},
+  {id:'eve-photo-rahmen',cat:'Dekoration',icon:'🖼',name:'Deko-Bilderrahmen',   w:0.80,d:0.05,h:1.00,col:0xd4a017},
+  {id:'eve-branded-wand',cat:'Dekoration',icon:'🏷',name:'Branded-Wall (Fotowall)',w:3.00,d:0.15,h:2.50,col:0x336633},
+  {id:'eve-step-repeat',cat:'Dekoration',icon:'📸',name:'Step&Repeat-Wand',    w:2.50,d:0.15,h:2.20,col:0x111111},
+  {id:'eve-selfie-point',cat:'Dekoration',icon:'🤳',name:'Selfie-Station',      w:1.00,d:0.80,h:2.00,col:0x336633},
+
+  // ── EINGANG & ORDNER ─────────────────────────────────────────
+  {id:'eve-eingang-gate',cat:'Eingang',  icon:'🚧',name:'Einlass-Gate/Schranke',w:1.20,d:0.50,h:1.00,col:0xff6600},
+  {id:'eve-absperrband',cat:'Eingang',   icon:'🚧',name:'Absperrband-Ständer',  w:0.20,d:0.20,h:0.95,col:0xd4a017},
+  {id:'eve-absperrgitter',cat:'Eingang', icon:'🚧',name:'Crowd-Control Gitter 2m',w:2.00,d:0.10,h:1.10,col:0x888888},
+  {id:'eve-kassenhäuschen',cat:'Eingang',icon:'🎫',name:'Kasse/Einlasskabine',  w:1.20,d:1.00,h:2.20,col:0x336633},
+  {id:'eve-scan-gate',  cat:'Eingang',   icon:'📡',name:'Ticket-Scanner Gate',  w:0.60,d:0.80,h:2.00,col:0x224422},
+  {id:'eve-garderoben-st',cat:'Eingang', icon:'🧥',name:'Garderoben-Ständer',   w:0.60,d:0.60,h:1.70,col:0x888888},
+  {id:'eve-garderobe-1m',cat:'Eingang',  icon:'🧥',name:'Garderoben-Tresen 1m', w:1.00,d:0.50,h:1.00,col:0x555555},
+  {id:'eve-stanchion',  cat:'Eingang',   icon:'🔴',name:'VIP-Absperrung (Velours)',w:0.20,d:0.20,h:1.00,col:0x8b0000},
+  {id:'eve-würfelsitz',  cat:'Eingang',  icon:'🎫',name:'Würfelsitz für Ordner',  w:0.45,d:0.45,h:0.45,col:0x333333},
+
+  // ── NETWORKING & WORKSHOP ────────────────────────────────────
+  {id:'eve-workshop-set',cat:'Workshop', icon:'✏',name:'Workshop-Tisch mit 4 Stühlen',w:1.60,d:0.80,h:0.75,col:0xe8e0d0},
+  {id:'eve-flipchart',  cat:'Workshop',  icon:'📊',name:'Flipchart',             w:0.70,d:0.50,h:1.80,col:0x888888},
+  {id:'eve-moderationskoffer',cat:'Workshop',icon:'🧩',name:'Moderationskoffer', w:0.60,d:0.25,h:0.90,col:0x555555},
+  {id:'eve-whiteboard-m',cat:'Workshop', icon:'📋',name:'Whiteboard 1.8×1.2m',  w:1.80,d:0.10,h:1.20,col:0xffffff},
+  {id:'eve-steh-schreib',cat:'Workshop', icon:'✏',name:'Stehtisch Schreibhöhe', w:0.70,d:0.70,h:1.05,col:0x888888},
+  {id:'eve-locker-bags',cat:'Workshop',  icon:'🔐',name:'Gepäck-Locker-Station',w:1.80,d:0.50,h:1.80,col:0x666666},
+  {id:'eve-lade-station',cat:'Workshop', icon:'🔌',name:'Handy-Ladestation',     w:0.50,d:0.30,h:0.90,col:0x224422},
+  {id:'eve-networking-zone',cat:'Workshop',icon:'🤝',name:'Networking-Tisch rund',w:1.40,d:1.40,h:0.75,col:0x336633},
+  {id:'eve-brainstorm',  cat:'Workshop', icon:'💡',name:'Brainstorming-Wand (mit Haftnotizen)',w:2.40,d:0.10,h:1.20,col:0xffd700},
+  {id:'eve-teamtisch',   cat:'Workshop', icon:'👥',name:'Teamtisch U-Form',      w:3.00,d:2.00,h:0.75,col:0x555555},
+
+  // ── OUTDOOR / ZELTSYSTEM ────────────────────────────────────
+  {id:'eve-pavillon-3x3',cat:'Outdoor',  icon:'⛺',name:'Pavillon 3×3m',        w:3.00,d:3.00,h:2.80,col:0xffffff},
+  {id:'eve-pavillon-6x3',cat:'Outdoor',  icon:'⛺',name:'Zelt/Pavillon 6×3m',   w:6.00,d:3.00,h:2.80,col:0xffffff},
+  {id:'eve-partyzelt',  cat:'Outdoor',   icon:'⛺',name:'Party-Zelt 10×5m',      w:10.00,d:5.00,h:3.50,col:0xffffff},
+  {id:'eve-holzpalette-tisch',cat:'Outdoor',icon:'📦',name:'Palettentisch',      w:1.20,d:0.80,h:0.45,col:0xa07840},
+  {id:'eve-biertisch-set',cat:'Outdoor', icon:'🍺',name:'Biertisch-Garnitur',    w:2.20,d:0.80,h:0.75,col:0xa07840},
+  {id:'eve-sonnenschirm-event',cat:'Outdoor',icon:'☂',name:'Markt-Sonnenschirm (Ø3m)',w:3.00,d:3.00,h:2.40,col:0xff6600},
+  {id:'eve-heizpilz',   cat:'Outdoor',   icon:'🔥',name:'Heizpilz (Gasstrahler)',w:0.60,d:0.60,h:2.20,col:0x888888},
+  {id:'eve-stehtisch-outdoor',cat:'Outdoor',icon:'🍸',name:'Stehtisch wetterfest',w:0.70,d:0.70,h:1.10,col:0x555555},
+  {id:'eve-bauzaun',    cat:'Outdoor',   icon:'🚧',name:'Bauzaun/Eventgitter 2m',w:2.00,d:0.10,h:2.00,col:0xff6600},
+
+  // ── SPEZIAL & EXTRAS ────────────────────────────────────────
+  {id:'eve-fotobooth',  cat:'Extras',    icon:'📸',name:'Fotobooth-Kabine',      w:1.50,d:1.50,h:2.20,col:0x336633},
+  {id:'eve-grüner-schirm',cat:'Extras',  icon:'🟩',name:'Greenscreen (3×3m)',    w:3.00,d:0.10,h:2.50,col:0x00aa00},
+  {id:'eve-rad-tombola',cat:'Extras',    icon:'🎡',name:'Tombola-Rad',            w:0.70,d:0.30,h:1.50,col:0xff6600},
+  {id:'eve-glücksrad',  cat:'Extras',    icon:'🎡',name:'Glücksrad digitial',    w:0.60,d:0.60,h:1.80,col:0x336633},
+  {id:'eve-hochzeitstisch',cat:'Extras', icon:'💍',name:'Hochzeitstisch (Sweetheart)',w:1.80,d:0.80,h:0.75,col:0xffffff},
+  {id:'eve-redemikro',  cat:'Extras',    icon:'🎙',name:'Drahtloses Headset-Set',w:0.05,d:0.05,h:0.15,col:0x111111},
+  {id:'eve-verdunkelung',cat:'Extras',   icon:'⬛',name:'Verdunkelungsrollo 3m', w:3.00,d:0.10,h:2.50,col:0x111111},
+  {id:'eve-wlan-router-event',cat:'Extras',icon:'📡',name:'Event-WLAN Router',  w:0.20,d:0.15,h:0.05,col:0x224422},
+  {id:'eve-power-dist', cat:'Extras',    icon:'⚡',name:'Stromverteiler Event (63A)',w:0.40,d:0.30,h:0.20,col:0xee6600},
+  {id:'eve-kabelbrücke',cat:'Extras',    icon:'🔧',name:'Kabelbrücke (2m)',      w:2.00,d:0.30,h:0.06,col:0x888888},
+  {id:'eve-kabeltrommeln',cat:'Extras',  icon:'🔌',name:'Kabeltrommel 50m',       w:0.35,d:0.35,h:0.30,col:0xff6600},
+  {id:'eve-werkzeugwagen',cat:'Extras',  icon:'🔧',name:'Werkzeugwagen Technik', w:0.70,d:0.45,h:0.95,col:0xf5c518},
+  {id:'eve-transport-karre',cat:'Extras',icon:'🛒',name:'Transport-Sackkarre',   w:0.50,d:0.80,h:1.20,col:0x888888},
+  {id:'eve-akkumulde',  cat:'Extras',    icon:'🔋',name:'Akku-Ladestation',       w:0.40,d:0.35,h:0.60,col:0x224422},
+,
+
+  // ══ BÜHNE extra ══════════════════════════════════════════
+  {id:'eve-rigpoint',    cat:'Bühne',    icon:'⚓',name:'Rigging-Punkt (Deckenhaken)',w:0.15,d:0.15,h:0.15,col:0x888888,arch:'ceil'},
+  {id:'eve-gittermast',  cat:'Bühne',    icon:'🔧',name:'Gittermast 4m',             w:0.30,d:0.30,h:4.00,col:0x888888},
+  {id:'eve-traverse-q',  cat:'Bühne',    icon:'🔧',name:'Traverse Quader 3m',        w:3.00,d:0.30,h:0.30,col:0x888888},
+  {id:'eve-bühnen-geländer',cat:'Bühne', icon:'🛡',name:'Bühnen-Geländer 2m',       w:2.00,d:0.05,h:1.10,col:0x666666},
+  {id:'eve-motorhub',    cat:'Bühne',    icon:'⬆',name:'Kettenzug/Hoist 1000kg',    w:0.30,d:0.30,h:0.25,col:0x888888,arch:'ceil'},
+  {id:'eve-bühnen-tisch',cat:'Bühne',    icon:'📋',name:'Bühnentisch für Podium',    w:1.80,d:0.60,h:0.75,col:0x222222},
+  {id:'eve-bühnenboden', cat:'Bühne',    icon:'⬛',name:'Bühnenboden-Paneel 2×1m',   w:2.00,d:1.00,h:0.02,col:0x111111},
+  {id:'eve-lichtvorhang',cat:'Bühne',    icon:'✨',name:'LED-Lichtervorhang',        w:3.00,d:0.10,h:2.50,col:0xffd700},
+  {id:'eve-projektionsleinwand-boden',cat:'Bühne',icon:'📽',name:'Frontleinwand Bodenstativ',w:3.00,d:0.15,h:2.00,col:0xffffff},
+  {id:'eve-showtreppe',  cat:'Bühne',    icon:'🌟',name:'Show-Treppe beleuchtet',    w:1.20,d:2.00,h:0.80,col:0xd4a017},
+  // ══ MESSESTAND extra ═════════════════════════════════════
+  {id:'eve-systemtheke', cat:'Messestand',icon:'🏪',name:'System-Theke Curved',      w:1.20,d:0.70,h:1.00,col:0x224422},
+  {id:'eve-showcase-beleuchtet',cat:'Messestand',icon:'💡',name:'Beleuchtete Showcase-Vitrine',w:1.00,d:0.45,h:1.80,col:0x88ccff},
+  {id:'eve-tower-display',cat:'Messestand',icon:'🗼',name:'Tower-Display 1.5m',     w:0.50,d:0.50,h:1.50,col:0x336633},
+  {id:'eve-hängedisplay',cat:'Messestand',icon:'🖼',name:'Hängedisplay (Decke)',    w:1.50,d:0.10,h:1.00,col:0x224422},
+  {id:'eve-bodenaufkleber',cat:'Messestand',icon:'⬛',name:'Boden-Branding (2×2m)', w:2.00,d:2.00,h:0.01,col:0x22442220,arch:'floor'},
+  {id:'eve-gegenlicht',  cat:'Messestand',icon:'💡',name:'Gegenlicht-Panel',        w:1.00,d:0.15,h:2.50,col:0xffffff},
+  {id:'eve-messe-regal', cat:'Messestand',icon:'📦',name:'Fachboden-Präsenter',     w:1.00,d:0.35,h:2.00,col:0x555555},
+  {id:'eve-touchscreen', cat:'Messestand',icon:'📱',name:'Interaktiver Touchscreen', w:0.55,d:0.10,h:1.50,col:0x111111},
+  {id:'eve-katalogstände',cat:'Messestand',icon:'📚',name:'Katalog-Ständer drehbar', w:0.50,d:0.50,h:1.50,col:0x888888},
+  {id:'eve-klappbox',    cat:'Messestand',icon:'📦',name:'Transport-Klappbox',       w:0.60,d:0.40,h:0.50,col:0x888888},
+  {id:'eve-zähler-messe',cat:'Messestand',icon:'👤',name:'Besucherzähler',           w:0.08,d:0.06,h:0.12,col:0x224422},
+  {id:'eve-messe-teppich',cat:'Messestand',icon:'🔲',name:'Messe-Teppich 4×4m',    w:4.00,d:4.00,h:0.01,col:0x22442240,arch:'floor'},
+  {id:'eve-messe-dach',  cat:'Messestand',icon:'🏠',name:'Messe-Standdach',         w:4.00,d:4.00,h:0.20,col:0xdddddd},
+  {id:'eve-expo-wand-bogen',cat:'Messestand',icon:'🏛',name:'Expo-Bogen/Torbogen',  w:2.50,d:0.30,h:3.00,col:0xaaaaaa},
+  {id:'eve-promotion-stand',cat:'Messestand',icon:'🎯',name:'Promotion-Stand',      w:1.00,d:1.00,h:2.20,col:0x336633},
+  // ══ TECHNIK extra ════════════════════════════════════════
+  {id:'eve-stromverteil-400',cat:'Veranst-Technik',icon:'⚡',name:'Strom-Verteiler 400V',w:0.50,d:0.35,h:0.30,col:0xff6600},
+  {id:'eve-patchbay',    cat:'Veranst-Technik',icon:'🔌',name:'Audio-Patchbay',     w:0.48,d:0.20,h:0.05,col:0x333333},
+  {id:'eve-funk-sender', cat:'Veranst-Technik',icon:'📡',name:'Funk-Mikrofon-Sender',w:0.06,d:0.06,h:0.22,col:0x333333},
+  {id:'eve-intercom',    cat:'Veranst-Technik',icon:'🎧',name:'Intercom-System',    w:0.20,d:0.15,h:0.05,col:0x333333},
+  {id:'eve-timecode',    cat:'Veranst-Technik',icon:'⏱',name:'Timecode-Generator', w:0.20,d:0.15,h:0.05,col:0x333333},
+  {id:'eve-led-ticker',  cat:'Veranst-Technik',icon:'📢',name:'LED-Laufschrift 3m', w:3.00,d:0.10,h:0.25,col:0xff6600},
+  {id:'eve-infomonitor-hängend',cat:'Veranst-Technik',icon:'📺',name:'Hänge-Monitor 43"',w:0.95,d:0.10,h:0.55,col:0x111111,arch:'ceil'},
+  {id:'eve-kiosk-terminal',cat:'Veranst-Technik',icon:'🖥',name:'Kiosk-Terminal Touchscreen',w:0.55,d:0.55,h:1.40,col:0x222222},
+  // ══ LICHT extra ══════════════════════════════════════════
+  {id:'eve-strobe',      cat:'Veranst-Licht',icon:'⚡',name:'Stroboskop',           w:0.25,d:0.20,h:0.15,col:0xffffff},
+  {id:'eve-gobo',        cat:'Veranst-Licht',icon:'🔵',name:'Gobo-Projektor',       w:0.20,d:0.20,h:0.30,col:0x3366ff},
+  {id:'eve-pixel-tube',  cat:'Veranst-Licht',icon:'🌈',name:'LED Pixel-Tube (1m)',  w:0.06,d:0.06,h:1.00,col:0xff00ff},
+  {id:'eve-lichtbalken', cat:'Veranst-Licht',icon:'💡',name:'LED-Lichtbalken 1m',   w:1.00,d:0.08,h:0.08,col:0xffd700},
+  {id:'eve-uv-licht',    cat:'Veranst-Licht',icon:'🟣',name:'UV/Schwarzlicht',      w:0.60,d:0.10,h:0.10,col:0x6600ff},
+  // ══ BESCHALLUNG extra ════════════════════════════════════
+  {id:'eve-delay-ls',    cat:'Beschallung',icon:'🔊',name:'Delay-Lautsprecher',     w:0.25,d:0.25,h:0.30,col:0x333333},
+  {id:'eve-surround-ls', cat:'Beschallung',icon:'🔊',name:'Surround-Lautsprecher',  w:0.20,d:0.20,h:0.25,col:0x333333},
+  {id:'eve-verstärker',  cat:'Beschallung',icon:'⚡',name:'Endstufe/Verstärker',    w:0.48,d:0.40,h:0.05,col:0x333333},
+  {id:'eve-rack-19',     cat:'Beschallung',icon:'🗄',name:'19"-Rack 9HE',           w:0.48,d:0.60,h:0.50,col:0x222222},
+  // ══ CATERING extra ═══════════════════════════════════════
+  {id:'eve-wein-display',cat:'Catering',   icon:'🍷',name:'Wein-Präsenter/Regal',   w:0.80,d:0.40,h:1.50,col:0x5a1a1a},
+  {id:'eve-food-truck',  cat:'Catering',   icon:'🚚',name:'Food-Truck-Fläche (3×2)',w:3.00,d:2.00,h:0.01,col:0x33660020,arch:'floor'},
+  {id:'eve-bierfass',    cat:'Catering',   icon:'🍺',name:'Bierfass (50L)',          w:0.40,d:0.40,h:0.60,col:0xd4a017},
+  {id:'eve-kassenterminal',cat:'Catering', icon:'💳',name:'Kassen-Terminal mobil',   w:0.20,d:0.15,h:0.15,col:0x224422},
+  // ══ EINGANG extra ════════════════════════════════════════
+  {id:'eve-akkreditierung',cat:'Eingang',  icon:'🏷',name:'Akkreditierungs-Tisch',  w:1.60,d:0.60,h:0.75,col:0x555555},
+  {id:'eve-bändchen',    cat:'Eingang',    icon:'🎗',name:'Bändchen-Ausgabe',        w:0.40,d:0.30,h:0.75,col:0x336633},
+  {id:'eve-sicherheitsschleuse',cat:'Eingang',icon:'🔒',name:'Sicherheitsschleuse', w:1.00,d:2.50,h:2.20,col:0x666666},
+  {id:'eve-infopoint',   cat:'Eingang',    icon:'ℹ',name:'Infopoint-Säule',          w:0.40,d:0.40,h:1.80,col:0x336633},
+  // ══ OUTDOOR extra ════════════════════════════════════════
+  {id:'eve-toilettenwagen',cat:'Outdoor',  icon:'🚻',name:'Sanitär-/Toilettenwagen',w:2.50,d:2.50,h:2.50,col:0xffffff},
+  {id:'eve-generator',   cat:'Outdoor',    icon:'⚡',name:'Stromgenerator (30kVA)', w:1.80,d:0.90,h:1.20,col:0xf5c518},
+  {id:'eve-absperrzaun-event',cat:'Outdoor',icon:'🚧',name:'Sicherheitszaun Event 2m',w:2.00,d:0.10,h:2.00,col:0x888888},
+  {id:'eve-pissoir-mobil',cat:'Outdoor',   icon:'🚹',name:'Mobiles Pissoir',         w:0.70,d:0.70,h:1.20,col:0xbbbbbb},
+  {id:'eve-flagge-fahne',cat:'Outdoor',    icon:'🚩',name:'Event-Fahne/Beachflag',   w:0.80,d:0.10,h:3.50,col:0x336633},
 ];
 
 const ARCH = [
@@ -4855,7 +5103,7 @@ function build3DRoomFloor(r){
     cord.position.set(lx, ly-0.35, cz); g.add(cord);
   }
 
-  // ── v3.49/31 realism hooks ──────────────────────────────────────
+  // ── v3.50/31 realism hooks ──────────────────────────────────────
   addAmbientOcclusion(r, g, elev);
   addFloorDirt(r, g, elev);
   addCrownMolding(r, g, elev);
@@ -4939,7 +5187,7 @@ function setView(v){
 // ════════════════════════════════════════════════════════════════════════
 function showLeft(m){
   leftMode=m;
-  ['rooms','furn','arch','security','custom'].forEach(x=>{
+  ['rooms','furn','arch','security','events','custom'].forEach(x=>{
     const el=document.getElementById('ib-'+x);if(el)el.classList.toggle('active',x===m);
   });
   document.getElementById('left-title').textContent =
@@ -4954,6 +5202,7 @@ function renderLeft(){
   else if(leftMode==='furn')     renderFurnPanel(el);
   else if(leftMode==='arch')     renderBauPanel(el);
   else if(leftMode==='security') renderSecPanel(el);
+  else if(leftMode==='events')   renderEventsPanel(el);
   else renderCustomPanel(el);
 }
 
@@ -5032,7 +5281,74 @@ function renderCustomPanel(el){
   customObjs.forEach(o=>{
     h+=`<div class="rc"><div style="font-size:18px">${o.icon||'📦'}</div>
       <div class="ri"><div class="rn">${o.name}</div><div class="rd">${o.cat} · ${o.w}×${o.d}×${o.h}m</div></div>
-      <button class="rdel" style="opacity:1" onclick="delCustom('${o.id}')">🗑</button></div>`;
+      <button class="rdel" style="opacity:1" onclick="delCustom(
+
+// ════════════════════════════════════════════════════════════
+// VERANSTALTUNGEN PANEL
+// ════════════════════════════════════════════════════════════
+const EVENTS_GROUPS = {
+  '🎭 Bühne & Podium':      ['Bühne'],
+  '🪑 Bestuhlung & Tische': ['Bestuhlung'],
+  '🖥 Technik & Medien':    ['Veranst-Technik'],
+  '💡 Licht & Effekte':     ['Veranst-Licht'],
+  '🔊 Beschallung':          ['Beschallung'],
+  '🏢 Messestand & Expo':   ['Messestand'],
+  '🍽 Catering & Service':  ['Catering'],
+  '🎨 Dekoration':           ['Dekoration'],
+  '🚧 Eingang & Ordner':    ['Eingang'],
+  '✏ Workshop & Seminar':   ['Workshop'],
+  '⛺ Outdoor & Zelte':     ['Outdoor'],
+  '⭐ Equipment & Extras':  ['Extras'],
+};
+const EVENT_CATS_LIST = Object.values(EVENTS_GROUPS).flat();
+let _evSearch = '';
+const _closedEvGrp = new Set();
+
+function toggleEvGroup(id){
+  if(_closedEvGrp.has(id)) _closedEvGrp.delete(id); else _closedEvGrp.add(id);
+  renderLeft();
+}
+
+function _evItemHtml(item){
+  return '<div class="cat-item" onclick="startCatalogDrag(\''+item.id+'\')" '
+    +'style="display:flex;align-items:center;gap:6px;padding:5px 10px;cursor:pointer;font-size:11px;border-bottom:1px solid rgba(255,255,255,.03)">'
+    +'<span style="font-size:14px">'+item.icon+'</span>'
+    +'<div><div style="color:var(--tx)">'+item.name+'</div>'
+    +'<div style="font-size:9px;color:var(--tx3)">'+item.w+'\xd7'+item.d+'m</div></div></div>';
+}
+
+function renderEventsPanel(el){
+  const catalog = getCatalog().filter(i => EVENT_CATS_LIST.includes(i.cat));
+  const q = (_evSearch||'').toLowerCase();
+  let h = '<div style="padding:5px 8px">'
+    +'<input id="ev-search" placeholder="🔍 Suche Veranstaltung\u2026" value="'+(_evSearch||'')+'"'
+    +' oninput="_evSearch=this.value;renderLeft()"'
+    +' style="width:100%;padding:4px 8px;background:var(--bg3);border:1px solid var(--bd);'
+    +'border-radius:4px;color:var(--tx);font-size:11px;outline:none;box-sizing:border-box"></div>';
+
+  if(q){
+    const res = catalog.filter(i => i.name.toLowerCase().includes(q)||i.cat.toLowerCase().includes(q));
+    h += '<div style="padding:2px 10px 4px;font-size:10px;color:var(--tx3)">'+res.length+' Treffer</div>';
+    res.forEach(i => { h += _evItemHtml(i); });
+    el.innerHTML = h; return;
+  }
+
+  Object.entries(EVENTS_GROUPS).forEach(([grpName, cats]) => {
+    const items = catalog.filter(i => cats.includes(i.cat));
+    if(!items.length) return;
+    const gid = 'evg_'+grpName.replace(/[^\w]/g,'');
+    const closed = _closedEvGrp.has(gid);
+    h += '<div class="catsec" onclick="toggleEvGroup(\''+gid+'\')">'
+      +'<span>'+grpName+' <span class="cat-count">'+items.length+'</span></span>'
+      +'<span id="'+gid+'_arr">'+(closed?'▸':'▾')+'</span></div>';
+    h += '<div id="'+gid+'" style="'+(closed?'display:none':'')+';">';
+    items.forEach(i => { h += _evItemHtml(i); });
+    h += '</div>';
+  });
+  el.innerHTML = h;
+}
+// ════════════════════════════════════════════════════════════
+'${o.id}')">🗑</button></div>`;
   });
   el.innerHTML=h;
 }
@@ -5332,7 +5648,7 @@ function doPrint(){
     +'td,th{border:1px solid #ddd;padding:4px 6px;text-align:left}th{background:#f5f5f5}'
     +'@media print{body{padding:8px}}</style></head><body>'
     +'<h1>🌿 '+d.name+'</h1>'
-    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.49 · '+new Date().toLocaleDateString('de-DE')+'</div>'
+    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.50 · '+new Date().toLocaleDateString('de-DE')+'</div>'
     +'<img src="'+img+'">'
     +'<div class=grid>'
     +'<div class=box><h3>Räume ('+d.rooms.length+')</h3>'
@@ -7174,7 +7490,7 @@ function pickKallaxColor(id, part){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// KALLAX PRO EDITOR — Extended (v3.49)
+// KALLAX PRO EDITOR — Extended (v3.50)
 // ════════════════════════════════════════════════════════════════════════
 
 // Additional color palettes
@@ -8446,7 +8762,7 @@ function rebuild3DThrottled(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// NEW FEATURES v3.49
+// NEW FEATURES v3.50
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. RAUM-SNAP beim Platzieren ─────────────────────────────────────
@@ -8837,7 +9153,7 @@ function showCSCPanel(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// INTERAKTIVE ANLEITUNG v3.49
+// INTERAKTIVE ANLEITUNG v3.50
 // ════════════════════════════════════════════════════════════════════════
 function openHelp(page){
   document.getElementById('help-overlay').classList.add('open');
@@ -8887,7 +9203,7 @@ var _tutStep = 0;
 const TUT_STEPS = [
   {
     target: null,
-    title: '🌿 Willkommen im CSC Raumplaner v3.49',
+    title: '🌿 Willkommen im CSC Raumplaner v3.50',
     text: '<b>Der schnellste Weg zur eingerichteten Ausgabestelle:</b><br><br>'
       + '1️⃣ <b>Datei → "🤖 KI: Grundriss aus Foto"</b><br>'
       + '&nbsp;&nbsp;→ Grundriss-Foto oder PDF hochladen<br><br>'
@@ -8988,7 +9304,7 @@ function renderTutStep(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.49 — ALLE NEUEN FEATURES
+// v3.50 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. KI MÖBELANORDNUNG ─────────────────────────────────────────────
@@ -9640,7 +9956,7 @@ function removeWallCtxMenu(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.49 — ALLE NEUEN FEATURES
+// v3.50 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── FURNITURE PRICES DATABASE ────────────────────────────────────────
@@ -10166,7 +10482,7 @@ const _origAddRoom = addRoom;
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.49 — DROPDOWN MENU SYSTEM + NEW FEATURES
+// v3.50 — DROPDOWN MENU SYSTEM + NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── DROPDOWN MENU SYSTEM ─────────────────────────────────────────────
@@ -10516,7 +10832,7 @@ function renderComparePane(side, data){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.49 — ALL NEW FEATURES
+// v3.50 — ALL NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. DARK/LIGHT MODE ───────────────────────────────────────────────
@@ -10891,7 +11207,7 @@ function registerServiceWorker(){
   if(!location.protocol.startsWith('http')){ /* SW only on https - not an error */; return; }
   // Inline SW as blob
   const swCode=`
-    const CACHE='csc-v3.49';
+    const CACHE='csc-v3.50';
     self.addEventListener('install',e=>e.waitUntil(
       caches.open(CACHE).then(c=>c.add('/'))
     ));
@@ -10965,7 +11281,7 @@ function registerServiceWorker(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.49 — BRANDSCHUTZ / AKUSTIK / ENERGIE / REINIGUNG / INVENTAR /
+// v3.50 — BRANDSCHUTZ / AKUSTIK / ENERGIE / REINIGUNG / INVENTAR /
 //          HEATMAP MITGLIEDER / LIEFERWEGE / BARCODE
 // ════════════════════════════════════════════════════════════════════════
 
@@ -11378,7 +11694,7 @@ function drawRoutes(ctx){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.49 — ALLE AUTOMATISIERUNGS-FEATURES
+// v3.50 — ALLE AUTOMATISIERUNGS-FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -12144,7 +12460,7 @@ function addDashWidget(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.49 — ALLE NEUEN FEATURES
+// v3.50 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -12962,7 +13278,7 @@ function showGrowthPlan(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.49 — MINIMAP / SNAP / GUIDED / UNDO-TL / GROUPS / SEASONS / MORE
+// v3.50 — MINIMAP / SNAP / GUIDED / UNDO-TL / GROUPS / SEASONS / MORE
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -13498,7 +13814,7 @@ function addTooltip(el,text){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// EXTRA FEATURES v3.49
+// EXTRA FEATURES v3.50
 // ════════════════════════════════════════════════════════════════════════
 
 // ── PRINT PREVIEW ────────────────────────────────────────────────────
@@ -13664,7 +13980,7 @@ async function wizardGenerate(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// NEUES KATALOG-SYSTEM v3.49
+// NEUES KATALOG-SYSTEM v3.50
 // ════════════════════════════════════════════════════════════════════════
 
 // Group definitions
@@ -13941,7 +14257,7 @@ function renderCustomPanel(el){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.49 — ECHTZEIT COMPLIANCE / HEALTH SCORE / SMART UX / REALISTIC 3D
+// v3.50 — ECHTZEIT COMPLIANCE / HEALTH SCORE / SMART UX / REALISTIC 3D
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. HEALTH SCORE ──────────────────────────────────────────────────
@@ -14492,7 +14808,7 @@ function takePresentationScreenshot(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.49 — REALISTIC 3D ENGINE
+// v3.50 — REALISTIC 3D ENGINE
 // ════════════════════════════════════════════════════════════════════════
 
 // ── TEXTURE GENERATORS ───────────────────────────────────────────────
@@ -14980,7 +15296,7 @@ function openMaterialStudio(){
     +'<div class="floor-preview" style="background:'+p.preview+'"></div>'
     +'<div class="floor-name">'+p.name+'</div></div>'
   ).join('');
-  // Wall textures (reuse WALL_TEXTURES from v3.49)
+  // Wall textures (reuse WALL_TEXTURES from v3.50)
   const wg=document.getElementById('wall-tex-grid-studio');
   if(wg&&typeof WALL_TEXTURES!=='undefined') wg.innerHTML=WALL_TEXTURES.slice(0,8).map(t=>'<div onclick="applyWallTexture(\''+rooms[0]?.id+'\',\''+t.id+'\')" style="cursor:pointer;border-radius:4px;overflow:hidden;border:1px solid var(--bd)">'
     +'<div style="height:35px;background:'+t.color+'"></div>'
@@ -15019,7 +15335,7 @@ function isShelveType(typeId){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.49 — ADVANCED REALISTIC EFFECTS
+// v3.50 — ADVANCED REALISTIC EFFECTS
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. TEPPICH FASER-SHADER ──────────────────────────────────────────
@@ -15495,7 +15811,7 @@ function updateSkybox(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.49 — POST-PROCESSING / SHADOWS / MIRROR / ATMOSPHERE / DECOR
+// v3.50 — POST-PROCESSING / SHADOWS / MIRROR / ATMOSPHERE / DECOR
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. IMPROVED PCF SHADOWS ───────────────────────────────────────────
@@ -15937,7 +16253,7 @@ function addWainscoting(r, g, elev){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.49 — GROUTLINES + ANALYSEN
+// v3.50 — GROUTLINES + ANALYSEN
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. FLIESEN MIT ECHTER FUGENGEOMETRIE ─────────────────────────────
@@ -16195,7 +16511,7 @@ function dashCard(title,content,id){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.49 — BESUCHERFLUSS / REINIGUNG / SICHERHEITS-KI / TÄFELUNG FIX
+// v3.50 — BESUCHERFLUSS / REINIGUNG / SICHERHEITS-KI / TÄFELUNG FIX
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. BESUCHERFLUSS-ANIMATION ─────────────────────────────────────
@@ -16623,7 +16939,7 @@ async function generateFullReport(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.49 — PERF / MOBILE / VERSIONS / PRESENTATION / ANALYSEN / UX
+// v3.50 — PERF / MOBILE / VERSIONS / PRESENTATION / ANALYSEN / UX
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. LOD + FRUSTUM CULLING ──────────────────────────────────────────
@@ -17067,7 +17383,7 @@ async function generateFullReport(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.49 — KI-GRUNDRISS / ANNOTATIONEN 3D / ERWEITERTE FEATURES
+// v3.50 — KI-GRUNDRISS / ANNOTATIONEN 3D / ERWEITERTE FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. KI-GRUNDRISS ERKENNEN ─────────────────────────────────────────
@@ -17442,7 +17758,7 @@ function analyzeMemberGrowth(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.49 — FLOOR PATTERN 2D / COLLISION / SNAP / WIZARD / DOCS
+// v3.50 — FLOOR PATTERN 2D / COLLISION / SNAP / WIZARD / DOCS
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. BODENMUSTER IM 2D ─────────────────────────────────────────────
@@ -17818,7 +18134,7 @@ function zoomToRoom(r){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.49 — KAMERA-SICHTFELDER / BREAK-EVEN / PERSONALPLAN /
+// v3.50 — KAMERA-SICHTFELDER / BREAK-EVEN / PERSONALPLAN /
 //         WARTUNG / 3D-TOUR / EMBED / IFC / BARCODE / KI-MEMORY / OFFLINE
 // ════════════════════════════════════════════════════════════════════════
 
@@ -18317,7 +18633,7 @@ async function cloudSave(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.49 — MAßKETTEN / TÜRÖFFNUNGEN / GANTT / HEIZLAST / LUX
+// v3.50 — MAßKETTEN / TÜRÖFFNUNGEN / GANTT / HEIZLAST / LUX
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. CAD MAßKETTEN IM 2D ───────────────────────────────────────────
@@ -18734,7 +19050,7 @@ document.addEventListener('keydown', e=>{
 }, true);
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.49 — KI DROPDOWN / SIDE PANELS / LAYOUT
+// v3.50 — KI DROPDOWN / SIDE PANELS / LAYOUT
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -18774,7 +19090,7 @@ function makeDraggable(el, handle){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.49 CLEAN — PANEL FUNCTIONS + KI DROPDOWN + DRAGGABLE
+// v3.50 CLEAN — PANEL FUNCTIONS + KI DROPDOWN + DRAGGABLE
 // ════════════════════════════════════════════════════════════════════════
 
 // ── UNIVERSAL DRAG ───────────────────────────────────────────────────
@@ -19116,7 +19432,7 @@ draw2D();
 
 renderFloorTabs();
 initUndoSystem();
-setTimeout(()=>toast('🌿 v3.49 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
+setTimeout(()=>toast('🌿 v3.50 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
 
 
 
@@ -19144,7 +19460,7 @@ function initAutoSave(){
   // Enable auto-saving from now on
   _autoSaveReady = true;
   renderVersionHistory();
-  toast('🌿 v3.49 | Auto-Save aktiv','g');
+  toast('🌿 v3.50 | Auto-Save aktiv','g');
 }
 
 
@@ -19485,7 +19801,7 @@ function build3DObj(o){
   const metal = o.metalness !== undefined ? o.metalness : (item.arch==='window'?0.0: item.arch==='door'?0.05:['Lager','Info'].includes(item.cat)?0.55:0.04);
 
   if(item.isKallax || (item.id&&item.id.startsWith('kallax'))){
-    buildKallax3DPro(g, item, o); // v3.49 Pro
+    buildKallax3DPro(g, item, o); // v3.50 Pro
   } else if(item.arch==='security'){
     buildSecurity3D(g, item, o);
   } else if(item.arch==='foil'){
@@ -19905,7 +20221,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
     color:var(--rd);border-radius:4px;padding:2px 8px;cursor:pointer;font-size:10px">✕ Beenden</button>
 </div>
 
-<!-- ══ v3.49 EXTRA HTML ══ -->
+<!-- ══ v3.50 EXTRA HTML ══ -->
 <div id="mobile-left-btn" onclick="document.getElementById('left-panel').classList.toggle('mobile-open')">🛋</div>
 <div id="mobile-right-btn" onclick="document.getElementById('right-panel').classList.toggle('mobile-open')">🤖</div>
 <div id="touch-drag-hint">✋</div>
@@ -19927,7 +20243,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
 
   <div style="padding:12px 20px;border-bottom:1px solid #1a2a1a;display:flex;align-items:center;gap:14px;flex-shrink:0">
     <div style="font-size:16px;font-weight:800;color:#4ade80">🌿 CSC Raumplaner — Vollständige Anleitung</div>
-    <div style="font-size:11px;color:#555">v3.49</div>
+    <div style="font-size:11px;color:#555">v3.50</div>
     <div style="flex:1"></div>
     <button class="tbt" onclick="startOnboarding()" style="border-color:var(--gr);color:var(--gr);padding:6px 14px">▶ Illustriertes Intro</button>
     <button class="tbt" onclick="startTutorial()" style="padding:6px 14px">🎯 Interaktives Tutorial</button>
