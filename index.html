@@ -1115,7 +1115,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   font-size:9px;cursor:pointer;margin:2px}
 
 /* Next step panel */
-#nextstep-panel{position:fixed!important;bottom:60px!important;right:4px!important;top:auto!important;width:240px;z-index:400;font-size:11px}
+#nextstep-panel{position:fixed!important;bottom:60px!important;right:268px!important;top:auto!important;width:260px;z-index:150;border-radius:10px}
 #nextstep-panel.vis{display:block}
 
 
@@ -1413,7 +1413,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   text-transform:uppercase;letter-spacing:.5px;background:var(--bg3)}
 
 /* Nächster Schritt — anchored right of canvas */
-#nextstep-panel{position:fixed!important;bottom:60px!important;right:4px!important;top:auto!important;width:240px;z-index:400;font-size:11px}
+#nextstep-panel{position:fixed!important;bottom:60px!important;right:268px!important;top:auto!important;width:260px;z-index:150;border-radius:10px}
 /* ══════════════════════════════════════════════════════════════ */
 
 
@@ -1472,7 +1472,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 #info-panel .ip-body{padding:0}
 
 /* Nächster Schritt — fixed bottom right of canvas */
-#nextstep-panel{position:fixed!important;bottom:60px!important;right:4px!important;top:auto!important;width:240px;z-index:400;font-size:11px}
+#nextstep-panel{position:fixed!important;bottom:60px!important;right:268px!important;top:auto!important;width:260px;z-index:150;border-radius:10px}
 
 /* KI dropdown */
 #ki-dropdown-btn{
@@ -1563,6 +1563,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 /* Eigenschaften tab */
 #rpanel-props{font-size:11px}
 #rpanel-props .pp-section{padding:0 10px 10px}
+#rpanel-props-content{flex:1;overflow-y:auto;min-height:0}
 #rpanel-props .pp-sh{
   font-size:9px;text-transform:uppercase;letter-spacing:.5px;
   color:var(--tx3);margin:10px 0 5px;font-weight:600;
@@ -2235,7 +2236,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 
   <!-- EIGENSCHAFTEN PANEL -->
   <div class="rpanel active" id="rpanel-props">
-    <div id="rpanel-props-content" style="flex:1;overflow-y:auto">
+    <div id="rpanel-props-content" style="flex:1;overflow-y:auto;min-height:0">
       <div id="props-default-view">
         <div style="padding:8px 10px;font-size:10px;color:var(--tx3);border-bottom:1px solid var(--bd)">
           Klicke ein Objekt oder Raum an
