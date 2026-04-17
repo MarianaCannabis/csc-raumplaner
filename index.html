@@ -1044,7 +1044,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 /* ══ v3.51 ════════════════════════════════════════════════════════ */
 
 /* Health Score */
-#health-score{position:absolute;bottom:8px;left:12px;z-index:20;
+#health-score{position:absolute;bottom:8px;left:70px;z-index:20;
   background:rgba(10,10,10,.85);border:1px solid var(--bd2);
   border-radius:20px;padding:3px 10px;font-size:10px;
   display:flex;align-items:center;gap:5px;pointer-events:all;
@@ -5221,18 +5221,18 @@ function renderCustomPanel(el){
 
 // ══ VERANSTALTUNGEN PANEL ════════════════════════════════════
 const EVENTS_GROUPS_EV = {
-  'Bühne & Podium':      ['Bühne'],
-  'Bestuhlung & Tische': ['Bestuhlung'],
-  'Technik & Medien':    ['Veranst-Technik'],
-  'Licht & Effekte':     ['Veranst-Licht'],
-  'Beschallung':          ['Beschallung'],
-  'Messestand & Expo':   ['Messestand'],
-  'Catering & Service':  ['Catering'],
-  'Dekoration':           ['Dekoration'],
-  'Eingang & Ordner':    ['Eingang'],
-  'Workshop & Seminar':  ['Workshop'],
-  'Outdoor & Zelte':     ['Outdoor'],
-  'Equipment & Extras':  ['Extras'],
+  '🎭 Bühne & Podium':       ['Bühne'],
+  '🪑 Bestuhlung & Tische':  ['Bestuhlung'],
+  '🖥 Technik & Medien':     ['Veranst-Technik'],
+  '💡 Licht & Effekte':      ['Veranst-Licht'],
+  '🔊 Beschallung':           ['Beschallung'],
+  '🏢 Messestand & Expo':    ['Messestand'],
+  '🍽 Catering & Service':   ['Catering'],
+  '🎨 Dekoration':            ['Dekoration'],
+  '🚧 Eingang & Ordner':     ['Eingang'],
+  '✏️ Workshop & Seminar':   ['Workshop'],
+  '⛺ Outdoor & Zelte':      ['Outdoor'],
+  '⭐ Equipment & Extras':   ['Extras'],
 };
 const EVENT_CATS_LIST = Object.values(EVENTS_GROUPS_EV).flat();
 let _evSearch = '';
