@@ -51,7 +51,7 @@ input,textarea,select,button{font-family:inherit}
 .ibsep{width:36px;height:1px;background:var(--bd);margin:3px 0}
 
 /* ─ LEFT PANEL ──────────────────────────────────────────── */
-/* moved to v3.52 flex rules */
+/* moved to v3.53 flex rules */
 .lph{padding:10px 12px 7px;border-bottom:1px solid var(--bd);flex-shrink:0;font-size:11px;font-weight:600;color:var(--gr)}
 .lpb{flex:1;overflow-y:auto;padding:10px 10px 0;scrollbar-width:thin;scrollbar-color:var(--bd2) transparent}
 .sh{font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;margin-top:10px}
@@ -89,7 +89,7 @@ input,textarea,select,button{font-family:inherit}
 .dragging-furn{position:fixed;pointer-events:none;z-index:9999;opacity:.7;background:var(--bg3);border:2px solid var(--gr);border-radius:var(--r6);padding:6px 10px;font-size:12px;white-space:nowrap;transform:translate(-50%,-50%)}
 
 /* ─ CANVAS AREA ─────────────────────────────────────────── */
-/* moved to v3.52 flex rules */
+/* moved to v3.53 flex rules */
 canvas{display:block}
 
 /* 2D Floor plan canvas */
@@ -120,7 +120,7 @@ canvas{display:block}
 .sel-info{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.85);border:1px solid var(--gr);border-radius:var(--r6);padding:6px 10px;font-size:11px;color:var(--gr);display:none;z-index:20;pointer-events:none}
 
 /* ─ RIGHT AI PANEL ──────────────────────────────────────── */
-/* moved to v3.52 flex rules */
+/* moved to v3.53 flex rules */
 .rtabs{display:flex;border-bottom:1px solid var(--bd);flex-shrink:0}
 .rtab{flex:1;padding:9px 4px;text-align:center;font-size:11px;cursor:pointer;color:var(--tx3);border-bottom:2px solid transparent;transition:.12s}
 .rtab.active{color:var(--gr);border-color:var(--gr)}
@@ -461,7 +461,7 @@ canvas{display:block}
 #help-close:hover{color:#e8e4d8;background:#1a1a1a}
 
 
-/* ══ NEW FEATURES v3.52 ═══════════════════════════════════════════ */
+/* ══ NEW FEATURES v3.53 ═══════════════════════════════════════════ */
 
 /* Heatmap canvas */
 #heatmap-canvas{position:absolute;inset:0;pointer-events:none;opacity:0.55;display:none;z-index:8}
@@ -500,7 +500,7 @@ canvas{display:block}
 .vlink-inp{width:100%;padding:7px;background:var(--bg);border:1px solid var(--bd2);border-radius:4px;color:var(--tx);font-family:monospace;font-size:10px;margin:5px 0}
 
 
-/* ══ v3.52 FEATURES ══════════════════════════════════════════════ */
+/* ══ v3.53 FEATURES ══════════════════════════════════════════════ */
 /* Budget Tracker */
 #budget-panel{position:fixed;top:50px;right:360px;width:300px;background:var(--bg2);border:1px solid var(--bd2);border-radius:10px;z-index:200;display:none;box-shadow:0 4px 20px rgba(0,0,0,.6)}
 #budget-panel.vis{display:block}
@@ -534,7 +534,7 @@ canvas{display:block}
 .ruler-text{fill:#fbbf24;font-size:11px;font-weight:700;font-family:monospace}
 
 
-/* ══ DROPDOWN MENU SYSTEM v3.52 ══════════════════════════════════ */
+/* ══ DROPDOWN MENU SYSTEM v3.53 ══════════════════════════════════ */
 .tb-menu-group{display:flex;align-items:center;gap:2px}
 .tbm{position:relative}
 .tbm-btn{padding:4px 9px;background:transparent;border:1px solid transparent;border-radius:var(--r4);font-size:11px;cursor:pointer;color:var(--tx2);transition:.12s;white-space:nowrap;display:flex;align-items:center;gap:3px}
@@ -585,7 +585,7 @@ canvas{display:block}
 .compare-label{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);color:var(--gr);font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;z-index:10}
 
 
-/* ══ v3.52 ════════════════════════════════════════════════════════ */
+/* ══ v3.53 ════════════════════════════════════════════════════════ */
 /* Light mode */
 body.light-mode{--bg:#f5f5f0;--bg2:#ffffff;--bg3:#ebebeb;--bg4:#e0e0d8;
   --tx:#111;--tx2:#333;--tx3:#777;--bd:#ccc;--bd2:#aaa;
@@ -640,7 +640,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .font-sample:hover,.font-sample.active{border-color:var(--gr);color:var(--gr)}
 
 
-/* ══ v3.52 ════════════════════════════════════════════════════════ */
+/* ══ v3.53 ════════════════════════════════════════════════════════ */
 /* Inventory */
 .inv-row{display:grid;grid-template-columns:2fr 1.2fr 1.5fr 0.7fr;gap:6px;align-items:center;
   padding:5px 0;border-bottom:1px solid var(--bd);font-size:11px}
@@ -680,7 +680,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .fire-ok{color:#4ade80}.fire-warn{color:#f87171}.fire-info{color:#fbbf24}
 
 
-/* ══ v3.52 ════════════════════════════════════════════════════════ */
+/* ══ v3.53 ════════════════════════════════════════════════════════ */
 
 /* Command Palette */
 #cmd-palette{position:fixed;top:15%;left:50%;transform:translateX(-50%);
@@ -800,7 +800,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   cursor:pointer;min-width:60px;text-align:center}
 
 
-/* ══ v3.52 ════════════════════════════════════════════════════════ */
+/* ══ v3.53 ════════════════════════════════════════════════════════ */
 /* Badges */
 .badge-popup{position:fixed;top:60px;right:16px;background:#0d2010;
   border:1px solid #4ade80;border-radius:10px;padding:12px 16px;z-index:500;
@@ -885,7 +885,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   border-radius:3px;padding:1px 6px;color:var(--tx3);font-family:monospace}
 
 
-/* ══ v3.52 ════════════════════════════════════════════════════════ */
+/* ══ v3.53 ════════════════════════════════════════════════════════ */
 
 /* Minimap */
 #minimap{position:absolute;bottom:8px;right:8px;width:140px;height:100px;
@@ -970,7 +970,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .season-tab.active{background:var(--gr3);border-color:var(--gr);color:#fff}
 
 
-/* ══ NEUES KATALOG-SYSTEM v3.52 ══════════════════════════════════ */
+/* ══ NEUES KATALOG-SYSTEM v3.53 ══════════════════════════════════ */
 
 /* Main tab bar inside each panel */
 .cat-tabs{display:flex;gap:0;border-bottom:1px solid var(--bd);
@@ -1041,7 +1041,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .cat-grid .clist-item .ci-pin{position:absolute;top:2px;right:2px}
 
 
-/* ══ v3.52 ════════════════════════════════════════════════════════ */
+/* ══ v3.53 ════════════════════════════════════════════════════════ */
 
 /* Health Score */
 #health-score{position:absolute;bottom:8px;left:70px;z-index:20;
@@ -1120,7 +1120,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 #nextstep-panel.vis{display:block}
 
 
-/* ══ v3.52 REALISTIC ═════════════════════════════════════════════ */
+/* ══ v3.53 REALISTIC ═════════════════════════════════════════════ */
 /* Material picker */
 .mat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}
 .mat-card{border-radius:8px;overflow:hidden;cursor:pointer;
@@ -1148,11 +1148,11 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 /* Glow toggle */
 #glow-toggle.on{color:#ffd700;border-color:#d4a000}
 
-/* ══ v3.52 ════════════════════════════════════════════════════════ */
+/* ══ v3.53 ════════════════════════════════════════════════════════ */
 .weather-btn{padding:4px 8px;background:var(--bg3);border:1px solid var(--bd);
   border-radius:4px;font-size:10px;cursor:pointer;transition:.12s}
 .weather-btn.active{background:var(--bl2);border-color:var(--bl);color:var(--bl)}
-/* ══ v3.52 POST-FX ══════════════════════════════════════════════ */
+/* ══ v3.53 POST-FX ══════════════════════════════════════════════ */
 #postfx-canvas{position:absolute;inset:0;pointer-events:none;z-index:11;
   opacity:1;mix-blend-mode:screen}
 #vignette-overlay{position:absolute;inset:0;pointer-events:none;z-index:12;
@@ -1162,7 +1162,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .fx-btn{padding:3px 8px;font-size:10px;background:var(--bg3);
   border:1px solid var(--bd);border-radius:3px;cursor:pointer;transition:.12s}
 .fx-btn.on{background:var(--gr4);border-color:var(--gr);color:var(--gr)}
-/* ══ v3.52 ════════════════════════════════════════════════════════ */
+/* ══ v3.53 ════════════════════════════════════════════════════════ */
 /* Visitor flow canvas */
 #visitor-canvas{position:absolute;inset:0;pointer-events:none;
   z-index:17;display:none}
@@ -1177,7 +1177,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
   overflow:hidden;margin:3px 0}
 .clean-eff-fill{height:100%;border-radius:5px;transition:.5s}
 
-/* ══ v3.52 ════════════════════════════════════════════════════════ */
+/* ══ v3.53 ════════════════════════════════════════════════════════ */
 /* Presentation */
 #present-overlay{position:fixed;inset:0;background:#000;z-index:800;
   display:none;flex-direction:column;align-items:center;justify-content:center}
@@ -1230,7 +1230,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .sec-score-ring .score-text{position:absolute;inset:0;display:flex;align-items:center;
   justify-content:center;flex-direction:column}
 
-/* ══ v3.52 ════════════════════════════════════════════════════════ */
+/* ══ v3.53 ════════════════════════════════════════════════════════ */
 /* 3D Annotation */
 .ann-bubble{position:absolute;pointer-events:all;z-index:22;
   background:rgba(10,20,10,.92);border:1px solid var(--gr3);
@@ -1260,7 +1260,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .recog-preview{max-width:100%;border-radius:6px;margin-top:10px;
   max-height:200px;object-fit:contain}
 
-/* ══ v3.52 ════════════════════════════════════════════════════════ */
+/* ══ v3.53 ════════════════════════════════════════════════════════ */
 /* Collision highlight */
 .collision-warn{outline:2px solid #f87171!important;outline-offset:1px;
   box-shadow:0 0 8px rgba(248,113,113,.4)}
@@ -1290,7 +1290,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .cost-total{display:flex;justify-content:space-between;padding:6px 0;
   font-size:13px;font-weight:700;color:var(--gr);border-top:2px solid var(--gr)}
 
-/* ══ v3.52 ════════════════════════════════════════════════════════ */
+/* ══ v3.53 ════════════════════════════════════════════════════════ */
 /* Camera coverage */
 .cam-cone{position:absolute;pointer-events:none;z-index:16;opacity:0.3}
 /* Tour controls */
@@ -1319,7 +1319,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .be-chart{width:100%;height:120px;position:relative;margin:10px 0}
 .be-bar{position:absolute;bottom:0;border-radius:2px 2px 0 0;transition:.4s}
 
-/* ══ v3.52 ════════════════════════════════════════════════════════ */
+/* ══ v3.53 ════════════════════════════════════════════════════════ */
 
 /* CAD Dimension lines */
 .dim-line{position:absolute;pointer-events:none;z-index:19}
@@ -1351,7 +1351,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .heat-med{border-color:#fbbf24;background:rgba(251,191,36,.08)}
 .heat-high{border-color:#f87171;background:rgba(248,113,113,.08)}
 
-/* ══ v3.52 LAYOUT OVERHAUL ════════════════════════════════════ */
+/* ══ v3.53 LAYOUT OVERHAUL ════════════════════════════════════ */
 /* Properties tile under score */
 #props-tile{
   position:absolute;top:42px;right:8px;z-index:25;
@@ -1419,7 +1419,7 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 
 
 
-/* ══ v3.52 CLEAN LAYOUT ════════════════════════════════════════ */
+/* ══ v3.53 CLEAN LAYOUT ════════════════════════════════════════ */
 
 /* Props panel — fixed, right side, under health score, NOT in canvas */
 #props-panel{
@@ -1582,7 +1582,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 }
 #rpanel-props .mat-btn:hover{border-color:var(--gr);color:var(--gr)}
 #rpanel-props .mat-btn.sel{border-color:var(--gr);background:var(--gr4);color:var(--gr)}
-/* ══ v3.52 FLEX LAYOUT ══════════════════════════════════════════ */
+/* ══ v3.53 FLEX LAYOUT ══════════════════════════════════════════ */
 #main-row{display:flex;flex:1;min-height:0;overflow:hidden}
 #iconbar{width:64px;flex-shrink:0;background:#0c0c0c;border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden}
 #left{width:270px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden}
@@ -1686,7 +1686,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 <div id="topbar">
   <!-- LOGO -->
   <span class="logo">🌿 CSC <em>Raumplaner</em></span>
-  <span class="vbadge">v3.52</span>
+  <span class="vbadge">v3.53</span>
   <div class="tsep"></div>
 
   <!-- UNDO/REDO -->
@@ -3313,6 +3313,96 @@ var _visionBoards  = [];    // uploaded vision images
 // ════════════════════════════════════════════════════════════════════════
 const EMBEDDED_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind2a2prZHdhaHNxb3pldXBveHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4OTMwNjIsImV4cCI6MjA5MDQ2OTA2Mn0.30_He7gqgXBvdvGsEYkWQ_pfCnP_BvgLxiqp35_Q_1c';
 const getKey = () => localStorage.getItem('csc-key') || EMBEDDED_KEY || '';
+
+// ══ GETEILTE MÖBEL-DATENBANK ════════════════════════════════════
+// SQL für Supabase (einmalig ausführen):
+// CREATE TABLE IF NOT EXISTS csc_shared_furniture (
+//   id text PRIMARY KEY,
+//   name text NOT NULL,
+//   icon text DEFAULT '📦',
+//   cat text DEFAULT '📋 Allgemein',
+//   w numeric DEFAULT 1.0,
+//   d numeric DEFAULT 1.0,
+//   h numeric DEFAULT 1.0,
+//   col bigint DEFAULT 8947848,
+//   col3d text,
+//   notes text,
+//   created_by text DEFAULT 'anonym',
+//   created_at timestamptz DEFAULT now()
+// );
+// ALTER TABLE csc_shared_furniture ENABLE ROW LEVEL SECURITY;
+// CREATE POLICY "Public access" ON csc_shared_furniture FOR ALL USING (true) WITH CHECK (true);
+// ══ GETEILTE MÖBEL-DATENBANK ════════════════════════════════════
+const CUSTOM_CATS = [
+  '📋 Allgemein',
+  '🌿 Cannabis-Spezifisch', 
+  '🛋 Lounge & Sozial',
+  '📦 Lager & Aufbewahrung',
+  '🏪 Empfang & Ausgabe',
+  '🔒 Sicherheit',
+  '🎭 Veranstaltung',
+  '🏗 Bau & Installation',
+  '🖥 Technik',
+  '🌿 Eigene Kategorie',
+];
+
+let _sharedFurniCache = null;
+let _sharedFurniLastFetch = 0;
+
+async function loadSharedFurniture(forceRefresh=false){
+  const now = Date.now();
+  if(!forceRefresh && _sharedFurniCache && (now-_sharedFurniLastFetch) < 30000) 
+    return _sharedFurniCache;
+  if(!SB_URL||!SB_KEY) return [];
+  try {
+    const r = await fetch(
+      SB_URL+'/rest/v1/csc_shared_furniture?select=*&order=cat,name',
+      {headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}}
+    );
+    if(!r.ok) return _sharedFurniCache||[];
+    _sharedFurniCache = await r.json();
+    _sharedFurniLastFetch = now;
+    return _sharedFurniCache;
+  } catch(e){ return _sharedFurniCache||[]; }
+}
+
+async function saveSharedFurniture(item){
+  if(!SB_URL||!SB_KEY) return false;
+  try {
+    const payload = {
+      id: item.id,
+      name: item.name,
+      icon: item.icon||'📦',
+      cat: item.cat||'📋 Allgemein',
+      w: item.w||1.0,
+      d: item.d||1.0,
+      h: item.h||1.0,
+      col: item.col||0x888888,
+      col3d: item.col3d||null,
+      created_by: item.created_by||'anonym',
+      notes: item.notes||''
+    };
+    const r = await fetch(
+      SB_URL+'/rest/v1/csc_shared_furniture',
+      {method:'POST',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,
+       'Content-Type':'application/json','Prefer':'return=minimal'},
+       body:JSON.stringify(payload)}
+    );
+    if(r.ok){ _sharedFurniCache=null; toast('☁️ Möbel geteilt!','g'); return true; }
+    toast('Fehler beim Teilen','r'); return false;
+  } catch(e){ toast('Fehler: '+e.message,'r'); return false; }
+}
+
+async function deleteSharedFurniture(id){
+  if(!SB_URL||!SB_KEY) return;
+  await fetch(SB_URL+'/rest/v1/csc_shared_furniture?id=eq.'+id,
+    {method:'DELETE',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
+  _sharedFurniCache=null;
+  renderLeft();
+  toast('Möbel gelöscht','b');
+}
+// ══════════════════════════════════════════════════════════════════
+
 // ════════════════════════════════════════════════════════════════════════
 // ZENTRALER KI-API WRAPPER — robustes Error Handling für alle Funktionen
 // ════════════════════════════════════════════════════════════════════════
@@ -5036,7 +5126,7 @@ function build3DRoomFloor(r){
     cord.position.set(lx, ly-0.35, cz); g.add(cord);
   }
 
-  // ── v3.52/31 realism hooks ──────────────────────────────────────
+  // ── v3.53/31 realism hooks ──────────────────────────────────────
   addAmbientOcclusion(r, g, elev);
   addFloorDirt(r, g, elev);
   addCrownMolding(r, g, elev);
@@ -5207,17 +5297,131 @@ function renderCatalogPanel(el, catalog, isArch=false, secLayer=null){
   el.innerHTML=h;
 }
 
+
 function renderCustomPanel(el){
-  let h=`<button class="addbtn" onclick="openM('m-wizard')" style="margin-bottom:4px;border-color:var(--pu);color:var(--pu)">🤖 KI-Möbel erstellen (geführt)</button>
-  <button class="addbtn" onclick="openM('m-custom')" style="margin-bottom:10px">✏️ Manuell erstellen</button>`;
-  if(!customObjs.length) h+='<div style="color:var(--tx3);font-size:11px;text-align:center;padding:16px">Noch keine eigenen Objekte.</div>';
-  customObjs.forEach(o=>{
-    h+=`<div class="rc"><div style="font-size:18px">${o.icon||'📦'}</div>
-      <div class="ri"><div class="rn">${o.name}</div><div class="rd">${o.cat} · ${o.w}×${o.d}×${o.h}m</div></div>
-      <button class="rdel" style="opacity:1" onclick="delCustom('${o.id}')">🗑</button></div>`;
+  el.innerHTML = '';
+  
+  // Action buttons
+  const actions = document.createElement('div');
+  actions.style.cssText = 'padding:6px 8px;display:flex;flex-direction:column;gap:4px';
+  actions.innerHTML = 
+    '<button class="addbtn" onclick="openM(\'m-wizard\')" style="border-color:var(--pu);color:var(--pu)">🤖 KI-Möbel erstellen (geführt)</button>'
+    +'<button class="addbtn" onclick="openM(\'m-custom\')">✏️ Manuell erstellen</button>'
+    +'<button class="addbtn" onclick="openSharedFurnitureDB()" style="border-color:var(--gr3);color:var(--gr)">☁️ Geteilte Möbel-Datenbank laden</button>';
+  el.appendChild(actions);
+
+  // Search bar  
+  const sb = document.createElement('div');
+  sb.className = 'panel-search';
+  sb.innerHTML = '<div style="display:flex;align-items:center;gap:4px">'
+    +'<input id="custom-search" placeholder="🔍 Eigene Objekte suchen…" value="'+(_catSearch.custom||'')+'"'
+    +' oninput="_catSearch.custom=this.value;renderCustomPanel(document.getElementById(\'left-body\'))">'
+    +'<div class="view-toggle-btns">'
+    +'<button class="vtb'+(_catViewMode==="list"?" active":"")+'" onclick="_catViewMode=\'list\';renderCustomPanel(document.getElementById(\'left-body\'))">☰</button>'
+    +'<button class="vtb'+(_catViewMode==="grid"?" active":"")+'" onclick="_catViewMode=\'grid\';renderCustomPanel(document.getElementById(\'left-body\'))">⊞</button>'
+    +'</div></div>';
+  el.appendChild(sb);
+
+  const q = (_catSearch.custom||'').toLowerCase();
+  let objs = customObjs.filter(function(o){ 
+    return !q || o.name.toLowerCase().includes(q) || (o.cat||'').toLowerCase().includes(q);
   });
-  el.innerHTML=h;
+
+  if(!customObjs.length && !q){
+    const empty = document.createElement('div');
+    empty.style.cssText = 'color:var(--tx3);font-size:11px;text-align:center;padding:16px';
+    empty.textContent = 'Noch keine eigenen Objekte.';
+    el.appendChild(empty);
+    return;
+  }
+
+  // Group by category
+  const cats = {};
+  objs.forEach(function(o){
+    const c = o.cat || '📋 Allgemein';
+    if(!cats[c]) cats[c] = [];
+    cats[c].push(o);
+  });
+
+  const content = document.createElement('div');
+  Object.entries(cats).forEach(function(entry){
+    const catName = entry[0]; const items = entry[1];
+    const closed = localStorage.getItem('cc-closed-'+catName) !== '0';
+    const hdr = document.createElement('div');
+    hdr.className = 'catsec'+(closed?' closed':'');
+    hdr.innerHTML = '<span>'+catName+' <span class="cat-count">'+items.length+'</span></span><span class="catsec-arrow">▾</span>';
+    const body = document.createElement('div');
+    body.style.display = closed?'none':'block';
+    if(_catViewMode==='grid') body.className='cat-grid';
+    hdr.onclick = function(){
+      const c = hdr.classList.toggle('closed');
+      body.style.display = c?'none':'block';
+      localStorage.setItem('cc-closed-'+catName, c?'1':'0');
+    };
+    items.forEach(function(o){
+      body.appendChild(makeCatalogItem(o, false, false));
+    });
+    content.appendChild(hdr);
+    content.appendChild(body);
+  });
+  el.appendChild(content);
+
+  // Shared furniture section (async load)
+  const sharedSection = document.createElement('div');
+  sharedSection.id = 'shared-furn-section';
+  sharedSection.style.cssText = 'border-top:1px solid var(--bd);margin-top:8px;padding-top:4px';
+  sharedSection.innerHTML = '<div style="padding:4px 10px;font-size:9px;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px">☁️ Geteilte Möbel-Datenbank</div>'
+    +'<div id="shared-furn-list" style="padding:4px 10px;font-size:10px;color:var(--tx3)">Wird geladen…</div>';
+  el.appendChild(sharedSection);
+
+  // Load shared furniture asynchronously
+  loadSharedFurniture().then(function(items){
+    const listEl = document.getElementById('shared-furn-list');
+    if(!listEl) return;
+    if(!items||!items.length){
+      listEl.textContent = 'Noch keine geteilten Möbel vorhanden.';
+      return;
+    }
+    // Group by cat
+    const sharedCats = {};
+    items.forEach(function(i){ 
+      const c=i.cat||'📋 Allgemein'; 
+      if(!sharedCats[c]) sharedCats[c]=[]; 
+      sharedCats[c].push(i); 
+    });
+    listEl.innerHTML='';
+    Object.entries(sharedCats).forEach(function(e2){
+      const cn=e2[0]; const sits=e2[1];
+      const sh=document.createElement('div');
+      sh.className='catsec closed';
+      sh.innerHTML='<span>'+cn+' <span class="cat-count">'+sits.length+'</span></span><span class="catsec-arrow">▾</span>';
+      const sb2=document.createElement('div');
+      sb2.style.display='none';
+      if(_catViewMode==='grid') sb2.className='cat-grid';
+      sh.onclick=function(){
+        const c=sh.classList.toggle('closed');
+        sb2.style.display=c?'none':'block';
+      };
+      sits.forEach(function(fi){
+        // Add to customObjs if not there yet, then use makeCatalogItem
+        if(!customObjs.find(function(o){return o.id===fi.id;})){
+          customObjs.push({...fi, shared:true});
+          saveCustom();
+        }
+        sb2.appendChild(makeCatalogItem({...fi,shared:true},false,false));
+      });
+      listEl.appendChild(sh);
+      listEl.appendChild(sb2);
+    });
+  });
 }
+
+function openSharedFurnitureDB(){
+  // Force refresh and re-render
+  _sharedFurniCache = null;
+  showLeft('custom');
+}
+
 
 // ══ VERANSTALTUNGEN PANEL ════════════════════════════════════
 const EVENTS_GROUPS_EV = {
@@ -5357,7 +5561,18 @@ function confirmCustom(){
     col,custom:true};
   customObjs.push(o);saveCustom();closeM('m-custom');renderLeft();toast('✏️ Objekt erstellt','g');
 }
-function delCustom(id){customObjs=customObjs.filter(o=>o.id!==id);saveCustom();renderLeft();}
+function delCustom(id){customObjs=customObjs.filter(o=>o.id!==id);saveCustom();renderLeft();toast('Objekt gelöscht','b');}
+
+async function shareCustomObj(id){
+  const o=customObjs.find(o=>o.id===id);
+  if(!o) return;
+  const catList=CUSTOM_CATS.map((c,i)=>i+': '+c).join('\n');
+  const idx=parseInt(prompt('Kategorie für "'+o.name+'"::\n'+catList,'0'))||0;
+  const cat=CUSTOM_CATS[Math.min(Math.max(idx,0),CUSTOM_CATS.length-1)];
+  const creator=localStorage.getItem('csc-username')||'anonym';
+  await saveSharedFurniture({...o,cat,created_by:creator});
+  renderLeft();
+}
 
 // ════════════════════════════════════════════════════════════════════════
 // API KEY
@@ -5558,7 +5773,7 @@ async function uploadDOCX(file){
 // ════════════════════════════════════════════════════════════════════════
 // SAVE / LOAD
 // ════════════════════════════════════════════════════════════════════════
-function getPD(){return{v:3,name:projName,rooms:rooms.map(r=>({...r,grp:undefined})),objects:objects.map(o=>({...o,grp:undefined})),measures};}
+function getPD(){return{v:3,name:projName,rooms:rooms.map(r=>({...r,grp:undefined})),objects:objects.map(o=>({...o,grp:undefined})),measures,customObjs:customObjs.filter(o=>!o.shared)};}
 function loadPD(d){
   rooms.forEach(r=>{if(obj3Map[r.id])scene.remove(obj3Map[r.id]);});
   objects.forEach(o=>{if(obj3Map[o.id])scene.remove(obj3Map[o.id]);});
@@ -5609,7 +5824,7 @@ function doPrint(){
     +'td,th{border:1px solid #ddd;padding:4px 6px;text-align:left}th{background:#f5f5f5}'
     +'@media print{body{padding:8px}}</style></head><body>'
     +'<h1>🌿 '+d.name+'</h1>'
-    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.52 · '+new Date().toLocaleDateString('de-DE')+'</div>'
+    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.53 · '+new Date().toLocaleDateString('de-DE')+'</div>'
     +'<img src="'+img+'">'
     +'<div class=grid>'
     +'<div class=box><h3>Räume ('+d.rooms.length+')</h3>'
@@ -7451,7 +7666,7 @@ function pickKallaxColor(id, part){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// KALLAX PRO EDITOR — Extended (v3.52)
+// KALLAX PRO EDITOR — Extended (v3.53)
 // ════════════════════════════════════════════════════════════════════════
 
 // Additional color palettes
@@ -8723,7 +8938,7 @@ function rebuild3DThrottled(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// NEW FEATURES v3.52
+// NEW FEATURES v3.53
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. RAUM-SNAP beim Platzieren ─────────────────────────────────────
@@ -9114,7 +9329,7 @@ function showCSCPanel(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// INTERAKTIVE ANLEITUNG v3.52
+// INTERAKTIVE ANLEITUNG v3.53
 // ════════════════════════════════════════════════════════════════════════
 function openHelp(page){
   document.getElementById('help-overlay').classList.add('open');
@@ -9164,7 +9379,7 @@ var _tutStep = 0;
 const TUT_STEPS = [
   {
     target: null,
-    title: '🌿 Willkommen im CSC Raumplaner v3.52',
+    title: '🌿 Willkommen im CSC Raumplaner v3.53',
     text: '<b>Der schnellste Weg zur eingerichteten Ausgabestelle:</b><br><br>'
       + '1️⃣ <b>Datei → "🤖 KI: Grundriss aus Foto"</b><br>'
       + '&nbsp;&nbsp;→ Grundriss-Foto oder PDF hochladen<br><br>'
@@ -9265,7 +9480,7 @@ function renderTutStep(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.52 — ALLE NEUEN FEATURES
+// v3.53 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. KI MÖBELANORDNUNG ─────────────────────────────────────────────
@@ -9917,7 +10132,7 @@ function removeWallCtxMenu(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.52 — ALLE NEUEN FEATURES
+// v3.53 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── FURNITURE PRICES DATABASE ────────────────────────────────────────
@@ -10443,7 +10658,7 @@ const _origAddRoom = addRoom;
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.52 — DROPDOWN MENU SYSTEM + NEW FEATURES
+// v3.53 — DROPDOWN MENU SYSTEM + NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── DROPDOWN MENU SYSTEM ─────────────────────────────────────────────
@@ -10793,7 +11008,7 @@ function renderComparePane(side, data){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.52 — ALL NEW FEATURES
+// v3.53 — ALL NEW FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. DARK/LIGHT MODE ───────────────────────────────────────────────
@@ -11168,7 +11383,7 @@ function registerServiceWorker(){
   if(!location.protocol.startsWith('http')){ /* SW only on https - not an error */; return; }
   // Inline SW as blob
   const swCode=`
-    const CACHE='csc-v3.52';
+    const CACHE='csc-v3.53';
     self.addEventListener('install',e=>e.waitUntil(
       caches.open(CACHE).then(c=>c.add('/'))
     ));
@@ -11242,7 +11457,7 @@ function registerServiceWorker(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.52 — BRANDSCHUTZ / AKUSTIK / ENERGIE / REINIGUNG / INVENTAR /
+// v3.53 — BRANDSCHUTZ / AKUSTIK / ENERGIE / REINIGUNG / INVENTAR /
 //          HEATMAP MITGLIEDER / LIEFERWEGE / BARCODE
 // ════════════════════════════════════════════════════════════════════════
 
@@ -11655,7 +11870,7 @@ function drawRoutes(ctx){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.52 — ALLE AUTOMATISIERUNGS-FEATURES
+// v3.53 — ALLE AUTOMATISIERUNGS-FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -12423,7 +12638,7 @@ function addDashWidget(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.52 — ALLE NEUEN FEATURES
+// v3.53 — ALLE NEUEN FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -13241,7 +13456,7 @@ function showGrowthPlan(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.52 — MINIMAP / SNAP / GUIDED / UNDO-TL / GROUPS / SEASONS / MORE
+// v3.53 — MINIMAP / SNAP / GUIDED / UNDO-TL / GROUPS / SEASONS / MORE
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -13777,7 +13992,7 @@ function addTooltip(el,text){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// EXTRA FEATURES v3.52
+// EXTRA FEATURES v3.53
 // ════════════════════════════════════════════════════════════════════════
 
 // ── PRINT PREVIEW ────────────────────────────────────────────────────
@@ -13943,7 +14158,7 @@ async function wizardGenerate(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// NEUES KATALOG-SYSTEM v3.52
+// NEUES KATALOG-SYSTEM v3.53
 // ════════════════════════════════════════════════════════════════════════
 
 // Group definitions
@@ -14220,7 +14435,7 @@ function renderCustomPanel(el){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.52 — ECHTZEIT COMPLIANCE / HEALTH SCORE / SMART UX / REALISTIC 3D
+// v3.53 — ECHTZEIT COMPLIANCE / HEALTH SCORE / SMART UX / REALISTIC 3D
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. HEALTH SCORE ──────────────────────────────────────────────────
@@ -14771,7 +14986,7 @@ function takePresentationScreenshot(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.52 — REALISTIC 3D ENGINE
+// v3.53 — REALISTIC 3D ENGINE
 // ════════════════════════════════════════════════════════════════════════
 
 // ── TEXTURE GENERATORS ───────────────────────────────────────────────
@@ -15259,7 +15474,7 @@ function openMaterialStudio(){
     +'<div class="floor-preview" style="background:'+p.preview+'"></div>'
     +'<div class="floor-name">'+p.name+'</div></div>'
   ).join('');
-  // Wall textures (reuse WALL_TEXTURES from v3.52)
+  // Wall textures (reuse WALL_TEXTURES from v3.53)
   const wg=document.getElementById('wall-tex-grid-studio');
   if(wg&&typeof WALL_TEXTURES!=='undefined') wg.innerHTML=WALL_TEXTURES.slice(0,8).map(t=>'<div onclick="applyWallTexture(\''+rooms[0]?.id+'\',\''+t.id+'\')" style="cursor:pointer;border-radius:4px;overflow:hidden;border:1px solid var(--bd)">'
     +'<div style="height:35px;background:'+t.color+'"></div>'
@@ -15298,7 +15513,7 @@ function isShelveType(typeId){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.52 — ADVANCED REALISTIC EFFECTS
+// v3.53 — ADVANCED REALISTIC EFFECTS
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. TEPPICH FASER-SHADER ──────────────────────────────────────────
@@ -15774,7 +15989,7 @@ function updateSkybox(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.52 — POST-PROCESSING / SHADOWS / MIRROR / ATMOSPHERE / DECOR
+// v3.53 — POST-PROCESSING / SHADOWS / MIRROR / ATMOSPHERE / DECOR
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. IMPROVED PCF SHADOWS ───────────────────────────────────────────
@@ -16216,7 +16431,7 @@ function addWainscoting(r, g, elev){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.52 — GROUTLINES + ANALYSEN
+// v3.53 — GROUTLINES + ANALYSEN
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. FLIESEN MIT ECHTER FUGENGEOMETRIE ─────────────────────────────
@@ -16474,7 +16689,7 @@ function dashCard(title,content,id){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.52 — BESUCHERFLUSS / REINIGUNG / SICHERHEITS-KI / TÄFELUNG FIX
+// v3.53 — BESUCHERFLUSS / REINIGUNG / SICHERHEITS-KI / TÄFELUNG FIX
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. BESUCHERFLUSS-ANIMATION ─────────────────────────────────────
@@ -16902,7 +17117,7 @@ async function generateFullReport(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.52 — PERF / MOBILE / VERSIONS / PRESENTATION / ANALYSEN / UX
+// v3.53 — PERF / MOBILE / VERSIONS / PRESENTATION / ANALYSEN / UX
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. LOD + FRUSTUM CULLING ──────────────────────────────────────────
@@ -17346,7 +17561,7 @@ async function generateFullReport(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.52 — KI-GRUNDRISS / ANNOTATIONEN 3D / ERWEITERTE FEATURES
+// v3.53 — KI-GRUNDRISS / ANNOTATIONEN 3D / ERWEITERTE FEATURES
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. KI-GRUNDRISS ERKENNEN ─────────────────────────────────────────
@@ -17721,7 +17936,7 @@ function analyzeMemberGrowth(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.52 — FLOOR PATTERN 2D / COLLISION / SNAP / WIZARD / DOCS
+// v3.53 — FLOOR PATTERN 2D / COLLISION / SNAP / WIZARD / DOCS
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. BODENMUSTER IM 2D ─────────────────────────────────────────────
@@ -18097,7 +18312,7 @@ function zoomToRoom(r){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.52 — KAMERA-SICHTFELDER / BREAK-EVEN / PERSONALPLAN /
+// v3.53 — KAMERA-SICHTFELDER / BREAK-EVEN / PERSONALPLAN /
 //         WARTUNG / 3D-TOUR / EMBED / IFC / BARCODE / KI-MEMORY / OFFLINE
 // ════════════════════════════════════════════════════════════════════════
 
@@ -18596,7 +18811,7 @@ async function cloudSave(){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.52 — MAßKETTEN / TÜRÖFFNUNGEN / GANTT / HEIZLAST / LUX
+// v3.53 — MAßKETTEN / TÜRÖFFNUNGEN / GANTT / HEIZLAST / LUX
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. CAD MAßKETTEN IM 2D ───────────────────────────────────────────
@@ -19013,7 +19228,7 @@ document.addEventListener('keydown', e=>{
 }, true);
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.52 — KI DROPDOWN / SIDE PANELS / LAYOUT
+// v3.53 — KI DROPDOWN / SIDE PANELS / LAYOUT
 // ════════════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
@@ -19053,7 +19268,7 @@ function makeDraggable(el, handle){
 
 
 // ════════════════════════════════════════════════════════════════════════
-// v3.52 CLEAN — PANEL FUNCTIONS + KI DROPDOWN + DRAGGABLE
+// v3.53 CLEAN — PANEL FUNCTIONS + KI DROPDOWN + DRAGGABLE
 // ════════════════════════════════════════════════════════════════════════
 
 // ── UNIVERSAL DRAG ───────────────────────────────────────────────────
@@ -19395,7 +19610,7 @@ draw2D();
 
 renderFloorTabs();
 initUndoSystem();
-setTimeout(()=>toast('🌿 v3.52 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
+setTimeout(()=>toast('🌿 v3.53 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
 
 
 
@@ -19423,7 +19638,7 @@ function initAutoSave(){
   // Enable auto-saving from now on
   _autoSaveReady = true;
   renderVersionHistory();
-  toast('🌿 v3.52 | Auto-Save aktiv','g');
+  toast('🌿 v3.53 | Auto-Save aktiv','g');
 }
 
 
@@ -19764,7 +19979,7 @@ function build3DObj(o){
   const metal = o.metalness !== undefined ? o.metalness : (item.arch==='window'?0.0: item.arch==='door'?0.05:['Lager','Info'].includes(item.cat)?0.55:0.04);
 
   if(item.isKallax || (item.id&&item.id.startsWith('kallax'))){
-    buildKallax3DPro(g, item, o); // v3.52 Pro
+    buildKallax3DPro(g, item, o); // v3.53 Pro
   } else if(item.arch==='security'){
     buildSecurity3D(g, item, o);
   } else if(item.arch==='foil'){
@@ -20184,7 +20399,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
     color:var(--rd);border-radius:4px;padding:2px 8px;cursor:pointer;font-size:10px">✕ Beenden</button>
 </div>
 
-<!-- ══ v3.52 EXTRA HTML ══ -->
+<!-- ══ v3.53 EXTRA HTML ══ -->
 <div id="mobile-left-btn" onclick="document.getElementById('left-panel').classList.toggle('mobile-open')">🛋</div>
 <div id="mobile-right-btn" onclick="document.getElementById('right-panel').classList.toggle('mobile-open')">🤖</div>
 <div id="touch-drag-hint">✋</div>
@@ -20206,7 +20421,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
 
   <div style="padding:12px 20px;border-bottom:1px solid #1a2a1a;display:flex;align-items:center;gap:14px;flex-shrink:0">
     <div style="font-size:16px;font-weight:800;color:#4ade80">🌿 CSC Raumplaner — Vollständige Anleitung</div>
-    <div style="font-size:11px;color:#555">v3.52</div>
+    <div style="font-size:11px;color:#555">v3.53</div>
     <div style="flex:1"></div>
     <button class="tbt" onclick="startOnboarding()" style="border-color:var(--gr);color:var(--gr);padding:6px 14px">▶ Illustriertes Intro</button>
     <button class="tbt" onclick="startTutorial()" style="padding:6px 14px">🎯 Interaktives Tutorial</button>
