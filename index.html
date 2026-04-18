@@ -1752,6 +1752,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
         <div class="tbm-item" onclick="toggleSunAnimation();closeTBMenu()" id="mi-sunanim">🌅 Tag/Nacht Animation</div>
         <div class="tbm-sep"></div>
         <div class="tbm-label">2D-Overlays</div>
+        <div class="tbm-item" onclick="toggleGrid2D();closeTBMenu()" id="mi-grid">⬛ Raster ein/aus</div>
         <div class="tbm-item" onclick="toggleDimensions();closeTBMenu()" id="mi-dims">📏 Maßketten</div>
         <div class="tbm-item" onclick="toggleHeatmap();closeTBMenu()" id="mi-heatmap">🌡 Laufwege-Heatmap</div>
         <div class="tbm-item" onclick="toggleSoundHeatmap();closeTBMenu()" id="mi-sound">🔊 Schallschutz</div>
@@ -2160,6 +2161,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
   <!-- SAVE PANEL -->
   <div class="rpanel" id="rpanel-save">
     <div class="spanel-body">
+      <div id="cloud-status-bar" style="padding:6px 10px;background:rgba(74,222,128,.08);border:1px solid var(--gr3);border-radius:5px;font-size:10px;color:var(--gr);margin-bottom:8px;display:flex;align-items:center;gap:6px"><span id="cloud-status-dot">⬜</span><span id="cloud-status-text">Verbindung wird geprüft…</span></div>
       <div class="api-box">
         <label>🔑 KI-Assistent</label>
         <div class="api-st ok" id="api-st" style="margin-bottom:6px">⬜ Kein API Key — Key oben eingeben</div>
@@ -3123,12 +3125,11 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 
 <!-- BOTTOMBAR -->
 </div><!-- /main-row -->
-<!-- INFO PANEL (floating analysis results) -->
-<div id="info-panel" style="position:fixed;top:54px;right:4px;width:280px;max-height:calc(100vh - 80px);
+<div id="info-panel" style="position:fixed;top:54px;right:308px;width:260px;max-height:calc(100vh-80px);
   overflow-y:auto;background:var(--bg2);border:1px solid var(--gr3);border-radius:10px;
   z-index:200;display:none;box-shadow:0 4px 20px rgba(0,0,0,.6);font-size:11px">
   <div style="position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;
-    padding:7px 10px;background:var(--bg3);border-bottom:1px solid var(--bd);border-radius:10px 10px 0 0;z-index:1">
+    padding:7px 10px;background:var(--bg3);border-bottom:1px solid var(--bd);border-radius:10px 10px 0 0">
     <span id="ip-title" style="font-size:11px;font-weight:700;color:var(--gr)">Info</span>
     <button onclick="document.getElementById('info-panel').classList.remove('vis')"
       style="background:none;border:none;color:var(--tx3);cursor:pointer;font-size:16px;padding:0 4px">✕</button>
@@ -8196,6 +8197,16 @@ function loadSupabaseConfig(){
 }
 
 function updateSbStatus(connected){
+  const dot=document.getElementById('cloud-status-dot');
+  const txt=document.getElementById('cloud-status-text');
+  const bar=document.getElementById('cloud-status-bar');
+  if(dot&&txt){
+    dot.textContent=connected?'🟢':'🔴';
+    txt.textContent=connected?'☁️ Verbunden — Cloud aktiv':'🔴 Nicht verbunden';
+    if(bar){bar.style.background=connected?'rgba(74,222,128,.08)':'rgba(248,113,113,.08)';
+      bar.style.borderColor=connected?'var(--gr3)':'var(--rd)';
+      bar.style.color=connected?'var(--gr)':'var(--rd)';}
+  }
   const el = document.getElementById('sb-status');
   const saveBtn = document.getElementById('sb-save-btn');
   const loadBtn = document.getElementById('sb-load-btn');
@@ -9578,6 +9589,15 @@ async function optimizeFurnitureInRoom(roomId){
 
 // ── 2. AUTOMATISCHE MAßKETTEN ──────────────────────────────────────
 var _dimVisible = false;
+function toggleGrid2D(){
+  const cv=document.getElementById('fp-canvas');
+  if(!cv) return;
+  _showGrid2D=!(_showGrid2D!==false);
+  const mi=document.getElementById('mi-grid');
+  if(mi) mi.textContent=(_showGrid2D!==false?'✅':'⬛')+' Raster ein/aus';
+  draw2D();
+}
+
 function toggleDimensions(){
   _dimVisible = !_dimVisible;
   draw2D();
@@ -16711,15 +16731,7 @@ function openAnalysisDashboard(){
          'Notfall-Szenario':'runEmergencyScenario()'}[a]
       +'" class="mbt" style="flex:1;padding:4px 6px;font-size:9px;min-width:80px">'+a+'</button>'
     ).join('')+'</div>';
-  // Show in the dashboard overlay (full screen)
-  const dl=document.getElementById('dashboard-overlay');
-  const dc=document.getElementById('dashboard-content');
-  if(dl){
-    if(dc) dc.innerHTML=h;
-    dl.classList.add('vis');
-  } else {
-    showInfoPanel('📊 Analyse-Dashboard',h);
-  }
+  showFloatingPanel('📊 Analyse-Dashboard',h);
 }
 
 function dashCard(title,content,id){
@@ -17416,7 +17428,7 @@ function calcAccessibilityScore(){
     +checks.map(c=>'<div style="display:flex;justify-content:space-between;font-size:10px;padding:4px 0;border-bottom:1px solid var(--bd)">'
       +'<span>'+(c.ok?'✅':'❌')+' '+c.label+'</span><span style="color:var(--tx3)">'+c.pts+'/'+c.max+'</span></div>'
     ).join('')+'</div>';
-  showFloatingPanel('◀ <a href="#" onclick="clearInfoPanel();return false;" style="color:var(--tx3);font-size:9px">Analysen</a> → Barrierefreiheit',h);
+  showFloatingPanel('Barrierefreiheit',h);
 }
 
 // ── 10. KCANG LIVE MONITOR ────────────────────────────────────────────
@@ -18434,7 +18446,7 @@ function calcBreakEven(){
     +'</div>'
     +'<div style="font-size:9px;color:var(--tx3);margin-top:4px">X-Achse: Mitglieder · Y-Achse: Gewinn/Verlust</div>'
     +'</div>';
-  showFloatingPanel('◀ <a href="#" onclick="clearInfoPanel();return false;" style="color:var(--tx3);font-size:9px">Analysen</a> → Break-Even',h);
+  showFloatingPanel('Break-Even',h);
 }
 
 // ── 3. PERSONALPLAN / SCHICHTPLAN ────────────────────────────────────
@@ -18941,6 +18953,16 @@ function drawTick(ctx,x1,y1,x2,y2){
   ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
 }
 
+function toggleGrid2D(){
+  const cv=document.getElementById('fp-canvas');
+  if(!cv) return;
+  _showGrid2D=!(_showGrid2D!==false);
+  const mi=document.getElementById('mi-grid');
+  if(mi) mi.textContent=(_showGrid2D!==false?'✅':'⬛')+' Raster ein/aus';
+  draw2D();
+}
+let _showGrid2D=true;
+
 function toggleDimensions(){
   _showDimensions=!_showDimensions;
   draw2D();
@@ -19106,7 +19128,7 @@ function calcHeatLoad(){
     +kpiRow('🔥 Heizleistung',Math.round(totalW/1000*1.2*10)/10+' kW (mit 20% Reserve)','#fbbf24')
     +kpiRow('💰 Heizkosten/Jahr',Math.round(totalW/1000*2000*0.08).toLocaleString('de-DE')+'€','#38bdf8')
     +'</div></div>';
-  showFloatingPanel('◀ <a href="#" onclick="clearInfoPanel();return false;" style="color:var(--tx3);font-size:9px">Analysen</a> → Heizlast',h);
+  showFloatingPanel('Heizlast',h);
 }
 
 // ── 5. LUX-BERECHNUNG & VISUALISIERUNG ───────────────────────────────
@@ -19392,14 +19414,12 @@ function updatePropsPanel(){
 
 // ── INFO PANEL (for analysis results, tips) ─────────────────────────
 function showInfoPanel(title, content){
-  // Show in right panel Eigenschaften tab
   showRight('props');
-  const pov = document.getElementById('props-obj-view');
-  const pdv = document.getElementById('props-default-view');
+  const pov=document.getElementById('props-obj-view');
+  const pdv=document.getElementById('props-default-view');
   if(!pov) return;
-  // Add close button + title header
-  pov.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;'
-    +'padding:8px 12px;background:var(--bg3);border-bottom:1px solid var(--bd);position:sticky;top:0">'
+  pov.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;'
+    +'padding:8px 12px;background:var(--bg3);border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:1">'
     +'<span style="font-size:11px;font-weight:700;color:var(--gr)">'+title+'</span>'
     +'<button onclick="clearInfoPanel()" style="background:none;border:none;color:var(--tx3);cursor:pointer;font-size:16px;padding:0 4px">✕</button></div>'
     +'<div style="padding:10px">'+content+'</div>';
@@ -19410,10 +19430,9 @@ function showInfoPanel(title, content){
 function clearInfoPanel(){
   const pov=document.getElementById('props-obj-view');
   const pdv=document.getElementById('props-default-view');
-  if(pov){ pov.innerHTML=''; pov.style.display='none'; }
+  if(pov){pov.innerHTML='';pov.style.display='none';}
   if(pdv) pdv.style.display='block';
 }
-
 function closeInfoPanel(){
   document.getElementById('info-panel')?.classList.remove('vis');
 }
@@ -19595,45 +19614,23 @@ function exportPDF(){
 // ═════════════════════════════════════════════════════════════════
 
 
-// ══ VIDEO FRAME EXTRACTION for floor plan recognition ═══════════
-function extractVideoFrame(file, callback){
-  const video = document.createElement('video');
-  video.preload = 'metadata';
-  video.muted = true;
-  video.playsInline = true;
-  const url = URL.createObjectURL(file);
-  video.src = url;
-  video.addEventListener('loadeddata', function(){
-    video.currentTime = 1; // grab frame at 1 second
-  });
-  video.addEventListener('seeked', function(){
-    const canvas = document.createElement('canvas');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    canvas.getContext('2d').drawImage(video, 0, 0);
-    URL.revokeObjectURL(url);
-    callback(canvas.toDataURL('image/jpeg', 0.85));
-  });
-  video.addEventListener('error', function(){
-    URL.revokeObjectURL(url);
-    toast('Video konnte nicht geladen werden','r');
+function extractVideoFrame(file,cb){
+  const v=document.createElement('video');v.muted=true;v.playsInline=true;
+  const url=URL.createObjectURL(file);v.src=url;
+  v.addEventListener('loadeddata',()=>v.currentTime=1);
+  v.addEventListener('seeked',()=>{
+    const c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;
+    c.getContext('2d').drawImage(v,0,0);URL.revokeObjectURL(url);cb(c.toDataURL('image/jpeg',0.85));
   });
 }
-
 function handleRecogFile(file){
-  const isVideo = file.type.startsWith('video/');
-  if(isVideo){
-    toast('📹 Video wird analysiert (Frame 1s)…','b');
-    extractVideoFrame(file, function(dataUrl){
-      analyzeFloorplanImage(dataUrl);
-    });
+  if(file.type.startsWith('video/')){
+    toast('📹 Video: Frame wird extrahiert…','b');
+    extractVideoFrame(file,dataUrl=>analyzeFloorplanImage(dataUrl));
   } else {
-    const reader = new FileReader();
-    reader.onload = e => analyzeFloorplanImage(e.target.result);
-    reader.readAsDataURL(file);
+    const r=new FileReader();r.onload=e=>analyzeFloorplanImage(e.target.result);r.readAsDataURL(file);
   }
 }
-// ════════════════════════════════════════════════════════════════
 
 // ════════════════════════════════════════════════════════════════════════
 // ANIMATION LOOP
@@ -20212,7 +20209,7 @@ function build3DObj(o){
     // Capital and base
     [0,h].forEach(hy=>{const cap=new THREE.Mesh(new THREE.CylinderGeometry(w/2+0.06,w/2+0.06,0.08,20),mat);cap.position.y=hy;g.add(cap);});
   } else if(item.arch==='wall'||item.arch==='stairs'){
-    const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial({color:colHex,roughness:rough,metalness:metal,side:THREE.DoubleSide}));
+    const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial({color:colHex,roughness:0.4,metalness:0.1,side:THREE.DoubleSide}));
     mesh.position.y=h/2;mesh.castShadow=true;mesh.receiveShadow=true;g.add(mesh);
   } else {
     // Phase 4: rich geometry dispatch
