@@ -2189,10 +2189,10 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
       <div class="api-box" style="border-color:#38bdf8;margin-top:0;background:#0a1520" id="supabase-box">
         <label style="color:#38bdf8">☁️ Cloud-Speicher (Supabase)</label>
         <div id="sb-status" style="font-size:10px;color:var(--tx3);margin-bottom:6px">Nicht verbunden</div>
-        <div style="font-size:10px;color:#4ade80;margin:4px 0">✓ Verbunden mit: krqmbqkzclpixjhoxamd.supabase.co</div>
+        <div style="font-size:10px;color:#4ade80;margin:4px 0">✓ Verbunden mit: wvkjkdwahsqozeupoxpj.supabase.co</div>
         <div style="font-size:9px;color:var(--tx3)">Projekte werden automatisch in der Cloud gespeichert.</div>
         <!-- Hidden inputs needed for JS compatibility -->
-        <input id="sb-url" type="hidden" value="https://krqmbqkzclpixjhoxamd.supabase.co">
+        <input id="sb-url" type="hidden" value="https://wvkjkdwahsqozeupoxpj.supabase.co">
         <input id="sb-key" type="hidden" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtycW1icWt6Y2xwaXhqaG94YW1kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU3MTg4OTUsImV4cCI6MjA4MTI5NDg5NX0.h-sQZvIzGiP1ENWKNDUp90T8ZLngDvCsGuZ6ZRIGGBE">
       </div>
       <div style="display:flex;gap:5px;margin-bottom:6px">
@@ -3311,7 +3311,7 @@ var _visionBoards  = [];    // uploaded vision images
 // ════════════════════════════════════════════════════════════════════════
 // CONFIG
 // ════════════════════════════════════════════════════════════════════════
-const EMBEDDED_KEY = ''; // Key abgelaufen — bitte eigenen Key eingeben (rechts → 💾 Projekte → API Key)
+const EMBEDDED_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind2a2prZHdhaHNxb3pldXBveHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4OTMwNjIsImV4cCI6MjA5MDQ2OTA2Mn0.30_He7gqgXBvdvGsEYkWQ_pfCnP_BvgLxiqp35_Q_1c';
 const getKey = () => localStorage.getItem('csc-key') || EMBEDDED_KEY || '';
 // ════════════════════════════════════════════════════════════════════════
 // ZENTRALER KI-API WRAPPER — robustes Error Handling für alle Funktionen
@@ -3402,8 +3402,8 @@ async function testAIConnection(){
 
 
 // Supabase — fest eingebunden
-const DEFAULT_SB_URL = 'https://krqmbqkzclpixjhoxamd.supabase.co';
-const DEFAULT_SB_KEY = ''; // Key muss vom Nutzer eingetragen werden
+const DEFAULT_SB_URL = 'https://wvkjkdwahsqozeupoxpj.supabase.co';
+const DEFAULT_SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind2a2prZHdhaHNxb3pldXBveHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4OTMwNjIsImV4cCI6MjA5MDQ2OTA2Mn0.30_He7gqgXBvdvGsEYkWQ_pfCnP_BvgLxiqp35_Q_1c';
 
 // ════════════════════════════════════════════════════════════════════════
 // STATE
@@ -7942,8 +7942,7 @@ function loadSupabaseConfig(){
   if(u) u.value = SB_URL;
   if(k) k.value = '••••••••••••••';
   updateSbStatus(true);
-  // Only auto-load cloud projects if user has saved their own key
-  if(localStorage.getItem('sb-key')) setTimeout(showCloudProjects, 600);
+  setTimeout(showCloudProjects, 600); // Key is built-in, always connect
 }
 
 function updateSbStatus(connected){
@@ -8110,7 +8109,6 @@ async function cloudSave(){
 }
 
 async function showCloudProjects(){
-  if(!localStorage.getItem('sb-key')&&!localStorage.getItem('csc-key')) return;
   if(!SB_URL || !SB_KEY) return;
   const el = document.getElementById('cloud-list'); if(!el) return;
   el.innerHTML = '<div style="font-size:10px;color:var(--tx3);padding:4px">☁️ Lade…</div>';
@@ -18506,7 +18504,6 @@ async function saveAIChatToCloud(){
 }
 
 async function loadAIMemoryFromCloud(){
-  if(!localStorage.getItem('sb-key')&&!localStorage.getItem('csc-key')) return;
   if(!SB_URL||!SB_KEY) return;
   try{
     const resp=await fetch(SB_URL+'/rest/v1/csc_ai_memory?project_name=eq.'+encodeURIComponent(projName)+'&order=ts.desc&limit=1',{
