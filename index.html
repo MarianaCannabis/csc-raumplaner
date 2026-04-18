@@ -6029,7 +6029,10 @@ function confirmFloor(){
   const newId = 'floor_' + Date.now();
   floors.push({id:newId, name, elev});
   curFloor = newId;
-  renderFloorTabs(); renderLeft(); draw2D(); updateFloorUI();
+  renderFloorTabs();
+  closeM('m-floor');
+  toast('🏢 Etage "'+name+'" hinzugefügt','g');
+  draw2D(); snapshot(); renderLeft(); draw2D(); updateFloorUI();
   closeM('m-floor');
   snapshot();
   toast('🏢 Etage "'+name+'" erstellt','g');
@@ -6358,7 +6361,7 @@ function buildWallSegMesh3D(seg){
     const rightW = len/2 - cursor;
     if(rightW > 0.02){
       const m=new THREE.Mesh(new THREE.BoxGeometry(rightW,H,THICK), makeMat());
-      m.position.set(cursor+rightW/2, elev+H/2, 0);
+      m.position.set(cursor+rightW/2, H/2, 0);
       m.castShadow=true; m.receiveShadow=true; group.add(m);
     }
   }
@@ -17628,13 +17631,64 @@ function handleRecogDrop(e){
   e.preventDefault();
   const drop=document.getElementById('recog-drop');
   drop.classList.remove('over');
-  const file=e.dataTransfer.files[0];
+  const files=e.dataTransfer.files;
+  if(files.length>1){ loadRecogFiles({files:Array.from(files)}); return; }
+  const file=files[0];
   if(file) processRecogFile(file);
 }
 
 function loadRecogFile(inp){
   const file=inp.files[0];
   if(file) processRecogFile(file);
+}
+
+function loadRecogFiles(inp){
+  const files=Array.from(inp.files);
+  if(!files.length) return;
+  if(files.length===1){ processRecogFile(files[0]); return; }
+  // Multiple files: show grid and let user pick or analyze all
+  const panel=document.getElementById('fp-recog-panel');
+  const container=document.getElementById('recog-multi-grid')||(()=>{
+    const d=document.createElement('div');
+    d.id='recog-multi-grid';
+    d.style.cssText='display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;max-height:300px;overflow-y:auto';
+    panel&&panel.appendChild(d);
+    return d;
+  })();
+  container.innerHTML='<div style="grid-column:1/-1;font-size:11px;color:var(--tx3);padding:4px 0">'+files.length+' Dateien — klicke eine an zum Analysieren:</div>';
+  files.forEach(function(f,i){
+    const reader=new FileReader();
+    reader.onload=function(e){
+      const div=document.createElement('div');
+      div.style.cssText='cursor:pointer;border:2px solid var(--bd);border-radius:5px;overflow:hidden;transition:.12s';
+      div.onmouseover=function(){this.style.borderColor='var(--gr)';};
+      div.onmouseout=function(){this.style.borderColor='var(--bd)';};
+      div.onclick=function(){
+        container.innerHTML='';
+        if(f.type.startsWith('video/')){
+          extractVideoFrame(f,function(dataUrl){ analyzeRecogImage(dataUrl,f.name); });
+        } else {
+          analyzeRecogImage(e.target.result,f.name);
+        }
+      };
+      div.innerHTML='<img src="'+e.target.result+'" style="width:100%;height:60px;object-fit:cover">'
+        +'<div style="font-size:9px;padding:3px 4px;color:var(--tx3);overflow:hidden;white-space:nowrap;text-overflow:ellipsis">'+f.name+'</div>';
+      container.appendChild(div);
+    };
+    if(f.type.startsWith('video/')){
+      // Show video placeholder
+      const div=document.createElement('div');
+      div.style.cssText='cursor:pointer;border:2px solid var(--bd);border-radius:5px;overflow:hidden;background:var(--bg3);display:flex;flex-direction:column;align-items:center;justify-content:center;height:80px';
+      div.onclick=function(){
+        container.innerHTML='';
+        extractVideoFrame(f,function(dataUrl){ analyzeRecogImage(dataUrl,f.name); });
+      };
+      div.innerHTML='<span style="font-size:24px">📹</span><div style="font-size:9px;color:var(--tx3)">'+f.name.slice(0,16)+'</div>';
+      container.appendChild(div);
+    } else {
+      reader.readAsDataURL(f);
+    }
+  });
 }
 
 async function processRecogFile(file){
@@ -20527,7 +20581,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
     <div style="font-size:10px;color:var(--tx3);margin-top:3px">JPG, PNG, PDF · KI erkennt Räume automatisch</div>
     <img id="recog-preview" class="recog-preview" style="display:none">
   </div>
-  <input id="recog-file" type="file" accept="image/*,.pdf,.png,.jpg,.jpeg,.webp,.bmp,.tiff,.docx,.dxf,.dwg" style="display:none" onchange="loadRecogFile(this)">
+  <input id="recog-file" type="file" accept="image/*,video/*,.pdf,.png,.jpg,.jpeg,.webp,.bmp,.tiff,.docx,.dxf,.dwg" multiple style="display:none" onchange="loadRecogFiles(this)">
   <div id="recog-options" style="margin-top:12px;display:none">
     <div style="display:flex;gap:8px;margin-bottom:8px">
       <div class="mf" style="flex:1"><label>Maßstab</label>
