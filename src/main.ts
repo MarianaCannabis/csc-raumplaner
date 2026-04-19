@@ -6,7 +6,10 @@ import * as geo from './geo/overpass.js';
 import * as defaults from './config/defaults.js';
 import { scheduleAnalysis, subscribe, getLatestAnalysis } from './compliance/escapeAnalysis.js';
 import { loadModel, fitToBounds } from './three/assetLoader.js';
+import { makeMaterial } from './three/materials.js';
+import type { MaterialKey } from './three/materials.js';
 import { TEST_ITEMS } from './catalog/testItems.js';
+import { NEW_CATALOG } from './catalog/index.js';
 import { CREDITS, renderCreditsHtml } from './catalog/credits.js';
 
 console.info('[csc] vite entry alive', import.meta.env.MODE);
@@ -44,8 +47,12 @@ declare global {
       loadModel: typeof loadModel;
       fitToBounds: typeof fitToBounds;
     };
+    cscMaterials: {
+      make: (kind: MaterialKey, colorOverride?: number) => import('three').MeshStandardMaterial;
+    };
     cscCatalog: {
       testItems: typeof TEST_ITEMS;
+      newItems: typeof NEW_CATALOG;
     };
     cscCredits: {
       list: typeof CREDITS;
@@ -58,7 +65,8 @@ window.cscGeo = geo;
 window.cscDefaults = defaults;
 window.cscEscape = { schedule: scheduleAnalysis, getLatest: getLatestAnalysis };
 window.cscAssets = { loadModel, fitToBounds };
-window.cscCatalog = { testItems: TEST_ITEMS };
+window.cscMaterials = { make: makeMaterial };
+window.cscCatalog = { testItems: TEST_ITEMS, newItems: NEW_CATALOG };
 window.cscCredits = { list: CREDITS, renderHtml: renderCreditsHtml };
 
 // Project-panel footer: show the most-recent lastVerified so the operator
