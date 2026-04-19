@@ -13,6 +13,7 @@
 - **8 Funktionen** nutzen unrealistische oder veraltete Defaults (2024/2025 im KI-Prompt, 2800 €/FTE, 50 W/m³ Heizlast, …).
 - **3 Duplikate** (identische Zweit-Implementierungen) — konkreter Bug-Kandidat.
 - **10 Funktionen** sind sauber — Daten kommen aus Rooms/Objects/Meta mit sinnvollen Fallbacks.
+- **Zeit-Sensitivität** (Abschnitt am Ende): 19 Fundstellen mit veraltetem Modell `claude-sonnet-4-5`, 3 Prompts mit hardcoded "2024/2025", 1 CO₂-Basis "DE 2024", ~50 KCanG-Referenzen zur Revalidierung gegen Stand 04/2026.
 
 ### 🚨 Kritisch: Code-Duplikate
 
@@ -487,3 +488,100 @@ P2.1 sollte die **drei Duplikate** dedupen + dazu passende ESLint-Regel. Das ist
 P2.2 sollte `calcRoomLux` physikalisch korrigieren — direkter Einfluss auf alle Beleuchtungs-Reports, inklusive `analyzeLux`-Panel und `generateEnergyCertificate`.
 
 P2.3+ kann dann die UI-Input-Lücken schließen (Staff-Kosten, Baukosten, ACH, U-Werte, Wendekreis-Scope).
+
+---
+
+## Zeit-bezogene Anpassungen
+
+Stichtag für diese Prüfung: **19. April 2026.** Alle unten aufgeführten Fundstellen sollten bei einem Patch-Cycle aktualisiert werden.
+
+### A. Veraltete KI-Modell-Referenzen
+
+Aktuell im Code: `claude-sonnet-4-5` — dieses Modell existiert weiterhin, aber die produktiv empfohlene Sonnet-Generation ist **`claude-sonnet-4-6`**. Empfohlene Bulk-Ersetzung.
+
+| Datei | Zeile | Zeitbezug | Stand | Empfehlung |
+|---|---|---|---|---|
+| `index.html` | 3541 | `const model=opts.model\|\|'claude-sonnet-4-5';` (Default für `callAI`) | veraltet | → `'claude-sonnet-4-6'` |
+| `index.html` | 7486 | `aiLightPrompt` | veraltet | → `'claude-sonnet-4-6'` |
+| `index.html` | 8960 | `sendAI` (chat) | veraltet | → `'claude-sonnet-4-6'` |
+| `index.html` | 9518 | `estimateCosts` | veraltet | → `'claude-sonnet-4-6'` |
+| `index.html` | 9695 | `analyzeFloorplan` | veraltet | → `'claude-sonnet-4-6'` |
+| `index.html` | 9932 | `optimizeRoom` | veraltet | → `'claude-sonnet-4-6'` |
+| `index.html` | 11693 | `aiDescribeRoom` | veraltet | → `'claude-sonnet-4-6'` |
+| `index.html` | 11714 | `aiSecurityAudit` | veraltet | → `'claude-sonnet-4-6'` |
+| `index.html` | 11739 | `aiAccessibleRebuild` | veraltet | → `'claude-sonnet-4-6'` |
+| `index.html` | 12787 | `autoLabelRooms` | veraltet | → `'claude-sonnet-4-6'` |
+| `index.html` | 13768 | `recommendStyle` | veraltet | → `'claude-sonnet-4-6'` |
+| `index.html` | 13789 | `writeProtocol` | veraltet | → `'claude-sonnet-4-6'` |
+| `index.html` | 17489 | `calcAISecurityScore` (KI-Teil) | veraltet | → `'claude-sonnet-4-6'` |
+| `index.html` | 17567 | `generateFullReport` #1 | veraltet | → `'claude-sonnet-4-6'` (nach Dedupe weg) |
+| `index.html` | 18013 | `generateFullReport` #2 | veraltet | → `'claude-sonnet-4-6'` (nach Dedupe weg) |
+| `index.html` | 18182 | KI-Floorplan-Erkennung | veraltet | → `'claude-sonnet-4-6'` |
+| `index.html` | 18370 | `optimizeRoom` #2 | veraltet | → `'claude-sonnet-4-6'` |
+| `index.html` | 20381 | `aiMoodApply` | veraltet | → `'claude-sonnet-4-6'` |
+| `index.html` | 20888 | `aiCreateCustomObject` | veraltet | → `'claude-sonnet-4-6'` |
+
+**Nicht anfassen:** `supabase/functions/anthropic-proxy/index.ts:4` — `ANTHROPIC_VERSION = "2023-06-01"` ist die Anthropic-API-Contract-Version, kein Modell. Aktueller Stable.
+
+**Haiku für kleine Calls?** Manche Calls (z. B. `autoLabelRooms`, `aiMoodApply`, `recommendStyle`) geben nur wenige Tokens zurück. Wechsel auf `claude-haiku-4-5-20251001` würde Latency + Kosten drücken. Sollte in eigener PR getestet werden, nicht im Bulk-Update.
+
+---
+
+### B. Hardcoded Jahreszahlen in Prompts / UI
+
+| Datei | Zeile | Zeitbezug | Stand | Empfehlung |
+|---|---|---|---|---|
+| `index.html` | 9524 | `estimateCosts` Prompt: "…Realistisch für 2024/2025." | **veraltet** | → dynamisch: `"Realistisch für ${new Date().getFullYear()}."`, oder zeitlos: "auf aktuellem Preisniveau" |
+| `index.html` | 21624 | Help-Panel: "KI schätzt realistische Einrichtungskosten basierend auf Fläche und Möbeln (Stand 2024/2025)." | **veraltet** | → "Stand aktuell" oder Template-Placeholder |
+| `index.html` | 16993 | Energy-Certificate footer: "Basis: 400g CO₂/kWh (DE 2024) · LED-Beleuchtung" | **veraltet** | → Bundesamt-Strommix 2025/2026 checken (derzeit ~350 g/kWh und fallend); Jahr durch `new Date().getFullYear()` ersetzen, Wert aus Umweltbundesamt-API ziehen (idealerweise) |
+
+**Nicht zu ändern (reine Platzhalter):**
+- `index.html:2621` — `placeholder="z.B. © CSC Marburg 2025"` im Watermark-Input. Endnutzer überschreibt — reiner Beispieltext.
+
+---
+
+### C. KCanG-Referenzen zur Revalidierung (04/2026)
+
+KCanG wurde am **01.04.2024** wirksam; seitdem sind mehrere Anpassungen diskutiert worden (konkrete Novellen sind nach Stand dieses Audits zu prüfen). Die folgenden Code-Stellen verankern **numerische KCanG-Thresholds** und brauchen einen Fact-Check gegen den aktuellen Gesetzestext:
+
+| Datei | Zeile | Numerische Bindung | Aktuelle Rechtslage prüfen |
+|---|---|---|---|
+| `src/compliance/rules/memberLimit.ts` | 3 | `max. 500 Mitglieder pro CSC` — KCanG §11 | Stand 04/2026 unverändert? Weiterhin 500? |
+| `src/compliance/rules/poi100m.ts` | 4 | `≥ 100 m zu Schulen/Kitas/Spielplätzen/Sportstätten` — KCanG §5 Abs. 2 | Distanz konstant? Weitere POI-Kategorien hinzugekommen (z. B. Jugendeinrichtungen)? |
+| `src/compliance/rules/visualScreen.ts` | 4 | Sichtschutz-Pflicht (qualitativ, keine numerische Bindung) | Wurde konkretisiert (z. B. Mindestdichte Milchglas)? |
+| `src/compliance/rules/kapazitaet.ts` | — | `totalArea / 2 ≥ 10` (2 m²/Person, min. 10 Personen) | 2 m²-Schätzung ist Ableitung, nicht direkter Gesetzestext. Prüfen. |
+| `index.html:21727` | Help-Page | "Der Planer berechnet automatisch nach dem Grundsatz **2m² pro Person** (nach KCanG)." | Gleiche Quelle wie oben. |
+
+**Qualitative KCanG-Referenzen** (UI-Labels, Button-Texte, Hilfe-Seite, AI-Prompts die "KCanG" erwähnen) — ca. 50 Fundstellen in `index.html`. Keine einzelne Aktualisierung nötig, solange die zugrunde liegenden numerischen Werte stimmen. Bei einer Novellen-Änderung **zentral prüfen**:
+
+- `index.html:3000` Guide-Button Text
+- `index.html:9699, 11721, 12570, 14564, 15186, 19928` — AI-Prompt-Einbettungen ("nach KCanG", "prüft KCanG", …)
+- `index.html:21139, 21217, 21237, 21619, 21692–21727` — Hilfe-Seite `csc-rules`
+- `index.html:13274, 16418, 21534` — hardcoded Beispiel-Counts "10/12 KCanG ✓" oder "8/12" in SVG-Illustrationen → nach Regel-Count-Änderung (P1 hat auf 16 erweitert) nicht mehr stimmig. **Separate Aufgabe:** SVGs regenerieren oder Count dynamisch einsetzen.
+
+---
+
+### D. Preis-/Kostenannahmen mit Zeitbezug
+
+Nicht explizit jahres-gelabelt, aber faktisch altert:
+
+| Ort | Wert | Drift in ~2 Jahren |
+|---|---|---|
+| `#roi-staff` default | 2000 €/Monat | Mindestlohn-Entwicklung → ~2400 realistischer |
+| `#roi-rent` default | 1200 €/Monat | je Region 1500–3000, stark gestiegen |
+| `#roi-fee` default | 35 €/Monat | Marktpreis für CSC-Mitgliedsbeiträge in DE 2026 tendiert 40–60 € |
+| `#en-price` default | 0,32 €/kWh | Strompreis 2026 DE Haushaltstarif ~0,35–0,40 € |
+| `800 €/m²` Baukosten (`generateCostReport`) | fix | Baupreisindex +~18 % seit 2024 → ~950 €/m² |
+| `2800 €/FTE/Monat` (`generateShiftPlan`) | fix | mit Sozialabgaben + Mindestlohn 2026: 3000–3800 € |
+| `400g CO₂/kWh` DE-Strommix | fix (siehe B) | tendiert ~340 g/kWh |
+
+**Empfehlung:** Konstanten in ein zentrales `src/config/defaults.ts` mit Kommentar `// last-verified: 2026-04` — so ist beim nächsten Audit auf einen Blick sichtbar wann was revalidiert gehört.
+
+---
+
+### Empfohlener PR-Schnitt für die Zeitbezug-Updates
+
+- **P2.0a (klein):** Bulk-sed `claude-sonnet-4-5` → `claude-sonnet-4-6` über alle 19 Fundstellen. Ein Commit, low-risk.
+- **P2.0b (klein):** 3 hardcoded Jahreszahlen fixen (9524, 16993, 21624). Zentraler Helfer `currentYear()` oder `new Date().getFullYear()` in den 2 Prompts + dynamischer Energie-Certificate-Footer.
+- **P2.0c (Legal-Review):** `KCANG_NUMERIC_THRESHOLDS` nachschlagen (500, 100m, 2m²) gegen Stand 04/2026. Falls unverändert: kurzer Commit `// KCanG thresholds re-checked 2026-04-XX, unchanged` in den 4 Regel-Modulen.
+- **P2.0d (Daten):** Preis-Konstanten in `src/config/defaults.ts` ziehen mit `last-verified` Kommentaren.
