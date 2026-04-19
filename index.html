@@ -3278,6 +3278,10 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 'use strict';
 
 // ── Late-declared vars moved here to avoid TDZ ──────────────────────
+var currentMood;           // lighting/mood preset; buildSkySphere() reads this
+                           // during init, before the later `currentMood = 'day'`
+                           // assignment would run. var-hoist keeps it undefined
+                           // (→ `||'day'` fallback) instead of throwing TDZ.
 var dragCatPos   = null;   // position while dragging from catalog
 var SB_URL       = '';     // Supabase URL
 var SB_KEY       = '';     // Supabase anon key (public JWT for REST transport)
@@ -4900,7 +4904,7 @@ function updateSelBotBar(){
     document.getElementById('p-name').textContent='📐 '+r.name;
     document.getElementById('p-x').value=r.x.toFixed(2);
     document.getElementById('p-y').value=r.y.toFixed(2);
-    document.getElementById('p-rot').value='—'; document.getElementById('p-rot').disabled=true;
+    document.getElementById('p-rot').value=''; document.getElementById('p-rot').disabled=true;
     document.getElementById('p-wh').textContent=`${r.w.toFixed(2)}×${r.d.toFixed(2)}m`;
   } else {
     const o=objects.find(o=>o.id===selId);
@@ -11635,6 +11639,14 @@ function clearAIChats(){
 
 // ── 14. OFFLINE / SERVICE WORKER ────────────────────────────────────
 function registerServiceWorker(){
+  // TODO: re-enable once a real sw.js ships from the repo root.
+  // The inline-blob approach below registers a SW at the blob: URL, which
+  // Chrome scopes to the blob origin only — so it never intercepts real
+  // navigations, fills the registration slot uselessly, and confuses
+  // DevTools' SW panel. PWA/offline support is worth doing right later,
+  // not pretending to do wrong now.
+  return;
+  // eslint-disable-next-line no-unreachable
   if(!('serviceWorker' in navigator)) return;
   if(!location.protocol.startsWith('http')){ /* SW only on https - not an error */; return; }
   // Inline SW as blob
@@ -20124,7 +20136,9 @@ function updateFloorUI(){
 // MOOD / LIGHTING SYSTEM
 // ════════════════════════════════════════════════════════════════════════
 // moodPanelVis declared in STATE block above
-let currentMood = 'day';
+// currentMood hoisted to the late-declared vars block at the top of the
+// script to avoid TDZ from earlier callers (buildSkySphere at ~16474).
+currentMood = 'day';
 
 const MOODS = {
   day:    { bg:0xc8dff0, fog:0.013, hemi:[0xd0e8ff,0xe0c8a0,0.7], sun:[0xfff5e0,1.8], fill:[0x9ab8d8,0.4], exp:1.1, grid:true },
@@ -20282,9 +20296,12 @@ function renderRoomProps(id){
 
 function renderObjProps(id){
   const o = objects.find(o=>o.id===id); if(!o) return;
+  const title = document.getElementById('pp-title-txt');
+  const content = document.getElementById('pp-content');
+  if(!title || !content) return;
   const item = findItem(o.typeId)||{};
   const col = o.customColor || ('#' + ((item.col||0x888888).toString(16).padStart(6,'0')));
-  document.getElementById('pp-title-txt').textContent = (item.icon||'📦')+' '+(o.name||item.name||'Objekt');
+  title.textContent = (item.icon||'📦')+' '+(o.name||item.name||'Objekt');
 
   const mats = [
     {id:'wood', label:'🪵 Holz', r:0.65, m:0.02},
@@ -20298,7 +20315,7 @@ function renderObjProps(id){
   ];
   const curMat = o.matPreset||'wood';
 
-  document.getElementById('pp-content').innerHTML = `
+  content.innerHTML = `
     <div class="pp-section">
       <div class="pp-sh">Position & Rotation</div>
       <div class="pp-row"><label>X</label><input type="number" value="${(o.x||0).toFixed(2)}" step="0.1" onchange="updateObjProp('${id}','x',+this.value)"><span>m</span></div>
