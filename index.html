@@ -2261,6 +2261,9 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 <div class="mover" id="m-auth">
 <div class="modal" style="max-width:380px">
   <h2>🔑 Cloud-Login</h2>
+  <div style="font-size:12px;color:var(--tx);margin-bottom:8px;font-weight:600;line-height:1.4">
+    Zum Loslegen bitte einmal anmelden — Magic-Link per E-Mail.
+  </div>
   <div style="font-size:11px;color:var(--tx2);margin-bottom:10px;line-height:1.5">
     Wir senden dir einen <b>Magic Link</b> per E-Mail. Klicke den Link in der
     Mail — du wirst automatisch eingeloggt. Kein Passwort nötig.
@@ -8234,6 +8237,10 @@ function loadSupabaseConfig(){
   rehydrateAuth();
   updateAuthStatus();
   if(SB_TOKEN) setTimeout(showCloudProjects, 600);
+  // UX: if no session after rehydrate, prompt login shortly after first paint.
+  // 400ms delay so the main UI settles first and the modal feels like an
+  // invitation rather than a wall.
+  else setTimeout(()=>openM('m-auth'), 400);
   // Cross-tab login sync: if the magic-link tab writes csc-sb-token,
   // this tab picks it up without needing a manual reload.
   window.addEventListener('storage', e=>{
