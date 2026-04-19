@@ -12,6 +12,13 @@ export interface Credit {
 // künftige Nutzer.
 export const CREDITS: Credit[] = [
   {
+    name: 'Poly Haven — Studio Small 08 + Dikhololo Night (HDRIs)',
+    source: 'polyhaven.com',
+    license: 'CC0 1.0 Universal (keine Namensnennung nötig)',
+    url: 'https://polyhaven.com/a/studio_small_08',
+    note: 'Equirectangular HDR → PMREM-Envmap für PBR-Reflexionen. Studio = neutrales Key-Light, Dikhololo = warmes Abend. Umschaltbar via Ansicht-Menü.',
+  },
+  {
     name: 'CSC Raumplaner — Rich Primitives (proprietär, MIT)',
     source: 'Eigenentwicklung auf Basis Three.js Primitives',
     license: 'MIT',

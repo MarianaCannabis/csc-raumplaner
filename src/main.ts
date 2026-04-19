@@ -9,6 +9,7 @@ import { loadModel, fitToBounds } from './three/assetLoader.js';
 import { makeMaterial } from './three/materials.js';
 import type { MaterialKey } from './three/materials.js';
 import * as primitiveBuilders from './three/primitiveBuilders.js';
+import * as environment from './three/environment.js';
 import { NEW_CATALOG } from './catalog/index.js';
 import { RICH_PRIMITIVES } from './catalog/items/primitives.js';
 import { CREDITS, renderCreditsHtml } from './catalog/credits.js';
@@ -56,6 +57,7 @@ declare global {
       richPrimitives: typeof RICH_PRIMITIVES;
     };
     cscBuilders: typeof primitiveBuilders;
+    cscEnv: typeof environment;
     cscCredits: {
       list: typeof CREDITS;
       renderHtml: typeof renderCreditsHtml;
@@ -70,6 +72,7 @@ window.cscAssets = { loadModel, fitToBounds };
 window.cscMaterials = { make: makeMaterial };
 window.cscCatalog = { newItems: NEW_CATALOG, richPrimitives: RICH_PRIMITIVES };
 window.cscBuilders = primitiveBuilders;
+window.cscEnv = environment;
 window.cscCredits = { list: CREDITS, renderHtml: renderCreditsHtml };
 
 // Project-panel footer: show the most-recent lastVerified so the operator

@@ -1887,6 +1887,8 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
         <div class="tbm-item" onclick="aiStyleAdvisor();closeTBMenu()">🎨 KI: Stil-Berater</div>
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="fitViewToRooms();closeTBMenu()">🎯 Ansicht einpassen (F)</div>
+        <div class="tbm-item" onclick="switchLightingPreset('indoor');closeTBMenu()">💡 Beleuchtung: Studio</div>
+        <div class="tbm-item" onclick="switchLightingPreset('evening');closeTBMenu()">🌙 Beleuchtung: Abend</div>
         <div class="tbm-item" onclick="openBadges();closeTBMenu()">🏆 Errungenschaften</div>
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="openM('m-todos');closeTBMenu()">✅ Aufgaben</div>
@@ -5146,6 +5148,38 @@ bounce3.position.set(0,-5,0); scene.add(bounce3);
 const grid3=new THREE.GridHelper(120,60,0x99aabb,0xbbccdd);
 grid3.material.opacity=0.2; grid3.material.transparent=true;
 scene.add(grid3);
+
+// P3.3: async HDRI environment map for PBR reflections on the rich-primitive
+// builders (Kenney/Quaternius GLBs too). Microtask queued so the Vite module
+// has time to wire window.cscEnv. Fallback to RoomEnvironment if the HDRI
+// fetch fails — zero-network procedural stand-in.
+queueMicrotask(function(){
+  if(!window.cscEnv || typeof window.cscEnv.loadEnvironment !== 'function') return;
+  var baseUrl = (document.querySelector('base')?.href) || location.origin + location.pathname.replace(/\/[^/]*$/,'/');
+  var hdriUrl = baseUrl.replace(/\/+$/,'/') + 'hdri/indoor.hdr';
+  window.cscEnv.loadEnvironment(rend3, hdriUrl)
+    .then(function(envMap){ window.cscEnv.applyEnvironment(scene, envMap); })
+    .catch(function(err){
+      console.warn('[csc] HDRI load failed, using RoomEnvironment fallback', err);
+      try { window.cscEnv.fallbackEnvironment(rend3, scene); } catch(e){ console.warn('[csc] fallback env failed', e); }
+    });
+});
+
+// P3.3: switch between studio (indoor) and evening (dikhololo) HDRI presets.
+// Exposed globally so the Ansicht-Menü button can call it. Defaults kept
+// in-file so the toggle works even pre-module-load.
+window.switchLightingPreset = function(preset){
+  if(!window.cscEnv || typeof window.cscEnv.loadEnvironment !== 'function') return;
+  var baseUrl = (document.querySelector('base')?.href) || location.origin + location.pathname.replace(/\/[^/]*$/,'/');
+  var name = preset === 'evening' ? 'evening' : 'indoor';
+  var hdriUrl = baseUrl.replace(/\/+$/,'/') + 'hdri/' + name + '.hdr';
+  window.cscEnv.loadEnvironment(rend3, hdriUrl)
+    .then(function(envMap){
+      window.cscEnv.applyEnvironment(scene, envMap);
+      if(typeof toast === 'function') toast('💡 Beleuchtung: ' + (preset === 'evening' ? 'Abend' : 'Studio'),'g');
+    })
+    .catch(function(err){ console.warn('[csc] HDRI switch failed', err); });
+};
 
 // Orbit
 let oTh=0.5,oPh=1.05,oRad=22;
