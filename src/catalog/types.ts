@@ -26,4 +26,7 @@ export interface CatalogItem {
   modelAttribution?: string;
   /** Optional Euler rotation in radians [x,y,z] applied after fitToBounds. */
   modelRotation?: [number, number, number];
+  /** PBR material hint for primitive items — picked up by the materials
+   *  factory when the item has no modelUrl (falls back to `col` otherwise). */
+  material?: 'wood' | 'metal' | 'fabric' | 'plastic' | 'glass' | 'concrete';
 }
