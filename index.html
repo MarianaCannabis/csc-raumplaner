@@ -8336,19 +8336,17 @@ async function sendMagicLink(){
   if(btn){ btn.disabled = true; btn.textContent = '⏳ Sende…'; }
   try {
     const redirectTo = getRedirectUrl();
-    const payload = {
-      email: email,
-      create_user: true,
-      options: { email_redirect_to: redirectTo }
-    };
-    console.log('email_redirect_to payload:', payload);
-    const r = await fetch(SB_URL+'/auth/v1/otp', {
+    console.log('redirect_to query param:', redirectTo);
+    const r = await fetch(SB_URL + '/auth/v1/otp?redirect_to=' + encodeURIComponent(redirectTo), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'apikey': SB_KEY
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({
+        email: email,
+        create_user: true
+      })
     });
     if(r.ok){
       if(msg){ msg.textContent = '📧 Link gesendet! Prüfe dein Postfach.'; msg.style.color = '#4ade80'; }
