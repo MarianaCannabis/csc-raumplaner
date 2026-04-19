@@ -18,7 +18,7 @@ export interface PlacedObject {
 }
 
 export interface Poi {
-  type: string;
+  type: 'school' | 'kindergarten' | 'youth' | 'playground' | 'sports';
   name: string;
   lat: number;
   lon: number;
@@ -28,6 +28,12 @@ export interface ProjectMeta {
   memberCount?: number;
   address?: string;
   ageVerification?: boolean;
+  /** KCanG § 23 — name of the designated prevention officer. */
+  preventionOfficer?: string;
+  /** KCanG § 14 — operator confirmation that all windows carry visual
+   *  screening (foil/film). Project-level flag; geometry-per-window is
+   *  not required for compliance. */
+  windowsFilmed?: boolean;
   pois?: Poi[];
   /** Geocoded lat/lon of the address — filled by loadProjectPois(). */
   geocode?: { lat: number; lon: number };

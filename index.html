@@ -2222,6 +2222,22 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
             onchange="projMeta.ageVerification=this.checked; if(typeof renderComplianceBadges==='function') renderComplianceBadges();">
           Altersprüfung beim Eingang (18+)
         </label>
+        <div class="mf" style="margin-top:8px">
+          <label style="font-size:10px;color:var(--tx3)">Präventionsbeauftragter (§ 23 KCanG)</label>
+          <input type="text" id="pm-prev-officer" placeholder="Name, z.B. Max Mustermann"
+            onchange="projMeta.preventionOfficer=this.value; if(typeof renderComplianceBadges==='function') renderComplianceBadges();"
+            style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
+        </div>
+        <label style="font-size:11px;color:var(--tx2);display:flex;align-items:center;gap:6px;margin-top:6px">
+          <input type="checkbox" id="pm-windows-filmed"
+            onchange="projMeta.windowsFilmed=this.checked; if(typeof renderComplianceBadges==='function') renderComplianceBadges();">
+          Alle Fenster mit Sichtschutzfolie (§ 14 KCanG)
+        </label>
+        <div style="font-size:10px;color:var(--tx3);padding:8px;margin-top:10px;border-left:2px solid var(--or,#f97316);line-height:1.5;background:rgba(249,115,22,.06)">
+          ⚠️ Compliance-Prüfung basiert auf KCanG (Stand April 2024, keine bestätigten Novellen 2025/2026).
+          Länder-Ausführungsverordnungen nicht berücksichtigt. Für Genehmigungsverfahren
+          bitte Fachanwalt oder Landesbehörde hinzuziehen.
+        </div>
       </div>
 
       <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px">
@@ -5922,16 +5938,20 @@ function syncMetaUI(){
   const a = document.getElementById('pm-address');
   const v = document.getElementById('pm-age-ver');
   const p = document.getElementById('pm-poi-status');
+  const po = document.getElementById('pm-prev-officer');
+  const wf = document.getElementById('pm-windows-filmed');
   if(m) m.value = projMeta.memberCount != null ? projMeta.memberCount : '';
   if(a) a.value = projMeta.address || '';
   if(v) v.checked = !!projMeta.ageVerification;
+  if(po) po.value = projMeta.preventionOfficer || '';
+  if(wf) wf.checked = !!projMeta.windowsFilmed;
   if(p) p.textContent = projMeta.pois && projMeta.pois.length != null
     ? '✓ ' + projMeta.pois.length + ' POI(s) geladen'
     : '';
 }
 
 // Geocode projMeta.address and pull POIs from OSM Overpass. Results are
-// cached on projMeta so the poi100m rule can run without more network
+// cached on projMeta so the poiCscDistance rule can run without more network
 // traffic. Pure best-effort — errors just toast; the rule stays passed:null.
 async function loadProjectPois(){
   const status = document.getElementById('pm-poi-status');
@@ -9429,7 +9449,7 @@ function getKCaNGChecklist(){
   // geometry, youth protection, visual-screen, member limit). Legacy
   // {id,label,passed} shape preserved for the many call sites.
   //
-  // passed:null (rule not applicable — e.g. no address for poi100m) maps
+  // passed:null (rule not applicable — e.g. no address for poiCscDistance) maps
   // to passed:true so health-score / kcang_complete award / suggestion
   // filters don't treat "n/a" as a blocker. The richer `details` string
   // rides along for P1.5 tooltip work.
@@ -16989,13 +17009,16 @@ function calcCO2Footprint(){
   const lightKwh=(totalArea*8/1000)*8*365;
   const heatKwh=(totalArea*50/1000)*2000;
   const totalKwh=lightKwh+heatKwh;
-  const co2=totalKwh*0.4; // 400g CO2/kWh German grid
+  // UBA 2024, letzter verfügbarer Jahreswert (Stand 2026-04). 2025/2026
+  // noch nicht publiziert; bei Update hier + Energie-Footer anpassen.
+  const CO2_FACTOR_DE_GRAMS_PER_KWH = 363;
+  const co2=totalKwh*(CO2_FACTOR_DE_GRAMS_PER_KWH/1000);
   const h='<div style="padding:12px">'
     +'<div style="font-size:14px;font-weight:800;color:var(--gr);margin-bottom:10px">🌱 CO₂-Fußabdruck</div>'
     +kpiRow('⚡ Jahresenergie',Math.round(totalKwh)+' kWh','#fbbf24')
     +kpiRow('💨 CO₂/Jahr',Math.round(co2)+' kg','#f87171')
     +kpiRow('🌳 Bäume nötig',Math.round(co2/22)+' Bäume','#4ade80')
-    +'<div style="margin-top:8px;font-size:10px;color:var(--tx3)">Basis: 400g CO₂/kWh (DE 2026) · LED-Beleuchtung</div>'
+    +'<div style="margin-top:8px;font-size:10px;color:var(--tx3)">CO₂-Faktor Strom Deutschland: '+CO2_FACTOR_DE_GRAMS_PER_KWH+' g/kWh (UBA, Stand 2024 — letzter verfügbarer Jahreswert) · LED-Beleuchtung</div>'
     +'<div style="margin-top:6px">'
     +'<button class="mbt ok" onclick="calcEnergy();openM(\'m-energy\')" style="font-size:10px;width:100%">⚡ Energie-Details</button>'
     +'</div></div>';
