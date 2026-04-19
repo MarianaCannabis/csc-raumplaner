@@ -1680,6 +1680,15 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 </style>
 </head>
 <body>
+<!-- LOGIN GATE — blocking overlay shown when SB_TOKEN is empty. -->
+<div id="login-gate" style="display:none;position:fixed;inset:0;background:rgba(10,15,20,.92);z-index:9000;backdrop-filter:blur(6px);align-items:center;justify-content:center;flex-direction:column;gap:12px;font-family:system-ui">
+  <div style="font-size:48px">🔐</div>
+  <div style="color:var(--gr);font-size:18px;font-weight:700">Login erforderlich</div>
+  <div style="color:var(--tx2);font-size:13px;max-width:320px;text-align:center;line-height:1.5">
+    Bitte öffne den Magic-Link aus deiner E-Mail.<br>Das Fenster schließt sich automatisch nach dem Login.
+  </div>
+  <button class="mbt ok" onclick="openM('m-auth')" style="margin-top:8px">🔑 Erneut senden</button>
+</div>
 <div id="app">
 
 <!-- TOPBAR -->
@@ -8235,6 +8244,7 @@ function loadSupabaseConfig(){
   // P0: parse magic-link redirect → rehydrate stored token → refresh UI
   handleAuthRedirect();
   rehydrateAuth();
+  updateLoginGate();
   updateAuthStatus();
   if(SB_TOKEN) setTimeout(showCloudProjects, 600);
   // UX: if no session after rehydrate, prompt login shortly after first paint.
@@ -8247,6 +8257,7 @@ function loadSupabaseConfig(){
     if(e.key === 'csc-sb-token' && e.newValue){
       rehydrateAuth();
       updateAuthStatus();
+      updateLoginGate();
       toast('🔐 Eingeloggt','g');
       closeM('m-auth');
     }
@@ -8278,6 +8289,15 @@ function updateAuthStatus(){
     if(inBtn) inBtn.style.display='block';
     if(outBtn) outBtn.style.display='none';
   }
+  updateLoginGate();
+}
+
+// Blocking overlay — visible iff there is no active session. Cheap enough
+// to call on every auth-state change; uses display toggle, no layout churn.
+function updateLoginGate(){
+  const el = document.getElementById('login-gate');
+  if(!el) return;
+  el.style.display = SB_TOKEN ? 'none' : 'flex';
 }
 
 function rehydrateAuth(){
