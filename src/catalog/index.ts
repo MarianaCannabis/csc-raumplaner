@@ -8,8 +8,8 @@ import { FIRE_SAFETY } from './items/fireSafety.js';
 import { DOORS } from './items/doors.js';
 import { WINDOWS } from './items/windows.js';
 
-// GLTF-abhängige Kategorien (P3.2c) — aktuell leer, befüllt sobald
-// Quaternius / Kenney Pakete in public/models/ entpackt sind.
+// GLTF-basierte Kategorien (Kenney Furniture Kit 2.0 + Quaternius "Ultimate
+// House Interior Pack" via poly.pizza, beides CC0).
 import { CHAIRS } from './items/furnitureChairs.js';
 import { TABLES } from './items/furnitureTables.js';
 import { SOFAS } from './items/furnitureSofas.js';
@@ -17,6 +17,7 @@ import { KITCHEN } from './items/kitchen.js';
 import { OFFICE } from './items/office.js';
 import { SANITARY } from './items/sanitary.js';
 import { PLANTS_DECO } from './items/plantsDeco.js';
+import { LIGHTING } from './items/lighting.js';
 
 export const NEW_CATALOG: CatalogItem[] = [
   ...CSC_GROW,
@@ -32,4 +33,5 @@ export const NEW_CATALOG: CatalogItem[] = [
   ...OFFICE,
   ...SANITARY,
   ...PLANTS_DECO,
+  ...LIGHTING,
 ];
