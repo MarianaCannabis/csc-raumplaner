@@ -2194,6 +2194,11 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
         <label style="color:#38bdf8">☁️ Cloud-Speicher (Supabase)</label>
         <div id="sb-status" style="font-size:10px;color:var(--tx3);margin-bottom:6px">Nicht verbunden</div>
         <div style="font-size:10px;color:#4ade80;margin:4px 0">✓ Verbunden mit: wvkjkdwahsqozeupoxpj.supabase.co</div>
+        <div id="auth-status" style="font-size:10px;color:var(--tx3);margin:4px 0">🔒 Nicht eingeloggt</div>
+        <div style="display:flex;gap:5px;margin:6px 0">
+          <button class="tbt" id="auth-signin-btn" style="flex:1;padding:6px;border-color:#38bdf8;color:#38bdf8" onclick="cloudSignIn()">🔑 Einloggen</button>
+          <button class="tbt" id="auth-signout-btn" style="flex:1;padding:6px;display:none" onclick="cloudSignOut()">🚪 Ausloggen</button>
+        </div>
         <div style="font-size:9px;color:var(--tx3)">Projekte werden automatisch in der Cloud gespeichert.</div>
         <!-- Hidden inputs needed for JS compatibility -->
         <input id="sb-url" type="hidden" value="https://wvkjkdwahsqozeupoxpj.supabase.co">
@@ -2250,6 +2255,27 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 
 </div>
 
+
+
+<!-- CLOUD SIGN-IN MODAL (Magic Link) -->
+<div class="mover" id="m-auth">
+<div class="modal" style="max-width:380px">
+  <h2>🔑 Cloud-Login</h2>
+  <div style="font-size:11px;color:var(--tx2);margin-bottom:10px;line-height:1.5">
+    Wir senden dir einen <b>Magic Link</b> per E-Mail. Klicke den Link in der
+    Mail — du wirst automatisch eingeloggt. Kein Passwort nötig.
+  </div>
+  <div class="mf">
+    <label>E-Mail-Adresse</label>
+    <input id="auth-email" type="email" placeholder="deine@email.de" style="width:100%" autocomplete="email">
+  </div>
+  <div id="auth-msg" style="font-size:10px;color:var(--tx3);margin:6px 0;min-height:14px"></div>
+  <div class="mbtns">
+    <button class="mbt" onclick="closeM('m-auth')">Abbrechen</button>
+    <button class="mbt ok" id="auth-send-btn" onclick="sendMagicLink()">📧 Magic Link senden</button>
+  </div>
+</div>
+</div>
 
 
 <!-- DESIGN CREATOR MODAL -->
@@ -3254,7 +3280,9 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 // ── Late-declared vars moved here to avoid TDZ ──────────────────────
 var dragCatPos   = null;   // position while dragging from catalog
 var SB_URL       = '';     // Supabase URL
-var SB_KEY       = '';     // Supabase anon key
+var SB_KEY       = '';     // Supabase anon key (public JWT for REST transport)
+var SB_TOKEN     = '';     // Supabase user access token (from sign-in)
+var SB_USER      = null;   // Signed-in user: {id,email}
 var grab3d       = false;  // 3D grab mode active
 var grab3dLast   = null;   // last mouse pos during grab
 var _wallExclusions = [];    // room wall segments excluded from render
@@ -3326,8 +3354,10 @@ var _visionBoards  = [];    // uploaded vision images
 // ════════════════════════════════════════════════════════════════════════
 // CONFIG
 // ════════════════════════════════════════════════════════════════════════
-const EMBEDDED_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind2a2prZHdhaHNxb3pldXBveHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4OTMwNjIsImV4cCI6MjA5MDQ2OTA2Mn0.30_He7gqgXBvdvGsEYkWQ_pfCnP_BvgLxiqp35_Q_1c';
-const getKey = () => localStorage.getItem('csc-key') || EMBEDDED_KEY || '';
+// P0 SECURITY: No more embedded Anthropic key. getKey() now returns the
+// signed-in user's Supabase JWT, which is presented to the anthropic-proxy
+// Edge Function. The Edge Function holds the real ANTHROPIC_KEY server-side.
+const getKey = () => SB_TOKEN || '';
 
 // ══ GETEILTE MÖBEL-DATENBANK ════════════════════════════════════
 // SQL für Supabase (einmalig ausführen):
@@ -3372,7 +3402,7 @@ async function loadSharedFurniture(forceRefresh=false){
   try {
     const r = await fetch(
       SB_URL+'/rest/v1/csc_shared_furniture?select=*&order=cat,name',
-      {headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}}
+      {headers:{'apikey':SB_KEY,'Authorization':'Bearer '+(SB_TOKEN||SB_KEY)}}
     );
     if(!r.ok) return _sharedFurniCache||[];
     _sharedFurniCache = await r.json();
@@ -3399,7 +3429,7 @@ async function saveSharedFurniture(item){
     };
     const r = await fetch(
       SB_URL+'/rest/v1/csc_shared_furniture',
-      {method:'POST',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,
+      {method:'POST',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+(SB_TOKEN||SB_KEY),
        'Content-Type':'application/json','Prefer':'return=minimal'},
        body:JSON.stringify(payload)}
     );
@@ -3411,7 +3441,7 @@ async function saveSharedFurniture(item){
 async function deleteSharedFurniture(id){
   if(!SB_URL||!SB_KEY) return;
   await fetch(SB_URL+'/rest/v1/csc_shared_furniture?id=eq.'+id,
-    {method:'DELETE',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
+    {method:'DELETE',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+(SB_TOKEN||SB_KEY)}});
   _sharedFurniCache=null;
   renderLeft();
   toast('Möbel gelöscht','b');
@@ -3421,34 +3451,43 @@ async function deleteSharedFurniture(id){
 // ════════════════════════════════════════════════════════════════════════
 // ZENTRALER KI-API WRAPPER — robustes Error Handling für alle Funktionen
 // ════════════════════════════════════════════════════════════════════════
+
+// aiFetch — POSTs a Claude /v1/messages body to the authenticated Edge Function
+// proxy. The Anthropic API key never leaves the server. The user's Supabase
+// JWT (SB_TOKEN) is validated by verify_jwt and by the Function itself.
+async function aiFetch(body){
+  if(!SB_URL) throw new Error('Supabase nicht konfiguriert');
+  if(!SB_TOKEN) throw new Error('Bitte einloggen');
+  return fetch(SB_URL+'/functions/v1/anthropic-proxy',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'Authorization':'Bearer '+SB_TOKEN,
+      'apikey':SB_KEY
+    },
+    body:JSON.stringify(body)
+  });
+}
+
 async function callAI(prompt, opts={}){
   const k=getKey();
   if(!k){
-    toast('🔑 Bitte API Key eingeben!','r');
-    addMsg('🔑 <b>Kein API Key vorhanden.</b><br><br>'
-      +'Gehe zu: <b>Rechts → 💾 Projekte → API Key</b><br><br>'
-      +'Einen kostenfreien Key bekommst du auf: <b>console.anthropic.com</b>','sys');
+    toast('🔑 Bitte einloggen!','r');
+    addMsg('🔑 Bitte einloggen. Klicke rechts in der Cloud-Box auf "Einloggen" — '
+      +'du bekommst einen Magic Link per E-Mail.','sys');
     showRight('proj');
+    cloudSignIn();
     return null;
   }
   const maxTokens=opts.maxTokens||800;
   const sysPrompt=opts.system||AI_SYS;
   const model=opts.model||'claude-sonnet-4-5';
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':k,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body:JSON.stringify({
-        model,
-        max_tokens:maxTokens,
-        system:sysPrompt,
-        messages:[{role:'user',content:opts.content||[{type:'text',text:prompt}]}]
-      })
+    const resp=await aiFetch({
+      model,
+      max_tokens:maxTokens,
+      system:sysPrompt,
+      messages:[{role:'user',content:opts.content||[{type:'text',text:prompt}]}]
     });
     if(!resp.ok){
       const err=await resp.text().catch(()=>'');
@@ -7324,8 +7363,8 @@ async function aiLightPrompt(){
   const k=getKey(); if(!k){ toast('Kein API Key','r'); return; }
   toast('✨ KI berechnet Licht…','b');
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
       body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:600,
         system:'Lichtdesigner. Antworte NUR JSON: {"sky":"#hex","hemiSky":"#hex","hemiGnd":"#hex","hemiStr":0.65,"sunStr":1.8,"sunAz":210,"sunEl":55,"sunCol":"#hex","fillStr":0.4,"fillCol":"#hex","roomStr":0.85,"roomCol":"#hex","exp":1.1,"fog":0.013}',
         messages:[{role:'user',content:'Lichteinstellungen für: '+desc}]
@@ -8186,7 +8225,136 @@ function loadSupabaseConfig(){
   if(u) u.value = SB_URL;
   if(k) k.value = '••••••••••••••';
   updateSbStatus(true);
-  setTimeout(showCloudProjects, 600); // Key is built-in, always connect
+  // P0: parse magic-link redirect → rehydrate stored token → refresh UI
+  handleAuthRedirect();
+  rehydrateAuth();
+  updateAuthStatus();
+  if(SB_TOKEN) setTimeout(showCloudProjects, 600);
+}
+
+// ────────────────────────────────────────────────────────────────────────
+// AUTH — Magic Link via Supabase GoTrue (no SDK needed)
+// ────────────────────────────────────────────────────────────────────────
+function tokenExpired(token){
+  if(!token) return true;
+  try{
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    // exp is in seconds, treat tokens that expire within 30s as expired.
+    return !payload.exp || (payload.exp * 1000) < (Date.now() + 30000);
+  }catch(e){ return true; }
+}
+
+function updateAuthStatus(){
+  const el = document.getElementById('auth-status');
+  const inBtn = document.getElementById('auth-signin-btn');
+  const outBtn = document.getElementById('auth-signout-btn');
+  if(SB_TOKEN && SB_USER){
+    if(el){ el.textContent = '✅ Eingeloggt als '+(SB_USER.email||SB_USER.id); el.style.color='#4ade80'; }
+    if(inBtn) inBtn.style.display='none';
+    if(outBtn) outBtn.style.display='block';
+  } else {
+    if(el){ el.textContent = '🔒 Nicht eingeloggt — KI-Funktionen erfordern Login'; el.style.color='var(--tx3)'; }
+    if(inBtn) inBtn.style.display='block';
+    if(outBtn) outBtn.style.display='none';
+  }
+}
+
+function rehydrateAuth(){
+  const tok = localStorage.getItem('csc-sb-token') || '';
+  const usr = localStorage.getItem('csc-sb-user') || '';
+  if(!tok || tokenExpired(tok)){
+    if(tok){ localStorage.removeItem('csc-sb-token'); localStorage.removeItem('csc-sb-user'); }
+    SB_TOKEN = ''; SB_USER = null;
+    return;
+  }
+  SB_TOKEN = tok;
+  try { SB_USER = usr ? JSON.parse(usr) : null; } catch(e){ SB_USER = null; }
+}
+
+function handleAuthRedirect(){
+  // Supabase GoTrue returns tokens in the URL fragment (#access_token=…)
+  if(!location.hash || location.hash.indexOf('access_token=') < 0) return;
+  const params = new URLSearchParams(location.hash.slice(1));
+  const at = params.get('access_token');
+  if(!at) return;
+  SB_TOKEN = at;
+  try {
+    const payload = JSON.parse(atob(at.split('.')[1]));
+    SB_USER = { id: payload.sub, email: payload.email || '' };
+  } catch(e){ SB_USER = null; }
+  localStorage.setItem('csc-sb-token', SB_TOKEN);
+  if(SB_USER) localStorage.setItem('csc-sb-user', JSON.stringify(SB_USER));
+  // Clean the URL so the token doesn't stay visible / leak to history
+  try { history.replaceState(null, '', location.pathname + location.search); } catch(e){}
+  toast('✅ Eingeloggt!','g');
+}
+
+function cloudSignIn(){
+  const m = document.getElementById('m-auth');
+  if(m){
+    m.classList.add('open');
+    const msg = document.getElementById('auth-msg');
+    if(msg){ msg.textContent = ''; msg.style.color = 'var(--tx3)'; }
+    setTimeout(()=>{ document.getElementById('auth-email')?.focus(); }, 50);
+  }
+}
+
+async function sendMagicLink(){
+  const email = (document.getElementById('auth-email')?.value || '').trim();
+  const msg = document.getElementById('auth-msg');
+  const btn = document.getElementById('auth-send-btn');
+  if(!email || !/.+@.+\..+/.test(email)){
+    if(msg){ msg.textContent = '❌ Bitte eine gültige E-Mail eintragen'; msg.style.color = '#f87171'; }
+    return;
+  }
+  if(!SB_URL || !SB_KEY){
+    if(msg){ msg.textContent = '❌ Supabase nicht konfiguriert'; msg.style.color = '#f87171'; }
+    return;
+  }
+  if(btn){ btn.disabled = true; btn.textContent = '⏳ Sende…'; }
+  try {
+    const r = await fetch(SB_URL+'/auth/v1/otp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SB_KEY
+      },
+      body: JSON.stringify({
+        email: email,
+        create_user: true,
+        options: { email_redirect_to: location.origin + location.pathname }
+      })
+    });
+    if(r.ok){
+      if(msg){ msg.textContent = '📧 Link gesendet! Prüfe dein Postfach.'; msg.style.color = '#4ade80'; }
+    } else {
+      const err = await r.text().catch(()=>'');
+      if(msg){ msg.textContent = '❌ Fehler: ' + err.slice(0,120); msg.style.color = '#f87171'; }
+    }
+  } catch(e){
+    if(msg){ msg.textContent = '❌ Netzwerkfehler: ' + e.message; msg.style.color = '#f87171'; }
+  } finally {
+    if(btn){ btn.disabled = false; btn.textContent = '📧 Magic Link senden'; }
+  }
+}
+
+async function cloudSignOut(){
+  if(SB_URL && SB_TOKEN){
+    try {
+      await fetch(SB_URL+'/auth/v1/logout', {
+        method: 'POST',
+        headers: {
+          'apikey': SB_KEY,
+          'Authorization': 'Bearer ' + SB_TOKEN
+        }
+      });
+    } catch(e){ /* best-effort */ }
+  }
+  SB_TOKEN = ''; SB_USER = null;
+  localStorage.removeItem('csc-sb-token');
+  localStorage.removeItem('csc-sb-user');
+  updateAuthStatus();
+  toast('🚪 Ausgeloggt','b');
 }
 
 function updateSbStatus(connected){
@@ -8316,7 +8484,7 @@ async function cloudSave(){
     // Check if project with same name exists
     const checkR = await fetch(
       SB_URL+'/rest/v1/csc_projects?name=eq.'+encodeURIComponent(projName)+'&select=id',
-      { headers: { 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY } }
+      { headers: { 'apikey':SB_KEY, 'Authorization':'Bearer '+(SB_TOKEN||SB_KEY) } }
     );
     // Table missing?
     if(checkR.status===404||checkR.status===406){
@@ -8337,7 +8505,7 @@ async function cloudSave(){
       // Update existing
       r = await fetch(SB_URL+'/rest/v1/csc_projects?id=eq.'+existing[0].id, {
         method: 'PATCH',
-        headers: { 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY,
+        headers: { 'apikey':SB_KEY, 'Authorization':'Bearer '+(SB_TOKEN||SB_KEY),
                    'Content-Type':'application/json', 'Prefer':'return=minimal' },
         body: body
       });
@@ -8345,7 +8513,7 @@ async function cloudSave(){
       // Insert new
       r = await fetch(SB_URL+'/rest/v1/csc_projects', {
         method: 'POST',
-        headers: { 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY,
+        headers: { 'apikey':SB_KEY, 'Authorization':'Bearer '+(SB_TOKEN||SB_KEY),
                    'Content-Type':'application/json', 'Prefer':'return=minimal' },
         body: body
       });
@@ -8373,7 +8541,7 @@ async function showCloudProjects(){
   try {
     const r = await fetch(
       SB_URL+'/rest/v1/csc_projects?select=id,name,updated_at&order=updated_at.desc&limit=20',
-      { headers: { 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY } }
+      { headers: { 'apikey':SB_KEY, 'Authorization':'Bearer '+(SB_TOKEN||SB_KEY) } }
     );
     const projects = await r.json();
     
@@ -8399,7 +8567,7 @@ async function cloudLoad(id){
   if(!SB_URL || !SB_KEY) return;
   try {
     const r = await fetch(SB_URL+'/rest/v1/csc_projects?id=eq.'+id+'&select=data',
-      { headers: { 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY } }
+      { headers: { 'apikey':SB_KEY, 'Authorization':'Bearer '+(SB_TOKEN||SB_KEY) } }
     );
     const rows = await r.json();
     if(rows && rows[0]){ loadPD(rows[0].data); toast('☁️ Aus Cloud geladen!','g'); }
@@ -8410,7 +8578,7 @@ async function cloudDelete(id){
   if(!SB_URL || !SB_KEY || !confirm('Cloud-Projekt löschen?')) return;
   try {
     await fetch(SB_URL+'/rest/v1/csc_projects?id=eq.'+id,
-      { method:'DELETE', headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY} }
+      { method:'DELETE', headers:{'apikey':SB_KEY,'Authorization':'Bearer '+(SB_TOKEN||SB_KEY)} }
     );
     showCloudProjects(); toast('🗑 Cloud-Projekt gelöscht','b');
   } catch(e){ toast('Fehler: '+e.message,'r'); }
@@ -8563,10 +8731,11 @@ async function sendAI(){
   // Clear input
   if(inp) inp.value = '';
 
-  // Check API key
+  // Check sign-in
   const k = getKey();
   if(!k){
-    addMsg('❌ Kein API Key. Der eingebettete Key ist aktiv — bitte Seite neu laden.','sys');
+    addMsg('❌ Bitte einloggen. Klicke rechts auf "Einloggen" — du bekommst einen Magic Link per E-Mail.','sys');
+    cloudSignIn();
     return;
   }
 
@@ -8605,13 +8774,12 @@ async function sendAI(){
     }
 
     // API call
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    const resp = await fetch(SB_URL+'/functions/v1/anthropic-proxy', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': k,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
+        'Authorization': 'Bearer ' + SB_TOKEN,
+        'apikey': SB_KEY
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-5',
@@ -8922,8 +9090,20 @@ function addMsg(text, type){
   if(!el) return {remove:()=>{}};
   const div = document.createElement('div');
   div.className = 'amsg ' + (type==='user'?'usr':type==='load'?'load':type==='ai'?'ai':'sys');
-  if(type==='ai') div.innerHTML = '<div class="ailbl">🌿 KI-Assistent</div>' + text;
-  else            div.textContent = text;
+  if(type==='ai'){
+    // P0 XSS hardening: render AI text content without innerHTML so
+    // any HTML/script in the model output is displayed, not executed.
+    const lbl = document.createElement('div');
+    lbl.className = 'ailbl';
+    lbl.textContent = '🌿 KI-Assistent';
+    div.appendChild(lbl);
+    const body = document.createElement('div');
+    body.textContent = String(text == null ? '' : text);
+    body.style.whiteSpace = 'pre-wrap';
+    div.appendChild(body);
+  } else {
+    div.textContent = text;
+  }
   el.appendChild(div);
   el.scrollTop = el.scrollHeight;
   return div;
@@ -9127,9 +9307,9 @@ async function estimateCosts(){
   const totalArea = rooms.reduce((s,r)=>s+r.w*r.d,0).toFixed(0);
   toast('💰 KI schätzt Kosten…','b');
   try{
-    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+    const resp = await fetch(SB_URL+'/functions/v1/anthropic-proxy',{
       method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
       body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:600,
         messages:[{role:'user',content:
           'Schätze grobe Einrichtungskosten für eine CSC-Ausgabestelle in Deutschland.\n'
@@ -9304,9 +9484,9 @@ async function optimizeLayout(){
   const stateCtx = 'Räume: '+JSON.stringify(rooms.map(r=>({name:r.name,x:r.x,y:r.y,w:r.w,d:r.d,h:r.h})))
     +'\nObjekte: '+JSON.stringify(objects.slice(0,20).map(o=>({typeId:o.typeId,x:Math.round(o.x*10)/10,y:Math.round(o.y*10)/10})));
   try{
-    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+    const resp = await fetch(SB_URL+'/functions/v1/anthropic-proxy',{
       method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
       body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:800,
         messages:[{role:'user',content:stateCtx+'\n\nDu bist ein CSC-Experte. '
           +'Analysiere diesen Grundriss und gib konkrete Verbesserungsvorschläge:\n'
@@ -9541,9 +9721,9 @@ async function optimizeFurnitureInRoom(roomId){
     return {typeId:o.typeId,name:it.name||o.typeId,w:o.w||it.w||1,d:o.d||it.d||1,x:Math.round((o.x-r.x)*10)/10,y:Math.round((o.y-r.y)*10)/10,rot:o.rot||0};
   });
   try{
-    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+    const resp = await fetch(SB_URL+'/functions/v1/anthropic-proxy',{
       method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
       body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:1200,
         messages:[{role:'user',content:
           'Du bist Innenarchitekt für CSC-Ausgabestellen. Optimiere die Möbelpositionierung.\n\n'
@@ -11303,8 +11483,8 @@ async function aiDescribeRoom(){
   showRight('ai');
   addMsg('🔮 KI beschreibt Raum "'+r.name+'"…','sys');
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
       body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:400,messages:[{role:'user',content:
         'Beschreibe wie dieser Raum wirkt und was die Atmosphäre ausmacht:\n'
         +'Raum: '+r.name+' ('+r.w+'×'+r.d+'m, Höhe '+r.h+'m)\n'
@@ -11324,8 +11504,8 @@ async function aiSecurityAudit(){
   const secObjs=objects.filter(o=>{const it=findItem(o.typeId);return it&&it.arch==='security';});
   const secList=secObjs.map(o=>(findItem(o.typeId)||{}).name||o.typeId).join(', ');
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
       body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:800,messages:[{role:'user',content:
         'Führe einen detaillierten Sicherheits-Audit für eine CSC-Ausgabestelle durch.\n\n'
         +'Räume: '+JSON.stringify(rooms.map(r=>r.name))+'\n'
@@ -11349,8 +11529,8 @@ async function aiAccessibleRebuild(){
   showRight('ai');
   addMsg('♿ KI plant barrierefreien Umbau für "'+r.name+'"…','sys');
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
       body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:600,messages:[{role:'user',content:
         'Plane konkrete Umbaumaßnahmen für barrierefreie Zugänglichkeit.\n\n'
         +'Raum: '+r.name+' ('+r.w+'×'+r.d+'m)\n'
@@ -12388,9 +12568,9 @@ async function autoLabelRooms(){
   const k=getKey(); if(!k){ toast('Kein API Key','r'); return; }
   toast('🏷 KI benennt Räume…','b');
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+    const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{
       method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
       body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:400,
         messages:[{role:'user',content:
           'Benenne diese Räume für eine CSC-Ausgabestelle sinnvoll auf Deutsch.\n'
@@ -13370,8 +13550,8 @@ async function aiStyleAdvisor(){
   const targets=['Junge Erwachsene (18-30)','Mittleres Alter (30-50)','Gemischte Altersgruppen'];
   const budgets=['Günstig (<5.000€)','Mittel (5.000-20.000€)','Premium (>20.000€)'];
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
       body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:500,messages:[{role:'user',content:
         'Gib konkrete Stil-Empfehlungen für einen CSC:\n'
         +'Atmosphäre: '+(styles[(+q1||1)-1])+'\nZielgruppe: '+(targets[(+q2||3)-1])+'\nBudget: '+(budgets[(+q3||2)-1])+'\n\n'
@@ -13391,8 +13571,8 @@ async function generateSessionProtocol(){
   const d=getPD();
   const changes=_changelog.slice(0,10).map(c=>c.msg).join('\n');
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
       body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:400,messages:[{role:'user',content:
         'Erstelle ein kurzes Planungsprotokoll auf Deutsch:\n'
         +'Projekt: '+d.name+'\nRäume: '+d.rooms.length+' ('+d.rooms.map(r=>r.name).join(', ')+')\n'
@@ -17084,8 +17264,8 @@ async function calcAISecurityScore(){
   // AI enhancement async
   if(k&&totalScore<90){
     try{
-      const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-        headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
         body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:200,messages:[{role:'user',content:
           'Gib 2 konkrete Sicherheits-Empfehlungen für einen CSC (Score: '+totalScore+'/100).\n'
           +'Schwächen: '+scores.filter(s=>s.points/s.max<0.75).map(s=>s.cat).join(', ')+'\n'
@@ -17162,8 +17342,8 @@ async function generateFullReport(){
   const d=getPD();
   addMsg('📋 Gesamtbericht wird erstellt…','sys'); showRight('ai');
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
       body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:600,messages:[{role:'user',content:
         'Erstelle einen professionellen Kurzgutachten (3-4 Absätze) für diese CSC-Ausgabestelle:\n'
         +'Projektname: '+d.name+'\nRäume: '+d.rooms.length+' ('+d.rooms.map(r=>r.name).join(', ')+')\n'
@@ -17608,8 +17788,8 @@ async function generateFullReport(){
   showRight('ai'); addMsg('📋 Bericht wird erstellt…','sys');
   const score=calcHealthScore(),cap=calcCapacity(),d=getPD(),checks=getKCaNGChecklist();
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
       body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:600,messages:[{role:'user',content:
         'Professionelles Kurzgutachten (3 Absaetze) fuer CSC:\n'
         +'Name: '+d.name+'\nRaeume: '+d.rooms.map(r=>r.name).join(', ')+'\n'
@@ -17776,10 +17956,9 @@ async function runFloorPlanRecognition(){
       +(addFurniture?'\nNach der Raumanalyse werden Möbel automatisch platziert.':'')
     });
 
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+    const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{
       method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':k,
-        'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
       body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:1200,messages:[{role:'user',content}]})
     });
     const text=(await resp.json()).content?.[0]?.text||'{}';
@@ -17966,8 +18145,8 @@ async function autoArrangeFurniture(roomId){
   objects=objects.filter(o=>!(o.x>=r.x&&o.x<=r.x+r.w&&o.y>=r.y&&o.y<=r.y+r.d&&!findItem(o.typeId)?.arch));
   showRight('ai'); addMsg('🪑 KI ordnet Möbel in '+r.name+'…','sys');
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
       body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:600,messages:[{role:'user',content:
         'Optimale Möbelanordnung fuer Raum "'+r.name+'" ('+r.w+'x'+r.d+'m).\n'
         +'Antworte NUR mit JSON:\n'
@@ -18823,7 +19002,7 @@ async function saveAIChatToCloud(){
     const payload={project_name:projName,chat:chatLog.slice(-5000),ts:Date.now()};
     const resp=await fetch(SB_URL+'/rest/v1/csc_ai_memory',{
       method:'POST',
-      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,
+      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+(SB_TOKEN||SB_KEY),
         'Prefer':'resolution=merge-duplicates'},
       body:JSON.stringify(payload)
     });
@@ -18835,7 +19014,7 @@ async function loadAIMemoryFromCloud(){
   if(!SB_URL||!SB_KEY) return;
   try{
     const resp=await fetch(SB_URL+'/rest/v1/csc_ai_memory?project_name=eq.'+encodeURIComponent(projName)+'&order=ts.desc&limit=1',{
-      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+(SB_TOKEN||SB_KEY)}
     });
     if(resp.ok){
       const data=await resp.json();
@@ -19624,7 +19803,7 @@ async function realtimePoll(){
     const since=new Date(_rtLastCheck-5000).toISOString();
     const r=await fetch(
       SB_URL+'/rest/v1/csc_projects?select=id,name,updated_at,author,team_id&updated_at=gt.'+encodeURIComponent(since)+'&order=updated_at.desc&limit=10',
-      {headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}}
+      {headers:{'apikey':SB_KEY,'Authorization':'Bearer '+(SB_TOKEN||SB_KEY)}}
     );
     if(!r.ok) return;
     const updates=await r.json();
@@ -19970,9 +20149,9 @@ async function applyAIMood(){
 
   const load = addMsg('🌅 Stimmung wird erstellt…','load');
   try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+    const resp = await fetch(SB_URL+'/functions/v1/anthropic-proxy',{
       method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
       body: JSON.stringify({model:'claude-sonnet-4-5',max_tokens:800,
         system:`Du bist ein Lichtdesigner. Antworte NUR mit JSON:
 {"hemiSky":"#hexcolor","hemiGround":"#hexcolor","hemiInt":0.7,"sunColor":"#hexcolor","sunInt":1.8,"fillColor":"#hexcolor","fillInt":0.4,"bgColor":"#hexcolor","exposure":1.1,"roomLightColor":"#hexcolor","roomLightInt":1.0,"fogDensity":0.013,"message":"Kurze Erklärung auf Deutsch"}`,
@@ -20474,9 +20653,9 @@ async function wizardGenerate(){
 '\nroughness: Holz=0.65 Metall=0.2 Stoff=0.9 Glas=0.05 Kunststoff=0.5 Beton=0.9 Marmor=0.2 Leder=0.7';
 
   try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+    const resp = await fetch(SB_URL+'/functions/v1/anthropic-proxy',{
       method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
       body: JSON.stringify({model:'claude-sonnet-4-5',max_tokens:500,messages:[{role:'user',content:prompt}]})
     });
     const data = await resp.json();
