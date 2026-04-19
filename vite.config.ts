@@ -4,7 +4,7 @@ import checker from 'vite-plugin-checker';
 export default defineConfig({
   base: '/csc-raumplaner/',
   root: '.',
-  publicDir: false,
+  publicDir: 'public',
   build: {
     outDir: 'dist',
     emptyOutDir: true,
