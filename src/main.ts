@@ -6,7 +6,7 @@ import * as geo from './geo/overpass.js';
 import * as defaults from './config/defaults.js';
 import { scheduleAnalysis, subscribe, getLatestAnalysis } from './compliance/escapeAnalysis.js';
 import { loadModel, fitToBounds } from './three/assetLoader.js';
-import { makeMaterial } from './three/materials.js';
+import { makeMaterial, makeMaterialWithTextures } from './three/materials.js';
 import type { MaterialKey } from './three/materials.js';
 import { TEST_ITEMS } from './catalog/testItems.js';
 import { NEW_CATALOG } from './catalog/index.js';
@@ -49,6 +49,7 @@ declare global {
     };
     cscMaterials: {
       make: (kind: MaterialKey, colorOverride?: number) => import('three').MeshStandardMaterial;
+      makeTextured: (kind: MaterialKey, colorOverride?: number) => Promise<import('three').MeshStandardMaterial>;
     };
     cscCatalog: {
       testItems: typeof TEST_ITEMS;
@@ -65,7 +66,7 @@ window.cscGeo = geo;
 window.cscDefaults = defaults;
 window.cscEscape = { schedule: scheduleAnalysis, getLatest: getLatestAnalysis };
 window.cscAssets = { loadModel, fitToBounds };
-window.cscMaterials = { make: makeMaterial };
+window.cscMaterials = { make: makeMaterial, makeTextured: makeMaterialWithTextures };
 window.cscCatalog = { testItems: TEST_ITEMS, newItems: NEW_CATALOG };
 window.cscCredits = { list: CREDITS, renderHtml: renderCreditsHtml };
 
