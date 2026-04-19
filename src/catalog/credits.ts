@@ -19,11 +19,11 @@ export const CREDITS: Credit[] = [
     note: 'Stühle, Tische, Sofas, Küche, Büro, Sanitär, Pflanzen/Deko — 54 von 140 GLB-Modellen ausgewählt. Keine Namensnennung rechtlich nötig; freiwillig aufgeführt.',
   },
   {
-    name: 'Quaternius (Platzhalter für P3.3)',
-    source: 'quaternius.com',
+    name: 'Quaternius — Ultimate House Interior Pack (82 Modelle via Poly Pizza)',
+    source: 'quaternius.com / poly.pizza',
     license: 'CC0 1.0 Universal (Public Domain)',
-    url: 'https://quaternius.com',
-    note: 'Noch nicht integriert — P3.3 erweitert den Katalog um Quaternius-Interior/Kitchen/Office-Packs.',
+    url: 'https://poly.pizza/bundle/Ultimate-House-Interior-Pack-2SXnFbwFzm',
+    note: 'Alle 82 Modelle aus dem Bundle geladen. Pro-Modell-Attribution in public/models/quaternius/interior/_credits.json. Keine Namensnennung rechtlich nötig; freiwillig aufgeführt.',
   },
   {
     name: 'ambientCG — PBR Texture Maps (Wood050, Metal032, Fabric070, Plastic008, Concrete033)',
