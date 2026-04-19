@@ -4,9 +4,15 @@ const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 const ANTHROPIC_VERSION = "2023-06-01";
 const RATE_LIMIT_PER_MINUTE = 30;
 
-const kv = await Deno.openKv();
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
+
+// In-memory sliding-window rate limiter. Supabase Edge Runtime does not
+// expose Deno.openKv (unstable flag is off), so we fall back to a Map
+// scoped to the single worker instance. Cold starts reset counters —
+// acceptable for a soft 30/min guardrail.
+const rateBuckets = new Map<string, number[]>();
+const RATE_LIMIT_WINDOW_MS = 60_000;
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -23,13 +29,16 @@ async function verifyUser(jwt: string): Promise<string | null> {
   return typeof u?.id === "string" ? u.id : null;
 }
 
-async function rateLimit(userId: string): Promise<boolean> {
-  const minute = Math.floor(Date.now() / 60_000);
-  const key = ["rl", userId, minute];
-  const cur = await kv.get<number>(key);
-  const next = (cur.value ?? 0) + 1;
-  if (next > RATE_LIMIT_PER_MINUTE) return false;
-  await kv.set(key, next, { expireIn: 90_000 });
+function rateLimit(userId: string): boolean {
+  const now = Date.now();
+  const cutoff = now - RATE_LIMIT_WINDOW_MS;
+  const bucket = (rateBuckets.get(userId) ?? []).filter(t => t > cutoff);
+  if (bucket.length >= RATE_LIMIT_PER_MINUTE) {
+    rateBuckets.set(userId, bucket);
+    return false;
+  }
+  bucket.push(now);
+  rateBuckets.set(userId, bucket);
   return true;
 }
 
@@ -45,7 +54,7 @@ serve(async (req) => {
       status: 401, headers: { ...cors, "content-type": "application/json" },
     });
   }
-  if (!(await rateLimit(userId))) {
+  if (!rateLimit(userId)) {
     return new Response(JSON.stringify({ error: "rate_limited" }), {
       status: 429, headers: { ...cors, "content-type": "application/json" },
     });
