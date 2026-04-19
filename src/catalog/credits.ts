@@ -32,11 +32,11 @@ export const CREDITS: Credit[] = [
     note: 'Alle 82 Modelle aus dem Bundle geladen. Pro-Modell-Attribution in public/models/quaternius/interior/_credits.json. Keine Namensnennung rechtlich nötig; freiwillig aufgeführt.',
   },
   {
-    name: 'ambientCG — PBR Texture Maps (Wood050, Metal032, Fabric070, Plastic008, Concrete033)',
+    name: 'ambientCG — PBR-Texturen (Holz, Metall, Stoff, Plastik, Beton)',
     source: 'ambientcg.com',
     license: 'CC0 1.0 Universal (Public Domain)',
     url: 'https://ambientcg.com',
-    note: '2K-JPG Color/NormalGL/Roughness — 5 Material-Sets genutzt von src/three/materials.ts. Glass-Set nicht verfügbar → Glas rendert prozedural (transparent, rough:0.02).',
+    note: 'Color/NormalGL/Roughness @ 2K, auf Set-IDs Wood050, Metal032, Fabric070, Plastic008, Concrete033. Geladen und gecached via TextureLoader in src/three/materials.ts; automatisch auf allen 39 Rich-Primitive-Buildern sobald sie via matWood/matMetal/matFabric/matPlastic/matConcrete rendern. Glas rendert weiter prozedural (MeshPhysicalMaterial mit transmission — architektonisch passender als eine fotografierte Glasoberfläche).',
   },
   {
     name: 'Poly Haven (potentielle Ergänzung)',
