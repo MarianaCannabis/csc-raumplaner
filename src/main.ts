@@ -8,7 +8,6 @@ import { scheduleAnalysis, subscribe, getLatestAnalysis } from './compliance/esc
 import { loadModel, fitToBounds } from './three/assetLoader.js';
 import { makeMaterial, makeMaterialWithTextures } from './three/materials.js';
 import type { MaterialKey } from './three/materials.js';
-import { TEST_ITEMS } from './catalog/testItems.js';
 import { NEW_CATALOG } from './catalog/index.js';
 import { CREDITS, renderCreditsHtml } from './catalog/credits.js';
 
@@ -52,7 +51,6 @@ declare global {
       makeTextured: (kind: MaterialKey, colorOverride?: number) => Promise<import('three').MeshStandardMaterial>;
     };
     cscCatalog: {
-      testItems: typeof TEST_ITEMS;
       newItems: typeof NEW_CATALOG;
     };
     cscCredits: {
@@ -67,7 +65,7 @@ window.cscDefaults = defaults;
 window.cscEscape = { schedule: scheduleAnalysis, getLatest: getLatestAnalysis };
 window.cscAssets = { loadModel, fitToBounds };
 window.cscMaterials = { make: makeMaterial, makeTextured: makeMaterialWithTextures };
-window.cscCatalog = { testItems: TEST_ITEMS, newItems: NEW_CATALOG };
+window.cscCatalog = { newItems: NEW_CATALOG };
 window.cscCredits = { list: CREDITS, renderHtml: renderCreditsHtml };
 
 // Project-panel footer: show the most-recent lastVerified so the operator
