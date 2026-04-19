@@ -1889,6 +1889,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
         <div class="tbm-item" onclick="fitViewToRooms();closeTBMenu()">🎯 Ansicht einpassen (F)</div>
         <div class="tbm-item" onclick="switchLightingPreset('indoor');closeTBMenu()">💡 Beleuchtung: Studio</div>
         <div class="tbm-item" onclick="switchLightingPreset('evening');closeTBMenu()">🌙 Beleuchtung: Abend</div>
+        <div class="tbm-item" onclick="toggleBloom();closeTBMenu()">✨ Bloom an/aus</div>
         <div class="tbm-item" onclick="openBadges();closeTBMenu()">🏆 Errungenschaften</div>
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="openM('m-todos');closeTBMenu()">✅ Aufgaben</div>
@@ -5153,17 +5154,55 @@ scene.add(grid3);
 // builders (Kenney/Quaternius GLBs too). Microtask queued so the Vite module
 // has time to wire window.cscEnv. Fallback to RoomEnvironment if the HDRI
 // fetch fails — zero-network procedural stand-in.
+//
+// P3.4: Once env is in place, spin up an EffectComposer with UnrealBloomPass
+// for emissive/LED accents. window.cscBloomEnabled gates it at render time;
+// default is the last-saved preference in localStorage (default on).
 queueMicrotask(function(){
-  if(!window.cscEnv || typeof window.cscEnv.loadEnvironment !== 'function') return;
+  if(!window.cscEnv) return;
   var baseUrl = (document.querySelector('base')?.href) || location.origin + location.pathname.replace(/\/[^/]*$/,'/');
-  var hdriUrl = baseUrl.replace(/\/+$/,'/') + 'hdri/indoor.hdr';
-  window.cscEnv.loadEnvironment(rend3, hdriUrl)
-    .then(function(envMap){ window.cscEnv.applyEnvironment(scene, envMap); })
-    .catch(function(err){
-      console.warn('[csc] HDRI load failed, using RoomEnvironment fallback', err);
-      try { window.cscEnv.fallbackEnvironment(rend3, scene); } catch(e){ console.warn('[csc] fallback env failed', e); }
-    });
+  baseUrl = baseUrl.replace(/\/+$/,'/');
+  // Build composer even before HDRI resolves so the render pass is ready.
+  if(typeof window.cscEnv.createComposer === 'function'){
+    try { window.cscComposer = window.cscEnv.createComposer(rend3, scene, cam3); }
+    catch(e){ console.warn('[csc] composer init failed', e); }
+  }
+  // Restore bloom toggle (default on).
+  var bloomPref = localStorage.getItem('csc-bloom');
+  window.cscBloomEnabled = bloomPref === null ? true : bloomPref === '1';
+  // HDRI load
+  if(typeof window.cscEnv.loadEnvironment === 'function'){
+    window.cscEnv.loadEnvironment(rend3, baseUrl + 'hdri/indoor.hdr')
+      .then(function(envMap){ window.cscEnv.applyEnvironment(scene, envMap); })
+      .catch(function(err){
+        console.warn('[csc] HDRI load failed, using RoomEnvironment fallback', err);
+        try { window.cscEnv.fallbackEnvironment(rend3, scene); } catch(e){ console.warn('[csc] fallback env failed', e); }
+      });
+  }
 });
+
+// Single render entry-point — routes through the EffectComposer when bloom
+// is enabled, falls back to direct rend3.render otherwise. All legacy call
+// sites (animate loop, walk-through tour, export thumbnails) use this so
+// bloom either applies everywhere or nowhere.
+window.renderScene = function(camera){
+  var cam = camera || cam3;
+  if(window.cscBloomEnabled && window.cscComposer){
+    // Keep composer's RenderPass in sync with the active camera (tour may
+    // swap fpCam3 → cam3). Access the first pass directly — it's always
+    // the RenderPass from createComposer.
+    var rp = window.cscComposer.passes && window.cscComposer.passes[0];
+    if(rp && rp.camera !== cam) rp.camera = cam;
+    try { window.cscComposer.render(); return; } catch(e){ console.warn('[csc] composer render failed, falling back', e); }
+  }
+  rend3.render(scene, cam);
+};
+
+window.toggleBloom = function(){
+  window.cscBloomEnabled = !window.cscBloomEnabled;
+  localStorage.setItem('csc-bloom', window.cscBloomEnabled ? '1' : '0');
+  if(typeof toast === 'function') toast('✨ Bloom ' + (window.cscBloomEnabled ? 'an' : 'aus'), 'b');
+};
 
 // P3.3: switch between studio (indoor) and evening (dikhololo) HDRI presets.
 // Exposed globally so the Ansicht-Menü button can call it. Defaults kept
@@ -5385,6 +5424,9 @@ function resize3D(){
   const r=cvWrap.getBoundingClientRect();
   tCv.width=r.width;tCv.height=r.height;
   rend3.setSize(r.width,r.height,false);
+  if(window.cscComposer && typeof window.cscComposer.setSize === 'function'){
+    window.cscComposer.setSize(r.width,r.height);
+  }
   [oCam,fpCam3].forEach(c=>{c.aspect=r.width/r.height;c.updateProjectionMatrix();});
 }
 
@@ -19202,7 +19244,7 @@ function setTourProgress(t){
     const ahead=_tourPath.getPoint((_tourT+0.01)%1);
     cam3.position.copy(pt);
     cam3.lookAt(ahead);
-    if(currentView==='3d') rend3.render(scene,cam3);
+    if(currentView==='3d') window.renderScene(cam3);
   }
 }
 
@@ -20254,7 +20296,7 @@ function animate(t){
     Object.values(_mirrorWalls).forEach(({cubeCamera,mat,rt})=>{
       cubeCamera&&rend3.setRenderTarget&&rend3.capabilities&&(()=>{try{cubeCamera.update(rend3,scene);}catch(e){}})();
     });
-    rend3.render(scene,cam3);
+    window.renderScene(cam3);
     updatePostFX(dt);
   }
 }

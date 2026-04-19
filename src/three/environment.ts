@@ -16,12 +16,17 @@ import {
   ACESFilmicToneMapping,
   PCFSoftShadowMap,
   PMREMGenerator,
+  Vector2,
+  type Camera,
   type Scene,
   type Texture,
   type WebGLRenderer,
 } from 'three';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 const _rgbeLoader = new RGBELoader();
 const _envCache = new Map<string, Texture>();
@@ -68,6 +73,34 @@ export function fallbackEnvironment(renderer: WebGLRenderer, scene: Scene): void
   const pmrem = new PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
   pmrem.dispose();
+}
+
+/**
+ * Create an EffectComposer with a RenderPass + UnrealBloomPass. The bloom
+ * settings (strength 0.4, radius 0.6, threshold 0.95) are intentionally
+ * conservative — only actual emissive materials (matLED, chandelier
+ * glows, exit-sign faces) exceed the threshold. Bright plain colors
+ * don't trigger false blooming.
+ *
+ * Callers hold onto the returned composer and call `.render()` in the
+ * animation loop instead of `renderer.render(scene, camera)`. Resize
+ * via `composer.setSize(w, h)`.
+ */
+export function createComposer(
+  renderer: WebGLRenderer,
+  scene: Scene,
+  camera: Camera,
+): EffectComposer {
+  const composer = new EffectComposer(renderer);
+  composer.addPass(new RenderPass(scene, camera));
+  const bloom = new UnrealBloomPass(
+    new Vector2(window.innerWidth, window.innerHeight),
+    0.4, // strength — zurückhaltend, damit es nicht übertrieben wirkt
+    0.6, // radius
+    0.95, // threshold — nur echte emissive-Lichter, keine hellen Farben
+  );
+  composer.addPass(bloom);
+  return composer;
 }
 
 /** Tune a directional / sun light for large-scene soft shadows. */
