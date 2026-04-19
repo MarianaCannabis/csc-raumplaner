@@ -11891,14 +11891,29 @@ function registerServiceWorker(){
 // ── 1. BRANDSCHUTZ ───────────────────────────────────────────────────
 function calcFireSafety(){
   const el=document.getElementById('fire-result'); if(!el) return;
-  const totalArea=rooms.reduce((s,r)=>s+r.w*r.d,0);
-  // DIN EN 3 / ASR A2.2: 1 Löscher pro 200m² (mind. 1 pro Brandabschnitt)
-  const needed=Math.max(rooms.length,Math.ceil(totalArea/200));
-  const have=objects.filter(o=>o.typeId==='sec-ext').length;
-  const smoke=objects.filter(o=>o.typeId==='sec-smoke').length;
-  const needSmoke=rooms.length;
-  const exits=objects.filter(o=>o.typeId==='sec-sign-exit').length;
-  const emlight=objects.filter(o=>o.typeId==='sec-emlight').length;
+  // P2.2: data from src/compliance/metrics.ts; DOM stays here.
+  const metrics = window.cscCompliance && window.cscCompliance.metrics;
+  let r;
+  if(metrics && typeof metrics.calcFireSafety === 'function'){
+    try { r = metrics.calcFireSafety({rooms:rooms, objects:objects, meta:projMeta}); }
+    catch(err){ console.warn('[metrics] calcFireSafety delegate failed', err); }
+  }
+  if(!r){
+    // Legacy fallback (identical math).
+    const totalArea=rooms.reduce((s,r)=>s+r.w*r.d,0);
+    const needed=Math.max(rooms.length,Math.ceil(totalArea/200));
+    const have=objects.filter(o=>o.typeId==='sec-ext').length;
+    const smoke=objects.filter(o=>o.typeId==='sec-smoke').length;
+    const needSmoke=rooms.length;
+    const exits=objects.filter(o=>o.typeId==='sec-sign-exit').length;
+    const emlight=objects.filter(o=>o.typeId==='sec-emlight').length;
+    r = { totalArea,
+      extinguishersCount:have, extinguishersRequired:needed, extinguishersOk:have>=needed,
+      smokeDetectorsCount:smoke, smokeDetectorsRequired:needSmoke, smokeDetectorsOk:smoke>=needSmoke,
+      emergencyExitsCount:exits, emergencyExitsOk:exits>=1,
+      emergencyLightsCount:emlight, emergencyLightsOk:emlight>=1,
+      overallOk: have>=needed && smoke>=needSmoke };
+  }
 
   const row=(icon,label,val,ok,hint)=>
     '<div style="display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--bd)">'
@@ -11908,19 +11923,19 @@ function calcFireSafety(){
     +'<div style="font-size:11px;font-weight:700;'+(ok?'color:#4ade80':'color:#f87171')+'">'+val+'</div></div>';
 
   el.innerHTML=
-    row('🧯','Feuerlöscher',have+' / '+needed+' Stk.',have>=needed,
-      'ASR A2.2: 1 Löscher pro 200m² ('+totalArea.toFixed(0)+'m² gesamt)')
-    +row('🔥','Rauchmelder',smoke+' / '+needSmoke+' Stk.',smoke>=needSmoke,
+    row('🧯','Feuerlöscher',r.extinguishersCount+' / '+r.extinguishersRequired+' Stk.',r.extinguishersOk,
+      'ASR A2.2: 1 Löscher pro 200m² ('+r.totalArea.toFixed(0)+'m² gesamt)')
+    +row('🔥','Rauchmelder',r.smokeDetectorsCount+' / '+r.smokeDetectorsRequired+' Stk.',r.smokeDetectorsOk,
       'Mind. 1 pro Raum (§15 MBO)')
-    +row('🚨','Notausgang-Schilder',exits+' Stk.',exits>=1,
+    +row('🚨','Notausgang-Schilder',r.emergencyExitsCount+' Stk.',r.emergencyExitsOk,
       'Mind. 1 sichtbar am Ausgang')
-    +row('💡','Notbeleuchtung',emlight+' Stk.',emlight>=1,
+    +row('💡','Notbeleuchtung',r.emergencyLightsCount+' Stk.',r.emergencyLightsOk,
       'ASR A3.4/3: alle Fluchtwege beleuchtet')
     +'<div style="margin-top:8px;padding:8px;background:var(--bg3);border-radius:6px;font-size:11px">'
-    +'<div style="font-weight:700;color:'+(have>=needed&&smoke>=needSmoke?'#4ade80':'#f87171')
-    +'">'+( have>=needed&&smoke>=needSmoke?'✅ Brandschutz erfüllt':'⚠️ Mängel vorhanden')+'</div>'
-    +(have<needed?'<div style="color:#f87171;margin-top:4px">→ '+(needed-have)+' weiterer Feuerlöscher erforderlich</div>':'')
-    +(smoke<needSmoke?'<div style="color:#f87171;margin-top:4px">→ '+(needSmoke-smoke)+' weiterer Rauchmelder erforderlich</div>':'')
+    +'<div style="font-weight:700;color:'+(r.overallOk?'#4ade80':'#f87171')+'">'
+    +(r.overallOk?'✅ Brandschutz erfüllt':'⚠️ Mängel vorhanden')+'</div>'
+    +(!r.extinguishersOk?'<div style="color:#f87171;margin-top:4px">→ '+(r.extinguishersRequired-r.extinguishersCount)+' weiterer Feuerlöscher erforderlich</div>':'')
+    +(!r.smokeDetectorsOk?'<div style="color:#f87171;margin-top:4px">→ '+(r.smokeDetectorsRequired-r.smokeDetectorsCount)+' weiterer Rauchmelder erforderlich</div>':'')
     +'</div>';
 }
 
@@ -17831,23 +17846,35 @@ function openCSVImport(){
 
 // ── 9. BARRIEREFREIHEITS-SCORE ────────────────────────────────────────
 function calcAccessibilityScore(){
-  const checks=[
-    {label:'Türbreite ≥ 90cm',  ok:objects.some(o=>{const it=findItem(o.typeId)||{};return it.arch==='door'&&(o.w||it.w||0)>=0.9;}), pts:20,max:20},
-    {label:'WC vorhanden',      ok:rooms.some(r=>r.name.toLowerCase().includes('wc')), pts:15,max:15},
-    {label:'Rampe/Aufzug',      ok:objects.some(o=>o.typeId==='rollstuhlrampe'), pts:15,max:15},
-    {label:'Wendekr. ≥150cm',   ok:rooms.every(r=>r.w>=2&&r.d>=2), pts:20,max:20},
-    {label:'Notauss.-Schild',   ok:objects.some(o=>o.typeId==='sec-sign-exit'), pts:15,max:15},
-    {label:'Automatiktür',      ok:objects.some(o=>['at-karussel','at-barriere'].includes(o.typeId)), pts:15,max:15},
-  ];
-  const total=checks.reduce((s,c)=>s+c.pts,0);
-  const maxT=checks.reduce((s,c)=>s+c.max,0);
-  const pct=Math.round(total/maxT*100);
-  const color=pct>=75?'#4ade80':pct>=50?'#fbbf24':'#f87171';
+  // P2.2: data from src/compliance/metrics.ts; DOM stays here.
+  const metrics = window.cscCompliance && window.cscCompliance.metrics;
+  let result;
+  if(metrics && typeof metrics.calcAccessibilityScore === 'function'){
+    try { result = metrics.calcAccessibilityScore({rooms:rooms, objects:objects, meta:projMeta}); }
+    catch(err){ console.warn('[metrics] calcAccessibilityScore delegate failed', err); }
+  }
+  if(!result){
+    // Legacy fallback — note this uses findItem (catalog helper) for the
+    // door-width check; the TS version approximates via typeId regex.
+    const checks=[
+      {label:'Türbreite ≥ 90cm',  ok:objects.some(o=>{const it=findItem(o.typeId)||{};return it.arch==='door'&&(o.w||it.w||0)>=0.9;}), points:20,max:20},
+      {label:'WC vorhanden',      ok:rooms.some(r=>r.name.toLowerCase().includes('wc')), points:15,max:15},
+      {label:'Rampe/Aufzug',      ok:objects.some(o=>o.typeId==='rollstuhlrampe'), points:15,max:15},
+      {label:'Wendekr. ≥150cm',   ok:rooms.every(r=>r.w>=2&&r.d>=2), points:20,max:20},
+      {label:'Notaussch.-Schild', ok:objects.some(o=>o.typeId==='sec-sign-exit'), points:15,max:15},
+      {label:'Automatiktür',      ok:objects.some(o=>['at-karussel','at-barriere'].includes(o.typeId)), points:15,max:15},
+    ];
+    checks.forEach(c=>{ c.points = c.ok ? c.max : 0; });
+    const points=checks.reduce((s,c)=>s+c.points,0);
+    const maxPoints=checks.reduce((s,c)=>s+c.max,0);
+    result = { score: Math.round(points/maxPoints*100), points, maxPoints, checks };
+  }
+  const color=result.score>=75?'#4ade80':result.score>=50?'#fbbf24':'#f87171';
   const h='<div style="padding:12px">'
     +'<div style="font-size:13px;font-weight:700;color:var(--gr);margin-bottom:8px">♿ Barrierefreiheit (DIN 18040)</div>'
-    +'<div style="text-align:center;font-size:40px;font-weight:800;color:'+color+';margin-bottom:6px">'+pct+'%</div>'
-    +checks.map(c=>'<div style="display:flex;justify-content:space-between;font-size:10px;padding:4px 0;border-bottom:1px solid var(--bd)">'
-      +'<span>'+(c.ok?'✅':'❌')+' '+c.label+'</span><span style="color:var(--tx3)">'+c.pts+'/'+c.max+'</span></div>'
+    +'<div style="text-align:center;font-size:40px;font-weight:800;color:'+color+';margin-bottom:6px">'+result.score+'%</div>'
+    +result.checks.map(c=>'<div style="display:flex;justify-content:space-between;font-size:10px;padding:4px 0;border-bottom:1px solid var(--bd)">'
+      +'<span>'+(c.ok?'✅':'❌')+' '+c.label+'</span><span style="color:var(--tx3)">'+c.points+'/'+c.max+'</span></div>'
     ).join('')+'</div>';
   showFloatingPanel('Barrierefreiheit',h);
 }
@@ -17906,19 +17933,33 @@ function printToScale(){
 
 // ── 12. ENERGIE-ZERTIFIKAT ────────────────────────────────────────────
 function generateEnergyCertificate(){
-  const totalArea=rooms.reduce((s,r)=>s+r.w*r.d,0);
-  const kwh=(totalArea*8/1000*8*365)+(totalArea*50/1000*2000);
-  const kwhM2=kwh/Math.max(1,totalArea);
-  const label=kwhM2<30?'A++':kwhM2<50?'A+':kwhM2<75?'A':kwhM2<100?'B':kwhM2<130?'C':'D';
-  const color={'A++':'#00aa00','A+':'#44cc00','A':'#88dd00','B':'#ccdd00','C':'#ffcc00','D':'#ff8800'}[label];
+  // P2.2: label + kWh math in src/compliance/metrics.ts → energyCertificate().
+  // CO2 factor now pulled via CO2_FACTOR_DE (src/config/defaults.ts) instead
+  // of the legacy 0.4 constant — same thing calcCO2Footprint does since P2.0c.
+  const metrics = window.cscCompliance && window.cscCompliance.metrics;
+  let r;
+  if(metrics && typeof metrics.energyCertificate === 'function'){
+    try { r = metrics.energyCertificate(rooms); }
+    catch(err){ console.warn('[metrics] energyCertificate delegate failed', err); }
+  }
+  if(!r){
+    // Legacy fallback (note: legacy used the older 0.4 kg/kWh — keep for
+    // deterministic behaviour if the TS module never loaded).
+    const totalArea=rooms.reduce((s,r)=>s+r.w*r.d,0);
+    const kwh=(totalArea*8/1000*8*365)+(totalArea*50/1000*2000);
+    const kwhPerM2=kwh/Math.max(1,totalArea);
+    const label=kwhPerM2<30?'A++':kwhPerM2<50?'A+':kwhPerM2<75?'A':kwhPerM2<100?'B':kwhPerM2<130?'C':'D';
+    const labelColor={'A++':'#00aa00','A+':'#44cc00','A':'#88dd00','B':'#ccdd00','C':'#ffcc00','D':'#ff8800'}[label];
+    r = { totalArea, kwh: Math.round(kwh), kwhPerM2, label, labelColor, co2Kg: Math.round(kwh*0.4) };
+  }
   showFloatingPanel('Energie-Ausweis',
     '<div style="padding:12px">'
     +'<div style="font-size:13px;font-weight:700;color:var(--gr);margin-bottom:8px">⚡ Energie-Ausweis</div>'
-    +'<div style="text-align:center;margin-bottom:10px"><div style="display:inline-block;padding:10px 24px;background:'+color+';border-radius:6px;font-size:28px;font-weight:800;color:#fff">'+label+'</div></div>'
-    +kpiRow('⚡ Jahresverbrauch',Math.round(kwh)+' kWh','#fbbf24')
-    +kpiRow('📊 kWh/m²',kwhM2.toFixed(0),'#38bdf8')
-    +kpiRow('🌍 CO₂/Jahr',Math.round(kwh*0.4)+' kg','#f87171')
-    +'<div style="font-size:9px;color:var(--tx3);margin-top:6px">Schatzwert nach GEG — nicht rechtsverbindlich</div>'
+    +'<div style="text-align:center;margin-bottom:10px"><div style="display:inline-block;padding:10px 24px;background:'+r.labelColor+';border-radius:6px;font-size:28px;font-weight:800;color:#fff">'+r.label+'</div></div>'
+    +kpiRow('⚡ Jahresverbrauch',r.kwh+' kWh','#fbbf24')
+    +kpiRow('📊 kWh/m²',r.kwhPerM2.toFixed(0),'#38bdf8')
+    +kpiRow('🌍 CO₂/Jahr',r.co2Kg+' kg','#f87171')
+    +'<div style="font-size:9px;color:var(--tx3);margin-top:6px">Schätzwert nach GEG — nicht rechtsverbindlich</div>'
     +'</div>');
 }
 
