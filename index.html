@@ -21643,5 +21643,10 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
   </div>
 </div>
 
+<!-- P1: Vite ES-module entry. Legacy inline script above stays in place; this
+     loads modular code from src/ that will strangle the monolith piece by
+     piece. Vite rewrites this src attribute to a hashed asset at build time. -->
+<script type="module" src="/src/main.ts"></script>
+
 </body>
 </html>

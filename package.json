@@ -1,0 +1,17 @@
+{
+  "name": "csc-raumplaner",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/three": "^0.184.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.8",
+    "vite-plugin-checker": "^0.13.0"
+  }
+}
