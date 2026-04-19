@@ -1,4 +1,4 @@
-project_id = "wvkjkdwahsqozeupoxpj"
+project_id = "csc-raumplaner"
 
 [functions.anthropic-proxy]
-verify_jwt = true
+verify_jwt = false
