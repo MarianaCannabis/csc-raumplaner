@@ -5155,6 +5155,9 @@ function requestWalkLock(){ tCv.requestPointerLock(); }
 const obj3Map={};
 
 function rebuild3D(){
+  // P1.3: kick the escape-route worker after geometry changes. Debounced
+  // 300 ms inside cscEscape.schedule, so rebuild3D storms don't spam.
+  if(window.cscEscape) window.cscEscape.schedule(rooms, objects);
   // Remove old
   Object.values(obj3Map).forEach(g=>scene.remove(g));
   Object.keys(obj3Map).forEach(k=>delete obj3Map[k]);
