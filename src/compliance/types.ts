@@ -37,6 +37,8 @@ export interface RuleContext {
   rooms: Room[];
   objects: PlacedObject[];
   meta?: ProjectMeta;
+  /** Set by evaluateForRoom() when running a 'room'-scoped rule. */
+  currentRoom?: Room;
 }
 
 export interface RuleResult {
@@ -65,5 +67,10 @@ export interface Rule {
   label: string;
   category: RuleCategory;
   severity: RuleSeverity;
+  /** Default 'project'. 'room' rules skip evaluateAll() and are run only
+   *  by evaluateForRoom() with currentRoom set. */
+  scope?: 'project' | 'room';
+  /** Optional single-glyph badge marker for canvas overlays (per-room). */
+  icon?: string;
   check(ctx: RuleContext): RuleResult;
 }

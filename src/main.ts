@@ -6,7 +6,12 @@ import * as geo from './geo/overpass.js';
 import { scheduleAnalysis, subscribe, getLatestAnalysis } from './compliance/escapeAnalysis.js';
 
 console.info('[csc] vite entry alive', import.meta.env.MODE);
-console.info('[csc] compliance rules registered:', compliance.listRules().length);
+const _allRules = compliance.listRules();
+const _projectRules = _allRules.filter((r) => (r.scope ?? 'project') === 'project').length;
+const _roomRules = _allRules.filter((r) => r.scope === 'room').length;
+console.info(
+  `[csc] compliance rules registered: ${_allRules.length} (project: ${_projectRules}, room: ${_roomRules})`,
+);
 
 // When the escape-route worker returns a new result, nudge the legacy
 // badge bar so the `flucht` rule's outcome repaints against fresh data.
