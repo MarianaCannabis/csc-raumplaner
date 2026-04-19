@@ -11,6 +11,9 @@ import './rules/feuerloescher.js';
 import './rules/alarm.js';
 import './rules/fluchtweg.js';
 import './rules/kapazitaet.js';
+import './rules/memberLimit.js';
+import './rules/youthProtection.js';
+import './rules/visualScreen.js';
 
 export { evaluateAll, listRules, registerRule } from './registry.js';
 export type { EvaluationEntry } from './registry.js';

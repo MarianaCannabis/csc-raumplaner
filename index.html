@@ -2197,6 +2197,29 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
           oninput="localStorage.setItem('csc-teamid',this.value)"
           style="width:100%;padding:5px 8px;margin-top:3px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
       </div>
+
+      <!-- KCanG-PROJEKTDATEN (meta input for compliance rules) -->
+      <div style="padding:10px;margin-bottom:12px;border:1px solid var(--bd);border-radius:6px;background:var(--bg3)">
+        <div class="sh" style="margin-top:0">KCanG-Projektdaten</div>
+        <div class="mf">
+          <label style="font-size:10px;color:var(--tx3)">Mitglieder</label>
+          <input type="number" id="pm-members" min="0" max="500"
+            onchange="projMeta.memberCount=+this.value; if(typeof renderComplianceBadges==='function') renderComplianceBadges();"
+            style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
+        </div>
+        <div class="mf">
+          <label style="font-size:10px;color:var(--tx3)">Adresse (für 100m-Check)</label>
+          <input type="text" id="pm-address" placeholder="Straße, PLZ Ort"
+            onchange="projMeta.address=this.value;"
+            style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
+        </div>
+        <label style="font-size:11px;color:var(--tx2);display:flex;align-items:center;gap:6px;margin-top:6px">
+          <input type="checkbox" id="pm-age-ver"
+            onchange="projMeta.ageVerification=this.checked; if(typeof renderComplianceBadges==='function') renderComplianceBadges();">
+          Altersprüfung beim Eingang (18+)
+        </label>
+      </div>
+
       <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px">
         <button class="tbt g" style="padding:9px" onclick="saveProj()">💾 Projekt speichern</button>
         <button class="tbt" style="padding:9px" onclick="exportPDF()">🖨️ PDF / Druckansicht</button>
@@ -3312,6 +3335,7 @@ var SB_URL       = '';     // Supabase URL
 var SB_KEY       = '';     // Supabase anon key (public JWT for REST transport)
 var SB_TOKEN     = '';     // Supabase user access token (from sign-in)
 var SB_USER      = null;   // Signed-in user: {id,email}
+var projMeta     = {};     // KCanG project meta: {memberCount, address, ageVerification, pois?, geocode?}
 var grab3d       = false;  // 3D grab mode active
 var grab3dLast   = null;   // last mouse pos during grab
 var _wallExclusions = [];    // room wall segments excluded from render
@@ -5870,7 +5894,7 @@ async function uploadDOCX(file){
 // ════════════════════════════════════════════════════════════════════════
 // SAVE / LOAD
 // ════════════════════════════════════════════════════════════════════════
-function getPD(){return{v:3,name:projName,rooms:rooms.map(r=>({...r,grp:undefined})),objects:objects.map(o=>({...o,grp:undefined})),measures,customObjs:customObjs.filter(o=>!o.shared)};}
+function getPD(){return{v:3,name:projName,rooms:rooms.map(r=>({...r,grp:undefined})),objects:objects.map(o=>({...o,grp:undefined})),measures,customObjs:customObjs.filter(o=>!o.shared),meta:projMeta};}
 function loadPD(d){
   rooms.forEach(r=>{if(obj3Map[r.id])scene.remove(obj3Map[r.id]);});
   objects.forEach(o=>{if(obj3Map[o.id])scene.remove(obj3Map[o.id]);});
@@ -5879,7 +5903,20 @@ function loadPD(d){
   (d.rooms||[]).forEach(r=>addRoom(r));
   (d.objects||[]).forEach(o=>addObject(o));
   measures=d.measures||[];
+  projMeta=d.meta||{};
+  syncMetaUI();
     rebuild3D();renderLeft();draw2D();updateSavedUI();
+}
+
+// Sync the KCanG-Projektdaten UI fields from projMeta. Called after loadPD
+// and once at boot so refreshed tabs show the last-saved meta values.
+function syncMetaUI(){
+  const m = document.getElementById('pm-members');
+  const a = document.getElementById('pm-address');
+  const v = document.getElementById('pm-age-ver');
+  if(m) m.value = projMeta.memberCount != null ? projMeta.memberCount : '';
+  if(a) a.value = projMeta.address || '';
+  if(v) v.checked = !!projMeta.ageVerification;
 }
 function saveProj(){
   const saves=JSON.parse(localStorage.getItem('csc-saves3')||'{}');
