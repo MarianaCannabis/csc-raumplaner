@@ -2242,6 +2242,9 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
           Länder-Ausführungsverordnungen nicht berücksichtigt. Für Genehmigungsverfahren
           bitte Fachanwalt oder Landesbehörde hinzuziehen.
         </div>
+        <div style="font-size:9px;color:var(--tx3);margin-top:4px" title="Kosten/Energie-Konstanten aus src/config/defaults.ts — Miete, Personal, Baukosten, Strompreis, CO₂-Faktor etc.">
+          Default-Werte zuletzt geprüft: <span id="defaults-last-verified">—</span>
+        </div>
       </div>
 
       <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px">
@@ -12032,7 +12035,7 @@ function calcEnergy(){
   const lightType=document.getElementById('en-light')?.value||'led';
   const hours=+(document.getElementById('en-hours')?.value||8);
   const heatType=document.getElementById('en-heat')?.value||'gas';
-  const priceEl=+(document.getElementById('en-price')?.value||0.32);
+  const priceEl=+(document.getElementById('en-price')?.value||(window.cscDefaults?.ELECTRICITY_PRICE?.value)||0.32);
   const totalArea=rooms.reduce((s,r)=>s+r.w*r.d,0);
   const totalVol=rooms.reduce((s,r)=>s+r.w*r.d*r.h,0);
 
@@ -13717,10 +13720,11 @@ function fitViewToRooms(){
 // 9. ROI RECHNER
 // ════════════════════════════════════════════════════════════════════════
 function calcROI(){
+  const _d = window.cscDefaults;
   const members=+(document.getElementById('roi-members')?.value||100);
-  const fee=+(document.getElementById('roi-fee')?.value||35);
-  const rent=+(document.getElementById('roi-rent')?.value||1200);
-  const staff=+(document.getElementById('roi-staff')?.value||2000);
+  const fee=+(document.getElementById('roi-fee')?.value||(_d?.MEMBER_FEE?.value)||35);
+  const rent=+(document.getElementById('roi-rent')?.value||(_d?.RENT?.value)||1200);
+  const staff=+(document.getElementById('roi-staff')?.value||(_d?.ROI_STAFF?.value)||2000);
   const other=+(document.getElementById('roi-other')?.value||500);
   const setup=+(document.getElementById('roi-setup')?.value||0) ||
     objects.reduce((s,o)=>s+getObjPrice(o.typeId),0);
@@ -17024,16 +17028,17 @@ function calcCO2Footprint(){
   const lightKwh=(totalArea*8/1000)*8*365;
   const heatKwh=(totalArea*50/1000)*2000;
   const totalKwh=lightKwh+heatKwh;
-  // UBA 2024, letzter verfügbarer Jahreswert (Stand 2026-04). 2025/2026
-  // noch nicht publiziert; bei Update hier + Energie-Footer anpassen.
-  const CO2_FACTOR_DE_GRAMS_PER_KWH = 363;
+  // Defaults aus src/config/defaults.ts (mit 363-Fallback für Pre-Boot).
+  const _co2 = window.cscDefaults?.CO2_FACTOR_DE;
+  const CO2_FACTOR_DE_GRAMS_PER_KWH = _co2?.value ?? 363;
   const co2=totalKwh*(CO2_FACTOR_DE_GRAMS_PER_KWH/1000);
+  const _co2Note = _co2?.note || 'UBA, Stand 2024 — letzter verfügbarer Jahreswert';
   const h='<div style="padding:12px">'
     +'<div style="font-size:14px;font-weight:800;color:var(--gr);margin-bottom:10px">🌱 CO₂-Fußabdruck</div>'
     +kpiRow('⚡ Jahresenergie',Math.round(totalKwh)+' kWh','#fbbf24')
     +kpiRow('💨 CO₂/Jahr',Math.round(co2)+' kg','#f87171')
     +kpiRow('🌳 Bäume nötig',Math.round(co2/22)+' Bäume','#4ade80')
-    +'<div style="margin-top:8px;font-size:10px;color:var(--tx3)">CO₂-Faktor Strom Deutschland: '+CO2_FACTOR_DE_GRAMS_PER_KWH+' g/kWh (UBA, Stand 2024 — letzter verfügbarer Jahreswert) · LED-Beleuchtung</div>'
+    +'<div style="margin-top:8px;font-size:10px;color:var(--tx3)" title="'+_co2Note.replace(/"/g,'&quot;')+'">CO₂-Faktor Strom Deutschland: '+CO2_FACTOR_DE_GRAMS_PER_KWH+' g/kWh (UBA, Stand 2024 — letzter verfügbarer Jahreswert) · LED-Beleuchtung</div>'
     +'<div style="margin-top:6px">'
     +'<button class="mbt ok" onclick="calcEnergy();openM(\'m-energy\')" style="font-size:10px;width:100%">⚡ Energie-Details</button>'
     +'</div></div>';
@@ -17087,7 +17092,7 @@ function calcStaffNeeds(){
     +kpiRow('🌿 Ausgabe-MA',staffAusgabe+' FTE','#4ade80')
     +kpiRow('📦 Lager-MA',staffLager+' FTE','#4ade80')
     +kpiRow('👔 Gesamt',staffTotal+' FTE','#fbbf24')
-    +kpiRow('💰 Personalkosten',Math.round(staffTotal*2800).toLocaleString('de-DE')+'€/Mon.','#f87171')
+    +kpiRow('💰 Personalkosten',Math.round(staffTotal*((window.cscDefaults?.FTE_COST?.value)||2800)).toLocaleString('de-DE')+'€/Mon.','#f87171')
     +'</div>';
   showFloatingPanel('Personalbedarf',h);
 }
@@ -18743,7 +18748,8 @@ function generateCostReport(){
     cats[cat].push({name:it.name||o.typeId,price:getObjPrice(o.typeId)});
   });
   const total=Object.values(cats).flat().reduce((s,i)=>s+i.price,0);
-  const constructCost=rooms.reduce((s,r)=>s+r.w*r.d*800,0); // ~800€/m² Umbau
+  const _cpm2 = (window.cscDefaults?.CONSTRUCTION_PRICE?.value) ?? 800;
+  const constructCost=rooms.reduce((s,r)=>s+r.w*r.d*_cpm2,0);
   const grandTotal=total+constructCost;
   const pw=window.open('','_blank');
   if(!pw) return;
@@ -18763,7 +18769,7 @@ function generateCostReport(){
     <p><strong>${d.name}</strong> · ${new Date().toLocaleDateString('de-DE')}</p>
     <h3>Raumübersicht</h3>
     <table><tr><th>Raum</th><th>Fläche</th><th>Umbaukosten</th></tr>
-    ${d.rooms.map(r=>`<tr><td>${r.name}</td><td>${(r.w*r.d).toFixed(0)}m²</td><td>${(r.w*r.d*800).toLocaleString('de-DE')} €</td></tr>`).join('')}
+    ${d.rooms.map(r=>`<tr><td>${r.name}</td><td>${(r.w*r.d).toFixed(0)}m²</td><td>${(r.w*r.d*_cpm2).toLocaleString('de-DE')} €</td></tr>`).join('')}
     <tr style="background:#f5f5f5"><td colspan="2"><strong>Gesamt Umbau</strong></td><td><strong>${constructCost.toLocaleString('de-DE')} €</strong></td></tr>
     </table>
     <h3 style="margin-top:20px">Einrichtung & Ausstattung</h3>
@@ -18981,7 +18987,7 @@ function generateShiftPlan(){
 
   const weeklyHours=openHours*7;
   const fte=Math.round(weeklyHours*staffPerShift/40*10)/10;
-  const monthlyCost=Math.round(fte*2800);
+  const monthlyCost=Math.round(fte*((window.cscDefaults?.FTE_COST?.value)||2800));
 
   const h='<div style="padding:12px">'
     +'<div style="font-size:13px;font-weight:700;color:var(--gr);margin-bottom:8px">👥 Schichtplan</div>'
@@ -19578,7 +19584,7 @@ function showShiftGantt(){
       +'<div style="width:10px;height:10px;border-radius:2px;background:'+r.color+'"></div>'+r.name+'</div>').join('')
     +'</div>'
     +kpiRow('👤 Vollzeitstellen',fte+' FTE','#4ade80')
-    +kpiRow('💰 Personalkosten',Math.round(fte*2800).toLocaleString('de-DE')+'€/Mon.','#f87171')
+    +kpiRow('💰 Personalkosten',Math.round(fte*((window.cscDefaults?.FTE_COST?.value)||2800)).toLocaleString('de-DE')+'€/Mon.','#f87171')
     +'<button class="mbt ok" onclick="exportShiftCSV('+openH+','+openFrom+','+counters+')" style="width:100%;margin-top:8px;font-size:10px">📥 CSV exportieren</button>'
     +'</div>';
   showFloatingPanel('Wochenplan Gantt',h);

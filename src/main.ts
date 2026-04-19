@@ -3,6 +3,7 @@
 // they get strangled one by one.
 import * as compliance from './compliance/index.js';
 import * as geo from './geo/overpass.js';
+import * as defaults from './config/defaults.js';
 import { scheduleAnalysis, subscribe, getLatestAnalysis } from './compliance/escapeAnalysis.js';
 
 console.info('[csc] vite entry alive', import.meta.env.MODE);
@@ -31,6 +32,7 @@ declare global {
   interface Window {
     cscCompliance: typeof compliance;
     cscGeo: typeof geo;
+    cscDefaults: typeof defaults;
     cscEscape: {
       schedule: typeof scheduleAnalysis;
       getLatest: typeof getLatestAnalysis;
@@ -39,4 +41,13 @@ declare global {
 }
 window.cscCompliance = compliance;
 window.cscGeo = geo;
+window.cscDefaults = defaults;
 window.cscEscape = { schedule: scheduleAnalysis, getLatest: getLatestAnalysis };
+
+// Project-panel footer: show the most-recent lastVerified so the operator
+// knows how fresh the cost/energy defaults are. Rewrites on every boot,
+// so a defaults.ts bump is visible without a hard reload ritual.
+queueMicrotask(() => {
+  const el = document.getElementById('defaults-last-verified');
+  if (el) el.textContent = defaults.latestLastVerified();
+});
