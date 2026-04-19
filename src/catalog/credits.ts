@@ -33,11 +33,11 @@ export const CREDITS: Credit[] = [
     note: 'Keine Namensnennung rechtlich nötig — freiwillig aufgeführt.',
   },
   {
-    name: 'ambientCG — PBR Texture Maps',
+    name: 'ambientCG — PBR Texture Maps (Wood050, Metal032, Fabric070, Plastic008, Concrete033)',
     source: 'ambientcg.com',
     license: 'CC0 1.0 Universal (Public Domain)',
     url: 'https://ambientcg.com',
-    note: 'Wood / Metal / Fabric / Concrete albedo-normal-roughness Sets.',
+    note: '2K-JPG Color/NormalGL/Roughness — 5 Material-Sets genutzt von src/three/materials.ts. Glass-Set nicht verfügbar → Glas rendert prozedural (transparent, rough:0.02).',
   },
   {
     name: 'Poly Haven (potentielle Ergänzung)',
