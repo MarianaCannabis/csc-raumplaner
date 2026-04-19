@@ -14,6 +14,7 @@ import './rules/kapazitaet.js';
 import './rules/memberLimit.js';
 import './rules/youthProtection.js';
 import './rules/visualScreen.js';
+import './rules/poi100m.js';
 
 export { evaluateAll, listRules, registerRule } from './registry.js';
 export type { EvaluationEntry } from './registry.js';

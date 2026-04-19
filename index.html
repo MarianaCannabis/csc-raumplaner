@@ -2209,9 +2209,13 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
         </div>
         <div class="mf">
           <label style="font-size:10px;color:var(--tx3)">Adresse (für 100m-Check)</label>
-          <input type="text" id="pm-address" placeholder="Straße, PLZ Ort"
-            onchange="projMeta.address=this.value;"
-            style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
+          <div style="display:flex;gap:5px">
+            <input type="text" id="pm-address" placeholder="Straße, PLZ Ort"
+              onchange="projMeta.address=this.value;"
+              style="flex:1;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
+            <button class="tbt" onclick="loadProjectPois()" title="Schulen/Kitas/Sportstätten aus OpenStreetMap im 500m-Umkreis laden" style="padding:5px 8px;white-space:nowrap;font-size:11px">📍 POIs laden</button>
+          </div>
+          <div id="pm-poi-status" style="font-size:10px;color:var(--tx3);margin-top:4px;min-height:14px"></div>
         </div>
         <label style="font-size:11px;color:var(--tx2);display:flex;align-items:center;gap:6px;margin-top:6px">
           <input type="checkbox" id="pm-age-ver"
@@ -5914,9 +5918,51 @@ function syncMetaUI(){
   const m = document.getElementById('pm-members');
   const a = document.getElementById('pm-address');
   const v = document.getElementById('pm-age-ver');
+  const p = document.getElementById('pm-poi-status');
   if(m) m.value = projMeta.memberCount != null ? projMeta.memberCount : '';
   if(a) a.value = projMeta.address || '';
   if(v) v.checked = !!projMeta.ageVerification;
+  if(p) p.textContent = projMeta.pois && projMeta.pois.length != null
+    ? '✓ ' + projMeta.pois.length + ' POI(s) geladen'
+    : '';
+}
+
+// Geocode projMeta.address and pull POIs from OSM Overpass. Results are
+// cached on projMeta so the poi100m rule can run without more network
+// traffic. Pure best-effort — errors just toast; the rule stays passed:null.
+async function loadProjectPois(){
+  const status = document.getElementById('pm-poi-status');
+  const addr = (projMeta.address||'').trim();
+  if(!addr){
+    if(status){ status.textContent = '❌ Erst Adresse eintragen'; status.style.color = '#f87171'; }
+    return;
+  }
+  if(!window.cscGeo){
+    if(status){ status.textContent = '❌ Geo-Modul nicht geladen'; status.style.color = '#f87171'; }
+    return;
+  }
+  if(status){ status.textContent = '⏳ Geocoding…'; status.style.color = 'var(--tx3)'; }
+  try {
+    const g = await window.cscGeo.geocode(addr);
+    if(!g){
+      if(status){ status.textContent = '❌ Adresse nicht gefunden'; status.style.color = '#f87171'; }
+      return;
+    }
+    projMeta.geocode = { lat: g.lat, lon: g.lon };
+    if(status) status.textContent = '⏳ Suche POIs im 500m-Umkreis…';
+    const pois = await window.cscGeo.fetchPois(g.lat, g.lon, 500);
+    projMeta.pois = pois;
+    if(status){
+      status.textContent = '✓ ' + pois.length + ' POI(s) geladen';
+      status.style.color = '#4ade80';
+    }
+    toast('📍 ' + pois.length + ' POI(s) aus OSM geladen','g');
+    if(typeof renderComplianceBadges === 'function') renderComplianceBadges();
+  } catch(e){
+    const msg = (e && e.message) ? e.message : String(e);
+    if(status){ status.textContent = '❌ Fehler: ' + msg.slice(0,80); status.style.color = '#f87171'; }
+    toast('POI-Fehler: ' + msg.slice(0,60),'r');
+  }
 }
 function saveProj(){
   const saves=JSON.parse(localStorage.getItem('csc-saves3')||'{}');
