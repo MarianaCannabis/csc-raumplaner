@@ -1,5 +1,6 @@
 import type { Room, PlacedObject, RuleContext } from './types.js';
 import { evaluateAll } from './registry.js';
+import { CO2_FACTOR_DE } from '../config/defaults.js';
 
 // =============================================================================
 // CAPACITY
@@ -168,3 +169,219 @@ export function calcHealthScore(
 // Avoid "imported but unused" on PlacedObject — keep the import so readers
 // see the full context shape this module consumes.
 export type { PlacedObject };
+
+// =============================================================================
+// FIRE SAFETY — DIN EN 3 / ASR A2.2 / §15 MBO / ASR A3.4/3
+// =============================================================================
+
+export interface FireSafetyResult {
+  /** 0–100 percent: fraction of 4 sub-checks passed. */
+  score: number;
+  extinguishersCount: number;
+  extinguishersRequired: number;
+  smokeDetectorsCount: number;
+  smokeDetectorsRequired: number;
+  emergencyExitsCount: number;
+  emergencyLightsCount: number;
+  extinguishersOk: boolean;
+  smokeDetectorsOk: boolean;
+  emergencyExitsOk: boolean;
+  emergencyLightsOk: boolean;
+  /** Legacy "Brandschutz erfüllt" gate: löscher AND rauchmelder ok. */
+  overallOk: boolean;
+  totalArea: number;
+  /** Actionable shortfall list, German, legacy-style. */
+  issues: string[];
+}
+
+export function calcFireSafety(ctx: RuleContext): FireSafetyResult {
+  const { rooms, objects } = ctx;
+  const totalArea = rooms.reduce((s, r) => s + r.w * r.d, 0);
+
+  // DIN EN 3 / ASR A2.2: 1 extinguisher per 200 m², minimum 1 per
+  // Brandabschnitt → floor gives room count; we pick the larger of the
+  // two requirements.
+  const extinguishersRequired = Math.max(rooms.length, Math.ceil(totalArea / 200));
+  const extinguishersCount = objects.filter((o) => o.typeId === 'sec-ext').length;
+
+  // §15 MBO: 1 smoke detector per room.
+  const smokeDetectorsRequired = rooms.length;
+  const smokeDetectorsCount = objects.filter((o) => o.typeId === 'sec-smoke').length;
+
+  const emergencyExitsCount = objects.filter((o) => o.typeId === 'sec-sign-exit').length;
+  const emergencyLightsCount = objects.filter((o) => o.typeId === 'sec-emlight').length;
+
+  const extinguishersOk = extinguishersCount >= extinguishersRequired;
+  const smokeDetectorsOk = smokeDetectorsCount >= smokeDetectorsRequired;
+  const emergencyExitsOk = emergencyExitsCount >= 1;
+  const emergencyLightsOk = emergencyLightsCount >= 1;
+  const overallOk = extinguishersOk && smokeDetectorsOk;
+
+  const issues: string[] = [];
+  if (!extinguishersOk) {
+    issues.push(`${extinguishersRequired - extinguishersCount} weitere Feuerlöscher erforderlich`);
+  }
+  if (!smokeDetectorsOk) {
+    issues.push(`${smokeDetectorsRequired - smokeDetectorsCount} weitere Rauchmelder erforderlich`);
+  }
+  if (!emergencyExitsOk) issues.push('Mind. 1 Notausgang-Schild fehlt');
+  if (!emergencyLightsOk) issues.push('Notbeleuchtung fehlt');
+
+  const passedCount = [
+    extinguishersOk,
+    smokeDetectorsOk,
+    emergencyExitsOk,
+    emergencyLightsOk,
+  ].filter(Boolean).length;
+  const score = Math.round((passedCount / 4) * 100);
+
+  return {
+    score,
+    extinguishersCount,
+    extinguishersRequired,
+    smokeDetectorsCount,
+    smokeDetectorsRequired,
+    emergencyExitsCount,
+    emergencyLightsCount,
+    extinguishersOk,
+    smokeDetectorsOk,
+    emergencyExitsOk,
+    emergencyLightsOk,
+    overallOk,
+    totalArea,
+    issues,
+  };
+}
+
+// =============================================================================
+// ACCESSIBILITY — DIN 18040
+// =============================================================================
+
+const ACCESS_DOOR_TYPE_RE = /^(at-|door|tür)/i;
+const ACCESS_AUTO_DOOR_TYPES = new Set(['at-karussel', 'at-barriere']);
+const ACCESS_MIN_DOOR_WIDTH_M = 0.9;
+const ACCESS_MIN_TURN_DIAM_M = 2.0; // Legacy: every room ≥ 2×2 m.
+
+export interface AccessibilityCheck {
+  label: string;
+  ok: boolean;
+  points: number;
+  max: number;
+}
+
+export interface AccessibilityResult {
+  /** 0–100 percent: weighted checks. */
+  score: number;
+  points: number;
+  maxPoints: number;
+  checks: AccessibilityCheck[];
+}
+
+export function calcAccessibilityScore(ctx: RuleContext): AccessibilityResult {
+  const { rooms, objects } = ctx;
+
+  // Legacy used `findItem(typeId).arch === 'door'`. We approximate via
+  // typeId prefix — same heuristic as the room-door-width rule and the
+  // escape-route worker.
+  const hasWideDoor = objects.some((o) => {
+    if (!ACCESS_DOOR_TYPE_RE.test(o.typeId)) return false;
+    const w = typeof o['w'] === 'number' ? (o['w'] as number) : 0;
+    return w >= ACCESS_MIN_DOOR_WIDTH_M;
+  });
+
+  // Note: legacy `rooms.every(...)` returns true vacuously for 0 rooms —
+  // preserved here so the score doesn't drift on empty layouts. Users see
+  // a full 20 pts while no room exists; that matches pre-P2.2 behaviour.
+  const turningRadiusOk = rooms.every(
+    (r) => r.w >= ACCESS_MIN_TURN_DIAM_M && r.d >= ACCESS_MIN_TURN_DIAM_M,
+  );
+
+  const checks: AccessibilityCheck[] = [
+    { label: 'Türbreite ≥ 90cm', ok: hasWideDoor, points: 0, max: 20 },
+    {
+      label: 'WC vorhanden',
+      ok: rooms.some((r) => /wc/i.test(r.name)),
+      points: 0,
+      max: 15,
+    },
+    {
+      label: 'Rampe/Aufzug',
+      ok: objects.some((o) => o.typeId === 'rollstuhlrampe'),
+      points: 0,
+      max: 15,
+    },
+    { label: 'Wendekr. ≥150cm', ok: turningRadiusOk, points: 0, max: 20 },
+    {
+      label: 'Notaussch.-Schild',
+      ok: objects.some((o) => o.typeId === 'sec-sign-exit'),
+      points: 0,
+      max: 15,
+    },
+    {
+      label: 'Automatiktür',
+      ok: objects.some((o) => ACCESS_AUTO_DOOR_TYPES.has(o.typeId)),
+      points: 0,
+      max: 15,
+    },
+  ];
+  for (const c of checks) c.points = c.ok ? c.max : 0;
+  const points = checks.reduce((s, c) => s + c.points, 0);
+  const maxPoints = checks.reduce((s, c) => s + c.max, 0);
+  const score = maxPoints > 0 ? Math.round((points / maxPoints) * 100) : 0;
+
+  return { score, points, maxPoints, checks };
+}
+
+// =============================================================================
+// ENERGY CERTIFICATE — GEG-Anlehnung (nicht rechtsverbindlich)
+// =============================================================================
+
+export type EnergyLabel = 'A++' | 'A+' | 'A' | 'B' | 'C' | 'D';
+
+export interface EnergyCertificateResult {
+  totalArea: number;
+  /** Annual consumption in kWh (heating + lighting, legacy formula). */
+  kwh: number;
+  kwhPerM2: number;
+  label: EnergyLabel;
+  labelColor: string;
+  /** Annual CO₂ emissions in kg, using CO2_FACTOR_DE from defaults. */
+  co2Kg: number;
+}
+
+const ENERGY_LABEL_COLORS: Record<EnergyLabel, string> = {
+  'A++': '#00aa00',
+  'A+': '#44cc00',
+  A: '#88dd00',
+  B: '#ccdd00',
+  C: '#ffcc00',
+  D: '#ff8800',
+};
+
+export function energyCertificate(rooms: Room[]): EnergyCertificateResult {
+  const totalArea = rooms.reduce((s, r) => s + r.w * r.d, 0);
+  // Legacy formula (generateEnergyCertificate pre-P2.2):
+  //   lighting_kWh = area · 8 W/m² · 8 h/day · 365 d / 1000
+  //   heating_kWh  = area · 50 W/m³ · 2000 HDD / 1000
+  // Residential-oriented thresholds; see FUNCTIONS-AUDIT §5.2 for the
+  // known issue with commercial-scale kWh/m² skew.
+  const kwh = (totalArea * 8 / 1000 * 8 * 365) + (totalArea * 50 / 1000 * 2000);
+  const kwhPerM2 = totalArea > 0 ? kwh / totalArea : 0;
+  const label: EnergyLabel =
+    kwhPerM2 < 30 ? 'A++' :
+    kwhPerM2 < 50 ? 'A+' :
+    kwhPerM2 < 75 ? 'A' :
+    kwhPerM2 < 100 ? 'B' :
+    kwhPerM2 < 130 ? 'C' : 'D';
+  // Legacy used a hardcoded 0.4 kg/kWh — we now use the centralised
+  // 363 g/kWh from defaults.ts (P2.0d), aligning with calcCO2Footprint.
+  const co2Kg = Math.round(kwh * (CO2_FACTOR_DE.value / 1000));
+  return {
+    totalArea,
+    kwh: Math.round(kwh),
+    kwhPerM2,
+    label,
+    labelColor: ENERGY_LABEL_COLORS[label],
+    co2Kg,
+  };
+}
