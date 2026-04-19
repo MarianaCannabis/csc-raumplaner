@@ -2208,14 +2208,18 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
             style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
         </div>
         <div class="mf">
-          <label style="font-size:10px;color:var(--tx3)">Adresse (für 100m-Check)</label>
-          <div style="display:flex;gap:5px">
+          <label style="font-size:10px;color:var(--tx3)">Adresse (für § 13 KCanG 200m-Standort-Check)</label>
+          <div style="display:flex;gap:5px;flex-wrap:wrap">
             <input type="text" id="pm-address" placeholder="Straße, PLZ Ort"
               onchange="projMeta.address=this.value;"
-              style="flex:1;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
-            <button class="tbt" onclick="loadProjectPois()" title="Schulen/Kitas/Sportstätten aus OpenStreetMap im 500m-Umkreis laden" style="padding:5px 8px;white-space:nowrap;font-size:11px">📍 POIs laden</button>
+              style="flex:1;min-width:140px;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
+            <button class="tbt" onclick="loadProjectPois()" title="Schulen/Kitas/Spielplätze/Sportstätten aus OpenStreetMap im 500m-Umkreis laden" style="padding:5px 8px;white-space:nowrap;font-size:11px">📍 POIs laden</button>
+            <button class="tbt" id="btn-bubatzkarte" onclick="openBubatzkarte()" title="Externe Karte zum Doppelcheck" style="padding:5px 8px;white-space:nowrap;font-size:11px">🗺️ Bubatzkarte</button>
           </div>
           <div id="pm-poi-status" style="font-size:10px;color:var(--tx3);margin-top:4px;min-height:14px"></div>
+          <div style="font-size:10px;color:var(--tx3);margin-top:4px;line-height:1.4">
+            ℹ️ Externer Abgleich: <a href="https://bubatzkarte.de" target="_blank" rel="noopener noreferrer" style="color:var(--gr)">bubatzkarte.de</a> zeigt § 5 KCanG Konsum-Zonen (100 m) basierend auf OSM. Für unseren § 13 200 m-Standort-Check siehe oben.
+          </div>
         </div>
         <label style="font-size:11px;color:var(--tx2);display:flex;align-items:center;gap:6px;margin-top:6px">
           <input type="checkbox" id="pm-age-ver"
@@ -5953,6 +5957,17 @@ function syncMetaUI(){
 // Geocode projMeta.address and pull POIs from OSM Overpass. Results are
 // cached on projMeta so the poiCscDistance rule can run without more network
 // traffic. Pure best-effort — errors just toast; the rule stays passed:null.
+// Opens bubatzkarte.de centred on the project's geocoded lat/lon so the
+// operator can cross-check our poiCscDistance (§ 13, 200 m) result against
+// the external map's § 5 consumption-zone overlay (100 m). Different rule,
+// different legal basis — we render both so nothing is missed by assumption.
+function openBubatzkarte(){
+  const geo = projMeta && projMeta.geocode;
+  if(!geo){ toast('Erst Adresse + POIs laden','b'); return; }
+  const url = 'https://bubatzkarte.de/#' + geo.lat + ',' + geo.lon + ',17';
+  window.open(url, '_blank', 'noopener,noreferrer');
+}
+
 async function loadProjectPois(){
   const status = document.getElementById('pm-poi-status');
   const addr = (projMeta.address||'').trim();
