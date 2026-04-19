@@ -14937,23 +14937,30 @@ function renderComplianceBadges(){
   document.querySelectorAll('.comp-badge').forEach(e=>e.remove());
   const wrap=document.getElementById('canvas-wrap'); if(!wrap) return;
 
-  const RULES=[
-    {check:r=>!objects.some(o=>o.typeId==='sec-smoke'&&o.x>=r.x&&o.x<=r.x+r.w&&o.y>=r.y&&o.y<=r.y+r.d),
-     label:'🔥',tip:'Kein Rauchmelder in diesem Raum',action:()=>{const r2=rooms.find(r2=>r2.id===r.id);addObject({typeId:'sec-smoke',x:r2.x+r2.w/2,y:r2.y+r2.d/2,w:0.12,d:0.12,h:0.05,rot:0,py:r2.h-0.1,floorId:curFloor});}},
-    {check:r=>r.w*r.d<4&&r.name.toLowerCase().includes('wc')&&false,label:'♿',tip:'WC zu klein'},
-  ];
+  // P1.5: drive from the TS registry. If the Vite module hasn't loaded yet
+  // (deferred module), skip rather than run a stale inline copy — the
+  // badges will paint on the next draw2D after main.ts finishes importing.
+  const reg = window.cscCompliance;
+  if(!reg || typeof reg.evaluateForRoom !== 'function'){
+    calcHealthScore();
+    return;
+  }
+
+  const BADGE_W = 22; // step between stacked badges on the same room
 
   rooms.filter(r=>(r.floorId||'eg')===curFloor).forEach(r=>{
-    RULES.forEach(rule=>{
-      if(!rule.check(r)) return;
-      const cx=wx2cx(r.x+r.w-0.5)+2, cy=wy2cy(r.y+0.3)+2;
-      const badge=document.createElement('div');
-      badge.className='comp-badge';
-      badge.style.left=cx+'px'; badge.style.top=cy+'px';
-      badge.textContent=rule.label;
-      badge.title=rule.tip+'\nKlick = automatisch beheben';
-      badge.style.cursor='pointer';
-      badge.onclick=()=>{rule.action&&rule.action();renderComplianceBadges();updateSuggestions();};
+    const results = reg.evaluateForRoom({rooms:rooms, objects:objects, meta:projMeta}, r);
+    const failing = results.filter(e=>e.passed === false);
+    failing.forEach((entry, i)=>{
+      const cx = wx2cx(r.x + r.w - 0.5) + 2 - i * BADGE_W;
+      const cy = wy2cy(r.y + 0.3) + 2;
+      const badge = document.createElement('div');
+      badge.className = 'comp-badge';
+      badge.style.left = cx + 'px';
+      badge.style.top  = cy + 'px';
+      badge.style.cursor = 'default';
+      badge.textContent = entry.rule.icon || '⚠️';
+      badge.title = (entry.rule.label) + (entry.details ? '\n' + entry.details : '');
       wrap.appendChild(badge);
     });
   });

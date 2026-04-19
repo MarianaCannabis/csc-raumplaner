@@ -15,8 +15,14 @@ import './rules/memberLimit.js';
 import './rules/youthProtection.js';
 import './rules/visualScreen.js';
 import './rules/poi100m.js';
+// Per-room (scope: 'room') — drive the canvas badge overlay.
+import './rules/roomSmokeDetector.js';
+import './rules/roomMinArea.js';
+import './rules/roomDoorWidth.js';
 
 export * as escapeAnalysis from './escapeAnalysis.js';
+
+export { evaluateForRoom } from './registry.js';
 
 export { evaluateAll, listRules, registerRule } from './registry.js';
 export type { EvaluationEntry } from './registry.js';
