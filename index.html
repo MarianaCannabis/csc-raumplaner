@@ -8309,6 +8309,18 @@ function cloudSignIn(){
   }
 }
 
+// GitHub Pages project sites live under /<repo>/ — if the page was opened as
+// /<repo>/index.html, location.pathname keeps the filename and Supabase's
+// redirect-URL allowlist normalizes it away. Strip any trailing file and
+// ensure a trailing slash so we always hand GoTrue the folder URL that the
+// Dashboard's allowed Redirect URLs match.
+function getRedirectUrl(){
+  let base = location.origin + location.pathname;
+  base = base.replace(/\/[^/]*\.\w+$/, '/');
+  if(!base.endsWith('/')) base += '/';
+  return base;
+}
+
 async function sendMagicLink(){
   const email = (document.getElementById('auth-email')?.value || '').trim();
   const msg = document.getElementById('auth-msg');
@@ -8323,17 +8335,20 @@ async function sendMagicLink(){
   }
   if(btn){ btn.disabled = true; btn.textContent = '⏳ Sende…'; }
   try {
+    const redirectTo = getRedirectUrl();
+    const payload = {
+      email: email,
+      create_user: true,
+      options: { email_redirect_to: redirectTo }
+    };
+    console.log('email_redirect_to payload:', payload);
     const r = await fetch(SB_URL+'/auth/v1/otp', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'apikey': SB_KEY
       },
-      body: JSON.stringify({
-        email: email,
-        create_user: true,
-        options: { email_redirect_to: location.origin + location.pathname }
-      })
+      body: JSON.stringify(payload)
     });
     if(r.ok){
       if(msg){ msg.textContent = '📧 Link gesendet! Prüfe dein Postfach.'; msg.style.color = '#4ade80'; }
