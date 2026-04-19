@@ -9449,10 +9449,24 @@ function zoomToSelection(){
 
 // ── 4. CSC MITGLIEDER-KAPAZITÄT ──────────────────────────────────────
 function calcCapacity(){
+  // P2.1a: delegate to src/compliance/metrics.ts when the Vite module has
+  // loaded. Legacy {total, details} shape preserved for 15+ call sites.
+  // Floor filter stays here so curFloor is a legacy concern, not a
+  // concept the TS side has to learn.
+  const filtered = rooms.filter(r=>(r.floorId||'eg')===curFloor);
+  if(window.cscCompliance && window.cscCompliance.metrics && typeof window.cscCompliance.metrics.calcCapacity === 'function'){
+    try {
+      const r = window.cscCompliance.metrics.calcCapacity(filtered);
+      return { total: r.total, details: r.details };
+    } catch(err){
+      console.warn('[metrics] calcCapacity delegate failed, using legacy fallback', err);
+    }
+  }
+  // Legacy fallback — pre-P2.1a inline path (identical math).
   const SQM_PER_PERSON = 2.0;
   let total = 0;
   const details = [];
-  rooms.filter(r=>(r.floorId||'eg')===curFloor).forEach(r=>{
+  filtered.forEach(r=>{
     const area = r.w * r.d;
     const cap  = Math.floor(area / SQM_PER_PERSON);
     total += cap;
@@ -14934,24 +14948,42 @@ function renderCustomPanel(el){
 
 // ── 1. HEALTH SCORE ──────────────────────────────────────────────────
 function calcHealthScore(){
-  let score=0;
-  const checks=getKCaNGChecklist();
-  // KCanG compliance (40%)
-  score += (checks.filter(c=>c.passed).length/checks.length)*40;
-  // Has rooms (15%)
-  if(rooms.length>=3) score+=15;
-  else if(rooms.length>=1) score+=7;
-  // Has furniture (15%)
-  if(objects.length>=10) score+=15;
-  else if(objects.length>=3) score+=7;
-  // Security (15%)
-  const secTypes=['sec-cam-ceil','sec-smoke','sec-ext'];
-  score += (secTypes.filter(t=>objects.some(o=>o.typeId===t)).length/secTypes.length)*15;
-  // Saved/cloud (15%)
-  if(localStorage.getItem('csc-autosave')) score+=8;
-  if(SB_URL&&SB_KEY) score+=7;
+  // P2.1a: delegate the arithmetic to src/compliance/metrics.ts; side
+  // effects (_healthScore global, #hs-fill / #hs-label DOM) stay here
+  // because they are legacy concerns outside the module's scope.
+  let score;
+  const flags = {
+    autosaveEnabled: !!localStorage.getItem('csc-autosave'),
+    cloudConnected: !!(SB_URL && SB_KEY),
+  };
+  if(window.cscCompliance && window.cscCompliance.metrics && typeof window.cscCompliance.metrics.calcHealthScore === 'function'){
+    try {
+      const b = window.cscCompliance.metrics.calcHealthScore(
+        { rooms: rooms, objects: objects, meta: projMeta },
+        flags
+      );
+      score = b.score;
+    } catch(err){
+      console.warn('[metrics] calcHealthScore delegate failed, using legacy fallback', err);
+    }
+  }
+  if(score == null){
+    // Legacy fallback — pre-P2.1a inline path (identical math + weights).
+    score = 0;
+    const checks=getKCaNGChecklist();
+    score += (checks.filter(c=>c.passed).length/checks.length)*40;
+    if(rooms.length>=3) score+=15;
+    else if(rooms.length>=1) score+=7;
+    if(objects.length>=10) score+=15;
+    else if(objects.length>=3) score+=7;
+    const secTypes=['sec-cam-ceil','sec-smoke','sec-ext'];
+    score += (secTypes.filter(t=>objects.some(o=>o.typeId===t)).length/secTypes.length)*15;
+    if(flags.autosaveEnabled) score+=8;
+    if(flags.cloudConnected) score+=7;
+    score = Math.round(score);
+  }
 
-  _healthScore=Math.round(score);
+  _healthScore = score;
   const fill=document.getElementById('hs-fill');
   const label=document.getElementById('hs-label');
   const col=_healthScore>=80?'#4ade80':_healthScore>=50?'#fbbf24':'#f87171';
