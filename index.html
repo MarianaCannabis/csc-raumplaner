@@ -4792,6 +4792,9 @@ fpCv.addEventListener('dblclick',e=>{
 });
 
 document.addEventListener('keydown',e=>{
+  // e.key is undefined for some synthetic/IME events; bail before any
+  // .toLowerCase() can throw and kill the whole handler (incl. ESC/Delete).
+  if(!e.key) return;
   if(e.code==='Space'&&!e.target.matches('input,textarea')){ e.preventDefault(); spaceDown=true; fpCv.style.cursor='grab'; }
   // Undo / Redo shortcuts
   if((e.ctrlKey||e.metaKey) && !e.target.matches('input,textarea')){
@@ -4817,7 +4820,7 @@ document.addEventListener('keydown',e=>{
   }
   keys[e.key.toLowerCase()]=true;
 });
-document.addEventListener('keyup',e=>{ if(e.code==='Space'){spaceDown=false; fpCv.style.cursor='default';} keys[e.key.toLowerCase()]=false;});
+document.addEventListener('keyup',e=>{ if(!e.key) return; if(e.code==='Space'){spaceDown=false; fpCv.style.cursor='default';} keys[e.key.toLowerCase()]=false;});
 
 // ── DRAG FROM CATALOG ────────────────────────────────────────────────────
 function startCatalogDrag(typeId){
@@ -12243,8 +12246,8 @@ function closeCmdPalette(){
 
 function filterCommands(q){
   const all=q?COMMANDS.filter(c=>
-    c.label.toLowerCase().includes(q.toLowerCase())||
-    c.sub.toLowerCase().includes(q.toLowerCase())
+    (c.label||'').toLowerCase().includes(q.toLowerCase())||
+    (c.sub||'').toLowerCase().includes(q.toLowerCase())
   ):COMMANDS;
   _cmdFiltered=all; _cmdIdx=0;
   renderCmdResults(all);
