@@ -16,7 +16,12 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: '24', cache: 'npm' }
-      - run: npm ci
+      # Using `npm install` instead of `npm ci` because the lockfile is
+      # authored on Windows and the Linux runner pulls different
+      # platform-conditional @emnapi optional deps — a known npm bug
+      # (npm/cli#4828). Reconciliation is acceptable here; for stricter
+      # projects: generate the lockfile on Linux in a Docker step first.
+      - run: npm install --no-audit --no-fund
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with: { path: dist }
