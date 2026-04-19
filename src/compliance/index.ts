@@ -9,12 +9,14 @@ import './rules/kamera.js';
 import './rules/notausgang.js';
 import './rules/feuerloescher.js';
 import './rules/alarm.js';
-import './rules/fluchtweg.js';
+import './rules/escapeRoute.js';
 import './rules/kapazitaet.js';
 import './rules/memberLimit.js';
 import './rules/youthProtection.js';
 import './rules/visualScreen.js';
 import './rules/poi100m.js';
+
+export * as escapeAnalysis from './escapeAnalysis.js';
 
 export { evaluateAll, listRules, registerRule } from './registry.js';
 export type { EvaluationEntry } from './registry.js';
