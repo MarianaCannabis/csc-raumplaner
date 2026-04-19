@@ -19020,7 +19020,10 @@ function printBarcodeLabel(invId){
 }
 
 // ── 9. KI-GEDÄCHTNIS (SUPABASE) ──────────────────────────────────────
+// Disabled until csc_ai_memory table + RLS are provisioned. Re-enable by
+// removing the `if(false)` gates here + at the setTimeout trigger below.
 async function saveAIChatToCloud(){
+  if(false) { /* csc_ai_memory not provisioned yet */ return; }
   if(!SB_URL||!SB_KEY){ toast('Keine Supabase-Verbindung','r'); return; }
   try{
     const chatLog=document.getElementById('ai-msgs')?.innerText||'';
@@ -19036,6 +19039,7 @@ async function saveAIChatToCloud(){
 }
 
 async function loadAIMemoryFromCloud(){
+  if(false) { /* csc_ai_memory not provisioned yet */ return; }
   if(!SB_URL||!SB_KEY) return;
   try{
     const resp=await fetch(SB_URL+'/rest/v1/csc_ai_memory?project_name=eq.'+encodeURIComponent(projName)+'&order=ts.desc&limit=1',{
@@ -20008,7 +20012,7 @@ if(!localStorage.getItem('csc-onboarded')){
 renderNorthArrow();
 setTimeout(registerServiceWorker,1000);
 initIndexedDB();
-setTimeout(loadAIMemoryFromCloud,2000);
+if(false) setTimeout(loadAIMemoryFromCloud,2000); // csc_ai_memory disabled
 setTimeout(initTouchHandlers,600);
 loadNamedVersions();setTimeout(renderVersionBadges,800);
 // Clear old closed-state cache that may have wrong defaults
