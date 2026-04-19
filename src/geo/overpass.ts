@@ -1,4 +1,4 @@
-// Nominatim (geocode) + Overpass (POI) wrappers for the KCanG 100m rule.
+// Nominatim (geocode) + Overpass (POI) wrappers for the KCanG distance rule.
 // Both services are free but rate-limited; we keep calls explicit (user
 // triggers via the "POIs laden" button, not on every keystroke).
 
@@ -22,7 +22,11 @@ export async function geocode(address: string): Promise<GeocodeResult | null> {
   return { lat: +first.lat, lon: +first.lon, displayName: first.display_name };
 }
 
-export type PoiType = 'school' | 'kindergarten' | 'sports';
+// Protected-POI types under KCanG § 13: Schulen, Kinder- und Jugendein-
+// richtungen, Kinderspielplätze, Sportstätten. 'youth' is carried through
+// the type union as reserved — community-centre tagging in OSM is too
+// irregular to query reliably; can be added later with a curated filter.
+export type PoiType = 'school' | 'kindergarten' | 'youth' | 'playground' | 'sports';
 
 export interface Poi {
   type: PoiType;
@@ -38,6 +42,7 @@ interface OverpassElement {
   tags?: { amenity?: string; leisure?: string; name?: string };
 }
 
+// Radius stays at 500 m (200 m rule + headroom for map visualisation).
 export async function fetchPois(
   lat: number,
   lon: number,
@@ -46,6 +51,8 @@ export async function fetchPois(
   const query = `[out:json][timeout:25];
     ( node["amenity"~"school|kindergarten"](around:${radiusM},${lat},${lon});
       way["amenity"~"school|kindergarten"](around:${radiusM},${lat},${lon});
+      node["leisure"="playground"](around:${radiusM},${lat},${lon});
+      way["leisure"="playground"](around:${radiusM},${lat},${lon});
       node["leisure"~"sports_centre|pitch|stadium"](around:${radiusM},${lat},${lon});
       way["leisure"~"sports_centre|pitch|stadium"](around:${radiusM},${lat},${lon}); );
     out center tags;`;
@@ -61,11 +68,15 @@ export async function fetchPois(
     const pLon = e.lon ?? e.center?.lon;
     if (pLat == null || pLon == null) continue;
     const amenity = e.tags?.amenity;
-    const type: PoiType =
-      amenity === 'kindergarten' ? 'kindergarten' : amenity === 'school' ? 'school' : 'sports';
+    const leisure = e.tags?.leisure;
+    let type: PoiType;
+    if (amenity === 'kindergarten') type = 'kindergarten';
+    else if (amenity === 'school') type = 'school';
+    else if (leisure === 'playground') type = 'playground';
+    else type = 'sports';
     out.push({
       type,
-      name: e.tags?.name ?? amenity ?? e.tags?.leisure ?? 'POI',
+      name: e.tags?.name ?? amenity ?? leisure ?? 'POI',
       lat: pLat,
       lon: pLon,
     });
