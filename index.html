@@ -6772,7 +6772,7 @@ function placeOpeningOrObject(typeId, wx, wz){
 // ── Smart placement is now inlined into placeFromCatalog directly ────────
 
 // ── DRAW DOOR 3D (enhanced: glass, security styles) ─────────────────────
-function buildDoor3D_v2(g, item, o){
+function buildDoor3D(g, item, o){
   const w=o.w||item.w||1, h=o.h||item.h||2.2;
   const style=o.doorStyle||item.doorStyle||'panel';
 
@@ -6847,8 +6847,10 @@ function buildDoor3D_v2(g, item, o){
     [[0.07,h+0.04,0.13,-w/2-0.035,h/2,0],[0.07,h+0.04,0.13,w/2+0.035,h/2,0],[w+0.14,0.07,0.13,0,h+0.035,0]].forEach(([fw,fh,fd,px,py,pz])=>{
       const m=new THREE.Mesh(new THREE.BoxGeometry(fw,fh,fd),fMat);m.position.set(px,py,pz);g.add(m);
     });
-    // Swing arc (visual only, tiny)
-    const arcMat=new THREE.MeshBasicMaterial({color:0xc8a060,transparent:true,opacity:0.2});
+    // Swing arc (visual only, tiny). P2.1b: promoted to MeshStandardMaterial
+    // with roughness 0.7 / metalness 0 — PBR-ready default; the arc still
+    // reads as a flat translucent hint because opacity carries the signal.
+    const arcMat=new THREE.MeshStandardMaterial({color:0xc8a060,roughness:0.7,metalness:0,transparent:true,opacity:0.2});
     const arcGeo=new THREE.CircleGeometry(w*0.98,20,0,Math.PI/2);
     const arc=new THREE.Mesh(arcGeo,arcMat);arc.rotation.x=-Math.PI/2;arc.position.set(-w/2,0.01,0);g.add(arc);
   }
@@ -7674,84 +7676,12 @@ function resetDesign(id){
 // ════════════════════════════════════════════════════════════════════════
 // PHASE 6C: KALLAX 3D BUILDER (realistic with configurable design)
 // ════════════════════════════════════════════════════════════════════════
-function buildKallax3D(g, item, o){
-  const w = o.w||item.w||1.54;
-  const d = o.d||item.d||0.39;
-  const h = o.h||item.h||1.47;
-  const dc = getObjDesign(o);
-
-  const frameCol = parseInt(dc.frame.replace('#',''),16);
-  const topCol   = parseInt((dc.topColor||'#3E2723').replace('#',''),16);
-  const ledCol   = parseInt((dc.led||'#1B4332').replace('#',''),16);
-
-  const frameMat = new THREE.MeshStandardMaterial({color:frameCol,roughness:0.65,metalness:0.02,
-    map: makeTex('parquet_light',2,3)});
-  const topMat   = new THREE.MeshStandardMaterial({color:topCol,roughness:0.55,metalness:0.05,
-    map: makeTex('parquet_dark',2,1)});
-
-  // How many columns based on width
-  const cols = w > 1.2 ? 4 : w > 0.65 ? 2 : 1;
-  const rows = 4;
-  const cw = (w - 0.03*(cols+1)) / cols;
-  const ch = (h - 0.44 - 0.03*(rows+1)) / rows; // reserve 0.44m for countertop
-
-  // Frame body
-  const body = new THREE.Mesh(new THREE.BoxGeometry(w, h-0.44, d), frameMat);
-  body.position.y = (h-0.44)/2; body.castShadow=true; body.receiveShadow=true; g.add(body);
-
-  // Front planks per cell (configurable color/pattern)
-  const plankMat = new THREE.MeshStandardMaterial({roughness:0.62,metalness:0.02,
-    map: makeTex('parquet_light',1,1)});
-  const colors = dc.colors && dc.colors.length ? dc.colors : [dc.frontColor];
-
-  for(let row=0;row<rows;row++){
-    for(let col=0;col<cols;col++){
-      const ci = row*cols+col;
-      let col2;
-      switch(dc.pattern){
-        case 'uniform':      col2=colors[0]; break;
-        case 'alternating-2':col2=colors[ci%2]||colors[0]; break;
-        case 'alternating-3':col2=colors[ci%Math.min(3,colors.length)]||colors[0]; break;
-        case 'gradient':     { const t=ci/Math.max(1,rows*cols-1); const c1=new THREE.Color(colors[0]),c2=new THREE.Color(colors[1]||colors[0]);col2='#'+c1.clone().lerp(c2,t).getHexString(); break; }
-        case 'random':       col2=colors[Math.floor(Math.random()*colors.length)]; break;
-        default:             col2=colors[0];
-      }
-      const pm = plankMat.clone();
-      pm.color.set(col2); pm.userData.materialCloned=true;
-      const px = -w/2 + 0.03 + cw/2 + col*(cw+0.03);
-      const py = 0.03 + ch/2 + row*(ch+0.03);
-      const plank = new THREE.Mesh(new THREE.BoxGeometry(cw, ch, d*0.04), pm);
-      plank.position.set(px, py, d/2+0.001); plank.userData.partType='front-plank'; plank.userData.partIndex=ci;
-      g.add(plank);
-    }
-  }
-
-  // Countertop
-  const topMesh = new THREE.Mesh(new THREE.BoxGeometry(w+0.04, 0.04, d+0.08), topMat);
-  topMesh.position.set(0, h-0.44+0.02, 0.02); topMesh.castShadow=true; g.add(topMesh);
-  // Front edge of countertop
-  const edge = new THREE.Mesh(new THREE.BoxGeometry(w+0.04, 0.44, 0.04), topMat);
-  edge.position.set(0, h-0.44-0.22+0.04, d/2+0.02); g.add(edge);
-
-  // LED strip
-  if(dc.ledOn !== false){
-    const ledMat = new THREE.MeshStandardMaterial({
-      color:ledCol, emissive:ledCol, emissiveIntensity:0.9, roughness:0.3
-    });
-    const led = new THREE.Mesh(new THREE.BoxGeometry(w-0.04, 0.018, 0.015), ledMat);
-    led.position.set(0, h-0.44-0.005, d/2-0.01); led.userData.partType='led-strip'; g.add(led);
-    // Point light
-    const pl = new THREE.PointLight(dc.ledGlow||ledCol, 0.6, 2.0);
-    pl._manual=true; pl.position.set(0, h-0.38, d/2+0.1); g.add(pl);
-  }
-
-  // Legs (4x small)
-  const legMat = new THREE.MeshStandardMaterial({color:0x888888,roughness:0.4,metalness:0.6});
-  [[-w/2+0.06,0.04],[w/2-0.06,0.04]].forEach(([lx])=>{
-    const leg = new THREE.Mesh(new THREE.BoxGeometry(0.04,0.08,d-0.04),legMat);
-    leg.position.set(lx,-0.04,0); g.add(leg);
-  });
-}
+// P2.1b: buildKallax3D (the "standard" variant) lived here until this
+// commit but was dead code — the dispatcher at build3DObj has always
+// called the Pro version. Removing the dead branch (~75 lines) so the
+// single remaining builder can take the clean name without a `Pro`
+// suffix. Lineage: the pre-deletion body is recoverable at commit
+// HEAD~ if a less-detailed fallback ever becomes useful.
 
 // ════════════════════════════════════════════════════════════════════════
 // PHASE 6D: DESIGN PANEL UI
@@ -7965,7 +7895,7 @@ function clearCellOverrides(oid){
 }
 
 // Extended KALLAX 3D builder — uses cell overrides
-function buildKallax3DPro(g, item, o){
+function buildKallax3D(g, item, o){
   const w = o.w||item.w||1.54;
   const d = o.d||item.d||0.39;
   const h = o.h||item.h||1.47;
@@ -8071,8 +8001,9 @@ function buildKallax3DPro(g, item, o){
   });
 }
 
-// ── Replace old buildKallax3D with Pro version ──────────────────────
-// (done by patching build3DObj dispatch below)
+// P2.1b: formerly buildKallax3DPro. The older simpler builder above was
+// unreachable — see comment at its former location. This is now the
+// single Kallax builder; dispatch calls buildKallax3D directly.
 
 // ── FULL DESIGN PANEL RENDERER (extended) ───────────────────────────
 let kallaxActiveTab = 'style'; // style | cells | surface | export
@@ -20724,13 +20655,13 @@ function build3DObj(o){
   const metal = o.metalness !== undefined ? o.metalness : (item.arch==='window'?0.0: item.arch==='door'?0.05:['Lager','Info'].includes(item.cat)?0.55:0.04);
 
   if(item.isKallax || (item.id&&item.id.startsWith('kallax'))){
-    buildKallax3DPro(g, item, o); // v3.56 Pro
+    buildKallax3D(g, item, o);
   } else if(item.arch==='security'){
     buildSecurity3D(g, item, o);
   } else if(item.arch==='foil'){
     buildFoil3D(g, item, o);
   } else if(item.arch==='door'){
-    buildDoor3D_v2(g, item, o); // Phase 3 enhanced
+    buildDoor3D(g, item, o);
     if(false){ // old code kept for reference
     const dMat=new THREE.MeshStandardMaterial({color:colHex,roughness:rough,metalness:metal});
     const dr=new THREE.Mesh(new THREE.BoxGeometry(w-0.06,h-0.06,0.04),dMat);
