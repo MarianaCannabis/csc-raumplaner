@@ -212,7 +212,7 @@ canvas{display:block}
 .pbtn.del:hover{background:#3f1111}
 
 /* ─ MODALS ──────────────────────────────────────────────── */
-.mover{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:200;align-items:center;justify-content:center}
+.mover{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9500;align-items:center;justify-content:center}
 .mover.open{display:flex}
 .modal{background:var(--bg2);border:1px solid var(--bd2);border-radius:var(--r12);padding:22px;width:400px;max-width:96vw;max-height:92vh;overflow-y:auto}
 .modal h2{font-size:14px;font-weight:700;margin-bottom:14px;color:var(--gr)}
@@ -1685,9 +1685,10 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
   <div style="font-size:48px">🔐</div>
   <div style="color:var(--gr);font-size:18px;font-weight:700">Login erforderlich</div>
   <div style="color:var(--tx2);font-size:13px;max-width:320px;text-align:center;line-height:1.5">
-    Bitte öffne den Magic-Link aus deiner E-Mail.<br>Das Fenster schließt sich automatisch nach dem Login.
+    Du musst eingeloggt sein, um den Raumplaner zu nutzen.<br>
+    Magic-Link per E-Mail — kein Passwort nötig.
   </div>
-  <button class="mbt ok" onclick="openM('m-auth')" style="margin-top:8px">🔑 Erneut senden</button>
+  <button class="mbt ok" onclick="openM('m-auth')" style="margin-top:8px">🔑 Jetzt einloggen</button>
 </div>
 <div id="app">
 
