@@ -27,7 +27,10 @@ export interface Poi {
 export interface ProjectMeta {
   memberCount?: number;
   address?: string;
+  ageVerification?: boolean;
   pois?: Poi[];
+  /** Geocoded lat/lon of the address — filled by loadProjectPois(). */
+  geocode?: { lat: number; lon: number };
 }
 
 export interface RuleContext {
