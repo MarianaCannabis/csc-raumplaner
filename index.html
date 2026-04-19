@@ -4345,9 +4345,8 @@ function getCatalog(){
   // P3.1/P3.2: TS-side catalog items (test model + new CSC primitives + later
   // GLTF furniture) registered via window.cscCatalog. Empty if the Vite
   // module isn't ready — pre-boot catalog renders BUILTIN + customObjs only.
-  const testItems = (window.cscCatalog && window.cscCatalog.testItems) ? window.cscCatalog.testItems : [];
   const newItems  = (window.cscCatalog && window.cscCatalog.newItems)  ? window.cscCatalog.newItems  : [];
-  return [...BUILTIN, ...customObjs.map(o=>({...o,custom:true})), ...testItems, ...newItems];
+  return [...BUILTIN, ...customObjs.map(o=>({...o,custom:true})), ...newItems];
 }
 function getArchCatalog(){ return ARCH.filter(i=>i.cat!=='Kameras'&&i.cat!=='Alarm'&&i.cat!=='Brandschutz'&&i.cat!=='Sicherung'&&i.cat!=='Notfall'); }
 function getSecurityCatalog(){ return ARCH.filter(i=>['Kameras','Alarm','Brandschutz','Sicherung','Notfall'].includes(i.cat)); }

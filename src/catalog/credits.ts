@@ -12,25 +12,18 @@ export interface Credit {
 // künftige Nutzer.
 export const CREDITS: Credit[] = [
   {
-    name: 'Duck.glb (Pipeline-Test)',
-    source: 'Khronos glTF Sample Models',
-    license: 'CC-BY 4.0 (Sony / Intel)',
-    url: 'https://github.com/KhronosGroup/glTF-Sample-Models',
-    note: 'Wird in P3.2c durch echte CSC-Furniture-Modelle ersetzt.',
+    name: 'Kenney Furniture Kit 2.0 (54 Modelle)',
+    source: 'kenney.nl',
+    license: 'CC0 1.0 Universal (Public Domain)',
+    url: 'https://kenney.nl/assets/furniture-kit',
+    note: 'Stühle, Tische, Sofas, Küche, Büro, Sanitär, Pflanzen/Deko — 54 von 140 GLB-Modellen ausgewählt. Keine Namensnennung rechtlich nötig; freiwillig aufgeführt.',
   },
   {
-    name: 'Quaternius — Ultimate Interior / Kitchen / Office Packs',
+    name: 'Quaternius (Platzhalter für P3.3)',
     source: 'quaternius.com',
     license: 'CC0 1.0 Universal (Public Domain)',
     url: 'https://quaternius.com',
-    note: 'Keine Namensnennung rechtlich nötig — freiwillig aufgeführt.',
-  },
-  {
-    name: 'Kenney — Furniture Kit / Office Kit',
-    source: 'kenney.nl',
-    license: 'CC0 1.0 Universal (Public Domain)',
-    url: 'https://kenney.nl/assets',
-    note: 'Keine Namensnennung rechtlich nötig — freiwillig aufgeführt.',
+    note: 'Noch nicht integriert — P3.3 erweitert den Katalog um Quaternius-Interior/Kitchen/Office-Packs.',
   },
   {
     name: 'ambientCG — PBR Texture Maps (Wood050, Metal032, Fabric070, Plastic008, Concrete033)',
