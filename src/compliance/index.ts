@@ -29,6 +29,7 @@ import './rules/roomMinArea.js';
 import './rules/roomDoorWidth.js';
 
 export * as escapeAnalysis from './escapeAnalysis.js';
+export * as metrics from './metrics.js';
 
 export { evaluateAll, listRules, registerRule, evaluateForRoom } from './registry.js';
 export type { EvaluationEntry } from './registry.js';
