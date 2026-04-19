@@ -9425,6 +9425,36 @@ function calcCapacity(){
 
 // ── 5. KCanG CHECKLISTE ───────────────────────────────────────────────
 function getKCaNGChecklist(){
+  // P1.4: delegate to the TypeScript registry (16 rules incl. POI, escape
+  // geometry, youth protection, visual-screen, member limit). Legacy
+  // {id,label,passed} shape preserved for the many call sites.
+  //
+  // passed:null (rule not applicable — e.g. no address for poi100m) maps
+  // to passed:true so health-score / kcang_complete award / suggestion
+  // filters don't treat "n/a" as a blocker. The richer `details` string
+  // rides along for P1.5 tooltip work.
+  //
+  // Fallback below keeps the pre-P1.2 12-rule behavior if the Vite
+  // module hasn't loaded yet (module scripts are deferred; any legacy
+  // call during inline-script parse hits this path). Registry calls
+  // after boot always take over.
+  if(window.cscCompliance && typeof window.cscCompliance.evaluateAll === 'function'){
+    try {
+      const entries = window.cscCompliance.evaluateAll({
+        rooms: rooms,
+        objects: objects,
+        meta: projMeta
+      });
+      return entries.map(e => ({
+        id: e.rule.id,
+        label: e.rule.label,
+        passed: e.passed !== false, // null (n/a) + true both count as ok
+        details: e.details,
+      }));
+    } catch(err) {
+      console.warn('[compliance] registry evaluate failed, using legacy fallback', err);
+    }
+  }
   const checks = [
     {id:'ausgabe',    label:'Ausgaberaum vorhanden',      check:()=>rooms.some(r=>r.name.toLowerCase().includes('ausgab'))},
     {id:'lager',      label:'Lagerraum vorhanden',        check:()=>rooms.some(r=>r.name.toLowerCase().includes('lager'))},
