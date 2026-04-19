@@ -1682,13 +1682,25 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 <body>
 <!-- LOGIN GATE — blocking overlay shown when SB_TOKEN is empty. -->
 <div id="login-gate" style="display:none;position:fixed;inset:0;background:rgba(10,15,20,.92);z-index:9000;backdrop-filter:blur(6px);align-items:center;justify-content:center;flex-direction:column;gap:12px;font-family:system-ui">
-  <div style="font-size:48px">🔐</div>
-  <div style="color:var(--gr);font-size:18px;font-weight:700">Login erforderlich</div>
-  <div style="color:var(--tx2);font-size:13px;max-width:320px;text-align:center;line-height:1.5">
-    Du musst eingeloggt sein, um den Raumplaner zu nutzen.<br>
-    Magic-Link per E-Mail — kein Passwort nötig.
+  <div id="gate-default" style="display:flex;flex-direction:column;align-items:center;gap:12px">
+    <div style="font-size:48px">🔐</div>
+    <div style="color:var(--gr);font-size:18px;font-weight:700">Login erforderlich</div>
+    <div style="color:var(--tx2);font-size:13px;max-width:320px;text-align:center;line-height:1.5">
+      Du musst eingeloggt sein, um den Raumplaner zu nutzen.<br>Magic-Link per E-Mail — kein Passwort nötig.
+    </div>
+    <button class="mbt ok" onclick="openM('m-auth')" style="margin-top:8px">🔑 Jetzt einloggen</button>
   </div>
-  <button class="mbt ok" onclick="openM('m-auth')" style="margin-top:8px">🔑 Jetzt einloggen</button>
+  <div id="gate-awaiting" style="display:none;flex-direction:column;align-items:center;gap:12px">
+    <div style="font-size:48px">📬</div>
+    <div style="color:var(--gr);font-size:18px;font-weight:700">Prüfe dein Postfach</div>
+    <div style="color:var(--tx2);font-size:13px;max-width:340px;text-align:center;line-height:1.5">
+      Wir haben dir eine Mail geschickt. Klicke den <b>Magic-Link</b> — dieses Fenster schließt sich dann automatisch.
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button class="mbt" onclick="openM('m-auth')">Andere E-Mail</button>
+      <button class="mbt ok" onclick="openM('m-auth')">🔄 Erneut senden</button>
+    </div>
+  </div>
 </div>
 <div id="app">
 
@@ -8298,10 +8310,26 @@ function updateAuthStatus(){
 
 // Blocking overlay — visible iff there is no active session. Cheap enough
 // to call on every auth-state change; uses display toggle, no layout churn.
+// Two sub-states (_gateState) swap the visible sub-container:
+//   'default'  — initial "Login erforderlich" CTA
+//   'awaiting' — after sendMagicLink → "Prüfe dein Postfach"
+var _gateState = 'default';
+
+function setGateState(s){
+  _gateState = s;
+  const def = document.getElementById('gate-default');
+  const awa = document.getElementById('gate-awaiting');
+  if(def) def.style.display = s === 'default' ? 'flex' : 'none';
+  if(awa) awa.style.display = s === 'awaiting' ? 'flex' : 'none';
+}
+
 function updateLoginGate(){
   const el = document.getElementById('login-gate');
   if(!el) return;
   el.style.display = SB_TOKEN ? 'none' : 'flex';
+  // Reset to 'default' once logged in, so the NEXT logout lands on the
+  // initial CTA instead of sticking on "Prüfe dein Postfach".
+  if(SB_TOKEN) setGateState('default');
 }
 
 function rehydrateAuth(){
@@ -8387,6 +8415,7 @@ async function sendMagicLink(){
       if(msg){ msg.textContent = '📧 Link gesendet! Prüfe dein Postfach.'; msg.style.color = '#4ade80'; }
       toast('📬 Prüfe dein Postfach','b');
       setTimeout(()=>closeM('m-auth'), 2000);
+      setGateState('awaiting');
     } else {
       const err = await r.text().catch(()=>'');
       if(msg){ msg.textContent = '❌ Fehler: ' + err.slice(0,120); msg.style.color = '#f87171'; }
