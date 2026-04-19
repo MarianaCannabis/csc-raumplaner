@@ -3538,7 +3538,7 @@ async function callAI(prompt, opts={}){
   }
   const maxTokens=opts.maxTokens||800;
   const sysPrompt=opts.system||AI_SYS;
-  const model=opts.model||'claude-sonnet-4-5';
+  const model=opts.model||'claude-sonnet-4-6';
   try{
     const resp=await aiFetch({
       model,
@@ -7483,7 +7483,7 @@ async function aiLightPrompt(){
   try{
     const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
-      body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:600,
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,
         system:'Lichtdesigner. Antworte NUR JSON: {"sky":"#hex","hemiSky":"#hex","hemiGnd":"#hex","hemiStr":0.65,"sunStr":1.8,"sunAz":210,"sunEl":55,"sunCol":"#hex","fillStr":0.4,"fillCol":"#hex","roomStr":0.85,"roomCol":"#hex","exp":1.1,"fog":0.013}',
         messages:[{role:'user',content:'Lichteinstellungen für: '+desc}]
       })
@@ -8957,7 +8957,7 @@ async function sendAI(){
         'apikey': SB_KEY
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-5',
+        model: 'claude-sonnet-4-6',
         max_tokens: 4096,
         system: AI_SYS,
         messages: [{role:'user', content}]
@@ -9515,13 +9515,13 @@ async function estimateCosts(){
     const resp = await fetch(SB_URL+'/functions/v1/anthropic-proxy',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
-      body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:600,
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,
         messages:[{role:'user',content:
           'Schätze grobe Einrichtungskosten für eine CSC-Ausgabestelle in Deutschland.\n'
           +'Gesamtfläche: '+totalArea+'m²\n'
           +'Einrichtung: '+items.slice(0,20).join(', ')+'\n\n'
           +'Antworte mit einer kurzen übersichtlichen Kostenschätzung auf Deutsch '
-          +'(Möbel, Sicherheit, Elektro, Gesamt). Realistisch für 2024/2025.'}]
+          +'(Möbel, Sicherheit, Elektro, Gesamt). Realistisch für 2026.'}]
       })
     });
     const data = await resp.json();
@@ -9692,7 +9692,7 @@ async function optimizeLayout(){
     const resp = await fetch(SB_URL+'/functions/v1/anthropic-proxy',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
-      body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:800,
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,
         messages:[{role:'user',content:stateCtx+'\n\nDu bist ein CSC-Experte. '
           +'Analysiere diesen Grundriss und gib konkrete Verbesserungsvorschläge:\n'
           +'1. Kundenfluss & Ergonomie\n'
@@ -9929,7 +9929,7 @@ async function optimizeFurnitureInRoom(roomId){
     const resp = await fetch(SB_URL+'/functions/v1/anthropic-proxy',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
-      body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:1200,
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1200,
         messages:[{role:'user',content:
           'Du bist Innenarchitekt für CSC-Ausgabestellen. Optimiere die Möbelpositionierung.\n\n'
           +'Raum "'+r.name+'": '+r.w+'m × '+r.d+'m (Koordinaten: x='+r.x+', y='+r.y+')\n'
@@ -11690,7 +11690,7 @@ async function aiDescribeRoom(){
   try{
     const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
-      body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:400,messages:[{role:'user',content:
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:400,messages:[{role:'user',content:
         'Beschreibe wie dieser Raum wirkt und was die Atmosphäre ausmacht:\n'
         +'Raum: '+r.name+' ('+r.w+'×'+r.d+'m, Höhe '+r.h+'m)\n'
         +'Einrichtung: '+objs+'\n'
@@ -11711,7 +11711,7 @@ async function aiSecurityAudit(){
   try{
     const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
-      body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:800,messages:[{role:'user',content:
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:
         'Führe einen detaillierten Sicherheits-Audit für eine CSC-Ausgabestelle durch.\n\n'
         +'Räume: '+JSON.stringify(rooms.map(r=>r.name))+'\n'
         +'Sicherheitsausstattung: '+(secList||'keine')+'\n'
@@ -11736,7 +11736,7 @@ async function aiAccessibleRebuild(){
   try{
     const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
-      body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:600,messages:[{role:'user',content:
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,messages:[{role:'user',content:
         'Plane konkrete Umbaumaßnahmen für barrierefreie Zugänglichkeit.\n\n'
         +'Raum: '+r.name+' ('+r.w+'×'+r.d+'m)\n'
         +'Vorhandene Türen: '+objects.filter(o=>o.x>=r.x&&o.x<=r.x+r.w&&o.y>=r.y&&o.y<=r.y+r.d&&findItem(o.typeId)?.arch==='door').length+'\n\n'
@@ -12784,7 +12784,7 @@ async function autoLabelRooms(){
     const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
-      body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:400,
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:400,
         messages:[{role:'user',content:
           'Benenne diese Räume für eine CSC-Ausgabestelle sinnvoll auf Deutsch.\n'
           +'Räume:\n'+rooms.map((r,i)=>(i+1)+'. '+r.w+'×'+r.d+'m ('+r.name+')').join('\n')+'\n\n'
@@ -13271,7 +13271,7 @@ const OB_STEPS=[
   <text x="35" y="119" fill="#9a9288" font-size="7" font-family="sans-serif">✓ Sozialbereich 8×7m eingerichtet</text>
   <text x="35" y="131" fill="#9a9288" font-size="7" font-family="sans-serif">✓ 23 Möbel platziert</text>
   <text x="35" y="143" fill="#9a9288" font-size="7" font-family="sans-serif">✓ Sicherheitsausstattung installiert</text>
-  <text x="35" y="155" fill="#4ade80" font-size="7" font-family="sans-serif">✅ Fertig! 8/12 KCanG-Punkte erfüllt</text>
+  <text x="35" y="155" fill="#4ade80" font-size="7" font-family="sans-serif">✅ Fertig! 12/16 KCanG-Punkte erfüllt</text>
   <!-- Input box -->
   <rect x="20" y="162" width="330" height="22" fill="#111" stroke="#1a3a1a" stroke-width="1" rx="4"/>
   <text x="30" y="176" fill="#555" font-size="8" font-family="sans-serif">Schreibe einen Befehl...</text>
@@ -13765,7 +13765,7 @@ async function aiStyleAdvisor(){
   try{
     const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
-      body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:500,messages:[{role:'user',content:
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:500,messages:[{role:'user',content:
         'Gib konkrete Stil-Empfehlungen für einen CSC:\n'
         +'Atmosphäre: '+(styles[(+q1||1)-1])+'\nZielgruppe: '+(targets[(+q2||3)-1])+'\nBudget: '+(budgets[(+q3||2)-1])+'\n\n'
         +'Empfehle: Farbpalette, Möbelstil, Beleuchtung, 3 konkrete Möbelstücke, Besonderheit. Auf Deutsch, knapp und umsetzbar.'}]})
@@ -13786,7 +13786,7 @@ async function generateSessionProtocol(){
   try{
     const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
-      body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:400,messages:[{role:'user',content:
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:400,messages:[{role:'user',content:
         'Erstelle ein kurzes Planungsprotokoll auf Deutsch:\n'
         +'Projekt: '+d.name+'\nRäume: '+d.rooms.length+' ('+d.rooms.map(r=>r.name).join(', ')+')\n'
         +'Objekte: '+d.objects.length+'\nÄnderungen: '+changes+'\n\n'
@@ -16415,7 +16415,12 @@ function buildMonitorScreen(g, item, o){
   c.fillText('🌿 CSC Planer',20,40);
   c.font='11px monospace'; c.fillStyle='#9a9288';
   c.fillText('Kapazität: 47 Personen',20,65);
-  c.fillText('KCanG: 10/12 ✓',20,80);
+  // KCanG count pulled from the live registry so it tracks P1+ expansions
+  // (12 → 16 → …) instead of rotting as a hardcoded "10/12".
+  var _kch = (typeof getKCaNGChecklist === 'function') ? getKCaNGChecklist() : [];
+  var _p = _kch.filter(function(_c){ return _c.passed; }).length;
+  var _n = _kch.length || 16;
+  c.fillText('KCanG: ' + _p + '/' + _n + ' ✓', 20, 80);
   c.fillText('Budget: 24.850 €',20,95);
   c.fillStyle='#4ade80'; c.fillText('Status: AKTIV',20,115);
   const tex=new THREE.CanvasTexture(cv);
@@ -16990,7 +16995,7 @@ function calcCO2Footprint(){
     +kpiRow('⚡ Jahresenergie',Math.round(totalKwh)+' kWh','#fbbf24')
     +kpiRow('💨 CO₂/Jahr',Math.round(co2)+' kg','#f87171')
     +kpiRow('🌳 Bäume nötig',Math.round(co2/22)+' Bäume','#4ade80')
-    +'<div style="margin-top:8px;font-size:10px;color:var(--tx3)">Basis: 400g CO₂/kWh (DE 2024) · LED-Beleuchtung</div>'
+    +'<div style="margin-top:8px;font-size:10px;color:var(--tx3)">Basis: 400g CO₂/kWh (DE 2026) · LED-Beleuchtung</div>'
     +'<div style="margin-top:6px">'
     +'<button class="mbt ok" onclick="calcEnergy();openM(\'m-energy\')" style="font-size:10px;width:100%">⚡ Energie-Details</button>'
     +'</div></div>';
@@ -17486,7 +17491,7 @@ async function calcAISecurityScore(){
     try{
       const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{method:'POST',
         headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
-        body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:200,messages:[{role:'user',content:
+        body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:200,messages:[{role:'user',content:
           'Gib 2 konkrete Sicherheits-Empfehlungen für einen CSC (Score: '+totalScore+'/100).\n'
           +'Schwächen: '+scores.filter(s=>s.points/s.max<0.75).map(s=>s.cat).join(', ')+'\n'
           +'Antworte NUR: ["Tipp1","Tipp2"]'}]})
@@ -17564,7 +17569,7 @@ async function generateFullReport(){
   try{
     const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
-      body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:600,messages:[{role:'user',content:
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,messages:[{role:'user',content:
         'Erstelle einen professionellen Kurzgutachten (3-4 Absätze) für diese CSC-Ausgabestelle:\n'
         +'Projektname: '+d.name+'\nRäume: '+d.rooms.length+' ('+d.rooms.map(r=>r.name).join(', ')+')\n'
         +'Kapazität: '+cap.total+' Personen\nScore: '+score+'%\n'
@@ -18010,7 +18015,7 @@ async function generateFullReport(){
   try{
     const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
-      body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:600,messages:[{role:'user',content:
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,messages:[{role:'user',content:
         'Professionelles Kurzgutachten (3 Absaetze) fuer CSC:\n'
         +'Name: '+d.name+'\nRaeume: '+d.rooms.map(r=>r.name).join(', ')+'\n'
         +'Kapazitaet: '+cap.total+' Personen\nScore: '+score+'%\n'
@@ -18179,7 +18184,7 @@ async function runFloorPlanRecognition(){
     const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
-      body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:1200,messages:[{role:'user',content}]})
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1200,messages:[{role:'user',content}]})
     });
     const text=(await resp.json()).content?.[0]?.text||'{}';
     const jsonMatch=text.match(/\{[\s\S]*\}/);
@@ -18367,7 +18372,7 @@ async function autoArrangeFurniture(roomId){
   try{
     const resp=await fetch(SB_URL+'/functions/v1/anthropic-proxy',{method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
-      body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:600,messages:[{role:'user',content:
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,messages:[{role:'user',content:
         'Optimale Möbelanordnung fuer Raum "'+r.name+'" ('+r.w+'x'+r.d+'m).\n'
         +'Antworte NUR mit JSON:\n'
         +'[{"typeId":"aus-theke","x":'+r.x.toFixed(1)+',"y":'+r.y.toFixed(1)+',"rot":0},...]\n'
@@ -20378,7 +20383,7 @@ async function applyAIMood(){
     const resp = await fetch(SB_URL+'/functions/v1/anthropic-proxy',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
-      body: JSON.stringify({model:'claude-sonnet-4-5',max_tokens:800,
+      body: JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,
         system:`Du bist ein Lichtdesigner. Antworte NUR mit JSON:
 {"hemiSky":"#hexcolor","hemiGround":"#hexcolor","hemiInt":0.7,"sunColor":"#hexcolor","sunInt":1.8,"fillColor":"#hexcolor","fillInt":0.4,"bgColor":"#hexcolor","exposure":1.1,"roomLightColor":"#hexcolor","roomLightInt":1.0,"fogDensity":0.013,"message":"Kurze Erklärung auf Deutsch"}`,
         messages:[{role:'user',content:'Erstelle Lichteinstellungen für: '+desc}]
@@ -20885,7 +20890,7 @@ async function wizardGenerate(){
     const resp = await fetch(SB_URL+'/functions/v1/anthropic-proxy',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_TOKEN,'apikey':SB_KEY},
-      body: JSON.stringify({model:'claude-sonnet-4-5',max_tokens:500,messages:[{role:'user',content:prompt}]})
+      body: JSON.stringify({model:'claude-sonnet-4-6',max_tokens:500,messages:[{role:'user',content:prompt}]})
     });
     const data = await resp.json();
     const raw = data.content?.[0]?.text||'{}';
@@ -21531,7 +21536,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
   <text x="35" y="119" fill="#9a9288" font-size="7" font-family="sans-serif">✓ Sozialbereich 8×7m eingerichtet</text>
   <text x="35" y="131" fill="#9a9288" font-size="7" font-family="sans-serif">✓ 23 Möbel platziert</text>
   <text x="35" y="143" fill="#9a9288" font-size="7" font-family="sans-serif">✓ Sicherheitsausstattung installiert</text>
-  <text x="35" y="155" fill="#4ade80" font-size="7" font-family="sans-serif">✅ Fertig! 8/12 KCanG-Punkte erfüllt</text>
+  <text x="35" y="155" fill="#4ade80" font-size="7" font-family="sans-serif">✅ Fertig! 12/16 KCanG-Punkte erfüllt</text>
   <!-- Input box -->
   <rect x="20" y="162" width="330" height="22" fill="#111" stroke="#1a3a1a" stroke-width="1" rx="4"/>
   <text x="30" y="176" fill="#555" font-size="8" font-family="sans-serif">Schreibe einen Befehl...</text>
@@ -21621,7 +21626,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
           <li>Fehlende Pflichtbereiche</li>
         </ul>
         <h2>Kosten schätzen (💰)</h2>
-        <p>KI schätzt realistische Einrichtungskosten basierend auf Fläche und Möbeln (Stand 2024/2025).</p>
+        <p>KI schätzt realistische Einrichtungskosten basierend auf Fläche und Möbeln (Stand 2026).</p>
         <h2>Barrierefreiheit prüfen (♿)</h2>
         <p>Automatische Prüfung auf:</p>
         <ul>
