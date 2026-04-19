@@ -8,7 +8,9 @@ import { scheduleAnalysis, subscribe, getLatestAnalysis } from './compliance/esc
 import { loadModel, fitToBounds } from './three/assetLoader.js';
 import { makeMaterial, makeMaterialWithTextures } from './three/materials.js';
 import type { MaterialKey } from './three/materials.js';
+import * as primitiveBuilders from './three/primitiveBuilders.js';
 import { NEW_CATALOG } from './catalog/index.js';
+import { RICH_PRIMITIVES } from './catalog/items/primitives.js';
 import { CREDITS, renderCreditsHtml } from './catalog/credits.js';
 
 console.info('[csc] vite entry alive', import.meta.env.MODE);
@@ -52,7 +54,9 @@ declare global {
     };
     cscCatalog: {
       newItems: typeof NEW_CATALOG;
+      richPrimitives: typeof RICH_PRIMITIVES;
     };
+    cscBuilders: typeof primitiveBuilders;
     cscCredits: {
       list: typeof CREDITS;
       renderHtml: typeof renderCreditsHtml;
@@ -65,7 +69,8 @@ window.cscDefaults = defaults;
 window.cscEscape = { schedule: scheduleAnalysis, getLatest: getLatestAnalysis };
 window.cscAssets = { loadModel, fitToBounds };
 window.cscMaterials = { make: makeMaterial, makeTextured: makeMaterialWithTextures };
-window.cscCatalog = { newItems: NEW_CATALOG };
+window.cscCatalog = { newItems: NEW_CATALOG, richPrimitives: RICH_PRIMITIVES };
+window.cscBuilders = primitiveBuilders;
 window.cscCredits = { list: CREDITS, renderHtml: renderCreditsHtml };
 
 // Project-panel footer: show the most-recent lastVerified so the operator

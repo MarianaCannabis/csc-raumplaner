@@ -18,8 +18,49 @@
 // Texture sets live in public/textures/ambientcg/<kind>/ and are served
 // at runtime from the Vite BASE_URL path. All sets are ambientCG CC0.
 
-import { MeshStandardMaterial, DoubleSide } from 'three';
+import { MeshStandardMaterial, MeshPhysicalMaterial, DoubleSide } from 'three';
 import type { Texture } from 'three';
+
+// -----------------------------------------------------------------------------
+// Procedural material shortcuts for the P3.2 rich-primitive builders.
+// Zero textures, zero network dependency — builders assemble multi-mesh
+// groups using these. Fabric uses physical-sheen + glass uses transmission
+// so the PBR output looks richer than flat MeshStandardMaterial.
+// -----------------------------------------------------------------------------
+
+export const matWood = (col = 0x8b5a2b) => new MeshStandardMaterial({
+  color: col, roughness: 0.85, metalness: 0.0,
+});
+
+export const matMetal = (col = 0xa0a0a0) => new MeshStandardMaterial({
+  color: col, roughness: 0.25, metalness: 1.0,
+});
+
+export const matFabric = (col = 0x4a5c70) => new MeshPhysicalMaterial({
+  color: col, roughness: 0.95, metalness: 0.0,
+  sheen: 1.0, sheenColor: 0x6b7a8a, sheenRoughness: 0.5,
+});
+
+export const matPlastic = (col = 0xeeeeee) => new MeshStandardMaterial({
+  color: col, roughness: 0.4, metalness: 0.0,
+});
+
+export const matGlassPhys = (col = 0xaaccdd) => new MeshPhysicalMaterial({
+  color: col, transparent: true, opacity: 0.3,
+  roughness: 0.0, metalness: 0.0, transmission: 0.9, ior: 1.5,
+});
+
+export const matLED = (col = 0xffffff) => new MeshStandardMaterial({
+  color: col, emissive: col, emissiveIntensity: 1.5, roughness: 1.0,
+});
+
+export const matConcrete = (col = 0x888880) => new MeshStandardMaterial({
+  color: col, roughness: 0.9, metalness: 0.0,
+});
+
+export const matLeather = (col = 0x4a2a1a) => new MeshPhysicalMaterial({
+  color: col, roughness: 0.6, metalness: 0.0, clearcoat: 0.3, clearcoatRoughness: 0.5,
+});
 
 export type MaterialKey =
   | 'wood'
