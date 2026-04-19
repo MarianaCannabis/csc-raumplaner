@@ -5,6 +5,9 @@ import * as compliance from './compliance/index.js';
 import * as geo from './geo/overpass.js';
 import * as defaults from './config/defaults.js';
 import { scheduleAnalysis, subscribe, getLatestAnalysis } from './compliance/escapeAnalysis.js';
+import { loadModel, fitToBounds } from './three/assetLoader.js';
+import { TEST_ITEMS } from './catalog/testItems.js';
+import { CREDITS, renderCreditsHtml } from './catalog/credits.js';
 
 console.info('[csc] vite entry alive', import.meta.env.MODE);
 const _allRules = compliance.listRules();
@@ -37,12 +40,26 @@ declare global {
       schedule: typeof scheduleAnalysis;
       getLatest: typeof getLatestAnalysis;
     };
+    cscAssets: {
+      loadModel: typeof loadModel;
+      fitToBounds: typeof fitToBounds;
+    };
+    cscCatalog: {
+      testItems: typeof TEST_ITEMS;
+    };
+    cscCredits: {
+      list: typeof CREDITS;
+      renderHtml: typeof renderCreditsHtml;
+    };
   }
 }
 window.cscCompliance = compliance;
 window.cscGeo = geo;
 window.cscDefaults = defaults;
 window.cscEscape = { schedule: scheduleAnalysis, getLatest: getLatestAnalysis };
+window.cscAssets = { loadModel, fitToBounds };
+window.cscCatalog = { testItems: TEST_ITEMS };
+window.cscCredits = { list: CREDITS, renderHtml: renderCreditsHtml };
 
 // Project-panel footer: show the most-recent lastVerified so the operator
 // knows how fresh the cost/energy defaults are. Rewrites on every boot,

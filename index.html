@@ -2289,6 +2289,9 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
       <div id="version-list" style="margin-bottom:12px"></div>
       <div class="sh">Lokal gespeicherte Projekte</div>
       <div id="saved-list"></div>
+      <div style="margin-top:14px;padding-top:8px;border-top:1px solid var(--bd);text-align:center">
+        <button class="tbt" onclick="openCredits()" style="padding:5px 10px;font-size:10px;color:var(--tx3)">🎨 Credits</button>
+      </div>
     </div>
   </div>
 
@@ -2328,6 +2331,17 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 </div>
 
 
+
+<!-- CREDITS / ATTRIBUTION MODAL -->
+<div class="mover" id="m-credits">
+<div class="modal" style="max-width:480px">
+  <h2>🎨 Credits & Lizenzen</h2>
+  <div id="m-credits-body" style="font-size:11px;color:var(--tx2)">Lade…</div>
+  <div class="mbtns">
+    <button class="mbt" onclick="closeM('m-credits')">Schließen</button>
+  </div>
+</div>
+</div>
 
 <!-- CLOUD SIGN-IN MODAL (Magic Link) -->
 <div class="mover" id="m-auth">
@@ -4327,7 +4341,12 @@ const ARCH = [
   {id:'notfallkasten',   cat:'Notfall',  icon:'📦',name:'Notfallkoffer',        w:0.50,d:0.30,h:0.35,col:0xff8800},
 ];
 
-function getCatalog(){ return [...BUILTIN,...customObjs.map(o=>({...o,custom:true}))];}
+function getCatalog(){
+  // P3.1: TS-side catalog items (pipeline-test model, later real furniture)
+  // registered via window.cscCatalog. Empty if the Vite module isn't ready.
+  const extra = (window.cscCatalog && window.cscCatalog.testItems) ? window.cscCatalog.testItems : [];
+  return [...BUILTIN, ...customObjs.map(o=>({...o,custom:true})), ...extra];
+}
 function getArchCatalog(){ return ARCH.filter(i=>i.cat!=='Kameras'&&i.cat!=='Alarm'&&i.cat!=='Brandschutz'&&i.cat!=='Sicherung'&&i.cat!=='Notfall'); }
 function getSecurityCatalog(){ return ARCH.filter(i=>['Kameras','Alarm','Brandschutz','Sicherung','Notfall'].includes(i.cat)); }
 function toggleCatGroup(id){
@@ -8415,6 +8434,18 @@ function handleAuthRedirect(){
   // Clean the URL so the token doesn't stay visible / leak to history
   try { history.replaceState(null, '', location.pathname + location.search); } catch(e){}
   toast('✅ Eingeloggt!','g');
+}
+
+// P3.1: Credits modal — renders the TS-maintained CREDITS list, with a
+// fallback message if the Vite module hasn't loaded (pre-boot case).
+function openCredits(){
+  const body = document.getElementById('m-credits-body');
+  if(body){
+    body.innerHTML = (window.cscCredits && typeof window.cscCredits.renderHtml === 'function')
+      ? window.cscCredits.renderHtml()
+      : '<div style="font-size:11px;color:var(--tx3);padding:12px">Credits-Modul noch nicht geladen — bitte kurz warten und erneut öffnen.</div>';
+  }
+  openM('m-credits');
 }
 
 function cloudSignIn(){
@@ -20687,6 +20718,22 @@ function build3DObj(o){
   const py = o.py||0;
   g.position.set(o.x+w/2, py, o.y+d/2);
   g.rotation.y = (o.rot||0)*Math.PI/180;
+
+  // P3.1: if the catalog item has a modelUrl, load the GLTF asynchronously.
+  // The primitive below acts as placeholder; when the promise resolves we
+  // swap the group's children. Cache lives in assetLoader so concurrent
+  // placements of the same item only fetch once.
+  if(item.modelUrl && window.cscAssets){
+    window.cscAssets.loadModel(item.modelUrl).then(function(res){
+      window.cscAssets.fitToBounds(res.scene, {w:item.w, d:item.d, h:item.h});
+      if(item.modelRotation) res.scene.rotation.set.apply(res.scene.rotation, item.modelRotation);
+      // Remove primitive placeholder children, insert the loaded scene.
+      while(g.children.length) g.remove(g.children[0]);
+      g.add(res.scene);
+    }).catch(function(err){
+      console.warn('[csc] model load failed', item.modelUrl, err);
+    });
+  }
 
   // Custom color override
   let colHex = item.col||0x888888;
