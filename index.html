@@ -4342,11 +4342,12 @@ const ARCH = [
 ];
 
 function getCatalog(){
-  // P3.1/P3.2: TS-side catalog items (test model + new CSC primitives + later
-  // GLTF furniture) registered via window.cscCatalog. Empty if the Vite
-  // module isn't ready — pre-boot catalog renders BUILTIN + customObjs only.
-  const newItems  = (window.cscCatalog && window.cscCatalog.newItems)  ? window.cscCatalog.newItems  : [];
-  return [...BUILTIN, ...customObjs.map(o=>({...o,custom:true})), ...newItems];
+  // P3.1/P3.2: TS-side catalog items registered via window.cscCatalog.
+  // Empty if the Vite module isn't ready — pre-boot catalog renders
+  // BUILTIN + customObjs only.
+  const newItems = (window.cscCatalog && window.cscCatalog.newItems) ? window.cscCatalog.newItems : [];
+  const richPrims = (window.cscCatalog && window.cscCatalog.richPrimitives) ? window.cscCatalog.richPrimitives : [];
+  return [...BUILTIN, ...customObjs.map(o=>({...o,custom:true})), ...newItems, ...richPrims];
 }
 function getArchCatalog(){ return ARCH.filter(i=>i.cat!=='Kameras'&&i.cat!=='Alarm'&&i.cat!=='Brandschutz'&&i.cat!=='Sicherung'&&i.cat!=='Notfall'); }
 function getSecurityCatalog(){ return ARCH.filter(i=>['Kameras','Alarm','Brandschutz','Sicherung','Notfall'].includes(i.cat)); }
@@ -20720,20 +20721,27 @@ function build3DObj(o){
   g.position.set(o.x+w/2, py, o.y+d/2);
   g.rotation.y = (o.rot||0)*Math.PI/180;
 
-  // P3.1: if the catalog item has a modelUrl, load the GLTF asynchronously.
-  // The primitive below acts as placeholder; when the promise resolves we
-  // swap the group's children. Cache lives in assetLoader so concurrent
-  // placements of the same item only fetch once.
+  // P3.1: async GLTF load path (Kenney/Quaternius external assets).
   if(item.modelUrl && window.cscAssets){
     window.cscAssets.loadModel(item.modelUrl).then(function(res){
       window.cscAssets.fitToBounds(res.scene, {w:item.w, d:item.d, h:item.h});
       if(item.modelRotation) res.scene.rotation.set.apply(res.scene.rotation, item.modelRotation);
-      // Remove primitive placeholder children, insert the loaded scene.
       while(g.children.length) g.remove(g.children[0]);
       g.add(res.scene);
     }).catch(function(err){
       console.warn('[csc] model load failed', item.modelUrl, err);
     });
+  }
+  // P3.2: sync rich-primitive path (multi-mesh builder, no network).
+  else if(item.builder && window.cscBuilders && typeof window.cscBuilders.BUILDER_MAP === 'object' && window.cscBuilders.BUILDER_MAP[item.builder]){
+    try {
+      const built = window.cscBuilders.BUILDER_MAP[item.builder](item.w||w, item.d||d, item.h||h);
+      while(g.children.length) g.remove(g.children[0]);
+      g.add(built);
+      return g; // short-circuit the legacy default-primitive branch below
+    } catch(err){
+      console.warn('[csc] builder failed, falling back to default primitive', item.builder, err);
+    }
   }
 
   // Custom color override

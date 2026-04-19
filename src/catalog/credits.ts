@@ -12,6 +12,12 @@ export interface Credit {
 // künftige Nutzer.
 export const CREDITS: Credit[] = [
   {
+    name: 'CSC Raumplaner — Rich Primitives (proprietär, MIT)',
+    source: 'Eigenentwicklung auf Basis Three.js Primitives',
+    license: 'MIT',
+    note: 'P3.2: ~40 Möbel/Geräte-Items rein prozedural aus Three.js Box/Cylinder/Sphere/Plane + PBR-Materialien (MeshStandardMaterial / MeshPhysicalMaterial mit Sheen, Transmission, Clearcoat). Kein externes Asset nötig. Siehe src/three/primitiveBuilders.ts.',
+  },
+  {
     name: 'Kenney Furniture Kit 2.0 (54 Modelle)',
     source: 'kenney.nl',
     license: 'CC0 1.0 Universal (Public Domain)',
