@@ -8230,6 +8230,16 @@ function loadSupabaseConfig(){
   rehydrateAuth();
   updateAuthStatus();
   if(SB_TOKEN) setTimeout(showCloudProjects, 600);
+  // Cross-tab login sync: if the magic-link tab writes csc-sb-token,
+  // this tab picks it up without needing a manual reload.
+  window.addEventListener('storage', e=>{
+    if(e.key === 'csc-sb-token' && e.newValue){
+      rehydrateAuth();
+      updateAuthStatus();
+      toast('🔐 Eingeloggt','g');
+      closeM('m-auth');
+    }
+  });
 }
 
 // ────────────────────────────────────────────────────────────────────────
@@ -8327,6 +8337,8 @@ async function sendMagicLink(){
     });
     if(r.ok){
       if(msg){ msg.textContent = '📧 Link gesendet! Prüfe dein Postfach.'; msg.style.color = '#4ade80'; }
+      toast('📬 Prüfe dein Postfach','b');
+      setTimeout(()=>closeM('m-auth'), 2000);
     } else {
       const err = await r.text().catch(()=>'');
       if(msg){ msg.textContent = '❌ Fehler: ' + err.slice(0,120); msg.style.color = '#f87171'; }
