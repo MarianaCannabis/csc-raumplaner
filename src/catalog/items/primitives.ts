@@ -1,5 +1,6 @@
 import type { CatalogItem } from '../types.js';
 import { MESSE_ITEMS } from './messe.js';
+import { EVENT_ITEMS } from './events.js';
 
 // Rich primitives: items that render via a named builder in
 // src/three/primitiveBuilders.ts instead of GLTF or the legacy default
@@ -10,7 +11,7 @@ export interface PrimitiveCatalogItem extends CatalogItem {
 }
 
 // Re-export so legacy callers pulling RICH_PRIMITIVES get Messe items too.
-export { MESSE_ITEMS };
+export { MESSE_ITEMS, EVENT_ITEMS };
 
 export const RICH_PRIMITIVES: PrimitiveCatalogItem[] = [
   // ── Büro ─────────────────────────────────────────────────────────
@@ -73,4 +74,7 @@ export const RICH_PRIMITIVES: PrimitiveCatalogItem[] = [
 
   // ── Messe (P4.2 — image-map support) ─────────────────────────────
   ...MESSE_ITEMS,
+
+  // ── Event (P5.1 — 111 Items über 11 Kategorien) ──────────────────
+  ...EVENT_ITEMS,
 ];

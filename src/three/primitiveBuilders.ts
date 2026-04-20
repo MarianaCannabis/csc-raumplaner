@@ -32,6 +32,7 @@ import {
   imageMapMaterial,
   type ImageAspect,
 } from './materials.js';
+import { EVENT_BUILDER_MAP } from './eventBuilders.js';
 
 // P4.2 — opts bag threaded from build3DObj (index.html) to every builder.
 // Only the Messe builders currently read any fields; others ignore the arg.
@@ -843,4 +844,6 @@ export const BUILDER_MAP: Record<string, (w: number, d: number, h: number, opts?
   buildPottedPlant, buildWallArt, buildFloorLamp,
   // Messe (P4.2)
   buildBackwall, buildRollupBanner, buildCounterFront, buildLedWall, buildFlag,
+  // Event (P5.1) — merged from ./eventBuilders
+  ...EVENT_BUILDER_MAP,
 };
