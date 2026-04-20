@@ -23,6 +23,10 @@ import {
   type Texture,
   type WebGLRenderer,
 } from 'three';
+// RGBELoader bleibt: HDRLoader wurde erst in three r162+ eingeführt,
+// die hier gebündelte npm-Version + das Legacy-CDN (r128) haben ihn
+// nicht. Potentielle Console-Deprecation-Warning akzeptieren bis zum
+// nächsten Three-Upgrade.
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';

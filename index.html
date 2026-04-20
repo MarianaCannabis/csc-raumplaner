@@ -3493,10 +3493,16 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
   </div>
 </div>
 </div>
+<!-- three.min.js bleibt als CDN: der Legacy-Inline-Code unten erstellt
+     `const scene=new THREE.Scene()` bei Parse-Zeit, also muss THREE
+     synchron verfügbar sein. Ein vollständiger Wechsel auf npm-Module
+     würde einen Scene-Init-Wrapper-Refactor benötigen (großer Scope).
+     GLTFExporter-CDN ist dagegen ENTFERNT und wird von src/main.ts
+     als window.THREE.GLTFExporter = npmExporter angehängt — so nur
+     noch EINE GLTFExporter-Version (npm gebunden). -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/GLTFExporter.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 'use strict';
@@ -3686,8 +3692,11 @@ async function deleteSharedFurniture(id){
 // JWT (SB_TOKEN) is validated by verify_jwt and by the Function itself.
 async function aiFetch(body){
   if(!SB_URL) throw new Error('Supabase nicht konfiguriert');
+  // Pre-Refresh: prüft ob Access-Token < 2 Min Rest-TTL hat und erneuert
+  // via refresh_token bevor überhaupt losgefeuert wird.
+  if(typeof refreshTokenIfNeeded === 'function') await refreshTokenIfNeeded();
   if(!SB_TOKEN) throw new Error('Bitte einloggen');
-  return fetch(SB_URL+'/functions/v1/anthropic-proxy',{
+  const doFetch = () => fetch(SB_URL+'/functions/v1/anthropic-proxy',{
     method:'POST',
     headers:{
       'Content-Type':'application/json',
@@ -3696,6 +3705,16 @@ async function aiFetch(body){
     },
     body:JSON.stringify(body)
   });
+  const r = await doFetch();
+  // Safety-net: Edge-Case wo Token zwischen Pre-Refresh und Request stirbt
+  // (Tab im Hintergrund, System-Sleep etc.) — ein einziges Retry mit
+  // erzwungenem Refresh. Klappt das nicht → handleAuthLoss.
+  if(r.status === 401 && typeof refreshTokenIfNeeded === 'function'){
+    const ok = await refreshTokenIfNeeded(true);
+    if(ok) return doFetch();
+    if(typeof handleAuthLoss === 'function') handleAuthLoss();
+  }
+  return r;
 }
 
 async function callAI(prompt, opts={}){
@@ -9086,20 +9105,112 @@ function updateLoginGate(){
 function rehydrateAuth(){
   const tok = localStorage.getItem('csc-sb-token') || '';
   const usr = localStorage.getItem('csc-sb-user') || '';
-  if(!tok || tokenExpired(tok)){
-    if(tok){ localStorage.removeItem('csc-sb-token'); localStorage.removeItem('csc-sb-user'); }
+  const refresh = localStorage.getItem('csc-sb-refresh') || '';
+  // Wenn Token expired aber refresh vorhanden ist → lazy refresh. Wir
+  // setzen SB_USER + SB_TOKEN provisorisch aus localStorage; der erste
+  // aiFetch/cloudSave triggert refreshTokenIfNeeded und lädt einen
+  // frischen Access-Token. So vermeidet der erste Reload nach Ablauf
+  // der 1h-TTL einen harten Logout.
+  if(!tok && !refresh){
     SB_TOKEN = ''; SB_USER = null;
     return;
   }
-  SB_TOKEN = tok;
+  if(!tok || tokenExpired(tok)){
+    if(!refresh){
+      if(tok){ localStorage.removeItem('csc-sb-token'); localStorage.removeItem('csc-sb-user'); }
+      SB_TOKEN = ''; SB_USER = null;
+      return;
+    }
+    // Bleiben "halb-eingeloggt" bis der nächste Call refresh triggert.
+  }
+  if(tok) SB_TOKEN = tok;
   try { SB_USER = usr ? JSON.parse(usr) : null; } catch(e){ SB_USER = null; }
 }
+
+// Token-Auto-Refresh. Ruft /auth/v1/token?grant_type=refresh_token mit
+// dem stored refresh_token und schreibt access+refresh zurück in
+// localStorage. Läuft vor aiFetch + cloud-Calls + einmal pro 5 Min als
+// silent-keepalive. force=true umgeht das "noch >2 Min gültig"-Shortcut.
+let _refreshInFlight = null;
+async function refreshTokenIfNeeded(force){
+  if(!SB_URL) return false;
+  const refresh = localStorage.getItem('csc-sb-refresh') || '';
+  // Shortcut wenn Token noch lange lebt und kein force verlangt ist
+  if(!force && SB_TOKEN){
+    try {
+      const payload = JSON.parse(atob(SB_TOKEN.split('.')[1]));
+      const expiresIn = (payload.exp * 1000) - Date.now();
+      if(expiresIn > 120000) return true;
+    } catch(e){ /* fallthrough: refreshen */ }
+  }
+  if(!refresh) return false;
+  // De-dupe: wenn bereits ein Refresh fliegt, auf dasselbe Promise warten.
+  if(_refreshInFlight) return _refreshInFlight;
+  _refreshInFlight = (async () => {
+    try {
+      const r = await fetch(SB_URL + '/auth/v1/token?grant_type=refresh_token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': SB_KEY },
+        body: JSON.stringify({ refresh_token: refresh }),
+      });
+      if(!r.ok) return false;
+      const data = await r.json();
+      if(!data.access_token) return false;
+      SB_TOKEN = data.access_token;
+      localStorage.setItem('csc-sb-token', data.access_token);
+      if(data.refresh_token) localStorage.setItem('csc-sb-refresh', data.refresh_token);
+      // User-Info neu parsen (sub/email aus dem neuen Payload)
+      try {
+        const payload = JSON.parse(atob(data.access_token.split('.')[1]));
+        SB_USER = { id: payload.sub, email: payload.email || (SB_USER && SB_USER.email) || '' };
+        localStorage.setItem('csc-sb-user', JSON.stringify(SB_USER));
+      } catch(e){}
+      if(typeof updateAuthStatus === 'function') updateAuthStatus();
+      console.info('[csc] token refreshed');
+      return true;
+    } catch(e){
+      console.warn('[csc] token refresh failed', e);
+      return false;
+    } finally {
+      _refreshInFlight = null;
+    }
+  })();
+  return _refreshInFlight;
+}
+
+// Hard auth-loss: wenn refresh-token auch tot ist, UI zurück auf Login.
+function handleAuthLoss(){
+  SB_TOKEN = ''; SB_USER = null;
+  try {
+    localStorage.removeItem('csc-sb-token');
+    localStorage.removeItem('csc-sb-user');
+    localStorage.removeItem('csc-sb-refresh');
+  } catch(e){}
+  if(typeof updateAuthStatus === 'function') updateAuthStatus();
+  if(typeof updateLoginGate === 'function') updateLoginGate();
+  if(typeof toast === 'function') toast('🔑 Sitzung abgelaufen — bitte neu einloggen','r');
+  if(typeof openM === 'function'){
+    try { openM('m-auth'); } catch(e){}
+  }
+}
+
+// Silent-Keepalive: alle 5 Min einen Refresh anstoßen (no-op wenn Token
+// noch > 2 Min gültig ist dank Shortcut oben). Verhindert dass ein
+// aktiver Tab überhaupt erst in einen expired-State läuft.
+(function startRefreshInterval(){
+  const INTERVAL_MS = 5 * 60 * 1000;
+  setInterval(function(){
+    if(!SB_TOKEN && !localStorage.getItem('csc-sb-refresh')) return;
+    refreshTokenIfNeeded();
+  }, INTERVAL_MS);
+})();
 
 function handleAuthRedirect(){
   // Supabase GoTrue returns tokens in the URL fragment (#access_token=…)
   if(!location.hash || location.hash.indexOf('access_token=') < 0) return;
   const params = new URLSearchParams(location.hash.slice(1));
   const at = params.get('access_token');
+  const rt = params.get('refresh_token');
   if(!at) return;
   SB_TOKEN = at;
   try {
@@ -9108,6 +9219,9 @@ function handleAuthRedirect(){
   } catch(e){ SB_USER = null; }
   localStorage.setItem('csc-sb-token', SB_TOKEN);
   if(SB_USER) localStorage.setItem('csc-sb-user', JSON.stringify(SB_USER));
+  // P-Auth: Refresh-Token persistieren, damit refreshTokenIfNeeded()
+  // nach der 1h-Access-Token-TTL ohne Re-Login einen neuen holen kann.
+  if(rt) localStorage.setItem('csc-sb-refresh', rt);
   // Clean the URL so the token doesn't stay visible / leak to history
   try { history.replaceState(null, '', location.pathname + location.search); } catch(e){}
   toast('✅ Eingeloggt!','g');
@@ -9324,6 +9438,9 @@ function setSbMsg(msg, type){
 async function cloudSave(){
   if(!navigator.onLine){ queueOfflineAction('cloud_save',{}); toast('📵 Offline — wird synchronisiert','b'); return; }
   if(!SB_URL || !SB_KEY){ toast('Supabase nicht verbunden','r'); return; }
+  // Token proaktiv auffrischen, sonst feuert die 1h-TTL mitten im Save
+  // und der User verliert gerade gespeicherte Arbeit an ein 401.
+  if(typeof refreshTokenIfNeeded === 'function') await refreshTokenIfNeeded();
   // P4.2: warn when embedded image maps will make the payload hefty.
   // 5 MB base64 ≈ 6.7 MB JSON; at that size the upload stalls noticeably.
   if(window.cscImageUpload){
@@ -9384,6 +9501,15 @@ async function cloudSave(){
     if(r.ok || r.status===201 || r.status===204){
       toast('☁️ In Cloud gespeichert: '+projName,'g');
       showCloudProjects();
+    } else if(r.status === 401){
+      // Letzter Versuch: Refresh + Retry
+      const refreshed = typeof refreshTokenIfNeeded === 'function'
+        ? await refreshTokenIfNeeded(true) : false;
+      if(refreshed){
+        toast('🔄 Token erneuert — bitte nochmal speichern klicken','b');
+      } else if(typeof handleAuthLoss === 'function'){
+        handleAuthLoss();
+      }
     } else {
       const err = await r.text();
       toast('Cloud-Fehler: '+err.slice(0,60),'r');
@@ -9531,8 +9657,10 @@ function updateBotHint(){
 const AI_SYS = `Du bist ein professioneller 3D-Raumplaner für Cannabis Social Clubs (CSC) in Deutschland.
 Du analysierst Grundrisse und planst Räume für Ausgabestellen.
 
-ANTWORTFORMAT: Antworte IMMER NUR mit einem JSON-Objekt (kein Text davor/danach, kein Markdown):
+ANTWORTFORMAT: Antworte IMMER NUR mit einem JSON-Objekt (kein Text davor/danach, kein Code-Fence):
 {"message":"Kurze Erklärung auf Deutsch","actions":[...]}
+
+Im "message"-Feld: Markdown-Formatierung erlaubt (**fett**, \`code\`, Zeilenumbrüche). NIEMALS HTML-Tags wie <b> oder <br> verwenden.
 
 VERFÜGBARE AKTIONEN:
 
@@ -9948,20 +10076,50 @@ function loadCustomDesigns(){
 // ════════════════════════════════════════════════════════════════════════
 // AI CHAT HELPER FUNCTIONS
 // ════════════════════════════════════════════════════════════════════════
+// Sicherer Mini-Markdown-Renderer für AI-Output. Reihenfolge ist kritisch:
+// 1) Alle HTML-Entities komplett neutralisieren (&lt; &gt; &amp; etc.)
+// 2) Whitelist anwenden — konvertiert &lt;b&gt; (escaped Legacy-HTML der KI)
+//    UND **markdown** in <strong>, dito <code>/`, <br>/\n.
+// Angriff <img src=x onerror=…> wird in Schritt 1 zu &lt;img …&gt; → nie
+// als Tag interpretiert. Schritt 2 matcht nur die Whitelist-Patterns.
+function renderAIText(text){
+  const esc = String(text == null ? '' : text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+  return esc
+    // Legacy-HTML-Tags die die KI evtl. noch sendet (nach Escape als &lt;b&gt;…)
+    .replace(/&lt;b&gt;([^<]*?)&lt;\/b&gt;/g, '<strong>$1</strong>')
+    .replace(/&lt;strong&gt;([^<]*?)&lt;\/strong&gt;/g, '<strong>$1</strong>')
+    .replace(/&lt;i&gt;([^<]*?)&lt;\/i&gt;/g, '<em>$1</em>')
+    .replace(/&lt;em&gt;([^<]*?)&lt;\/em&gt;/g, '<em>$1</em>')
+    .replace(/&lt;code&gt;([^<]*?)&lt;\/code&gt;/g, '<code>$1</code>')
+    .replace(/&lt;br\s*\/?&gt;/g, '<br>')
+    // Markdown-Syntax (bevorzugt — s. System-Prompt-Hinweis)
+    .replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/`([^`\n]+)`/g, '<code>$1</code>')
+    .replace(/\n/g, '<br>');
+}
+
 function addMsg(text, type){
   const el = document.getElementById('ai-msgs');
   if(!el) return {remove:()=>{}};
   const div = document.createElement('div');
   div.className = 'amsg ' + (type==='user'?'usr':type==='load'?'load':type==='ai'?'ai':'sys');
   if(type==='ai'){
-    // P0 XSS hardening: render AI text content without innerHTML so
-    // any HTML/script in the model output is displayed, not executed.
+    // P0 XSS hardening + Markdown-Render: renderAIText escaped zuerst
+    // alle HTML-Entities und wendet dann eine strenge Tag-Whitelist an
+    // (<strong>, <em>, <code>, <br>). Beliebige HTML-Injection aus dem
+    // KI-Output landet sicher als Text, nur Whitelist-Formatierung
+    // wird gerendert.
     const lbl = document.createElement('div');
     lbl.className = 'ailbl';
     lbl.textContent = '🌿 KI-Assistent';
     div.appendChild(lbl);
     const body = document.createElement('div');
-    body.textContent = String(text == null ? '' : text);
+    body.innerHTML = renderAIText(text);
     body.style.whiteSpace = 'pre-wrap';
     div.appendChild(body);
   } else {
@@ -21169,15 +21327,31 @@ function startRealtime(){
   _rtTimer=setInterval(realtimePoll,30000);
 }
 
+let _realtimeFailCount = 0;
 async function realtimePoll(){
   if(!SB_URL||!SB_KEY||!_rtEnabled) return;
+  // Ohne User-Token pollen wir nicht — verhindert 401-Spam im Dashboard.
+  if(!SB_TOKEN) return;
   try{
+    // Proaktiv refreshen bevor wir pollen, damit der Poll nicht der
+    // Trigger für ein 401 wird.
+    if(typeof refreshTokenIfNeeded === 'function') await refreshTokenIfNeeded();
     const since=new Date(_rtLastCheck-5000).toISOString();
     const r=await fetch(
       SB_URL+'/rest/v1/csc_projects?select=id,name,updated_at,author,team_id&updated_at=gt.'+encodeURIComponent(since)+'&order=updated_at.desc&limit=10',
       {headers:{'apikey':SB_KEY,'Authorization':'Bearer '+(SB_TOKEN||SB_KEY)}}
     );
+    if(r.status === 401){
+      _realtimeFailCount++;
+      if(_realtimeFailCount >= 3){
+        if(_rtTimer){ clearInterval(_rtTimer); _rtTimer = null; }
+        _rtEnabled = false;
+        if(typeof handleAuthLoss === 'function') handleAuthLoss();
+      }
+      return;
+    }
     if(!r.ok) return;
+    _realtimeFailCount = 0;
     const updates=await r.json();
     _rtLastCheck=Date.now();
     const myName=localStorage.getItem('csc-username')||'';
