@@ -33,6 +33,7 @@ import {
   type ImageAspect,
 } from './materials.js';
 import { EVENT_BUILDER_MAP } from './eventBuilders.js';
+import { CSC_BUILDER_MAP } from './cscBuilders.js';
 
 // P4.2 — opts bag threaded from build3DObj (index.html) to every builder.
 // Only the Messe builders currently read any fields; others ignore the arg.
@@ -846,4 +847,6 @@ export const BUILDER_MAP: Record<string, (w: number, d: number, h: number, opts?
   buildBackwall, buildRollupBanner, buildCounterFront, buildLedWall, buildFlag,
   // Event (P5.1) — merged from ./eventBuilders
   ...EVENT_BUILDER_MAP,
+  // CSC Expansion (P5.2) — merged from ./cscBuilders
+  ...CSC_BUILDER_MAP,
 };
