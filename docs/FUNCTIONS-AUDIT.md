@@ -585,3 +585,25 @@ Nicht explizit jahres-gelabelt, aber faktisch altert:
 - **P2.0b (klein):** 3 hardcoded Jahreszahlen fixen (9524, 16993, 21624). Zentraler Helfer `currentYear()` oder `new Date().getFullYear()` in den 2 Prompts + dynamischer Energie-Certificate-Footer.
 - **P2.0c (Legal-Review):** `KCANG_NUMERIC_THRESHOLDS` nachschlagen (500, 100m, 2m²) gegen Stand 04/2026. Falls unverändert: kurzer Commit `// KCanG thresholds re-checked 2026-04-XX, unchanged` in den 4 Regel-Modulen.
 - **P2.0d (Daten):** Preis-Konstanten in `src/config/defaults.ts` ziehen mit `last-verified` Kommentaren.
+
+---
+
+## P7 Nachtrag — IFC-Export-Lib-Entscheidung (2026-04-20)
+
+Aus P6.3-Wunschliste: IFC-Export via npm-Lib. Recherche-Ergebnis:
+
+- `web-ifc@0.0.77` — unpackedSize **24.0 MB** (WebAssembly-Parser)
+- `web-ifc-three@0.0.126` — unpackedSize **18.4 MB** (+ drei-mesh-bvh-Dep)
+
+Beide weit über der 300-KB-Scope-Schwelle. Würden das Bundle um ~6 MB
+gezippt vergrößern — inakzeptabel für eine Planner-App.
+
+**Entscheidung: bei der existierenden String-Template-`exportIFC()` bleiben**
+(index.html ~50 Zeilen, IFC2X3-Schema, schreibt Räume als IFCSPACE,
+keine Dependency). Limitation: kein IFC4, keine Möbel-Geometrie,
+keine Türen/Fenster als OpeningElements — ausreichend für einen
+Layout-Export an Bauzeichner, unzureichend für vollen BIM-Workflow.
+
+Falls in Zukunft vollständiger IFC-Support gewünscht: eine
+Server-side-Konvertierung (Node-Tool, nicht Client-Bundle) wäre
+der richtige Weg.
