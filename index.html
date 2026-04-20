@@ -2467,6 +2467,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
             <button class="tbt" style="padding:8px" onclick="exportBudgetCSV()">💰 Budget (.csv)</button>
             <button class="tbt" style="padding:8px" onclick="exportGLTF()">🏗 3D-Modell (.gltf)</button>
             <button class="tbt" style="padding:8px" onclick="exportDXF()">📐 Grundriss (.dxf)</button>
+            <button class="tbt" style="padding:8px" onclick="exportIFC()">🏗 IFC/BIM (.ifc)</button>
           </div>
         </details>
 
@@ -21620,7 +21621,36 @@ function generateEmbedCode(){
 }
 
 // ── 7. IFC EXPORT ─────────────────────────────────────────────────────
+// P9.1: Delegiert an src/export/ifc.ts wenn verfügbar. Das TS-Modul
+// produziert vollständigeres IFC2x3 mit Objects + Grounds + Measures.
+// Legacy-Pfad (unten) bleibt als Fallback für den Fall dass der
+// Bridge noch nicht geladen ist.
 function exportIFC(){
+  if(window.cscIfc && typeof window.cscIfc.download === 'function'){
+    try {
+      const d = getPD();
+      window.cscIfc.download({
+        name: d.name || 'Projekt',
+        rooms: (d.rooms || []).map(r => ({ id: r.id, name: r.name, x: r.x, y: r.y, w: r.w, d: r.d, h: r.h })),
+        objects: (d.objects || []).map(o => {
+          const it = findItem(o.typeId) || {};
+          return { id: o.id, typeId: o.typeId, name: o.name || it.name, x: o.x, y: o.y, w: o.w || it.w, d: o.d || it.d, h: o.h || it.h, rot: o.rot, py: o.py };
+        }),
+        measures: d.measures || [],
+        grounds: (d.grounds || []).map(g => ({ id: g.id, name: g.name, x: g.x, y: g.y, w: g.w, d: g.d })),
+        walls: walls.map(w => ({ id: w.id, x1: w.x1, z1: w.z1, x2: w.x2, z2: w.z2, h: w.h })),
+        meta: {
+          owner: (SB_USER && SB_USER.email) || '',
+          createdAt: new Date().toISOString(),
+          memberCount: projMeta.memberCount,
+          maxHeight: projMeta.maxHeight,
+        },
+      });
+      toast('🏗 IFC exportiert (IFC2x3, Rooms + Objects + Grounds + Walls)', 'g');
+      return;
+    } catch(err){ console.warn('[ifc] ts-export fehlgeschlagen, fallback auf legacy', err); }
+  }
+  // Legacy-Fallback — minimaler IFC mit nur Räumen
   const d=getPD();
   const ts=new Date().toISOString().replace(/[-:.TZ]/g,'').slice(0,14);
   let ifc=`ISO-10303-21;
