@@ -3,6 +3,7 @@ import { MESSE_ITEMS } from './messe.js';
 import { EVENT_ITEMS } from './events.js';
 import { EVENT_ITEMS_P2 } from './eventsPhase2.js';
 import { CSC_EXPANSION_ITEMS } from './cscExpansion.js';
+import { CSC_EXPANSION_ITEMS_P2 } from './cscExpansionPhase2.js';
 
 // Rich primitives: items that render via a named builder in
 // src/three/primitiveBuilders.ts instead of GLTF or the legacy default
@@ -13,7 +14,7 @@ export interface PrimitiveCatalogItem extends CatalogItem {
 }
 
 // Re-export so legacy callers pulling RICH_PRIMITIVES get Messe items too.
-export { MESSE_ITEMS, EVENT_ITEMS, EVENT_ITEMS_P2, CSC_EXPANSION_ITEMS };
+export { MESSE_ITEMS, EVENT_ITEMS, EVENT_ITEMS_P2, CSC_EXPANSION_ITEMS, CSC_EXPANSION_ITEMS_P2 };
 
 export const RICH_PRIMITIVES: PrimitiveCatalogItem[] = [
   // ── Büro ─────────────────────────────────────────────────────────
@@ -85,4 +86,7 @@ export const RICH_PRIMITIVES: PrimitiveCatalogItem[] = [
 
   // ── CSC-Expansion (P5.2 — 37 Realismus-Items über 6 Kategorien) ──
   ...CSC_EXPANSION_ITEMS,
+
+  // ── CSC-Expansion Phase 2 (P5.2-P2 — 15 weitere Realismus-Items) ─
+  ...CSC_EXPANSION_ITEMS_P2,
 ];
