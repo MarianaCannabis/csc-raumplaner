@@ -34,10 +34,10 @@ export const CSC_SECURITY_EXP: PrimitiveCatalogItem[] = [
 // 3. Ausgabe (+5)
 export const CSC_DISPENSE_EXP: PrimitiveCatalogItem[] = [
   { id: 'csc-tasting-corner',     cat: '🏪 Ausgabe', icon: '👃', name: 'Probier-Ecke (Aromatest)',   w: 1.6, d: 0.7, h: 1.1, builder: 'buildTastingCorner' },
-  { id: 'csc-consult-booth',      cat: '🏪 Ausgabe', icon: '🗣', name: 'Beratungs-Booth (3-Wand)',   w: 2.0, d: 1.8, h: 2.0, builder: 'buildConsultationBooth' },
+  { id: 'csc-consult-booth',      cat: '🏪 Ausgabe', icon: '🗣', name: 'Beratungs-Booth (3-Wand)',   w: 2.0, d: 1.8, h: 2.0, builder: 'buildConsultationBooth', imageMapFace: 'back', imageMapAspect: 'cover' },
   { id: 'csc-tablet-kiosk',       cat: '🏪 Ausgabe', icon: '📱', name: 'Tablet-Kiosk (Bestellung)',  w: 0.4, d: 0.3, h: 1.3, builder: 'buildTouchscreenKiosk' },
   { id: 'csc-order-terminal',     cat: '🏪 Ausgabe', icon: '🖥', name: 'Online-Bestell-Terminal',    w: 0.5, d: 0.5, h: 1.5, builder: 'buildOrderTerminal' },
-  { id: 'csc-merch-display',      cat: '🏪 Ausgabe', icon: '👕', name: 'Merch-Display (3-Ebenen)',   w: 1.0, d: 0.4, h: 1.7, builder: 'buildMerchDisplay' },
+  { id: 'csc-merch-display',      cat: '🏪 Ausgabe', icon: '👕', name: 'Merch-Display (3-Ebenen)',   w: 1.0, d: 0.4, h: 1.7, builder: 'buildMerchDisplay', imageMapFace: 'front', imageMapAspect: 'contain' },
 ];
 
 // 4. Lager (+5)
