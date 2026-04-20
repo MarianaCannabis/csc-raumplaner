@@ -1793,6 +1793,12 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
   <button class="tbt icon-btn" id="redo-btn" onclick="redo()" disabled title="Wiederholen (Ctrl+Y)" aria-label="Wiederholen">↪</button>
   <div class="tsep"></div>
 
+  <!-- P10.4: Primary Save-Button (UX-Flow 1 — aus Submenü hochgezogen) -->
+  <button class="tbt" id="btn-save-primary" onclick="saveProj()" title="Projekt speichern (Ctrl+S)"
+    aria-label="Projekt speichern"
+    style="padding:5px 12px;border:1px solid var(--gr3);background:rgba(74,222,128,0.08);color:var(--gr);font-weight:600">💾 Speichern</button>
+  <div class="tsep"></div>
+
   <!-- P4.3b: Prominenter Vorlagen-Button (erster Einstieg für neue User) -->
   <button class="tbt" id="btn-templates" onclick="openTemplates()" title="Vorlagen laden — fertige CSC-Layouts + Messestände"
     style="padding:5px 10px;border:1px solid var(--gr3);background:rgba(74,222,128,0.08);color:var(--gr);font-weight:600">📋 Vorlagen</button>
@@ -1883,7 +1889,6 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="openLayoutComparison();closeTBMenu()">🔀 Lageplan vergleichen</div>
         <div class="tbm-item" onclick="toggleTheme();closeTBMenu()">🌙 Hell/Dunkel wechseln</div>
-        <div class="tbm-item" onclick="toggleDimensions();closeTBMenu()">📏 Maßketten ein/aus (D)</div>
         <div class="tbm-item" onclick="cycleDimStyle();closeTBMenu()">📐 Maßketten-Stil wechseln</div>
         <div class="tbm-item" onclick="toggleRoomStats();closeTBMenu()">📊 Raum-Statistik im Plan</div>
         <div class="tbm-item" onclick="openMaterialStudio();closeTBMenu()">🎨 Material & Textur Studio</div>
