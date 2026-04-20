@@ -2716,6 +2716,43 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
     <div id="kd-rules" style="font-size:11px;color:var(--tx2);max-height:40vh;overflow-y:auto"></div>
   </div>
 
+  <!-- P7 Audit-R2: erweiterte Berechnungs-Parameter (expandable) -->
+  <details style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px;margin-top:12px">
+    <summary style="padding:8px 12px;cursor:pointer;font-size:11px;font-weight:600;color:#a78bfa">⚙ Erweiterte Parameter (Audit-Round-2)</summary>
+    <div style="padding:8px 12px 12px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div>
+        <label style="font-size:10px;color:var(--tx3)" title="Gehgeschwindigkeit für Evakuierungs-Berechnung (m/s). Default 0.6 für Panik; 1.0–1.4 für Büros.">Evak-Gehgeschwindigkeit (m/s)</label>
+        <input type="number" id="kd-walk-speed" min="0.3" max="2" step="0.1" placeholder="0.6"
+          onchange="projMeta.walkSpeed=this.value?+this.value:null; _kcangDashRefresh();"
+          style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
+      </div>
+      <div>
+        <label style="font-size:10px;color:var(--tx3)" title="DIN-Toleranz für Gesamt-Evakuierungszeit (Sekunden). 150 s bei &lt;4 Geschossen; 240 s bei hohen Gebäuden.">Evak-Toleranz (s)</label>
+        <input type="number" id="kd-evac-tol" min="60" max="600" step="10" placeholder="150"
+          onchange="projMeta.evacToleranceSec=this.value?+this.value:null; _kcangDashRefresh();"
+          style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
+      </div>
+      <div>
+        <label style="font-size:10px;color:var(--tx3)" title="Umsatz/Mitglied/Monat (€) für Break-Even-Rechnung. Abgabestellen 120€, Kiosk-Modell 50€.">Umsatz/Mitglied (€/Mo)</label>
+        <input type="number" id="kd-revenue" min="0" max="500" step="5" placeholder="80"
+          onchange="projMeta.avgRevenuePerMember=this.value?+this.value:null;"
+          style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
+      </div>
+      <div>
+        <label style="font-size:10px;color:var(--tx3)" title="Raum-Malus pro Raum im Cleaning-Score. Negativ (−8 alt), 0 = fair.">Cleaning Raum-Malus</label>
+        <input type="number" id="kd-clean-pen" max="0" step="1" placeholder="-8"
+          onchange="projMeta.cleaningRoomPenalty=this.value!==''?+this.value:null;"
+          style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
+      </div>
+      <div style="grid-column:1/-1">
+        <label style="font-size:10px;color:var(--tx3)" title="Barrierefreiheits-Wendekreis nur in Räumen ≥ X m² prüfen. Default 4.0 = 2×2 m (ASR A1.2).">Barrierefrei: min Raum-Fläche für Wendekreis (m²)</label>
+        <input type="number" id="kd-acc-min" min="0" max="20" step="0.5" placeholder="4.0"
+          onchange="projMeta.accessibilityMinRoomArea=this.value?+this.value:null; _kcangDashRefresh();"
+          style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
+      </div>
+    </div>
+  </details>
+
   <div class="mbtns">
     <button class="mbt ok" onclick="closeM('m-kcang-dashboard')">Fertig</button>
   </div>
@@ -10962,6 +10999,12 @@ function _kcangDashSync(){
   const a = document.getElementById('kd-address');     if(a) a.value = projMeta.address || '';
   const v = document.getElementById('kd-age-ver');     if(v) v.checked = !!projMeta.ageVerification;
   const w = document.getElementById('kd-windows-filmed'); if(w) w.checked = !!projMeta.windowsFilmed;
+  // P7 Audit-R2: erweiterte Parameter
+  const ws = document.getElementById('kd-walk-speed');  if(ws) ws.value = projMeta.walkSpeed != null ? projMeta.walkSpeed : '';
+  const et = document.getElementById('kd-evac-tol');    if(et) et.value = projMeta.evacToleranceSec != null ? projMeta.evacToleranceSec : '';
+  const rv = document.getElementById('kd-revenue');     if(rv) rv.value = projMeta.avgRevenuePerMember != null ? projMeta.avgRevenuePerMember : '';
+  const cp = document.getElementById('kd-clean-pen');   if(cp) cp.value = projMeta.cleaningRoomPenalty != null ? projMeta.cleaningRoomPenalty : '';
+  const am = document.getElementById('kd-acc-min');     if(am) am.value = projMeta.accessibilityMinRoomArea != null ? projMeta.accessibilityMinRoomArea : '';
 }
 function _kcangDashRefresh(){
   // Auch die Projekt-Panel-Inputs syncen damit beide konsistent sind
@@ -18927,11 +18970,14 @@ function runEmergencyScenario(){
   const exits=objects.filter(o=>o.typeId==='sec-sign-exit').length||1;
   const doors=objects.filter(o=>{ const it=findItem(o.typeId); return it&&it.arch==='door'&&(o.w||1)>=0.9; }).length;
   const totalArea=rooms.reduce((s,r)=>s+r.w*r.d,0);
-  // Evac time: 1.5 persons/second per exit, 60cm/s walking speed, avg 10m walk
-  const walkTime=Math.round(10/0.6); // ~17s
+  // Evac time: 1.5 persons/second per exit, configurable walking speed
+  // P7 Audit-R2: projMeta.walkSpeed + projMeta.evacToleranceSec
+  const walkSpd = (projMeta.walkSpeed != null && projMeta.walkSpeed > 0) ? projMeta.walkSpeed : 0.6;
+  const tol = (projMeta.evacToleranceSec != null && projMeta.evacToleranceSec > 0) ? projMeta.evacToleranceSec : 150;
+  const walkTime=Math.round(10/walkSpd);
   const exitTime=Math.round(cap/exits/1.5);
   const totalTime=walkTime+exitTime;
-  const ok=totalTime<=150; // <2.5 min
+  const ok=totalTime<=tol;
   const h='<div style="padding:12px">'
     +'<div style="font-size:14px;font-weight:800;color:var(--gr);margin-bottom:10px">🚨 Notfall-Szenario</div>'
     +kpiRow('👥 Zu evakuieren',cap+' Personen','#9a9288')

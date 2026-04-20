@@ -77,6 +77,25 @@ export interface ProjectMeta {
   regulationSource?: string;
   /** P6.8: ISO-Datum des Imports. */
   regulationImportedAt?: string;
+
+  /** P7 Audit-R2: Evakuierungs-Gehgeschwindigkeit (m/s). Default 0.6
+   *  (pragmatisch langsam für Panik-Situationen); für reine
+   *  Büro-Layouts kann 1.0-1.4 angemessen sein. */
+  walkSpeed?: number;
+  /** P7 Audit-R2: Evakuierungs-Gesamttoleranz (s). Default 150 s (DIN-
+   *  konform für < 4 Geschosse). Höhere Gebäude brauchen 240 s. */
+  evacToleranceSec?: number;
+  /** P7 Audit-R2: calcCleaningScore Raum-Malus pro Raum. Default -8 pts
+   *  war zu hart für kleine CSCs mit vielen Räumen; 0 bis -3 pragmatischer. */
+  cleaningRoomPenalty?: number;
+  /** P7 Audit-R2: Durchschnittlicher Umsatz pro Mitglied pro Monat (€).
+   *  Default 80. Für break-even-Rechnung essenziell; variiert stark
+   *  zwischen reinen Abgabestellen (120) und Kiosk-Konzepten (50). */
+  avgRevenuePerMember?: number;
+  /** P7 Audit-R2: Wendekreis-Min-Fläche (m²) für Barrierefreiheits-
+   *  Check. Default 4.0 (= 2×2 m). Nur Räume ≥ dieser Fläche werden
+   *  als gemeinschaftsbereich-relevant geprüft. */
+  accessibilityMinRoomArea?: number;
 }
 
 export interface RuleContext {
