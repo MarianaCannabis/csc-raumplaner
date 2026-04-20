@@ -2462,6 +2462,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
           <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
             <button class="tbt g" style="padding:8px" onclick="saveProj()">💾 Projekt speichern</button>
             <button class="tbt" style="padding:8px;border-color:var(--gr3);color:var(--gr)" onclick="openTemplates()">📋 Vorlage laden</button>
+            <button class="tbt" style="padding:8px" onclick="saveAsUserTemplate()">💾 Als Vorlage speichern</button>
             <button class="tbt" style="padding:8px" onclick="document.getElementById('json-up').click()">📤 .json laden</button>
             <input type="file" id="json-up" accept=".json" style="display:none" onchange="loadJSONFile(event)">
           </div>
@@ -2731,6 +2732,33 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
     <button class="mbt" onclick="copyPacklistMD()">📋 Markdown kopieren</button>
     <button class="mbt" onclick="togglePacklistMD()">📝 Markdown ein/aus</button>
     <button class="mbt" onclick="closeM('m-packlist')">Schließen</button>
+  </div>
+</div>
+</div>
+
+<!-- P9.3: Save-as-user-template Modal -->
+<div class="mover" id="m-save-template">
+<div class="modal" style="max-width:520px">
+  <h2>💾 Aktuelles Projekt als Vorlage speichern</h2>
+  <div style="font-size:11px;color:var(--tx3);margin-bottom:10px">Die Vorlage wird in deinem Account gespeichert und erscheint im Template-Modal unter „Meine Vorlagen".</div>
+  <div class="mf">
+    <label style="font-size:10px;color:var(--tx3)">Name</label>
+    <input type="text" id="tpl-save-name" placeholder="z.B. Mein Workshop-Setup"
+      style="width:100%;padding:6px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px;box-sizing:border-box;font-size:12px">
+  </div>
+  <div class="mf" style="margin-top:8px">
+    <label style="font-size:10px;color:var(--tx3)">Beschreibung</label>
+    <textarea id="tpl-save-desc" rows="2" placeholder="Kurze Beschreibung"
+      style="width:100%;padding:6px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px;box-sizing:border-box;font-size:12px"></textarea>
+  </div>
+  <div class="mf" style="margin-top:8px">
+    <label style="font-size:10px;color:var(--tx3)">Tags (Komma-getrennt)</label>
+    <input type="text" id="tpl-save-tags" placeholder="messe, workshop, eigene"
+      style="width:100%;padding:6px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px;box-sizing:border-box;font-size:12px">
+  </div>
+  <div class="mbtns">
+    <button class="mbt" onclick="closeM('m-save-template')">Abbrechen</button>
+    <button class="mbt ok" onclick="doSaveUserTemplate()">💾 Speichern</button>
   </div>
 </div>
 </div>
@@ -11444,6 +11472,93 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+// ════════════════════════════════════════════════════════════════════════
+// P9.3: User-generierte Templates (Save/Load/Delete via Supabase)
+// ════════════════════════════════════════════════════════════════════════
+let _userTemplatesCache = [];
+let _userTemplatesLoadedAt = 0;
+
+function saveAsUserTemplate(){
+  if(!SB_TOKEN){ toast('Erst einloggen — User-Vorlagen werden in der Cloud gespeichert','r'); return; }
+  document.getElementById('tpl-save-name').value = projName === 'Neue Ausgabestelle' ? '' : projName;
+  document.getElementById('tpl-save-desc').value = '';
+  document.getElementById('tpl-save-tags').value = '';
+  openM('m-save-template');
+}
+async function doSaveUserTemplate(){
+  if(!SB_TOKEN){ toast('Nicht eingeloggt','r'); return; }
+  const name = (document.getElementById('tpl-save-name').value || '').trim();
+  if(!name){ toast('Name erforderlich','r'); return; }
+  const desc = document.getElementById('tpl-save-desc').value.trim();
+  const tagsStr = document.getElementById('tpl-save-tags').value.trim();
+  const tags = tagsStr ? tagsStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+  // Thumbnail vom 2D-Canvas
+  let thumb = '';
+  try { thumb = fpCv.toDataURL('image/jpeg', 0.5); } catch(e){}
+  const data = getPD();
+  // Fläche abschätzen für size_label
+  const totalM2 = (data.rooms || []).reduce((s, r) => s + r.w * r.d, 0);
+  try {
+    const r = await fetch(SB_URL + '/rest/v1/csc_user_templates', {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_TOKEN,
+                 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify({
+        owner: SB_USER && SB_USER.id,
+        name, description: desc, tags,
+        icon: '📋',
+        size_label: totalM2 ? totalM2.toFixed(1) + ' m²' : null,
+        data, thumbnail: thumb,
+      }),
+    });
+    if(r.status === 404 || r.status === 406){
+      toast('❌ Tabelle fehlt — Migration 0004_user_templates.sql einspielen','r');
+      return;
+    }
+    if(!r.ok) throw new Error('API ' + r.status);
+    closeM('m-save-template');
+    _userTemplatesCache = [];
+    _userTemplatesLoadedAt = 0;
+    toast('✅ Als Vorlage gespeichert: ' + name, 'g');
+  } catch(e){
+    toast('Speichern fehlgeschlagen: ' + e.message, 'r');
+  }
+}
+async function loadUserTemplates(){
+  if(!SB_TOKEN) return [];
+  if(_userTemplatesCache.length && Date.now() - _userTemplatesLoadedAt < 60000) return _userTemplatesCache;
+  try {
+    const r = await fetch(SB_URL + '/rest/v1/csc_user_templates?select=*&order=updated_at.desc',
+      { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_TOKEN } });
+    if(!r.ok) return [];
+    _userTemplatesCache = await r.json();
+    _userTemplatesLoadedAt = Date.now();
+    return _userTemplatesCache;
+  } catch(e){ return []; }
+}
+async function deleteUserTemplate(id){
+  if(!confirm('Vorlage endgültig löschen?')) return;
+  try {
+    await fetch(SB_URL + '/rest/v1/csc_user_templates?id=eq.' + id, {
+      method: 'DELETE',
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_TOKEN },
+    });
+    _userTemplatesCache = [];
+    if(typeof openTemplates === 'function') openTemplates();
+    toast('🗑 Vorlage gelöscht','b');
+  } catch(e){ toast('Löschen fehlgeschlagen: ' + e.message,'r'); }
+}
+async function applyUserTemplate(id){
+  const t = (_userTemplatesCache || []).find(x => x.id === id);
+  if(!t){ toast('Vorlage nicht gefunden','r'); return; }
+  if(!confirm('Vorlage „' + t.name + '" laden? Aktuelle Räume werden ersetzt.')) return;
+  closeM('m-templates');
+  try {
+    loadPD(t.data);
+    toast('✅ Vorlage geladen: ' + t.name,'g');
+  } catch(e){ toast('Laden fehlgeschlagen: ' + e.message,'r'); }
+}
+
 // P7 Bug-2: KCanG-Dashboard — aggregiert Meta-Inputs + Live-Regelprüfung
 // in einem zentralen Modal. Via neuem Topbar-Button 🌿 KCanG aufgerufen.
 function openKCaNGDashboard(){
@@ -12163,6 +12278,7 @@ function openMesseBudget(){
 
 // P4.5 + P4.3b-fix: merged template list with CSC (legacy) + Messe/Showroom (TS).
 let _tplFilter = 'all';
+let _tplTab = 'system'; // 'system' | 'mine' | 'community'
 let _tplRetryTimer = null;
 function _getTSTemplates(){
   const t = window.cscTemplates;
@@ -12188,10 +12304,34 @@ function openTemplates(){
     tsCount: ts ? ts.length : 0,
     cscCount: (typeof ROOM_TEMPLATES !== 'undefined' && ROOM_TEMPLATES) ? ROOM_TEMPLATES.length : 0,
     filter: _tplFilter,
+    tab: _tplTab,
   });
   const grid = document.getElementById('tpl-grid'); if(!grid) return;
-  // Build filter chip bar
   const parent = grid.parentElement;
+  // P9.3: Tab-Bar (System / Meine / Community) über den Filter-Chips
+  let tabBar = document.getElementById('tpl-tab-bar');
+  if(!tabBar){
+    tabBar = document.createElement('div');
+    tabBar.id = 'tpl-tab-bar';
+    tabBar.style.cssText = 'display:flex;gap:6px;margin-bottom:8px;border-bottom:1px solid var(--bd);padding-bottom:6px';
+    parent.insertBefore(tabBar, grid);
+  }
+  tabBar.innerHTML = [
+    {id:'system', label:'System-Vorlagen'},
+    {id:'mine', label:'Meine Vorlagen'},
+    {id:'community', label:'Community', disabled: true, hint:'(bald)'},
+  ].map(tab => {
+    const active = _tplTab === tab.id;
+    const disabled = tab.disabled;
+    return '<button ' + (disabled ? 'disabled' : '') +
+      ' onclick="' + (disabled ? '' : ('_tplTab=\'' + tab.id + '\';openTemplates()')) + '"' +
+      ' style="padding:5px 12px;font-size:11px;border:none;background:' + (active ? 'var(--gr3)' : 'transparent') +
+      ';color:' + (active ? 'var(--gr)' : disabled ? 'var(--tx3)' : 'var(--tx2)') +
+      ';border-radius:4px 4px 0 0;cursor:' + (disabled ? 'default' : 'pointer') + '">' +
+      tab.label + (tab.hint ? ' <span style="font-size:9px;opacity:0.6">'+tab.hint+'</span>' : '') +
+      '</button>';
+  }).join('');
+  // Chip-Bar (filtert nur im System-Tab)
   let chipBar = document.getElementById('tpl-chip-bar');
   if(!chipBar){
     chipBar = document.createElement('div');
@@ -12199,6 +12339,7 @@ function openTemplates(){
     chipBar.style.cssText = 'display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px';
     parent.insertBefore(chipBar, grid);
   }
+  chipBar.style.display = _tplTab === 'system' ? 'flex' : 'none';
   renderTemplateChipBar();
   renderTemplateGrid();
   openM('m-templates');
@@ -12256,9 +12397,43 @@ function setTplFilter(tag){
   renderTemplateGrid();
 }
 
-function renderTemplateGrid(){
+async function renderTemplateGrid(){
   const grid = document.getElementById('tpl-grid'); if(!grid) return;
   const status = document.getElementById('tpl-status');
+  // P9.3: Tab 'mine' lädt User-Templates aus Supabase
+  if(_tplTab === 'mine'){
+    if(!SB_TOKEN){
+      grid.innerHTML = '<div style="grid-column:1/-1;padding:20px;text-align:center;color:var(--tx3);font-size:11px">🔑 Erst einloggen, um eigene Vorlagen zu sehen</div>';
+      if(status) status.textContent = '';
+      return;
+    }
+    grid.innerHTML = '<div style="grid-column:1/-1;padding:12px;text-align:center;color:var(--tx3)">⏳ Lade deine Vorlagen…</div>';
+    const list = await loadUserTemplates();
+    if(status) status.textContent = list.length + ' eigene Vorlagen';
+    if(list.length === 0){
+      grid.innerHTML = '<div style="grid-column:1/-1;padding:20px;text-align:center;color:var(--tx3);font-size:11px">Noch keine eigenen Vorlagen.<br>Erstelle eine über „💾 Als Vorlage speichern"</div>';
+      return;
+    }
+    grid.innerHTML = list.map(t => {
+      const thumb = t.thumbnail ? '<img src="'+t.thumbnail+'" style="width:100%;height:80px;object-fit:cover;display:block">' : '';
+      return '<div class="tpl-card" style="position:relative">'+
+        '<div onclick="applyUserTemplate(\''+t.id+'\')">'+thumb+
+        '<div class="tpl-icon">'+(t.icon||'📋')+'</div>'+
+        '<div class="tpl-name">'+(t.name||'').replace(/[<>]/g,'')+'</div>'+
+        '<div class="tpl-desc" style="font-size:10px">'+(t.description||'').replace(/[<>]/g,'')+'</div>'+
+        (t.size_label?'<div class="tpl-size">'+t.size_label+'</div>':'')+
+        '</div>'+
+        '<button onclick="event.stopPropagation();deleteUserTemplate(\''+t.id+'\')" style="position:absolute;top:4px;right:4px;background:rgba(239,68,68,0.2);border:1px solid #ef4444;color:#ef4444;border-radius:3px;padding:2px 6px;font-size:10px;cursor:pointer">🗑</button>'+
+        '</div>';
+    }).join('');
+    return;
+  }
+  if(_tplTab === 'community'){
+    grid.innerHTML = '<div style="grid-column:1/-1;padding:20px;text-align:center;color:var(--tx3);font-size:11px">🛍 Community-Marketplace kommt in v1.1+</div>';
+    if(status) status.textContent = '';
+    return;
+  }
+  // System-Tab (default): Logik wie bisher
   const all = getAllTemplates();
   const ts = _getTSTemplates();
   // Status line: explicit about module state so user knows when list is complete.
