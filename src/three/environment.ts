@@ -17,6 +17,7 @@ import {
   PCFSoftShadowMap,
   PMREMGenerator,
   Vector2,
+  Color,
   type Camera,
   type Scene,
   type Texture,
@@ -33,7 +34,10 @@ const _envCache = new Map<string, Texture>();
 
 export function applyRendererDefaults(renderer: WebGLRenderer): void {
   renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.1;
+  // 0.9 — was 1.1 before, too bright für den hellen Indoor-HDRI +
+  // das default Sky-Blau → Gesamt-Washout. 0.9 gibt Materialien/
+  // Schatten wieder Kontrast.
+  renderer.toneMappingExposure = 0.9;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = PCFSoftShadowMap;
 }
@@ -61,12 +65,26 @@ export async function loadEnvironment(
   });
 }
 
+// Sentinel-Palette: Hintergrund-Farben, bei denen applyEnvironment den BG
+// auf einen neutralen Dark überschreiben darf. 0xc4d8f0 ist das Legacy-
+// Default (sky-blue beim scene-Init) — wenn der User später via
+// buildSkySphere/setWeather einen anderen Preset wählt, bleibt dieser.
+const NEUTRAL_OVERRIDE_COLORS: number[] = [0xc4d8f0];
+const NEUTRAL_BG = new Color(0x1a2230);
+
 export function applyEnvironment(scene: Scene, envMap: Texture): void {
   scene.environment = envMap;
-  // Intentionally NOT setting scene.background here — the legacy scene has
-  // its own sky-sphere / colored background, and overwriting it with the
-  // HDRI would fight the user-chosen mood preset. The envMap drives PBR
-  // reflections only.
+  // Fix "washed-out 3D": bei Legacy-Sky-Blau auf dezenten Dark-BG
+  // wechseln, damit PBR-Materialien + Schatten wieder Kontrast haben.
+  // Wenn scene.background null ist oder ein anderer expliziter Preset
+  // gesetzt wurde, nichts anfassen.
+  const bg = scene.background;
+  if (bg && (bg as Color).isColor) {
+    const hex = (bg as Color).getHex();
+    if (NEUTRAL_OVERRIDE_COLORS.includes(hex)) {
+      scene.background = NEUTRAL_BG.clone();
+    }
+  }
 }
 
 export function fallbackEnvironment(renderer: WebGLRenderer, scene: Scene): void {
@@ -95,9 +113,9 @@ export function createComposer(
   composer.addPass(new RenderPass(scene, camera));
   const bloom = new UnrealBloomPass(
     new Vector2(window.innerWidth, window.innerHeight),
-    0.4, // strength — zurückhaltend, damit es nicht übertrieben wirkt
-    0.6, // radius
-    0.95, // threshold — nur echte emissive-Lichter, keine hellen Farben
+    0.25, // strength — war 0.4, überstrahlte auch hell-weiße PBR-Oberflächen
+    0.4,  // radius — war 0.6
+    0.98, // threshold — war 0.95, jetzt nur echte Emissives (LED-Wand, Exit-Signs)
   );
   composer.addPass(bloom);
   return composer;

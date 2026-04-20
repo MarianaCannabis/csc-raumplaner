@@ -1778,6 +1778,8 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
       <button class="tbm-btn" onclick="toggleTBMenu('view')">👁 Ansicht <span class="tbm-arr">▾</span></button>
       <div class="tbm-drop" id="tbmd-view">
         <div class="tbm-label">3D-Optionen</div>
+        <div class="tbm-item" onclick="window.cscFrameScene&&window.cscFrameScene();closeTBMenu()">🎯 Ansicht zentrieren</div>
+        <div class="tbm-item" onclick="toggleHelperFloor();closeTBMenu()">🧭 Hilfsboden ein/aus</div>
         <div class="tbm-item" onclick="toggleCeiling();closeTBMenu()" id="mi-ceiling">⬜ Decke ein/aus</div>
         <div class="tbm-item" onclick="toggleSliceView();closeTBMenu()">✂️ Schnittansicht</div>
         <div class="tbm-item" id="mi-allfloors" onclick="toggleAllFloors();closeTBMenu()" style="display:none">🏢 Alle Etagen</div>
@@ -2034,6 +2036,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
     <button class="mpill" id="pill-ground" onclick="openGroundMaterialPicker()">🟫 Fläche</button>
     <button class="mpill" id="pill-measure" onclick="set2DTool('measure')">📏 Maß</button>
     <button class="mpill" id="pill-pan" onclick="set2DTool('pan')">✋ Verschieben</button>
+    <button class="mpill" id="pill-center-3d" onclick="window.cscFrameScene&&window.cscFrameScene()" title="Kamera auf aktuellen Inhalt zentrieren (3D)" style="background:rgba(74,222,128,0.08);border-color:var(--gr3);color:var(--gr)">🎯 Zentrieren</button>
   </div>
 
   <!-- P4.1: Ground-material picker (shown when clicking 🟫 Fläche) -->
@@ -5581,8 +5584,11 @@ function confirmRoom(){
 // ════════════════════════════════════════════════════════════════════════
 const tCv=document.getElementById('three-canvas');
 const scene=new THREE.Scene();
-scene.background=new THREE.Color(0xc4d8f0);
-scene.fog=new THREE.FogExp2(0xc4d8f0,0.013);
+// Fix "washed-out 3D": dezenter Dark-BG passt zum App-Theme, lässt PBR-
+// Materialien + Schatten Kontrast haben. Legacy-Sky-Blau 0xc4d8f0 war
+// zu hell in Kombination mit HDRI-Env + exposure 1.1.
+scene.background=new THREE.Color(0x1a2230);
+scene.fog=new THREE.FogExp2(0x1a2230, 0.008);
 
 const oCam=new THREE.PerspectiveCamera(58,1,0.1,200);
 const fpCam3=new THREE.PerspectiveCamera(72,1,0.05,100);
@@ -5593,7 +5599,7 @@ rend3.shadowMap.enabled=true; rend3.shadowMap.type=THREE.PCFSoftShadowMap;
 rend3.setPixelRatio(Math.min(devicePixelRatio,2));
 rend3.physicallyCorrectLights=true;
 rend3.toneMapping=THREE.ACESFilmicToneMapping;
-rend3.toneMappingExposure=1.1;
+rend3.toneMappingExposure=0.9;
 rend3.outputEncoding=THREE.sRGBEncoding;
 
 const hemi=new THREE.HemisphereLight(0xd0e8ff,0xe0c8a0,0.7); scene.add(hemi);
@@ -5611,6 +5617,44 @@ bounce3.position.set(0,-5,0); scene.add(bounce3);
 const grid3=new THREE.GridHelper(120,60,0x99aabb,0xbbccdd);
 grid3.material.opacity=0.2; grid3.material.transparent=true;
 scene.add(grid3);
+
+// Fix-5: Hilfsboden + Achsen für leere Szenen. Wird ausgeblendet sobald
+// Räume oder Grounds existieren (siehe _updateHelperVisibility). Via
+// Ansicht-Menü togglebar.
+const _helperFloor = new THREE.Mesh(
+  new THREE.PlaneGeometry(20, 20),
+  new THREE.MeshStandardMaterial({ color: 0x2a3642, roughness: 0.95, metalness: 0, side: THREE.DoubleSide })
+);
+_helperFloor.rotation.x = -Math.PI / 2;
+_helperFloor.position.y = -0.01;
+_helperFloor.receiveShadow = true;
+_helperFloor.name = '_helperFloor';
+scene.add(_helperFloor);
+
+const _helperAxes = new THREE.AxesHelper(2);
+_helperAxes.position.set(0, 0.02, 0);
+scene.add(_helperAxes);
+
+window._helperFloorVisible = true;
+function _updateHelperVisibility(){
+  // Auto-hide wenn die Szene echten Inhalt hat; Force-Show wenn User
+  // ihn explizit toggle'd (window._helperFloorForced).
+  const hasContent = (typeof rooms !== 'undefined' && rooms.length > 0) ||
+                     (typeof grounds !== 'undefined' && grounds.length > 0);
+  const shouldShow = window._helperFloorForced !== undefined
+    ? window._helperFloorForced
+    : !hasContent;
+  _helperFloor.visible = shouldShow;
+  _helperAxes.visible = shouldShow;
+}
+window.toggleHelperFloor = function(){
+  window._helperFloorForced = !(_helperFloor.visible);
+  _updateHelperVisibility();
+  if(typeof toast === 'function'){
+    toast('🧭 Hilfsboden ' + (_helperFloor.visible ? 'an' : 'aus'), 'b');
+  }
+};
+_updateHelperVisibility();
 
 // P3.3: async HDRI environment map for PBR reflections on the rich-primitive
 // builders (Kenney/Quaternius GLBs too). Microtask queued so the Vite module
@@ -5658,6 +5702,58 @@ window.renderScene = function(camera){
     try { window.cscComposer.render(); return; } catch(e){ console.warn('[csc] composer render failed, falling back', e); }
   }
   rend3.render(scene, cam);
+};
+
+// Fix-4: Auto-Fit Kamera nach Template/Project-Load. Berechnet Bounding-
+// Box aller Räume + Objekte, positioniert die Orbit-Kamera so dass alles
+// bequem ins Bild passt und setzt oTgt (Orbit-Target) auf den Mittelpunkt.
+window.cscFrameScene = function frameSceneToCamera(){
+  if(!scene || typeof THREE === 'undefined') return false;
+  const box = new THREE.Box3();
+  const v = new THREE.Vector3();
+  rooms.forEach(r => {
+    box.expandByPoint(v.set(r.x, 0, r.y));
+    box.expandByPoint(v.set(r.x + r.w, r.h || 3, r.y + r.d));
+  });
+  if(typeof grounds !== 'undefined'){
+    grounds.forEach(g => {
+      box.expandByPoint(v.set(g.x, 0, g.y));
+      box.expandByPoint(v.set(g.x + g.w, 0.05, g.y + g.d));
+    });
+  }
+  objects.forEach(o => {
+    const item = (typeof findItem === 'function') ? findItem(o.typeId) : null;
+    if(!item) return;
+    const w = o.w || item.w || 1;
+    const d = o.d || item.d || 1;
+    const h = o.h || item.h || 1;
+    const py = o.py || 0;
+    box.expandByPoint(v.set(o.x, py, o.y));
+    box.expandByPoint(v.set(o.x + w, py + h, o.y + d));
+  });
+  if(box.isEmpty()) return false;
+
+  const center = new THREE.Vector3();
+  const size = new THREE.Vector3();
+  box.getCenter(center);
+  box.getSize(size);
+  const maxDim = Math.max(size.x, size.y, size.z, 2);
+  const fov = oCam.fov * (Math.PI / 180);
+  const distance = (maxDim / 2) / Math.tan(fov / 2) * 1.5;
+
+  // Orbit-System (oTh, oPh, oRad) so einstellen, dass upOrbit() das
+  // gleiche Ergebnis liefert — sonst überschreibt der nächste mouse-move
+  // unsere neue Position wieder.
+  oTgt.set(center.x, center.y, center.z);
+  oRad = Math.max(4, distance);
+  oTh  = 0.8;   // horizontal ≈45° Versatz
+  oPh  = 1.1;   // leichte Schrägansicht von oben
+  upOrbit();
+
+  oCam.near = Math.max(0.05, distance / 100);
+  oCam.far  = Math.max(200, distance * 10);
+  oCam.updateProjectionMatrix();
+  return true;
 };
 
 window.toggleBloom = function(){
@@ -5740,6 +5836,8 @@ function rebuild3D(){
   // Remove old
   Object.values(obj3Map).forEach(g=>scene.remove(g));
   Object.keys(obj3Map).forEach(k=>delete obj3Map[k]);
+  // Helper-Floor bei leerem Canvas zeigen, bei Inhalt verstecken
+  if(typeof _updateHelperVisibility === 'function') _updateHelperVisibility();
 
   // All-floors flag (declared once at top to avoid TDZ)
   const showAF = !!_show3DAllFloors;
@@ -6506,6 +6604,8 @@ function loadPD(d){
   projMeta=d.meta||{};
   syncMetaUI();
     rebuild3D();renderLeft();draw2D();updateSavedUI();
+  // Fix-4: Kamera nach Project-Load auf den geladenen Inhalt zentrieren
+  if(typeof window.cscFrameScene === 'function') setTimeout(window.cscFrameScene, 50);
 }
 
 // Sync the KCanG-Projektdaten UI fields from projMeta. Called after loadPD
@@ -11122,6 +11222,9 @@ function applyTemplate(id){
     addObject({...o, id:null, w:it.w, d:it.d, h:it.h, py:o.py||0, arch:it.arch||null, floorId:curFloor});
   });
   rebuild3D(); draw2D(); renderLeft(); snapshot();
+  // Fix-4: Kamera nach Template-Load zentrieren, damit der Stand bequem
+  // ins Bild passt statt im Nirgendwo zu liegen
+  if(typeof window.cscFrameScene === 'function') setTimeout(window.cscFrameScene, 50);
   toast('🏗 Vorlage "'+tpl.name+'" geladen!','g');
 }
 
@@ -16422,7 +16525,7 @@ function _renderSceneToDataURL(preset, width, height){
   r.shadowMap.enabled = true;
   r.shadowMap.type = THREE.PCFSoftShadowMap;
   r.toneMapping = THREE.ACESFilmicToneMapping;
-  r.toneMappingExposure = 1.1;
+  r.toneMappingExposure = 0.9;
   // Build preset camera
   const aspect = width / height;
   let cam;
@@ -21295,6 +21398,7 @@ function acceptPendingRestore(){
     _restoreSnapshot(window._pendingAutoRestore.saved);
     const ago = Math.round((Date.now()-window._pendingAutoRestore.ts)/60000);
     toast('🔄 Stand wiederhergestellt (vor '+(ago<60?ago+' Min.':Math.round(ago/60)+' Std.')+')','g');
+    if(typeof window.cscFrameScene === 'function') setTimeout(window.cscFrameScene, 50);
   } catch(e) { toast('Restore fehlgeschlagen: '+e.message,'r'); }
   window._pendingAutoRestore = null;
   if(typeof suggestNextStep==='function') suggestNextStep();
