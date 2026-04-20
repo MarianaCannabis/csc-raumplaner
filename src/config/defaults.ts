@@ -86,6 +86,50 @@ export const FTE_COST: VerifiedValue<number> = {
   note: 'TVöD E5 Stufe 2 liegt bei ~3200, Mindestlohn-FTE bei ~2500. 2800 als Mittelwert für einfaches Aufsichtspersonal.',
 };
 
+// =============================================================================
+// P4.6 — Messe-Budget-Konstanten (B2B-Messen DE 2026)
+// =============================================================================
+
+export const MESSE_QM_PRICE_PER_DAY: VerifiedValue<number> = {
+  value: 120,
+  unit: '€/m²/Tag',
+  lastVerified: '2026-04-19',
+  source: 'heuristisch, B2B-Messen DE 2026 (AUMA-Standkosten-Vergleich)',
+  note: 'Spanne 80–180 €/m²/Tag je nach Messe. ISPO/Mari-Jane ~120, Dmexco ~160, Boot Düsseldorf ~140.',
+};
+
+export const MESSE_SETUP_PER_ITEM: VerifiedValue<number> = {
+  value: 40,
+  unit: '€ pro Messe-Item',
+  lastVerified: '2026-04-19',
+  source: 'heuristisch, Aufbau+Transport pro Item DE 2026',
+  note: 'Schnitt über Rückwand (80€), Rollup (15€), Counter (60€), Flag (25€). 40 als Pauschale.',
+};
+
+export const MESSE_ELECTRICITY_FLAT: VerifiedValue<number> = {
+  value: 180,
+  unit: '€/Messe',
+  lastVerified: '2026-04-19',
+  source: 'heuristisch, Grundanschluss 3 kW DE 2026',
+  note: 'Typische Pauschale für Stromanschluss inkl. Verbrauch bis 3 kW. Höhere Verbräuche extra.',
+};
+
+export const MESSE_WIFI_FLAT: VerifiedValue<number> = {
+  value: 80,
+  unit: '€/Messe',
+  lastVerified: '2026-04-19',
+  source: 'heuristisch, Stand-WLAN-Paket DE 2026',
+  note: 'Buchung über Messegesellschaft. Ohne: Aussteller-WLAN sharen oder LTE-Router mitbringen.',
+};
+
+export const MESSE_CARPET_PRICE_PER_QM: VerifiedValue<number> = {
+  value: 12,
+  unit: '€/m²',
+  lastVerified: '2026-04-19',
+  source: 'heuristisch, Messeteppich-Verlegung DE 2026',
+  note: 'Standard-Bodenbelag 10–18 €/m² inkl. Verlegung. 12 als Messe-Median.',
+};
+
 /** Helper: ältester `lastVerified`-Wert über alle Defaults. */
 export function oldestLastVerified(): string {
   const values: VerifiedValue<unknown>[] = [
@@ -96,6 +140,11 @@ export function oldestLastVerified(): string {
     ROI_STAFF,
     CONSTRUCTION_PRICE,
     FTE_COST,
+    MESSE_QM_PRICE_PER_DAY,
+    MESSE_SETUP_PER_ITEM,
+    MESSE_ELECTRICITY_FLAT,
+    MESSE_WIFI_FLAT,
+    MESSE_CARPET_PRICE_PER_QM,
   ];
   return values
     .map((v) => v.lastVerified)
@@ -113,6 +162,11 @@ export function latestLastVerified(): string {
     ROI_STAFF,
     CONSTRUCTION_PRICE,
     FTE_COST,
+    MESSE_QM_PRICE_PER_DAY,
+    MESSE_SETUP_PER_ITEM,
+    MESSE_ELECTRICITY_FLAT,
+    MESSE_WIFI_FLAT,
+    MESSE_CARPET_PRICE_PER_QM,
   ];
   return values
     .map((v) => v.lastVerified)

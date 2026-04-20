@@ -2285,6 +2285,13 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
             onchange="projMeta.maxHeight=this.value?+this.value:null; if(typeof renderComplianceBadges==='function') renderComplianceBadges();"
             style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
         </div>
+        <div class="mf" style="margin-top:6px">
+          <label style="font-size:10px;color:var(--tx3)">Messetage (Dauer)</label>
+          <input type="number" id="pm-messe-days" min="1" max="14" step="1" placeholder="3"
+            onchange="projMeta.messeDays=this.value?+this.value:null;"
+            style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
+        </div>
+        <button class="tbt" onclick="openMesseBudget()" style="margin-top:6px;padding:6px;border-color:var(--gr3);color:var(--gr);font-size:11px">💰 Messe-Kosten schätzen</button>
         <label style="font-size:11px;color:var(--tx2);display:flex;align-items:center;gap:6px;margin-top:6px">
           <input type="checkbox" id="pm-windows-filmed"
             onchange="projMeta.windowsFilmed=this.checked; if(typeof renderComplianceBadges==='function') renderComplianceBadges();">
@@ -2481,6 +2488,20 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
   </div>
   <div class="mbtns" style="margin-top:8px">
     <button class="mbt" onclick="closeM('m-vision')">Schließen</button>
+  </div>
+</div>
+</div>
+
+<!-- P4.6: MESSE-BUDGET-MODAL -->
+<div class="mover" id="m-messe-budget">
+<div class="modal" style="max-width:540px">
+  <h2>💰 Messe-Kostenschätzung</h2>
+  <div id="m-budget-body" style="font-size:11px;color:var(--tx2);line-height:1.6">Lade…</div>
+  <div style="font-size:9px;color:var(--tx3);margin-top:10px;padding:6px;border-left:2px solid var(--or,#f97316);background:rgba(249,115,22,0.06);line-height:1.5">
+    ⚠ Heuristische Schätzung — reale Kosten hängen von Messe, Halle, Anbieter und Verhandlung ab. Defaults aus src/config/defaults.ts.
+  </div>
+  <div class="mbtns">
+    <button class="mbt" onclick="closeM('m-messe-budget')">Schließen</button>
   </div>
 </div>
 </div>
@@ -6446,6 +6467,8 @@ function syncMetaUI(){
   if(wf) wf.checked = !!projMeta.windowsFilmed;
   const mh = document.getElementById('pm-max-height');
   if(mh) mh.value = projMeta.maxHeight != null ? projMeta.maxHeight : '';
+  const md = document.getElementById('pm-messe-days');
+  if(md) md.value = projMeta.messeDays != null ? projMeta.messeDays : '';
   if(p) p.textContent = projMeta.pois && projMeta.pois.length != null
     ? '✓ ' + projMeta.pois.length + ' POI(s) geladen'
     : '';
@@ -10806,6 +10829,29 @@ const ROOM_TEMPLATES = [
     ]
   },
 ];
+
+// P4.6: Messe budget estimator — pulls calcMesseBudget from the TS bridge.
+function openMesseBudget(){
+  if(!window.cscBudget){ toast('Budget-Modul nicht geladen','r'); return; }
+  const result = window.cscBudget.calc({
+    rooms: rooms.map(r=>({w:r.w, d:r.d})),
+    objects: objects.map(o=>({typeId:o.typeId})),
+    grounds: (typeof grounds !== 'undefined' ? grounds : []).map(g=>({w:g.w, d:g.d, material:g.material})),
+    meta: projMeta,
+  });
+  const body = document.getElementById('m-budget-body');
+  if(!body) return;
+  const rows = result.breakdown.map(b=>
+    '<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--bd)"><span>'+
+    b.label.replace(/&/g,'&amp;').replace(/</g,'&lt;')+
+    '</span><span style="font-weight:600;color:var(--tx);white-space:nowrap">'+window.cscBudget.fmtEUR(b.eur)+'</span></div>'
+  ).join('');
+  body.innerHTML =
+    '<div style="margin-bottom:12px;font-size:10px;color:var(--tx3)">Fläche: <b>'+result.areaQm.toFixed(1)+' m²</b> · Tage: <b>'+result.days+'</b></div>'+
+    rows+
+    '<div style="display:flex;justify-content:space-between;padding:10px 0 4px;font-size:14px;font-weight:700;color:var(--gr)"><span>Gesamt</span><span>'+window.cscBudget.fmtEUR(result.totalEUR)+'</span></div>';
+  openM('m-messe-budget');
+}
 
 // P4.5: merged template list with CSC (legacy) + Messe/Showroom (TS).
 let _tplFilter = 'all';

@@ -18,6 +18,8 @@ import type { GroundMaterial } from './catalog/grounds.js';
 import { processUpload, estimateImageMapBytes } from './util/imageUpload.js';
 import { STAND_TEMPLATES, findTemplate } from './templates/index.js';
 import type { StandTemplate } from './templates/index.js';
+import { calcMesseBudget, fmtEUR } from './compliance/budget.js';
+import type { BudgetResult } from './compliance/budget.js';
 
 console.info('[csc] vite entry alive', import.meta.env.MODE);
 const _allRules = compliance.listRules();
@@ -80,6 +82,10 @@ declare global {
       list: StandTemplate[];
       find: typeof findTemplate;
     };
+    cscBudget: {
+      calc: typeof calcMesseBudget;
+      fmtEUR: typeof fmtEUR;
+    };
   }
 }
 window.cscCompliance = compliance;
@@ -95,6 +101,7 @@ window.cscCredits = { list: CREDITS, renderHtml: renderCreditsHtml };
 window.cscGrounds = { materials: GROUND_MATERIALS, find: findGroundMaterial, loadMaterial: loadGroundMaterial };
 window.cscImageUpload = { processUpload, estimateBytes: estimateImageMapBytes };
 window.cscTemplates = { list: STAND_TEMPLATES, find: findTemplate };
+window.cscBudget = { calc: calcMesseBudget, fmtEUR };
 
 // Project-panel footer: show the most-recent lastVerified so the operator
 // knows how fresh the cost/energy defaults are. Rewrites on every boot,
