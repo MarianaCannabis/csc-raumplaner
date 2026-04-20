@@ -34,7 +34,9 @@ export interface TemplateMeta {
   messeDays?: number;
 }
 
-export type TemplateTag = 'csc' | 'messe' | 'showroom';
+// P6.1: fair-specific tags für Modal-Filter. 'messe' bleibt Oberkategorie
+// für alle Messestände; 'mari-jane'/'dmexco'/'boot'/'gamescom' sind spezifisch.
+export type TemplateTag = 'csc' | 'messe' | 'mari-jane' | 'dmexco' | 'boot' | 'gamescom' | 'showroom';
 
 export interface StandTemplate {
   id: string;
@@ -59,7 +61,7 @@ const MARI_JANE_REIHE: StandTemplate = {
   icon: '📐',
   desc: 'Reihenstand 4×3 m — Rückwand + rechte Seitenwand',
   size: '12 m²',
-  tag: 'messe',
+  tag: 'mari-jane',
   rooms: [
     { name: 'Reihenstand', x: 0, y: 0, w: 4, d: 3, h: 2.5, floorColor: '#3a5a3a', wallColor: '#ffffff' },
   ],
@@ -88,7 +90,7 @@ const MARI_JANE_ECK: StandTemplate = {
   icon: '📐',
   desc: 'Eckstand 6×4 m — 2 angrenzende Wände, Lounge-Zone',
   size: '24 m²',
-  tag: 'messe',
+  tag: 'mari-jane',
   rooms: [
     { name: 'Eckstand', x: 0, y: 0, w: 6, d: 4, h: 2.5, floorColor: '#3a5a3a', wallColor: '#ffffff' },
   ],
@@ -122,7 +124,7 @@ const MARI_JANE_INSEL: StandTemplate = {
   icon: '🏝',
   desc: 'Inselstand 8×6 m — offen, großer Lounge-Bereich',
   size: '48 m²',
-  tag: 'messe',
+  tag: 'mari-jane',
   rooms: [
     { name: 'Inselstand', x: 0, y: 0, w: 8, d: 6, h: 2.5, floorColor: '#3a5a3a', wallColor: '#cccccc' },
   ],
@@ -214,7 +216,7 @@ const MARI_JANE_KOPFSTAND_18: StandTemplate = {
   icon: '📐',
   desc: 'Kopfstand 6×3 m — einzelne Rückwand, 3 Seiten offen',
   size: '18 m²',
-  tag: 'messe',
+  tag: 'mari-jane',
   rooms: [
     { name: 'Kopfstand', x: 0, y: 0, w: 6, d: 3, h: 2.5, floorColor: '#3a5a3a', wallColor: '#ffffff' },
   ],
@@ -239,7 +241,7 @@ const MARI_JANE_REIHE_6: StandTemplate = {
   icon: '📐',
   desc: 'Minimal-Reihenstand 3×2 m — Rückwand + Counter, Basisbestückung',
   size: '6 m²',
-  tag: 'messe',
+  tag: 'mari-jane',
   rooms: [
     { name: 'Reihenstand Klein', x: 0, y: 0, w: 3, d: 2, h: 2.5, floorColor: '#3a5a3a', wallColor: '#ffffff' },
   ],
@@ -259,7 +261,7 @@ const MARI_JANE_REIHE_9: StandTemplate = {
   icon: '📐',
   desc: 'Standard-Reihenstand 3×3 m — Rückwand + Counter + Lounge-Hocker',
   size: '9 m²',
-  tag: 'messe',
+  tag: 'mari-jane',
   rooms: [
     { name: 'Reihenstand 9', x: 0, y: 0, w: 3, d: 3, h: 2.5, floorColor: '#3a5a3a', wallColor: '#ffffff' },
   ],
@@ -282,7 +284,7 @@ const MARI_JANE_KOPFSTAND_24: StandTemplate = {
   icon: '📐',
   desc: 'Großer Kopfstand 8×3 m — Doppel-Rückwand, Counter + Lounge',
   size: '24 m²',
-  tag: 'messe',
+  tag: 'mari-jane',
   rooms: [
     { name: 'Kopfstand XL', x: 0, y: 0, w: 8, d: 3, h: 2.5, floorColor: '#3a5a3a', wallColor: '#ffffff' },
   ],
@@ -309,7 +311,7 @@ const MARI_JANE_INSEL_72: StandTemplate = {
   icon: '🏝',
   desc: 'XXL Inselstand 12×6 m — offen, Bar-Lounge + Konferenzzone',
   size: '72 m²',
-  tag: 'messe',
+  tag: 'mari-jane',
   rooms: [
     { name: 'Insel XXL', x: 0, y: 0, w: 12, d: 6, h: 2.5, floorColor: '#3a5a3a', wallColor: '#cccccc' },
   ],
@@ -376,6 +378,143 @@ const GENERIC_SHOWROOM_24: StandTemplate = {
   meta: { maxHeight: 4.0, messeDays: 4 },
 };
 
+// Mari-Jane Eckstand 32 m² — 8×4, fünf Rückwände-Segmente in L
+const MARI_JANE_ECK_32: StandTemplate = {
+  id: 'mari-jane-eckstand-32m2',
+  name: 'Mari-Jane Eckstand 32 m²',
+  icon: '📐',
+  desc: 'Großer Eckstand 8×4 m — L-Wandzug, Lounge + Bar-Ecke',
+  size: '32 m²',
+  tag: 'mari-jane',
+  rooms: [
+    { name: 'Eckstand XL', x: 0, y: 0, w: 8, d: 4, h: 2.5, floorColor: '#3a5a3a', wallColor: '#ffffff' },
+  ],
+  objects: [
+    // Rückwand-Reihe hinten (8m)
+    { typeId: 'msg-backwall-4', x: 0, y: 0.05, rot: 0 },
+    { typeId: 'msg-backwall-4', x: 4, y: 0.05, rot: 0 },
+    // Seitenwand rechts (4m)
+    { typeId: 'msg-backwall-4', x: 7.95, y: 0.05, rot: 90 },
+    // LED-Wand + Counter-Duo
+    { typeId: 'msg-led-wall', x: 3.5, y: 0.2, rot: 0, py: 0.7 },
+    { typeId: 'msg-counter-front', x: 1.1, y: 1.5, rot: 0 },
+    { typeId: 'msg-counter-front', x: 5.1, y: 1.5, rot: 0 },
+    // Lounge vorn links: 3er Sofa + Couchtisch
+    { typeId: 'p-sofa-3', x: 0.5, y: 2.8, rot: 0 },
+    { typeId: 'p-coffee-table', x: 1.0, y: 2.2, rot: 0 },
+    // Bar-Ecke rechts-vorne
+    { typeId: 'ev-glass-bar', x: 5.8, y: 3.3, rot: 0 },
+    { typeId: 'ev-swivel-barstool', x: 5.8, y: 2.7, rot: 0 },
+    { typeId: 'ev-swivel-barstool', x: 6.8, y: 2.7, rot: 0 },
+    // 4 Flags rund herum
+    { typeId: 'msg-flag', x: 0.3, y: 3.7, rot: 0 },
+    { typeId: 'msg-flag', x: 3.6, y: 3.7, rot: 0 },
+    { typeId: 'msg-flag', x: 7.6, y: 3.7, rot: 0 },
+    { typeId: 'p-potted-plant-l', x: 0.3, y: 0.3, rot: 0 },
+  ],
+  meta: { maxHeight: 2.5, messeDays: 3 },
+};
+
+// =============================================================================
+// Event-spezifische generische Templates — Dmexco / Boot / Gamescom
+// =============================================================================
+
+const DMEXCO_18: StandTemplate = {
+  id: 'dmexco-koeln-18m2',
+  name: 'Dmexco Köln 18 m²',
+  icon: '💻',
+  desc: 'Digital-Marketing-Messe 6×3 m — Screens, Demo-Stationen, wenig Catering',
+  size: '18 m²',
+  tag: 'dmexco',
+  rooms: [
+    { name: 'Dmexco-Stand', x: 0, y: 0, w: 6, d: 3, h: 4.0, floorColor: '#2a2a2a', wallColor: '#1a1a1a' },
+  ],
+  objects: [
+    { typeId: 'msg-backwall-3', x: 0, y: 0.05, rot: 0 },
+    { typeId: 'msg-backwall-3', x: 3, y: 0.05, rot: 0 },
+    { typeId: 'ev-led-p39-3x2', x: 1.5, y: 0.2, rot: 0, py: 0.5 },
+    // 2 Demo-Stationen mit Touchscreens
+    { typeId: 'ev-touchscreen-pro', x: 1.0, y: 1.8, rot: 0 },
+    { typeId: 'ev-touchscreen-pro', x: 4.0, y: 1.8, rot: 0 },
+    // Media-Server versteckt hinten
+    { typeId: 'ev-media-server', x: 5.5, y: 0.3, rot: 0 },
+    // Stehtisch-Cluster vorne
+    { typeId: 'msg-counter-front', x: 2.1, y: 2.4, rot: 0 },
+    { typeId: 'ev-barstool-wood', x: 1.5, y: 1.2, rot: 0 },
+    { typeId: 'ev-barstool-wood', x: 4.5, y: 1.2, rot: 0 },
+    { typeId: 'msg-rollup', x: 5.6, y: 2.6, rot: 0 },
+  ],
+  meta: { maxHeight: 4.0, messeDays: 2 },
+};
+
+const BOOT_DUESSELDORF_36: StandTemplate = {
+  id: 'boot-duesseldorf-36m2',
+  name: 'Boot Düsseldorf 36 m²',
+  icon: '⛵',
+  desc: 'Boots-Messe 9×4 m — Platz für 6-8 m Exponat, Lounge, Info',
+  size: '36 m²',
+  tag: 'boot',
+  rooms: [
+    { name: 'Boot-Stand', x: 0, y: 0, w: 9, d: 4, h: 5.0, floorColor: '#3a5a7a', wallColor: '#ffffff' },
+  ],
+  objects: [
+    // Exponat-Zone zentral (Platzhalter, User stellt sein Boot rein)
+    { typeId: 'ev-stage-mod-2x1', x: 2, y: 1, rot: 0 },
+    { typeId: 'ev-stage-mod-2x1', x: 4, y: 1, rot: 0 },
+    // Info-Rückwand hinten
+    { typeId: 'msg-backwall-3', x: 6, y: 0.05, rot: 0 },
+    { typeId: 'ev-mobile-led-wall', x: 6.5, y: 0.2, rot: 0, py: 1.0 },
+    // Empfang vorne links
+    { typeId: 'p-reception', x: 0.5, y: 2.8, rot: 0 },
+    { typeId: 'p-office-chair', x: 1.1, y: 3.2, rot: 180 },
+    // Lounge vorne rechts
+    { typeId: 'p-sofa-3', x: 6.5, y: 2.8, rot: 0 },
+    { typeId: 'p-coffee-table', x: 7.2, y: 2.0, rot: 0 },
+    // Roll-ups + Flags
+    { typeId: 'msg-rollup', x: 0.2, y: 0.3, rot: 0 },
+    { typeId: 'msg-rollup', x: 8.5, y: 3.5, rot: 0 },
+    { typeId: 'msg-flag', x: 8.6, y: 0.3, rot: 0 },
+    // Deko Outdoor-Feel
+    { typeId: 'p-potted-plant-l', x: 0.3, y: 3.5, rot: 0 },
+    { typeId: 'p-potted-plant-l', x: 8.5, y: 3.5, rot: 0 },
+  ],
+  meta: { maxHeight: 5.0, messeDays: 9 },
+};
+
+const GAMESCOM_24: StandTemplate = {
+  id: 'gamescom-koeln-24m2',
+  name: 'Gamescom Köln 24 m²',
+  icon: '🎮',
+  desc: 'Gaming-Messe 6×4 m — LED-Walls, Gaming-Seats, Demo-Stationen',
+  size: '24 m²',
+  tag: 'gamescom',
+  rooms: [
+    { name: 'Gamescom-Stand', x: 0, y: 0, w: 6, d: 4, h: 5.0, floorColor: '#1a1a2a', wallColor: '#0a0a1a' },
+  ],
+  objects: [
+    // Große LED-Wand-Reihe (3 Module)
+    { typeId: 'ev-led-p39-2x2', x: 0, y: 0.15, rot: 0, py: 0.5 },
+    { typeId: 'ev-led-p39-2x2', x: 2, y: 0.15, rot: 0, py: 0.5 },
+    { typeId: 'ev-led-p39-2x2', x: 4, y: 0.15, rot: 0, py: 0.5 },
+    // 4 Gaming-Stationen vorne (Touchscreen-Kiosks als Platzhalter)
+    { typeId: 'ev-touchscreen-pro', x: 0.5, y: 1.8, rot: 0 },
+    { typeId: 'ev-touchscreen-pro', x: 2.0, y: 1.8, rot: 0 },
+    { typeId: 'ev-touchscreen-pro', x: 3.5, y: 1.8, rot: 0 },
+    { typeId: 'ev-touchscreen-pro', x: 5.0, y: 1.8, rot: 0 },
+    // Gaming-Stühle
+    { typeId: 'ev-swivel-barstool', x: 0.7, y: 2.7, rot: 180 },
+    { typeId: 'ev-swivel-barstool', x: 2.2, y: 2.7, rot: 180 },
+    { typeId: 'ev-swivel-barstool', x: 3.7, y: 2.7, rot: 180 },
+    { typeId: 'ev-swivel-barstool', x: 5.2, y: 2.7, rot: 180 },
+    // Info-Counter + Moving-Head-Spots
+    { typeId: 'msg-counter-front', x: 2.1, y: 3.3, rot: 0 },
+    { typeId: 'ev-moving-head-beam', x: 0.5, y: 3.5, rot: 0, py: 3.5 },
+    { typeId: 'ev-moving-head-beam', x: 5.2, y: 3.5, rot: 0, py: 3.5 },
+    { typeId: 'ev-uv-bar', x: 2.8, y: 3.7, rot: 0, py: 3.2 },
+  ],
+  meta: { maxHeight: 5.0, messeDays: 5 },
+};
+
 export const STAND_TEMPLATES: StandTemplate[] = [
   MARI_JANE_REIHE_6,
   MARI_JANE_REIHE_9,
@@ -383,8 +522,12 @@ export const STAND_TEMPLATES: StandTemplate[] = [
   MARI_JANE_KOPFSTAND_18,
   MARI_JANE_KOPFSTAND_24,
   MARI_JANE_ECK,
+  MARI_JANE_ECK_32,
   MARI_JANE_INSEL,
   MARI_JANE_INSEL_72,
+  DMEXCO_18,
+  BOOT_DUESSELDORF_36,
+  GAMESCOM_24,
   GENERIC_SHOWROOM_24,
   GENERIC_SHOWROOM,
 ];

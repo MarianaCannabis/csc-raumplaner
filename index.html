@@ -11480,13 +11480,16 @@ function renderTemplateChipBar(){
   const chipBar = document.getElementById('tpl-chip-bar'); if(!chipBar) return;
   const all = getAllTemplates();
   // Count per tag for chip labels — so user can tell which categories have items.
-  const counts = { all: all.length, csc: 0, messe: 0, showroom: 0 };
+  const counts = { all: all.length, csc: 0, 'mari-jane': 0, dmexco: 0, boot: 0, gamescom: 0, showroom: 0 };
   all.forEach(t => { if(counts[t.tag] != null) counts[t.tag]++; });
   const chips = [
-    {id:'all',      label:'Alle',     icon:'📋'},
-    {id:'csc',      label:'CSC',      icon:'🌿'},
-    {id:'messe',    label:'Messe',    icon:'🎪'},
-    {id:'showroom', label:'Showroom', icon:'🏢'},
+    {id:'all',       label:'Alle',       icon:'📋'},
+    {id:'csc',       label:'CSC',        icon:'🌿'},
+    {id:'mari-jane', label:'Mari-Jane',  icon:'🌿'},
+    {id:'dmexco',    label:'Dmexco',     icon:'💻'},
+    {id:'boot',      label:'Boot',       icon:'⛵'},
+    {id:'gamescom',  label:'Gamescom',   icon:'🎮'},
+    {id:'showroom',  label:'Showroom',   icon:'🏢'},
   ];
   chipBar.innerHTML = chips.map(c=>{
     const n = counts[c.id] != null ? ' ('+counts[c.id]+')' : '';
