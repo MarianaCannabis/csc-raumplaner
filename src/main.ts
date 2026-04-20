@@ -16,6 +16,7 @@ import { CREDITS, renderCreditsHtml } from './catalog/credits.js';
 import { GROUND_MATERIALS, findGroundMaterial } from './catalog/grounds.js';
 import type { GroundMaterial } from './catalog/grounds.js';
 import { processUpload, estimateImageMapBytes } from './util/imageUpload.js';
+import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js';
 import { STAND_TEMPLATES, findTemplate } from './templates/index.js';
 import type { StandTemplate } from './templates/index.js';
 import { calcMesseBudget, fmtEUR } from './compliance/budget.js';
@@ -23,6 +24,16 @@ import type { BudgetResult } from './compliance/budget.js';
 import { buildPackList } from './compliance/packlist.js';
 
 console.info('[csc] vite entry alive', import.meta.env.MODE);
+
+// Bridge GLTFExporter onto the globally-available legacy THREE (from CDN).
+// Der legacy exportGLTF()-Handler ruft `new THREE.GLTFExporter()` — ohne
+// diese Zuweisung hat er kein GLTFExporter. Früher kam er aus einem
+// separaten CDN-Tag; der ist entfernt (duplicate-Warning), der Exporter
+// kommt jetzt aus dem npm-Bundle (single source of truth).
+declare global { interface Window { THREE: any } }
+if (typeof window !== 'undefined' && (window as any).THREE) {
+  (window as any).THREE.GLTFExporter = GLTFExporter;
+}
 const _allRules = compliance.listRules();
 const _projectRules = _allRules.filter((r) => (r.scope ?? 'project') === 'project').length;
 const _roomRules = _allRules.filter((r) => r.scope === 'room').length;
