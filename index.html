@@ -2256,15 +2256,20 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
       <div id="ai-autocomplete" style="position:relative"></div>
       <div style="display:flex;gap:6px;align-items:flex-end">
         <textarea class="ainput" id="ai-inp" rows="1"
-          placeholder="Räume beschreiben, Fragen stellen…"
+          placeholder="Räume beschreiben, Fragen stellen… (Ctrl+K)"
           onkeydown="aiKey(event)" oninput="updateAIAutocomplete(this.value)"
+          aria-label="KI-Eingabe"
           style="flex:1;resize:none;min-height:36px;max-height:120px"></textarea>
-        <button class="asend" id="ai-send" onclick="sendAI()" style="height:36px;padding:0 14px">↑</button>
+        <button class="asend" id="ai-send" onclick="sendAI()" style="height:36px;padding:0 14px" aria-label="Senden">↑</button>
       </div>
+      <!-- P9.4: Quick-Actions — kontext-aware Aktionen -->
       <div style="display:flex;gap:4px;margin-top:5px;flex-wrap:wrap">
         <span class="chip" onclick="document.getElementById('fp-upload').click()">📎 Foto/Datei</span>
         <span class="chip" onclick="qmsg('Erstelle eine vollständige CSC-Ausgabestelle: Empfang, Ausgabe, Lager, Sozialbereich und WC')">🌿 CSC-Anlage</span>
         <span class="chip" onclick="qmsg('Optimiere das Layout für maximalen Durchfluss')">⚡ Layout</span>
+        <span class="chip" onclick="qmsg('Schätze die Kosten dieses Projekts detailliert')">💰 Kosten</span>
+        <span class="chip" onclick="qmsg('Prüfe dieses Layout rechtlich gegen KCanG und markiere Probleme')">⚖ Rechtliches</span>
+        <span class="chip" onclick="qmsg('Was sind die 3 wichtigsten nächsten Schritte für dieses Projekt?')">💡 Nächste Schritte</span>
       </div>
     </div>
   </div><!-- /rpanel-ai -->
@@ -10505,11 +10510,30 @@ async function sendAI(){
   if(sendBtn) sendBtn.disabled = true;
 
   try {
-    // Build state context
+    // P9.4: Erweiterter Kontext — Meta, Compliance-Violations, Selection
+    // Der KI-Companion soll wissen was gerade schiefläuft (rote Regeln)
+    // damit proaktive Vorschläge möglich sind.
+    let complianceWarnings = [];
+    try {
+      const checks = typeof getKCaNGChecklist === 'function' ? getKCaNGChecklist() : [];
+      complianceWarnings = checks.filter(c => c.passed === false).slice(0, 5).map(c => (c.label || '') + (c.details ? ': ' + c.details : ''));
+    } catch(e){}
+    let selectionCtx = '';
+    if(selId){
+      if(selIsRoom){ const r = rooms.find(x=>x.id===selId); if(r) selectionCtx = '\nAktuell SELEKTIERT: Raum "' + r.name + '" (' + r.w + '×' + r.d + 'm)'; }
+      else if(selIsGround){ const g = grounds.find(x=>x.id===selId); if(g) selectionCtx = '\nAktuell SELEKTIERT: Fläche "' + g.name + '" (' + g.material + ')'; }
+      else { const o = objects.find(x=>x.id===selId); if(o){ const it = findItem(o.typeId); selectionCtx = '\nAktuell SELEKTIERT: Objekt "' + (o.name || (it && it.name) || o.typeId) + '"'; } }
+    }
+    const metaCtx = '\nProjekt-Meta: Mitglieder=' + (projMeta.memberCount || '—') +
+      ', MaxHöhe=' + (projMeta.maxHeight || '—') +
+      ', Adresse=' + (projMeta.address ? '✓' : '—') +
+      ', Präventionsbeauftragter=' + (projMeta.preventionOfficer ? '✓' : '—');
+    const warnCtx = complianceWarnings.length ? '\nAKTIVE COMPLIANCE-PROBLEME:\n- ' + complianceWarnings.join('\n- ') : '\nCompliance: alle Regeln OK';
     const stateCtx = 'AKTUELLER ZUSTAND:\nRäume: ' +
       JSON.stringify(rooms.map(r=>({name:r.name,x:Math.round(r.x*10)/10,y:Math.round(r.y*10)/10,w:r.w,d:r.d}))) +
       '\nObjekte (erste 15): ' +
-      JSON.stringify(objects.slice(0,15).map(o=>({typeId:o.typeId,x:Math.round(o.x*10)/10,y:Math.round(o.y*10)/10})));
+      JSON.stringify(objects.slice(0,15).map(o=>({typeId:o.typeId,x:Math.round(o.x*10)/10,y:Math.round(o.y*10)/10}))) +
+      metaCtx + warnCtx + selectionCtx;
 
     // Build content array
     let content = [];
@@ -11471,6 +11495,65 @@ document.addEventListener('keydown', (e) => {
     openHelpModal();
   }
 });
+
+// P9.4: Ctrl+K / Cmd+K öffnet/fokussiert KI-Input
+document.addEventListener('keydown', (e) => {
+  if((e.ctrlKey || e.metaKey) && e.key === 'k' && !e.shiftKey){
+    e.preventDefault();
+    // Right-Panel auf AI-Tab wechseln + Input fokussieren
+    if(typeof showRight === 'function') showRight('ai');
+    const inp = document.getElementById('ai-inp');
+    if(inp){ inp.focus(); inp.select(); }
+  }
+});
+
+// P9.4: Chat-Historie pro Projekt in localStorage persistieren.
+// Wird bei jedem addMsg mit type 'ai' oder 'user' aktualisiert.
+// Beim Projekt-Wechsel (loadPD) wird die History wiederhergestellt.
+const _CHAT_HISTORY_KEY = 'csc-ai-chat-history';
+const _CHAT_HISTORY_MAX = 100; // max Einträge pro Projekt
+
+function _saveChatHistory(){
+  try {
+    const el = document.getElementById('ai-msgs');
+    if(!el) return;
+    const msgs = Array.from(el.querySelectorAll('.amsg')).map(d => ({
+      type: d.classList.contains('usr') ? 'user' : d.classList.contains('ai') ? 'ai' : 'sys',
+      text: (d.querySelector('div:last-child') || d).textContent || '',
+      ts: Date.now(),
+    })).slice(-_CHAT_HISTORY_MAX);
+    const store = JSON.parse(localStorage.getItem(_CHAT_HISTORY_KEY) || '{}');
+    store[projName] = msgs;
+    localStorage.setItem(_CHAT_HISTORY_KEY, JSON.stringify(store));
+  } catch(e){ /* quota-exceeded ist selten problematisch */ }
+}
+
+function _restoreChatHistory(){
+  try {
+    const store = JSON.parse(localStorage.getItem(_CHAT_HISTORY_KEY) || '{}');
+    const msgs = store[projName];
+    if(!msgs || !msgs.length) return;
+    msgs.forEach(m => {
+      if(typeof addMsg === 'function') addMsg(m.text, m.type);
+    });
+  } catch(e){}
+}
+
+// Auto-save bei jedem addMsg (monkey-patch)
+(function patchAddMsgForHistory(){
+  const fired = { save: null };
+  window.addEventListener('DOMContentLoaded', () => {
+    const origAddMsg = window.addMsg;
+    if(typeof origAddMsg !== 'function') return;
+    window.addMsg = function(text, type){
+      const ret = origAddMsg(text, type);
+      // Debounce 500ms damit wir nicht bei jedem Zeichen schreiben
+      clearTimeout(fired.save);
+      fired.save = setTimeout(_saveChatHistory, 500);
+      return ret;
+    };
+  });
+})();
 
 // ════════════════════════════════════════════════════════════════════════
 // P9.3: User-generierte Templates (Save/Load/Delete via Supabase)
