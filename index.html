@@ -1765,6 +1765,9 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
   <!-- P7 Bug-2-Fix: KCanG-Dashboard aus der Ansicht-Menu-Tiefe an die Topbar hochgezogen -->
   <button class="tbt" id="btn-kcang" onclick="openKCaNGDashboard()" title="KCanG-Projektdaten + Compliance-Check (Mitglieder, Adresse, Präventionsbeauftragter, Regeln)"
     style="padding:5px 10px;border:1px solid var(--gr3);background:rgba(74,222,128,0.08);color:var(--gr);font-weight:600">🌿 KCanG</button>
+  <!-- P8.2: Hilfe-Modal mit FAQ + Shortcuts + Link zum User-Guide -->
+  <button class="tbt icon-btn" id="btn-help" onclick="openHelpModal()" title="Hilfe: FAQ, Tastenkürzel, User-Guide"
+    style="padding:5px 10px" aria-label="Hilfe öffnen">❓</button>
   <div class="tsep"></div>
 
   <!-- DROPDOWN MENUS -->
@@ -2671,6 +2674,63 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
     <button class="mbt" onclick="copyPacklistMD()">📋 Markdown kopieren</button>
     <button class="mbt" onclick="togglePacklistMD()">📝 Markdown ein/aus</button>
     <button class="mbt" onclick="closeM('m-packlist')">Schließen</button>
+  </div>
+</div>
+</div>
+
+<!-- P8.2: Hilfe-Modal — FAQ + Shortcuts + User-Guide-Link -->
+<div class="mover" id="m-help">
+<div class="modal" style="max-width:720px;max-height:88vh">
+  <h2>❓ Hilfe &amp; FAQ</h2>
+  <div style="font-size:11px;color:var(--tx3);margin-bottom:14px">Kurz-Antworten + vollständiger User-Guide auf <a href="https://github.com/MarianaCannabis/csc-raumplaner/blob/main/docs/USER-GUIDE.md" target="_blank" rel="noopener" style="color:var(--gr)">GitHub</a>.</div>
+
+  <details open style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px;padding:10px 12px;margin-bottom:6px">
+    <summary style="cursor:pointer;font-weight:600;color:var(--gr)">🌿 Erste Schritte</summary>
+    <div style="padding-top:6px;font-size:12px;color:var(--tx2);line-height:1.5">
+      Klick auf <b>📋 Vorlagen</b> (Topbar) für fertige Mari-Jane/Messe/CSC-Layouts. Oder <b>⬜ Raum zeichnen</b> im Mode-Pill-Bar unten und diagonal über den Grundriss ziehen. Katalog-Items werden aus der linken Sidebar auf den Plan gezogen.
+    </div>
+  </details>
+
+  <details style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px;padding:10px 12px;margin-bottom:6px">
+    <summary style="cursor:pointer;font-weight:600;color:var(--gr)">🌿 KCanG-Compliance</summary>
+    <div style="padding-top:6px;font-size:12px;color:var(--tx2);line-height:1.5">
+      <b>🌿 KCanG</b>-Button oben öffnet das Dashboard. Pflicht-Felder: Mitgliederzahl (&lt;500), Adresse (§13 POI-Check), Präventionsbeauftragter (§23), Sichtschutzfolie (§14). Die Live-Regel-Liste zeigt 21 KCanG-Regeln mit ✅/❌/⚪-Status + Gesamt-Score.
+    </div>
+  </details>
+
+  <details style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px;padding:10px 12px;margin-bottom:6px">
+    <summary style="cursor:pointer;font-weight:600;color:var(--gr)">🎪 Messestand planen</summary>
+    <div style="padding-top:6px;font-size:12px;color:var(--tx2);line-height:1.5">
+      Vorlagen-Modal → Chip auf <b>Mari-Jane</b> / <b>Dmexco</b> / <b>Boot</b> / <b>Gamescom</b>. Template setzt <code>maxHeight</code> (2.5 / 4 / 5 m) automatisch → Höhen-Regel fährt hoch. Messe-Items in der Kategorie „🎪 Messe" (Rückwand / Roll-up / Counter / LED / Flag). Bild-Upload via Property-Panel für bedruckbare Oberflächen.
+    </div>
+  </details>
+
+  <details style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px;padding:10px 12px;margin-bottom:6px">
+    <summary style="cursor:pointer;font-weight:600;color:var(--gr)">☁ Cloud-Save &amp; Login</summary>
+    <div style="padding-top:6px;font-size:12px;color:var(--tx2);line-height:1.5">
+      Rechte Sidebar → <b>💾 Projekte</b> → <b>🔑 Einloggen</b> → Magic-Link per Mail. Access-Token lebt 1 h, wird alle 5 Min still erneuert (Refresh-Token ~2 Wochen). <b>☁ Auto-Cloud-Save</b> (Datei-Menü) debouncet 3 s.
+    </div>
+  </details>
+
+  <details style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px;padding:10px 12px;margin-bottom:6px">
+    <summary style="cursor:pointer;font-weight:600;color:var(--gr)">📤 Export (DXF / PDF / CSV / …)</summary>
+    <div style="padding-top:6px;font-size:12px;color:var(--tx2);line-height:1.5">
+      Projekt-Panel → Export-Collapse. <b>DXF</b> hat 5 farbige Layer (ROOMS/GROUNDS/OBJECTS/FREE_WALLS/MEASURES). <b>CSV</b> liefert Detail- + Aggregiert-Block für Lieferanten. <b>📸 Hochauflösende Visualisierung</b> erzeugt PNGs aus 4 Kameras (HD/2K/4K).
+    </div>
+  </details>
+
+  <details style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px;padding:10px 12px;margin-bottom:6px">
+    <summary style="cursor:pointer;font-weight:600;color:var(--gr)">⌨ Tastenkürzel</summary>
+    <div style="padding-top:6px;font-size:11px;color:var(--tx2);line-height:1.7">
+      <kbd>Strg+Z</kbd> Rückgängig · <kbd>Strg+Y</kbd> Wiederholen · <kbd>Del</kbd> Löschen · <kbd>R</kbd> Drehen ·
+      <kbd>H</kbd> Hilfe · <kbd>Z</kbd> Zoom auf Selektion · <kbd>ESC</kbd> Cancel / Close ·
+      <kbd>Leertaste+Drag</kbd> Pannen · <kbd>Strg+S</kbd> Speichern · <kbd>Mausrad</kbd> Zoom
+    </div>
+  </details>
+
+  <div class="mbtns">
+    <button class="mbt" onclick="startWelcomeFlow();closeM('m-help')">📚 Welcome neu zeigen</button>
+    <button class="mbt ok" onclick="closeM('m-help')">Schließen</button>
   </div>
 </div>
 </div>
@@ -11106,6 +11166,18 @@ async function optimizeLayout(){
 }
 
 // ── 14. KAPAZITÄTS- UND CHECKLISTEN-PANEL ────────────────────────────
+// P8.2: Hilfe-Modal — FAQ + Shortcuts + User-Guide-Link
+function openHelpModal(){ openM('m-help'); }
+
+// P8.2: Keyboard-Shortcut-Overlay beim Druck von ? oder F1
+document.addEventListener('keydown', (e) => {
+  if(e.target && e.target.matches && e.target.matches('input,textarea,select')) return;
+  if(e.key === '?' || e.key === 'F1'){
+    e.preventDefault();
+    openHelpModal();
+  }
+});
+
 // P7 Bug-2: KCanG-Dashboard — aggregiert Meta-Inputs + Live-Regelprüfung
 // in einem zentralen Modal. Via neuem Topbar-Button 🌿 KCanG aufgerufen.
 function openKCaNGDashboard(){
