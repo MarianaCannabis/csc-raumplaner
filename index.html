@@ -2021,8 +2021,46 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
     <button class="mpill active" id="pill-sel" onclick="set2DTool('sel')">↖ Auswählen</button>
     <button class="mpill" id="pill-wall" onclick="set2DTool('wall')">🧱 Wand zeichnen</button>
     <button class="mpill" id="pill-room" onclick="set2DTool('room')">⬜ Raum zeichnen</button>
+    <button class="mpill" id="pill-ground" onclick="openGroundMaterialPicker()">🟫 Fläche</button>
     <button class="mpill" id="pill-measure" onclick="set2DTool('measure')">📏 Maß</button>
     <button class="mpill" id="pill-pan" onclick="set2DTool('pan')">✋ Verschieben</button>
+  </div>
+
+  <!-- P4.1: Ground-material picker (shown when clicking 🟫 Fläche) -->
+  <div id="ground-picker" style="display:none;position:absolute;top:52px;left:50%;transform:translateX(-50%);background:#0c1420;border:1px solid #334155;border-radius:8px;padding:10px;z-index:40;box-shadow:0 6px 20px rgba(0,0,0,0.5);max-width:420px">
+    <div style="font-size:11px;color:#94a3b8;margin-bottom:8px">Material für neue Fläche wählen:</div>
+    <div id="ground-picker-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px"></div>
+    <div style="text-align:right;margin-top:8px">
+      <button class="mpill" onclick="closeGroundMaterialPicker()" style="font-size:11px">Abbrechen</button>
+    </div>
+  </div>
+
+  <!-- P4.1: Ground property panel -->
+  <div id="ground-prop-panel" style="display:none;position:absolute;top:60px;right:20px;width:260px;background:#0c1420;border:1px solid #334155;border-radius:8px;padding:12px;z-index:30;box-shadow:0 6px 20px rgba(0,0,0,0.5);font-size:12px">
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
+      <span id="gpp-icon" style="font-size:18px">🟫</span>
+      <span style="font-weight:600;color:#e2e8f0;flex:1">Fläche</span>
+      <button onclick="closeGroundPropPanel()" style="background:transparent;color:#94a3b8;border:none;cursor:pointer;font-size:14px">✕</button>
+    </div>
+    <label style="display:block;color:#94a3b8;font-size:10px">Name</label>
+    <input id="gpp-name" style="width:100%;background:#1e293b;border:1px solid #334155;color:#e2e8f0;border-radius:4px;padding:4px;margin-bottom:8px;box-sizing:border-box"/>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
+      <div>
+        <label style="display:block;color:#94a3b8;font-size:10px">Breite (m)</label>
+        <input id="gpp-w" type="number" step="0.1" min="0.5" style="width:100%;background:#1e293b;border:1px solid #334155;color:#e2e8f0;border-radius:4px;padding:4px;box-sizing:border-box"/>
+      </div>
+      <div>
+        <label style="display:block;color:#94a3b8;font-size:10px">Tiefe (m)</label>
+        <input id="gpp-d" type="number" step="0.1" min="0.5" style="width:100%;background:#1e293b;border:1px solid #334155;color:#e2e8f0;border-radius:4px;padding:4px;box-sizing:border-box"/>
+      </div>
+    </div>
+    <label style="display:block;color:#94a3b8;font-size:10px">Rotation (°)</label>
+    <input id="gpp-rot" type="number" step="15" style="width:100%;background:#1e293b;border:1px solid #334155;color:#e2e8f0;border-radius:4px;padding:4px;margin-bottom:8px;box-sizing:border-box"/>
+    <label style="display:block;color:#94a3b8;font-size:10px">Material</label>
+    <select id="gpp-mat" style="width:100%;background:#1e293b;border:1px solid #334155;color:#e2e8f0;border-radius:4px;padding:4px;margin-bottom:8px;box-sizing:border-box"></select>
+    <label style="display:block;color:#94a3b8;font-size:10px">Farbe (Tint, weiß = pure Textur)</label>
+    <input id="gpp-color" type="color" style="width:100%;background:#1e293b;border:1px solid #334155;border-radius:4px;margin-bottom:8px;box-sizing:border-box;height:32px;padding:2px"/>
+    <button onclick="deleteSelectedGround()" style="width:100%;background:#7f1d1d;color:#fecaca;border:1px solid #991b1b;border-radius:4px;padding:6px;cursor:pointer;font-size:11px">🗑 Fläche löschen</button>
   </div>
 
   <div id="tip-bar"><span class="tip-icon">💡</span><span id="tip-text"></span><button class="tip-close" onclick="document.getElementById('tip-bar').classList.add('hidden')">✕</button></div>
@@ -3651,6 +3689,7 @@ const DEFAULT_SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmF
 // ════════════════════════════════════════════════════════════════════════
 let projName = 'Neue Ausgabestelle';
 let rooms    = [];   // {id,name,x,y,w,d,h,floorColor,wallColor,ceilColor}
+let grounds  = [];   // P4.1: {id,name,x,y,w,d,rot,material,color,floorId} — floor-only polygons, no walls
 let objects  = [];   // {id,typeId,name,icon,x,y,w,d,h,rot,py,arch}
 let walls    = [];   // free-hand walls (Phase 2 – already reserved)
 let measures = [];   // {ax,ay,bx,by}
@@ -3659,12 +3698,17 @@ let curFloor = 'eg';
 let selId    = null;
 let selIsRoom = false;
 let selIsWall = false;  // true when a freehand wall is selected
-let rid = 1, oid = 1, wid = 1;
+let selIsGround = false; // P4.1: true when a ground plane is selected
+let rid = 1, oid = 1, wid = 1, gid = 1;
 let leftMode  = 'rooms';
 let currentView = '2d';
-let tool2d = 'sel';   // sel|room|measure|pan
+let tool2d = 'sel';   // sel|room|measure|pan|ground
 let placingCatalogId = null;
 let wallDrawStart = null;    // {wx,wz} when drawing a wall (click A)
+let drawGroundStart = null;  // P4.1: {cx,cy,wx,wy} while dragging a new ground rect
+let dragGround = null;       // P4.1: {id,ox,oy} while moving a ground
+let resizeGroundHandle = null; // P4.1: {id,handle,ox,oy,origW,origD,origX,origY}
+let currentGroundMat = 'carpet'; // P4.1: material preset picked before tool==='ground' draw
 var _show3DAllFloors = false; // show all floors in 3D view
 var _autoSaveReady   = false; // true after initAutoSave runs
 let customObjs = [];
@@ -4420,6 +4464,9 @@ function draw2D(){
   // Grid
   drawGrid();
 
+  // Grounds (P4.1) — rendered BEFORE rooms so rooms sit on top
+  grounds.filter(g=>(g.floorId||'eg')===curFloor).forEach(g => drawGround2D(g));
+
   // Rooms (current floor only)
   checkCollisions();
   rooms.filter(r=>(r.floorId||'eg')===curFloor).forEach(r => drawRoom2D(r));
@@ -4446,6 +4493,24 @@ function draw2D(){
     const wm=snapM(px2m(x2-x1)), dm=snapM(px2m(y2-y1));
     ctx.fillStyle='#4ade80'; ctx.font='12px system-ui'; ctx.textAlign='center';
     ctx.fillText(`${wm.toFixed(1)}m × ${dm.toFixed(1)}m`,(x1+x2)/2,(y1+y2)/2);
+  }
+
+  // P4.1 ground-draw preview
+  if(tool2d === 'ground' && drawGroundStart){
+    const cx = lastX, cy = lastY;
+    const x1=Math.min(drawGroundStart.cx,cx), y1=Math.min(drawGroundStart.cy,cy);
+    const x2=Math.max(drawGroundStart.cx,cx), y2=Math.max(drawGroundStart.cy,cy);
+    const mat = (window.cscGrounds && window.cscGrounds.find(currentGroundMat)) || null;
+    const hex = mat ? '#'+mat.tint.toString(16).padStart(6,'0') : '#888';
+    ctx.globalAlpha = 0.4;
+    ctx.fillStyle = hex;
+    ctx.fillRect(x1,y1,x2-x1,y2-y1);
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = '#fbbf24'; ctx.lineWidth=2; ctx.setLineDash([6,4]);
+    ctx.strokeRect(x1,y1,x2-x1,y2-y1); ctx.setLineDash([]);
+    const wm=snapM(px2m(x2-x1)), dm=snapM(px2m(y2-y1));
+    ctx.fillStyle='#fbbf24'; ctx.font='12px system-ui'; ctx.textAlign='center';
+    ctx.fillText((mat?mat.icon+' ':'')+`${wm.toFixed(1)}m × ${dm.toFixed(1)}m`,(x1+x2)/2,(y1+y2)/2);
   }
 
   // ── Opening snap preview (Phase 3 — inlined, no recursion) ─────────────
@@ -4565,6 +4630,73 @@ function drawRoom2D(r){
     ctx.fillText(`${r.w.toFixed(2)}m`, x+w/2, y-8);
     ctx.fillText(`${r.d.toFixed(2)}m`, x+w+30, y+d/2);
   }
+}
+
+// P4.1 — draw a ground polygon in 2D. Tinted rectangle with axis-aligned
+// bounds; rotation is applied via canvas transform so the visual reflects
+// g.rot (set via property panel).
+function drawGround2D(g){
+  const x=wx2cx(g.x), y=wy2cy(g.y);
+  const w=m2px(g.w), d=m2px(g.d);
+  const isSel = selId===g.id && selIsGround;
+  const mat = (window.cscGrounds && window.cscGrounds.find(g.material)) || null;
+  ctx.save();
+  if(g.rot){
+    ctx.translate(x+w/2, y+d/2);
+    ctx.rotate((g.rot||0)*Math.PI/180);
+    ctx.translate(-(x+w/2), -(y+d/2));
+  }
+  const fillHex = g.color && g.color !== '#ffffff' ? g.color :
+    (mat ? '#'+mat.tint.toString(16).padStart(6,'0') : '#888888');
+  ctx.globalAlpha = 0.55;
+  ctx.fillStyle = fillHex;
+  ctx.fillRect(x,y,w,d);
+  ctx.globalAlpha = 1;
+  ctx.strokeStyle = isSel ? '#4ade80' : 'rgba(255,255,255,0.3)';
+  ctx.lineWidth = isSel ? 3 : 1;
+  ctx.setLineDash(isSel ? [] : [4,3]);
+  ctx.strokeRect(x,y,w,d);
+  ctx.setLineDash([]);
+  // label
+  ctx.fillStyle = isSel ? '#4ade80' : 'rgba(255,255,255,0.75)';
+  ctx.font = '11px system-ui'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  const label = (mat?mat.icon+' ':'') + (g.name||'Fläche');
+  ctx.fillText(label, x+w/2, y+d/2);
+  // resize handles (only when selected, only axis-aligned grounds to keep hit-test simple)
+  if(isSel && !g.rot){
+    [[x+w,y+d],[x+w,y+d/2],[x+w/2,y+d]].forEach(([hx,hy])=>{
+      ctx.fillStyle='#4ade80'; ctx.beginPath();
+      ctx.arc(hx,hy,6,0,Math.PI*2); ctx.fill();
+    });
+  }
+  ctx.restore();
+}
+
+function hitGround(wx,wy){
+  for(let i=grounds.length-1;i>=0;i--){
+    const g=grounds[i];
+    if((g.floorId||'eg')!==curFloor) continue;
+    let px=wx, py=wy;
+    if(g.rot){
+      const cx=g.x+g.w/2, cy=g.y+g.d/2;
+      const a=-(g.rot||0)*Math.PI/180;
+      const dx=wx-cx, dy=wy-cy;
+      px=cx+dx*Math.cos(a)-dy*Math.sin(a);
+      py=cy+dx*Math.sin(a)+dy*Math.cos(a);
+    }
+    if(px>=g.x && px<=g.x+g.w && py>=g.y && py<=g.y+g.d) return g;
+  }
+  return null;
+}
+
+function hitGroundResizeHandle(wx,wy,g){
+  if(g.rot) return null; // rotated grounds: no drag-handles (edit via panel)
+  const tol = px2m(8);
+  const ex=g.x+g.w, ey=g.y+g.d;
+  if(Math.abs(wx-ex)<tol && Math.abs(wy-ey)<tol) return 'se';
+  if(Math.abs(wx-ex)<tol && Math.abs(wy-(g.y+g.d/2))<tol) return 'e';
+  if(Math.abs(wx-(g.x+g.w/2))<tol && Math.abs(wy-ey)<tol) return 's';
+  return null;
 }
 
 function drawObj2D(o){
@@ -4737,6 +4869,9 @@ fpCv.addEventListener('mousedown', e => {
   if(tool2d==='room' && !placingCatalogId){
     drawRoomStart={cx:e.offsetX,cy:e.offsetY,wx,wy}; return;
   }
+  if(tool2d==='ground' && !placingCatalogId){
+    drawGroundStart={cx:e.offsetX,cy:e.offsetY,wx:snapM(wx),wy:snapM(wy)}; return;
+  }
   if(tool2d==='measure'){
     measureStart={cx:e.offsetX,cy:e.offsetY,ax:wx,ay:wy}; return;
   }
@@ -4754,27 +4889,42 @@ fpCv.addEventListener('mousedown', e => {
         }
       }
     }
+    // P4.1: ground resize handle
+    if(selId && selIsGround){
+      const gr=grounds.find(g=>g.id===selId);
+      if(gr){
+        const handle=hitGroundResizeHandle(wx,wy,gr);
+        if(handle){
+          resizeGroundHandle={id:gr.id,handle,ox:wx,oy:wy,origW:gr.w,origD:gr.d,origX:gr.x,origY:gr.y};
+          return;
+        }
+      }
+    }
     // Hit object
     const hitO=hitObj(wx,wy);
     if(hitO){
       if(e.shiftKey){ addToMultiSel(hitO.id); return; }
-      selIsWall=false;
+      selIsWall=false; selIsGround=false;
       setSelection(hitO.id,false);
       dragObj={id:hitO.id,ox:wx-hitO.x,oy:wy-hitO.y}; return;
     }
     // Hit freehand wall
     const hitW=hitFreeWall(wx,wy);
     if(hitW && !hitW.locked){
-      selId=hitW.id; selIsRoom=false; selIsWall=true;
+      selId=hitW.id; selIsRoom=false; selIsWall=true; selIsGround=false;
       updateSelBotBar(); renderLeft(); draw2D();
       openWallPropPanel(hitW.id); return;
     }
     // Hit room
     const hitR=hitRoom(wx,wy);
     if(hitR&&handleSmartConnect(hitR)) return;
-    if(hitR){ selIsWall=false; setSelection(hitR.id,true); dragRoom={id:hitR.id,ox:wx-hitR.x,oy:wy-hitR.y}; return; }
+    if(hitR){ selIsWall=false; selIsGround=false; setSelection(hitR.id,true); dragRoom={id:hitR.id,ox:wx-hitR.x,oy:wy-hitR.y}; return; }
+    // P4.1: hit ground (last — rooms take priority when overlapping)
+    const hitG=hitGround(wx,wy);
+    if(hitG){ selIsWall=false; selectGround(hitG.id); dragGround={id:hitG.id,ox:wx-hitG.x,oy:wy-hitG.y}; return; }
     // Deselect
-    selIsWall=false; setSelection(null,false);
+    selIsWall=false; selIsGround=false; setSelection(null,false);
+    closeGroundPropPanel();
   }
 });
 
@@ -4796,6 +4946,15 @@ fpCv.addEventListener('mousemove', e => {
       updateSelBotBar(); draw2D(); rebuild3D(); return;
     }
   }
+  if(resizeGroundHandle){
+    const gr=grounds.find(g=>g.id===resizeGroundHandle.id);
+    if(gr){
+      const dx=snapM(wx-resizeGroundHandle.ox), dy=snapM(wy-resizeGroundHandle.oy);
+      if(resizeGroundHandle.handle==='se'||resizeGroundHandle.handle==='e') gr.w=Math.max(0.5,resizeGroundHandle.origW+dx);
+      if(resizeGroundHandle.handle==='se'||resizeGroundHandle.handle==='s') gr.d=Math.max(0.5,resizeGroundHandle.origD+dy);
+      updateSelBotBar(); draw2D(); rebuild3D(); syncGroundPropPanel(); return;
+    }
+  }
   if(dragObj){
     const o=objects.find(o=>o.id===dragObj.id);
     if(o){ o.x=snapM(wx-dragObj.ox); o.y=snapM(wy-dragObj.oy); updateSelBotBar(); draw2D(); rebuild3D(); }
@@ -4806,11 +4965,20 @@ fpCv.addEventListener('mousemove', e => {
     if(r){ r.x=snapM(wx-dragRoom.ox); r.y=snapM(wy-dragRoom.oy); updateSelBotBar(); draw2D(); rebuild3D(); }
     return;
   }
+  if(dragGround){
+    const gr=grounds.find(g=>g.id===dragGround.id);
+    if(gr){ gr.x=snapM(wx-dragGround.ox); gr.y=snapM(wy-dragGround.oy); updateSelBotBar(); draw2D(); rebuild3D(); syncGroundPropPanel(); }
+    return;
+  }
   // Cursor
   if(tool2d==='sel'){
     if(selId&&selIsRoom){
       const r=rooms.find(r=>r.id===selId);
       if(r&&hitRoomResizeHandle(wx,wy,r)) fpCv.style.cursor='se-resize';
+      else fpCv.style.cursor='default';
+    } else if(selId&&selIsGround){
+      const gr=grounds.find(g=>g.id===selId);
+      if(gr&&hitGroundResizeHandle(wx,wy,gr)) fpCv.style.cursor='se-resize';
       else fpCv.style.cursor='default';
     } else { fpCv.style.cursor='default'; }
   } else if(tool2d==='pan'){ fpCv.style.cursor='grab'; }
@@ -4834,15 +5002,25 @@ fpCv.addEventListener('mouseup', e => {
     if(wm>0.5&&dm>0.5) quickAddRoom(x1,y1,wm,dm);
     drawRoomStart=null;
   }
+  if(tool2d==='ground' && drawGroundStart && e.button===0){
+    const x1=Math.min(drawGroundStart.wx,snapM(wx));
+    const y1=Math.min(drawGroundStart.wy,snapM(wy));
+    const wm=Math.abs(snapM(wx)-drawGroundStart.wx);
+    const dm=Math.abs(snapM(wy)-drawGroundStart.wy);
+    if(wm>0.5&&dm>0.5) quickAddGround(x1,y1,wm,dm);
+    drawGroundStart=null;
+  }
   if(tool2d==='measure'&&measureStart&&e.button===0){
     measures.push({ax:measureStart.ax,ay:measureStart.ay,bx:snapM(wx),by:snapM(wy)});
     measureStart=null;
   }
   if(isPanning) isPanning=false;
   if(resizeHandle){ resizeHandle=null; snapshot(); }
+  if(resizeGroundHandle){ resizeGroundHandle=null; snapshot(); }
   if(dragObj){ dragObj=null; snapshot(); }
   hideResizeTooltip();
   if(dragRoom){ const r=rooms.find(r=>r.id===(dragRoom?.id||"")); if(r) snapRoomToNeighbors(r); dragRoom=null; rebuild3D(); snapshot(); }
+  if(dragGround){ dragGround=null; snapshot(); }
   draw2D();
 });
 
@@ -4897,6 +5075,7 @@ document.addEventListener('keydown',e=>{
     if(e.key==='z'||e.key==='Z') zoomToSelection();
     if(e.key==='Escape'){
       placingCatalogId=null; dragCatPos=null; wallDrawStart=null;
+      drawGroundStart=null; closeGroundMaterialPicker();
       hideDraw2DHint(); document.body.style.cursor='default'; draw2D();
       // Close all open dropdowns and menus
       document.querySelectorAll('.tbm.vis,.ki-dropdown-menu.vis,[id$="-dropdown"].vis').forEach(el=>el.classList.remove('vis'));
@@ -4977,7 +5156,147 @@ function removeRoom(id){
   snapshot();
 }
 
+// ── GROUND MANAGEMENT (P4.1) ─────────────────────────────────────────────
+function quickAddGround(x,y,w,d){
+  addGround({
+    name: 'Fläche '+(grounds.length+1),
+    x, y, w, d, rot: 0,
+    material: currentGroundMat,
+    color: '#ffffff',
+    floorId: curFloor,
+  });
+}
+
+function addGround(cfg, opts){
+  if(!cfg.id) cfg.id = 'g'+(gid++);
+  if(cfg.rot == null) cfg.rot = 0;
+  if(!cfg.material) cfg.material = 'carpet';
+  if(!cfg.color) cfg.color = '#ffffff';
+  if(!cfg.floorId) cfg.floorId = curFloor;
+  // Track max id to avoid collision after load
+  const num = parseInt(String(cfg.id).replace(/^g/,''),10);
+  if(!isNaN(num) && num >= gid) gid = num + 1;
+  grounds.push(cfg);
+  if(!opts || !opts.silent){
+    rebuild3D(); renderLeft(); draw2D();
+    selectGround(cfg.id);
+    snapshot();
+  }
+}
+
+function removeGround(id){
+  grounds = grounds.filter(g=>g.id!==id);
+  const key = 'gnd_'+id;
+  if(obj3Map[key]){ scene.remove(obj3Map[key]); delete obj3Map[key]; }
+  if(selId===id){selId=null; selIsGround=false;}
+  closeGroundPropPanel();
+  rebuild3D(); renderLeft(); draw2D(); snapshot();
+}
+
+function selectGround(id){
+  selId = id; selIsRoom = false; selIsWall = false; selIsGround = true;
+  updateSelBotBar(); renderLeft(); draw2D(); updateBreadcrumb();
+  if(id) openGroundPropPanel(id);
+  else closeGroundPropPanel();
+}
+
+// ── GROUND MATERIAL PICKER (P4.1) ────────────────────────────────────────
+// Shown when the user clicks the 🟫 Fläche pill. Picks a material preset,
+// then switches tool2d='ground' so the next drag draws a new ground.
+function openGroundMaterialPicker(){
+  const gp = document.getElementById('ground-picker');
+  const grid = document.getElementById('ground-picker-grid');
+  if(!gp || !grid || !window.cscGrounds) return;
+  grid.innerHTML = '';
+  window.cscGrounds.materials.forEach(mat=>{
+    const btn = document.createElement('button');
+    btn.className = 'mpill';
+    btn.style.cssText = 'padding:8px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px';
+    btn.innerHTML = `<span style="font-size:16px">${mat.icon}</span><span>${mat.label}</span>`;
+    btn.onclick = ()=>{
+      currentGroundMat = mat.id;
+      closeGroundMaterialPicker();
+      set2DTool('ground');
+      toast('Fläche zeichnen: Klicken + ziehen ('+mat.label+')', 'b');
+    };
+    grid.appendChild(btn);
+  });
+  gp.style.display = 'block';
+}
+function closeGroundMaterialPicker(){
+  const gp = document.getElementById('ground-picker');
+  if(gp) gp.style.display = 'none';
+}
+
+// ── GROUND PROPERTY PANEL (P4.1) ─────────────────────────────────────────
+function openGroundPropPanel(id){
+  const gr = grounds.find(g=>g.id===id);
+  if(!gr) return;
+  const panel = document.getElementById('ground-prop-panel');
+  if(!panel || !window.cscGrounds) return;
+  const mat = window.cscGrounds.find(gr.material) || window.cscGrounds.materials[0];
+  document.getElementById('gpp-icon').textContent = mat ? mat.icon : '🟫';
+  document.getElementById('gpp-name').value = gr.name || '';
+  document.getElementById('gpp-w').value = gr.w.toFixed(2);
+  document.getElementById('gpp-d').value = gr.d.toFixed(2);
+  document.getElementById('gpp-rot').value = gr.rot || 0;
+  document.getElementById('gpp-color').value = gr.color || '#ffffff';
+  const sel = document.getElementById('gpp-mat');
+  sel.innerHTML = '';
+  window.cscGrounds.materials.forEach(m=>{
+    const opt = document.createElement('option');
+    opt.value = m.id;
+    opt.textContent = m.icon + ' ' + m.label;
+    if(m.id === gr.material) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  panel.style.display = 'block';
+
+  // Wire change handlers fresh (cheap, avoids duplicate listeners).
+  document.getElementById('gpp-name').oninput = (e)=>{
+    gr.name = e.target.value; draw2D(); updateSelBotBar();
+  };
+  document.getElementById('gpp-w').onchange = (e)=>{
+    gr.w = Math.max(0.5, parseFloat(e.target.value)||gr.w); rebuild3D(); draw2D(); updateSelBotBar();
+  };
+  document.getElementById('gpp-d').onchange = (e)=>{
+    gr.d = Math.max(0.5, parseFloat(e.target.value)||gr.d); rebuild3D(); draw2D(); updateSelBotBar();
+  };
+  document.getElementById('gpp-rot').onchange = (e)=>{
+    gr.rot = parseFloat(e.target.value) || 0; rebuild3D(); draw2D(); updateSelBotBar();
+  };
+  document.getElementById('gpp-mat').onchange = (e)=>{
+    gr.material = e.target.value;
+    const m2 = window.cscGrounds.find(gr.material);
+    if(m2) document.getElementById('gpp-icon').textContent = m2.icon;
+    rebuild3D(); draw2D(); updateSelBotBar();
+  };
+  document.getElementById('gpp-color').onchange = (e)=>{
+    gr.color = e.target.value; rebuild3D(); draw2D();
+  };
+}
+function closeGroundPropPanel(){
+  const panel = document.getElementById('ground-prop-panel');
+  if(panel) panel.style.display = 'none';
+}
+function syncGroundPropPanel(){
+  if(!selIsGround || !selId) return;
+  const gr = grounds.find(g=>g.id===selId);
+  if(!gr) return;
+  const panel = document.getElementById('ground-prop-panel');
+  if(!panel || panel.style.display === 'none') return;
+  document.getElementById('gpp-w').value = gr.w.toFixed(2);
+  document.getElementById('gpp-d').value = gr.d.toFixed(2);
+  document.getElementById('gpp-rot').value = Math.round(gr.rot||0);
+}
+function deleteSelectedGround(){
+  if(!selId || !selIsGround) return;
+  removeGround(selId);
+}
+
 function setSelection(id, isRoom){
+  selIsGround = false;
+  closeGroundPropPanel();
   selId=id; selIsRoom=isRoom;
   updateSelBotBar();
   renderLeft(); draw2D();
@@ -5009,6 +5328,16 @@ function updateSelBotBar(){
     document.getElementById('p-y').value=r.y.toFixed(2);
     document.getElementById('p-rot').value=''; document.getElementById('p-rot').disabled=true;
     document.getElementById('p-wh').textContent=`${r.w.toFixed(2)}×${r.d.toFixed(2)}m`;
+  } else if(selIsGround){
+    const gr=grounds.find(g=>g.id===selId);
+    if(!gr)return;
+    const mat = (window.cscGrounds && window.cscGrounds.find(gr.material)) || null;
+    document.getElementById('p-name').textContent=(mat?mat.icon:'🟫')+' '+(gr.name||'Fläche');
+    document.getElementById('p-x').value=gr.x.toFixed(2);
+    document.getElementById('p-y').value=gr.y.toFixed(2);
+    document.getElementById('p-rot').value=Math.round(gr.rot||0);
+    document.getElementById('p-rot').disabled=false;
+    document.getElementById('p-wh').textContent=`${gr.w.toFixed(2)}×${gr.d.toFixed(2)}m`;
   } else {
     const o=objects.find(o=>o.id===selId);
     if(!o)return;
@@ -5027,12 +5356,22 @@ function applySelProps(){
   const y=parseFloat(document.getElementById('p-y').value)||0;
   const rot=parseFloat(document.getElementById('p-rot').value)||0;
   if(selIsRoom){ const r=rooms.find(r=>r.id===selId);if(r){r.x=x;r.y=y;}}
+  else if(selIsGround){ const gr=grounds.find(g=>g.id===selId);if(gr){gr.x=x;gr.y=y;gr.rot=rot;syncGroundPropPanel();}}
   else { const o=objects.find(o=>o.id===selId);if(o){o.x=x;o.y=y;o.rot=rot;}}
   rebuild3D(); draw2D();
 }
 
 function rotateSel(){
-  if(!selId||selIsRoom)return;
+  if(!selId)return;
+  if(selIsRoom) return;
+  if(selIsGround){
+    const gr=grounds.find(g=>g.id===selId);
+    if(!gr) return;
+    gr.rot=((gr.rot||0)+90)%360;
+    const tmp=gr.w; gr.w=gr.d; gr.d=tmp;
+    updateSelBotBar(); draw2D(); rebuild3D(); syncGroundPropPanel();
+    return;
+  }
   const o=objects.find(o=>o.id===selId);
   if(!o)return;
   o.rot=((o.rot||0)+90)%360;
@@ -5049,7 +5388,8 @@ function dupSel(){
 
 function deleteSel(){
   if(!selId) return;
-  if(selIsRoom)   removeRoom(selId);
+  if(selIsGround) removeGround(selId);
+  else if(selIsRoom)   removeRoom(selId);
   else if(selIsWall) removeFreeWall(selId);
   else { objects=objects.filter(o=>o.id!==selId); setSelection(null,false); rebuild3D(); draw2D(); }
 }
@@ -5067,10 +5407,11 @@ function set2DTool(t){
   updateBotHint();
   // Cancel any in-progress wall drawing when switching tools
   if(t!=='wall'){ wallDrawStart=null; hideDraw2DHint(); }
-  ['sel','wall','room','measure','pan'].forEach(x=>{
+  if(t!=='ground'){ drawGroundStart=null; }
+  ['sel','wall','room','ground','measure','pan'].forEach(x=>{
     const el=document.getElementById('pill-'+x); if(el) el.classList.toggle('active',x===t);
   });
-  fpCv.style.cursor = t==='pan'?'grab': t==='wall'||t==='room'||t==='measure'?'crosshair':'default';
+  fpCv.style.cursor = t==='pan'?'grab': t==='wall'||t==='room'||t==='ground'||t==='measure'?'crosshair':'default';
 }
 
 function openRoomEdit(r){
@@ -5281,6 +5622,15 @@ function rebuild3D(){
 
   // All-floors flag (declared once at top to avoid TDZ)
   const showAF = !!_show3DAllFloors;
+
+  // ── Grounds (P4.1) — render BEFORE room floors so they sit under rooms.
+  //    Slight y=+0.001 offset above the scene floor prevents z-fighting with
+  //    the big sky-room ground plane; the room floor at y=elev is higher, so
+  //    grounds overlapping a room stay visibly under the room's floor.
+  grounds.filter(g=>showAF||(g.floorId===curFloor||!g.floorId)).forEach(g=>{
+    const m=build3DGround(g);
+    if(m){ scene.add(m); obj3Map['gnd_'+g.id]=m; }
+  });
 
   // ── Room FLOORS
   rooms.filter(r=>showAF||(r.floorId===curFloor||!r.floorId)).forEach(r=>{
@@ -6021,13 +6371,15 @@ async function uploadDOCX(file){
 // ════════════════════════════════════════════════════════════════════════
 // SAVE / LOAD
 // ════════════════════════════════════════════════════════════════════════
-function getPD(){return{v:3,name:projName,rooms:rooms.map(r=>({...r,grp:undefined})),objects:objects.map(o=>({...o,grp:undefined})),measures,customObjs:customObjs.filter(o=>!o.shared),meta:projMeta};}
+function getPD(){return{v:4,name:projName,rooms:rooms.map(r=>({...r,grp:undefined})),grounds:grounds.map(g=>({...g})),objects:objects.map(o=>({...o,grp:undefined})),measures,customObjs:customObjs.filter(o=>!o.shared),meta:projMeta};}
 function loadPD(d){
   rooms.forEach(r=>{if(obj3Map[r.id])scene.remove(obj3Map[r.id]);});
+  grounds.forEach(g=>{if(obj3Map['gnd_'+g.id])scene.remove(obj3Map['gnd_'+g.id]);});
   objects.forEach(o=>{if(obj3Map[o.id])scene.remove(obj3Map[o.id]);});
-  rooms=[];objects=[];measures=[];selId=null;selIsRoom=false;
+  rooms=[];grounds=[];objects=[];measures=[];selId=null;selIsRoom=false;selIsGround=false;
   projName=d.name||'Projekt';document.getElementById('proj-lbl').textContent=projName;
   (d.rooms||[]).forEach(r=>addRoom(r));
+  (d.grounds||[]).forEach(g=>addGround(g,{silent:true}));
   (d.objects||[]).forEach(o=>addObject(o));
   measures=d.measures||[];
   projMeta=d.meta||{};
@@ -6562,6 +6914,28 @@ function segmentsMatch(s, edge){
     Math.abs(s.a.x-edge.b.x)<TOL && Math.abs(s.a.z-edge.b.z)<TOL &&
     Math.abs(s.b.x-edge.a.x)<TOL && Math.abs(s.b.z-edge.a.z)<TOL
   );
+}
+
+// P4.1 — build a horizontal plane for a ground. Material comes from
+// window.cscGrounds.loadMaterial, which pulls PBR maps from
+// public/textures/ambientcg/<folder>/ and tints them with the per-ground
+// color. Rotation is around the vertical (y) axis.
+function build3DGround(g){
+  if(!window.THREE) return null;
+  const findGM = window.cscGrounds && window.cscGrounds.find;
+  const loadGM = window.cscGrounds && window.cscGrounds.loadMaterial;
+  if(!findGM || !loadGM) return null;
+  const mat = findGM(g.material || 'carpet');
+  if(!mat) return null;
+  const tint = parseInt(String(g.color||'#ffffff').replace('#',''), 16) || 0xffffff;
+  const material = loadGM(mat, tint);
+  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(g.w, g.d), material);
+  mesh.rotation.x = -Math.PI/2;
+  mesh.rotation.z = -(g.rot||0) * Math.PI/180;
+  const elev = getFloorElev(g.floorId || 'eg');
+  mesh.position.set(g.x + g.w/2, elev + 0.001, g.y + g.d/2);
+  mesh.receiveShadow = true;
+  return mesh;
 }
 
 function buildWallSegMesh3D(seg){
@@ -8908,6 +9282,7 @@ function updateBotHint(){
     sel:  '↖ Auswählen · Klick = Objekt/Raum wählen · Doppelklick = Eigenschaften · Del = Löschen · Ctrl+Z = Rückgängig',
     wall: '🧱 Wand: Klick A → Klick B · Snap an bestehende Ecken · ESC = Abbrechen · Ketten: letzter Punkt wird neuer Start',
     room: '⬜ Raum: Diagonal ziehen · Loslassen = fertig · ESC = Abbrechen',
+    ground: '🟫 Fläche: Diagonal ziehen · Loslassen = fertig · Material im Picker gewählt · ESC = Abbrechen',
     measure: '📏 Maß: Klick Start → Klick Ende · Zeigt Distanz in Metern',
     pan: '✋ Verschieben: Ziehen um die Ansicht zu bewegen · Scroll = Zoom',
   };
