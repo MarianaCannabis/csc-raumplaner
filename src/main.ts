@@ -11,7 +11,7 @@ import type { MaterialKey } from './three/materials.js';
 import * as primitiveBuilders from './three/primitiveBuilders.js';
 import * as environment from './three/environment.js';
 import { NEW_CATALOG } from './catalog/index.js';
-import { RICH_PRIMITIVES, EVENT_ITEMS } from './catalog/items/primitives.js';
+import { RICH_PRIMITIVES, EVENT_ITEMS, CSC_EXPANSION_ITEMS } from './catalog/items/primitives.js';
 import { CREDITS, renderCreditsHtml } from './catalog/credits.js';
 import { GROUND_MATERIALS, findGroundMaterial } from './catalog/grounds.js';
 import type { GroundMaterial } from './catalog/grounds.js';
@@ -64,6 +64,7 @@ declare global {
       newItems: typeof NEW_CATALOG;
       richPrimitives: typeof RICH_PRIMITIVES;
       eventItems: typeof EVENT_ITEMS;
+      cscExpansionItems: typeof CSC_EXPANSION_ITEMS;
     };
     cscBuilders: typeof primitiveBuilders;
     cscEnv: typeof environment;
@@ -101,8 +102,13 @@ window.cscDefaults = defaults;
 window.cscEscape = { schedule: scheduleAnalysis, getLatest: getLatestAnalysis };
 window.cscAssets = { loadModel, fitToBounds };
 window.cscMaterials = { make: makeMaterial };
-window.cscCatalog = { newItems: NEW_CATALOG, richPrimitives: RICH_PRIMITIVES, eventItems: EVENT_ITEMS };
-console.info('[csc] event catalog ready', EVENT_ITEMS.length, 'event items');
+window.cscCatalog = {
+  newItems: NEW_CATALOG,
+  richPrimitives: RICH_PRIMITIVES,
+  eventItems: EVENT_ITEMS,
+  cscExpansionItems: CSC_EXPANSION_ITEMS,
+};
+console.info('[csc] event catalog ready', EVENT_ITEMS.length, 'event items · CSC-expansion', CSC_EXPANSION_ITEMS.length, 'items');
 window.cscBuilders = primitiveBuilders;
 window.cscEnv = environment;
 window.cscCredits = { list: CREDITS, renderHtml: renderCreditsHtml };
