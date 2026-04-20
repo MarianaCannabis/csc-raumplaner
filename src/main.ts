@@ -21,6 +21,8 @@ import { STAND_TEMPLATES, findTemplate } from './templates/index.js';
 import type { StandTemplate } from './templates/index.js';
 import { calcMesseBudget, fmtEUR } from './compliance/budget.js';
 import type { BudgetResult } from './compliance/budget.js';
+import { exportToIfc, downloadIfc } from './export/ifc.js';
+import type { IfcProject } from './export/ifc.js';
 import { buildPackList } from './compliance/packlist.js';
 
 console.info('[csc] vite entry alive', import.meta.env.MODE);
@@ -105,6 +107,10 @@ declare global {
     cscPacklist: {
       build: typeof buildPackList;
     };
+    cscIfc: {
+      exportToIfc: typeof exportToIfc;
+      download: typeof downloadIfc;
+    };
   }
 }
 window.cscCompliance = compliance;
@@ -133,6 +139,7 @@ window.cscTemplates = {
 console.info('[csc] templates bridge ready', STAND_TEMPLATES.length, 'project templates');
 window.cscBudget = { calc: calcMesseBudget, fmtEUR };
 window.cscPacklist = { build: buildPackList };
+window.cscIfc = { exportToIfc, download: downloadIfc };
 
 // Project-panel footer: show the most-recent lastVerified so the operator
 // knows how fresh the cost/energy defaults are. Rewrites on every boot,
