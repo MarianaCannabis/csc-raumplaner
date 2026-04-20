@@ -6,13 +6,15 @@ import * as geo from './geo/overpass.js';
 import * as defaults from './config/defaults.js';
 import { scheduleAnalysis, subscribe, getLatestAnalysis } from './compliance/escapeAnalysis.js';
 import { loadModel, fitToBounds } from './three/assetLoader.js';
-import { makeMaterial } from './three/materials.js';
+import { makeMaterial, loadGroundMaterial } from './three/materials.js';
 import type { MaterialKey } from './three/materials.js';
 import * as primitiveBuilders from './three/primitiveBuilders.js';
 import * as environment from './three/environment.js';
 import { NEW_CATALOG } from './catalog/index.js';
 import { RICH_PRIMITIVES } from './catalog/items/primitives.js';
 import { CREDITS, renderCreditsHtml } from './catalog/credits.js';
+import { GROUND_MATERIALS, findGroundMaterial } from './catalog/grounds.js';
+import type { GroundMaterial } from './catalog/grounds.js';
 
 console.info('[csc] vite entry alive', import.meta.env.MODE);
 const _allRules = compliance.listRules();
@@ -62,6 +64,11 @@ declare global {
       list: typeof CREDITS;
       renderHtml: typeof renderCreditsHtml;
     };
+    cscGrounds: {
+      materials: typeof GROUND_MATERIALS;
+      find: typeof findGroundMaterial;
+      loadMaterial: (mat: GroundMaterial, tintOverride?: number) => import('three').MeshStandardMaterial;
+    };
   }
 }
 window.cscCompliance = compliance;
@@ -74,6 +81,7 @@ window.cscCatalog = { newItems: NEW_CATALOG, richPrimitives: RICH_PRIMITIVES };
 window.cscBuilders = primitiveBuilders;
 window.cscEnv = environment;
 window.cscCredits = { list: CREDITS, renderHtml: renderCreditsHtml };
+window.cscGrounds = { materials: GROUND_MATERIALS, find: findGroundMaterial, loadMaterial: loadGroundMaterial };
 
 // Project-panel footer: show the most-recent lastVerified so the operator
 // knows how fresh the cost/energy defaults are. Rewrites on every boot,

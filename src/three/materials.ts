@@ -24,6 +24,7 @@ import {
   SRGBColorSpace,
 } from 'three';
 import type { Texture } from 'three';
+import type { GroundMaterial } from '../catalog/grounds.js';
 
 // =============================================================================
 // Texture loader + cache
@@ -148,3 +149,38 @@ export const fabricMaterial   = (c?: number) => makeMaterial('fabric', c);
 export const plasticMaterial  = (c?: number) => makeMaterial('plastic', c);
 export const glassMaterial    = (c?: number) => makeMaterial('glass', c);
 export const concreteMaterial = (c?: number) => makeMaterial('concrete', c);
+
+// =============================================================================
+// Ground-plane factory (P4.1)
+// =============================================================================
+
+/**
+ * Build a PBR material for a ground plane. If the GroundMaterial has a
+ * textureFolder, the ambientCG set at public/textures/ambientcg/<folder>/ is
+ * loaded and tinted with `tintOverride ?? mat.tint`. Without a textureFolder
+ * (e.g. the 'plain' material), returns a flat-color MeshStandardMaterial.
+ *
+ * The ground-material's `repeat` value wins over the per-base-material repeat
+ * so large outdoor grounds don't end up with postage-stamp textures. Since
+ * tex() caches by URL, two grounds sharing the same folder share one Texture
+ * instance — fine as long as one repeat setting is acceptable site-wide. If
+ * that ever becomes a problem, bust the cache by URL suffix.
+ */
+export function loadGroundMaterial(mat: GroundMaterial, tintOverride?: number): MeshStandardMaterial {
+  const color = tintOverride ?? mat.tint;
+  if (!mat.textureFolder) {
+    return new MeshStandardMaterial({
+      color,
+      roughness: mat.roughness,
+      metalness: mat.metalness,
+    });
+  }
+  const folderBase = BASE + mat.textureFolder + '/';
+  return new MeshStandardMaterial({
+    color,
+    map: tex(folderBase + 'color.jpg', mat.repeat, true),
+    normalMap: tex(folderBase + 'normal.jpg', mat.repeat, false),
+    roughnessMap: tex(folderBase + 'roughness.jpg', mat.repeat, false),
+    metalness: mat.metalness,
+  });
+}

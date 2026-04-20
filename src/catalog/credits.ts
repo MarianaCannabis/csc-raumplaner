@@ -46,6 +46,13 @@ export const CREDITS: Credit[] = [
     note: 'Color/NormalGL/Roughness @ 2K, auf Set-IDs Wood050, Metal032, Fabric070, Plastic008, Concrete033. Geladen und gecached via TextureLoader in src/three/materials.ts; automatisch auf allen 39 Rich-Primitive-Buildern sobald sie via matWood/matMetal/matFabric/matPlastic/matConcrete rendern. Glas rendert weiter prozedural (MeshPhysicalMaterial mit transmission — architektonisch passender als eine fotografierte Glasoberfläche).',
   },
   {
+    name: 'ambientCG — Ground-Plane-Texturen (P4.1)',
+    source: 'ambientcg.com',
+    license: 'CC0 1.0 Universal (Public Domain)',
+    url: 'https://ambientcg.com',
+    note: 'Color/NormalGL/Roughness @ 2K für Flächen-Materialien: Ground037 (Rasen), Gravel023 (Schotter), Ground048 (Erde), Asphalt004 (Asphalt), Tiles074 (Fliesen). Ergänzt die P3.2-Basis-Sets. Genutzt in loadGroundMaterial() → direkt über src/catalog/grounds.ts adressiert.',
+  },
+  {
     name: 'Poly Haven (potentielle Ergänzung)',
     source: 'polyhaven.com',
     license: 'CC0 1.0 Universal (Public Domain)',
