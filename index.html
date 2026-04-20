@@ -53,7 +53,11 @@ input,textarea,select,button{font-family:inherit}
 /* ─ LEFT PANEL ──────────────────────────────────────────── */
 /* moved to v3.56 flex rules */
 .lph{padding:10px 12px 7px;border-bottom:1px solid var(--bd);flex-shrink:0;font-size:11px;font-weight:600;color:var(--gr)}
-.lpb{flex:1;overflow-y:auto;padding:10px 10px 0;scrollbar-width:thin;scrollbar-color:var(--bd2) transparent}
+.lpb{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:10px 10px 0;scrollbar-width:thin;scrollbar-color:var(--bd2) transparent}
+/* UX/sidebar-scroll: verhindert das die Kategorie-Render-Funktionen einen
+   zweiten inneren Scroll-Container aufmachen (nested-scroll frisst sonst
+   Events am Rand). Der äußere .lpb scrollt, die Kinder wachsen natürlich. */
+.lpb > div[style*="overflow-y:auto"]{overflow:visible!important}
 .sh{font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;margin-top:10px}
 .sh:first-child{margin-top:0}
 
@@ -6030,7 +6034,7 @@ function renderCustomPanel(el){
   sb.className = 'panel-search';
   sb.innerHTML = '<div style="display:flex;align-items:center;gap:4px">'
     +'<input id="custom-search" placeholder="🔍 Eigene Objekte suchen…" value="'+(_catSearch.custom||'')+'"'
-    +' oninput="_catSearch.custom=this.value;renderCustomPanel(document.getElementById(\'left-body\'))">'
+    +' oninput="_panelSearch(\'custom\', this.value, \'renderCustomPanel\')">'
     +'<div class="view-toggle-btns">'
     +'<button class="vtb'+(_catViewMode==="list"?" active":"")+'" onclick="_catViewMode=\'list\';renderCustomPanel(document.getElementById(\'left-body\'))">☰</button>'
     +'<button class="vtb'+(_catViewMode==="grid"?" active":"")+'" onclick="_catViewMode=\'grid\';renderCustomPanel(document.getElementById(\'left-body\'))">⊞</button>'
@@ -6186,8 +6190,8 @@ function renderEventsPanel(el){
   const sb = document.createElement('div');
   sb.className = 'panel-search';
   sb.innerHTML = '<div style="display:flex;align-items:center;gap:4px">'
-    + '<input placeholder="🔍 Veranstaltung suchen…" value="' + query + '"'
-    + ' oninput="_catSearch.events=this.value;renderEventsPanel(document.getElementById(\'left-body\'))">'
+    + '<input id="events-search" placeholder="🔍 Veranstaltung suchen…" value="' + query + '"'
+    + ' oninput="_panelSearch(\'events\', this.value, \'renderEventsPanel\')">'
     + '<div class="view-toggle-btns">'
     + '<button class="vtb' + (_catViewMode==='list'?' active':'') + '" onclick="_catViewMode=\'list\';renderEventsPanel(document.getElementById(\'left-body\'))">☰</button>'
     + '<button class="vtb' + (_catViewMode==='grid'?' active':'') + '" onclick="_catViewMode=\'grid\';renderEventsPanel(document.getElementById(\'left-body\'))">⊞</button>'
@@ -15475,6 +15479,48 @@ var _activeBauGrp = null;
 var _activeSecGrp = null;
 var _catSearch    = {};       // {panel: query}
 
+// UX: Such-Inputs verlieren nach jedem Tastendruck den Fokus weil die
+// Render-Funktionen das Input-Element via innerHTML komplett neu
+// aufbauen. _preserveFocus(fn) merkt sich activeElement-ID + value +
+// Selektion, ruft die Render-Funktion, und fokussiert das neue Input
+// wieder — mit gleicher Cursor-Position. Variante B aus P-Auftrag; die
+// saubere Variante A (nur items-Container re-rendern) wäre invasiv in
+// 5 Render-Funktionen; B löst das Problem mit minimalem Eingriff.
+function _preserveFocus(renderFn){
+  const a = document.activeElement;
+  const isInp = !!(a && a.tagName === 'INPUT' && a.id);
+  const id = isInp ? a.id : null;
+  const value = isInp ? a.value : null;
+  const selStart = isInp ? a.selectionStart : null;
+  const selEnd = isInp ? a.selectionEnd : null;
+  try { renderFn(); } finally {
+    if(id){
+      // Das neue Input-Element mit derselben ID finden und refokussieren.
+      // preventScroll: damit der sticky-Header nicht wegspringt.
+      const next = document.getElementById(id);
+      if(next && document.activeElement !== next){
+        try {
+          next.focus({ preventScroll: true });
+          if(value !== null && next.value === value && selStart !== null){
+            next.setSelectionRange(selStart, selEnd);
+          }
+        } catch(e){}
+      }
+    }
+  }
+}
+
+// Wrapper für Sidebar-Such-Inputs: speichert Query in _catSearch und
+// ruft die passende Render-Funktion mit Fokus-Preservation.
+function _panelSearch(category, value, renderFnName){
+  _preserveFocus(function(){
+    _catSearch[category] = value;
+    const fn = window[renderFnName];
+    const body = document.getElementById('left-body');
+    if(typeof fn === 'function' && body) fn(body);
+  });
+}
+
 function renderFurnPanel(el){
   const query=_catSearch.furn||'';
   let catalog=[...getCatalog()];
@@ -15488,7 +15534,7 @@ function renderFurnPanel(el){
   sb.className='panel-search';
   sb.innerHTML='<div style="display:flex;align-items:center;gap:4px">'
     +'<input id="furn-search" placeholder="🔍 Möbel suchen…" value="'+query+'"'
-    +' oninput="var _p=this.selectionStart;_catSearch.furn=this.value;renderFurnPanel(document.getElementById(\'left-body\'));var _ni=document.getElementById(\'furn-search\');if(_ni){_ni.focus();_ni.setSelectionRange(_p,_p);}">'
+    +' oninput="_panelSearch(\'furn\', this.value, \'renderFurnPanel\')">'
     +'<div class="view-toggle-btns">'
     +'<button class="vtb'+(_catViewMode==='list'?' active':'')+'" onclick="_catViewMode=\'list\';renderFurnPanel(document.getElementById(\'left-body\'))">☰</button>'
     +'<button class="vtb'+(_catViewMode==='grid'?' active':'')+'" onclick="_catViewMode=\'grid\';renderFurnPanel(document.getElementById(\'left-body\'))">⊞</button>'
@@ -15553,8 +15599,8 @@ function renderBauPanel(el){
   const sb=document.createElement('div');
   sb.className='panel-search';
   sb.innerHTML='<div style="display:flex;align-items:center;gap:4px">'
-    +'<input placeholder="🔍 Bauelemente suchen…" value="'+query+'"'
-    +' oninput="_catSearch.bau=this.value;renderBauPanel(document.getElementById(\'left-body\'))">'
+    +'<input id="bau-search" placeholder="🔍 Bauelemente suchen…" value="'+query+'"'
+    +' oninput="_panelSearch(\'bau\', this.value, \'renderBauPanel\')">'
     +'<div class="view-toggle-btns">'
     +'<button class="vtb'+(_catViewMode==='list'?' active':'')+'" onclick="_catViewMode=\'list\';renderBauPanel(document.getElementById(\'left-body\'))">☰</button>'
     +'<button class="vtb'+(_catViewMode==='grid'?' active':'')+'" onclick="_catViewMode=\'grid\';renderBauPanel(document.getElementById(\'left-body\'))">⊞</button>'
@@ -15602,8 +15648,8 @@ function renderSecPanel(el){
   const sb=document.createElement('div');
   sb.className='panel-search';
   sb.innerHTML='<div style="display:flex;align-items:center;gap:4px">'
-    +'<input placeholder="🔍 Sicherheitstechnik suchen…" value="'+query+'"'
-    +' oninput="_catSearch.sec=this.value;renderSecPanel(document.getElementById(\'left-body\'))">'
+    +'<input id="sec-search" placeholder="🔍 Sicherheitstechnik suchen…" value="'+query+'"'
+    +' oninput="_panelSearch(\'sec\', this.value, \'renderSecPanel\')">'
     +'<div class="view-toggle-btns">'
     +'<button class="vtb'+(_catViewMode==='list'?' active':'')+'" onclick="_catViewMode=\'list\';renderSecPanel(document.getElementById(\'left-body\'))">☰</button>'
     +'<button class="vtb'+(_catViewMode==='grid'?' active':'')+'" onclick="_catViewMode=\'grid\';renderSecPanel(document.getElementById(\'left-body\'))">⊞</button>'
