@@ -25,6 +25,7 @@ import { exportToIfc, downloadIfc } from './export/ifc.js';
 import type { IfcProject } from './export/ifc.js';
 import { t, setLang, LANG, availableLanguages } from './i18n/index.js';
 import type { SupportedLang } from './i18n/index.js';
+import { userTier, currentLimits, hasFeature, checkLimit, PLANS } from './config/features.js';
 import { buildPackList } from './compliance/packlist.js';
 
 console.info('[csc] vite entry alive', import.meta.env.MODE);
@@ -119,6 +120,13 @@ declare global {
       current: () => SupportedLang;
       available: typeof availableLanguages;
     };
+    cscPlan: {
+      tier: typeof userTier;
+      limits: typeof currentLimits;
+      has: typeof hasFeature;
+      check: typeof checkLimit;
+      plans: typeof PLANS;
+    };
   }
 }
 window.cscCompliance = compliance;
@@ -149,6 +157,7 @@ window.cscBudget = { calc: calcMesseBudget, fmtEUR };
 window.cscPacklist = { build: buildPackList };
 window.cscIfc = { exportToIfc, download: downloadIfc };
 window.cscI18n = { t, setLang, current: () => LANG, available: availableLanguages };
+window.cscPlan = { tier: userTier, limits: currentLimits, has: hasFeature, check: checkLimit, plans: PLANS };
 
 // Project-panel footer: show the most-recent lastVerified so the operator
 // knows how fresh the cost/energy defaults are. Rewrites on every boot,
