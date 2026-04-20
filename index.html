@@ -22027,7 +22027,13 @@ function renderObjProps(id){
       </div>
       <div id="img-preview-${id}" style="margin-top:6px">${renderImagePreview(o)}</div>
       <div style="font-size:10px;color:var(--tx3);margin-top:4px">Max 1024px · JPEG Q=0.85 · Face: ${item.imageMapFace}${item.imageMapAspect?' · '+item.imageMapAspect:''}</div>
-    </div>`:''}
+    </div>`:`
+    <div class="pp-section" style="opacity:0.55">
+      <div class="pp-sh">🖼️ Bild auf Oberfläche</div>
+      <div style="font-size:10px;color:var(--tx3);padding:6px;border:1px dashed var(--bd);border-radius:4px">
+        Dieses Objekt unterstützt keinen Bild-Upload. Für bedruckte Flächen nutze Items aus Kategorie <b>🎪 Messe</b> (Rückwand, Roll-up, Counter, LED-Wand, Flag).
+      </div>
+    </div>`}
     <div class="pp-section">
       <div class="pp-sh">Aktionen</div>
       <button class="pp-btn" onclick="rotateSel();renderObjProps('${id}')">↻ 90° drehen</button>
