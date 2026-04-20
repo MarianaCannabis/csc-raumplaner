@@ -39,13 +39,18 @@ const KCANG_HARD_LIMIT = 500;
 /** Flächen-basierte Kapazitäts-Rechnung. Input-Filter (z. B. nur curFloor)
  *  liegt beim Caller — diese Funktion rechnet über genau die Räume, die
  *  sie bekommt. */
-export function calcCapacity(rooms: Room[]): CapacityResult {
+export function calcCapacity(rooms: Room[], meta?: { sqmPerPerson?: number }): CapacityResult {
+  // P5.3: User-konfigurierbares m²/Person-Verhältnis via projMeta. Fällt
+  // auf ASR-A1.2-Standard 2.0 zurück wenn nicht gesetzt.
+  const m2PerMember = (meta && typeof meta.sqmPerPerson === 'number' && meta.sqmPerPerson > 0)
+    ? meta.sqmPerPerson
+    : M2_PER_MEMBER;
   let total = 0;
   let totalM2 = 0;
   const details: CapacityDetail[] = [];
   for (const r of rooms) {
     const area = r.w * r.d;
-    const cap = Math.floor(area / M2_PER_MEMBER);
+    const cap = Math.floor(area / m2PerMember);
     total += cap;
     totalM2 += area;
     details.push({ name: r.name, area: area.toFixed(1), cap });
@@ -54,7 +59,7 @@ export function calcCapacity(rooms: Room[]): CapacityResult {
     total,
     maxCalculated: total,
     totalM2,
-    m2PerMember: M2_PER_MEMBER,
+    m2PerMember,
     hardLimit: KCANG_HARD_LIMIT,
     effective: Math.min(total, KCANG_HARD_LIMIT),
     details,
@@ -195,13 +200,19 @@ export interface FireSafetyResult {
 }
 
 export function calcFireSafety(ctx: RuleContext): FireSafetyResult {
-  const { rooms, objects } = ctx;
+  const { rooms, objects, meta } = ctx;
   const totalArea = rooms.reduce((s, r) => s + r.w * r.d, 0);
 
   // DIN EN 3 / ASR A2.2: 1 extinguisher per 200 m², minimum 1 per
   // Brandabschnitt → floor gives room count; we pick the larger of the
   // two requirements.
-  const extinguishersRequired = Math.max(rooms.length, Math.ceil(totalArea / 200));
+  // P5.3: Wenn der Operator eine echte Personenzahl angibt (statt der
+  // Auto-Kapazitäts-Schätzung), schlägt die 1-pro-100-Personen-Regel
+  // zusätzlich zu.
+  let extinguishersRequired = Math.max(rooms.length, Math.ceil(totalArea / 200));
+  if (meta && typeof meta.plannedPeopleCount === 'number' && meta.plannedPeopleCount > 0) {
+    extinguishersRequired = Math.max(extinguishersRequired, Math.ceil(meta.plannedPeopleCount / 100));
+  }
   const extinguishersCount = objects.filter((o) => o.typeId === 'sec-ext').length;
 
   // §15 MBO: 1 smoke detector per room.
@@ -358,14 +369,30 @@ const ENERGY_LABEL_COLORS: Record<EnergyLabel, string> = {
   D: '#ff8800',
 };
 
-export function energyCertificate(rooms: Room[]): EnergyCertificateResult {
+// P5.3: Multiplikatoren für Dämmstandards. 1.0 = GEG-2024-Neubau;
+// EnEV-2016 ist etwas weniger effizient; KfW-55/40 sind geförderte
+// Sanierungen mit deutlich besserer Energiebilanz.
+const ENERGY_CLASS_FACTOR: Record<string, number> = {
+  GEG2024: 1.0,
+  EnEV2016: 1.15,
+  KfW55: 0.55,
+  KfW40: 0.40,
+};
+
+export function energyCertificate(
+  rooms: Room[],
+  meta?: { energyClass?: 'GEG2024' | 'EnEV2016' | 'KfW55' | 'KfW40' },
+): EnergyCertificateResult {
   const totalArea = rooms.reduce((s, r) => s + r.w * r.d, 0);
   // Legacy formula (generateEnergyCertificate pre-P2.2):
   //   lighting_kWh = area · 8 W/m² · 8 h/day · 365 d / 1000
   //   heating_kWh  = area · 50 W/m³ · 2000 HDD / 1000
   // Residential-oriented thresholds; see FUNCTIONS-AUDIT §5.2 for the
   // known issue with commercial-scale kWh/m² skew.
-  const kwh = (totalArea * 8 / 1000 * 8 * 365) + (totalArea * 50 / 1000 * 2000);
+  const baseKwh = (totalArea * 8 / 1000 * 8 * 365) + (totalArea * 50 / 1000 * 2000);
+  // P5.3: Dämmstandard-Faktor aus meta.energyClass anwenden.
+  const factor = meta && meta.energyClass ? (ENERGY_CLASS_FACTOR[meta.energyClass] ?? 1.0) : 1.0;
+  const kwh = baseKwh * factor;
   const kwhPerM2 = totalArea > 0 ? kwh / totalArea : 0;
   const label: EnergyLabel =
     kwhPerM2 < 30 ? 'A++' :

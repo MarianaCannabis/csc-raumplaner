@@ -44,6 +44,23 @@ export interface ProjectMeta {
   maxHeight?: number;
   /** P4.6: Days the stand is open (used by calcMesseBudget). */
   messeDays?: number;
+
+  /** P5.3: m² pro Person für Kapazitätsberechnung. Default 2.0 (ASR A1.2).
+   *  Operator kann z.B. für Konferenz-Layout auf 1.5 senken. */
+  sqmPerPerson?: number;
+  /** P5.3: GEG/EnEV-Klasse für Energie-Ausweis. Multipliziert den
+   *  kWh/m²-Wert: 'GEG2024'=1.0, 'EnEV2016'=1.15, 'KfW55'=0.55, 'KfW40'=0.40.
+   *  Default 'GEG2024'. */
+  energyClass?: 'GEG2024' | 'EnEV2016' | 'KfW55' | 'KfW40';
+  /** P5.3: Geplante Personenzahl zur Fire-Safety-Auslegung. Wenn gesetzt,
+   *  überschreibt die Feuerlöscher-Berechnung `max(rooms, ceil(people/100))`. */
+  plannedPeopleCount?: number;
+  /** P5.3: Budget-Obergrenze in € für Kostenrechner/Warnungen.
+   *  Null = keine Warnung. */
+  budgetCap?: number;
+  /** P5.3: AI-Security-Audit-Schwellwert (Score-Punkte) unter dem das
+   *  Audit als kritisch markiert. Default 60. */
+  securityThresholdPct?: number;
 }
 
 export interface RuleContext {
