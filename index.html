@@ -2426,6 +2426,17 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
             <button class="tbt" style="padding:8px" onclick="openVisualHistory()">🖼 Visual History</button>
           </div>
         </details>
+
+        <!-- P6.8: Messeordnung-Import -->
+        <details class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
+          <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:#a78bfa">📄 Messeordnung</summary>
+          <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
+            <input type="file" id="regulation-upload" accept="application/pdf" style="display:none" onchange="handleRegulationUpload(event)">
+            <button class="tbt" style="padding:8px" onclick="document.getElementById('regulation-upload').click()">📄 PDF importieren (Claude extrahiert)</button>
+            <button class="tbt" style="padding:8px;display:none" id="btn-view-regulations" onclick="showImportedRegulations()">👁 Regeln ansehen</button>
+            <div id="regulation-status" style="font-size:10px;color:var(--tx3);margin-top:2px"></div>
+          </div>
+        </details>
       </div>
       <div style="height:1px;background:var(--bd);margin:8px 0"></div>
       <!-- SUPABASE CLOUD -->
@@ -6897,6 +6908,16 @@ function syncMetaUI(){
   if(bc) bc.value = projMeta.budgetCap != null ? projMeta.budgetCap : '';
   const st = document.getElementById('pm-security-threshold');
   if(st) st.value = projMeta.securityThresholdPct != null ? projMeta.securityThresholdPct : '';
+  // P6.8: Regulation-Import-Status nach loadPD synchronisieren
+  const rbtn = document.getElementById('btn-view-regulations');
+  const rstatus = document.getElementById('regulation-status');
+  if(projMeta.regulationRules && projMeta.regulationRules.length){
+    if(rbtn) rbtn.style.display = 'block';
+    if(rstatus){ rstatus.textContent = '✅ ' + projMeta.regulationRules.length + ' Regeln (' + (projMeta.regulationSource||'PDF') + ')'; rstatus.style.color = 'var(--gr)'; }
+  } else {
+    if(rbtn) rbtn.style.display = 'none';
+    if(rstatus) rstatus.textContent = '';
+  }
   if(p) p.textContent = projMeta.pois && projMeta.pois.length != null
     ? '✓ ' + projMeta.pois.length + ' POI(s) geladen'
     : '';
@@ -22014,6 +22035,165 @@ function stopRealtimeCollab(){
 
 // Auto-start nach Login + cleanup beim Logout/Unload
 window.addEventListener('beforeunload', stopRealtimeCollab);
+
+// ══ P6.8: PDF MESSEORDNUNG-IMPORT ═════════════════════════════════
+// User lädt eine Messe-Hallenordnung als PDF hoch. Datei wird via
+// Anthropic Vision-API an Claude geschickt; Claude liest das PDF direkt
+// (kein separater PDF-Parser nötig — supported seit claude-3.5 / 4).
+// System-Prompt ist streng: JSON-Output mit Array aus Regel-Objekten.
+// Ergebnis landet in projMeta.regulationRules und wird im Compliance-
+// Badge-Bar zusätzlich zu den KCanG-Regeln angezeigt.
+
+const REGULATION_SYSTEM = `Du bist ein Experte für Messebau-Ordnungen (Hallen-Regeln, technische Richtlinien für Messestände in Deutschland: Mari-Jane, Dmexco, Boot Düsseldorf, Gamescom etc.).
+
+Aus dem angehängten PDF extrahiere alle für einen Standbauer relevanten Regeln als JSON:
+
+{"rules":[{"category":"height|distance|fire|electrical|structural|other","severity":"critical|high|medium|low","label":"kurz 2-5 Worte","description":"1-2 Sätze erklären","value":<Zahl oder null>,"unit":"m|kg|A|W|null"}]}
+
+Typische Regeln aus Messeordnungen:
+- Max. Standhöhe (z.B. 2.5m für Reihenstand, 4m für Inselstand) → category:"height"
+- Rückstand zur Standkante bei doppelter Höhe → category:"distance"
+- Anschlussleistung max. (z.B. 3kW pro Stand) → category:"electrical"
+- Brandschutz: freizuhaltende Fluchtwege 2m → category:"fire"
+- Materialien: schwer entflammbar B1/DIN 4102 → category:"structural"
+- Werbung nur innerhalb Standfläche → category:"other"
+
+Gib NUR JSON aus, keinen Fließtext davor/danach, KEIN Markdown-Codefence.`;
+
+async function handleRegulationUpload(e){
+  const file = e.target.files && e.target.files[0];
+  if(!file) return;
+  const status = document.getElementById('regulation-status');
+  if(!SB_TOKEN){
+    if(status){ status.textContent = '❌ Bitte erst einloggen'; status.style.color = 'var(--rd)'; }
+    return;
+  }
+  if(file.size > 20 * 1024 * 1024){
+    if(status){ status.textContent = '❌ PDF > 20 MB — Anthropic-Limit'; status.style.color = 'var(--rd)'; }
+    return;
+  }
+  if(status){ status.textContent = '⏳ PDF wird gelesen…'; status.style.color = 'var(--tx3)'; }
+
+  try {
+    // PDF als Base64 kodieren für Anthropic-Vision-Input
+    const b64 = await new Promise((resolve, reject) => {
+      const fr = new FileReader();
+      fr.onload = () => resolve(String(fr.result).split(',')[1] || '');
+      fr.onerror = reject;
+      fr.readAsDataURL(file);
+    });
+
+    if(status) status.textContent = '⏳ Claude analysiert das PDF…';
+
+    // Claude-Request via bestehender aiFetch-Bridge. Anthropic-Vision
+    // akzeptiert application/pdf direkt im content-Array als document-Block.
+    const resp = await aiFetch({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 2500,
+      system: REGULATION_SYSTEM,
+      messages: [{
+        role: 'user',
+        content: [
+          {
+            type: 'document',
+            source: { type: 'base64', media_type: 'application/pdf', data: b64 },
+          },
+          { type: 'text', text: 'Extrahiere alle relevanten Messebau-Regeln aus diesem PDF als JSON.' },
+        ],
+      }],
+    });
+
+    if(!resp.ok){
+      const errText = await resp.text();
+      throw new Error('API ' + resp.status + ': ' + errText.slice(0, 100));
+    }
+    const data = await resp.json();
+    const raw = (data.content && data.content[0] && data.content[0].text) || '';
+    // JSON aus der Response extrahieren (toleriert Code-Fences und
+    // Surrounding-Text via Regex-Match auf erstes {…}).
+    const match = raw.match(/\{[\s\S]*\}/);
+    if(!match) throw new Error('Kein JSON in der Antwort gefunden');
+    const parsed = JSON.parse(match[0]);
+    const rules = Array.isArray(parsed.rules) ? parsed.rules : [];
+    if(rules.length === 0) throw new Error('Keine Regeln extrahiert — PDF evtl. nicht eindeutig oder zu lang');
+
+    // In projMeta speichern
+    projMeta.regulationRules = rules;
+    projMeta.regulationSource = file.name;
+    projMeta.regulationImportedAt = new Date().toISOString();
+
+    if(status){
+      status.textContent = '✅ ' + rules.length + ' Regeln extrahiert (' + file.name + ')';
+      status.style.color = 'var(--gr)';
+    }
+    const viewBtn = document.getElementById('btn-view-regulations');
+    if(viewBtn) viewBtn.style.display = 'block';
+    snapshot();
+    toast('📄 ' + rules.length + ' Regeln importiert aus ' + file.name, 'g');
+  } catch(err){
+    console.warn('[regulation-import] failed', err);
+    if(status){
+      status.textContent = '❌ ' + (err.message || err);
+      status.style.color = 'var(--rd)';
+    }
+    toast('Import fehlgeschlagen: ' + (err.message || err), 'r');
+  } finally {
+    e.target.value = ''; // allow re-upload
+  }
+}
+
+function showImportedRegulations(){
+  const rules = projMeta && projMeta.regulationRules;
+  if(!rules || !rules.length){ toast('Noch keine Regeln importiert', 'b'); return; }
+  let modal = document.getElementById('m-regulations');
+  if(!modal){
+    modal = document.createElement('div');
+    modal.id = 'm-regulations';
+    modal.className = 'mover';
+    modal.innerHTML = '<div class="modal" style="max-width:640px;max-height:80vh">' +
+      '<h2>📄 Importierte Messe-Regeln</h2>' +
+      '<div style="font-size:11px;color:var(--tx3);margin-bottom:10px" id="regulations-source"></div>' +
+      '<div id="regulations-list" style="max-height:60vh;overflow-y:auto;font-size:12px"></div>' +
+      '<div class="mbtns">' +
+      '<button class="mbt del" onclick="clearImportedRegulations()">🗑 Alle entfernen</button>' +
+      '<button class="mbt" onclick="closeM(\'m-regulations\')">Schließen</button>' +
+      '</div></div>';
+    document.body.appendChild(modal);
+  }
+  const catLabels = { height:'📏 Höhe', distance:'↔ Abstand', fire:'🔥 Brandschutz', electrical:'⚡ Elektro', structural:'🏗 Konstruktion', other:'📋 Sonstiges' };
+  const sevColor = { critical:'#ef4444', high:'#f97316', medium:'#fbbf24', low:'#94a3b8' };
+  const sevIcon = { critical:'🔴', high:'🟠', medium:'🟡', low:'⚪' };
+  const srcEl = document.getElementById('regulations-source');
+  if(srcEl) srcEl.textContent = 'Quelle: ' + (projMeta.regulationSource || '—') + ' · importiert ' +
+    (projMeta.regulationImportedAt ? new Date(projMeta.regulationImportedAt).toLocaleString('de-DE') : '—');
+  const list = document.getElementById('regulations-list');
+  list.innerHTML = rules.map(function(r, i){
+    const cat = catLabels[r.category] || r.category || '📋';
+    const sev = sevIcon[r.severity] || '⚪';
+    const col = sevColor[r.severity] || 'var(--tx3)';
+    const valStr = (r.value != null) ? ('<b>' + r.value + (r.unit ? ' ' + r.unit : '') + '</b>') : '';
+    return '<div style="padding:8px;border-bottom:1px solid var(--bd);border-left:3px solid ' + col + ';margin-bottom:4px">' +
+      '<div style="font-size:10px;color:var(--tx3)">' + cat + ' · ' + sev + ' ' + (r.severity || '') + '</div>' +
+      '<div style="font-weight:600;margin:2px 0">' + (r.label || '(ohne Label)').replace(/[<>]/g,'') + ' ' + valStr + '</div>' +
+      '<div style="font-size:11px;color:var(--tx2)">' + (r.description || '').replace(/[<>]/g,'') + '</div>' +
+    '</div>';
+  }).join('');
+  openM('m-regulations');
+}
+
+function clearImportedRegulations(){
+  if(!confirm('Alle importierten Messe-Regeln entfernen?')) return;
+  delete projMeta.regulationRules;
+  delete projMeta.regulationSource;
+  delete projMeta.regulationImportedAt;
+  const viewBtn = document.getElementById('btn-view-regulations');
+  if(viewBtn) viewBtn.style.display = 'none';
+  const status = document.getElementById('regulation-status');
+  if(status) status.textContent = '';
+  closeM('m-regulations');
+  snapshot();
+  toast('Regeln entfernt', 'b');
+}
 
 // ══ PDF / DRUCK EXPORT ═══════════════════════════════════════════
 function exportPDF(){
