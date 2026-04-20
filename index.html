@@ -2098,6 +2098,11 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
     <h3>🚶 Durchgehen-Modus</h3>
     <p>Klicken zum Aktivieren<br>WASD = Bewegen · Shift = Schnell<br>Maus = Umschauen · ESC beenden</p>
   </div></div>
+  <!-- P6.5: Exit-Button + Kopfzeile während First-Person aktiv -->
+  <div id="fp-exit-bar" style="display:none;position:absolute;top:16px;left:50%;transform:translateX(-50%);z-index:25;background:rgba(10,15,20,0.9);border:1px solid var(--gr);border-radius:20px;padding:6px 12px;font-size:12px;color:var(--gr);pointer-events:auto">
+    <span style="margin-right:10px">🚶 Durchgehen-Modus</span>
+    <button onclick="exitWalkMode()" style="background:var(--gr);color:#0a0a0a;border:none;border-radius:12px;padding:3px 10px;font-size:11px;cursor:pointer;font-weight:600">✕ Zurück zur Übersicht</button>
+  </div>
   <div id="xhair"></div>
   <div id="place-hint">Klick auf Boden → Objekt platzieren · ESC = Abbrechen</div>
   <div class="sel-info" id="sel-info"></div>
@@ -5711,7 +5716,9 @@ scene.background=new THREE.Color(0x1a2230);
 scene.fog=new THREE.FogExp2(0x1a2230, 0.008);
 
 const oCam=new THREE.PerspectiveCamera(58,1,0.1,200);
-const fpCam3=new THREE.PerspectiveCamera(72,1,0.05,100);
+// P6.5: FOV 75° ist realistischer Human-Eye-Standard; 72° war eher
+// Shooter-Game-Default. Near/Far unverändert.
+const fpCam3=new THREE.PerspectiveCamera(75,1,0.05,100);
 const topCam=new THREE.OrthographicCamera(-20,20,20,-20,0.1,200);
 let cam3=oCam;
 const rend3=new THREE.WebGLRenderer({canvas:tCv,antialias:true});
@@ -5918,11 +5925,19 @@ function upTop(){
 // FP walk
 let fpPos3=new THREE.Vector3(5,1.7,5);
 let fpYaw=0,fpPitch=0,fpLocked=false;
+// P6.5: Smooth-Movement mit Velocity-Vektor für Acceleration/Damping
+let fpVel = null; // THREE.Vector3, lazy init nach THREE-Load
+const FP_ACCEL = 18; // m/s² — wie schnell der Walk auf Ziel-Speed kommt
+const FP_DAMP  = 8;  // s⁻¹ — wie schnell er wieder ausklingt
+const FP_BODY_RADIUS = 0.35; // Kollisions-Radius um Spieler
 const keys={};
 document.addEventListener('pointerlockchange',()=>{
   fpLocked=document.pointerLockElement===tCv;
   document.getElementById('xhair').style.display=fpLocked?'block':'none';
   if(!fpLocked&&currentView==='walk') document.getElementById('fp-walk').classList.add('vis');
+  // P6.5: Exit-Bar folgt dem Lock-Status
+  const bar = document.getElementById('fp-exit-bar');
+  if(bar) bar.style.display = fpLocked ? 'block' : 'none';
 });
 document.addEventListener('mousemove',e=>{
   if(!fpLocked)return;
@@ -5931,20 +5946,86 @@ document.addEventListener('mousemove',e=>{
 });
 
 function upFP(dt){
-  if(!fpLocked)return;
-  const spd=(keys['shift']?8:4)*dt;
-  const fwd=new THREE.Vector3(Math.sin(fpYaw),0,Math.cos(fpYaw));
-  const rgt=new THREE.Vector3(Math.cos(fpYaw),0,-Math.sin(fpYaw));
-  if(keys['w']||keys['arrowup'])fpPos3.addScaledVector(fwd,-spd);
-  if(keys['s']||keys['arrowdown'])fpPos3.addScaledVector(fwd,spd);
-  if(keys['a']||keys['arrowleft'])fpPos3.addScaledVector(rgt,-spd);
-  if(keys['d']||keys['arrowright'])fpPos3.addScaledVector(rgt,spd);
-  fpPos3.y=1.7;
+  if(!fpLocked) return;
+  // P6.5 Smooth-Movement: Velocity-basiert mit Acceleration + Damping.
+  // Input liefert Target-Direction; fpVel konvergiert dorthin mit FP_ACCEL,
+  // klingt bei losen Tasten mit FP_DAMP aus.
+  if(!fpVel) fpVel = new THREE.Vector3();
+  const maxSpd = (keys['shift'] ? 8 : 4);
+  const fwd = new THREE.Vector3(Math.sin(fpYaw), 0, Math.cos(fpYaw));
+  const rgt = new THREE.Vector3(Math.cos(fpYaw), 0, -Math.sin(fpYaw));
+  const target = new THREE.Vector3();
+  if(keys['w'] || keys['arrowup'])    target.addScaledVector(fwd, -1);
+  if(keys['s'] || keys['arrowdown'])  target.addScaledVector(fwd, 1);
+  if(keys['a'] || keys['arrowleft'])  target.addScaledVector(rgt, -1);
+  if(keys['d'] || keys['arrowright']) target.addScaledVector(rgt, 1);
+  if(target.lengthSq() > 0){
+    target.normalize().multiplyScalar(maxSpd);
+    // Ease toward target
+    fpVel.x += (target.x - fpVel.x) * Math.min(1, FP_ACCEL * dt);
+    fpVel.z += (target.z - fpVel.z) * Math.min(1, FP_ACCEL * dt);
+  } else {
+    // Damping
+    const d = Math.max(0, 1 - FP_DAMP * dt);
+    fpVel.multiplyScalar(d);
+  }
+  // P6.5 Collision-Detection gegen Räume: Spieler bleibt inside room-bounds
+  // wenn er in einem Raum startet. Pragmatischer Ansatz — prüfe Kandidat-
+  // Position; wenn außerhalb aller Räume ABER Start war drin, clamp auf
+  // Raum-Inneres. Lose Items werden nicht geprüft (zu aufwändig).
+  const candX = fpPos3.x + fpVel.x * dt;
+  const candZ = fpPos3.z + fpVel.z * dt;
+  const wasInside = rooms.some(r =>
+    fpPos3.x >= r.x && fpPos3.x <= r.x + r.w &&
+    fpPos3.z >= r.y && fpPos3.z <= r.y + r.d
+  );
+  if(wasInside){
+    // Clamp X und Z separat an bounds des aktuellen Raums
+    const cur = rooms.find(r =>
+      fpPos3.x >= r.x && fpPos3.x <= r.x + r.w &&
+      fpPos3.z >= r.y && fpPos3.z <= r.y + r.d
+    );
+    if(cur){
+      fpPos3.x = Math.max(cur.x + FP_BODY_RADIUS, Math.min(cur.x + cur.w - FP_BODY_RADIUS, candX));
+      fpPos3.z = Math.max(cur.y + FP_BODY_RADIUS, Math.min(cur.y + cur.d - FP_BODY_RADIUS, candZ));
+    } else {
+      fpPos3.x = candX; fpPos3.z = candZ;
+    }
+  } else {
+    // Außerhalb — freie Bewegung
+    fpPos3.x = candX; fpPos3.z = candZ;
+  }
+  fpPos3.y = 1.7; // Kopfhöhe konstant
   fpCam3.position.copy(fpPos3);
-  fpCam3.lookAt(fpPos3.clone().add(new THREE.Vector3(Math.sin(fpYaw)*Math.cos(fpPitch),Math.sin(fpPitch),Math.cos(fpYaw)*Math.cos(fpPitch))));
+  fpCam3.lookAt(fpPos3.clone().add(new THREE.Vector3(
+    Math.sin(fpYaw) * Math.cos(fpPitch),
+    Math.sin(fpPitch),
+    Math.cos(fpYaw) * Math.cos(fpPitch)
+  )));
 }
 
-function requestWalkLock(){ tCv.requestPointerLock(); }
+function requestWalkLock(){
+  tCv.requestPointerLock();
+  // P6.5: Exit-Bar einblenden + beim ersten Walk ein Tutorial-Toast
+  const bar = document.getElementById('fp-exit-bar');
+  if(bar) bar.style.display = 'block';
+  if(!localStorage.getItem('csc-walk-tutorial-seen')){
+    if(typeof toast === 'function'){
+      toast('🎮 Walk-Mode: WASD bewegen · Shift rennen · Maus umschauen · ESC beenden', 'b');
+    }
+    try { localStorage.setItem('csc-walk-tutorial-seen', '1'); } catch(e){}
+  }
+}
+
+function exitWalkMode(){
+  // Raus aus Pointer-Lock + zurück zur Orbit-View
+  try { document.exitPointerLock && document.exitPointerLock(); } catch(e){}
+  const bar = document.getElementById('fp-exit-bar');
+  if(bar) bar.style.display = 'none';
+  if(currentView === 'walk' && typeof setView === 'function'){
+    setView('3d');
+  }
+}
 
 // 3D scene objects map
 const obj3Map={};
