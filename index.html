@@ -2486,6 +2486,18 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
       <div id="version-list" style="margin-bottom:12px"></div>
       <div class="sh">Lokal gespeicherte Projekte</div>
       <div id="saved-list"></div>
+      <!-- P8.3: DSGVO-Daten-Werkzeuge -->
+      <details class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px;margin-top:8px">
+        <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:#a78bfa">🔒 Datenschutz / DSGVO</summary>
+        <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
+          <button class="tbt" style="padding:8px" onclick="exportMyData()">📤 Meine Daten exportieren (Art. 20)</button>
+          <button class="tbt" style="padding:8px;border-color:#ef4444;color:#ef4444" onclick="deleteMyAccount()">🗑 Account löschen (Art. 17)</button>
+          <div style="font-size:10px;color:var(--tx3);line-height:1.4;padding-top:4px">
+            <a href="privacy.html" target="_blank" style="color:var(--gr)">Datenschutzerklärung</a> ·
+            <a href="impressum.html" target="_blank" style="color:var(--gr)">Impressum</a>
+          </div>
+        </div>
+      </details>
       <div style="margin-top:14px;padding-top:8px;border-top:1px solid var(--bd);text-align:center">
         <button class="tbt" onclick="openCredits()" style="padding:5px 10px;font-size:10px;color:var(--tx3)">🎨 Credits</button>
       </div>
@@ -3803,6 +3815,22 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 'use strict';
+
+// ════════════════════════════════════════════════════════════════════════
+// P8.3 — Cookie-Banner (einmalig, minimal — wir nutzen nur technisch
+// notwendige Cookies/Storage; daher keine opt-in-Pflicht, nur
+// transparenter Info-Hinweis mit 'Verstanden'-Dismiss)
+// ════════════════════════════════════════════════════════════════════════
+if(!localStorage.getItem('csc-cookie-dismissed')){
+  window.addEventListener('DOMContentLoaded', () => {
+    const banner = document.createElement('div');
+    banner.id = 'cookie-banner';
+    banner.style.cssText = 'position:fixed;bottom:12px;left:12px;right:12px;max-width:560px;margin:0 auto;background:#1a2230;border:1px solid #4ade80;border-radius:10px;padding:12px 16px;z-index:9000;box-shadow:0 4px 20px rgba(0,0,0,.5);font-size:12px;color:#e0e6ed;display:flex;gap:12px;align-items:center;flex-wrap:wrap';
+    banner.innerHTML = '<span style="flex:1;min-width:240px">🍪 Wir nutzen <b>ausschließlich technisch notwendige</b> Daten (LocalStorage/IndexedDB) für Auto-Save + Offline-Betrieb. Keine Tracking-Cookies. <a href="privacy.html" target="_blank" style="color:#4ade80">Datenschutz</a> · <a href="impressum.html" target="_blank" style="color:#4ade80">Impressum</a></span>' +
+      '<button onclick="try{localStorage.setItem(\'csc-cookie-dismissed\',\'1\')}catch(e){};this.parentNode.remove()" style="background:#4ade80;color:#0a0f14;border:none;border-radius:4px;padding:6px 14px;cursor:pointer;font-weight:600;font-size:12px">Verstanden</button>';
+    document.body.appendChild(banner);
+  });
+}
 
 // ════════════════════════════════════════════════════════════════════════
 // P8.1 — Error Resilience + PWA Bootstrap
@@ -11168,6 +11196,103 @@ async function optimizeLayout(){
 // ── 14. KAPAZITÄTS- UND CHECKLISTEN-PANEL ────────────────────────────
 // P8.2: Hilfe-Modal — FAQ + Shortcuts + User-Guide-Link
 function openHelpModal(){ openM('m-help'); }
+
+// ──────────────────────────────────────────────────────────────────────
+// P8.3 DSGVO: Daten-Export (Art. 20) + Account-Delete (Art. 17)
+// ──────────────────────────────────────────────────────────────────────
+
+// Art. 20 — komplette Datenübertragbarkeit. Bundle: local projects (json-
+// saves3), aktuelle Cloud-Projekte, projMeta, Auth-User-Info. Als ZIP-Blob
+// per JSZip (schon via CDN geladen, Zeile 3500).
+async function exportMyData(){
+  if(typeof JSZip === 'undefined'){ toast('ZIP-Bibliothek nicht geladen','r'); return; }
+  toast('📤 Sammle deine Daten...','b');
+  const zip = new JSZip();
+  const ts = new Date().toISOString();
+  // 1. Lokal gespeicherte Projekte
+  const localSaves = JSON.parse(localStorage.getItem('csc-saves3') || '{}');
+  zip.file('local-projects.json', JSON.stringify(localSaves, null, 2));
+  // 2. Aktuell-Editor-Zustand
+  try { zip.file('current-project.json', JSON.stringify(getPD(), null, 2)); } catch(e){}
+  // 3. User-Info (aus localStorage, ohne Access-Token)
+  const userInfo = {
+    email: SB_USER ? SB_USER.email : null,
+    id:    SB_USER ? SB_USER.id    : null,
+    username:  localStorage.getItem('csc-username') || null,
+    exported_at: ts,
+  };
+  zip.file('user.json', JSON.stringify(userInfo, null, 2));
+  // 4. Cloud-Projekte, falls eingeloggt
+  if(SB_TOKEN && SB_URL){
+    try {
+      const r = await fetch(SB_URL + '/rest/v1/csc_projects?select=*',
+        { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_TOKEN } });
+      if(r.ok){
+        const rows = await r.json();
+        zip.file('cloud-projects.json', JSON.stringify(rows, null, 2));
+      }
+    } catch(e){}
+  }
+  // 5. Einstellungen / Dismissed-States
+  const settings = {};
+  const keysOfInterest = ['csc-username','csc-bloom','csc-welcome-never','csc-cookie-dismissed','csc-never-restore','csc-onboarded','csc-walk-tutorial-seen'];
+  keysOfInterest.forEach(k => { const v = localStorage.getItem(k); if(v !== null) settings[k] = v; });
+  zip.file('settings.json', JSON.stringify(settings, null, 2));
+  // 6. Readme zum Bundle
+  zip.file('README.txt', '# CSC Raumplaner — Deine Daten (DSGVO Art. 20)\n\n' +
+    'Dieses ZIP enthält alle uns gespeicherten personenbezogenen Daten:\n' +
+    '- user.json: Account-Info (E-Mail, User-ID)\n' +
+    '- local-projects.json: Projekte im Browser-LocalStorage\n' +
+    '- cloud-projects.json: Projekte in der Supabase-Cloud\n' +
+    '- current-project.json: Der gerade offene Zustand\n' +
+    '- settings.json: App-Einstellungen (ohne Auth-Tokens)\n\n' +
+    'Export-Zeitpunkt: ' + ts + '\n');
+  const blob = await zip.generateAsync({ type: 'blob' });
+  const filename = 'csc-meine-daten-' + ts.slice(0,10) + '.zip';
+  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: filename });
+  a.click();
+  toast('✅ ZIP heruntergeladen: ' + filename, 'g');
+}
+
+// Art. 17 — Account-Löschung. Löscht alle Cloud-Projekte + Sessions +
+// logged user aus. Auth-User-Löschung muss via Supabase-Admin-Function
+// passieren (client-side nicht möglich ohne Admin-Key) — wir löschen
+// die owned data + toasten einen Reminder dass der Auth-Record selbst
+// via Support-Request oder Dashboard gelöscht werden muss.
+async function deleteMyAccount(){
+  if(!SB_TOKEN || !SB_USER){ toast('Erst einloggen','b'); return; }
+  if(!confirm('ACCOUNT LÖSCHEN\n\nAlle deine Cloud-Projekte + Sessions werden unwiderruflich gelöscht. Lokale Browser-Daten werden geleert.\n\nFortfahren?')) return;
+  const phrase = prompt('Zur Bestätigung tippe: LÖSCHEN');
+  if(phrase !== 'LÖSCHEN'){ toast('Abgebrochen','b'); return; }
+  try {
+    // Cloud-Projekte löschen (RLS erlaubt owner-delete)
+    await fetch(SB_URL + '/rest/v1/csc_projects?owner=eq.' + SB_USER.id, {
+      method: 'DELETE',
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_TOKEN },
+    });
+    // Realtime-Sessions löschen
+    await fetch(SB_URL + '/rest/v1/csc_project_sessions?user_id=eq.' + SB_USER.id, {
+      method: 'DELETE',
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_TOKEN },
+    }).catch(()=>{});
+    // Shared-Furniture vom User löschen (best-effort)
+    await fetch(SB_URL + '/rest/v1/csc_shared_furniture?created_by=eq.' + (SB_USER.email || SB_USER.id), {
+      method: 'DELETE',
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_TOKEN },
+    }).catch(()=>{});
+    // Local storage leeren
+    ['csc-sb-token','csc-sb-refresh','csc-sb-user','csc-username','csc-saves3','csc-autosave','csc-autosave-ts','csc-versions'].forEach(k => {
+      try { localStorage.removeItem(k); } catch(e){}
+    });
+    // IDB droppen
+    try { indexedDB.deleteDatabase('CSCRaumplaner'); } catch(e){}
+    toast('✅ Alle deine Daten in dieser App wurden gelöscht. Der Auth-User selbst muss via Support entfernt werden (areiche@cscsdeutschland.de).', 'g');
+    setTimeout(() => location.reload(), 2000);
+  } catch(e){
+    toast('Löschung fehlgeschlagen: ' + e.message, 'r');
+  }
+}
+
 
 // P8.2: Keyboard-Shortcut-Overlay beim Druck von ? oder F1
 document.addEventListener('keydown', (e) => {
