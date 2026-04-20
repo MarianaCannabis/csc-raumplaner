@@ -2360,18 +2360,40 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
         </div>
       </div>
 
-      <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px">
-        <button class="tbt g" style="padding:9px" onclick="saveProj()">💾 Projekt speichern</button>
-        <button class="tbt" style="padding:9px;border-color:var(--gr3);color:var(--gr)" onclick="openTemplates()">📋 Vorlage laden</button>
-        <button class="tbt" style="padding:9px" onclick="exportPDF()">🖨️ PDF / Druckansicht</button>
-        <button class="tbt" style="padding:9px" onclick="dlJSON()">📥 Als .json exportieren</button>
-        <button class="tbt" style="padding:9px" onclick="exportFurnitureCSV()">📊 Möbelliste (.csv)</button>
-        <button class="tbt" style="padding:9px" onclick="exportBudgetCSV()">💰 Budget (.csv)</button>
-        <button class="tbt" style="padding:9px" onclick="exportGLTF()">🏗 3D-Modell (.gltf)</button>
-        <button class="tbt" style="padding:9px" onclick="exportDXF()">📐 Grundriss (.dxf)</button>
-        <button class="tbt" style="padding:9px" onclick="showChangelog()">📋 Änderungsprotokoll</button>
-        <button class="tbt" style="padding:9px" onclick="document.getElementById('json-up').click()">📤 .json laden</button>
-        <input type="file" id="json-up" accept=".json" style="display:none" onchange="loadJSONFile(event)">
+      <!-- P5.4: Projekte-Panel aufgeräumt in 3 Collapsible-Sections -->
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
+
+        <!-- 💾 Speichern -->
+        <details open class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
+          <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:var(--gr)">💾 Speichern</summary>
+          <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
+            <button class="tbt g" style="padding:8px" onclick="saveProj()">💾 Projekt speichern</button>
+            <button class="tbt" style="padding:8px;border-color:var(--gr3);color:var(--gr)" onclick="openTemplates()">📋 Vorlage laden</button>
+            <button class="tbt" style="padding:8px" onclick="document.getElementById('json-up').click()">📤 .json laden</button>
+            <input type="file" id="json-up" accept=".json" style="display:none" onchange="loadJSONFile(event)">
+          </div>
+        </details>
+
+        <!-- 📤 Export -->
+        <details class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
+          <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:#38bdf8">📤 Export</summary>
+          <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
+            <button class="tbt" style="padding:8px" onclick="exportPDF()">🖨️ PDF / Druckansicht</button>
+            <button class="tbt" style="padding:8px" onclick="dlJSON()">📥 Als .json exportieren</button>
+            <button class="tbt" style="padding:8px" onclick="exportFurnitureCSV()">📊 Möbelliste (.csv)</button>
+            <button class="tbt" style="padding:8px" onclick="exportBudgetCSV()">💰 Budget (.csv)</button>
+            <button class="tbt" style="padding:8px" onclick="exportGLTF()">🏗 3D-Modell (.gltf)</button>
+            <button class="tbt" style="padding:8px" onclick="exportDXF()">📐 Grundriss (.dxf)</button>
+          </div>
+        </details>
+
+        <!-- 📜 Historie -->
+        <details class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
+          <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:#fbbf24">📜 Historie</summary>
+          <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
+            <button class="tbt" style="padding:8px" onclick="showChangelog()">📋 Änderungsprotokoll</button>
+          </div>
+        </details>
       </div>
       <div style="height:1px;background:var(--bd);margin:8px 0"></div>
       <!-- SUPABASE CLOUD -->
