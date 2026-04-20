@@ -33,6 +33,29 @@
   }
 }
 
+/* P8.6 — sichtbare Focus-Styles für Keyboard-Navigation (WCAG 2.4.7).
+   Default-Outline war oft auf none gesetzt — das bricht a11y. Jetzt
+   focus-visible (nicht bei Mausklick): gut sichtbarer 2px-Ring in
+   accent-green, mit 2px Offset damit kein Content-Shift. */
+:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+details > summary:focus-visible {
+  outline: 2px solid #4ade80 !important;
+  outline-offset: 2px !important;
+  border-radius: 3px;
+}
+/* Screen-reader-only (nur für Assistive-Tech sichtbar, visuell weg) */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
 :root{
   --bg:#111;--bg2:#191919;--bg3:#212121;--bg4:#2a2a2a;
   --bd:#2e2e2e;--bd2:#3a3a3a;
@@ -1765,9 +1788,9 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
   <div class="tsep"></div>
 
   <!-- UNDO/REDO -->
-  <button class="tbt icon-btn" id="undo-btn" onclick="undo()" disabled title="Rückgängig (Ctrl+Z)" onmouseenter="showUndoPreview()" onmouseleave="hideUndoPreview()">↩</button>
+  <button class="tbt icon-btn" id="undo-btn" onclick="undo()" disabled title="Rückgängig (Ctrl+Z)" aria-label="Rückgängig" onmouseenter="showUndoPreview()" onmouseleave="hideUndoPreview()">↩</button>
   <div id="undo-preview"></div>
-  <button class="tbt icon-btn" id="redo-btn" onclick="redo()" disabled title="Wiederholen (Ctrl+Y)">↪</button>
+  <button class="tbt icon-btn" id="redo-btn" onclick="redo()" disabled title="Wiederholen (Ctrl+Y)" aria-label="Wiederholen">↪</button>
   <div class="tsep"></div>
 
   <!-- P4.3b: Prominenter Vorlagen-Button (erster Einstieg für neue User) -->
@@ -2005,12 +2028,12 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
   <button class="tbt" onclick="openM('m-wizard')" style="color:var(--pu);border-color:#3a2a4a;background:#1a0d2a" title="KI Möbel-Assistent">🤖</button>
   <button class="tbt" id="btn-guided" onclick="toggleGuidedMode()" title="Geführter Modus">🧭</button>
   <button class="tbt" onclick="toggleUndoTimeline()" title="Verlauf" id="btn-undotl">🕐</button>
-  <button class="tbt" onclick="openCmdPalette()" title="Befehlspalette (Ctrl+K)" style="color:var(--bl)">⌨</button>
+  <button class="tbt" onclick="openCmdPalette()" title="Befehlspalette (Ctrl+K)" aria-label="Befehlspalette" style="color:var(--bl)">⌨</button>
   <button class="tbt" onclick="toggleVisitorFlow()" title="Besucherfluss">👥</button>
-  <button class="tbt" onclick="start3DTour()" title="3D-Rundgang">🎬</button>
-  <button class="tbt" onclick="openPostFXSettings()" title="Effekte & Atmosphäre" style="color:#fbbf24">✨</button>
+  <button class="tbt" onclick="start3DTour()" title="3D-Rundgang" aria-label="3D-Rundgang starten">🎬</button>
+  <button class="tbt" onclick="openPostFXSettings()" title="Effekte & Atmosphäre" aria-label="Effekte & Atmosphäre" style="color:#fbbf24">✨</button>
   <button id="theme-toggle" onclick="toggleTheme()" title="Hell/Dunkel">🌙 Dark</button>
-  <button class="tbt" onclick="openHelp()" style="color:var(--or)" title="Anleitung (H/F1)">❓</button>
+  <button class="tbt" onclick="openHelp()" style="color:var(--or)" title="Anleitung (H/F1)" aria-label="Anleitung">❓</button>
   <div class="tsep"></div>
 
   <!-- ETAGEN -->
@@ -2052,7 +2075,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
   <span id="view-hint-3d" style="font-size:10px;color:var(--tx3);display:none;margin-left:8px">Klick=Wählen · G=Verschieben · Del=Löschen · RMB=Orbit</span>
 </div>
 
-<div id="main-row">
+<div id="main-row" role="main" aria-label="Raumplaner-Arbeitsfläche">
 <!-- ICONBAR -->
 <div id="iconbar">
   <div class="ib active" id="ib-rooms" onclick="showLeft('rooms')"><span class="ico">📐</span>Räume</div>
