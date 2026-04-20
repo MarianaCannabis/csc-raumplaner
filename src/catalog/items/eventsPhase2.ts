@@ -79,7 +79,7 @@ export const EVENT_SOUND_P2: PrimitiveCatalogItem[] = [
 // Catering (+10)
 export const EVENT_CATERING_P2: PrimitiveCatalogItem[] = [
   { id: 'ev-glass-bar',        cat: '🍽 Catering', icon: '🍸', name: 'Gläser-Bar',             w: 2.0, d: 0.5, h: 1.1, builder: 'buildGlassBar' },
-  { id: 'ev-bar-backwall',     cat: '🍽 Catering', icon: '🍾', name: 'Bar-Rückwand',           w: 2.5, d: 0.4, h: 2.4, builder: 'buildBarBackWall' },
+  { id: 'ev-bar-backwall',     cat: '🍽 Catering', icon: '🍾', name: 'Bar-Rückwand',           w: 2.5, d: 0.4, h: 2.4, builder: 'buildBarBackWall', imageMapFace: 'front', imageMapAspect: 'contain' },
   { id: 'ev-dishwasher-pro',   cat: '🍽 Catering', icon: '🧼', name: 'Gewerbe-Spülmaschine',    w: 0.6, d: 0.6, h: 0.85, builder: 'buildDishwasherCommercial' },
   { id: 'ev-beverage-cooler',  cat: '🍽 Catering', icon: '🧊', name: 'Getränke-Kühler Glas',   w: 0.6, d: 0.6, h: 1.8, builder: 'buildBeverageCooler' },
   { id: 'ev-chafing-2gn',      cat: '🍽 Catering', icon: '🍲', name: 'Warmhaltebehälter GN2/1', w: 0.65, d: 0.55, h: 0.3, builder: 'buildChafingDish' },
@@ -96,10 +96,10 @@ export const EVENT_DECO_P2: PrimitiveCatalogItem[] = [
   { id: 'ev-table-linen',       cat: '🌿 Deko', icon: '🎀', name: 'Tischwäsche-Drape',         w: 1.8, d: 0.75, h: 0.78, builder: 'buildTableLinen' },
   { id: 'ev-centerpiece-lux',   cat: '🌿 Deko', icon: '💐', name: 'Centerpiece Lux mit Kerze', w: 0.35, d: 0.35, h: 0.5, builder: 'buildCenterpieceLux' },
   { id: 'ev-candle-stand',      cat: '🌿 Deko', icon: '🕯', name: 'Kerzenständer hoch',        w: 0.25, d: 0.25, h: 1.2, builder: 'buildCandleStand' },
-  { id: 'ev-welcome-board',     cat: '🌿 Deko', icon: '🎉', name: 'Willkommensschild (Easel)', w: 0.8, d: 0.5, h: 1.4, builder: 'buildWelcomeBoard' },
+  { id: 'ev-welcome-board',     cat: '🌿 Deko', icon: '🎉', name: 'Willkommensschild (Easel)', w: 0.8, d: 0.5, h: 1.4, builder: 'buildWelcomeBoard', imageMapFace: 'front', imageMapAspect: 'cover' },
   { id: 'ev-tall-plant-xl',     cat: '🌿 Deko', icon: '🌴', name: 'Kübelpflanze XL 2.5 m',      w: 0.6, d: 0.6, h: 2.5, builder: 'buildTallPlant' },
   { id: 'ev-string-lights-10',  cat: '🌿 Deko', icon: '✨', name: 'Lichterkette 10 m',         w: 10.0, d: 0.05, h: 3.0, builder: 'buildStringLights' },
-  { id: 'ev-artwork-single',    cat: '🌿 Deko', icon: '🖼', name: 'Einzelbild gerahmt 80×60',   w: 0.8, d: 0.03, h: 0.6, builder: 'buildArtworkSet' },
+  { id: 'ev-artwork-single',    cat: '🌿 Deko', icon: '🖼', name: 'Einzelbild gerahmt 80×60',   w: 0.8, d: 0.03, h: 0.6, builder: 'buildArtworkSet', imageMapFace: 'front', imageMapAspect: 'cover' },
   { id: 'ev-drape-curtain-red', cat: '🌿 Deko', icon: '🪟', name: 'Drape-Vorhang Rot 3 m',     w: 3.0, d: 0.08, h: 3.0, builder: 'buildDrapeCurtain' },
   { id: 'ev-vase-floor-xxl',    cat: '🌿 Deko', icon: '🏺', name: 'Bodenvase XXL 1.5 m',       w: 0.45, d: 0.45, h: 1.5, builder: 'buildVaseTall' },
 ];

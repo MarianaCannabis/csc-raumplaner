@@ -1734,7 +1734,6 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
       <button class="tbm-btn" onclick="toggleTBMenu('file')">📁 Datei <span class="tbm-arr">▾</span></button>
       <div class="tbm-drop" id="tbmd-file">
         <div class="tbm-item" onclick="newProj();closeTBMenu()">🆕 Neues Projekt</div>
-        <div class="tbm-item" onclick="openTemplates();closeTBMenu()">📋 Aus Vorlage starten</div>
         <div class="tbm-item" onclick="saveProj();closeTBMenu()">💾 Speichern <span class="tbm-kbd">Ctrl+S</span></div>
         <div class="tbm-item" onclick="showRight('save');closeTBMenu()">📂 Projekte öffnen</div>
         <div class="tbm-sep"></div>
@@ -1987,7 +1986,11 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
   <div class="tgap"></div>
 
   <!-- PROJEKT NAME -->
-  <span id="proj-lbl" style="font-size:11px;color:var(--tx2);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Neue Ausgabestelle</span>
+  <span id="proj-lbl" style="font-size:11px;color:var(--tx2);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:text;padding:2px 4px;border-radius:3px"
+        title="Klick zum Umbennen" onclick="startInlineProjectRename()">Neue Ausgabestelle</span>
+  <input id="proj-lbl-edit" type="text" maxlength="80" style="display:none;font-size:11px;padding:2px 4px;background:var(--bg3);border:1px solid var(--gr);color:var(--tx);border-radius:3px;max-width:160px"
+         onblur="finishInlineProjectRename()" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();} else if(event.key==='Escape'){this.value=projName;this.blur();}">
+  <button id="proj-lbl-save" onclick="finishInlineProjectRename()" style="display:none;border:none;background:var(--gr);color:#0a0a0a;font-size:10px;padding:2px 6px;border-radius:3px;cursor:pointer" title="Speichern">💾</button>
   <button class="tbt icon-btn" onclick="openM('m-rename')" title="Umbenennen">✏️</button>
 
   <!-- 3D Hint -->
@@ -2357,18 +2360,40 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
         </div>
       </div>
 
-      <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px">
-        <button class="tbt g" style="padding:9px" onclick="saveProj()">💾 Projekt speichern</button>
-        <button class="tbt" style="padding:9px;border-color:var(--gr3);color:var(--gr)" onclick="openTemplates()">📋 Vorlage laden</button>
-        <button class="tbt" style="padding:9px" onclick="exportPDF()">🖨️ PDF / Druckansicht</button>
-        <button class="tbt" style="padding:9px" onclick="dlJSON()">📥 Als .json exportieren</button>
-        <button class="tbt" style="padding:9px" onclick="exportFurnitureCSV()">📊 Möbelliste (.csv)</button>
-        <button class="tbt" style="padding:9px" onclick="exportBudgetCSV()">💰 Budget (.csv)</button>
-        <button class="tbt" style="padding:9px" onclick="exportGLTF()">🏗 3D-Modell (.gltf)</button>
-        <button class="tbt" style="padding:9px" onclick="exportDXF()">📐 Grundriss (.dxf)</button>
-        <button class="tbt" style="padding:9px" onclick="showChangelog()">📋 Änderungsprotokoll</button>
-        <button class="tbt" style="padding:9px" onclick="document.getElementById('json-up').click()">📤 .json laden</button>
-        <input type="file" id="json-up" accept=".json" style="display:none" onchange="loadJSONFile(event)">
+      <!-- P5.4: Projekte-Panel aufgeräumt in 3 Collapsible-Sections -->
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
+
+        <!-- 💾 Speichern -->
+        <details open class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
+          <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:var(--gr)">💾 Speichern</summary>
+          <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
+            <button class="tbt g" style="padding:8px" onclick="saveProj()">💾 Projekt speichern</button>
+            <button class="tbt" style="padding:8px;border-color:var(--gr3);color:var(--gr)" onclick="openTemplates()">📋 Vorlage laden</button>
+            <button class="tbt" style="padding:8px" onclick="document.getElementById('json-up').click()">📤 .json laden</button>
+            <input type="file" id="json-up" accept=".json" style="display:none" onchange="loadJSONFile(event)">
+          </div>
+        </details>
+
+        <!-- 📤 Export -->
+        <details class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
+          <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:#38bdf8">📤 Export</summary>
+          <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
+            <button class="tbt" style="padding:8px" onclick="exportPDF()">🖨️ PDF / Druckansicht</button>
+            <button class="tbt" style="padding:8px" onclick="dlJSON()">📥 Als .json exportieren</button>
+            <button class="tbt" style="padding:8px" onclick="exportFurnitureCSV()">📊 Möbelliste (.csv)</button>
+            <button class="tbt" style="padding:8px" onclick="exportBudgetCSV()">💰 Budget (.csv)</button>
+            <button class="tbt" style="padding:8px" onclick="exportGLTF()">🏗 3D-Modell (.gltf)</button>
+            <button class="tbt" style="padding:8px" onclick="exportDXF()">📐 Grundriss (.dxf)</button>
+          </div>
+        </details>
+
+        <!-- 📜 Historie -->
+        <details class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
+          <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:#fbbf24">📜 Historie</summary>
+          <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
+            <button class="tbt" style="padding:8px" onclick="showChangelog()">📋 Änderungsprotokoll</button>
+          </div>
+        </details>
       </div>
       <div style="height:1px;background:var(--bd);margin:8px 0"></div>
       <!-- SUPABASE CLOUD -->
@@ -2995,8 +3020,8 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 <div id="suggestions-bar"></div>
 
 <!-- VOICE INDICATOR -->
-<div id="voice-indicator">
-  <div class="voice-dot"></div>
+<div id="voice-indicator" title="Voice-Input aktiv — Mikrofon hört zu. Klick auf das 🎤-Icon in der Toolbar stoppt die Aufnahme.">
+  <div class="voice-dot" aria-label="Aufnahme läuft"></div>
   <span id="voice-text">Höre zu…</span>
   <button onclick="stopVoice()" style="background:none;border:none;color:#f87171;cursor:pointer;font-size:12px">✕</button>
 </div>
@@ -6878,6 +6903,38 @@ function showRight(p){
 }
 function doRename(){projName=document.getElementById('rename-in').value||'Projekt';document.getElementById('proj-lbl').textContent=projName;closeM('m-rename');}
 
+// P5.4: Inline-Edit des Projektnamens oben in der Topbar. Klick auf
+// das #proj-lbl-Span blendet Input+Save-Button ein; Enter/Blur schreibt
+// zurück, Escape verwirft.
+function startInlineProjectRename(){
+  const lbl = document.getElementById('proj-lbl');
+  const inp = document.getElementById('proj-lbl-edit');
+  const btn = document.getElementById('proj-lbl-save');
+  if(!lbl || !inp || !btn) return;
+  inp.value = projName || 'Projekt';
+  lbl.style.display = 'none';
+  inp.style.display = 'inline-block';
+  btn.style.display = 'inline-block';
+  inp.focus();
+  inp.select();
+}
+function finishInlineProjectRename(){
+  const lbl = document.getElementById('proj-lbl');
+  const inp = document.getElementById('proj-lbl-edit');
+  const btn = document.getElementById('proj-lbl-save');
+  if(!lbl || !inp || !btn) return;
+  const newName = (inp.value || '').trim() || 'Projekt';
+  if(newName !== projName){
+    projName = newName;
+    lbl.textContent = projName;
+    if(typeof snapshot === 'function') snapshot();
+    if(typeof toast === 'function') toast('📝 Projekt umbenannt: ' + projName, 'g');
+  }
+  lbl.style.display = '';
+  inp.style.display = 'none';
+  btn.style.display = 'none';
+}
+
 // ════════════════════════════════════════════════════════════════════════
 // TOAST
 // ════════════════════════════════════════════════════════════════════════
@@ -9592,7 +9649,7 @@ async function cloudSave(){
     
     const _tid=localStorage.getItem('csc-teamid')||'';
     const _aut=localStorage.getItem('csc-username')||'anonym';
-    body = JSON.stringify({ name: projName, data: data, thumbnail: thumb, team_id: _tid, author: _aut });
+    const body = JSON.stringify({ name: projName, data: data, thumbnail: thumb, team_id: _tid, author: _aut });
     
     let r;
     if(existing && existing.length > 0){
@@ -14594,6 +14651,9 @@ function finishOnboarding(){
   _onboardingDone=true;
   try{localStorage.setItem('csc-onboarded','1');}catch(e){}
   checkAndAwardBadge('first_open');
+  // P5.4: Nach Tutorial-Abschluss einmal nextstep-panel auffrischen
+  // damit der User den aktuellen Stand + Start-CTAs sieht.
+  if(typeof suggestNextStep === 'function') setTimeout(suggestNextStep, 300);
 }
 function obNext(){
   _obStep++;
@@ -16378,6 +16438,11 @@ function toggleTransparency(){
 
 // ── 8. NÄCHSTER SCHRITT KI ─────────────────────────────────────────
 async function suggestNextStep(){
+  // P5.4: Onboarding-Dupe-Fix. Wenn das Fullscreen-Tutorial-Overlay
+  // gerade läuft, NICHT zusätzlich das nextstep-panel einblenden —
+  // der User sieht sonst zwei konkurrierende "Starte hier"-Panels.
+  const ob = document.getElementById('onboarding-overlay');
+  if(ob && ob.classList.contains('vis')) return;
   const score=calcHealthScore();
   const checks=getKCaNGChecklist();
   const missing=checks.filter(c=>!c.passed);
@@ -21984,7 +22049,13 @@ function renderObjProps(id){
       </div>
       <div id="img-preview-${id}" style="margin-top:6px">${renderImagePreview(o)}</div>
       <div style="font-size:10px;color:var(--tx3);margin-top:4px">Max 1024px · JPEG Q=0.85 · Face: ${item.imageMapFace}${item.imageMapAspect?' · '+item.imageMapAspect:''}</div>
-    </div>`:''}
+    </div>`:`
+    <div class="pp-section" style="opacity:0.55">
+      <div class="pp-sh">🖼️ Bild auf Oberfläche</div>
+      <div style="font-size:10px;color:var(--tx3);padding:6px;border:1px dashed var(--bd);border-radius:4px">
+        Dieses Objekt unterstützt keinen Bild-Upload. Für bedruckte Flächen nutze Items aus Kategorie <b>🎪 Messe</b> (Rückwand, Roll-up, Counter, LED-Wand, Flag).
+      </div>
+    </div>`}
     <div class="pp-section">
       <div class="pp-sh">Aktionen</div>
       <button class="pp-btn" onclick="rotateSel();renderObjProps('${id}')">↻ 90° drehen</button>
@@ -22143,10 +22214,20 @@ function build3DObj(o){
   const item = findItem(o.typeId); if(!item) return null;
   const g = new THREE.Group();
 
-  const w = o.w||item.w||1, d = o.d||item.d||1, h = o.h||item.h||1;
-  const py = o.py||0;
+  // P5.4 Numeric-Safety: Alt-JSONs oder Custom-Items können w/d/h = 0 oder NaN
+  // geliefert haben → Mesh wird zur flachen Ebene → User sieht nur den Schatten-
+  // Cluster auf dem Ground, keine echte 3D-Form. Harte Minimum-Dimensionen
+  // (0.05 m = 5 cm) stellen sicher dass jedes Item in allen Achsen Volumen hat.
+  const rawW = o.w != null ? +o.w : (item.w != null ? +item.w : 1);
+  const rawD = o.d != null ? +o.d : (item.d != null ? +item.d : 1);
+  const rawH = o.h != null ? +o.h : (item.h != null ? +item.h : 1);
+  const w = (Number.isFinite(rawW) && rawW > 0.05) ? rawW : (rawW <= 0 ? 0.3 : 0.05);
+  const d = (Number.isFinite(rawD) && rawD > 0.05) ? rawD : (rawD <= 0 ? 0.3 : 0.05);
+  const h = (Number.isFinite(rawH) && rawH > 0.05) ? rawH : (rawH <= 0 ? 0.3 : 0.05);
+  const py = Number.isFinite(+o.py) ? +o.py : 0;
   g.position.set(o.x+w/2, py, o.y+d/2);
   g.rotation.y = (o.rot||0)*Math.PI/180;
+  g.visible = true; // Safety: Custom-Items hatten manchmal visible=false vererbt
 
   // P3.1: async GLTF load path (Kenney/Quaternius external assets).
   if(item.modelUrl && window.cscAssets){

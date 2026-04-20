@@ -12,11 +12,22 @@ import {
 import {
   matWood, matMetal, matFabric, matPlastic, matGlassPhys, matLED,
   matConcrete, matLeather,
+  imageMapMaterial,
+  type ImageAspect,
 } from './materials.js';
 
 function addMeshes(g: Group, meshes: Mesh[]): Group {
   for (const m of meshes) { m.castShadow = true; m.receiveShadow = true; g.add(m); }
   return g;
+}
+
+interface BuilderOpts {
+  imageMap?: string;
+  imageMapAspect?: ImageAspect;
+}
+function imgOrFallback(opts: BuilderOpts | undefined, fallback: () => Mesh['material']) {
+  if (opts && opts.imageMap) return imageMapMaterial(opts.imageMap, opts.imageMapAspect ?? 'cover');
+  return fallback();
 }
 
 // ── Bühne / Podium ──────────────────────────────────────────────────────
@@ -211,10 +222,16 @@ export function buildGlassBar(w: number, d: number, h: number): Group {
   }
   return addMeshes(g, [body, top]);
 }
-export function buildBarBackWall(w: number, d: number, h: number): Group {
+export function buildBarBackWall(w: number, d: number, h: number, opts: BuilderOpts = {}): Group {
   const g = new Group();
   const wall = new Mesh(new BoxGeometry(w, h, d), matWood(0x2a1a0a));
   wall.position.y = h/2;
+  // Logo-Panel oben mittig auf der Vorderseite (bedruckbar)
+  if (opts.imageMap) {
+    const logo = new Mesh(new PlaneGeometry(w * 0.5, h * 0.18), imgOrFallback(opts, () => matFabric(0xffffff)));
+    logo.position.set(0, h * 0.87, d/2 + 0.001);
+    g.add(logo);
+  }
   // 4 Regalborden mit Flaschen-Dummys
   for (let r = 0; r < 3; r++) {
     const shelf = new Mesh(new BoxGeometry(w * 0.96, 0.02, d * 0.8), matWood(0x3a1a0a));
@@ -296,10 +313,14 @@ export function buildCandleStand(w: number, _d: number, h: number): Group {
   flame.position.y = h * 0.94;
   return addMeshes(g, [base, stem, cup, flame]);
 }
-export function buildWelcomeBoard(w: number, d: number, h: number): Group {
+export function buildWelcomeBoard(w: number, d: number, h: number, opts: BuilderOpts = {}): Group {
   const g = new Group();
   const board = new Mesh(new BoxGeometry(w, h * 0.5, d), matWood(0x3a2a1a));
   board.position.y = h * 0.75;
+  // Bedruckbare Fläche auf der Vorderseite
+  const panel = new Mesh(new PlaneGeometry(w * 0.92, h * 0.45), imgOrFallback(opts, () => matFabric(0xffffff)));
+  panel.position.set(0, h * 0.75, d/2 + 0.001);
+  g.add(panel);
   const easel1 = new Mesh(new CylinderGeometry(0.02, 0.02, h, 6), matWood(0x3a2a1a));
   easel1.position.set(-w * 0.3, h/2, 0.15);
   easel1.rotation.z = 0.1;
