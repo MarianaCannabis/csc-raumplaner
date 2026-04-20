@@ -12227,64 +12227,163 @@ function exportGLTF(){
 }
 
 // ── 9. DXF EXPORT ────────────────────────────────────────────────
+// P6.3: DXF-Export upgraded auf LWPOLYLINE (kompakter, lesbarer in CAD)
+// für Rooms/Grounds, 3DFACE für rotierte Object-Footprints, LINE für
+// Wands + Measures. Separate Layers: ROOMS, GROUNDS, OBJECTS,
+// FREE_WALLS, MEASURES. Kompatibel zu AutoCAD R12+ (ACADVER AC1009) —
+// einfachster Lesbarkeits-Modus für Messebauer-Tools.
 function exportDXF(){
-  let dxf='0\nSECTION\n2\nHEADER\n9\n$ACADVER\n1\nAC1015\n0\nENDSEC\n';
-  dxf+='0\nSECTION\n2\nENTITIES\n';
-  // Rooms as rectangles
-  rooms.forEach(r=>{
-    dxf+=dxfRect(r.x,r.y,r.x+r.w,r.y+r.d,r.name);
+  const layers = [
+    { name: 'ROOMS',      color: 5 },  // blue
+    { name: 'GROUNDS',    color: 3 },  // green
+    { name: 'OBJECTS',    color: 7 },  // white/black
+    { name: 'FREE_WALLS', color: 8 },  // dark grey
+    { name: 'MEASURES',   color: 2 },  // yellow
+  ];
+  let dxf = '0\nSECTION\n2\nHEADER\n9\n$ACADVER\n1\nAC1015\n0\nENDSEC\n';
+  // Layer-Tabelle
+  dxf += '0\nSECTION\n2\nTABLES\n0\nTABLE\n2\nLAYER\n';
+  layers.forEach(l => {
+    dxf += '0\nLAYER\n2\n' + l.name + '\n70\n0\n62\n' + l.color + '\n6\nCONTINUOUS\n';
   });
-  // Free walls
-  walls.forEach(w=>{
-    dxf+='0\nLINE\n8\nWALLS\n';
-    dxf+='10\n'+w.x1+'\n20\n'+w.z1+'\n30\n0\n';
-    dxf+='11\n'+w.x2+'\n21\n'+w.z2+'\n31\n0\n';
-  });
-  // Objects as points with text
-  objects.forEach(o=>{
-    const it=findItem(o.typeId)||{};
-    const cx=(o.x+(o.w||it.w||1)/2).toFixed(3);
-    const cy=(o.y+(o.d||it.d||1)/2).toFixed(3);
-    dxf+='0\nPOINT\n8\nFURNITURE\n10\n'+cx+'\n20\n'+cy+'\n30\n0\n';
-    dxf+='0\nTEXT\n8\nFURNITURE\n10\n'+cx+'\n20\n'+cy+'\n30\n0\n40\n0.3\n1\n'+(it.name||o.typeId)+'\n';
-  });
-  dxf+='0\nENDSEC\n0\nEOF\n';
-  const blob=new Blob([dxf],{type:'application/dxf'});
-  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:projName.replace(/[^a-z0-9]/gi,'_')+'.dxf'});
-  a.click();
-  toast('📐 DXF exportiert!','g');
-}
+  dxf += '0\nENDTAB\n0\nENDSEC\n0\nSECTION\n2\nENTITIES\n';
 
-function dxfRect(x1,y1,x2,y2,layer){
-  let s='';
-  [[x1,y1,x2,y1],[x2,y1,x2,y2],[x2,y2,x1,y2],[x1,y2,x1,y1]].forEach(([ax,ay,bx,by])=>{
-    s+='0\nLINE\n8\n'+(layer||'ROOMS')+'\n10\n'+ax+'\n20\n'+ay+'\n30\n0\n11\n'+bx+'\n21\n'+by+'\n31\n0\n';
+  // LWPOLYLINE-Helfer für geschlossenes Rechteck
+  const lwpolyRect = (x1, y1, x2, y2, layer) => {
+    return '0\nLWPOLYLINE\n8\n' + layer + '\n90\n4\n70\n1\n' +
+      '10\n' + x1 + '\n20\n' + y1 + '\n' +
+      '10\n' + x2 + '\n20\n' + y1 + '\n' +
+      '10\n' + x2 + '\n20\n' + y2 + '\n' +
+      '10\n' + x1 + '\n20\n' + y2 + '\n';
+  };
+
+  // Räume als LWPOLYLINE + Beschriftung zentriert
+  rooms.forEach(r => {
+    dxf += lwpolyRect(r.x, r.y, r.x + r.w, r.y + r.d, 'ROOMS');
+    const cx = (r.x + r.w / 2).toFixed(3);
+    const cy = (r.y + r.d / 2).toFixed(3);
+    dxf += '0\nTEXT\n8\nROOMS\n10\n' + cx + '\n20\n' + cy + '\n40\n0.25\n1\n' + (r.name || 'Raum') + '\n';
   });
-  return s;
+
+  // P4.1 Grounds als LWPOLYLINE
+  if(typeof grounds !== 'undefined'){
+    grounds.forEach(g => {
+      dxf += lwpolyRect(g.x, g.y, g.x + g.w, g.y + g.d, 'GROUNDS');
+    });
+  }
+
+  // Free walls als LINE
+  walls.forEach(w => {
+    dxf += '0\nLINE\n8\nFREE_WALLS\n' +
+      '10\n' + w.x1 + '\n20\n' + w.z1 + '\n30\n0\n' +
+      '11\n' + w.x2 + '\n21\n' + w.z2 + '\n31\n0\n';
+  });
+
+  // Objekte als rotiertes Footprint-Rechteck (4 Ecken mit Rotation)
+  objects.forEach(o => {
+    const it = findItem(o.typeId) || {};
+    const w = o.w || it.w || 1, d = o.d || it.d || 1;
+    const cx = o.x + w / 2, cy = o.y + d / 2;
+    const rot = (o.rot || 0) * Math.PI / 180;
+    const cos = Math.cos(rot), sin = Math.sin(rot);
+    const corners = [[-w/2,-d/2],[w/2,-d/2],[w/2,d/2],[-w/2,d/2]].map(([lx,ly]) => ({
+      x: cx + lx * cos - ly * sin,
+      y: cy + lx * sin + ly * cos,
+    }));
+    dxf += '0\nLWPOLYLINE\n8\nOBJECTS\n90\n4\n70\n1\n';
+    corners.forEach(c => {
+      dxf += '10\n' + c.x.toFixed(3) + '\n20\n' + c.y.toFixed(3) + '\n';
+    });
+    // Name zentriert als TEXT
+    dxf += '0\nTEXT\n8\nOBJECTS\n10\n' + cx.toFixed(3) + '\n20\n' + cy.toFixed(3) +
+      '\n40\n0.15\n1\n' + (it.name || o.typeId).replace(/[^\x20-\x7E]/g, '') + '\n';
+  });
+
+  // Maße als LINE + TEXT
+  measures.forEach(m => {
+    dxf += '0\nLINE\n8\nMEASURES\n' +
+      '10\n' + m.ax + '\n20\n' + m.ay + '\n30\n0\n' +
+      '11\n' + m.bx + '\n21\n' + m.by + '\n31\n0\n';
+    const dist = Math.hypot(m.bx - m.ax, m.by - m.ay);
+    const mx = (m.ax + m.bx) / 2, my = (m.ay + m.by) / 2;
+    dxf += '0\nTEXT\n8\nMEASURES\n10\n' + mx.toFixed(3) + '\n20\n' + my.toFixed(3) +
+      '\n40\n0.2\n1\n' + dist.toFixed(2) + ' m\n';
+  });
+
+  dxf += '0\nENDSEC\n0\nEOF\n';
+  const blob = new Blob([dxf], { type: 'application/dxf' });
+  const a = Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(blob),
+    download: projName.replace(/[^a-z0-9]/gi, '_') + '.dxf',
+  });
+  a.click();
+  toast('📐 DXF exportiert (5 Layers: ROOMS/GROUNDS/OBJECTS/FREE_WALLS/MEASURES)', 'g');
 }
 
 // ── 10. MÖBELLISTE CSV EXPORT ─────────────────────────────────────
+// P6.3: Zwei CSV-Exporte:
+//  - Detail-Liste: pro platzierte Instanz eine Zeile (inkl. Position + Rotation)
+//  - Aggregiert: typeId-gruppiert mit Anzahl, Volumen, Gewicht — ideal zum
+//    Mailen an den Lieferanten ("bitte 5× Rückwand 3m + 2× Counter").
 function exportFurnitureCSV(){
-  const rows=['\uFEFFObjekt,Kategorie,Breite(m),Tiefe(m),Höhe(m),X(m),Y(m),Etage,Preis(€)'];
+  // Detail-Zeilen für Lieferanten-Kontext
+  const detailHeader = '\uFEFFKategorie,Artikel,typeId,Breite(m),Tiefe(m),Höhe(m),X(m),Y(m),Rotation(°),Etage,Preis(€)';
+  const detailRows = [detailHeader];
   objects.forEach(o=>{
     const it=findItem(o.typeId)||{};
-    rows.push([
-      '"'+(it.name||o.typeId)+'"',
-      '"'+(it.cat||'')+'"',
+    detailRows.push([
+      '"'+(it.cat||'').replace(/"/g,'')+'"',
+      '"'+(it.name||o.typeId).replace(/"/g,'')+'"',
+      '"'+o.typeId+'"',
       (o.w||it.w||1).toFixed(2),
       (o.d||it.d||1).toFixed(2),
       (o.h||it.h||1).toFixed(2),
       (o.x||0).toFixed(2),
       (o.y||0).toFixed(2),
+      (o.rot||0).toString(),
       '"'+(o.floorId||'eg')+'"',
-      getObjPrice(o.typeId)
+      getObjPrice(o.typeId),
     ].join(','));
   });
-  rows.push(['','','','','','','','Gesamt:',objects.reduce((s,o)=>s+getObjPrice(o.typeId),0)].join(','));
-  const blob=new Blob([rows.join('\n')],{type:'text/csv;charset=utf-8'});
-  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:projName.replace(/[^a-z0-9]/gi,'_')+'_möbel.csv'});
+  const total = objects.reduce((s,o)=>s+getObjPrice(o.typeId),0);
+  detailRows.push(['','Gesamt:','','','','','','','','',total].join(','));
+
+  // Aggregierte Packliste (für Lieferanten)
+  const aggHeader = '\nKategorie,Artikel,typeId,Stück,Breite(m),Tiefe(m),Höhe(m),Volumen(m³),Preis-total(€)';
+  const byType = new Map();
+  objects.forEach(o=>{
+    const entry = byType.get(o.typeId) || { count: 0, sample: o };
+    entry.count++;
+    byType.set(o.typeId, entry);
+  });
+  const aggRows = [aggHeader];
+  for(const [tid, {count, sample}] of byType){
+    const it = findItem(tid) || {};
+    const w = sample.w || it.w || 1;
+    const d = sample.d || it.d || 1;
+    const h = sample.h || it.h || 1;
+    const vol = (w * d * h * count).toFixed(3);
+    aggRows.push([
+      '"'+(it.cat||'').replace(/"/g,'')+'"',
+      '"'+(it.name||tid).replace(/"/g,'')+'"',
+      '"'+tid+'"',
+      count,
+      w.toFixed(2),
+      d.toFixed(2),
+      h.toFixed(2),
+      vol,
+      (getObjPrice(tid) * count).toFixed(0),
+    ].join(','));
+  }
+
+  const csv = detailRows.join('\n') + '\n\n# AGGREGIERT (für Lieferanten)' + aggRows.join('\n') + '\n';
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  const a = Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(blob),
+    download: projName.replace(/[^a-z0-9]/gi, '_') + '_moebel.csv',
+  });
   a.click();
-  toast('📊 Möbelliste als CSV exportiert!','g');
+  toast('📊 Möbelliste exportiert (Detail + Aggregiert)', 'g');
 }
 
 // ── 11. LINEAL-WERKZEUG ───────────────────────────────────────────
