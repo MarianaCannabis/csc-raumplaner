@@ -18,6 +18,7 @@ import {
   TorusGeometry,
   PlaneGeometry,
   DoubleSide,
+  type MeshStandardMaterial,
 } from 'three';
 import {
   matWood,
@@ -28,7 +29,16 @@ import {
   matLED,
   matConcrete,
   matLeather,
+  imageMapMaterial,
+  type ImageAspect,
 } from './materials.js';
+
+// P4.2 — opts bag threaded from build3DObj (index.html) to every builder.
+// Only the Messe builders currently read any fields; others ignore the arg.
+export interface BuilderOpts {
+  imageMap?: string;
+  imageMapAspect?: ImageAspect;
+}
 
 // Shared helper: adds all meshes to a group and marks them cast/receive shadow.
 function addMeshes(g: Group, meshes: Mesh[]): Group {
@@ -684,10 +694,133 @@ export function buildFloorLamp(w: number, d: number, h: number): Group {
 }
 
 // =============================================================================
+// MESSE (P4.2) — image-map surfaces
+// =============================================================================
+//
+// Every Messe builder accepts opts.imageMap (a data URL from processUpload).
+// When the image is set, a quad on the designated face renders with
+// imageMapMaterial; otherwise the face falls back to a neutral Fabric or
+// Metal so the placed object is still visible pre-upload.
+
+function imgOrFallback(opts: BuilderOpts | undefined, fallback: () => Mesh['material']) {
+  if (opts && opts.imageMap) {
+    return imageMapMaterial(opts.imageMap, opts.imageMapAspect ?? 'cover');
+  }
+  return fallback();
+}
+
+export function buildBackwall(w: number, d: number, h: number, opts: BuilderOpts = {}): Group {
+  const g = new Group();
+  // Alu frame
+  const frame = new Mesh(new BoxGeometry(w, h, d), matMetal(0xc8c8cc));
+  frame.position.y = h / 2;
+  // Front image panel — inset 2% on w/h, d/2+0.001 to avoid z-fight
+  const panelW = w * 0.98;
+  const panelH = h * 0.98;
+  const panel = new Mesh(new PlaneGeometry(panelW, panelH), imgOrFallback(opts, () => matFabric(0xffffff)));
+  panel.position.set(0, h / 2, d / 2 + 0.001);
+  // Back panel — plain metal so 360° view is decent
+  const back = new Mesh(new PlaneGeometry(panelW, panelH), matMetal(0x888888));
+  back.position.set(0, h / 2, -d / 2 - 0.001);
+  back.rotation.y = Math.PI;
+  // Small feet so it stands
+  const foot1 = new Mesh(new BoxGeometry(0.2, 0.05, 0.3), matMetal(0x555555));
+  foot1.position.set(-w / 2 + 0.15, 0.025, 0);
+  const foot2 = new Mesh(new BoxGeometry(0.2, 0.05, 0.3), matMetal(0x555555));
+  foot2.position.set(w / 2 - 0.15, 0.025, 0);
+  return addMeshes(g, [frame, panel, back, foot1, foot2]);
+}
+
+export function buildRollupBanner(w: number, d: number, h: number, opts: BuilderOpts = {}): Group {
+  const g = new Group();
+  // Cartridge base
+  const base = new Mesh(new BoxGeometry(w, 0.08, d), matMetal(0x444455));
+  base.position.y = 0.04;
+  // Two legs/feet that fold out for stability
+  const footL = new Mesh(new CylinderGeometry(0.015, 0.015, d * 1.5, 8), matMetal(0x333333));
+  footL.rotation.x = Math.PI / 2;
+  footL.position.set(-w / 2 + 0.05, 0.015, 0);
+  const footR = new Mesh(new CylinderGeometry(0.015, 0.015, d * 1.5, 8), matMetal(0x333333));
+  footR.rotation.x = Math.PI / 2;
+  footR.position.set(w / 2 - 0.05, 0.015, 0);
+  // Pole
+  const pole = new Mesh(new CylinderGeometry(0.01, 0.01, h - 0.08, 8), matMetal(0x888899));
+  pole.position.set(-w / 2 + 0.05, 0.08 + (h - 0.08) / 2, 0);
+  // Banner panel — stretch fits the nearly-2:1 portrait print
+  const banner = new Mesh(new PlaneGeometry(w, h - 0.08), imgOrFallback(opts, () => matFabric(0xffffff)));
+  banner.position.set(0, 0.08 + (h - 0.08) / 2, 0.01);
+  const bannerBack = new Mesh(new PlaneGeometry(w, h - 0.08), matFabric(0xcccccc));
+  bannerBack.position.set(0, 0.08 + (h - 0.08) / 2, -0.01);
+  bannerBack.rotation.y = Math.PI;
+  return addMeshes(g, [base, footL, footR, pole, banner, bannerBack]);
+}
+
+export function buildCounterFront(w: number, d: number, h: number, opts: BuilderOpts = {}): Group {
+  const g = new Group();
+  // Body
+  const body = new Mesh(new BoxGeometry(w, h - 0.04, d), matWood(0xe5e5e0));
+  body.position.y = (h - 0.04) / 2;
+  // Countertop
+  const top = new Mesh(new BoxGeometry(w + 0.04, 0.04, d + 0.04), matWood(0x333333));
+  top.position.y = h - 0.02;
+  // Front image panel (slightly inset)
+  const panel = new Mesh(new PlaneGeometry(w * 0.95, (h - 0.04) * 0.9), imgOrFallback(opts, () => matFabric(0xffffff)));
+  panel.position.set(0, (h - 0.04) / 2, d / 2 + 0.001);
+  return addMeshes(g, [body, top, panel]);
+}
+
+export function buildLedWall(w: number, d: number, h: number, opts: BuilderOpts = {}): Group {
+  const g = new Group();
+  // Frame cabinet
+  const cabinet = new Mesh(new BoxGeometry(w, h, d), matMetal(0x111111));
+  cabinet.position.y = h / 2;
+  // Image panel — slightly emissive so it reads as an LED display even
+  // without bloom. If bloom is active, the brightness of the uploaded
+  // image will pick up the glow naturally.
+  const display = new Mesh(new PlaneGeometry(w * 0.96, h * 0.96), imgOrFallback(opts, () => matLED(0x2233aa)));
+  display.position.set(0, h / 2, d / 2 + 0.001);
+  // Gently emissive when a user image is set — gives the LED-wall feel
+  // without overriding the image with pure color.
+  if (opts.imageMap) {
+    const mat = display.material as MeshStandardMaterial;
+    mat.emissive.setHex(0x222222);
+    mat.emissiveIntensity = 0.25;
+  }
+  return addMeshes(g, [cabinet, display]);
+}
+
+export function buildFlag(w: number, _d: number, h: number, opts: BuilderOpts = {}): Group {
+  const g = new Group();
+  // Weighted base (cross-foot)
+  const foot1 = new Mesh(new BoxGeometry(0.5, 0.03, 0.08), matMetal(0x333333));
+  foot1.position.y = 0.015;
+  const foot2 = new Mesh(new BoxGeometry(0.08, 0.03, 0.5), matMetal(0x333333));
+  foot2.position.y = 0.015;
+  // Pole (teardrop beach flag typically has a curved fibreglass pole —
+  // approximate with a tall thin cylinder; the curve is baked into the
+  // flag shape itself).
+  const pole = new Mesh(new CylinderGeometry(0.012, 0.012, h - 0.03, 8), matMetal(0xdddddd));
+  pole.position.y = (h - 0.03) / 2 + 0.03;
+  // Flag panel — sits along the pole (teardrop profile: PlaneGeometry is
+  // close enough for our 3D preview; actual production flag would be
+  // curved). Both sides get the image when imageMapFace='both_sides'.
+  const flagW = w;
+  const flagH = h * 0.85;
+  const flagFront = new Mesh(new PlaneGeometry(flagW, flagH), imgOrFallback(opts, () => matFabric(0xcc2244)));
+  flagFront.position.set(flagW / 2 - 0.012, flagH / 2 + 0.15, 0.01);
+  // Back face mirrors the front (UV flip would mirror text — acceptable for
+  // a preview; real production print is identical both sides).
+  const flagBack = new Mesh(new PlaneGeometry(flagW, flagH), imgOrFallback(opts, () => matFabric(0xcc2244)));
+  flagBack.position.set(flagW / 2 - 0.012, flagH / 2 + 0.15, -0.01);
+  flagBack.rotation.y = Math.PI;
+  return addMeshes(g, [foot1, foot2, pole, flagFront, flagBack]);
+}
+
+// =============================================================================
 // Builder registry
 // =============================================================================
 
-export const BUILDER_MAP: Record<string, (w: number, d: number, h: number) => Group> = {
+export const BUILDER_MAP: Record<string, (w: number, d: number, h: number, opts?: BuilderOpts) => Group> = {
   // Büro
   buildOfficeChair, buildDesk, buildFilingCabinet, buildBookshelf,
   buildConferenceTable, buildWhiteboard,
@@ -708,4 +841,6 @@ export const BUILDER_MAP: Record<string, (w: number, d: number, h: number) => Gr
   buildPartitionWall,
   // Deko
   buildPottedPlant, buildWallArt, buildFloorLamp,
+  // Messe (P4.2)
+  buildBackwall, buildRollupBanner, buildCounterFront, buildLedWall, buildFlag,
 };

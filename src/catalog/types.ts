@@ -29,4 +29,13 @@ export interface CatalogItem {
   /** PBR material hint for primitive items — picked up by the materials
    *  factory when the item has no modelUrl (falls back to `col` otherwise). */
   material?: 'wood' | 'metal' | 'fabric' | 'plastic' | 'glass' | 'concrete';
+  /** P4.2: Marks this item as supporting a user-uploaded image on one of
+   *  its faces. When set, the property-panel shows a file-upload control
+   *  and the instance gets a per-object `imageMap` data URL. The value
+   *  names which face the image lands on (builder-specific). */
+  imageMapFace?: 'front' | 'back' | 'top' | 'bottom' | 'both_sides';
+  /** P4.2: How the image fits the target plane — 'cover' fills the quad
+   *  cropping overflow, 'contain' fits inside with bars, 'stretch' distorts
+   *  to exact bounds. Default 'cover'. */
+  imageMapAspect?: 'contain' | 'cover' | 'stretch';
 }

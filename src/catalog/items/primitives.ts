@@ -1,4 +1,5 @@
 import type { CatalogItem } from '../types.js';
+import { MESSE_ITEMS } from './messe.js';
 
 // Rich primitives: items that render via a named builder in
 // src/three/primitiveBuilders.ts instead of GLTF or the legacy default
@@ -7,6 +8,9 @@ export interface PrimitiveCatalogItem extends CatalogItem {
   /** Key in BUILDER_MAP — e.g. 'buildOfficeChair'. */
   builder: string;
 }
+
+// Re-export so legacy callers pulling RICH_PRIMITIVES get Messe items too.
+export { MESSE_ITEMS };
 
 export const RICH_PRIMITIVES: PrimitiveCatalogItem[] = [
   // ── Büro ─────────────────────────────────────────────────────────
@@ -66,4 +70,7 @@ export const RICH_PRIMITIVES: PrimitiveCatalogItem[] = [
   { id: 'p-potted-plant-l',  cat: '🌱 Deko (Rich)',   icon: '🪴', name: 'Topfpflanze groß',            w: 0.5, d: 0.5, h: 1.5, builder: 'buildPottedPlant' },
   { id: 'p-wall-art',        cat: '🌱 Deko (Rich)',   icon: '🖼', name: 'Wandbild (Rahmen)',           w: 0.8, d: 0.03, h: 0.6, builder: 'buildWallArt' },
   { id: 'p-floor-lamp',      cat: '🌱 Deko (Rich)',   icon: '💡', name: 'Stehlampe (Schirm)',          w: 0.35, d: 0.35, h: 1.6, builder: 'buildFloorLamp' },
+
+  // ── Messe (P4.2 — image-map support) ─────────────────────────────
+  ...MESSE_ITEMS,
 ];
