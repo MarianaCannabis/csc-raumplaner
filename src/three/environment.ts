@@ -23,17 +23,17 @@ import {
   type Texture,
   type WebGLRenderer,
 } from 'three';
-// RGBELoader bleibt: HDRLoader wurde erst in three r162+ eingeführt,
-// die hier gebündelte npm-Version + das Legacy-CDN (r128) haben ihn
-// nicht. Potentielle Console-Deprecation-Warning akzeptieren bis zum
-// nächsten Three-Upgrade.
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+// three r184 — HDRLoader als drop-in Ersatz für den deprecated
+// RGBELoader. API-kompatibel (DataTextureLoader-Base, .load/.loadAsync
+// mit selber Signatur); .hdr-Files werden vom RGBE-Parser intern
+// gelesen. Beseitigt die Console-Deprecation-Warning des RGBELoader.
+import { HDRLoader } from 'three/examples/jsm/loaders/HDRLoader.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
-const _rgbeLoader = new RGBELoader();
+const _hdrLoader = new HDRLoader();
 const _envCache = new Map<string, Texture>();
 
 export function applyRendererDefaults(renderer: WebGLRenderer): void {
@@ -53,7 +53,7 @@ export async function loadEnvironment(
   const cached = _envCache.get(url);
   if (cached) return cached;
   return new Promise<Texture>((resolve, reject) => {
-    _rgbeLoader.load(
+    _hdrLoader.load(
       url,
       (hdrTex) => {
         const pmrem = new PMREMGenerator(renderer);
