@@ -145,14 +145,6 @@ export function makeMaterial(kind: MaterialKey, colorOverride?: number): MeshSta
   return mat;
 }
 
-// Convenience aliases for call sites that want named factories.
-export const woodMaterial     = (c?: number) => makeMaterial('wood', c);
-export const metalMaterial    = (c?: number) => makeMaterial('metal', c);
-export const fabricMaterial   = (c?: number) => makeMaterial('fabric', c);
-export const plasticMaterial  = (c?: number) => makeMaterial('plastic', c);
-export const glassMaterial    = (c?: number) => makeMaterial('glass', c);
-export const concreteMaterial = (c?: number) => makeMaterial('concrete', c);
-
 // =============================================================================
 // Ground-plane factory (P4.1)
 // =============================================================================
