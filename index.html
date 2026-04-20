@@ -22192,10 +22192,20 @@ function build3DObj(o){
   const item = findItem(o.typeId); if(!item) return null;
   const g = new THREE.Group();
 
-  const w = o.w||item.w||1, d = o.d||item.d||1, h = o.h||item.h||1;
-  const py = o.py||0;
+  // P5.4 Numeric-Safety: Alt-JSONs oder Custom-Items können w/d/h = 0 oder NaN
+  // geliefert haben → Mesh wird zur flachen Ebene → User sieht nur den Schatten-
+  // Cluster auf dem Ground, keine echte 3D-Form. Harte Minimum-Dimensionen
+  // (0.05 m = 5 cm) stellen sicher dass jedes Item in allen Achsen Volumen hat.
+  const rawW = o.w != null ? +o.w : (item.w != null ? +item.w : 1);
+  const rawD = o.d != null ? +o.d : (item.d != null ? +item.d : 1);
+  const rawH = o.h != null ? +o.h : (item.h != null ? +item.h : 1);
+  const w = (Number.isFinite(rawW) && rawW > 0.05) ? rawW : (rawW <= 0 ? 0.3 : 0.05);
+  const d = (Number.isFinite(rawD) && rawD > 0.05) ? rawD : (rawD <= 0 ? 0.3 : 0.05);
+  const h = (Number.isFinite(rawH) && rawH > 0.05) ? rawH : (rawH <= 0 ? 0.3 : 0.05);
+  const py = Number.isFinite(+o.py) ? +o.py : 0;
   g.position.set(o.x+w/2, py, o.y+d/2);
   g.rotation.y = (o.rot||0)*Math.PI/180;
+  g.visible = true; // Safety: Custom-Items hatten manchmal visible=false vererbt
 
   // P3.1: async GLTF load path (Kenney/Quaternius external assets).
   if(item.modelUrl && window.cscAssets){
