@@ -1717,6 +1717,11 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
   <button class="tbt icon-btn" id="redo-btn" onclick="redo()" disabled title="Wiederholen (Ctrl+Y)">↪</button>
   <div class="tsep"></div>
 
+  <!-- P4.3b: Prominenter Vorlagen-Button (erster Einstieg für neue User) -->
+  <button class="tbt" id="btn-templates" onclick="openTemplates()" title="Vorlagen laden — fertige CSC-Layouts + Messestände"
+    style="padding:5px 10px;border:1px solid var(--gr3);background:rgba(74,222,128,0.08);color:var(--gr);font-weight:600">📋 Vorlagen</button>
+  <div class="tsep"></div>
+
   <!-- DROPDOWN MENUS -->
   <div class="tb-menu-group">
 
@@ -1725,6 +1730,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
       <button class="tbm-btn" onclick="toggleTBMenu('file')">📁 Datei <span class="tbm-arr">▾</span></button>
       <div class="tbm-drop" id="tbmd-file">
         <div class="tbm-item" onclick="newProj();closeTBMenu()">🆕 Neues Projekt</div>
+        <div class="tbm-item" onclick="openTemplates();closeTBMenu()">📋 Aus Vorlage starten</div>
         <div class="tbm-item" onclick="saveProj();closeTBMenu()">💾 Speichern <span class="tbm-kbd">Ctrl+S</span></div>
         <div class="tbm-item" onclick="showRight('save');closeTBMenu()">📂 Projekte öffnen</div>
         <div class="tbm-sep"></div>
@@ -2290,6 +2296,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 
       <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px">
         <button class="tbt g" style="padding:9px" onclick="saveProj()">💾 Projekt speichern</button>
+        <button class="tbt" style="padding:9px;border-color:var(--gr3);color:var(--gr)" onclick="openTemplates()">📋 Vorlage laden</button>
         <button class="tbt" style="padding:9px" onclick="exportPDF()">🖨️ PDF / Druckansicht</button>
         <button class="tbt" style="padding:9px" onclick="dlJSON()">📥 Als .json exportieren</button>
         <button class="tbt" style="padding:9px" onclick="exportFurnitureCSV()">📊 Möbelliste (.csv)</button>
