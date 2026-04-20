@@ -4759,6 +4759,8 @@ function draw2D(){
     ctx.beginPath(); ctx.moveTo(measureStart.cx, measureStart.cy);
     ctx.lineTo(lastX, lastY); ctx.stroke(); ctx.setLineDash([]);
   }
+  // P6.7: Cursor der anderen User rendern
+  if(typeof _collabDrawCursors === 'function') _collabDrawCursors();
 }
 
 function drawGrid(){
@@ -5172,6 +5174,8 @@ fpCv.addEventListener('mousedown', e => {
 fpCv.addEventListener('mousemove', e => {
   lastX=e.offsetX; lastY=e.offsetY;
   const wx=cx2wx(e.offsetX), wy=cy2wy(e.offsetY);
+  // P6.7: Cursor-Position für Realtime-Collab merken
+  if(typeof _collabTrackCursor === 'function') _collabTrackCursor(wx, wy);
   if(placingCatalogId){ dragCatPos={wx:snapM(wx),wy:snapM(wy)}; draw2D(); return; }
   if(isPanning){
     const dx=e.offsetX-startX, dy=e.offsetY-startY;
@@ -9317,6 +9321,10 @@ function loadSupabaseConfig(){
   updateLoginGate();
   updateAuthStatus();
   if(SB_TOKEN) setTimeout(showCloudProjects, 600);
+  // P6.7: Realtime-Collab nach Login automatisch anschieben
+  if(SB_TOKEN && SB_USER && typeof startRealtimeCollab === 'function'){
+    setTimeout(startRealtimeCollab, 1200);
+  }
   // UX: if no session after rehydrate, prompt login shortly after first paint.
   // 400ms delay so the main UI settles first and the modal feels like an
   // invitation rather than a wall.
@@ -21842,6 +21850,170 @@ async function realtimePoll(){
     });
   }catch(e){}
 }
+
+// ══ P6.7 REALTIME-KOLLABORATION ═════════════════════════════════════
+// Presence-Tracking + Mouse-Cursors über csc_project_sessions-Tabelle.
+// Setzt voraus dass Migration 0003_realtime_sessions.sql eingespielt wurde
+// (supabase db push). Bricht silent wenn die Tabelle fehlt — User bekommt
+// eine Konsole-Warning, kein App-Crash.
+//
+// Flow:
+// 1. Auf Login heartbeat-Interval starten (alle 5s upsert cursor-pos)
+// 2. Alle 3s andere aktive Sessions via GET pollen + im #collab-avatars
+//    einblenden sowie im 2D-Canvas als farbige Dots rendern
+// 3. Stale Sessions (>2 min kein ping) werden DB-seitig via
+//    csc_cleanup_stale_sessions() gelöscht; der Client ignoriert zusätzlich
+//    alle mit last_ping > 15s age
+
+var _collabMyColor = null;
+var _collabSessions = [];         // andere User (ohne mich)
+var _collabHeartbeatTimer = null;
+var _collabPollTimer = null;
+var _collabLastCursorWx = 0, _collabLastCursorWy = 0;
+
+function _collabPickColor(){
+  if(_collabMyColor) return _collabMyColor;
+  const palette = ['#4ade80','#38bdf8','#f87171','#fbbf24','#a78bfa','#f472b6','#fb923c','#22d3ee'];
+  const seed = (SB_USER && SB_USER.id) || Math.random().toString();
+  let h = 0; for(const c of seed) h = (h * 31 + c.charCodeAt(0)) | 0;
+  _collabMyColor = palette[Math.abs(h) % palette.length];
+  return _collabMyColor;
+}
+
+async function _collabHeartbeat(){
+  if(!SB_URL || !SB_KEY || !SB_TOKEN || !SB_USER) return;
+  try {
+    const payload = {
+      project_name: projName || 'Projekt',
+      user_id: SB_USER.id,
+      user_email: SB_USER.email || '',
+      color: _collabPickColor(),
+      cursor_x: _collabLastCursorWx,
+      cursor_y: _collabLastCursorWy,
+      last_ping: new Date().toISOString(),
+    };
+    // Upsert via POST mit Prefer: resolution=merge-duplicates (PostgREST)
+    await fetch(SB_URL + '/rest/v1/csc_project_sessions?on_conflict=project_name,user_id', {
+      method: 'POST',
+      headers: {
+        'apikey': SB_KEY,
+        'Authorization': 'Bearer ' + SB_TOKEN,
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates,return=minimal',
+      },
+      body: JSON.stringify(payload),
+    });
+  } catch(e){ /* Netzwerk-Blip, nicht stören */ }
+}
+
+async function _collabPoll(){
+  if(!SB_URL || !SB_KEY || !SB_TOKEN) return;
+  try {
+    const r = await fetch(
+      SB_URL + '/rest/v1/csc_project_sessions?project_name=eq.' + encodeURIComponent(projName || 'Projekt') + '&select=*&order=last_ping.desc',
+      { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_TOKEN } }
+    );
+    if(r.status === 404 || r.status === 406){
+      console.warn('[csc-collab] csc_project_sessions fehlt. Migration 0003_realtime_sessions.sql einspielen (supabase db push).');
+      if(_collabPollTimer){ clearInterval(_collabPollTimer); _collabPollTimer = null; }
+      return;
+    }
+    if(!r.ok) return;
+    const rows = await r.json();
+    const now = Date.now();
+    _collabSessions = rows.filter(s => {
+      if(SB_USER && s.user_id === SB_USER.id) return false; // nicht mich
+      if(!s.last_ping) return false;
+      return (now - new Date(s.last_ping).getTime()) < 15000; // <15s = aktiv
+    });
+    _collabRenderAvatars();
+    if(typeof draw2D === 'function') draw2D(); // andere Cursor neu zeichnen
+  } catch(e){}
+}
+
+function _collabRenderAvatars(){
+  let bar = document.getElementById('collab-avatars');
+  if(!bar){
+    bar = document.createElement('div');
+    bar.id = 'collab-avatars';
+    bar.style.cssText = 'position:fixed;top:52px;right:16px;z-index:25;display:flex;gap:4px;background:rgba(10,15,20,0.85);border:1px solid var(--bd);border-radius:20px;padding:4px 8px;pointer-events:none;font-size:10px;color:var(--tx2)';
+    document.body.appendChild(bar);
+  }
+  if(_collabSessions.length === 0){ bar.style.display = 'none'; return; }
+  bar.style.display = 'flex';
+  bar.innerHTML = '<span style="margin-right:4px">👥 ' + _collabSessions.length + ' online</span>' +
+    _collabSessions.slice(0, 6).map(s => {
+      const initial = (s.user_email || 'U').charAt(0).toUpperCase();
+      return '<span title="' + (s.user_email || 'Unbekannt').replace(/[<>&"]/g,'') +
+        '" style="width:20px;height:20px;border-radius:50%;background:' +
+        (s.color || '#888') + ';color:#fff;font-weight:700;font-size:10px;' +
+        'display:flex;align-items:center;justify-content:center">' + initial + '</span>';
+    }).join('');
+}
+
+// Hook für 2D-Canvas mousemove: aktuelle Welt-Koordinate merken. Kein Heartbeat-
+// Trigger pro mousemove — Heartbeat läuft als Interval.
+function _collabTrackCursor(wx, wy){
+  _collabLastCursorWx = wx;
+  _collabLastCursorWy = wy;
+}
+
+// Rendering der anderen Cursor im 2D-Canvas. In draw2D einzuhängen.
+function _collabDrawCursors(){
+  if(!_collabSessions.length || typeof fpCv === 'undefined') return;
+  const ctx = fpCv.getContext('2d');
+  if(!ctx) return;
+  _collabSessions.forEach(s => {
+    if(s.cursor_x == null || s.cursor_y == null) return;
+    const cx = (typeof wx2cx === 'function') ? wx2cx(s.cursor_x) : 0;
+    const cy = (typeof wy2cy === 'function') ? wy2cy(s.cursor_y) : 0;
+    ctx.save();
+    ctx.fillStyle = s.color || '#888';
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + 14, cy + 5);
+    ctx.lineTo(cx + 6, cy + 7);
+    ctx.lineTo(cx + 8, cy + 16);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    if(s.user_email){
+      ctx.font = '10px system-ui';
+      ctx.fillStyle = s.color || '#888';
+      ctx.fillText(s.user_email.split('@')[0], cx + 18, cy + 12);
+    }
+    ctx.restore();
+  });
+}
+
+function startRealtimeCollab(){
+  if(_collabHeartbeatTimer) clearInterval(_collabHeartbeatTimer);
+  if(_collabPollTimer) clearInterval(_collabPollTimer);
+  if(!SB_TOKEN || !SB_USER) return;
+  _collabHeartbeat();  // sofort
+  _collabPoll();
+  _collabHeartbeatTimer = setInterval(_collabHeartbeat, 5000);
+  _collabPollTimer = setInterval(_collabPoll, 3000);
+}
+
+function stopRealtimeCollab(){
+  if(_collabHeartbeatTimer){ clearInterval(_collabHeartbeatTimer); _collabHeartbeatTimer = null; }
+  if(_collabPollTimer){ clearInterval(_collabPollTimer); _collabPollTimer = null; }
+  // Delete eigene Session beim Leave
+  if(SB_URL && SB_KEY && SB_TOKEN && SB_USER){
+    fetch(SB_URL + '/rest/v1/csc_project_sessions?user_id=eq.' + SB_USER.id + '&project_name=eq.' + encodeURIComponent(projName||'Projekt'), {
+      method: 'DELETE',
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_TOKEN },
+    }).catch(()=>{});
+  }
+  _collabSessions = [];
+  _collabRenderAvatars();
+}
+
+// Auto-start nach Login + cleanup beim Logout/Unload
+window.addEventListener('beforeunload', stopRealtimeCollab);
 
 // ══ PDF / DRUCK EXPORT ═══════════════════════════════════════════
 function exportPDF(){
