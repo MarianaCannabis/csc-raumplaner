@@ -5275,21 +5275,43 @@ function quickAddRoom(x,y,w,d){
 
 function addRoom(cfg){
   if(!cfg.id) cfg.id='r'+(rid++);
+  // Numeric safety: gleich wie addObject
+  cfg.x = Number.isFinite(+cfg.x) ? +cfg.x : 0;
+  cfg.y = Number.isFinite(+cfg.y) ? +cfg.y : 0;
+  cfg.w = Number.isFinite(+cfg.w) && +cfg.w > 0 ? +cfg.w : 4;
+  cfg.d = Number.isFinite(+cfg.d) && +cfg.d > 0 ? +cfg.d : 4;
+  cfg.h = Number.isFinite(+cfg.h) && +cfg.h > 0 ? +cfg.h : 2.8;
   rooms.push(cfg);
-  rebuild3D(); renderLeft(); draw2D();
-  setSelection(cfg.id,true);
-  snapshot();
+  if(!_loadInProgress){
+    rebuild3D(); renderLeft(); draw2D();
+    setSelection(cfg.id,true);
+    snapshot();
+  }
 }
+
+// Batch-Flag für loadPD/applyTemplate: wenn gesetzt, skippt addObject die
+// teuren Side-Effects (rebuild3D, draw2D, setSelection, snapshot) — die
+// werden einmal am Ende des Imports aufgerufen. Vorher: 50 Objekte
+// laden = 50× rebuild3D, O(N²)-Perf + die snapshot-Stack wuchs sinnlos.
+let _loadInProgress = false;
 
 function addObject(cfg){
   if(!cfg.id) cfg.id='o'+(oid++);
+  // Numeric safety: Alt-JSONs ohne x/y/py (oder mit Strings wie "0.5") sonst
+  // NaN → Three.js setzt die Group auf (NaN,NaN,NaN) → alle Objekte
+  // kollabieren auf (0,0,0) im Render. Coercen + Fallback 0.
+  cfg.x  = Number.isFinite(+cfg.x)  ? +cfg.x  : 0;
+  cfg.y  = Number.isFinite(+cfg.y)  ? +cfg.y  : 0;
+  cfg.py = Number.isFinite(+cfg.py) ? +cfg.py : 0;
   const item=findItem(cfg.typeId);
   if(!cfg.name&&item) cfg.name=item.name;
   if(!cfg.icon&&item) cfg.icon=item.icon;
   objects.push(cfg);
-  rebuild3D(); draw2D();
-  setSelection(cfg.id,false);
-  snapshot();
+  if(!_loadInProgress){
+    rebuild3D(); draw2D();
+    setSelection(cfg.id,false);
+    snapshot();
+  }
 }
 
 function removeRoom(id){
@@ -6616,14 +6638,23 @@ function loadPD(d){
   objects.forEach(o=>{if(obj3Map[o.id])scene.remove(obj3Map[o.id]);});
   rooms=[];grounds=[];objects=[];measures=[];selId=null;selIsRoom=false;selIsGround=false;
   projName=d.name||'Projekt';document.getElementById('proj-lbl').textContent=projName;
-  (d.rooms||[]).forEach(r=>addRoom(r));
-  (d.grounds||[]).forEach(g=>addGround(g,{silent:true}));
-  (d.objects||[]).forEach(o=>addObject(o));
+  // Batch-Mode: keine Side-Effects während der Import-Iteration. Objekte
+  // landen ins State-Array; ein einziges rebuild3D/draw2D/cscFrameScene
+  // läuft NACH allen Einträgen.
+  _loadInProgress = true;
+  try {
+    (d.rooms||[]).forEach(r=>addRoom(r));
+    (d.grounds||[]).forEach(g=>addGround(g,{silent:true}));
+    (d.objects||[]).forEach(o=>addObject(o));
+  } finally {
+    _loadInProgress = false;
+  }
   measures=d.measures||[];
   projMeta=d.meta||{};
   syncMetaUI();
-    rebuild3D();renderLeft();draw2D();updateSavedUI();
-  // Fix-4: Kamera nach Project-Load auf den geladenen Inhalt zentrieren
+  rebuild3D();renderLeft();draw2D();updateSavedUI();
+  // Auto-Fit erst NACH dem einen Rebuild — ansonsten berechnet BBox
+  // auf noch nicht platzierte Objekte und framed auf Luftraum.
   if(typeof window.cscFrameScene === 'function') setTimeout(window.cscFrameScene, 50);
 }
 
@@ -11373,12 +11404,19 @@ function applyTemplate(id){
     if(tpl.meta.messeDays != null) projMeta.messeDays = tpl.meta.messeDays;
     syncMetaUI();
   }
-  // Apply template
-  tpl.rooms.forEach(r=>addRoom({...r, ceilColor:r.ceilColor||'#f0ece0'}));
-  tpl.objects.forEach(o=>{
-    const it=findItem(o.typeId); if(!it) return;
-    addObject({...o, id:null, w:it.w, d:it.d, h:it.h, py:o.py||0, arch:it.arch||null, floorId:curFloor});
-  });
+  // Apply template im Batch-Mode — gleiches Problem wie loadPD, ohne
+  // Batch läuft rebuild3D pro Objekt und Template mit 20 Items dauert
+  // merklich. Ein Rebuild am Ende reicht.
+  _loadInProgress = true;
+  try {
+    tpl.rooms.forEach(r=>addRoom({...r, ceilColor:r.ceilColor||'#f0ece0'}));
+    tpl.objects.forEach(o=>{
+      const it=findItem(o.typeId); if(!it) return;
+      addObject({...o, id:null, w:it.w, d:it.d, h:it.h, py:o.py||0, arch:it.arch||null, floorId:curFloor});
+    });
+  } finally {
+    _loadInProgress = false;
+  }
   rebuild3D(); draw2D(); renderLeft(); snapshot();
   // Fix-4: Kamera nach Template-Load zentrieren, damit der Stand bequem
   // ins Bild passt statt im Nirgendwo zu liegen
