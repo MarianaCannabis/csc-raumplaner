@@ -4699,6 +4699,22 @@ function hitGroundResizeHandle(wx,wy,g){
   return null;
 }
 
+// P4.2: small LRU-ish cache so the draw2D render loop doesn't allocate a new
+// Image() every frame for every object with an imageMap. Map keyed by the
+// dataUrl itself — when a user swaps or removes an image, the stale entry
+// just never gets asked for again (dataUrls with no other refs get GC'd).
+const _imgCache = new Map();
+function _getImgCached(dataUrl){
+  const cached = _imgCache.get(dataUrl);
+  if(cached) return cached;
+  const img = new Image();
+  img.onload = () => draw2D();
+  img.onerror = () => {};
+  img.src = dataUrl;
+  _imgCache.set(dataUrl, img);
+  return img;
+}
+
 function drawObj2D(o){
   const item = findItem(o.typeId);
   if(!item) return;
@@ -4740,6 +4756,20 @@ function drawObj2D(o){
     [[-w/2,-d/2],[w/2,-d/2],[-w/2,d/2],[w/2,d/2]].forEach(([hx,hy])=>{
       ctx.beginPath();ctx.arc(hx,hy,4,0,Math.PI*2);ctx.fill();
     });
+  }
+
+  // P4.2: image-map thumbnail as 2D preview (before icon).
+  if(o.imageMap && item.imageMapFace){
+    const img = _getImgCached(o.imageMap);
+    if(img && img.complete && img.naturalWidth){
+      // Clip to object rect so image doesn't bleed on rotation
+      ctx.save();
+      ctx.beginPath(); ctx.rect(-w/2, -d/2, w, d); ctx.clip();
+      ctx.globalAlpha = 0.85;
+      ctx.drawImage(img, -w/2, -d/2, w, d);
+      ctx.globalAlpha = 1;
+      ctx.restore();
+    }
   }
 
   // Icon
@@ -9099,6 +9129,16 @@ function setSbMsg(msg, type){
 async function cloudSave(){
   if(!navigator.onLine){ queueOfflineAction('cloud_save',{}); toast('📵 Offline — wird synchronisiert','b'); return; }
   if(!SB_URL || !SB_KEY){ toast('Supabase nicht verbunden','r'); return; }
+  // P4.2: warn when embedded image maps will make the payload hefty.
+  // 5 MB base64 ≈ 6.7 MB JSON; at that size the upload stalls noticeably.
+  if(window.cscImageUpload){
+    const imgBytes = window.cscImageUpload.estimateBytes(objects);
+    if(imgBytes > 5*1024*1024){
+      const mb = (imgBytes/1024/1024).toFixed(1);
+      const ok = confirm('Projekt enthält Bilder ('+mb+' MB). Cloud-Save kann lange dauern.\n\nTrotzdem speichern?');
+      if(!ok){ toast('Cloud-Save abgebrochen','b'); return; }
+    }
+  }
   const data = getPD();
   // Take a small 3D screenshot
   let thumb = '';
@@ -21060,6 +21100,16 @@ function renderObjProps(id){
       <div class="pp-row"><label>Rauheit</label><input type="range" min="0" max="1" step="0.05" value="${(o.roughness||0.6).toFixed(2)}" oninput="updateObjProp('${id}','roughness',+this.value);this.nextSibling.textContent=this.value"><span class="pp-val">${(o.roughness||0.6).toFixed(2)}</span></div>
       <div class="pp-row"><label>Metallic</label><input type="range" min="0" max="1" step="0.05" value="${(o.metalness||0).toFixed(2)}" oninput="updateObjProp('${id}','metalness',+this.value);this.nextSibling.textContent=this.value"><span class="pp-val">${(o.metalness||0).toFixed(2)}</span></div>
     </div>`:''}
+    ${item.imageMapFace?`
+    <div class="pp-section">
+      <div class="pp-sh">🖼️ Bild auf Oberfläche</div>
+      <div class="pp-row" style="display:flex;gap:6px;align-items:center">
+        <input type="file" id="img-upload-${id}" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="handleImageUpload(event,'${id}')">
+        <button class="pp-btn" onclick="document.getElementById('img-upload-${id}').click()">📁 Bild wählen</button>
+      </div>
+      <div id="img-preview-${id}" style="margin-top:6px">${renderImagePreview(o)}</div>
+      <div style="font-size:10px;color:var(--tx3);margin-top:4px">Max 1024px · JPEG Q=0.85 · Face: ${item.imageMapFace}${item.imageMapAspect?' · '+item.imageMapAspect:''}</div>
+    </div>`:''}
     <div class="pp-section">
       <div class="pp-sh">Aktionen</div>
       <button class="pp-btn" onclick="rotateSel();renderObjProps('${id}')">↻ 90° drehen</button>
@@ -21077,6 +21127,57 @@ function updateObjProp(id, prop, val){
   if(prop!=='name') {
     const inp = document.querySelector(`#pp-content input[onchange*="'${prop}'"]`);
   }
+}
+
+// ── P4.2: IMAGE-MAP UPLOAD ───────────────────────────────────────────────
+function renderImagePreview(o){
+  if(!o || !o.imageMap){
+    return '<div style="font-size:10px;color:var(--tx3);padding:6px;border:1px dashed var(--bd);border-radius:4px;text-align:center">Kein Bild geladen</div>';
+  }
+  const fname = (o.imageMapName||'Bild').replace(/[<>&"']/g,s=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[s]));
+  return `<div style="display:flex;gap:8px;align-items:center;padding:4px;background:var(--bg3);border-radius:4px">
+    <img src="${o.imageMap}" style="width:48px;height:48px;object-fit:cover;border-radius:3px;border:1px solid var(--bd)">
+    <div style="flex:1;min-width:0">
+      <div style="font-size:10px;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${fname}</div>
+    </div>
+    <button class="pp-btn del" style="padding:2px 8px;font-size:10px" onclick="removeImageMap('${o.id}')">✕</button>
+  </div>`;
+}
+
+async function handleImageUpload(e, id){
+  const file = e.target.files && e.target.files[0];
+  if(!file) return;
+  if(file.size > 10*1024*1024){ toast('Bild > 10 MB — bitte vorher verkleinern','r'); return; }
+  if(!window.cscImageUpload){ toast('Bild-Modul nicht geladen','r'); return; }
+  const obj = objects.find(o=>o.id===id);
+  if(!obj){ toast('Objekt nicht gefunden','r'); return; }
+  try {
+    const result = await window.cscImageUpload.processUpload(file);
+    obj.imageMap = result.dataUrl;
+    obj.imageMapName = file.name;
+    toast(`Bild geladen (${result.width}×${result.height}, ${(result.bytes/1024).toFixed(0)} KB)`,'g');
+    rebuild3D(); draw2D();
+    const wrap = document.getElementById('img-preview-'+id);
+    if(wrap) wrap.innerHTML = renderImagePreview(obj);
+    snapshot();
+  } catch(err){
+    console.warn('[csc] image upload failed', err);
+    toast('Upload fehlgeschlagen: '+(err&&err.message||err),'r');
+  } finally {
+    e.target.value = ''; // allow re-uploading the same filename
+  }
+}
+
+function removeImageMap(id){
+  const obj = objects.find(o=>o.id===id);
+  if(!obj) return;
+  obj.imageMap = '';
+  obj.imageMapName = '';
+  rebuild3D(); draw2D();
+  const wrap = document.getElementById('img-preview-'+id);
+  if(wrap) wrap.innerHTML = renderImagePreview(obj);
+  snapshot();
+  toast('Bild entfernt','b');
 }
 
 function setObjMat(id, matId, rough, metal, el){
@@ -21186,7 +21287,13 @@ function build3DObj(o){
   // P3.2: sync rich-primitive path (multi-mesh builder, no network).
   else if(item.builder && window.cscBuilders && typeof window.cscBuilders.BUILDER_MAP === 'object' && window.cscBuilders.BUILDER_MAP[item.builder]){
     try {
-      const built = window.cscBuilders.BUILDER_MAP[item.builder](item.w||w, item.d||d, item.h||h);
+      // P4.2: thread image-map opts through to Messe builders (backwall,
+      // rollup, counterfront, ledwall, flag). Non-messe builders accept
+      // the 4th arg and ignore it.
+      const builderOpts = {};
+      if(o.imageMap) builderOpts.imageMap = o.imageMap;
+      if(item.imageMapAspect) builderOpts.imageMapAspect = item.imageMapAspect;
+      const built = window.cscBuilders.BUILDER_MAP[item.builder](item.w||w, item.d||d, item.h||h, builderOpts);
       while(g.children.length) g.remove(g.children[0]);
       g.add(built);
       return g; // short-circuit the legacy default-primitive branch below

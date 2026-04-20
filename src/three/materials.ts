@@ -21,6 +21,7 @@ import {
   DoubleSide,
   TextureLoader,
   RepeatWrapping,
+  ClampToEdgeWrapping,
   SRGBColorSpace,
 } from 'three';
 import type { Texture } from 'three';
@@ -166,6 +167,59 @@ export const concreteMaterial = (c?: number) => makeMaterial('concrete', c);
  * instance — fine as long as one repeat setting is acceptable site-wide. If
  * that ever becomes a problem, bust the cache by URL suffix.
  */
+// =============================================================================
+// Image-map material (P4.2) — user-uploaded image on a flat surface
+// =============================================================================
+
+export type ImageAspect = 'contain' | 'cover' | 'stretch';
+
+const _imageTexCache = new Map<string, Texture>();
+
+/**
+ * Build a MeshStandardMaterial backed by a user-uploaded image. Accepts a
+ * data URL from processUpload() (or any URL the browser can load via
+ * TextureLoader). The aspect parameter controls UV mapping for the target
+ * plane geometry. Callers size the plane — this factory only handles
+ * texture wrap/filter setup.
+ *
+ * Caching by URL means a reloaded project with 5 duplicate banners pulls
+ * one Texture, not five. Cache invalidates implicitly when the user swaps
+ * the image (new data URL = new cache key).
+ */
+export function imageMapMaterial(dataUrl: string, aspect: ImageAspect = 'cover'): MeshStandardMaterial {
+  const cached = _imageTexCache.get(dataUrl);
+  let texture: Texture;
+  if (cached) {
+    texture = cached;
+  } else {
+    texture = _loader.load(dataUrl);
+    texture.colorSpace = SRGBColorSpace;
+    // 'stretch' distorts the image to exactly fill the UVs (no repeat).
+    // 'contain'/'cover' both use clamp-to-edge so the edge pixel extends
+    // past the frame without wrap artefacts. The actual contain-vs-cover
+    // difference lives in UV math on the plane geometry in each builder.
+    texture.wrapS = ClampToEdgeWrapping;
+    texture.wrapT = ClampToEdgeWrapping;
+    _imageTexCache.set(dataUrl, texture);
+  }
+  return new MeshStandardMaterial({
+    map: texture,
+    roughness: 0.9,
+    metalness: 0,
+    side: DoubleSide,
+  });
+}
+
+/** Drop a single image URL from the texture cache. Call when removing an
+ *  imageMap from an object so the next upload creates a fresh texture. */
+export function disposeImageMapTexture(dataUrl: string): void {
+  const t = _imageTexCache.get(dataUrl);
+  if (t) {
+    t.dispose();
+    _imageTexCache.delete(dataUrl);
+  }
+}
+
 export function loadGroundMaterial(mat: GroundMaterial, tintOverride?: number): MeshStandardMaterial {
   const color = tintOverride ?? mat.tint;
   if (!mat.textureFolder) {

@@ -15,6 +15,7 @@ import { RICH_PRIMITIVES } from './catalog/items/primitives.js';
 import { CREDITS, renderCreditsHtml } from './catalog/credits.js';
 import { GROUND_MATERIALS, findGroundMaterial } from './catalog/grounds.js';
 import type { GroundMaterial } from './catalog/grounds.js';
+import { processUpload, estimateImageMapBytes } from './util/imageUpload.js';
 
 console.info('[csc] vite entry alive', import.meta.env.MODE);
 const _allRules = compliance.listRules();
@@ -69,6 +70,10 @@ declare global {
       find: typeof findGroundMaterial;
       loadMaterial: (mat: GroundMaterial, tintOverride?: number) => import('three').MeshStandardMaterial;
     };
+    cscImageUpload: {
+      processUpload: typeof processUpload;
+      estimateBytes: typeof estimateImageMapBytes;
+    };
   }
 }
 window.cscCompliance = compliance;
@@ -82,6 +87,7 @@ window.cscBuilders = primitiveBuilders;
 window.cscEnv = environment;
 window.cscCredits = { list: CREDITS, renderHtml: renderCreditsHtml };
 window.cscGrounds = { materials: GROUND_MATERIALS, find: findGroundMaterial, loadMaterial: loadGroundMaterial };
+window.cscImageUpload = { processUpload, estimateBytes: estimateImageMapBytes };
 
 // Project-panel footer: show the most-recent lastVerified so the operator
 // knows how fresh the cost/energy defaults are. Rewrites on every boot,
