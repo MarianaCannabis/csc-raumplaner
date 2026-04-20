@@ -1750,6 +1750,9 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
   <!-- P4.3b: Prominenter Vorlagen-Button (erster Einstieg für neue User) -->
   <button class="tbt" id="btn-templates" onclick="openTemplates()" title="Vorlagen laden — fertige CSC-Layouts + Messestände"
     style="padding:5px 10px;border:1px solid var(--gr3);background:rgba(74,222,128,0.08);color:var(--gr);font-weight:600">📋 Vorlagen</button>
+  <!-- P7 Bug-2-Fix: KCanG-Dashboard aus der Ansicht-Menu-Tiefe an die Topbar hochgezogen -->
+  <button class="tbt" id="btn-kcang" onclick="openKCaNGDashboard()" title="KCanG-Projektdaten + Compliance-Check (Mitglieder, Adresse, Präventionsbeauftragter, Regeln)"
+    style="padding:5px 10px;border:1px solid var(--gr3);background:rgba(74,222,128,0.08);color:var(--gr);font-weight:600">🌿 KCanG</button>
   <div class="tsep"></div>
 
   <!-- DROPDOWN MENUS -->
@@ -2656,6 +2659,65 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
     <button class="mbt" onclick="copyPacklistMD()">📋 Markdown kopieren</button>
     <button class="mbt" onclick="togglePacklistMD()">📝 Markdown ein/aus</button>
     <button class="mbt" onclick="closeM('m-packlist')">Schließen</button>
+  </div>
+</div>
+</div>
+
+<!-- P7 Bug-2-Fix: KCanG-Dashboard — zentrale Anlaufstelle für Compliance -->
+<div class="mover" id="m-kcang-dashboard">
+<div class="modal" style="max-width:680px;max-height:88vh">
+  <h2>🌿 KCanG-Dashboard</h2>
+  <div style="font-size:11px;color:var(--tx3);margin-bottom:14px">Projekt-Metadaten + Live-Compliance-Check. Alle Felder speichern automatisch.</div>
+
+  <!-- Metadaten -->
+  <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px;padding:12px;margin-bottom:14px">
+    <div style="font-size:11px;font-weight:600;color:var(--gr);margin-bottom:8px">📋 Projekt-Metadaten</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div>
+        <label style="font-size:10px;color:var(--tx3)">Mitgliederzahl</label>
+        <input type="number" id="kd-members" min="0" max="500" placeholder="z.B. 120"
+          oninput="projMeta.memberCount=this.value?+this.value:null; _kcangDashRefresh();"
+          style="width:100%;padding:6px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:12px;box-sizing:border-box">
+      </div>
+      <div>
+        <label style="font-size:10px;color:var(--tx3)">Präventionsbeauftragter</label>
+        <input type="text" id="kd-prev" placeholder="Name"
+          oninput="projMeta.preventionOfficer=this.value; _kcangDashRefresh();"
+          style="width:100%;padding:6px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:12px;box-sizing:border-box">
+      </div>
+      <div style="grid-column:1/-1">
+        <label style="font-size:10px;color:var(--tx3)">Adresse (für § 13 POI-Check)</label>
+        <div style="display:flex;gap:6px">
+          <input type="text" id="kd-address" placeholder="Straße, PLZ Ort"
+            oninput="projMeta.address=this.value;"
+            style="flex:1;padding:6px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:12px">
+          <button class="tbt" onclick="loadProjectPois()" style="padding:4px 10px;font-size:11px">📍 POIs</button>
+        </div>
+      </div>
+      <label style="font-size:11px;color:var(--tx2);display:flex;align-items:center;gap:6px;grid-column:1/-1">
+        <input type="checkbox" id="kd-age-ver"
+          onchange="projMeta.ageVerification=this.checked; _kcangDashRefresh();">
+        Altersprüfung beim Eingang (18+)
+      </label>
+      <label style="font-size:11px;color:var(--tx2);display:flex;align-items:center;gap:6px;grid-column:1/-1">
+        <input type="checkbox" id="kd-windows-filmed"
+          onchange="projMeta.windowsFilmed=this.checked; _kcangDashRefresh();">
+        Alle Fenster mit Sichtschutzfolie (§ 14 KCanG)
+      </label>
+    </div>
+  </div>
+
+  <!-- Live-Regel-Liste -->
+  <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px;padding:12px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div style="font-size:11px;font-weight:600;color:var(--gr)">✅ Compliance-Status</div>
+      <div id="kd-score" style="font-size:13px;font-weight:700;color:var(--tx)">—</div>
+    </div>
+    <div id="kd-rules" style="font-size:11px;color:var(--tx2);max-height:40vh;overflow-y:auto"></div>
+  </div>
+
+  <div class="mbtns">
+    <button class="mbt ok" onclick="closeM('m-kcang-dashboard')">Fertig</button>
   </div>
 </div>
 </div>
@@ -10886,6 +10948,53 @@ async function optimizeLayout(){
 }
 
 // ── 14. KAPAZITÄTS- UND CHECKLISTEN-PANEL ────────────────────────────
+// P7 Bug-2: KCanG-Dashboard — aggregiert Meta-Inputs + Live-Regelprüfung
+// in einem zentralen Modal. Via neuem Topbar-Button 🌿 KCanG aufgerufen.
+function openKCaNGDashboard(){
+  _kcangDashSync();
+  _kcangDashRefresh();
+  openM('m-kcang-dashboard');
+}
+function _kcangDashSync(){
+  // Input-Werte aus aktuellem projMeta laden
+  const m = document.getElementById('kd-members');     if(m) m.value = projMeta.memberCount != null ? projMeta.memberCount : '';
+  const p = document.getElementById('kd-prev');        if(p) p.value = projMeta.preventionOfficer || '';
+  const a = document.getElementById('kd-address');     if(a) a.value = projMeta.address || '';
+  const v = document.getElementById('kd-age-ver');     if(v) v.checked = !!projMeta.ageVerification;
+  const w = document.getElementById('kd-windows-filmed'); if(w) w.checked = !!projMeta.windowsFilmed;
+}
+function _kcangDashRefresh(){
+  // Auch die Projekt-Panel-Inputs syncen damit beide konsistent sind
+  if(typeof syncMetaUI === 'function') syncMetaUI();
+  const rules = document.getElementById('kd-rules');
+  const score = document.getElementById('kd-score');
+  if(!rules) return;
+  try {
+    const checks = (typeof getKCaNGChecklist === 'function') ? getKCaNGChecklist() : [];
+    if(!checks.length){
+      rules.innerHTML = '<div style="padding:8px;text-align:center;color:var(--tx3)">Keine Regeln geladen</div>';
+      if(score) score.textContent = '—';
+      return;
+    }
+    const passed = checks.filter(c => c.passed === true).length;
+    const total = checks.filter(c => c.passed !== null).length;
+    const pct = total ? Math.round(passed / total * 100) : 0;
+    if(score){
+      score.textContent = passed + '/' + total + ' (' + pct + '%)';
+      score.style.color = pct >= 80 ? 'var(--gr)' : pct >= 50 ? '#fbbf24' : '#ef4444';
+    }
+    rules.innerHTML = checks.map(c => {
+      const icon = c.passed === true ? '✅' : c.passed === false ? '❌' : '⚪';
+      const col = c.passed === true ? 'var(--gr)' : c.passed === false ? '#ef4444' : 'var(--tx3)';
+      const label = (c.label || 'Regel').replace(/[<>]/g, '');
+      const det = c.details ? '<div style="font-size:10px;color:var(--tx3);margin-left:20px">' + String(c.details).replace(/[<>]/g, '') + '</div>' : '';
+      return '<div style="padding:6px;border-bottom:1px solid var(--bd);display:flex;align-items:flex-start;gap:6px"><span style="flex-shrink:0">' + icon + '</span><div style="flex:1;color:' + col + '">' + label + det + '</div></div>';
+    }).join('');
+  } catch(err){
+    rules.innerHTML = '<div style="padding:8px;color:#ef4444">Fehler: ' + (err.message || err) + '</div>';
+  }
+}
+
 function showCSCPanel(){
   const cap = calcCapacity();
   const checks = getKCaNGChecklist();
@@ -22847,6 +22956,29 @@ function rotateSel3D(){
 // ════════════════════════════════════════════════════════════════════════
 // build3DObj – single canonical version (Phase 4, no overrides)
 // ════════════════════════════════════════════════════════════════════════
+// P7 Bug-3-Fix: Kategorie-basierter Fallback-Builder für Katalog-Items
+// ohne explizites builder-Feld. Schaut auf item.cat + item.name; liefert
+// einen Builder-Namen aus EVENT_BUILDER_MAP_P2 zurück, oder null.
+function _pickGenericBuilder(item){
+  if(!item) return null;
+  const cat = (item.cat || '').toLowerCase();
+  const name = (item.name || '').toLowerCase();
+  const id = (item.id || '').toLowerCase();
+  // Chair/Stuhl/Sessel
+  if(/stuhl|sessel|chair|hocker|bench|bank(?!ett)/.test(cat + ' ' + name)) return 'buildGenericChair';
+  // Tisch/Table
+  if(/tisch|table|bankett|tresen|theke|counter/.test(cat + ' ' + name) && !/tuch|linen|deko/.test(name)) return 'buildGenericTable';
+  // Schrank/Cabinet/Regal
+  if(/schrank|cabinet|regal|vitrine|locker|rack|kommode/.test(cat + ' ' + name)) return 'buildGenericCabinet';
+  // Licht/Lampe
+  if(/lampe|licht|light|strahler|leuchte|spot|beamer/.test(cat + ' ' + name) && !/schalter|steckdose/.test(name)) return 'buildGenericLamp';
+  // Pflanze/Plant
+  if(/pflanze|plant|baum|grün/.test(cat + ' ' + name) && !/anbau|grow/.test(id)) return 'buildGenericPlant';
+  // Deko fallback für alles was als "Deko"/"Decoration" markiert ist
+  if(/deko|deco|skulptur|kunst/.test(cat)) return 'buildGenericDeco';
+  return null;
+}
+
 function build3DObj(o){
   const item = findItem(o.typeId); if(!item) return null;
   const g = new THREE.Group();
@@ -22878,20 +23010,21 @@ function build3DObj(o){
     });
   }
   // P3.2: sync rich-primitive path (multi-mesh builder, no network).
-  else if(item.builder && window.cscBuilders && typeof window.cscBuilders.BUILDER_MAP === 'object' && window.cscBuilders.BUILDER_MAP[item.builder]){
+  // P7 Bug-3-Fix: Falls kein Builder im Katalog-Item gesetzt ist, wähle
+  // einen kategorie-basierten Generic-Builder statt auf die flache Box
+  // zu fallen. Deckt ~80% des Katalogs ab.
+  const resolvedBuilder = item.builder || _pickGenericBuilder(item);
+  if(resolvedBuilder && window.cscBuilders && typeof window.cscBuilders.BUILDER_MAP === 'object' && window.cscBuilders.BUILDER_MAP[resolvedBuilder]){
     try {
-      // P4.2: thread image-map opts through to Messe builders (backwall,
-      // rollup, counterfront, ledwall, flag). Non-messe builders accept
-      // the 4th arg and ignore it.
       const builderOpts = {};
       if(o.imageMap) builderOpts.imageMap = o.imageMap;
       if(item.imageMapAspect) builderOpts.imageMapAspect = item.imageMapAspect;
-      const built = window.cscBuilders.BUILDER_MAP[item.builder](item.w||w, item.d||d, item.h||h, builderOpts);
+      const built = window.cscBuilders.BUILDER_MAP[resolvedBuilder](item.w||w, item.d||d, item.h||h, builderOpts);
       while(g.children.length) g.remove(g.children[0]);
       g.add(built);
-      return g; // short-circuit the legacy default-primitive branch below
+      return g;
     } catch(err){
-      console.warn('[csc] builder failed, falling back to default primitive', item.builder, err);
+      console.warn('[csc] builder failed, falling back to default primitive', resolvedBuilder, err);
     }
   }
 

@@ -395,9 +395,86 @@ export function buildTripodSpotlight(w: number, _d: number, h: number): Group {
 }
 
 // =============================================================================
+// P7 — Generic category fallbacks
+// =============================================================================
+// Items ohne expliziten Builder rendern sonst als nackter Box. Diese 6
+// Generics decken ~80% aller Katalog-Kategorien ab und werden in
+// build3DObj als Fallback gewählt basierend auf item.cat.
+
+export function buildGenericChair(w: number, d: number, h: number): Group {
+  const g = new Group();
+  const seat = new Mesh(new BoxGeometry(w * 0.9, 0.06, d * 0.9), matFabric(0x444466));
+  seat.position.y = h * 0.5;
+  const back = new Mesh(new BoxGeometry(w * 0.9, h * 0.5, 0.05), matFabric(0x444466));
+  back.position.set(0, h * 0.75, -d * 0.45);
+  for (const [sx, sz] of [[-1,-1],[1,-1],[-1,1],[1,1]] as const) {
+    const leg = new Mesh(new BoxGeometry(0.04, h * 0.5, 0.04), matMetal(0x333333));
+    leg.position.set(sx * (w/2 - 0.04), h * 0.25, sz * (d/2 - 0.04));
+    g.add(leg);
+  }
+  return addMeshes(g, [seat, back]);
+}
+export function buildGenericTable(w: number, d: number, h: number): Group {
+  const g = new Group();
+  const top = new Mesh(new BoxGeometry(w, 0.04, d), matWood(0xc8a572));
+  top.position.y = h - 0.02;
+  for (const [sx, sz] of [[-1,-1],[1,-1],[-1,1],[1,1]] as const) {
+    const leg = new Mesh(new BoxGeometry(0.05, h - 0.04, 0.05), matWood(0x8a6a4a));
+    leg.position.set(sx * (w/2 - 0.08), (h - 0.04)/2, sz * (d/2 - 0.08));
+    g.add(leg);
+  }
+  return addMeshes(g, [top]);
+}
+export function buildGenericCabinet(w: number, d: number, h: number): Group {
+  const g = new Group();
+  const body = new Mesh(new BoxGeometry(w, h, d), matWood(0xa07a4a));
+  body.position.y = h / 2;
+  // Door split (zwei Türen)
+  for (const sx of [-0.5, 0.5]) {
+    const door = new Mesh(new BoxGeometry(w * 0.48, h * 0.95, 0.02), matWood(0x8a6a4a));
+    door.position.set(sx * w * 0.25, h * 0.5, d/2 + 0.01);
+    const knob = new Mesh(new SphereGeometry(0.015, 8, 6), matMetal(0x333333));
+    knob.position.set(sx * w * 0.05, h * 0.5, d/2 + 0.025);
+    g.add(door, knob);
+  }
+  return addMeshes(g, [body]);
+}
+export function buildGenericLamp(w: number, d: number, h: number): Group {
+  const g = new Group();
+  const shade = new Mesh(new CylinderGeometry(w * 0.4, w * 0.3, h * 0.3, 16), matFabric(0xeeeeaa));
+  shade.position.y = h * 0.85;
+  const bulb = new Mesh(new SphereGeometry(w * 0.12, 12, 10), matLED(0xffffaa));
+  bulb.position.y = h * 0.8;
+  const pole = new Mesh(new CylinderGeometry(0.015, 0.015, h * 0.7, 6), matMetal(0x888888));
+  pole.position.y = h * 0.35;
+  const base = new Mesh(new CylinderGeometry(w * 0.3, w * 0.35, 0.03, 12), matMetal(0x555555));
+  base.position.y = 0.015;
+  return addMeshes(g, [shade, bulb, pole, base]);
+}
+export function buildGenericPlant(w: number, d: number, h: number): Group {
+  const g = new Group();
+  const pot = new Mesh(new CylinderGeometry(w * 0.35, w * 0.4, h * 0.25, 12), matConcrete(0xaaaaaa));
+  pot.position.y = h * 0.125;
+  const foliage = new Mesh(new SphereGeometry(w * 0.5, 12, 10), matFabric(0x2a6a3a));
+  foliage.position.y = h * 0.65;
+  return addMeshes(g, [pot, foliage]);
+}
+export function buildGenericDeco(w: number, d: number, h: number): Group {
+  const g = new Group();
+  // Generic sculpture/deco: truncated pyramid auf Sockel
+  const base = new Mesh(new BoxGeometry(w, h * 0.2, d), matConcrete(0x888888));
+  base.position.y = h * 0.1;
+  const top = new Mesh(new ConeGeometry(w * 0.35, h * 0.75, 4), matMetal(0xcc9944));
+  top.position.y = h * 0.6;
+  return addMeshes(g, [base, top]);
+}
+
+// =============================================================================
 // Registry
 // =============================================================================
 export const EVENT_BUILDER_MAP_P2: Record<string, (w: number, d: number, h: number) => Group> = {
+  buildGenericChair, buildGenericTable, buildGenericCabinet,
+  buildGenericLamp, buildGenericPlant, buildGenericDeco,
   buildProscenium, buildLectern, buildIntervalWall, buildStageTile,
   buildCinemaChair, buildSwivelBarstool, buildTribuneRow, buildAudienceBench,
   buildMediaServer, buildLavalierMic,
