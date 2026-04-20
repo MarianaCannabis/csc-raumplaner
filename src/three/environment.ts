@@ -89,6 +89,24 @@ export function applyEnvironment(scene: Scene, envMap: Texture): void {
       scene.background = NEUTRAL_BG.clone();
     }
   }
+  // P7 Bug-5-Fix: HDRI-Reflexionen waren auf manchen Materialien unsichtbar,
+  // weil envMapIntensity nicht explizit gesetzt war. Alle existierenden
+  // MeshStandard/Physical-Materials bekommen jetzt einen deutlichen
+  // envMapIntensity-Boost (1.4) — Metall reflektiert dann sichtbar, PBR-
+  // Holz glänzt dezent. Neu-erzeugte Materialien nach diesem Call müssen
+  // sich selbst um envMapIntensity kümmern (standardmäßig 1.0 — reicht).
+  scene.traverse((obj) => {
+    // @ts-expect-error — three.js Object3D hat optional material
+    const mat = obj.material;
+    if (!mat) return;
+    const mats = Array.isArray(mat) ? mat : [mat];
+    mats.forEach((m: { envMapIntensity?: number; needsUpdate?: boolean }) => {
+      if (m && 'envMapIntensity' in m) {
+        m.envMapIntensity = 1.4;
+        m.needsUpdate = true;
+      }
+    });
+  });
 }
 
 export function fallbackEnvironment(renderer: WebGLRenderer, scene: Scene): void {
@@ -117,9 +135,10 @@ export function createComposer(
   composer.addPass(new RenderPass(scene, camera));
   const bloom = new UnrealBloomPass(
     new Vector2(window.innerWidth, window.innerHeight),
-    0.25, // strength — war 0.4, überstrahlte auch hell-weiße PBR-Oberflächen
-    0.4,  // radius — war 0.6
-    0.98, // threshold — war 0.95, jetzt nur echte Emissives (LED-Wand, Exit-Signs)
+    0.4,  // strength — P7 zurück auf 0.4 (0.25 war so schwach dass User 'geht nicht' meldete)
+    0.5,  // radius
+    0.85, // threshold — P7 von 0.98 auf 0.85 gesenkt; erreicht jetzt
+          // MeshLED mit emissiveIntensity ≥1.5 zuverlässig
   );
   composer.addPass(bloom);
   return composer;

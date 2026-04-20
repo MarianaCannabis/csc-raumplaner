@@ -91,7 +91,9 @@ export const matGlassPhys = (col = 0xaaccdd) => new MeshPhysicalMaterial({
 });
 
 export const matLED = (col = 0xffffff) => new MeshStandardMaterial({
-  color: col, emissive: col, emissiveIntensity: 1.5, roughness: 1.0,
+  // P7 Bug-4-Fix: emissiveIntensity 1.5 → 2.0, damit UnrealBloomPass bei
+  // threshold 0.85 zuverlässig auslöst. LED-Wand + Exit-Signs glühen sichtbar.
+  color: col, emissive: col, emissiveIntensity: 2.0, roughness: 1.0,
 });
 
 export const matLeather = (col = 0x4a2a1a) => new MeshPhysicalMaterial({
