@@ -2292,6 +2292,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
             style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
         </div>
         <button class="tbt" onclick="openMesseBudget()" style="margin-top:6px;padding:6px;border-color:var(--gr3);color:var(--gr);font-size:11px">💰 Messe-Kosten schätzen</button>
+        <button class="tbt" onclick="openPacklist()" style="margin-top:4px;padding:6px;border-color:var(--gr3);color:var(--gr);font-size:11px">📦 Packliste generieren</button>
         <label style="font-size:11px;color:var(--tx2);display:flex;align-items:center;gap:6px;margin-top:6px">
           <input type="checkbox" id="pm-windows-filmed"
             onchange="projMeta.windowsFilmed=this.checked; if(typeof renderComplianceBadges==='function') renderComplianceBadges();">
@@ -2488,6 +2489,20 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
   </div>
   <div class="mbtns" style="margin-top:8px">
     <button class="mbt" onclick="closeM('m-vision')">Schließen</button>
+  </div>
+</div>
+</div>
+
+<!-- P4.7: PACKLISTE-MODAL -->
+<div class="mover" id="m-packlist">
+<div class="modal" style="max-width:640px">
+  <h2>📦 Packliste</h2>
+  <div id="m-packlist-body" style="font-size:11px;color:var(--tx2);max-height:60vh;overflow-y:auto">Lade…</div>
+  <textarea id="m-packlist-md" style="display:none;width:100%;height:240px;background:var(--bg2);color:var(--tx);border:1px solid var(--bd);border-radius:4px;padding:8px;font-family:monospace;font-size:10px;margin-top:8px" readonly></textarea>
+  <div class="mbtns">
+    <button class="mbt" onclick="copyPacklistMD()">📋 Markdown kopieren</button>
+    <button class="mbt" onclick="togglePacklistMD()">📝 Markdown ein/aus</button>
+    <button class="mbt" onclick="closeM('m-packlist')">Schließen</button>
   </div>
 </div>
 </div>
@@ -10829,6 +10844,71 @@ const ROOM_TEMPLATES = [
     ]
   },
 ];
+
+// P4.7: Packlist generator — aggregates placed objects by category.
+let _packlistMD = '';
+function openPacklist(){
+  if(!window.cscPacklist){ toast('Packlist-Modul nicht geladen','r'); return; }
+  // Resolve each object with its catalog entry so we have name/icon/cat.
+  const enriched = objects.map(o=>{
+    const it = findItem(o.typeId) || {};
+    return {
+      typeId: o.typeId,
+      w: o.w || it.w || 0.5,
+      d: o.d || it.d || 0.5,
+      h: o.h || it.h || 0.5,
+      name: it.name || o.name || o.typeId,
+      icon: it.icon || '',
+      cat: it.cat || '',
+    };
+  });
+  const result = window.cscPacklist.build(enriched);
+  _packlistMD = result.markdown;
+  const body = document.getElementById('m-packlist-body');
+  if(!body) return;
+  if(result.totalItems === 0){
+    body.innerHTML = '<div style="padding:20px;text-align:center;color:var(--tx3)">Noch keine Objekte platziert.</div>';
+    openM('m-packlist');
+    return;
+  }
+  // Group rows by cat for the HTML table.
+  const catsMap = {};
+  result.rows.forEach(r=>{ if(!catsMap[r.cat]) catsMap[r.cat]=[]; catsMap[r.cat].push(r); });
+  const sections = Object.keys(catsMap).sort().map(cat=>{
+    const head = '<tr><th style="text-align:left">Stück</th><th style="text-align:left">Artikel</th><th style="text-align:right">Volumen (m³)</th><th style="text-align:right">Gewicht (kg)</th></tr>';
+    const rows = catsMap[cat].map(r=>
+      '<tr><td>'+r.count+'</td><td>'+r.label.replace(/</g,'&lt;')+
+      '</td><td style="text-align:right">'+r.volumeM3.toFixed(3)+
+      '</td><td style="text-align:right">'+r.weightKg+'</td></tr>'
+    ).join('');
+    return '<h3 style="margin:12px 0 4px;font-size:12px;color:var(--gr)">'+cat+'</h3>'+
+      '<table style="width:100%;border-collapse:collapse;font-size:11px"><thead>'+head+
+      '</thead><tbody>'+rows+'</tbody></table>';
+  }).join('');
+  body.innerHTML =
+    '<div style="padding:8px;background:var(--bg3);border-radius:6px;margin-bottom:10px">'+
+    '<b>Gesamt:</b> '+result.totalItems+' Teile · '+result.totalVolumeM3.toFixed(2)+' m³ · '+result.totalWeightKg+' kg'+
+    '</div>'+sections;
+  const ta = document.getElementById('m-packlist-md');
+  if(ta){ ta.value = _packlistMD; ta.style.display = 'none'; }
+  openM('m-packlist');
+}
+function togglePacklistMD(){
+  const ta = document.getElementById('m-packlist-md');
+  if(!ta) return;
+  ta.style.display = ta.style.display === 'none' ? 'block' : 'none';
+}
+async function copyPacklistMD(){
+  if(!_packlistMD){ toast('Erst Packliste generieren','r'); return; }
+  try {
+    await navigator.clipboard.writeText(_packlistMD);
+    toast('📋 Markdown kopiert','g');
+  } catch(err){
+    // Fallback for browsers/contexts without Clipboard API
+    const ta = document.getElementById('m-packlist-md');
+    if(ta){ ta.style.display='block'; ta.select(); document.execCommand('copy'); toast('📋 Markdown kopiert','g'); }
+  }
+}
 
 // P4.6: Messe budget estimator — pulls calcMesseBudget from the TS bridge.
 function openMesseBudget(){
