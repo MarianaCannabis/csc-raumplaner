@@ -2560,9 +2560,10 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 
 <!-- RAUMVORLAGEN -->
 <div class="mover" id="m-templates">
-<div class="modal" style="max-width:500px">
-  <h2>🏗 Raumvorlagen — 1-Klick CSC-Layouts</h2>
-  <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Wähle eine Vorlage. Bestehende Räume werden ersetzt.</p>
+<div class="modal" style="max-width:560px">
+  <h2>📋 Vorlagen — CSC-Layouts + Messestände</h2>
+  <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Filter oben wählen. Klick auf Karte lädt Vorlage (bestehende Räume werden ersetzt).</p>
+  <div id="tpl-status" style="font-size:10px;color:var(--tx3);margin-bottom:8px;min-height:14px"></div>
   <div class="tpl-grid" id="tpl-grid"></div>
   <div class="mbtns"><button class="mbt" onclick="closeM('m-templates')">Abbrechen</button></div>
 </div>
@@ -10970,23 +10971,36 @@ function openMesseBudget(){
   openM('m-messe-budget');
 }
 
-// P4.5: merged template list with CSC (legacy) + Messe/Showroom (TS).
+// P4.5 + P4.3b-fix: merged template list with CSC (legacy) + Messe/Showroom (TS).
 let _tplFilter = 'all';
+let _tplRetryTimer = null;
+function _getTSTemplates(){
+  const t = window.cscTemplates;
+  if(!t) return null;
+  // Accept either .list (array) or .all() (fn) — whichever the module exposes.
+  if(Array.isArray(t.list)) return t.list;
+  if(typeof t.all === 'function'){
+    const v = t.all();
+    if(Array.isArray(v)) return v;
+  }
+  return null;
+}
 function getAllTemplates(){
   const cscTagged = ROOM_TEMPLATES.map(t=>({...t, tag:'csc'}));
-  const tsList = (window.cscTemplates && Array.isArray(window.cscTemplates.list)) ? window.cscTemplates.list : [];
+  const tsList = _getTSTemplates() || [];
   return cscTagged.concat(tsList);
 }
 
 function openTemplates(){
+  const ts = _getTSTemplates();
+  console.info('[csc] openTemplates', {
+    hasModule: !!window.cscTemplates,
+    tsCount: ts ? ts.length : 0,
+    cscCount: (typeof ROOM_TEMPLATES !== 'undefined' && ROOM_TEMPLATES) ? ROOM_TEMPLATES.length : 0,
+    filter: _tplFilter,
+  });
   const grid = document.getElementById('tpl-grid'); if(!grid) return;
-  // Build filter chip bar + grid
-  const chips = [
-    {id:'all', label:'Alle', icon:'📋'},
-    {id:'csc', label:'CSC', icon:'🌿'},
-    {id:'messe', label:'Messe', icon:'🎪'},
-    {id:'showroom', label:'Showroom', icon:'🏢'},
-  ];
+  // Build filter chip bar
   const parent = grid.parentElement;
   let chipBar = document.getElementById('tpl-chip-bar');
   if(!chipBar){
@@ -10995,31 +11009,79 @@ function openTemplates(){
     chipBar.style.cssText = 'display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px';
     parent.insertBefore(chipBar, grid);
   }
-  chipBar.innerHTML = chips.map(c=>
-    '<button class="tbt'+(_tplFilter===c.id?' g':'')+'" style="padding:4px 10px;font-size:11px" onclick="setTplFilter(\''+c.id+'\')">'+c.icon+' '+c.label+'</button>'
-  ).join('');
+  renderTemplateChipBar();
   renderTemplateGrid();
   openM('m-templates');
+
+  // P4.3b-fix: retry up to 10× / 3s if TS-module hadn't bridged yet when
+  // the user clicked. This covers the narrow window on cold loads where
+  // the <script type="module"> hasn't finished executing before first
+  // interaction. Once the module arrives, chip counts + Mari-Jane cards
+  // render automatically — no user action needed.
+  clearTimeout(_tplRetryTimer);
+  if(!_getTSTemplates()){
+    let tries = 0;
+    const poll = () => {
+      tries++;
+      if(_getTSTemplates()){
+        console.info('[csc] templates module arrived after', tries*300, 'ms');
+        renderTemplateChipBar(); renderTemplateGrid();
+        return;
+      }
+      if(tries >= 10){
+        console.warn('[csc] templates module never arrived — showing CSC-only list');
+        return;
+      }
+      _tplRetryTimer = setTimeout(poll, 300);
+    };
+    _tplRetryTimer = setTimeout(poll, 300);
+  }
+}
+
+function renderTemplateChipBar(){
+  const chipBar = document.getElementById('tpl-chip-bar'); if(!chipBar) return;
+  const all = getAllTemplates();
+  // Count per tag for chip labels — so user can tell which categories have items.
+  const counts = { all: all.length, csc: 0, messe: 0, showroom: 0 };
+  all.forEach(t => { if(counts[t.tag] != null) counts[t.tag]++; });
+  const chips = [
+    {id:'all',      label:'Alle',     icon:'📋'},
+    {id:'csc',      label:'CSC',      icon:'🌿'},
+    {id:'messe',    label:'Messe',    icon:'🎪'},
+    {id:'showroom', label:'Showroom', icon:'🏢'},
+  ];
+  chipBar.innerHTML = chips.map(c=>{
+    const n = counts[c.id] != null ? ' ('+counts[c.id]+')' : '';
+    return '<button class="tbt'+(_tplFilter===c.id?' g':'')+'" style="padding:4px 10px;font-size:11px" onclick="setTplFilter(\''+c.id+'\')">'+
+      c.icon+' '+c.label+n+'</button>';
+  }).join('');
 }
 
 function setTplFilter(tag){
   _tplFilter = tag;
-  // Update chip active state
-  const chipBar = document.getElementById('tpl-chip-bar');
-  if(chipBar){
-    chipBar.querySelectorAll('button').forEach(b=>b.classList.remove('g'));
-    const clicked = chipBar.querySelector('button[onclick*="\''+tag+'\'"]');
-    if(clicked) clicked.classList.add('g');
-  }
+  renderTemplateChipBar();
   renderTemplateGrid();
 }
 
 function renderTemplateGrid(){
   const grid = document.getElementById('tpl-grid'); if(!grid) return;
+  const status = document.getElementById('tpl-status');
   const all = getAllTemplates();
+  const ts = _getTSTemplates();
+  // Status line: explicit about module state so user knows when list is complete.
+  if(status){
+    if(ts === null){
+      status.innerHTML = '<span style="color:var(--or,#f97316)">⏳ TS-Modul lädt noch — Messe-Vorlagen erscheinen gleich automatisch.</span>';
+    } else {
+      status.textContent = all.length + ' Vorlagen geladen · CSC: '+(ROOM_TEMPLATES.length)+' · Projekt (TS): '+ts.length;
+    }
+  }
   const filtered = _tplFilter==='all' ? all : all.filter(t=>t.tag===_tplFilter);
   if(filtered.length===0){
-    grid.innerHTML = '<div style="grid-column:1/-1;padding:20px;text-align:center;color:var(--tx3);font-size:11px">Keine Vorlagen in dieser Kategorie</div>';
+    const hint = (ts===null)
+      ? 'Modul lädt noch — Filter <b>CSC</b> wählen oder kurz warten.'
+      : 'Keine Vorlagen in dieser Kategorie.';
+    grid.innerHTML = '<div style="grid-column:1/-1;padding:20px;text-align:center;color:var(--tx3);font-size:11px">'+hint+'</div>';
     return;
   }
   grid.innerHTML = filtered.map(t=>{
