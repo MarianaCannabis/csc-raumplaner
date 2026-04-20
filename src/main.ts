@@ -82,6 +82,8 @@ declare global {
     cscTemplates: {
       list: StandTemplate[];
       find: typeof findTemplate;
+      /** Defensive alias for list — some diagnostic snippets call .all(). */
+      all: () => StandTemplate[];
     };
     cscBudget: {
       calc: typeof calcMesseBudget;
@@ -104,7 +106,12 @@ window.cscEnv = environment;
 window.cscCredits = { list: CREDITS, renderHtml: renderCreditsHtml };
 window.cscGrounds = { materials: GROUND_MATERIALS, find: findGroundMaterial, loadMaterial: loadGroundMaterial };
 window.cscImageUpload = { processUpload, estimateBytes: estimateImageMapBytes };
-window.cscTemplates = { list: STAND_TEMPLATES, find: findTemplate };
+window.cscTemplates = {
+  list: STAND_TEMPLATES,
+  find: findTemplate,
+  all: () => STAND_TEMPLATES,
+};
+console.info('[csc] templates bridge ready', STAND_TEMPLATES.length, 'project templates');
 window.cscBudget = { calc: calcMesseBudget, fmtEUR };
 window.cscPacklist = { build: buildPackList };
 
