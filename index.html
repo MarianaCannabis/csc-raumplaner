@@ -15956,6 +15956,31 @@ async function suggestNextStep(){
   panel.style.display='block';
 
   let hint='', btns=[];
+  // P5.0 UX: Empty-canvas Start-Flow
+  if(!rooms.length && !(typeof grounds !== 'undefined' && grounds.length)){
+    // Restore-Prompt wenn ein gespeicherter Stand vorliegt
+    if(window._pendingAutoRestore){
+      const p = window._pendingAutoRestore;
+      const ago = Math.round((Date.now()-p.ts)/60000);
+      const agoTxt = ago<2?'gerade eben':ago<60?ago+' Min.':Math.round(ago/60)+' Std.';
+      hint = '🔄 <b>Letzter Stand verfügbar</b> — '+p.roomCount+' Raum/Räume, gespeichert vor '+agoTxt+'.<br>Wiederherstellen?';
+      content.innerHTML = hint;
+      actions.innerHTML =
+        '<button class="mbt ok" onclick="acceptPendingRestore()" style="flex:1;padding:6px 8px;font-size:11px">✅ Ja, laden</button>'+
+        '<button class="mbt" onclick="dismissPendingRestore()" style="flex:1;padding:6px 8px;font-size:11px">Nein, leer starten</button>'+
+        '<button class="mbt" onclick="neverRestoreAgain()" style="flex:1;padding:6px 8px;font-size:10px;color:var(--tx3)">Nicht mehr fragen</button>';
+      return;
+    }
+    // Empty canvas — show 4 prominente Start-Optionen
+    hint = '🏗️ <b>Starte dein Projekt</b><br><span style="font-size:10px;color:var(--tx3)">Canvas ist leer. Wähle wie du loslegst:</span>';
+    content.innerHTML = hint;
+    actions.innerHTML =
+      '<button class="mbt ok" onclick="openTemplates()" style="flex:1 1 45%;padding:8px;font-size:11px">📋 Vorlage laden</button>'+
+      '<button class="mbt ok" onclick="set2DTool(\'room\')" style="flex:1 1 45%;padding:8px;font-size:11px">⬜ Raum zeichnen</button>'+
+      '<button class="mbt ok" onclick="openGroundMaterialPicker()" style="flex:1 1 45%;padding:8px;font-size:11px">🟫 Fläche zeichnen</button>'+
+      '<button class="mbt" onclick="showRight(\'save\')" style="flex:1 1 45%;padding:8px;font-size:11px">📂 Projekt laden</button>';
+    return;
+  }
   if(!rooms.length){
     hint='⬜ Starte mit dem Zeichnen deiner Räume. Nutze <b>🏗 Vorlagen</b> für einen sofortigen Start!';
     btns=[{label:'🏗 Vorlage laden',fn:'openTemplates()'}];
@@ -20261,19 +20286,11 @@ function saveToIDB(){
 }
 
 function loadFromIDB(){
-  if(!_idb||!projName) return;
-  try{
-    const tx=_idb.transaction('projects','readonly');
-    const req=tx.objectStore('projects').get(projName);
-    req.onsuccess=e=>{
-      const d=e.target.result;
-      if(d&&d._ts>((+localStorage.getItem('csc-autosave-ts'))||0)){
-        rooms=d.rooms||rooms; objects=d.objects||objects;
-        rebuild3D(); draw2D(); renderLeft();
-        toast('💾 Projekt aus IDB geladen','b');
-      }
-    };
-  }catch(e){}
+  // P5.0 UX: kein silent-apply mehr. Explizite User-Aktion (z.B. Projekt
+  // aus Versions-Panel wählen) muss ein IDB-Projekt laden. Funktion
+  // behält die Existenz für manuelle Aufrufer, tut aber beim App-Start
+  // nichts automatisch.
+  return;
 }
 
 function queueOfflineAction(type,data){
@@ -21206,22 +21223,46 @@ setTimeout(suggestNextStep,3000);
 setTimeout(initLiveCollaboration, 2000);
 loadSharedProject();
 loadVisionShare();
-// ── Auto-restore last session ──────────────────────────────────────
-(function autoRestore(){
+// ── P5.0 UX: Opt-in restore statt silent autoRestore ───────────────
+// Startet IMMER mit leerem Canvas. Wenn ein gespeicherter Stand vorliegt
+// und der User ihn nicht dauerhaft ausgeblendet hat, setzt diese IIFE
+// window._pendingAutoRestore für das nextstep-panel (zeigt dort einen
+// expliziten „Letzten Stand wiederherstellen?"-Prompt).
+window._pendingAutoRestore = null;
+(function collectPendingRestore(){
+  if(localStorage.getItem('csc-never-restore') === '1') return;
   const saved = localStorage.getItem('csc-autosave');
   const ts    = +(localStorage.getItem('csc-autosave-ts')||0);
   if(!saved) return;
-  // Only auto-restore if saved within last 7 days and has content
-  if(Date.now()-ts > 7*24*3600*1000) return;
+  if(Date.now()-ts > 14*24*3600*1000) return; // älter als 2 Wochen: ignorieren
   try {
     const s = JSON.parse(saved);
-    if(!s.rooms || s.rooms.length === 0) return; // empty, skip
-    _restoreSnapshot(saved);
-    const ago = Math.round((Date.now()-ts)/60000);
-    const agoStr = ago<60 ? ago+'min' : Math.round(ago/60)+'h';
-    toast('🔄 Letzter Stand wiederhergestellt (vor '+agoStr+')', 'g');
+    if(!s.rooms || s.rooms.length === 0) return;
+    window._pendingAutoRestore = { saved, ts, roomCount: s.rooms.length };
   } catch(e) {}
 })();
+
+// User-actions for the restore prompt — wired from suggestNextStep.
+function acceptPendingRestore(){
+  if(!window._pendingAutoRestore) return;
+  try {
+    _restoreSnapshot(window._pendingAutoRestore.saved);
+    const ago = Math.round((Date.now()-window._pendingAutoRestore.ts)/60000);
+    toast('🔄 Stand wiederhergestellt (vor '+(ago<60?ago+' Min.':Math.round(ago/60)+' Std.')+')','g');
+  } catch(e) { toast('Restore fehlgeschlagen: '+e.message,'r'); }
+  window._pendingAutoRestore = null;
+  if(typeof suggestNextStep==='function') suggestNextStep();
+}
+function dismissPendingRestore(){
+  window._pendingAutoRestore = null;
+  if(typeof suggestNextStep==='function') suggestNextStep();
+}
+function neverRestoreAgain(){
+  try { localStorage.setItem('csc-never-restore','1'); } catch(e) {}
+  window._pendingAutoRestore = null;
+  toast('Auto-Restore deaktiviert. Bei Bedarf "Letzten Stand zurückholen" manuell via Projekte-Panel.','b');
+  if(typeof suggestNextStep==='function') suggestNextStep();
+}
 showLeft('rooms');
 setView('2d');
 animate(0);
@@ -21230,20 +21271,10 @@ setTimeout(buildSkySphere,800);
 
 if(window.pdfjsLib) window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
 
-// Demo rooms — nur beim allerersten Start (kein gespeicherter Zustand)
-if(!localStorage.getItem('csc-autosave') && rooms.length===0){
-  addRoom({name:'Empfang & Ausgabe',x:0,y:0,w:9,d:7,h:2.8,floorColor:'#c4b08a',wallColor:'#ddd4be',ceilColor:'#f0ece0'});
-  addRoom({name:'Lagerraum',x:9.15,y:0,w:4,d:7,h:2.8,floorColor:'#888888',wallColor:'#aaaaaa',ceilColor:'#cccccc'});
-  addRoom({name:'Sozialbereich',x:13.3,y:0,w:7,d:7,h:2.8,floorColor:'#8a9a7c',wallColor:'#c4ccb8',ceilColor:'#e8ece0'});
-  addRoom({name:'WC',x:0,y:7.15,w:3,d:3,h:2.5,floorColor:'#cccccc',wallColor:'#e0e0e0',ceilColor:'#f5f5f5'});
-  addObject({typeId:'aus-theke',x:2,y:1.5,w:2.5,d:0.7,h:1.0,rot:0,py:0});
-  addObject({typeId:'w-sofa',x:0.5,y:4.5,w:2.1,d:0.85,h:0.75,rot:0,py:0});
-  addObject({typeId:'kuehlschr',x:10,y:0.5,w:0.7,d:0.7,h:2.0,rot:0,py:0});
-  addObject({typeId:'regal',x:10.8,y:0.5,w:1.0,d:0.4,h:2.0,rot:0,py:0});
-  addObject({typeId:'l-sofa',x:14,y:1.5,w:2.2,d:0.9,h:0.75,rot:0,py:0});
-  addObject({typeId:'etisch',x:15.5,y:3.5,w:1.8,d:0.9,h:0.75,rot:0,py:0});
-  addObject({typeId:'infowand',x:13.3,y:0.5,w:1.5,d:0.08,h:1.8,rot:90,py:0});
-}
+// P5.0 UX: Demo-Räume entfernt — neue User starten mit leerem Canvas
+// und wählen via Template-Picker oder Draw-Tool selbst ihren Einstieg.
+// Die bestehende autoRestore-Logik (oben) legt auch nicht mehr automatisch
+// los; statt silent-restore zeigt nextstep-panel einen opt-in Prompt.
 
 // Center view
 vpX=30; vpY=50; vpZoom=42;
@@ -21261,22 +21292,10 @@ setTimeout(()=>toast('🌿 v3.56 | KI ✓ · Türen ✓ · 3D-Edit · Design','g
 // _autoSaveReady declared in STATE block
 
 function initAutoSave(){
-  // Try to restore last session
-  try {
-    const saved = localStorage.getItem('csc-autosave');
-    const ts    = +(localStorage.getItem('csc-autosave-ts')||0);
-    if(saved && (Date.now()-ts) < 14*24*3600*1000){
-      const s = JSON.parse(saved);
-      if(s.rooms && s.rooms.length > 0){
-        _restoreSnapshot(saved);
-        const ago   = Math.round((Date.now()-ts)/60000);
-        const agoTxt= ago<2?'gerade eben':ago<60?ago+' Min.':Math.round(ago/60)+' Std.';
-        setTimeout(()=>toast('🔄 Letzter Stand geladen (vor '+agoTxt+')','g'),400);
-      }
-    }
-  } catch(e){ console.warn('AutoRestore failed:',e); }
-
-  // Enable auto-saving from now on
+  // P5.0 UX: Auto-restore wurde entfernt — der restore-Pfad läuft jetzt
+  // ausschließlich opt-in über das nextstep-panel (s. acceptPendingRestore).
+  // Hier nur noch Auto-Save-Writes aktivieren, damit User-Änderungen ab
+  // jetzt gesichert werden.
   _autoSaveReady = true;
   renderVersionHistory();
   toast('🌿 v3.56 | Auto-Save aktiv','g');
