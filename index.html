@@ -22,6 +22,17 @@
   <link rel="icon" href="icon-placeholder.svg" type="image/svg+xml">
 <title>CSC Raumplaner v1.0 🌿</title>
 <style>
+/* P8.5 — prefers-reduced-motion: Transitions + Animationen für
+   User die Motion reduzieren wollen (WCAG 2.3.3, Barrierefreiheit) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 :root{
   --bg:#111;--bg2:#191919;--bg3:#212121;--bg4:#2a2a2a;
   --bd:#2e2e2e;--bd2:#3a3a3a;
