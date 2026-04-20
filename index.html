@@ -7462,6 +7462,12 @@ async function loadProjectPois(){
   }
 }
 function saveProj(){
+  // P9.6: Soft-Limit-Check (Free-Tier: max 3 Projekte)
+  if(window.cscPlan){
+    const saves=JSON.parse(localStorage.getItem('csc-saves3')||'{}');
+    const existing = Object.keys(saves).filter(k => k !== projName).length;
+    if(!window.cscPlan.check('projects', existing)) return; // bricht bei Limit
+  }
   const saves=JSON.parse(localStorage.getItem('csc-saves3')||'{}');
   saves[projName]={data:getPD(),at:new Date().toISOString()};
   localStorage.setItem('csc-saves3',JSON.stringify(saves));
