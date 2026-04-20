@@ -2,13 +2,25 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-  <meta name="theme-color" content="#111111">
+  <meta name="theme-color" content="#0a0f14">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="CSC Planer">
-  <link rel="manifest" id="pwa-manifest">
+  <link rel="manifest" href="manifest.webmanifest">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CSC Raumplaner v3 🌿</title>
+  <!-- P8.5 Preconnects — TLS-Handshake zu kritischen Backend-Hosts vorwärmen -->
+  <link rel="preconnect" href="https://wvkjkdwahsqozeupoxpj.supabase.co" crossorigin>
+  <link rel="dns-prefetch" href="https://ambientcg.com">
+  <!-- P8.8 Open-Graph/Twitter-Card — Link-Vorschau in WhatsApp/Twitter/LinkedIn -->
+  <meta property="og:title" content="CSC Raumplaner Pro 🌿">
+  <meta property="og:description" content="Professionelle Planung für Cannabis Social Clubs und Messestände — KCanG-compliant, 3D, 260+ Items">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://marianacannabis.github.io/csc-raumplaner/">
+  <meta property="og:locale" content="de_DE">
+  <meta name="twitter:card" content="summary">
+  <meta name="description" content="CSC Raumplaner Pro — Cannabis Social Club + Messestand-Planer mit KCanG-Compliance, Magic-Link-Login, 2D+3D-Ansicht, Image-Upload auf Banner/Theken, PDF-Regel-Import, Cloud-Save.">
+  <link rel="icon" href="icon-placeholder.svg" type="image/svg+xml">
+<title>CSC Raumplaner v1.0 🌿</title>
 <style>
 :root{
   --bg:#111;--bg2:#191919;--bg3:#212121;--bg4:#2a2a2a;
@@ -3731,6 +3743,98 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 'use strict';
+
+// ════════════════════════════════════════════════════════════════════════
+// P8.1 — Error Resilience + PWA Bootstrap
+// ════════════════════════════════════════════════════════════════════════
+// Globale Crash-Handler + Service-Worker-Register + Retry-Fetch. Läuft
+// noch VOR der restlichen App, damit frühe Crashes auch abgefangen werden.
+
+// Service Worker (nur https + prod)
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  window.addEventListener('load', () => {
+    // SW-Pfad relativ zur Seite; GitHub-Pages Subpath wird automatisch korrekt.
+    const swPath = location.pathname.replace(/[^/]*$/, '') + 'sw.js';
+    navigator.serviceWorker.register(swPath).catch((e) => {
+      console.warn('[csc-sw] registration failed', e);
+    });
+  });
+}
+
+// Globaler Crash-Handler: fängt unhandled errors + promise rejections,
+// zeigt ein minimalistisches Error-Modal. Autosave läuft ohnehin parallel
+// alle 30s in IndexedDB (siehe _idbAutoSave weiter unten), also ist
+// Datenverlust bei Crash nicht garantiert aber deutlich unwahrscheinlicher.
+let _crashShown = false;
+function _showCrashModal(msg){
+  if(_crashShown) return; _crashShown = true;
+  const m = document.createElement('div');
+  m.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+  m.innerHTML = '<div style="background:#0a0f14;border:1px solid #ef4444;border-radius:10px;padding:24px;max-width:440px;color:#e0e6ed;font-family:system-ui">' +
+    '<h2 style="margin:0 0 10px;color:#ef4444;font-size:18px">⚠ Etwas ist schiefgelaufen</h2>' +
+    '<p style="font-size:13px;line-height:1.5;color:#a0aec0">Die App hat einen Fehler gemeldet. Dein Projekt ist auto-gespeichert (alle 30s in IndexedDB). Bitte die Seite neu laden.</p>' +
+    '<details style="margin-top:8px;font-size:11px;color:#666"><summary>Technischer Fehler</summary><pre style="overflow-x:auto;margin-top:6px">' + (msg || '(unbekannt)').replace(/[<>]/g,'') + '</pre></details>' +
+    '<div style="display:flex;gap:6px;margin-top:14px;justify-content:flex-end">' +
+    '<button onclick="this.closest(\'div\').parentNode.remove();" style="background:#2a2a2a;color:#e0e6ed;border:1px solid #3a3a3a;border-radius:4px;padding:6px 14px;cursor:pointer">Schließen</button>' +
+    '<button onclick="location.reload();" style="background:#4ade80;color:#0a0f14;border:none;border-radius:4px;padding:6px 14px;cursor:pointer;font-weight:600">Neu laden</button>' +
+    '</div></div>';
+  document.body.appendChild(m);
+}
+window.addEventListener('error', (e) => {
+  // User-Code-Errors rauspicken, Three.js-Warnings ignorieren
+  const msg = e && e.message ? e.message : '';
+  if(/ResizeObserver|Non-error promise rejection|Script error\.?$/i.test(msg)) return;
+  console.error('[csc-crash]', msg, e);
+  _showCrashModal(msg + (e.filename ? ' @ ' + e.filename + ':' + e.lineno : ''));
+});
+window.addEventListener('unhandledrejection', (e) => {
+  const r = e && e.reason;
+  const msg = r && r.message ? r.message : String(r);
+  if(/abort|cancel|NetworkError when attempting/i.test(msg)) return;
+  console.error('[csc-rejection]', msg, r);
+  _showCrashModal(msg);
+});
+
+// P8.1 Retry-Wrapper: exponential backoff für transient Network-Errors.
+// Bei 4xx-Responses sofort zurückgeben (der Caller entscheidet), nur
+// NetworkError + 5xx kriegen bis 3 Retries (400ms, 1200ms, 3600ms).
+window.fetchRetry = async function(url, opts, retries){
+  retries = retries || 3;
+  let lastErr;
+  for(let i = 0; i < retries; i++){
+    try {
+      const r = await fetch(url, opts);
+      if(r.status >= 500 && i < retries - 1){
+        await new Promise((res) => setTimeout(res, 400 * Math.pow(3, i)));
+        continue;
+      }
+      return r;
+    } catch(e){
+      lastErr = e;
+      if(i < retries - 1) await new Promise((res) => setTimeout(res, 400 * Math.pow(3, i)));
+    }
+  }
+  throw lastErr;
+};
+
+// Auto-Save in IndexedDB alle 30s. IDB-Boot selbst geschieht in
+// initIDB() weiter unten (bestehender Code); wir hooken uns mit einem
+// Interval ein sobald _idb verfügbar ist.
+(function autoSaveLoop(){
+  setInterval(() => {
+    try {
+      if(typeof _idb !== 'undefined' && _idb && typeof saveToIDB === 'function') saveToIDB();
+      // localStorage-Autosave als Fallback (existing System)
+      if(typeof getPD === 'function' && typeof _autoSaveReady !== 'undefined' && _autoSaveReady){
+        try {
+          const state = JSON.stringify({ data: getPD(), _ts: Date.now() });
+          localStorage.setItem('csc-autosave', state);
+          localStorage.setItem('csc-autosave-ts', String(Date.now()));
+        } catch(e){ /* Quota exceeded — silent skip */ }
+      }
+    } catch(e){ /* never interrupt the app on autosave errors */ }
+  }, 30000);
+})();
 
 // ── Late-declared vars moved here to avoid TDZ ──────────────────────
 var currentMood;           // lighting/mood preset; buildSkySphere() reads this
