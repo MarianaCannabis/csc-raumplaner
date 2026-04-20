@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Über · CSC Raumplaner Pro</title>
+<style>
+body{font-family:system-ui,-apple-system,sans-serif;max-width:780px;margin:0 auto;padding:24px;background:#0a0f14;color:#e0e6ed;line-height:1.6}
+h1{color:#4ade80;border-bottom:1px solid #2d3748;padding-bottom:8px}
+h2{color:#4ade80;margin-top:28px;font-size:18px}
+a{color:#4ade80}
+.nav{margin-bottom:16px;font-size:13px}
+.badge{display:inline-block;padding:2px 8px;background:rgba(74,222,128,.15);color:#4ade80;border:1px solid #4ade80;border-radius:10px;font-size:11px;margin-left:6px}
+code{background:#1a2230;padding:2px 6px;border-radius:3px;font-size:12px}
+ul{padding-left:22px}
+</style>
+</head>
+<body>
+<div class="nav"><a href="./">← Zurück zur App</a> · <a href="./privacy.html">Datenschutz</a> · <a href="./impressum.html">Impressum</a></div>
+
+<h1>🌿 CSC Raumplaner Pro <span class="badge">v1.0.0</span></h1>
+
+<p style="font-size:14px">Professionelle Planungs-App für <b>Cannabis Social Clubs (KCanG)</b> und <b>Messestände</b> — 2D + 3D, Compliance-Live-Check, Cloud-Save, KI-Features.</p>
+
+<h2>Mission</h2>
+<p>
+CSC-Betreiber brauchen einen schnellen Weg, ihre Ausgabestelle zu planen und gegen die § des KCanG zu prüfen, ohne CAD-Lizenzen oder Architektur-Studium. Der Raumplaner liefert einen kompletten Workflow: Vorlage wählen → Räume + Objekte + Material-Flächen → KCanG-Check → Export an Bauzeichner/Messebauer — browser-basiert, kostenlos, open-source.
+</p>
+
+<h2>Technologie-Stack</h2>
+<ul>
+<li><b>Frontend:</b> Vanilla JS Legacy-Core (21k Lines) + progressiver Strangler-Umzug auf TypeScript unter <code>src/</code> (Vite-Bundler)</li>
+<li><b>3D:</b> Three.js r184 mit PBR-Materialien (MeshStandardMaterial, MeshPhysicalMaterial), Shadow-Mapping PCFSoft, UnrealBloomPass, HDRI-Environment-Maps</li>
+<li><b>Compliance-Engine:</b> eigene Rule-Registry mit 21 Regeln aus dem KCanG 2024 (inkl. messe-specific Rules), lebt in <code>src/compliance/</code></li>
+<li><b>KI:</b> Anthropic Claude via Supabase Edge-Function (API-Key server-side), Vision-API für PDF-Messeordnungs-Extraktion</li>
+<li><b>Backend:</b> Supabase (Postgres + Auth + Realtime + Edge-Functions), RLS auf allen Tabellen</li>
+<li><b>PWA:</b> Service Worker (network-first HTML, cache-first Assets), offline-fähig, installierbar</li>
+</ul>
+
+<h2>Open-Source + Credits</h2>
+<p>
+Der App-Code steht unter MIT-Lizenz. Source Code:
+<a href="https://github.com/MarianaCannabis/csc-raumplaner">github.com/MarianaCannabis/csc-raumplaner</a>.
+</p>
+<p>
+Assets (alle CC0-lizenziert):
+</p>
+<ul>
+<li><b>Poly Haven</b> — HDRIs (studio_small_08, dikhololo_night)</li>
+<li><b>ambientCG</b> — PBR-Texturen (Wood, Metal, Fabric, Plastic, Concrete, Grass, Gravel, Dirt, Asphalt, Tiles)</li>
+<li><b>Kenney.nl</b> — Furniture Kit 2.0 (54 CC0-Modelle)</li>
+<li><b>Quaternius</b> via Poly Pizza — Ultimate House Interior Pack (82 Modelle)</li>
+</ul>
+
+<h2>Changelog</h2>
+<p>
+Vollständige Versionshistorie in <a href="https://github.com/MarianaCannabis/csc-raumplaner/blob/main/CHANGELOG.md">CHANGELOG.md</a>.
+Kurzversion:
+</p>
+<ul>
+<li><b>v1.0.0</b> (2026-04-21) — Launch-Release. Error-Resilience, PWA, Help-System, DSGVO, Vitest, a11y, Monitoring-Hooks.</li>
+<li>v0.7 (P7 Post-Test-Bug-Bash) — KCanG-Dashboard prominent, Category-Fallback-Builder, Bloom + HDRI-Fixes.</li>
+<li>v0.6 (P6 Launch-Readiness-Teil 1) — Templates-Series, Universal-Image-Upload, DXF/CSV-Export, Visual History, First-Person-Walk-Polish, Mobile UI, Realtime-Collab, PDF-Import.</li>
+<li>v0.5 (P5) — 260+ Katalog-Items, Messe-Templates, Audit-Fix-Actions.</li>
+<li>v0.4 (P4) — Ground-Planes mit 12 Materials, Image-Upload auf Oberflächen, Messe-Budget-Kalkulator, Packliste, Hochauflösende Visualisierung.</li>
+<li>v0.3 (P3) — Rich-Primitive-Builder, HDRI-Env, Bloom-Post-Processing.</li>
+<li>v0.2 (P2) — Function-Audit, TS-Compliance-Engine, zentrale Defaults.</li>
+<li>v0.1 (P0/P1) — Security-Foundation (RLS, Edge-Function), Magic-Link-Auth, Vite-Bundler, Strangler-Start.</li>
+</ul>
+
+<h2>Contact</h2>
+<p>
+Betrieb: <a href="https://cscsdeutschland.de">cscsdeutschland.de</a><br>
+Issues + Feature-Requests: <a href="https://github.com/MarianaCannabis/csc-raumplaner/issues">GitHub Issues</a>
+</p>
+
+<div class="nav" style="margin-top:32px"><a href="./">← Zurück zur App</a></div>
+</body>
+</html>
