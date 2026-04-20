@@ -2279,6 +2279,12 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
             onchange="projMeta.preventionOfficer=this.value; if(typeof renderComplianceBadges==='function') renderComplianceBadges();"
             style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
         </div>
+        <div class="mf" style="margin-top:8px">
+          <label style="font-size:10px;color:var(--tx3)" title="Messe-Mode: alle platzierten Objekte werden gegen diesen Wert geprüft. Leer lassen = aus.">Messe-Höhenbegrenzung (m)</label>
+          <input type="number" id="pm-max-height" min="0" step="0.1" placeholder="z.B. 2.5"
+            onchange="projMeta.maxHeight=this.value?+this.value:null; if(typeof renderComplianceBadges==='function') renderComplianceBadges();"
+            style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
+        </div>
         <label style="font-size:11px;color:var(--tx2);display:flex;align-items:center;gap:6px;margin-top:6px">
           <input type="checkbox" id="pm-windows-filmed"
             onchange="projMeta.windowsFilmed=this.checked; if(typeof renderComplianceBadges==='function') renderComplianceBadges();">
@@ -6438,6 +6444,8 @@ function syncMetaUI(){
   if(v) v.checked = !!projMeta.ageVerification;
   if(po) po.value = projMeta.preventionOfficer || '';
   if(wf) wf.checked = !!projMeta.windowsFilmed;
+  const mh = document.getElementById('pm-max-height');
+  if(mh) mh.value = projMeta.maxHeight != null ? projMeta.maxHeight : '';
   if(p) p.textContent = projMeta.pois && projMeta.pois.length != null
     ? '✓ ' + projMeta.pois.length + ' POI(s) geladen'
     : '';
