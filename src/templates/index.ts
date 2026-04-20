@@ -202,10 +202,190 @@ const GENERIC_SHOWROOM: StandTemplate = {
   meta: { maxHeight: 4.0, messeDays: 4 },
 };
 
+// =============================================================================
+// Zusätzliche Mari-Jane-Größen (P5.4)
+// =============================================================================
+
+// Kopfstand 18 m² — 3 Seiten offen, eine Rückwand. Prestige-Variante
+// zwischen Reihe und Eck. Häufigste Größe bei Mari-Jane 2024/2025.
+const MARI_JANE_KOPFSTAND_18: StandTemplate = {
+  id: 'mari-jane-kopfstand-18m2',
+  name: 'Mari-Jane Kopfstand 18 m²',
+  icon: '📐',
+  desc: 'Kopfstand 6×3 m — einzelne Rückwand, 3 Seiten offen',
+  size: '18 m²',
+  tag: 'messe',
+  rooms: [
+    { name: 'Kopfstand', x: 0, y: 0, w: 6, d: 3, h: 2.5, floorColor: '#3a5a3a', wallColor: '#ffffff' },
+  ],
+  objects: [
+    { typeId: 'msg-backwall-4', x: 1, y: 0.05, rot: 0 },
+    { typeId: 'msg-counter-front', x: 2.1, y: 1.5, rot: 0 },
+    { typeId: 'p-office-chair', x: 2.2, y: 0.9, rot: 180 },
+    { typeId: 'p-office-chair', x: 3.0, y: 0.9, rot: 180 },
+    { typeId: 'msg-rollup', x: 0.3, y: 2.3, rot: 0 },
+    { typeId: 'msg-rollup', x: 5.3, y: 2.3, rot: 0 },
+    { typeId: 'msg-led-wall', x: 2.5, y: 0.2, rot: 0, py: 0.7 },
+    { typeId: 'msg-flag', x: 5.6, y: 2.7, rot: 0 },
+    { typeId: 'p-potted-plant-m', x: 0.3, y: 2.5, rot: 0 },
+    { typeId: 'p-potted-plant-m', x: 5.3, y: 0.3, rot: 0 },
+  ],
+  meta: { maxHeight: 2.5, messeDays: 3 },
+};
+
+const MARI_JANE_REIHE_6: StandTemplate = {
+  id: 'mari-jane-reihenstand-6m2',
+  name: 'Mari-Jane Reihenstand 6 m²',
+  icon: '📐',
+  desc: 'Minimal-Reihenstand 3×2 m — Rückwand + Counter, Basisbestückung',
+  size: '6 m²',
+  tag: 'messe',
+  rooms: [
+    { name: 'Reihenstand Klein', x: 0, y: 0, w: 3, d: 2, h: 2.5, floorColor: '#3a5a3a', wallColor: '#ffffff' },
+  ],
+  objects: [
+    { typeId: 'msg-backwall-3', x: 0, y: 0.05, rot: 0 },
+    { typeId: 'msg-counter-front', x: 0.6, y: 1.4, rot: 180 },
+    { typeId: 'p-office-chair', x: 0.7, y: 0.8, rot: 180 },
+    { typeId: 'msg-rollup', x: 0.2, y: 1.6, rot: 0 },
+    { typeId: 'msg-flag', x: 2.6, y: 1.7, rot: 0 },
+  ],
+  meta: { maxHeight: 2.5, messeDays: 3 },
+};
+
+const MARI_JANE_REIHE_9: StandTemplate = {
+  id: 'mari-jane-reihenstand-9m2',
+  name: 'Mari-Jane Reihenstand 9 m²',
+  icon: '📐',
+  desc: 'Standard-Reihenstand 3×3 m — Rückwand + Counter + Lounge-Hocker',
+  size: '9 m²',
+  tag: 'messe',
+  rooms: [
+    { name: 'Reihenstand 9', x: 0, y: 0, w: 3, d: 3, h: 2.5, floorColor: '#3a5a3a', wallColor: '#ffffff' },
+  ],
+  objects: [
+    { typeId: 'msg-backwall-3', x: 0, y: 0.05, rot: 0 },
+    { typeId: 'msg-counter-front', x: 0.6, y: 1.5, rot: 0 },
+    { typeId: 'p-office-chair', x: 0.7, y: 0.9, rot: 180 },
+    { typeId: 'p-office-chair', x: 1.5, y: 0.9, rot: 180 },
+    { typeId: 'ev-barstool-high', x: 2.5, y: 2.2, rot: 0 },
+    { typeId: 'msg-rollup', x: 0.2, y: 2.5, rot: 0 },
+    { typeId: 'msg-flag', x: 2.6, y: 2.7, rot: 0 },
+    { typeId: 'p-potted-plant-m', x: 0.3, y: 2.5, rot: 0 },
+  ],
+  meta: { maxHeight: 2.5, messeDays: 3 },
+};
+
+const MARI_JANE_KOPFSTAND_24: StandTemplate = {
+  id: 'mari-jane-kopfstand-24m2',
+  name: 'Mari-Jane Kopfstand 24 m²',
+  icon: '📐',
+  desc: 'Großer Kopfstand 8×3 m — Doppel-Rückwand, Counter + Lounge',
+  size: '24 m²',
+  tag: 'messe',
+  rooms: [
+    { name: 'Kopfstand XL', x: 0, y: 0, w: 8, d: 3, h: 2.5, floorColor: '#3a5a3a', wallColor: '#ffffff' },
+  ],
+  objects: [
+    { typeId: 'msg-backwall-4', x: 0, y: 0.05, rot: 0 },
+    { typeId: 'msg-backwall-4', x: 4, y: 0.05, rot: 0 },
+    { typeId: 'msg-led-wall', x: 3.5, y: 0.2, rot: 0, py: 0.7 },
+    { typeId: 'msg-counter-front', x: 1.1, y: 1.5, rot: 0 },
+    { typeId: 'msg-counter-front', x: 5.1, y: 1.5, rot: 0 },
+    { typeId: 'p-sofa-2', x: 3.0, y: 2.2, rot: 180 },
+    { typeId: 'p-coffee-table', x: 3.5, y: 1.5, rot: 0 },
+    { typeId: 'msg-rollup', x: 0.2, y: 2.7, rot: 0 },
+    { typeId: 'msg-rollup', x: 7.3, y: 2.7, rot: 0 },
+    { typeId: 'msg-flag', x: 7.6, y: 2.7, rot: 0 },
+    { typeId: 'p-potted-plant-l', x: 0.3, y: 2.5, rot: 0 },
+    { typeId: 'p-potted-plant-l', x: 7.3, y: 0.3, rot: 0 },
+  ],
+  meta: { maxHeight: 2.5, messeDays: 3 },
+};
+
+const MARI_JANE_INSEL_72: StandTemplate = {
+  id: 'mari-jane-insel-72m2',
+  name: 'Mari-Jane Inselstand 72 m²',
+  icon: '🏝',
+  desc: 'XXL Inselstand 12×6 m — offen, Bar-Lounge + Konferenzzone',
+  size: '72 m²',
+  tag: 'messe',
+  rooms: [
+    { name: 'Insel XXL', x: 0, y: 0, w: 12, d: 6, h: 2.5, floorColor: '#3a5a3a', wallColor: '#cccccc' },
+  ],
+  objects: [
+    // Zentrale LED-Wand-Tower
+    { typeId: 'msg-led-wall', x: 5.5, y: 2.5, rot: 0, py: 0.5 },
+    // U-Counter zentral
+    { typeId: 'msg-counter-front', x: 4.1, y: 3.0, rot: 0 },
+    { typeId: 'msg-counter-front', x: 4.1, y: 3.8, rot: 180 },
+    { typeId: 'p-reception', x: 6.0, y: 3.4, rot: 90 },
+    // Lounge-Zone 1 (links): Sofas + Couchtisch
+    { typeId: 'p-sofa-3', x: 0.5, y: 1.0, rot: 0 },
+    { typeId: 'p-sofa-2', x: 0.5, y: 3.0, rot: 0 },
+    { typeId: 'p-coffee-table', x: 1.5, y: 2.0, rot: 0 },
+    // Konferenz-Zone (rechts): Konferenztisch + Stühle
+    { typeId: 'p-conf-table', x: 8.5, y: 3.0, rot: 0 },
+    { typeId: 'p-office-chair', x: 8.3, y: 2.8, rot: 0 },
+    { typeId: 'p-office-chair', x: 10.0, y: 2.8, rot: 0 },
+    { typeId: 'p-office-chair', x: 8.3, y: 4.4, rot: 180 },
+    { typeId: 'p-office-chair', x: 10.0, y: 4.4, rot: 180 },
+    // Bar-Ecke (vorn rechts)
+    { typeId: 'ev-glass-bar', x: 9.5, y: 0.5, rot: 0 },
+    { typeId: 'ev-swivel-barstool', x: 9.3, y: 1.2, rot: 180 },
+    { typeId: 'ev-swivel-barstool', x: 10.1, y: 1.2, rot: 180 },
+    // 6 Beachflags
+    { typeId: 'msg-flag', x: 0.3, y: 0.3, rot: 0 },
+    { typeId: 'msg-flag', x: 11.5, y: 0.3, rot: 0 },
+    { typeId: 'msg-flag', x: 0.3, y: 5.7, rot: 0 },
+    { typeId: 'msg-flag', x: 11.5, y: 5.7, rot: 0 },
+    { typeId: 'msg-flag', x: 6.0, y: 0.3, rot: 0 },
+    { typeId: 'msg-flag', x: 6.0, y: 5.7, rot: 0 },
+    // Deko
+    { typeId: 'p-potted-plant-l', x: 1.0, y: 0.8, rot: 0 },
+    { typeId: 'p-potted-plant-l', x: 10.8, y: 5.0, rot: 0 },
+    { typeId: 'ev-string-lights-10', x: 1.0, y: 0.3, rot: 0, py: 2.4 },
+  ],
+  meta: { maxHeight: 2.5, messeDays: 3 },
+};
+
+// Generic Showroom-Varianten für andere Messen (Boot, Dmexco etc.)
+const GENERIC_SHOWROOM_24: StandTemplate = {
+  id: 'generic-showroom-24m2',
+  name: 'Showroom 24 m²',
+  icon: '🏢',
+  desc: 'Kompakter B2B-Showroom 6×4 m — Empfang + Präsentation',
+  size: '24 m²',
+  tag: 'showroom',
+  rooms: [
+    { name: 'Showroom 24', x: 0, y: 0, w: 6, d: 4, h: 4.0, floorColor: '#4a4a4a', wallColor: '#ffffff' },
+  ],
+  objects: [
+    { typeId: 'msg-backwall-3', x: 0, y: 0.05, rot: 0 },
+    { typeId: 'msg-backwall-3', x: 3, y: 0.05, rot: 0 },
+    { typeId: 'msg-led-wall', x: 2.5, y: 0.2, rot: 0, py: 0.7 },
+    { typeId: 'p-reception', x: 2.0, y: 2.0, rot: 0 },
+    { typeId: 'p-office-chair', x: 2.6, y: 2.4, rot: 180 },
+    { typeId: 'p-conf-table', x: 0.8, y: 2.8, rot: 0 },
+    { typeId: 'p-office-chair', x: 0.6, y: 2.6, rot: 0 },
+    { typeId: 'p-office-chair', x: 2.1, y: 2.6, rot: 0 },
+    { typeId: 'msg-rollup', x: 0.2, y: 3.5, rot: 0 },
+    { typeId: 'msg-rollup', x: 5.0, y: 3.5, rot: 0 },
+    { typeId: 'p-potted-plant-l', x: 0.3, y: 3.5, rot: 0 },
+  ],
+  meta: { maxHeight: 4.0, messeDays: 4 },
+};
+
 export const STAND_TEMPLATES: StandTemplate[] = [
+  MARI_JANE_REIHE_6,
+  MARI_JANE_REIHE_9,
   MARI_JANE_REIHE,
+  MARI_JANE_KOPFSTAND_18,
+  MARI_JANE_KOPFSTAND_24,
   MARI_JANE_ECK,
   MARI_JANE_INSEL,
+  MARI_JANE_INSEL_72,
+  GENERIC_SHOWROOM_24,
   GENERIC_SHOWROOM,
 ];
 
