@@ -2298,6 +2298,47 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
             onchange="projMeta.messeDays=this.value?+this.value:null;"
             style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
         </div>
+
+        <!-- P5.3: Audit-Fix-Actions — user-konfigurierbare Parameter -->
+        <div class="mf" style="margin-top:12px;padding-top:10px;border-top:1px solid var(--bd)">
+          <div style="font-size:10px;color:var(--gr);margin-bottom:6px">⚙ Berechnungs-Parameter</div>
+        </div>
+        <div class="mf">
+          <label style="font-size:10px;color:var(--tx3)" title="ASR A1.2 Standard = 2.0 m²/Person. Konferenz-Layout ggf. 1.5, gemütliches Lounge 3.0.">Kapazität: m²/Person</label>
+          <input type="number" id="pm-sqm-per-person" min="0.5" max="10" step="0.1" placeholder="2.0"
+            onchange="projMeta.sqmPerPerson=this.value?+this.value:null; if(typeof renderComplianceBadges==='function') renderComplianceBadges();"
+            style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
+        </div>
+        <div class="mf" style="margin-top:6px">
+          <label style="font-size:10px;color:var(--tx3)" title="Wenn gesetzt: Feuerlöscher-Bedarf zusätzlich zu ASR-Regel auch über ceil(Personen/100) auslegen.">Geplante Personenzahl (Fire-Safety)</label>
+          <input type="number" id="pm-planned-people" min="0" max="2000" step="1" placeholder="auto"
+            onchange="projMeta.plannedPeopleCount=this.value?+this.value:null; if(typeof renderComplianceBadges==='function') renderComplianceBadges();"
+            style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
+        </div>
+        <div class="mf" style="margin-top:6px">
+          <label style="font-size:10px;color:var(--tx3)" title="Dämmstandard beeinflusst Energiebedarf im Energie-Ausweis.">Dämmstandard (Energie)</label>
+          <select id="pm-energy-class"
+            onchange="projMeta.energyClass=this.value||null;"
+            style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
+            <option value="">Standard (GEG 2024)</option>
+            <option value="GEG2024">GEG 2024 — Neubau</option>
+            <option value="EnEV2016">EnEV 2016 — Bestand</option>
+            <option value="KfW55">KfW-55 — saniert</option>
+            <option value="KfW40">KfW-40 — hochsaniert</option>
+          </select>
+        </div>
+        <div class="mf" style="margin-top:6px">
+          <label style="font-size:10px;color:var(--tx3)" title="Budget-Obergrenze. Warnung wenn geschätzte Kosten überschritten.">Budget-Obergrenze (€)</label>
+          <input type="number" id="pm-budget-cap" min="0" step="100" placeholder="keine"
+            onchange="projMeta.budgetCap=this.value?+this.value:null;"
+            style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
+        </div>
+        <div class="mf" style="margin-top:6px">
+          <label style="font-size:10px;color:var(--tx3)" title="AI-Security-Audit Schwellwert (0-100). Score darunter = als kritisch markiert.">AI-Security-Schwellwert (%)</label>
+          <input type="number" id="pm-security-threshold" min="0" max="100" step="5" placeholder="60"
+            onchange="projMeta.securityThresholdPct=this.value?+this.value:null;"
+            style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
+        </div>
         <button class="tbt" onclick="openMesseBudget()" style="margin-top:6px;padding:6px;border-color:var(--gr3);color:var(--gr);font-size:11px">💰 Messe-Kosten schätzen</button>
         <button class="tbt" onclick="openPacklist()" style="margin-top:4px;padding:6px;border-color:var(--gr3);color:var(--gr);font-size:11px">📦 Packliste generieren</button>
         <button class="tbt" onclick="openM('m-visualize')" style="margin-top:4px;padding:6px;border-color:var(--gr3);color:var(--gr);font-size:11px">📸 Hochauflösende Visualisierung</button>
@@ -6708,6 +6749,17 @@ function syncMetaUI(){
   if(mh) mh.value = projMeta.maxHeight != null ? projMeta.maxHeight : '';
   const md = document.getElementById('pm-messe-days');
   if(md) md.value = projMeta.messeDays != null ? projMeta.messeDays : '';
+  // P5.3: Audit-Fix-Action Parameter
+  const spp = document.getElementById('pm-sqm-per-person');
+  if(spp) spp.value = projMeta.sqmPerPerson != null ? projMeta.sqmPerPerson : '';
+  const pp = document.getElementById('pm-planned-people');
+  if(pp) pp.value = projMeta.plannedPeopleCount != null ? projMeta.plannedPeopleCount : '';
+  const ec = document.getElementById('pm-energy-class');
+  if(ec) ec.value = projMeta.energyClass || '';
+  const bc = document.getElementById('pm-budget-cap');
+  if(bc) bc.value = projMeta.budgetCap != null ? projMeta.budgetCap : '';
+  const st = document.getElementById('pm-security-threshold');
+  if(st) st.value = projMeta.securityThresholdPct != null ? projMeta.securityThresholdPct : '';
   if(p) p.textContent = projMeta.pois && projMeta.pois.length != null
     ? '✓ ' + projMeta.pois.length + ' POI(s) geladen'
     : '';
@@ -10327,14 +10379,18 @@ function calcCapacity(){
   const filtered = rooms.filter(r=>(r.floorId||'eg')===curFloor);
   if(window.cscCompliance && window.cscCompliance.metrics && typeof window.cscCompliance.metrics.calcCapacity === 'function'){
     try {
-      const r = window.cscCompliance.metrics.calcCapacity(filtered);
+      // P5.3: projMeta mitgeben für user-konfigurierbares sqmPerPerson
+      const r = window.cscCompliance.metrics.calcCapacity(filtered, projMeta);
       return { total: r.total, details: r.details };
     } catch(err){
       console.warn('[metrics] calcCapacity delegate failed, using legacy fallback', err);
     }
   }
   // Legacy fallback — pre-P2.1a inline path (identical math).
-  const SQM_PER_PERSON = 2.0;
+  // P5.3: respektiere auch hier den Meta-Override.
+  const SQM_PER_PERSON = (projMeta && typeof projMeta.sqmPerPerson === 'number' && projMeta.sqmPerPerson > 0)
+    ? projMeta.sqmPerPerson
+    : 2.0;
   let total = 0;
   const details = [];
   filtered.forEach(r=>{
@@ -19270,7 +19326,8 @@ function generateEnergyCertificate(){
   const metrics = window.cscCompliance && window.cscCompliance.metrics;
   let r;
   if(metrics && typeof metrics.energyCertificate === 'function'){
-    try { r = metrics.energyCertificate(rooms); }
+    // P5.3: Dämmstandard aus projMeta.energyClass an TS-Metrics durchreichen
+    try { r = metrics.energyCertificate(rooms, projMeta); }
     catch(err){ console.warn('[metrics] energyCertificate delegate failed', err); }
   }
   if(!r){
