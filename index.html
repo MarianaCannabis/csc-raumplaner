@@ -3851,6 +3851,79 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 'use strict';
 
 // ════════════════════════════════════════════════════════════════════════
+// P8.7 — Monitoring-Hooks (opt-in, datenschutzfreundlich)
+// ════════════════════════════════════════════════════════════════════════
+// Sentry + Plausible werden NUR geladen wenn der User explizit einwilligt
+// (localStorage.getItem('csc-analytics-opt-in') === '1'). Default: OFF.
+// DSN/Domain-Config über window._CSC_SENTRY_DSN bzw. _CSC_PLAUSIBLE_DOMAIN
+// (Platzhalter — der Betreiber setzt das in der Deploy-Pipeline oder
+// per Meta-Tag; produktions-Domains sind noch nicht konfiguriert).
+
+window.cscTelemetry = {
+  // Track ein Event — no-op wenn User nicht eingewilligt hat
+  track(eventName, props) {
+    try {
+      if(localStorage.getItem('csc-analytics-opt-in') !== '1') return;
+      if(window.plausible) window.plausible(eventName, { props });
+    } catch(e){ /* telemetry should never throw */ }
+  },
+  // Opt-in aktivieren (z.B. im Settings-Panel oder via Cookie-Banner)
+  enable() {
+    try { localStorage.setItem('csc-analytics-opt-in', '1'); } catch(e){}
+    _loadTelemetryScripts();
+  },
+  disable() {
+    try { localStorage.removeItem('csc-analytics-opt-in'); } catch(e){}
+    // Scripts laufen noch in dieser Session; beim Reload sind sie weg
+  },
+  isEnabled() {
+    try { return localStorage.getItem('csc-analytics-opt-in') === '1'; } catch(e){ return false; }
+  },
+};
+
+function _loadTelemetryScripts(){
+  // Plausible — nur wenn Domain konfiguriert (sonst Skip mit Console-Hint)
+  const plausibleDomain = window._CSC_PLAUSIBLE_DOMAIN;
+  if(plausibleDomain && !document.getElementById('plausible-script')){
+    const s = document.createElement('script');
+    s.id = 'plausible-script';
+    s.defer = true;
+    s.dataset.domain = plausibleDomain;
+    s.src = 'https://plausible.io/js/script.js';
+    document.head.appendChild(s);
+  }
+  // Sentry — nur wenn DSN gesetzt; CDN-Bundle (keine npm-Dep für
+  // smaller bundle baseline)
+  const sentryDsn = window._CSC_SENTRY_DSN;
+  if(sentryDsn && !window.Sentry){
+    const s = document.createElement('script');
+    s.src = 'https://browser.sentry-cdn.com/7.119.0/bundle.min.js';
+    s.crossOrigin = 'anonymous';
+    s.onload = function(){
+      try {
+        window.Sentry.init({
+          dsn: sentryDsn,
+          tracesSampleRate: 0,
+          beforeSend(event) {
+            // Kein PII: Email/User-ID aus Breadcrumbs strippen
+            if(event.request && event.request.headers) delete event.request.headers.Authorization;
+            if(event.user) delete event.user;
+            return event;
+          },
+        });
+      } catch(e){ console.warn('[telemetry] Sentry init failed', e); }
+    };
+    document.head.appendChild(s);
+  }
+  if(!plausibleDomain && !sentryDsn){
+    console.info('[telemetry] Opt-in aktiv aber keine DSN/Domain konfiguriert — kein Tracking');
+  }
+}
+
+// Auto-load wenn bereits eingewilligt (z.B. nach Reload)
+if(window.cscTelemetry.isEnabled()) _loadTelemetryScripts();
+
+// ════════════════════════════════════════════════════════════════════════
 // P8.3 — Cookie-Banner (einmalig, minimal — wir nutzen nur technisch
 // notwendige Cookies/Storage; daher keine opt-in-Pflicht, nur
 // transparenter Info-Hinweis mit 'Verstanden'-Dismiss)
@@ -7318,6 +7391,7 @@ function saveProj(){
   saves[projName]={data:getPD(),at:new Date().toISOString()};
   localStorage.setItem('csc-saves3',JSON.stringify(saves));
   updateSavedUI();toast('💾 Gespeichert: '+projName,'g');
+  if(window.cscTelemetry) window.cscTelemetry.track('project_saved', { target: 'local' });
 }
 function updateSavedUI(){
   const el=document.getElementById('saved-list');
@@ -12214,6 +12288,8 @@ function applyTemplate(id){
   // Fix-4: Kamera nach Template-Load zentrieren, damit der Stand bequem
   // ins Bild passt statt im Nirgendwo zu liegen
   if(typeof window.cscFrameScene === 'function') setTimeout(window.cscFrameScene, 50);
+  // P8.7 Telemetry: Template-Ladung tracken (opt-in)
+  if(window.cscTelemetry) window.cscTelemetry.track('template_loaded', { id: tpl.id, tag: tpl.tag });
   toast('🏗 Vorlage "'+tpl.name+'" geladen!','g');
 }
 
