@@ -23,6 +23,7 @@ import './rules/youthProtection.js';
 import './rules/visualScreen.js';
 import './rules/poiCscDistance.js';
 import './rules/preventionOfficer.js';
+import './rules/messeHeightLimit.js';
 // Per-room (scope: 'room') — drive the canvas badge overlay.
 import './rules/roomSmokeDetector.js';
 import './rules/roomMinArea.js';

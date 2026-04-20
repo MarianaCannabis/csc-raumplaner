@@ -37,6 +37,13 @@ export interface ProjectMeta {
   pois?: Poi[];
   /** Geocoded lat/lon of the address — filled by loadProjectPois(). */
   geocode?: { lat: number; lon: number };
+  /** P4.4: Messe-mode height cap in metres. When set, any placed object
+   *  whose top edge (py + h) exceeds this value fails the messeHeightLimit
+   *  rule. Typical values: 2.5 (Mari-Jane Stand), 4.0 (B2B-Messe open ceil).
+   *  Undefined = rule skipped (not applicable). */
+  maxHeight?: number;
+  /** P4.6: Days the stand is open (used by calcMesseBudget). */
+  messeDays?: number;
 }
 
 export interface RuleContext {
