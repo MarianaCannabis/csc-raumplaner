@@ -11816,6 +11816,48 @@ async function applyUserTemplate(id){
   } catch(e){ toast('Laden fehlgeschlagen: ' + e.message,'r'); }
 }
 
+// P9.7 Marketplace: Template laden + Downloads-Counter erhöhen
+async function applyMarketplaceTemplate(id){
+  if(!confirm('Community-Template laden? Aktuelle Räume werden ersetzt.')) return;
+  try {
+    const r = await fetch(SB_URL + '/rest/v1/csc_marketplace_templates?id=eq.'+id+'&select=*',
+      { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_TOKEN } });
+    const rows = await r.json();
+    if(!rows.length) throw new Error('Template nicht gefunden');
+    const t = rows[0];
+    closeM('m-templates');
+    loadPD(t.data);
+    toast('✅ Geladen: '+t.name, 'g');
+    // Counter hochzählen via RPC (security-definer)
+    fetch(SB_URL + '/rest/v1/rpc/csc_mp_increment_downloads', {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer '+SB_TOKEN, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ template_id: id }),
+    }).catch(()=>{});
+  } catch(e){ toast('Fehler: '+e.message,'r'); }
+}
+
+// P9.7: User-Template im Marketplace publizieren (submit for review)
+async function publishTemplateToMarketplace(tpl){
+  if(!confirm('„'+tpl.name+'" im Community-Marketplace einreichen?\n\nNach Admin-Review (pending) wird es für alle User sichtbar.')) return;
+  try {
+    await fetch(SB_URL + '/rest/v1/csc_marketplace_templates', {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer '+SB_TOKEN,
+                 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify({
+        owner: SB_USER && SB_USER.id,
+        name: tpl.name, description: tpl.description || '',
+        tags: tpl.tags || [], icon: tpl.icon || '🛍',
+        size_label: tpl.size_label,
+        data: tpl.data, thumbnail: tpl.thumbnail,
+        status: 'pending', price_cents: 0, // v1: nur kostenlos — Payment deferred
+      }),
+    });
+    toast('📩 Eingereicht — wird von Admin reviewed','g');
+  } catch(e){ toast('Fehler: '+e.message,'r'); }
+}
+
 // P7 Bug-2: KCanG-Dashboard — aggregiert Meta-Inputs + Live-Regelprüfung
 // in einem zentralen Modal. Via neuem Topbar-Button 🌿 KCanG aufgerufen.
 function openKCaNGDashboard(){
@@ -12673,6 +12715,7 @@ async function renderTemplateGrid(){
     }
     grid.innerHTML = list.map(t => {
       const thumb = t.thumbnail ? '<img src="'+t.thumbnail+'" style="width:100%;height:80px;object-fit:cover;display:block">' : '';
+      const tJson = btoa(encodeURIComponent(JSON.stringify(t)));
       return '<div class="tpl-card" style="position:relative">'+
         '<div onclick="applyUserTemplate(\''+t.id+'\')">'+thumb+
         '<div class="tpl-icon">'+(t.icon||'📋')+'</div>'+
@@ -12680,14 +12723,50 @@ async function renderTemplateGrid(){
         '<div class="tpl-desc" style="font-size:10px">'+(t.description||'').replace(/[<>]/g,'')+'</div>'+
         (t.size_label?'<div class="tpl-size">'+t.size_label+'</div>':'')+
         '</div>'+
-        '<button onclick="event.stopPropagation();deleteUserTemplate(\''+t.id+'\')" style="position:absolute;top:4px;right:4px;background:rgba(239,68,68,0.2);border:1px solid #ef4444;color:#ef4444;border-radius:3px;padding:2px 6px;font-size:10px;cursor:pointer">🗑</button>'+
+        '<div style="position:absolute;top:4px;right:4px;display:flex;gap:3px">'+
+          '<button onclick="event.stopPropagation();publishTemplateToMarketplace(JSON.parse(decodeURIComponent(atob(\''+tJson+'\'))))" title="Im Community-Marketplace teilen" style="background:rgba(167,139,250,0.2);border:1px solid #a78bfa;color:#a78bfa;border-radius:3px;padding:2px 6px;font-size:10px;cursor:pointer">🛍</button>'+
+          '<button onclick="event.stopPropagation();deleteUserTemplate(\''+t.id+'\')" style="background:rgba(239,68,68,0.2);border:1px solid #ef4444;color:#ef4444;border-radius:3px;padding:2px 6px;font-size:10px;cursor:pointer">🗑</button>'+
+        '</div>'+
         '</div>';
     }).join('');
     return;
   }
   if(_tplTab === 'community'){
-    grid.innerHTML = '<div style="grid-column:1/-1;padding:20px;text-align:center;color:var(--tx3);font-size:11px">🛍 Community-Marketplace kommt in v1.1+</div>';
-    if(status) status.textContent = '';
+    // P9.7: Marketplace — approved-Templates aus csc_marketplace_templates
+    if(!SB_TOKEN){
+      grid.innerHTML = '<div style="grid-column:1/-1;padding:20px;text-align:center;color:var(--tx3);font-size:11px">🔑 Erst einloggen, um Community-Templates zu sehen</div>';
+      if(status) status.textContent = '';
+      return;
+    }
+    grid.innerHTML = '<div style="grid-column:1/-1;padding:12px;text-align:center;color:var(--tx3)">⏳ Lade Community-Templates…</div>';
+    try {
+      const r = await fetch(SB_URL + '/rest/v1/csc_marketplace_templates?status=eq.approved&select=*&order=downloads.desc&limit=50',
+        { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_TOKEN } });
+      if(r.status === 404 || r.status === 406){
+        grid.innerHTML = '<div style="grid-column:1/-1;padding:20px;color:#ef4444">❌ Migration 0007_marketplace.sql fehlt — bitte einspielen</div>';
+        return;
+      }
+      const items = await r.json();
+      if(!items.length){
+        grid.innerHTML = '<div style="grid-column:1/-1;padding:20px;text-align:center;color:var(--tx3);font-size:11px">Noch keine Community-Templates.<br>Als Erste(r) eines veröffentlichen? Eigene Vorlage → „Im Marketplace teilen"</div>';
+        if(status) status.textContent = '';
+        return;
+      }
+      if(status) status.textContent = items.length + ' Community-Templates';
+      grid.innerHTML = items.map(t => {
+        const thumb = t.thumbnail ? '<img src="'+t.thumbnail+'" style="width:100%;height:80px;object-fit:cover;display:block">' : '';
+        const price = (t.price_cents > 0) ? '<div style="position:absolute;top:4px;right:4px;background:var(--or);color:#0a0f14;border-radius:4px;padding:2px 6px;font-size:10px;font-weight:600">'+(t.price_cents/100).toFixed(2)+' €</div>' : '<div style="position:absolute;top:4px;right:4px;background:var(--gr);color:#0a0f14;border-radius:4px;padding:2px 6px;font-size:10px;font-weight:600">FREE</div>';
+        return '<div class="tpl-card" style="position:relative;cursor:pointer" onclick="applyMarketplaceTemplate(\''+t.id+'\')">'+
+          price+thumb+
+          '<div class="tpl-icon">'+(t.icon||'🛍')+'</div>'+
+          '<div class="tpl-name">'+(t.name||'').replace(/[<>]/g,'')+'</div>'+
+          '<div class="tpl-desc" style="font-size:10px">'+(t.description||'').replace(/[<>]/g,'')+'</div>'+
+          '<div class="tpl-size">⬇ '+(t.downloads||0)+'</div>'+
+          '</div>';
+      }).join('');
+    } catch(e){
+      grid.innerHTML = '<div style="grid-column:1/-1;padding:20px;color:#ef4444">Fehler: '+e.message+'</div>';
+    }
     return;
   }
   // System-Tab (default): Logik wie bisher
