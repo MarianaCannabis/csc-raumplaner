@@ -14629,6 +14629,9 @@ function finishOnboarding(){
   _onboardingDone=true;
   try{localStorage.setItem('csc-onboarded','1');}catch(e){}
   checkAndAwardBadge('first_open');
+  // P5.4: Nach Tutorial-Abschluss einmal nextstep-panel auffrischen
+  // damit der User den aktuellen Stand + Start-CTAs sieht.
+  if(typeof suggestNextStep === 'function') setTimeout(suggestNextStep, 300);
 }
 function obNext(){
   _obStep++;
@@ -16413,6 +16416,11 @@ function toggleTransparency(){
 
 // ── 8. NÄCHSTER SCHRITT KI ─────────────────────────────────────────
 async function suggestNextStep(){
+  // P5.4: Onboarding-Dupe-Fix. Wenn das Fullscreen-Tutorial-Overlay
+  // gerade läuft, NICHT zusätzlich das nextstep-panel einblenden —
+  // der User sieht sonst zwei konkurrierende "Starte hier"-Panels.
+  const ob = document.getElementById('onboarding-overlay');
+  if(ob && ob.classList.contains('vis')) return;
   const score=calcHealthScore();
   const checks=getKCaNGChecklist();
   const missing=checks.filter(c=>!c.passed);
