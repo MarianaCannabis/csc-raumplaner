@@ -61,6 +61,22 @@ export interface ProjectMeta {
   /** P5.3: AI-Security-Audit-Schwellwert (Score-Punkte) unter dem das
    *  Audit als kritisch markiert. Default 60. */
   securityThresholdPct?: number;
+
+  /** P6.8: Aus einer hochgeladenen Messe-Ordnung extrahierte Regeln.
+   *  Pro Projekt temporär gespeichert, nicht zentral registriert.
+   *  Struktur ist KI-erzeugt, daher sehr tolerant gegenüber Variationen. */
+  regulationRules?: Array<{
+    category: 'height' | 'distance' | 'fire' | 'electrical' | 'structural' | 'other';
+    severity: 'critical' | 'high' | 'medium' | 'low';
+    label: string;
+    description: string;
+    value?: number;
+    unit?: string;
+  }>;
+  /** P6.8: Name der Quell-Datei (für UI-Referenz). */
+  regulationSource?: string;
+  /** P6.8: ISO-Datum des Imports. */
+  regulationImportedAt?: string;
 }
 
 export interface RuleContext {
