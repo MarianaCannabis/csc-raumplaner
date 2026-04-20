@@ -1189,15 +1189,41 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .pnav-btn{padding:8px 20px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);
   border-radius:20px;color:#fff;cursor:pointer;font-size:12px}
 .present-title{color:rgba(255,255,255,.6);font-size:13px;font-weight:600;margin-bottom:12px}
-/* Responsive */
-@media(max-width:768px){
+/* Responsive — Tablet (600-1023px): seitliche Drawer wie bisher */
+@media(min-width:600px) and (max-width:1023px){
   #left-panel{position:fixed;left:0;top:40px;bottom:0;z-index:100;
-    transform:translateX(-100%);transition:transform .25s;width:240px!important}
+    transform:translateX(-100%);transition:transform .25s;width:260px!important}
   #left-panel.mobile-open{transform:translateX(0)}
   #right-panel{position:fixed;right:0;top:40px;bottom:0;z-index:100;
-    transform:translateX(100%);transition:transform .25s;width:280px!important}
+    transform:translateX(100%);transition:transform .25s;width:300px!important}
   #right-panel.mobile-open{transform:translateX(0)}
   #mobile-left-btn,#mobile-right-btn{display:flex!important}
+}
+/* P6.6 — Phone (< 600px): Bottom-Sheet statt Drawer, Property-Panel fullscreen */
+@media(max-width:599px){
+  #left-panel, #right-panel{
+    position:fixed;left:0;right:0;top:auto;bottom:-100vh;
+    width:100vw!important;max-width:none!important;
+    height:70vh;z-index:100;
+    border-radius:16px 16px 0 0;
+    border:1px solid var(--bd2);border-bottom:none;
+    box-shadow:0 -4px 20px rgba(0,0,0,.5);
+    transition:bottom .28s ease-out;
+  }
+  #left-panel.mobile-open, #right-panel.mobile-open{ bottom:0 }
+  /* Grab-Bar oben drauf zur visuellen Bottom-Sheet-Affordance */
+  #left-panel::before, #right-panel::before{
+    content:'';display:block;width:36px;height:4px;background:var(--tx3);
+    border-radius:2px;margin:8px auto 4px;opacity:.5}
+  #mobile-left-btn,#mobile-right-btn{display:flex!important;bottom:16px}
+  /* Touch-Targets auf Buttons: mind. 44×44 (WCAG 2.1 AA) */
+  .tbt, .mpill, .tbm-item, .mbt{ min-height:40px }
+  #topbar{ padding:0 6px!important; gap:4px!important }
+  #topbar .tbt, #topbar .tbm-btn{ padding:6px 8px!important; font-size:11px!important }
+  .modal{ width:96vw!important; max-height:88vh!important }
+  /* Property-Panel overlay vollflächig */
+  #prop-panel{ max-width:none!important; width:100vw!important; left:0!important; right:0!important }
+  #mode-pills{ flex-wrap:wrap!important; top:46px!important; right:8px!important; max-width:calc(100vw - 16px) }
 }
 #mobile-left-btn,#mobile-right-btn{display:none;position:fixed;bottom:70px;
   z-index:50;padding:10px 14px;background:var(--bg2);border:1px solid var(--bd2);
