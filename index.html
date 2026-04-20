@@ -9592,7 +9592,7 @@ async function cloudSave(){
     
     const _tid=localStorage.getItem('csc-teamid')||'';
     const _aut=localStorage.getItem('csc-username')||'anonym';
-    body = JSON.stringify({ name: projName, data: data, thumbnail: thumb, team_id: _tid, author: _aut });
+    const body = JSON.stringify({ name: projName, data: data, thumbnail: thumb, team_id: _tid, author: _aut });
     
     let r;
     if(existing && existing.length > 0){
