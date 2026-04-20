@@ -5296,7 +5296,12 @@ function addRoom(cfg){
 let _loadInProgress = false;
 
 function addObject(cfg){
-  if(!cfg.id) cfg.id='o'+(oid++);
+  // Kollisionsschutz: wenn die cfg.id schon im objects-Array existiert
+  // (z.B. nach Duplizieren wurde ID mitkopiert), neue vergeben. Sonst
+  // würde selId auf zwei Einträge matchen.
+  if(!cfg.id || objects.some(o => o.id === cfg.id)){
+    cfg.id = 'o' + (oid++);
+  }
   // Numeric safety: Alt-JSONs ohne x/y/py (oder mit Strings wie "0.5") sonst
   // NaN → Three.js setzt die Group auf (NaN,NaN,NaN) → alle Objekte
   // kollabieren auf (0,0,0) im Render. Coercen + Fallback 0.
@@ -5462,6 +5467,13 @@ function deleteSelectedGround(){
 function setSelection(id, isRoom){
   selIsGround = false;
   closeGroundPropPanel();
+  // Single-Select clears Multi-Select, sonst bleibt die Multi-Bar hängen
+  // und delete-Sel würde alte Multi-Auswahl löschen (sticky selection).
+  // Shift-Click-Flow ruft stattdessen addToMultiSel() direkt.
+  if(typeof _multiSel !== 'undefined' && _multiSel.length){
+    _multiSel = [];
+    if(typeof updateMultiSelBar === 'function') updateMultiSelBar();
+  }
   selId=id; selIsRoom=isRoom;
   updateSelBotBar();
   renderLeft(); draw2D();
@@ -6642,10 +6654,30 @@ function loadPD(d){
   // landen ins State-Array; ein einziges rebuild3D/draw2D/cscFrameScene
   // läuft NACH allen Einträgen.
   _loadInProgress = true;
+  // Dedup-IDs: ältere JSON-Exports können doppelte IDs enthalten (z.B.
+  // nach "Duplizieren"-Aktion wurde ID mitgespeichert). Selection-System
+  // matcht auf ID → zwei Objekte mit gleicher ID = zwei gleichzeitig
+  // selektiert, Drag bewegt beide. Beim Import neue IDs vergeben wenn
+  // eine Kollision auftritt.
+  const usedRoomIds = new Set();
+  const usedObjIds = new Set();
+  const usedGroundIds = new Set();
   try {
-    (d.rooms||[]).forEach(r=>addRoom(r));
-    (d.grounds||[]).forEach(g=>addGround(g,{silent:true}));
-    (d.objects||[]).forEach(o=>addObject(o));
+    (d.rooms||[]).forEach(r => {
+      if(!r.id || usedRoomIds.has(r.id)) r.id = 'r' + (rid++);
+      usedRoomIds.add(r.id);
+      addRoom(r);
+    });
+    (d.grounds||[]).forEach(g => {
+      if(!g.id || usedGroundIds.has(g.id)) g.id = 'g' + (gid++);
+      usedGroundIds.add(g.id);
+      addGround(g, { silent: true });
+    });
+    (d.objects||[]).forEach(o => {
+      if(!o.id || usedObjIds.has(o.id)) o.id = 'o' + (oid++);
+      usedObjIds.add(o.id);
+      addObject(o);
+    });
   } finally {
     _loadInProgress = false;
   }
