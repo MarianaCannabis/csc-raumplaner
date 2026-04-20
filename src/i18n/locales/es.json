@@ -1,0 +1,50 @@
+{
+  "topbar.templates": "Plantillas",
+  "topbar.kcang": "KCanG",
+  "topbar.help": "Ayuda",
+  "topbar.undo": "Deshacer",
+  "topbar.redo": "Rehacer",
+  "topbar.file": "Archivo",
+  "topbar.view": "Vista",
+  "topbar.analysis": "Análisis",
+  "topbar.share": "Compartir",
+
+  "tool.select": "Seleccionar",
+  "tool.wall": "Dibujar muro",
+  "tool.room": "Dibujar sala",
+  "tool.ground": "Superficie",
+  "tool.measure": "Medir",
+  "tool.pan": "Mover",
+  "tool.center3d": "Centrar",
+
+  "save.local": "Guardar proyecto",
+  "save.cloud": "Guardar en la nube",
+  "save.template": "Cargar plantilla",
+  "save.loadJson": "Cargar .json",
+  "save.loadCloud": "Cargar de la nube",
+
+  "export.pdf": "PDF / imprimir",
+  "export.json": "Exportar como .json",
+  "export.csvFurniture": "Lista de muebles (.csv)",
+  "export.csvBudget": "Presupuesto (.csv)",
+  "export.gltf": "Modelo 3D (.gltf)",
+  "export.dxf": "Plano (.dxf)",
+  "export.ifc": "IFC/BIM (.ifc)",
+
+  "kcang.title": "Panel KCanG",
+  "kcang.metadata": "Metadatos del proyecto",
+  "kcang.members": "Número de miembros",
+  "kcang.complianceStatus": "Estado de cumplimiento",
+
+  "welcome.title1": "Bienvenido al planificador CSC",
+  "welcome.cta.template": "📋 Plantilla",
+  "welcome.cta.empty": "⬜ Vacío",
+  "welcome.cta.load": "📂 Cargar",
+  "welcome.neverShow": "No mostrar de nuevo",
+  "welcome.next": "Siguiente →",
+
+  "common.cancel": "Cancelar",
+  "common.close": "Cerrar",
+  "common.delete": "Eliminar",
+  "common.save": "Guardar"
+}

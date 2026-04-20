@@ -1,0 +1,50 @@
+{
+  "topbar.templates": "Sjablonen",
+  "topbar.kcang": "KCanG",
+  "topbar.help": "Hulp",
+  "topbar.undo": "Ongedaan maken",
+  "topbar.redo": "Opnieuw",
+  "topbar.file": "Bestand",
+  "topbar.view": "Weergave",
+  "topbar.analysis": "Analyse",
+  "topbar.share": "Delen",
+
+  "tool.select": "Selecteren",
+  "tool.wall": "Muur tekenen",
+  "tool.room": "Kamer tekenen",
+  "tool.ground": "Oppervlak",
+  "tool.measure": "Meet",
+  "tool.pan": "Verschuiven",
+  "tool.center3d": "Centreren",
+
+  "save.local": "Project opslaan",
+  "save.cloud": "Opslaan in cloud",
+  "save.template": "Sjabloon laden",
+  "save.loadJson": ".json laden",
+  "save.loadCloud": "Uit cloud laden",
+
+  "export.pdf": "PDF / afdrukken",
+  "export.json": "Exporteer als .json",
+  "export.csvFurniture": "Meubellijst (.csv)",
+  "export.csvBudget": "Budget (.csv)",
+  "export.gltf": "3D-model (.gltf)",
+  "export.dxf": "Plattegrond (.dxf)",
+  "export.ifc": "IFC/BIM (.ifc)",
+
+  "kcang.title": "KCanG Dashboard",
+  "kcang.metadata": "Projectmetadata",
+  "kcang.members": "Aantal leden",
+  "kcang.complianceStatus": "Compliance-status",
+
+  "welcome.title1": "Welkom bij de CSC-planner",
+  "welcome.cta.template": "📋 Sjabloon",
+  "welcome.cta.empty": "⬜ Leeg",
+  "welcome.cta.load": "📂 Laden",
+  "welcome.neverShow": "Niet meer tonen",
+  "welcome.next": "Volgende →",
+
+  "common.cancel": "Annuleren",
+  "common.close": "Sluiten",
+  "common.delete": "Verwijderen",
+  "common.save": "Opslaan"
+}

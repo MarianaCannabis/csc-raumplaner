@@ -1802,6 +1802,16 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
   <!-- P8.2: Hilfe-Modal mit FAQ + Shortcuts + Link zum User-Guide -->
   <button class="tbt icon-btn" id="btn-help" onclick="openHelpModal()" title="Hilfe: FAQ, Tastenkürzel, User-Guide"
     style="padding:5px 10px" aria-label="Hilfe öffnen">❓</button>
+  <!-- P9.2: Sprach-Umschalter -->
+  <select id="lang-switch" onchange="window.cscI18n&&window.cscI18n.setLang(this.value)"
+    aria-label="Sprache wählen"
+    title="Sprache · Language · Taal · Idioma"
+    style="padding:4px 6px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:3px;font-size:11px">
+    <option value="de">🇩🇪 DE</option>
+    <option value="en">🇬🇧 EN</option>
+    <option value="nl">🇳🇱 NL</option>
+    <option value="es">🇪🇸 ES</option>
+  </select>
   <div class="tsep"></div>
 
   <!-- DROPDOWN MENUS -->
@@ -11305,6 +11315,28 @@ async function optimizeLayout(){
 // ── 14. KAPAZITÄTS- UND CHECKLISTEN-PANEL ────────────────────────────
 // P8.2: Hilfe-Modal — FAQ + Shortcuts + User-Guide-Link
 function openHelpModal(){ openM('m-help'); }
+
+// P9.2: i18n — beim Sprach-Wechsel betroffene Elements re-labeln.
+// Nicht das ganze DOM re-rendern, sondern nur die Elemente mit
+// data-i18n-Attribut. Aktuell nur Topbar + Button-Labels; der Rest
+// kommt in späteren Passes inkrementell.
+window.addEventListener('csc-lang-change', () => {
+  const t = window.cscI18n && window.cscI18n.t;
+  if(!t) return;
+  // Topbar-Buttons
+  const bt = document.getElementById('btn-templates'); if(bt) bt.innerHTML = '📋 ' + t('topbar.templates');
+  const bk = document.getElementById('btn-kcang');     if(bk) bk.innerHTML = '🌿 ' + t('topbar.kcang');
+  // Sprach-Umschalter auf aktuellen Wert
+  const sw = document.getElementById('lang-switch');
+  if(sw && window.cscI18n) sw.value = window.cscI18n.current();
+});
+
+// Beim Load einmal anwenden (falls User schon eine Sprache gewählt hat)
+window.addEventListener('load', () => {
+  const sw = document.getElementById('lang-switch');
+  if(sw && window.cscI18n) sw.value = window.cscI18n.current();
+  window.dispatchEvent(new Event('csc-lang-change'));
+});
 
 // ──────────────────────────────────────────────────────────────────────
 // P8.3 DSGVO: Daten-Export (Art. 20) + Account-Delete (Art. 17)
