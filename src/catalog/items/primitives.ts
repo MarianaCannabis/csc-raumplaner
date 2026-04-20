@@ -20,15 +20,15 @@ export const RICH_PRIMITIVES: PrimitiveCatalogItem[] = [
   // ── Büro ─────────────────────────────────────────────────────────
   { id: 'p-office-chair',    cat: '💼 Büro (Rich)',   icon: '🪑', name: 'Bürostuhl (5-Stern, Gas)',    w: 0.6, d: 0.6, h: 0.95, builder: 'buildOfficeChair' },
   { id: 'p-desk',            cat: '💼 Büro (Rich)',   icon: '🗃', name: 'Schreibtisch',                w: 1.4, d: 0.7, h: 0.75, builder: 'buildDesk' },
-  { id: 'p-filing-cabinet',  cat: '💼 Büro (Rich)',   icon: '🗄', name: 'Aktenschrank (3 Schubl.)',    w: 0.5, d: 0.55, h: 1.3, builder: 'buildFilingCabinet' },
+  { id: 'p-filing-cabinet',  cat: '💼 Büro (Rich)',   icon: '🗄', name: 'Aktenschrank (3 Schubl.)',    w: 0.5, d: 0.55, h: 1.3, builder: 'buildFilingCabinet', imageMapFace: 'front', imageMapAspect: 'contain' },
   { id: 'p-bookshelf',       cat: '💼 Büro (Rich)',   icon: '📚', name: 'Bücherregal',                 w: 0.9, d: 0.35, h: 2.0, builder: 'buildBookshelf' },
   { id: 'p-conf-table',      cat: '💼 Büro (Rich)',   icon: '🪵', name: 'Konferenztisch rund',         w: 1.6, d: 1.6, h: 0.74, builder: 'buildConferenceTable' },
-  { id: 'p-whiteboard',      cat: '💼 Büro (Rich)',   icon: '📋', name: 'Whiteboard',                  w: 1.5, d: 0.05, h: 0.9, builder: 'buildWhiteboard' },
+  { id: 'p-whiteboard',      cat: '💼 Büro (Rich)',   icon: '📋', name: 'Whiteboard',                  w: 1.5, d: 0.05, h: 0.9, builder: 'buildWhiteboard', imageMapFace: 'front', imageMapAspect: 'contain' },
 
   // ── Empfang / Ausgabe ────────────────────────────────────────────
-  { id: 'p-reception',       cat: '🏪 Empfang (Rich)',icon: '🧾', name: 'Empfangstheke',               w: 2.0, d: 0.7, h: 1.05, builder: 'buildReceptionDesk' },
-  { id: 'p-dispense-counter',cat: '🏪 Empfang (Rich)',icon: '🧪', name: 'Ausgabetheke mit Vitrine',    w: 2.5, d: 0.8, h: 1.05, builder: 'buildDispensingCounter' },
-  { id: 'p-consult-booth',   cat: '🏪 Empfang (Rich)',icon: '🤝', name: 'Beratungs-Kabine (3-Wand)',   w: 1.6, d: 1.6, h: 2.0, builder: 'buildConsultingBooth' },
+  { id: 'p-reception',       cat: '🏪 Empfang (Rich)',icon: '🧾', name: 'Empfangstheke',               w: 2.0, d: 0.7, h: 1.05, builder: 'buildReceptionDesk', imageMapFace: 'front', imageMapAspect: 'cover' },
+  { id: 'p-dispense-counter',cat: '🏪 Empfang (Rich)',icon: '🧪', name: 'Ausgabetheke mit Vitrine',    w: 2.5, d: 0.8, h: 1.05, builder: 'buildDispensingCounter', imageMapFace: 'front', imageMapAspect: 'cover' },
+  { id: 'p-consult-booth',   cat: '🏪 Empfang (Rich)',icon: '🤝', name: 'Beratungs-Kabine (3-Wand)',   w: 1.6, d: 1.6, h: 2.0, builder: 'buildConsultingBooth', imageMapFace: 'back', imageMapAspect: 'cover' },
   { id: 'p-wait-bench',      cat: '🏪 Empfang (Rich)',icon: '🪑', name: 'Wartebank (4-Sitzer)',        w: 2.0, d: 0.5, h: 0.85, builder: 'buildWaitingBench' },
   { id: 'p-locker-row',      cat: '🏪 Empfang (Rich)',icon: '🗄', name: 'Spind-Reihe (4 Fächer)',      w: 1.4, d: 0.4, h: 1.8, builder: 'buildLockerRow' },
 
@@ -66,13 +66,13 @@ export const RICH_PRIMITIVES: PrimitiveCatalogItem[] = [
   { id: 'p-door-t90',        cat: '🏗 Bau (Rich)',    icon: '🟥', name: 'Brandschutztür T90',          w: 1.0, d: 0.1, h: 2.1, builder: 'buildDoorT90' },
   { id: 'p-sliding-door',    cat: '🏗 Bau (Rich)',    icon: '🚪', name: 'Schiebetür (2-flügelig Glas)',w: 2.0, d: 0.1, h: 2.1, builder: 'buildSlidingDoor' },
   { id: 'p-window-frame',    cat: '🏗 Bau (Rich)',    icon: '🪟', name: 'Fenster mit Sprossen',        w: 1.2, d: 0.08, h: 1.2, builder: 'buildWindowFrame' },
-  { id: 'p-partition-wall',  cat: '🏗 Bau (Rich)',    icon: '🧱', name: 'Trennwand (modular)',         w: 1.2, d: 0.08, h: 2.4, builder: 'buildPartitionWall' },
+  { id: 'p-partition-wall',  cat: '🏗 Bau (Rich)',    icon: '🧱', name: 'Trennwand (modular)',         w: 1.2, d: 0.08, h: 2.4, builder: 'buildPartitionWall', imageMapFace: 'front', imageMapAspect: 'cover' },
 
   // ── Deko ─────────────────────────────────────────────────────────
   { id: 'p-potted-plant-s',  cat: '🌱 Deko (Rich)',   icon: '🪴', name: 'Topfpflanze klein',           w: 0.3, d: 0.3, h: 0.5, builder: 'buildPottedPlant' },
   { id: 'p-potted-plant-m',  cat: '🌱 Deko (Rich)',   icon: '🪴', name: 'Topfpflanze mittel',          w: 0.4, d: 0.4, h: 0.9, builder: 'buildPottedPlant' },
   { id: 'p-potted-plant-l',  cat: '🌱 Deko (Rich)',   icon: '🪴', name: 'Topfpflanze groß',            w: 0.5, d: 0.5, h: 1.5, builder: 'buildPottedPlant' },
-  { id: 'p-wall-art',        cat: '🌱 Deko (Rich)',   icon: '🖼', name: 'Wandbild (Rahmen)',           w: 0.8, d: 0.03, h: 0.6, builder: 'buildWallArt' },
+  { id: 'p-wall-art',        cat: '🌱 Deko (Rich)',   icon: '🖼', name: 'Wandbild (Rahmen)',           w: 0.8, d: 0.03, h: 0.6, builder: 'buildWallArt', imageMapFace: 'front', imageMapAspect: 'cover' },
   { id: 'p-floor-lamp',      cat: '🌱 Deko (Rich)',   icon: '💡', name: 'Stehlampe (Schirm)',          w: 0.35, d: 0.35, h: 1.6, builder: 'buildFloorLamp' },
 
   // ── Messe (P4.2 — image-map support) ─────────────────────────────

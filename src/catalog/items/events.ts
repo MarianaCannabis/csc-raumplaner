@@ -96,7 +96,7 @@ export const EVENT_CATERING: PrimitiveCatalogItem[] = [
 // 7. Dekoration (10)
 export const EVENT_DECO: PrimitiveCatalogItem[] = [
   { id: 'ev-tall-plant',      cat: '🌿 Deko', icon: '🌴', name: 'Hohe Kübelpflanze 2 m',  w: 0.5, d: 0.5, h: 2.0, builder: 'buildTallPlant' },
-  { id: 'ev-partition-panel', cat: '🌿 Deko', icon: '🪟', name: 'Deko-Trennwand 1.2×2',    w: 1.2, d: 0.1, h: 2.0, builder: 'buildPartitionPanel' },
+  { id: 'ev-partition-panel', cat: '🌿 Deko', icon: '🪟', name: 'Deko-Trennwand 1.2×2',    w: 1.2, d: 0.1, h: 2.0, builder: 'buildPartitionPanel', imageMapFace: 'front', imageMapAspect: 'cover' },
   { id: 'ev-artwork-set',     cat: '🌿 Deko', icon: '🖼', name: 'Wandbilder-Triptychon',   w: 1.5, d: 0.04, h: 0.8, builder: 'buildArtworkSet' },
   { id: 'ev-balloon-bouquet', cat: '🌿 Deko', icon: '🎈', name: 'Ballontraube',            w: 0.7, d: 0.7, h: 1.6, builder: 'buildBalloonBouquet' },
   { id: 'ev-fire-torch',      cat: '🌿 Deko', icon: '🔥', name: 'Dekofackel (LED)',        w: 0.2, d: 0.2, h: 1.6, builder: 'buildFireTorch' },
@@ -113,10 +113,10 @@ export const EVENT_ENTRY: PrimitiveCatalogItem[] = [
   { id: 'ev-mobile-gate',     cat: '🚪 Eingang', icon: '🚧', name: 'Absperrgitter 2 m',      w: 2.0, d: 0.6, h: 1.1, builder: 'buildMobileGate' },
   { id: 'ev-metal-detector',  cat: '🚪 Eingang', icon: '🚨', name: 'Metalldetektor-Torbogen',w: 1.0, d: 0.2, h: 2.2, builder: 'buildMetalDetector' },
   { id: 'ev-turnstile',       cat: '🚪 Eingang', icon: '🔄', name: 'Drehkreuz',              w: 0.6, d: 1.0, h: 1.1, builder: 'buildTurnstile' },
-  { id: 'ev-info-desk-event', cat: '🚪 Eingang', icon: 'ℹ', name: 'Info-Pult mit Leuchtschild',w: 1.6, d: 0.7, h: 1.1, builder: 'buildInfoDesk' },
+  { id: 'ev-info-desk-event', cat: '🚪 Eingang', icon: 'ℹ', name: 'Info-Pult mit Leuchtschild',w: 1.6, d: 0.7, h: 1.1, builder: 'buildInfoDesk', imageMapFace: 'front', imageMapAspect: 'cover' },
   { id: 'ev-security-chk',    cat: '🚪 Eingang', icon: '🛡', name: 'Security-Checkpoint',    w: 1.4, d: 1.0, h: 1.2, builder: 'buildSecurityCheckpoint' },
   { id: 'ev-queue-divider',   cat: '🚪 Eingang', icon: '↔', name: 'Queue-Gurtständer',      w: 0.4, d: 0.4, h: 1.0, builder: 'buildQueueDivider' },
-  { id: 'ev-welcome-sign',    cat: '🚪 Eingang', icon: '👋', name: 'Willkommens-Aufsteller', w: 0.9, d: 0.3, h: 1.8, builder: 'buildWelcomeSign' },
+  { id: 'ev-welcome-sign',    cat: '🚪 Eingang', icon: '👋', name: 'Willkommens-Aufsteller', w: 0.9, d: 0.3, h: 1.8, builder: 'buildWelcomeSign', imageMapFace: 'front', imageMapAspect: 'contain' },
   { id: 'ev-entrance-arch',   cat: '🚪 Eingang', icon: '🏛', name: 'Eingangsbogen',          w: 3.0, d: 0.4, h: 3.0, builder: 'buildEntranceArch' },
   { id: 'ev-bag-scanner',     cat: '🚪 Eingang', icon: '🧳', name: 'Gepäck-Scanner',         w: 0.7, d: 1.8, h: 1.4, builder: 'buildBagScanner' },
 ];
@@ -124,7 +124,7 @@ export const EVENT_ENTRY: PrimitiveCatalogItem[] = [
 // 9. Workshop & Seminar (10)
 export const EVENT_WORKSHOP: PrimitiveCatalogItem[] = [
   { id: 'ev-flipchart',       cat: '📚 Workshop', icon: '📋', name: 'Flipchart Dreibein',       w: 0.7, d: 0.7, h: 1.8, builder: 'buildFlipchart' },
-  { id: 'ev-pinboard',        cat: '📚 Workshop', icon: '📌', name: 'Pinnwand mobil',          w: 1.2, d: 0.6, h: 1.5, builder: 'buildPinboard' },
+  { id: 'ev-pinboard',        cat: '📚 Workshop', icon: '📌', name: 'Pinnwand mobil',          w: 1.2, d: 0.6, h: 1.5, builder: 'buildPinboard', imageMapFace: 'front', imageMapAspect: 'cover' },
   { id: 'ev-moderation-case', cat: '📚 Workshop', icon: '🧰', name: 'Moderationskoffer',       w: 0.5, d: 0.3, h: 0.2, builder: 'buildModerationCase' },
   { id: 'ev-breakout-table',  cat: '📚 Workshop', icon: '🪑', name: 'Breakout-Tisch 4P',       w: 1.4, d: 0.8, h: 0.74, builder: 'buildBreakoutTable' },
   { id: 'ev-group-table-4',   cat: '📚 Workshop', icon: '🔲', name: 'Gruppentisch 4er quadr.', w: 1.4, d: 1.4, h: 0.74, builder: 'buildGroupTable4' },

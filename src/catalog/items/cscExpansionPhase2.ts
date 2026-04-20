@@ -19,7 +19,7 @@ export const CSC_SEC_EXP_P2: PrimitiveCatalogItem[] = [
 export const CSC_DISP_EXP_P2: PrimitiveCatalogItem[] = [
   { id: 'csc-return-box',      cat: '🏪 Ausgabe', icon: '📥', name: 'Rückgabe-Box (Leergut)', w: 0.5, d: 0.5, h: 1.1, builder: 'buildReturnBox' },
   { id: 'csc-payment-terminal',cat: '🏪 Ausgabe', icon: '💳', name: 'Zahlungs-Terminal',     w: 0.4, d: 0.35, h: 1.3, builder: 'buildPaymentTerminal' },
-  { id: 'csc-notice-board',    cat: '🏪 Ausgabe', icon: '📋', name: 'Aushang-Tafel',         w: 1.0, d: 0.05, h: 1.5, builder: 'buildNoticeBoard' },
+  { id: 'csc-notice-board',    cat: '🏪 Ausgabe', icon: '📋', name: 'Aushang-Tafel',         w: 1.0, d: 0.05, h: 1.5, builder: 'buildNoticeBoard', imageMapFace: 'front', imageMapAspect: 'cover' },
 ];
 
 export const CSC_LAG_EXP_P2: PrimitiveCatalogItem[] = [
