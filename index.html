@@ -10807,20 +10807,70 @@ const ROOM_TEMPLATES = [
   },
 ];
 
+// P4.5: merged template list with CSC (legacy) + Messe/Showroom (TS).
+let _tplFilter = 'all';
+function getAllTemplates(){
+  const cscTagged = ROOM_TEMPLATES.map(t=>({...t, tag:'csc'}));
+  const tsList = (window.cscTemplates && Array.isArray(window.cscTemplates.list)) ? window.cscTemplates.list : [];
+  return cscTagged.concat(tsList);
+}
+
 function openTemplates(){
   const grid = document.getElementById('tpl-grid'); if(!grid) return;
-  grid.innerHTML = ROOM_TEMPLATES.map(t=>
-    '<div class="tpl-card" onclick="applyTemplate(\''+t.id+'\')">'+
-    '<div class="tpl-icon">'+t.icon+'</div>'+
-    '<div class="tpl-name">'+t.name+'</div>'+
-    '<div class="tpl-desc">'+t.desc+'</div>'+
-    '<div class="tpl-size">'+t.size+'</div></div>'
+  // Build filter chip bar + grid
+  const chips = [
+    {id:'all', label:'Alle', icon:'📋'},
+    {id:'csc', label:'CSC', icon:'🌿'},
+    {id:'messe', label:'Messe', icon:'🎪'},
+    {id:'showroom', label:'Showroom', icon:'🏢'},
+  ];
+  const parent = grid.parentElement;
+  let chipBar = document.getElementById('tpl-chip-bar');
+  if(!chipBar){
+    chipBar = document.createElement('div');
+    chipBar.id = 'tpl-chip-bar';
+    chipBar.style.cssText = 'display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px';
+    parent.insertBefore(chipBar, grid);
+  }
+  chipBar.innerHTML = chips.map(c=>
+    '<button class="tbt'+(_tplFilter===c.id?' g':'')+'" style="padding:4px 10px;font-size:11px" onclick="setTplFilter(\''+c.id+'\')">'+c.icon+' '+c.label+'</button>'
   ).join('');
+  renderTemplateGrid();
   openM('m-templates');
 }
 
+function setTplFilter(tag){
+  _tplFilter = tag;
+  // Update chip active state
+  const chipBar = document.getElementById('tpl-chip-bar');
+  if(chipBar){
+    chipBar.querySelectorAll('button').forEach(b=>b.classList.remove('g'));
+    const clicked = chipBar.querySelector('button[onclick*="\''+tag+'\'"]');
+    if(clicked) clicked.classList.add('g');
+  }
+  renderTemplateGrid();
+}
+
+function renderTemplateGrid(){
+  const grid = document.getElementById('tpl-grid'); if(!grid) return;
+  const all = getAllTemplates();
+  const filtered = _tplFilter==='all' ? all : all.filter(t=>t.tag===_tplFilter);
+  if(filtered.length===0){
+    grid.innerHTML = '<div style="grid-column:1/-1;padding:20px;text-align:center;color:var(--tx3);font-size:11px">Keine Vorlagen in dieser Kategorie</div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(t=>{
+    const badge = t.tag && t.tag!=='csc' ? '<span style="background:var(--gr3);color:var(--gr);padding:1px 6px;border-radius:8px;font-size:9px;margin-left:4px">'+t.tag+'</span>' : '';
+    return '<div class="tpl-card" onclick="applyTemplate(\''+t.id+'\')">'+
+      '<div class="tpl-icon">'+t.icon+'</div>'+
+      '<div class="tpl-name">'+t.name+badge+'</div>'+
+      '<div class="tpl-desc">'+t.desc+'</div>'+
+      '<div class="tpl-size">'+t.size+'</div></div>';
+  }).join('');
+}
+
 function applyTemplate(id){
-  const tpl = ROOM_TEMPLATES.find(t=>t.id===id); if(!tpl) return;
+  const tpl = getAllTemplates().find(t=>t.id===id); if(!tpl) return;
   if(!confirm('Vorlage "'+tpl.name+'" laden? Alle aktuellen Räume werden ersetzt.')) return;
   closeM('m-templates');
   // Clear existing
@@ -10828,11 +10878,19 @@ function applyTemplate(id){
   objects.forEach(o=>{ if(obj3Map[o.id]) scene.remove(obj3Map[o.id]); });
   Object.keys(obj3Map).forEach(k=>{ scene.remove(obj3Map[k]); delete obj3Map[k]; });
   rooms=[]; objects=[]; measures=[];
+  // P4.5: if the template carries meta (maxHeight, messeDays), overwrite
+  // those project-meta fields so the height-limit rule + budget calc
+  // pick up the template's intent immediately.
+  if(tpl.meta){
+    if(tpl.meta.maxHeight != null) projMeta.maxHeight = tpl.meta.maxHeight;
+    if(tpl.meta.messeDays != null) projMeta.messeDays = tpl.meta.messeDays;
+    syncMetaUI();
+  }
   // Apply template
-  tpl.rooms.forEach(r=>addRoom({...r, ceilColor:'#f0ece0'}));
+  tpl.rooms.forEach(r=>addRoom({...r, ceilColor:r.ceilColor||'#f0ece0'}));
   tpl.objects.forEach(o=>{
     const it=findItem(o.typeId); if(!it) return;
-    addObject({...o, id:null, w:it.w, d:it.d, h:it.h, py:0, arch:it.arch||null, floorId:curFloor});
+    addObject({...o, id:null, w:it.w, d:it.d, h:it.h, py:o.py||0, arch:it.arch||null, floorId:curFloor});
   });
   rebuild3D(); draw2D(); renderLeft(); snapshot();
   toast('🏗 Vorlage "'+tpl.name+'" geladen!','g');
