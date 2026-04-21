@@ -2,14 +2,15 @@
 
 Browser-basierte Planungs-App für **Cannabis Social Clubs (KCanG)** und **Messestände** — 2D + 3D, Compliance-Live-Check, Cloud-Save, KI-Features.
 
-**Live:** https://marianacannabis.github.io/csc-raumplaner/ · **Version:** 1.0.0 · **Lizenz:** MIT
+**Live:** https://marianacannabis.github.io/csc-raumplaner/ · **Version:** 2.2.0 · **Lizenz:** MIT
 
-![Version](https://img.shields.io/badge/version-1.0.0-4ade80) ![Bundle gz](https://img.shields.io/badge/bundle-612KB_gz-fbbf24) ![Tests](https://img.shields.io/badge/tests-20_passing-4ade80)
+![Version](https://img.shields.io/badge/version-2.2.0-4ade80) ![Bundle gz](https://img.shields.io/badge/bundle-624KB_gz-fbbf24) ![Tests](https://img.shields.io/badge/tests-26_passing-4ade80) ![E2E](https://img.shields.io/badge/E2E-Playwright-blue)
 
 ## Was kann's
 
+- **Zwei Planungs-Modi:** Segmented Control in der Topbar wechselt zwischen `🏪 Raumplanung` (KCanG-Clubhaus) und `🎪 Veranstaltungs-Planung` (Messe/Kongress). Sidebar, Katalog, Regeln, Export-Buttons passen sich automatisch an.
 - **Raum-Planung:** 2D zeichnen, Objekte platzieren, 3D-Vorschau mit PBR-Materialien + HDRI-Environment
-- **KCanG-Compliance-Check:** 21 Live-Regeln (Ausgabe, Lager, WC, Sozial, Sicherheit, Flucht, §13-POI-Distance, §14-Sichtschutz, §23-Präventionsbeauftragter, Messe-Höhe …)
+- **KCanG-Compliance-Check:** 21 Live-Regeln (Ausgabe, Lager, WC, Sozial, Sicherheit, Flucht, §13-POI-Distance, §14-Sichtschutz, §23-Präventionsbeauftragter, Messe-Höhe …). Mode-abhängig gefiltert.
 - **Messe-Workflow:** 14 Stand-Templates (Mari-Jane, Dmexco, Boot, Gamescom, Showroom) + Budget-Kalkulator + Packliste + DXF-Export
 - **260+ Katalog-Items** in 30+ Kategorien mit PBR-Materialien (Kenney, Quaternius, ambientCG — alle CC0)
 - **KI-Features:** Grundriss-Analyse + Smart Lighting + **PDF-Messeordnung-Import** via Claude Vision API
@@ -31,11 +32,21 @@ npm run dev
 # Produktions-Build
 npm run build
 
-# Unit-Tests (Vitest, 20 Tests)
+# Unit-Tests (Vitest, 26 Tests)
 npm test
 
 # Coverage-Report
 npm run test:coverage
+
+# E2E-Tests (Playwright, einmalig Browser installieren)
+npx playwright install chromium
+npm run test:e2e
+
+# Lighthouse (lokal, benötigt Chrome)
+npm run lighthouse
+
+# Favicons regenerieren (Python + Pillow)
+npm run gen:favicons
 ```
 
 ## Architektur
@@ -79,25 +90,33 @@ docs/
   BUNDLE-SIZE.md       # Performance-Ausweis
 ```
 
+## Quality Gates (v2.2)
+
+| Gate | Ziel | Aktuell |
+|---|---|---|
+| Bundle-Size gz | <400 KB | **624 KB** (index.html-JS-Split offen) |
+| Unit-Tests | passing | **26/26 ✅** |
+| E2E-Tests | passing | Skeleton (User-Side: `npm run test:e2e`) |
+| TS strict | clean | **✅** (+ noFallthroughCasesInSwitch, noImplicitReturns) |
+| Lighthouse Performance | ≥ 90 | *nicht gemessen* (siehe `docs/LIGHTHOUSE.md`) |
+| Lighthouse A11y | ≥ 95 | *nicht gemessen* |
+| WCAG 2.1 AA Touch-Targets | 44×44 px | **✅** (ab P11.2, mobile media-query) |
+
 ## Roadmap
 
-### v1.1+ (Q2–Q3 2026)
+### v2.3 (Q2 2026)
 
-- WebP-Konversion der ambientCG-Texturen (-40% Asset-Download)
-- Post-Processing + EffectComposer lazy-load (-15 KB gz initial)
-- Playwright E2E-Suite (login / create-project / compliance)
-- Settings-Panel mit Opt-In-Toggle für Analytics
-- IFC4-Export mit Objekt-Geometrie (server-side Conversion)
-- Mobile-3D: dediziertes Touch-Orbit-System
-- Analytics-Dashboard-Setup (Plausible + Sentry)
-- Icons polish: echte Favicons (192/512) + OG-Screenshot
+- **JS-Split:** 21k-Zeilen inline-JS aus `index.html` nach `src/legacy/*.ts` — eröffnet <400 KB Bundle-Ziel
+- **Full Menu-Tagging:** restliche ~140 Items mit `data-mode`/`data-tier` (aktuell 17 getaggt)
+- **Lighthouse-CI-Integration** nach erstem grünen Baseline-Run
+- **Purgecss** für src/styles/main.css (geschätzt −20 KB gz)
 
-### v2.0 (vielleicht 2026 H2)
+### v3.0 (2026 H2)
 
 - Multi-Floor-Konstruktionen mit 3D-Treppen
 - Bauantrag-PDF-Generierung (Grundriss + Positionsplan + Schnitte)
-- Integration in BIM-Viewer (ifcViewer)
-- Team-Management (Rollen: Admin/Planer/Viewer)
+- BIM-Viewer (ifcViewer) Integration
+- Stripe-Checkout für Pro/Team-Pläne (v2.2 hat Infrastruktur, nicht Payment)
 
 ## Contributing
 

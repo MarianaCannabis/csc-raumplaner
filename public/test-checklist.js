@@ -220,6 +220,101 @@ const ITEMS = [
       'Freier Text: Bugs, unklare UI, langsame Interaktionen',
     ],
   },
+  // ── v2.2 Neue Flows (P11.*) ───────────────────────────────────────────
+  {
+    id: 'planning-mode-switch',
+    section: 'v2.2 Neue Features',
+    title: 'Planning-Mode-Switcher (P11.1)',
+    steps: [
+      'Topbar zeigt Segmented-Control: „🏪 Raumplanung" / „🎪 Veranstaltungs-Planung"',
+      '"Raumplanung" ist Default (grün hervorgehoben)',
+      'Auf "Veranstaltungs-Planung" klicken → Confirm-Dialog erscheint',
+      '→ OK: KCanG-Button verschwindet aus Topbar, Messe-Inputs werden sichtbar',
+      'Seite neu laden (F5): Event-Mode bleibt aktiv (localStorage)',
+      'Zurück zu Raumplanung: KCanG-Button kommt zurück',
+    ],
+  },
+  {
+    id: 'compliance-mode-filter',
+    section: 'v2.2 Neue Features',
+    title: 'Compliance-Regeln mode-gefiltert',
+    steps: [
+      'Im "Raumplanung"-Modus: KCanG-Dashboard öffnen',
+      '21 Regeln sollten geprüft werden (inkl. memberLimit, poiCscDistance, visualScreen)',
+      'Wechsel in "Veranstaltungs-Planung"',
+      'KCanG-Dashboard ist ausgeblendet (button hat data-mode="room")',
+      'Via Command-Palette "KCanG" suchen → Dashboard erreichbar, aber Regeln zeigen nur universelle (13)',
+    ],
+  },
+  {
+    id: 'ui-mode-tiers',
+    section: 'v2.2 Neue Features',
+    title: 'UI-Mode 3-Tier (Einfach/Standard/Profi)',
+    steps: [
+      'Topbar: UI-Mode-Select auf „🌱 Einfach"',
+      'IFC-Export im Datei-Menü ist ausgeblendet (pro-tier)',
+      'Behörden-Paket ist ausgeblendet (standard-tier)',
+      'Auf „🚀 Profi" umschalten: alle Einträge sichtbar',
+    ],
+  },
+  {
+    id: 'marketplace',
+    section: 'v2.2 Neue Features',
+    title: 'Template-Marketplace (P9.7)',
+    steps: [
+      'Eigenes Template speichern',
+      'Marketplace-Tab im Template-Modal öffnen',
+      'Eigenes Template publishen (status=pending)',
+      'Anderes Template aus Community laden — Download-Counter steigt',
+    ],
+  },
+  {
+    id: 'team-invite',
+    section: 'v2.2 Neue Features',
+    title: 'Team-Einladung (P9.5)',
+    steps: [
+      'Teams-Modal öffnen, neues Team erstellen',
+      'Invite-Link kopieren',
+      'In anderem Browser (Incognito): Invite-Link öffnen',
+      'Einladung annehmen → erscheint als Team-Mitglied',
+      'Projekt an Team zuweisen → anderes Mitglied sieht es in der Cloud-Liste',
+    ],
+  },
+  {
+    id: 'i18n-switch',
+    section: 'v2.2 Neue Features',
+    title: 'Sprach-Umschalter (P9.2)',
+    steps: [
+      'Topbar: Sprach-Select auf 🇬🇧 EN',
+      'Mindestens Topbar + Hauptmenü zeigen englische Strings',
+      'Auf 🇳🇱 NL: niederländische Strings',
+      'Auf 🇪🇸 ES: spanische Strings',
+      'Zurück auf 🇩🇪 DE',
+    ],
+  },
+  {
+    id: 'command-palette',
+    section: 'v2.2 Neue Features',
+    title: 'Command Palette (P9.4 / P10.6)',
+    steps: [
+      'Ctrl+K öffnet die Palette',
+      'Tippen: "raum" → zeigt "Raum zeichnen", "Raum-Statistik"',
+      'Pfeil-hoch/runter + Enter führt Befehl aus',
+      'Esc schließt',
+      '"UI-Modus" tippen → 3 Mode-Switcher sichtbar',
+    ],
+  },
+  {
+    id: 'touch-targets',
+    section: 'v2.2 Neue Features',
+    title: 'Touch-Targets 44×44 (P11.2)',
+    steps: [
+      'Mobile-Emulation in Chrome DevTools (<1024 px Breite)',
+      'Alle Topbar-Buttons sind min. 44 px hoch',
+      'Tap auf Menu-Items trifft zuverlässig',
+      'Segmented Mode-Control nicht zu klein',
+    ],
+  },
 ];
 
 // ── State helpers ───────────────────────────────────────────────────────────
