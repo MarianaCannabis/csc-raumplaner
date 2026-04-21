@@ -4,6 +4,23 @@ Alle bedeutsamen Änderungen an CSC Studio Pro.
 
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [2.4.2] — 2026-04-22 · Release-Workflow Fix (vbadge + SW-Cache)
+
+**Patch-Release.** Zwei Bugs, die den Release-Workflow kaputt gemacht hätten, behoben:
+
+### Fixed
+- **Topbar-Version-Badge (`.vbadge`)** zeigte hart-kodiert `v3.56` statt der echten `package.json`-Version. Neuer Build-Mechanismus über Vite-Plugin `csc-version-html-inject`: `package.json.version` wird als `__APP_VERSION__` in `index.html` + 4 weiteren User-sichtbaren Stellen (PDF-Header, 2 Toasts, Help-Overlay) beim Build eingesetzt.
+- **Service-Worker-Cache-Key** (`public/sw.js`): war hart-kodiert `csc-v1`, bumpte bei Release nicht mit. Bedeutet: Clients mit Offline-Cache hätten die alte `index.html` weitergeliefert, neue Versionen wären nie durchgeschlagen. Gleicher Mechanismus: `CACHE_VERSION = 'csc-v__APP_VERSION__'` wird beim Build durch `csc-v2.4.2` ersetzt. Vite-Plugin um `writeBundle`-Hook erweitert, der nach dem verbatim-Copy von `public/sw.js` nach `dist/sw.js` den Platzhalter ersetzt.
+
+### Released
+- `v2.4.1 → v2.4.2` Bump mit diesem CHANGELOG-Eintrag
+
+### Verifikation nach Deploy
+```bash
+curl -s https://marianacannabis.github.io/csc-raumplaner/sw.js | grep "CACHE_VERSION"
+# → const CACHE_VERSION = 'csc-v2.4.2';
+```
+
 ## [2.4.1] — 2026-04-21 · E2E grün + A11y 92 → 96
 
 **Patch-Release.** Test-Infrastruktur stabilisiert, Accessibility-Baseline übersprungen, ein echter App-Bug im Mode-Switcher behoben.

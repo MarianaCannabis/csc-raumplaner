@@ -2,7 +2,11 @@
 // Strategy: network-first für HTML (immer frisch); cache-first für Assets
 // (statische JS/CSS/Images, ändern selten). Offline-Fallback via Cache.
 
-const CACHE_VERSION = 'csc-v1';
+// Auto-bumped durch vite.config.ts transformIndexHtml / writeBundle-Hook:
+// beim Build wird __APP_VERSION__ durch package.json.version ersetzt.
+// Dev-Mode serviert public/sw.js as-is → CACHE_VERSION bleibt Literal,
+// was einen eigenen Dev-Cache ergibt (kein Bug, nur Dev/Prod-Trennung).
+const CACHE_VERSION = 'csc-v__APP_VERSION__';
 const PRECACHE_ASSETS = [
   '/csc-raumplaner/',
   '/csc-raumplaner/index.html',

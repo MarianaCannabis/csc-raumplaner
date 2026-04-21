@@ -30,6 +30,25 @@ export default defineConfig({
       transformIndexHtml(html) {
         return html.replace(/__APP_VERSION__/g, APP_VERSION);
       },
+      // Post-Build: public/sw.js wird von Vite verbatim nach dist/sw.js
+      // kopiert (kein Transform-Pipe). Deshalb hier nachträglich per
+      // writeBundle-Hook den __APP_VERSION__-Platzhalter ersetzen, damit
+      // der Service-Worker-Cache-Key mit jedem Release bumpt.
+      async writeBundle(options) {
+        const { readFile, writeFile, access } = await import('node:fs/promises');
+        const { join } = await import('node:path');
+        const outDir = options.dir || 'dist';
+        const swPath = join(outDir, 'sw.js');
+        try {
+          await access(swPath);
+          const contents = await readFile(swPath, 'utf8');
+          if (contents.includes('__APP_VERSION__')) {
+            await writeFile(swPath, contents.replace(/__APP_VERSION__/g, APP_VERSION), 'utf8');
+          }
+        } catch {
+          // sw.js nicht da → kein Fehler, einfach nichts tun.
+        }
+      },
     },
   ],
 });
