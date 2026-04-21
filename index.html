@@ -72,6 +72,18 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 body[data-ui-mode="simple"] [data-tier="pro"],
 body[data-ui-mode="simple"] [data-tier="standard"] { display: none !important; }
 body[data-ui-mode="standard"] [data-tier="pro"] { display: none !important; }
+
+/* P11.1: Planning-Mode (Raumplanung vs. Veranstaltungs-Planung) */
+body[data-planning-mode="room"]  [data-mode="event"] { display: none !important; }
+body[data-planning-mode="event"] [data-mode="room"]  { display: none !important; }
+
+/* P11.1: Segmented Control für Mode-Switch in Topbar */
+.mode-seg { display:inline-flex; background:var(--bg3); border:1px solid var(--bd); border-radius:20px; overflow:hidden; height:28px }
+.mode-seg button { padding:4px 14px; font-size:11px; border:0; background:transparent; color:var(--tx2); cursor:pointer; transition:.12s; white-space:nowrap; font-weight:600; min-height:28px }
+.mode-seg button:hover { color:var(--tx) }
+.mode-seg button.active { background:var(--gr3); color:var(--gr); }
+@media (max-width: 720px) { .mode-seg button { padding:4px 10px; font-size:10px } }
+
 input,textarea,select,button{font-family:inherit}
 #app{display:flex;flex-direction:column;height:100vh;overflow:hidden}
 
@@ -1819,11 +1831,45 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
     style="padding:5px 12px;border:1px solid var(--gr3);background:rgba(74,222,128,0.08);color:var(--gr);font-weight:600">💾 Speichern</button>
   <div class="tsep"></div>
 
+  <!-- P11.1: Planning-Mode Segmented Control (Raumplanung vs. Veranstaltungs-Planung) -->
+  <div class="mode-seg" role="group" aria-label="Planungs-Modus">
+    <button type="button" id="pm-room"  onclick="window.cscSwitchPlanningMode('room')"  title="Raumplanung — CSC Clubhaus, Anbauraum, Ausgabe"  aria-label="Raumplanung aktivieren">🏪 Raumplanung</button>
+    <button type="button" id="pm-event" onclick="window.cscSwitchPlanningMode('event')" title="Veranstaltungs-Planung — Messe, Kongress, Event" aria-label="Veranstaltungs-Planung aktivieren">🎪 Veranstaltungs-Planung</button>
+  </div>
+  <div class="tsep"></div>
+  <script>
+    // P11.1: Mode-Switcher — liest Persistenz, setzt active-Klasse, zeigt Confirm-Dialog.
+    (function(){
+      function applyActive(m){
+        var r = document.getElementById('pm-room'), e = document.getElementById('pm-event');
+        if(!r||!e) return;
+        r.classList.toggle('active', m==='room');
+        e.classList.toggle('active', m==='event');
+      }
+      var current = 'room';
+      try { var v = localStorage.getItem('csc-planning-mode'); if(v==='event'||v==='room') current = v; } catch(_){}
+      document.body.dataset.planningMode = current;
+      applyActive(current);
+
+      window.cscSwitchPlanningMode = function(m){
+        if(m!=='room' && m!=='event') return;
+        var cur = document.body.dataset.planningMode || 'room';
+        if(cur === m) return;
+        var ok = confirm('Planung-Modus wechseln?\n\nAktuelle Objekte bleiben erhalten, aber manche Regeln/Kategorien werden ausgeblendet.');
+        if(!ok) return;
+        try { localStorage.setItem('csc-planning-mode', m); } catch(_){}
+        document.body.dataset.planningMode = m;
+        applyActive(m);
+        window.dispatchEvent(new CustomEvent('csc-mode-change', { detail: m }));
+      };
+    })();
+  </script>
+
   <!-- P4.3b: Prominenter Vorlagen-Button (erster Einstieg für neue User) -->
   <button class="tbt" id="btn-templates" onclick="openTemplates()" title="Vorlagen laden — fertige CSC-Layouts + Messestände"
     style="padding:5px 10px;border:1px solid var(--gr3);background:rgba(74,222,128,0.08);color:var(--gr);font-weight:600">📋 Vorlagen</button>
   <!-- P7 Bug-2-Fix: KCanG-Dashboard aus der Ansicht-Menu-Tiefe an die Topbar hochgezogen -->
-  <button class="tbt" id="btn-kcang" onclick="openKCaNGDashboard()" title="KCanG-Projektdaten + Compliance-Check (Mitglieder, Adresse, Präventionsbeauftragter, Regeln)"
+  <button class="tbt" id="btn-kcang" data-mode="room" onclick="openKCaNGDashboard()" title="KCanG-Projektdaten + Compliance-Check (Mitglieder, Adresse, Präventionsbeauftragter, Regeln)"
     style="padding:5px 10px;border:1px solid var(--gr3);background:rgba(74,222,128,0.08);color:var(--gr);font-weight:600">🌿 KCanG</button>
   <!-- P8.2: Hilfe-Modal mit FAQ + Shortcuts + Link zum User-Guide -->
   <button class="tbt icon-btn" id="btn-help" onclick="openHelpModal()" title="Hilfe: FAQ, Tastenkürzel, User-Guide"
@@ -1871,8 +1917,8 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
         <div class="tbm-item" onclick="exportDXF();closeTBMenu()">📐 Grundriss .dxf</div>
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="openPrintPreview();closeTBMenu()">🖨 Druckvorschau</div>
-        <div class="tbm-item" data-tier="standard" onclick="generateAuthorityPackage();closeTBMenu()">📦 Behörden-Paket (.zip)</div>
-        <div class="tbm-item" onclick="openM('m-hygiene');closeTBMenu()">🧴 Hygiene-Konzept PDF</div>
+        <div class="tbm-item" data-tier="standard" data-mode="room" onclick="generateAuthorityPackage();closeTBMenu()">📦 Behörden-Paket (.zip)</div>
+        <div class="tbm-item" data-mode="room" onclick="openM('m-hygiene');closeTBMenu()">🧴 Hygiene-Konzept PDF</div>
         <div class="tbm-item" onclick="generateOpeningHoursSign();closeTBMenu()">⏰ Öffnungszeiten-Schild</div>
         <div class="tbm-item" onclick="takePresentationScreenshot();closeTBMenu()">📸 3D-Screenshot</div>
         <div class="tbm-item" onclick="shareByEmail();closeTBMenu()">📧 Per E-Mail teilen</div>
@@ -1941,7 +1987,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
         <div class="tbm-item" onclick="setLightTemperature('neutral');closeTBMenu()">⚪ Neutral 4000K</div>
         <div class="tbm-item" onclick="setLightTemperature('cool');closeTBMenu()">🔵 Kalt 6500K</div>
         <div class="tbm-sep"></div>
-        <div class="tbm-item" onclick="toggleKCaNGMonitor();closeTBMenu()">🌿 KCanG Live-Monitor</div>
+        <div class="tbm-item" data-mode="room" onclick="toggleKCaNGMonitor();closeTBMenu()">🌿 KCanG Live-Monitor</div>
         <div class="tbm-item" onclick="toggleAnnotationMode();closeTBMenu()">📌 Annotations-Modus</div>
         <div class="tbm-item" onclick="analyzeSound();closeTBMenu()">🔊 Schallschutzplan</div>
         <div class="tbm-item" onclick="toggleTransparency();closeTBMenu()">👁 Transparenz-Modus</div>
@@ -2425,13 +2471,13 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
             onchange="projMeta.preventionOfficer=this.value; if(typeof renderComplianceBadges==='function') renderComplianceBadges();"
             style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
         </div>
-        <div class="mf" style="margin-top:8px">
+        <div class="mf" data-mode="event" style="margin-top:8px">
           <label style="font-size:10px;color:var(--tx3)" title="Messe-Mode: alle platzierten Objekte werden gegen diesen Wert geprüft. Leer lassen = aus.">Messe-Höhenbegrenzung (m)</label>
           <input type="number" id="pm-max-height" min="0" step="0.1" placeholder="z.B. 2.5"
             onchange="projMeta.maxHeight=this.value?+this.value:null; if(typeof renderComplianceBadges==='function') renderComplianceBadges();"
             style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
         </div>
-        <div class="mf" style="margin-top:6px">
+        <div class="mf" data-mode="event" style="margin-top:6px">
           <label style="font-size:10px;color:var(--tx3)">Messetage (Dauer)</label>
           <input type="number" id="pm-messe-days" min="1" max="14" step="1" placeholder="3"
             onchange="projMeta.messeDays=this.value?+this.value:null;"
@@ -2478,8 +2524,8 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
             onchange="projMeta.securityThresholdPct=this.value?+this.value:null;"
             style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
         </div>
-        <button class="tbt" onclick="openMesseBudget()" style="margin-top:6px;padding:6px;border-color:var(--gr3);color:var(--gr);font-size:11px">💰 Messe-Kosten schätzen</button>
-        <button class="tbt" onclick="openPacklist()" style="margin-top:4px;padding:6px;border-color:var(--gr3);color:var(--gr);font-size:11px">📦 Packliste generieren</button>
+        <button class="tbt" data-mode="event" onclick="openMesseBudget()" style="margin-top:6px;padding:6px;border-color:var(--gr3);color:var(--gr);font-size:11px">💰 Messe-Kosten schätzen</button>
+        <button class="tbt" data-mode="event" onclick="openPacklist()" style="margin-top:4px;padding:6px;border-color:var(--gr3);color:var(--gr);font-size:11px">📦 Packliste generieren</button>
         <button class="tbt" onclick="openM('m-visualize')" style="margin-top:4px;padding:6px;border-color:var(--gr3);color:var(--gr);font-size:11px">📸 Hochauflösende Visualisierung</button>
         <label style="font-size:11px;color:var(--tx2);display:flex;align-items:center;gap:6px;margin-top:6px">
           <input type="checkbox" id="pm-windows-filmed"

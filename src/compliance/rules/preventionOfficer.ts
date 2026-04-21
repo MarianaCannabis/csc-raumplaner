@@ -10,6 +10,7 @@ registerRule({
   label: 'Präventionsbeauftragter benannt (§ 23 KCanG)',
   category: 'member',
   severity: 'high',
+  modes: ['room'],
   check({ meta }) {
     const name = meta?.preventionOfficer?.trim();
     if (name) return { passed: true, details: `Eingetragen: ${name}` };

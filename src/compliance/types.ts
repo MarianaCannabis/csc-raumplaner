@@ -135,6 +135,11 @@ export interface Rule {
   /** Default 'project'. 'room' rules skip evaluateAll() and are run only
    *  by evaluateForRoom() with currentRoom set. */
   scope?: 'project' | 'room';
+  /** P11.1: Wann diese Regel aktiv ist. Default: beide Modi.
+   *  - ['room']  → nur in Raumplanung (z.B. KCanG-Mitglieder, POI-Abstand)
+   *  - ['event'] → nur in Veranstaltungs-Planung (z.B. Messe-Höhenlimit)
+   *  - undefined / [] → läuft immer */
+  modes?: Array<'room' | 'event'>;
   /** Optional single-glyph badge marker for canvas overlays (per-room). */
   icon?: string;
   check(ctx: RuleContext): RuleResult;

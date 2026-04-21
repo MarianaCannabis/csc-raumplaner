@@ -6,6 +6,7 @@ registerRule({
   label: 'Max. 500 Mitglieder',
   category: 'member',
   severity: 'critical',
+  modes: ['room'],
   check({ meta }) {
     const n = meta?.memberCount;
     if (n == null) return { passed: null, details: 'Mitgliederzahl nicht gesetzt' };

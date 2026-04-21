@@ -9,6 +9,7 @@ registerRule({
   label: 'Jugendschutz (18+) am Eingang',
   category: 'youth',
   severity: 'critical',
+  modes: ['room'],
   check({ objects, meta }) {
     const hasSecureEntry = objects.some((o) => o.typeId === 'at-sec');
     const hasAgeProcess = meta?.ageVerification === true;

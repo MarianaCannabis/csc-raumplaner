@@ -29,6 +29,7 @@ registerRule({
   category: 'room',
   severity: 'high',
   scope: 'project',
+  modes: ['event'],
   icon: '📏',
   check({ objects, meta }) {
     const cap = meta?.maxHeight;
