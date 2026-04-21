@@ -90,17 +90,28 @@ docs/
   BUNDLE-SIZE.md       # Performance-Ausweis
 ```
 
-## Quality Gates (v2.2)
+## Quality Gates
+
+### Lighthouse
+
+| Kategorie      | v2.4.0 Baseline | Ziel |
+|----------------|-----------------|------|
+| Performance    | 47              | ≥ 90 (v2.5 JS-Split) |
+| Accessibility  | 92              | ≥ 95 |
+| Best Practices | 100             | ✅    |
+| SEO            | 100             | ✅    |
+
+> Performance-Baseline ist v2.4-spezifisch; Hauptoptimierung erfolgt in v2.5 über den in [`docs/P17-JS-SPLIT-PLAN.md`](docs/P17-JS-SPLIT-PLAN.md) dokumentierten JS-Split.
+
+### Sonstige Gates
 
 | Gate | Ziel | Aktuell |
 |---|---|---|
-| Bundle-Size gz | <400 KB | **624 KB** (index.html-JS-Split offen) |
-| Unit-Tests | passing | **26/26 ✅** |
-| E2E-Tests | passing | Skeleton (User-Side: `npm run test:e2e`) |
+| Bundle-Size gz | <400 KB | **626 KB** (index.html-JS-Split offen) |
+| Unit-Tests | passing | **42/42 ✅** |
+| E2E-Tests | 28/28 passing | **18/28** — 10 Test-Setup-Issues, keine App-Bugs (siehe `docs/test-reports/2026-04-21-local.md`) |
 | TS strict | clean | **✅** (+ noFallthroughCasesInSwitch, noImplicitReturns) |
-| Lighthouse Performance | ≥ 90 | *nicht gemessen* (siehe `docs/LIGHTHOUSE.md`) |
-| Lighthouse A11y | ≥ 95 | *nicht gemessen* |
-| WCAG 2.1 AA Touch-Targets | 44×44 px | **✅** (ab P11.2, mobile media-query) |
+| WCAG 2.1 AA Touch-Targets | 44×44 px | **✅** (P11.2 + P-Bug-Bash) |
 
 ## Roadmap
 
