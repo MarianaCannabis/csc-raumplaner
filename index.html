@@ -75,7 +75,7 @@
 <div id="topbar">
   <!-- LOGO -->
   <span class="logo">🌿 CSC <em>Studio Pro</em></span>
-  <span class="vbadge">v3.56</span>
+  <span class="vbadge">v__APP_VERSION__</span>
   <div class="tsep"></div>
 
   <!-- UNDO/REDO -->
@@ -5930,7 +5930,7 @@ function doPrint(){
     +'td,th{border:1px solid #ddd;padding:4px 6px;text-align:left}th{background:#f5f5f5}'
     +'@media print{body{padding:8px}}</style></head><body>'
     +'<h1>🌿 '+d.name+'</h1>'
-    +'<div style="font-size:11px;color:#888">CSC 3D Raumplaner v3.56 · '+new Date().toLocaleDateString('de-DE')+'</div>'
+    +'<div style="font-size:11px;color:#888">CSC Studio Pro v__APP_VERSION__ · '+new Date().toLocaleDateString('de-DE')+'</div>'
     +'<img src="'+img+'">'
     +'<div class=grid>'
     +'<div class=box><h3>Räume ('+d.rooms.length+')</h3>'
@@ -22292,7 +22292,7 @@ draw2D();
 
 renderFloorTabs();
 initUndoSystem();
-setTimeout(()=>toast('🌿 v3.56 | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
+setTimeout(()=>toast('🌿 v__APP_VERSION__ | KI ✓ · Türen ✓ · 3D-Edit · Design','g'),600);
 
 
 
@@ -22308,7 +22308,7 @@ function initAutoSave(){
   // jetzt gesichert werden.
   _autoSaveReady = true;
   renderVersionHistory();
-  toast('🌿 v3.56 | Auto-Save aktiv','g');
+  toast('🌿 v__APP_VERSION__ | Auto-Save aktiv','g');
 }
 
 
@@ -23226,7 +23226,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
 
   <div style="padding:12px 20px;border-bottom:1px solid #1a2a1a;display:flex;align-items:center;gap:14px;flex-shrink:0">
     <div style="font-size:16px;font-weight:800;color:#4ade80">🌿 CSC Studio Pro — Vollständige Anleitung</div>
-    <div style="font-size:11px;color:#555">v3.56</div>
+    <div style="font-size:11px;color:#555">v__APP_VERSION__</div>
     <div style="flex:1"></div>
     <button class="tbt" onclick="startOnboarding()" style="border-color:var(--gr);color:var(--gr);padding:6px 14px">▶ Illustriertes Intro</button>
     <button class="tbt" onclick="startTutorial()" style="padding:6px 14px">🎯 Interaktives Tutorial</button>
