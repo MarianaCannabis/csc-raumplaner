@@ -1,4 +1,4 @@
-# CSC Raumplaner Pro — User-Guide
+# CSC Studio Pro — User-Guide
 
 Version 1.0 · Stand 2026-04-21
 

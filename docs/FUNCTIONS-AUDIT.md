@@ -1,4 +1,4 @@
-# CSC Raumplaner — Funktions-Audit
+# CSC Studio Pro — Funktions-Audit
 
 **Stand:** 2026-04-19
 **Quelle:** `index.html` (~21 700 Zeilen) + `src/` (Vite/TS, Stand nach P1.5)

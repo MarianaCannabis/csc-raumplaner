@@ -1,8 +1,31 @@
 # Changelog
 
-Alle bedeutsamen Änderungen an CSC Raumplaner Pro.
+Alle bedeutsamen Änderungen an CSC Studio Pro.
 
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
+
+## [2.2.1] — 2026-04-21 · Rebrand auf "CSC Studio Pro"
+
+**Rebrand-Release** — ausschließlich User-sichtbare Namensänderung. Keine API-, DB- oder Verhaltensänderungen.
+
+### Changed
+- Produkt-Name: "CSC Raumplaner Pro" → **"CSC Studio Pro"**
+- `<title>`-Tag, `og:title`, `og:description`, `meta[name=description]`
+- Topbar-Logo: `🌿 CSC Studio Pro`
+- PWA-Manifest: `name` / `short_name` / `description` aktualisiert
+- Welcome-Modal, Onboarding-Titel, Presentation-Modus
+- DSGVO-Export README, IFC-Export-Header, ICS-Kalender-PRODID
+- `public/about.html`, `privacy.html`, `impressum.html`, `test.html`
+- `docs/ARCHITECTURE.md`, `docs/USER-GUIDE.md`
+- i18n: `welcome.title1` in DE/EN/NL/ES
+- `package.json` bekommt `description`-Feld
+
+### Not changed (bewusst)
+- Repo-URL `github.com/MarianaCannabis/csc-raumplaner` (würde alte Links brechen)
+- Supabase-Tabellen `csc_projects`, `csc_user_templates`, `csc_teams`, `csc_subscriptions`, `csc_marketplace_templates`
+- JS-Variablen `cscCompliance`, `cscCatalog`, `cscPlan` + Legacy-Globals `SB_URL`, `SB_KEY`
+- CSS-Klassen, File-Pfade (`/csc-raumplaner/`-Scope in manifest + sw.js), `package.json.name`
+- Historische Phase-Dokumente in `docs/P10.*.md` (zeitlich eingefroren)
 
 ## [2.2.0] — 2026-04-21 · Planning-Mode + Production Hardening
 

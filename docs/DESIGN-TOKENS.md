@@ -1,4 +1,4 @@
-# Design Tokens — CSC-Raumplaner
+# Design Tokens — CSC Studio Pro
 
 Stand: 2026-04-20 · Single Source of Truth für Farben, Spacing, Radien.
 
