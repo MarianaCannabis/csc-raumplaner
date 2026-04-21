@@ -502,11 +502,29 @@ function escapeHtml(s) {
 
 // ── Export ──────────────────────────────────────────────────────────────────
 
+/** YYYY-MM-DD-HHMM in local time — used as the standardized filename slug
+ *  that Web-Claude can grep for in docs/test-reports/. */
+function reportSlug(d = new Date()) {
+  const pad = (n) => String(n).padStart(2, '0');
+  return (
+    d.getFullYear() +
+    '-' +
+    pad(d.getMonth() + 1) +
+    '-' +
+    pad(d.getDate()) +
+    '-' +
+    pad(d.getHours()) +
+    pad(d.getMinutes())
+  );
+}
+
 function buildMarkdownReport() {
   const state = loadState();
   const now = new Date();
+  const slug = reportSlug(now);
   let md = `# CSC Raumplaner — Test-Report\n\n`;
-  md += `**Datum:** ${now.toLocaleString('de-DE')}\n`;
+  md += `**Datum:** ${now.toLocaleString('de-DE')}  \n`;
+  md += `**Slug:** \`${slug}\`  \n`;
   md += `**Getestet:** ${ITEMS.filter((i) => state[i.id]?.status).length} / ${ITEMS.length}\n\n`;
 
   const groups = {};
@@ -525,41 +543,78 @@ function buildMarkdownReport() {
         md += `**Notizen:**\n\n${s.notes.trim()}\n\n`;
       }
       if (s.screenshots && s.screenshots.length) {
-        md += `**Screenshots angehängt:** ${s.screenshots.length} (im JSON-Export enthalten)\n\n`;
+        md += `**Screenshots:** ${s.screenshots.length}\n\n`;
+        s.screenshots.forEach((ss, idx) => {
+          // Two references: repo-path (aspirational, für gepushte Reports)
+          // und inline data-URL-Fallback (rendert in GitHub-MD-Viewer sofort).
+          const alt = (ss.name || `${it.id}-${idx + 1}`).replace(/[\[\]]/g, '');
+          const filename = `${idx + 1}-${it.id}.png`;
+          md += `<!-- repo-path: docs/test-reports/screenshots/${slug}/${filename} -->\n`;
+          md += `![${alt}](${ss.dataUrl})\n\n`;
+        });
       }
     });
   });
 
-  return md;
+  return { md, slug };
 }
 
-function exportReport() {
-  const md = buildMarkdownReport();
+function copyToClipboard() {
+  const { md } = buildMarkdownReport();
   navigator.clipboard
     .writeText(md)
     .then(() => alert(`Bericht (${md.length} Zeichen) in Zwischenablage kopiert!\n\nPaste direkt in den Chat.`))
     .catch(() => {
-      // Clipboard blocked → fallback to downloading .md
-      const blob = new Blob([md], { type: 'text/markdown' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `csc-test-report-${new Date().toISOString().slice(0, 10)}.md`;
-      a.click();
-      alert('Clipboard blockiert — Bericht wurde als .md heruntergeladen.');
+      alert('Clipboard blockiert — bitte „💾 Als .md herunterladen" benutzen.');
     });
 }
 
-function downloadReport() {
+/** Triggert einen .md-Download mit standardisiertem Namen. */
+function downloadMdReport() {
+  const { md, slug } = buildMarkdownReport();
+  const blob = new Blob([md], { type: 'text/markdown' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `test-report-${slug}.md`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  return slug;
+}
+
+/** Zeigt eine Schritt-für-Schritt-Anleitung, wie der Bericht ins Repo
+ *  kommt, triggert parallel den .md-Download. */
+function pushToRepo() {
+  const slug = downloadMdReport();
+  const msg =
+    `✅ Download läuft: test-report-${slug}.md\n\n` +
+    `So geht's ins Repo:\n\n` +
+    `1. Heruntergeladene Datei nach docs/test-reports/ verschieben\n` +
+    `2. Screenshots (falls vorhanden) nach docs/test-reports/screenshots/${slug}/ kopieren\n` +
+    `3. Im Repo:\n` +
+    `   git add docs/test-reports/\n` +
+    `   git commit -m "Test-Report ${slug}"\n` +
+    `   git push\n\n` +
+    `4. Web-Claude Bescheid geben:\n` +
+    `   "Test beendet, Datum: ${slug}"`;
+  // Nach dem Download kurz warten, damit der Browser-Dialog zuerst aufgeht
+  // und der alert nicht modal davor blockt.
+  setTimeout(() => alert(msg), 250);
+}
+
+function downloadJsonReport() {
   const state = loadState();
+  const slug = reportSlug();
   const payload = {
     exportedAt: new Date().toISOString(),
+    slug,
     items: ITEMS.map((i) => ({ ...i, result: state[i.id] || null })),
   };
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `csc-test-report-${new Date().toISOString().slice(0, 10)}.json`;
+  a.download = `test-report-${slug}.json`;
   a.click();
+  URL.revokeObjectURL(a.href);
 }
 
 function resetAll() {
@@ -571,6 +626,8 @@ function resetAll() {
 // ── Boot ────────────────────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', renderAll);
-window.exportReport = exportReport;
-window.downloadReport = downloadReport;
+window.copyToClipboard = copyToClipboard;
+window.downloadMdReport = downloadMdReport;
+window.pushToRepo = pushToRepo;
+window.downloadJsonReport = downloadJsonReport;
 window.resetAll = resetAll;

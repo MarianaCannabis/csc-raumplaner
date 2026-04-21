@@ -54,8 +54,10 @@
   <div class="progress-text" id="progress-text">0 / 0 getestet</div>
   <div id="checklist"></div>
   <div class="export-bar">
-    <button class="btn-primary" onclick="exportReport()">📋 Bericht in Zwischenablage</button>
-    <button class="btn-secondary" onclick="downloadReport()">💾 Als JSON herunterladen</button>
+    <button class="btn-primary" onclick="pushToRepo()" title="Lädt .md herunter und zeigt die Repo-Push-Anleitung">📤 Report ans Repo pushen</button>
+    <button class="btn-secondary" onclick="downloadMdReport()">💾 Als .md herunterladen</button>
+    <button class="btn-secondary" onclick="copyToClipboard()">📋 In Zwischenablage</button>
+    <button class="btn-secondary" onclick="downloadJsonReport()">🗂 Als JSON</button>
     <button class="btn-secondary btn-danger" onclick="resetAll()">🗑 Alles zurücksetzen</button>
   </div>
   <script src="test-checklist.js"></script>
