@@ -1276,6 +1276,23 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 .pnav-btn{padding:8px 20px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);
   border-radius:20px;color:#fff;cursor:pointer;font-size:12px}
 .present-title{color:rgba(255,255,255,.6);font-size:13px;font-weight:600;margin-bottom:12px}
+/* fix/e2e-green Bug B1: Touch-Targets 44×44 für JEDEN mobilen Viewport
+   (Phone + Tablet), nicht nur Phone. WCAG 2.1 AA 2.5.5 gilt für alle
+   Touch-Geräte. #topbar behält seine Fix-Höhe, child-Buttons bekommen
+   ausreichenden Tap-Target via min-height + align-self:stretch. */
+@media (max-width: 1023px) {
+  #topbar { height: 48px !important; }
+  .tbt, .mpill, .tbm-item, .mbt, .cmd-item, .mode-seg button,
+  button[class*="btn"], select, input[type="button"], input[type="submit"]
+  { min-height: 44px !important; }
+  .icon-btn, .ib, .touch-target { min-width: 44px !important; min-height: 44px !important; }
+  /* Primary-Save-Button braucht padding-Override (Inline-Style ist 5px 12px) */
+  #btn-save-primary { padding: 8px 14px !important; min-height: 44px !important; }
+  /* Mode-Seg ist per Default 36px — auf Mobile auf 44px anheben */
+  .mode-seg { height: 44px !important; }
+  .mode-seg button { min-height: 44px !important; }
+}
+
 /* Responsive — Tablet (600-1023px): seitliche Drawer wie bisher */
 @media(min-width:600px) and (max-width:1023px){
   #left-panel{position:fixed;left:0;top:40px;bottom:0;z-index:100;
@@ -1303,13 +1320,6 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
     content:'';display:block;width:36px;height:4px;background:var(--tx3);
     border-radius:2px;margin:8px auto 4px;opacity:.5}
   #mobile-left-btn,#mobile-right-btn{display:flex!important;bottom:16px}
-  /* P11.2: Touch-Targets auf Buttons — WCAG 2.1 AA (min 44×44 px Höhe).
-     Breite wird vom Inhalt oder der umgebenden Row-Höhe bestimmt. */
-  .tbt, .mpill, .tbm-item, .mbt, .cmd-item, .mode-seg button,
-  button[class*="btn"], select, input[type="button"], input[type="submit"]
-  { min-height:44px }
-  /* Icon-only Buttons brauchen auch Breiten-Garantie */
-  .icon-btn, .ib, .touch-target { min-width:44px; min-height:44px }
   #topbar{ padding:0 6px!important; gap:4px!important }
   #topbar .tbt, #topbar .tbm-btn{ padding:6px 8px!important; font-size:11px!important }
   .modal{ width:96vw!important; max-height:88vh!important }

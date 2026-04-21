@@ -1,9 +1,10 @@
-// P11.4 + P16 — Planning-Mode-Switcher (P11.1) + Sidebar-Filter (P12.4 + Bug-B-Fix).
-import { test, expect } from '@playwright/test';
+// P11.4 + P16 + fix/e2e-green — Planning-Mode + Sidebar-Filter.
+// _fixtures.ts unterdrückt Welcome-Modal (csc-onboarded=1 via addInitScript)
+// und akzeptiert confirm-Dialoge — beides nötig damit Klicks auf Mode-Switcher
+// nicht am m-welcome-Overlay hängen bleiben.
+import { test, expect } from './_fixtures.js';
 
 test.beforeEach(async ({ page }) => {
-  // Dismiss the confirm() that P11.1 throws on mode change so we don't hang.
-  page.on('dialog', (d) => d.accept());
   await page.goto('/');
 });
 

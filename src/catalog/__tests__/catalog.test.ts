@@ -94,8 +94,12 @@ describe('catalog — coverage per major category', () => {
   it.each(Object.entries(EXPECTATIONS))(
     '%s has at least %i items',
     (name, min) => {
+      // fix/e2e-green Bug D: noUncheckedIndexedAccess markierte `arr` als
+      // möglicherweise undefined. Wir wissen dass name aus EXPECTATIONS kommt
+      // und in LOADED existiert (siehe Record-Type oben), deshalb assertion.
       const arr = LOADED[name];
-      expect(arr.length).toBeGreaterThanOrEqual(min);
+      expect(arr, `catalog ${name} must be loaded`).toBeDefined();
+      expect(arr!.length).toBeGreaterThanOrEqual(min);
     },
   );
 });

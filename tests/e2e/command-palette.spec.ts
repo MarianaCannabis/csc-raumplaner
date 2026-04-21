@@ -1,10 +1,9 @@
-// P11.4 + P16 — Command-Palette (P9.4 + P10.6 + Bug-C-Fix).
+// P11.4 + P16 + fix/e2e-green — Command-Palette.
 // Explicitly guards the user invariant: palette shows ALL commands,
 // never filtered by mode or tier.
-import { test, expect } from '@playwright/test';
+import { test, expect } from './_fixtures.js';
 
 test.beforeEach(async ({ page }) => {
-  page.on('dialog', (d) => d.accept());
   await page.goto('/');
 });
 

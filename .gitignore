@@ -11,6 +11,11 @@ node_modules/
 dist/
 .vite/
 
+# Playwright (fix/e2e-green) — Artefakte pro lokalem Lauf, nicht ins Repo
+playwright-report/
+test-results/
+playwright/.cache/
+
 # Env files — never commit secrets
 .env
 .env.local

@@ -40,7 +40,9 @@ const args = [
   '--quiet',
 ];
 
-const proc = spawn('npx', args, { stdio: 'inherit' });
+// fix/e2e-green Bug C: Windows spawn braucht shell:true damit npx.cmd/npx.ps1
+// via PATHEXT gefunden werden. Linux/macOS ist shell:true harmlos.
+const proc = spawn('npx', args, { stdio: 'inherit', shell: true });
 
 proc.on('exit', (code) => {
   if (code !== 0) {

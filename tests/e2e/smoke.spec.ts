@@ -1,5 +1,6 @@
-// P11.4 + P16 — Smoke test: app boots, no runtime errors, brand=CSC Studio Pro.
-import { test, expect } from '@playwright/test';
+// P11.4 + P16 + fix/e2e-green — Smoke test: App-Boot, Brand, keine Console-Errors.
+// _fixtures.ts setzt csc-onboarded damit das Welcome-Modal nicht blockiert.
+import { test, expect } from './_fixtures.js';
 
 test('app boots and shows topbar', async ({ page }) => {
   const errors: string[] = [];
