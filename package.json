@@ -10,10 +10,15 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "lighthouse": "npx -y lighthouse http://localhost:5173 --output=json --output-path=./docs/lighthouse-report.json --chrome-flags=\"--headless\"",
     "audit:functions": "node scripts/audit-functions.mjs",
-    "audit:broken-flows": "node scripts/broken-flow-detect.mjs"
+    "audit:broken-flows": "node scripts/broken-flow-detect.mjs",
+    "gen:favicons": "python scripts/gen-favicons.py"
   },
   "devDependencies": {
+    "@playwright/test": "^1.50.0",
     "@types/three": "^0.184.0",
     "@vitest/coverage-v8": "^4.1.4",
     "jsdom": "^29.0.2",
