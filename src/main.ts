@@ -1,6 +1,10 @@
 // P1 entry — loaded alongside the legacy inline script in index.html.
 // Modules under src/ live here; legacy globals stay in index.html until
 // they get strangled one by one.
+//
+// P11.3: Main CSS wurde aus index.html hierher ausgelagert — Vite bundlet
+// das Stylesheet, purgecss-kompatibel und messbar separat.
+import './styles/main.css';
 import * as compliance from './compliance/index.js';
 import * as geo from './geo/overpass.js';
 import * as defaults from './config/defaults.js';
