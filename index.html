@@ -146,18 +146,20 @@
   </script>
 
   <!-- P4.3b: Prominenter Vorlagen-Button (erster Einstieg für neue User) -->
-  <button class="tbt" id="btn-templates" data-mode="event" data-tier="simple" onclick="openTemplates()" title="Vorlagen laden — fertige CSC-Layouts + Messestände"
+  <!-- P15-Responsive: overflow-priority=1 → wandert bei <900px ins ⋯-Menü -->
+  <button class="tbt" id="btn-templates" data-mode="event" data-tier="simple" data-overflow-priority="1" onclick="openTemplates()" title="Vorlagen laden — fertige CSC-Layouts + Messestände"
     style="padding:5px 10px;border:1px solid var(--gr3);background:rgba(74,222,128,0.08);color:var(--gr);font-weight:600">📋 Vorlagen</button>
   <!-- P7 Bug-2-Fix: KCanG-Dashboard aus der Ansicht-Menu-Tiefe an die Topbar hochgezogen -->
   <!-- fix/e2e-green-final: vertikale margin für WCAG target-size — Nachbar-
        Buttons dürfen vertikal nur bis 23px nah sein, sonst nicht "clickable". -->
-  <button class="tbt" id="btn-kcang" data-mode="room" onclick="openKCaNGDashboard()" title="KCanG-Projektdaten + Compliance-Check (Mitglieder, Adresse, Präventionsbeauftragter, Regeln)"
+  <!-- P15-Responsive: overflow-priority=1 → wandert bei <900px ins ⋯-Menü -->
+  <button class="tbt" id="btn-kcang" data-mode="room" data-overflow-priority="1" onclick="openKCaNGDashboard()" title="KCanG-Projektdaten + Compliance-Check (Mitglieder, Adresse, Präventionsbeauftragter, Regeln)"
     style="padding:8px 12px;margin:4px 2px;border:1px solid var(--gr3);background:rgba(74,222,128,0.08);color:var(--gr);font-weight:600;min-height:32px">🌿 KCanG</button>
   <!-- P8.2: Hilfe-Modal mit FAQ + Shortcuts + Link zum User-Guide -->
-  <button class="tbt icon-btn" id="btn-help" data-tier="simple" onclick="openHelpModal()" title="Hilfe: FAQ, Tastenkürzel, User-Guide"
+  <button class="tbt icon-btn" id="btn-help" data-tier="simple" data-overflow-priority="1" onclick="openHelpModal()" title="Hilfe: FAQ, Tastenkürzel, User-Guide"
     style="padding:5px 10px" aria-label="Hilfe öffnen">❓</button>
-  <!-- P9.2: Sprach-Umschalter -->
-  <select id="lang-switch" onchange="window.cscI18n&&window.cscI18n.setLang(this.value)"
+  <!-- P9.2: Sprach-Umschalter (P15-Responsive: priority=2 = wandert bei <750px) -->
+  <select id="lang-switch" data-overflow-priority="2" onchange="window.cscI18n&&window.cscI18n.setLang(this.value)"
     aria-label="Sprache wählen"
     title="Sprache · Language · Taal · Idioma"
     style="padding:4px 6px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:3px;font-size:11px">
@@ -167,7 +169,7 @@
     <option value="es">🇪🇸 ES</option>
   </select>
   <!-- P10.5: UI-Mode Selector (Progressive Disclosure) -->
-  <select id="ui-mode-select" onchange="setUIMode(this.value)"
+  <select id="ui-mode-select" data-overflow-priority="2" onchange="setUIMode(this.value)"
     aria-label="UI-Modus wählen"
     title="UI-Modus: Einfach (nur Basics) · Standard (alles) · Profi (inkl. BIM/Team)"
     style="padding:4px 6px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:3px;font-size:11px">
@@ -412,8 +414,21 @@
        Erhalten bleiben: Command-Palette (simple-only via CSS, Zugang #cmd-palette-btn)
        + Theme-Toggle (häufiger One-Click-Use). -->
   <button class="tbt" id="cmd-palette-btn" onclick="openCmdPalette()" title="Befehlspalette (Ctrl+K)" aria-label="Befehlspalette öffnen" style="color:var(--bl)">⌨</button>
-  <button id="theme-toggle" data-tier="simple" onclick="toggleTheme()" title="Hell/Dunkel">🌙 Dark</button>
+  <!-- P15-Responsive: Theme-Toggle ist bei <750px im Overflow-Menü -->
+  <button id="theme-toggle" data-tier="simple" data-overflow-priority="2" onclick="toggleTheme()" title="Hell/Dunkel">🌙 Dark</button>
   <div class="tsep"></div>
+
+  <!-- P15 Topbar-Responsive: Overflow-Menü (Priority+) — wird bei <900px
+       via CSS-Media-Query sichtbar, beim Boot JS-populated mit Clones der
+       data-overflow-priority-Buttons. Alt: im Zweifel flex-wrap:wrap auf
+       dem Topbar-Container sorgt, dass Items nie off-screen landen. -->
+  <div id="topbar-overflow-wrap">
+    <button type="button" id="topbar-overflow-btn" class="tbt icon-btn"
+      onclick="toggleTopbarOverflow()" title="Weitere Aktionen"
+      aria-label="Weitere Topbar-Aktionen" aria-haspopup="true" aria-expanded="false"
+      style="padding:5px 10px">⋯</button>
+    <div id="topbar-overflow-menu" role="menu" aria-label="Überlauf-Menü"></div>
+  </div>
 
   <!-- ETAGEN -->
   <div id="floor-tabs-wrap">
@@ -22111,6 +22126,63 @@ if(!localStorage.getItem('csc-onboarded')){
   }
 renderNorthArrow();
 setTimeout(registerServiceWorker,1000);
+// P15 Topbar-Responsive: Overflow-Menü-Verwaltung. Klont beim Boot alle
+// Topbar-Elemente mit data-overflow-priority ins ⋯-Menü. CSS-Media-Queries
+// versteckt die Originale bei schmalen Viewports (<900px Priority-1,
+// <750px auch Priority-2). Das Clone-Pattern vermeidet DOM-Move-Flicker
+// und doppelte Event-Handler-Registrations.
+(function initTopbarOverflow(){
+  var menu = document.getElementById('topbar-overflow-menu');
+  var btn  = document.getElementById('topbar-overflow-btn');
+  if (!menu || !btn) return;
+  // Alle Topbar-Kinder mit data-overflow-priority klonen. Klon-Handler
+  // ruft die ORIGINAL-Funktion (window.*) via onclick-attr-Kopie.
+  var items = document.querySelectorAll('#topbar [data-overflow-priority]');
+  Array.prototype.forEach.call(items, function(orig){
+    var row = document.createElement('div');
+    row.className = 'tbm-item';
+    row.setAttribute('data-overflow-for', orig.id || '');
+    row.setAttribute('role', 'menuitem');
+    // Label aus title+textContent
+    var label = (orig.getAttribute('title') || '').split(' — ')[0] ||
+                orig.textContent.trim() ||
+                orig.getAttribute('aria-label') || 'Aktion';
+    row.textContent = label;
+    row.style.cursor = 'pointer';
+    row.addEventListener('click', function(){
+      closeTopbarOverflow();
+      // Select-Elemente können nicht geklickt werden — toggle visibility
+      if (orig.tagName === 'SELECT') {
+        // Scroll to original and focus so user sees the dropdown
+        orig.focus();
+        try { orig.click(); } catch(_){}
+      } else {
+        orig.click();
+      }
+    });
+    menu.appendChild(row);
+  });
+})();
+
+window.toggleTopbarOverflow = function(){
+  var menu = document.getElementById('topbar-overflow-menu');
+  var btn  = document.getElementById('topbar-overflow-btn');
+  if (!menu) return;
+  var open = menu.classList.toggle('open');
+  if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+};
+window.closeTopbarOverflow = function(){
+  var menu = document.getElementById('topbar-overflow-menu');
+  var btn  = document.getElementById('topbar-overflow-btn');
+  if (menu) menu.classList.remove('open');
+  if (btn) btn.setAttribute('aria-expanded', 'false');
+};
+// Outside-click schließt das Menü
+document.addEventListener('click', function(e){
+  var wrap = document.getElementById('topbar-overflow-wrap');
+  if (wrap && !wrap.contains(e.target)) closeTopbarOverflow();
+});
+
 // P15 Topbar-Cleanup: einmaliger Info-Toast nach Update. Verweist User
 // auf die neuen Tabs im rechten Panel (Design/Licht/KI/Projekte). Flag
 // wird beim Schließen/Timeout gesetzt — danach nie wieder gezeigt.

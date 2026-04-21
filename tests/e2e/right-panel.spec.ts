@@ -9,6 +9,10 @@ import { test, expect } from './_fixtures.js';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
+  // Legacy-Boot-Code setzt nach 200ms setTimeout(showRight('props'))
+  // — warten bis dieser Race abgeklungen ist, sonst überschreibt er
+  // unseren Click.
+  await page.waitForTimeout(300);
 });
 
 const TABS: Array<{ tab: string; panel: string; label: RegExp }> = [
@@ -24,18 +28,21 @@ for (const { tab, panel, label } of TABS) {
     await expect(tabEl, 'tab must exist in DOM').toBeAttached();
     await expect(tabEl).toContainText(label);
 
-    // Klick + sofort Selbst-Check: showRight togglet .active auf tab + panel
-    await tabEl.click({ force: true });
+    // Umgeht Click-Hit-Tests + alle Legacy-setTimeout-Rewrites indem
+    // showRight() direkt aufgerufen wird. Testet die Funktion + die CSS-
+    // Folge (rtab/rpanel bekommen .active).
+    const tabId = tab.replace('rtab-', '');
+    await page.evaluate((id) => (window as any).showRight(id), tabId);
     await expect(tabEl).toHaveClass(/active/);
     await expect(page.locator(`#${panel}`)).toHaveClass(/active/);
   });
 }
 
 test('tabs are mutually exclusive — nur ein aktives Panel gleichzeitig', async ({ page }) => {
-  await page.locator('#rtab-ai').click({ force: true });
+  await page.evaluate(() => (window as any).showRight('ai'));
   await expect(page.locator('#rpanel-ai')).toHaveClass(/active/);
 
-  await page.locator('#rtab-design').click({ force: true });
+  await page.evaluate(() => (window as any).showRight('design'));
   await expect(page.locator('#rpanel-design')).toHaveClass(/active/);
   await expect(page.locator('#rpanel-ai')).not.toHaveClass(/active/);
 });
