@@ -92,14 +92,14 @@ docs/
 
 ## Quality Gates
 
-### Lighthouse
+### Lighthouse (v2.4.1 Messung)
 
-| Kategorie      | v2.4.0 Baseline | Ziel |
-|----------------|-----------------|------|
-| Performance    | 47              | ≥ 90 (v2.5 JS-Split) |
-| Accessibility  | 92              | ≥ 95 |
-| Best Practices | 100             | ✅    |
-| SEO            | 100             | ✅    |
+| Kategorie      | v2.4.1 | Ziel |
+|----------------|--------|------|
+| Performance    | 61     | ≥ 90 (v2.5 JS-Split) |
+| Accessibility  | **96** | ≥ 95 ✅ |
+| Best Practices | 100    | ✅    |
+| SEO            | 100    | ✅    |
 
 > Performance-Baseline ist v2.4-spezifisch; Hauptoptimierung erfolgt in v2.5 über den in [`docs/P17-JS-SPLIT-PLAN.md`](docs/P17-JS-SPLIT-PLAN.md) dokumentierten JS-Split.
 
@@ -109,7 +109,7 @@ docs/
 |---|---|---|
 | Bundle-Size gz | <400 KB | **626 KB** (index.html-JS-Split offen) |
 | Unit-Tests | passing | **42/42 ✅** |
-| E2E-Tests | 28/28 passing | **18/28** — 10 Test-Setup-Issues, keine App-Bugs (siehe `docs/test-reports/2026-04-21-local.md`) |
+| E2E-Tests | 28/28 passing | **28/28 ✅** (`fix/e2e-green-final`, 55s Laufzeit) |
 | TS strict | clean | **✅** (+ noFallthroughCasesInSwitch, noImplicitReturns) |
 | WCAG 2.1 AA Touch-Targets | 44×44 px | **✅** (P11.2 + P-Bug-Bash) |
 

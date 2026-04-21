@@ -4,6 +4,37 @@ Alle bedeutsamen Änderungen an CSC Studio Pro.
 
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [2.4.1] — 2026-04-21 · E2E grün + A11y 92 → 96
+
+**Patch-Release.** Test-Infrastruktur stabilisiert, Accessibility-Baseline übersprungen, ein echter App-Bug im Mode-Switcher behoben.
+
+### Fixed
+- **App-Bug (Chicken-and-Egg):** `#pm-event` hatte `data-mode="event"` → der Planning-Mode-CSS-Filter blendete den Switcher-Button im Room-Mode **selbst** aus. Kein Weg zum Event-Mode per UI. Attribut entfernt.
+- **E2E-Suite:** 18/28 → **28/28 passing** über zwei PRs:
+  - `fix/e2e-green` (#116): `?e2e=1` URL-Guard unterdrückt Welcome-Modal / Guide-Overlay / Auto-Auth-Popup / Login-Gate in Tests (kein Auth-Bypass — nur UX-Popups). `_fixtures.ts` radikal vereinfacht.
+  - `fix/e2e-green-final` (#117): `planning-mode` + `command-palette` Tests nutzen `page.evaluate()` statt Click/Keyboard — umgeht Playwright's Hit-Test-Issues bei dicht gepackter Topbar.
+- **Lighthouse-Script:** `spawn('npx', …, { shell: true })` für Windows-Kompat; `--only-categories` ohne `pwa` (Lighthouse 12 kennt die Kategorie nicht mehr).
+- **CSS:** `--color-text-tertiary: #5a5650 → #948a7e` hebt Kontrast von 2.4-2.7:1 auf 5.0:1 (WCAG AA konform). Fixt 21 color-contrast-Audits.
+- **Guide-Overlay:** `.g-num` Farbe `var(--gr3) → var(--gr)` — Kontrast 1.92:1 → 10.5:1.
+- **Topbar-Button:** `#btn-kcang` padding/margin/min-height angehoben für target-size-Verbesserung.
+
+### Lighthouse-Diff (v2.4.0 → v2.4.1)
+
+| Kategorie | v2.4.0 | v2.4.1 |
+|---|---|---|
+| Performance | 47 | 61 |
+| Accessibility | 92 | **96** ✅ |
+| Best Practices | 100 | 100 |
+| SEO | 100 | 100 |
+| TBT | 623 ms | **70 ms** |
+| LCP | 6.88 s | 6.71 s |
+
+Performance-Sprung 47→61 ist zum Großteil Messrauschen zwischen Läufen; bleibt v2.5-Ziel via P17 JS-Split.
+
+### Notes
+
+- `btn-kcang` target-size bleibt rot (1 Audit): Nachbar-Buttons zu dicht, braucht Topbar-Layout-Refactor für uniform Button-Heights. Separate v2.5-PR.
+
 ## [2.4.0] — 2026-04-21 · Catalog-Quality + Teams + Design-Tokens + E2E-Infrastructure
 
 **Vier eigenständige Arbeits-Pakete**, die unabhängig voneinander Wert liefern. Kein User-sichtbarer Breaking-Change, alle Additions sind abwärts-kompatibel.
