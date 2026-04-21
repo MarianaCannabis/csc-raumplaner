@@ -17,6 +17,7 @@ registerRule({
   label: 'Abstand 200 m zu Schulen/Kitas/Spielplätzen/Sportstätten (§ 13 KCanG)',
   category: 'poi',
   severity: 'critical',
+  modes: ['room'],
   check({ meta }) {
     if (!meta?.address) return { passed: null, details: 'Adresse nicht gesetzt' };
     const pois = meta.pois ?? [];

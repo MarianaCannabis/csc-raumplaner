@@ -5,6 +5,7 @@ registerRule({
   label: 'Sozialbereich vorhanden',
   category: 'room',
   severity: 'medium',
+  modes: ['room'],
   check({ rooms }) {
     const found = rooms.some((r) => /sozial|lounge/i.test(r.name));
     return { passed: found, details: found ? undefined : 'Kein Sozialbereich / keine Lounge gefunden' };

@@ -16,6 +16,7 @@ registerRule({
   label: 'Sichtschutz aller Fenster (§ 14 KCanG)',
   category: 'screen',
   severity: 'high',
+  modes: ['room'],
   check({ objects, meta }) {
     const windows = objects.filter((o) => WINDOW_MATCH.test(String(o.typeId)));
     if (windows.length === 0) {
