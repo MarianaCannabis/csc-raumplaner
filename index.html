@@ -621,6 +621,12 @@ canvas{display:block}
 /* Icon-only buttons */
 .icon-btn{padding:4px 7px!important;min-width:28px}
 
+/* P11.2: Utility-Klasse für einheitliche Modal-Footer (rechte Button-Reihe) */
+.modal-footer { display:flex; justify-content:flex-end; gap:8px; padding-top:10px; margin-top:10px; border-top:1px solid var(--bd) }
+.modal-footer .mbt { min-width:90px }
+/* P11.2: Touch-Target-Utility — an jedes interaktive Element anwendbar, das nativ zu klein ist */
+.touch-target { min-width:44px; min-height:44px; display:inline-flex; align-items:center; justify-content:center }
+
 /* Topbar compact */
 #topbar{height:40px;padding:0 8px;gap:4px}
 .logo{font-size:13px}
@@ -1280,8 +1286,13 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
     content:'';display:block;width:36px;height:4px;background:var(--tx3);
     border-radius:2px;margin:8px auto 4px;opacity:.5}
   #mobile-left-btn,#mobile-right-btn{display:flex!important;bottom:16px}
-  /* Touch-Targets auf Buttons: mind. 44×44 (WCAG 2.1 AA) */
-  .tbt, .mpill, .tbm-item, .mbt{ min-height:40px }
+  /* P11.2: Touch-Targets auf Buttons — WCAG 2.1 AA (min 44×44 px Höhe).
+     Breite wird vom Inhalt oder der umgebenden Row-Höhe bestimmt. */
+  .tbt, .mpill, .tbm-item, .mbt, .cmd-item, .mode-seg button,
+  button[class*="btn"], select, input[type="button"], input[type="submit"]
+  { min-height:44px }
+  /* Icon-only Buttons brauchen auch Breiten-Garantie */
+  .icon-btn, .ib, .touch-target { min-width:44px; min-height:44px }
   #topbar{ padding:0 6px!important; gap:4px!important }
   #topbar .tbt, #topbar .tbm-btn{ padding:6px 8px!important; font-size:11px!important }
   .modal{ width:96vw!important; max-height:88vh!important }
