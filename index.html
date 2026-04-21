@@ -66,6 +66,12 @@ details > summary:focus-visible {
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);height:100vh;overflow:hidden}
+
+/* P10.5: Progressive Disclosure — 3-Tier UI-Mode */
+/* data-ui-mode="simple": nur Kern-Features. "standard": alles ausser Power-Features. "pro": alles sichtbar. */
+body[data-ui-mode="simple"] [data-tier="pro"],
+body[data-ui-mode="simple"] [data-tier="standard"] { display: none !important; }
+body[data-ui-mode="standard"] [data-tier="pro"] { display: none !important; }
 input,textarea,select,button{font-family:inherit}
 #app{display:flex;flex-direction:column;height:100vh;overflow:hidden}
 
@@ -1755,7 +1761,21 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 .rprop-row input:focus{border-color:var(--gr)}
 </style>
 </head>
-<body>
+<body data-ui-mode="standard">
+<script>
+  // P10.5: UI-Mode Bootstrap — load persisted tier before first paint to avoid flicker.
+  try {
+    const m = localStorage.getItem('csc-ui-mode');
+    if (m === 'simple' || m === 'standard' || m === 'pro') document.body.dataset.uiMode = m;
+  } catch(e) { /* localStorage kann in Private-Mode fehlschlagen — Default-Mode bleibt 'standard' */ }
+  window.setUIMode = function(mode) {
+    if (!['simple','standard','pro'].includes(mode)) return;
+    document.body.dataset.uiMode = mode;
+    try { localStorage.setItem('csc-ui-mode', mode); } catch(e) {}
+    const sel = document.getElementById('ui-mode-select');
+    if (sel) sel.value = mode;
+  };
+</script>
 <!-- LOGIN GATE — blocking overlay shown when SB_TOKEN is empty. -->
 <div id="login-gate" style="display:none;position:fixed;inset:0;background:rgba(10,15,20,.92);z-index:9000;backdrop-filter:blur(6px);align-items:center;justify-content:center;flex-direction:column;gap:12px;font-family:system-ui">
   <div id="gate-default" style="display:flex;flex-direction:column;align-items:center;gap:12px">
@@ -1812,6 +1832,19 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
     <option value="nl">🇳🇱 NL</option>
     <option value="es">🇪🇸 ES</option>
   </select>
+  <!-- P10.5: UI-Mode Selector (Progressive Disclosure) -->
+  <select id="ui-mode-select" onchange="setUIMode(this.value)"
+    aria-label="UI-Modus wählen"
+    title="UI-Modus: Einfach (nur Basics) · Standard (alles) · Profi (inkl. BIM/Team)"
+    style="padding:4px 6px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:3px;font-size:11px">
+    <option value="simple">🌱 Einfach</option>
+    <option value="standard" selected>⚖ Standard</option>
+    <option value="pro">🚀 Profi</option>
+  </select>
+  <script>
+    // Sync Select mit persistiertem Mode nach DOM-Mount
+    (function(){ const m = document.body.dataset.uiMode; const s = document.getElementById('ui-mode-select'); if (s && m) s.value = m; })();
+  </script>
   <div class="tsep"></div>
 
   <!-- DROPDOWN MENUS -->
@@ -1832,7 +1865,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
         <div class="tbm-item" onclick="exportDXF();closeTBMenu()">📐 Grundriss .dxf</div>
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="openPrintPreview();closeTBMenu()">🖨 Druckvorschau</div>
-        <div class="tbm-item" onclick="generateAuthorityPackage();closeTBMenu()">📦 Behörden-Paket (.zip)</div>
+        <div class="tbm-item" data-tier="standard" onclick="generateAuthorityPackage();closeTBMenu()">📦 Behörden-Paket (.zip)</div>
         <div class="tbm-item" onclick="openM('m-hygiene');closeTBMenu()">🧴 Hygiene-Konzept PDF</div>
         <div class="tbm-item" onclick="generateOpeningHoursSign();closeTBMenu()">⏰ Öffnungszeiten-Schild</div>
         <div class="tbm-item" onclick="takePresentationScreenshot();closeTBMenu()">📸 3D-Screenshot</div>
@@ -1842,10 +1875,10 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
         <div class="tbm-item" onclick="exportToGoogleDrive();closeTBMenu()">📂 Google Drive</div>
         <div class="tbm-item" onclick="generateSessionProtocol();closeTBMenu()">📋 Sitzungsprotokoll</div>
         <div class="tbm-item" onclick="saveNamedVersion();closeTBMenu()">🏷 Version benennen</div>
-        <div class="tbm-item" onclick="generateCostReport();closeTBMenu()">💰 Kostenvoranschlag PDF</div>
+        <div class="tbm-item" data-tier="standard" onclick="generateCostReport();closeTBMenu()">💰 Kostenvoranschlag PDF</div>
         <div class="tbm-item" onclick="generateEmbedCode();closeTBMenu()">🔗 Embed-Code für Website</div>
-        <div class="tbm-item" onclick="exportIFC();closeTBMenu()">🏗 IFC-Export (CAD)</div>
-        <div class="tbm-item" onclick="generateSecurityReport();closeTBMenu()">🔐 Sicherheitsbericht PDF</div>
+        <div class="tbm-item" data-tier="pro" onclick="exportIFC();closeTBMenu()">🏗 IFC-Export (CAD)</div>
+        <div class="tbm-item" data-tier="pro" onclick="generateSecurityReport();closeTBMenu()">🔐 Sicherheitsbericht PDF</div>
         <div class="tbm-item" onclick="printBarcodeLabel()">🏷 Inventar-Etiketten drucken</div>
         <div class="tbm-item" onclick="openCSVImport();closeTBMenu()">📂 Räume aus CSV</div>
         <div class="tbm-item" onclick="openSetupWizard();closeTBMenu()">🌿 Einrichtungs-Assistent</div>
@@ -1856,7 +1889,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
         <div class="tbm-item" onclick="localStorage.removeItem('csc-onboarded');location.reload()">🔄 Onboarding zurücksetzen</div>
         <div class="tbm-item" onclick="printToScale();closeTBMenu()">📐 Druck 1:50</div>
         <div class="tbm-item" onclick="startPresentation();closeTBMenu()">🎬 Präsentation</div>
-        <div class="tbm-item" onclick="exportEvacuationPlan();closeTBMenu()">🚨 Flucht- & Rettungsplan</div>
+        <div class="tbm-item" data-tier="pro" onclick="exportEvacuationPlan();closeTBMenu()">🚨 Flucht- & Rettungsplan</div>
       </div>
     </div>
 
