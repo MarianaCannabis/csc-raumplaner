@@ -56,21 +56,17 @@ body[data-ui-mode="standard"] [data-tier="pro"] { display: none !important; }
 .pro-only-debug { display: none }
 body[data-ui-mode="pro"] .pro-only-debug { display: block }
 
-/* P12.3: Simple-Mode-Warn-Banner */
-.simple-warn-banner {
-  position:fixed; top:44px; left:0; right:0; z-index:1999;
-  background:rgba(251,191,36,.14); border-bottom:1px solid rgba(251,191,36,.4);
-  color:var(--yw); text-align:center; font-size:12px; padding:6px 12px;
-  font-weight:500; line-height:1.4; display:none;
+/* P12-Followup: Simple-Mode-Badge (ersetzt den blockierenden Banner).
+   Dezenter 24px Pill neben dem UI-Mode-Select, nur in Simple-Mode sichtbar. */
+.simple-badge {
+  display:none; height:24px; padding:0 10px; margin-left:6px;
+  align-items:center; gap:4px; font-size:11px; font-weight:600;
+  background:rgba(251,191,36,.16); color:var(--yw);
+  border:1px solid rgba(251,191,36,.5); border-radius:12px;
+  cursor:pointer; white-space:nowrap; transition:.15s;
 }
-.simple-warn-banner b { color:var(--yw) }
-.simple-warn-banner button {
-  margin-left:10px; padding:2px 10px; font-size:11px; font-weight:600;
-  background:transparent; border:1px solid var(--yw); color:var(--yw);
-  border-radius:10px; cursor:pointer;
-}
-.simple-warn-banner button:hover { background:rgba(251,191,36,.18) }
-body[data-ui-mode="simple"] .simple-warn-banner { display:block }
+.simple-badge:hover { background:rgba(251,191,36,.28); color:var(--yw) }
+body[data-ui-mode="simple"] .simple-badge { display:inline-flex }
 
 /* P11.1: Planning-Mode (Raumplanung vs. Veranstaltungs-Planung) */
 body[data-planning-mode="room"]  [data-mode="event"] { display: none !important; }
@@ -787,7 +783,9 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
 #cmd-palette.vis{display:block}
 #cmd-input{width:100%;padding:14px 16px;background:transparent;border:none;
   border-bottom:1px solid var(--bd2);color:var(--tx);font-size:14px;outline:none}
-#cmd-results{max-height:360px;overflow-y:auto;padding:4px 0}
+#cmd-results{max-height:480px;overflow-y:auto;padding:4px 0}
+/* P12-Followup Bug C: Counter-Header über den Palette-Treffern, zeigt N von M. */
+.cmd-count{padding:6px 16px;font-size:10px;color:var(--tx3);border-bottom:1px solid var(--bd);background:var(--bg3);position:sticky;top:0;z-index:1;text-transform:uppercase;letter-spacing:.6px}
 .cmd-item{padding:9px 16px;cursor:pointer;display:flex;align-items:center;gap:10px;
   transition:.1s;border-radius:0}
 .cmd-item:hover,.cmd-item.sel{background:var(--bg3)}
