@@ -64,6 +64,12 @@
 </div>
 <div id="app">
 
+<!-- P12.3: Simple-Mode-Warn-Banner — nur sichtbar wenn data-ui-mode="simple" -->
+<div class="simple-warn-banner" role="alert">
+  <b>Einfach-Modus aktiv.</b> Viele Features sind ausgeblendet. Mit <b>Ctrl+K</b> weiterhin erreichbar, oder
+  <button onclick="window.setUIMode && window.setUIMode('standard')">⚖ Zurück auf Standard</button>
+</div>
+
 <!-- TOPBAR -->
 <div id="topbar">
   <!-- LOGO -->

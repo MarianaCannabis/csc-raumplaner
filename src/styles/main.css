@@ -43,11 +43,34 @@ details > summary:focus-visible {
 *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);height:100vh;overflow:hidden}
 
-/* P10.5: Progressive Disclosure — 3-Tier UI-Mode */
-/* data-ui-mode="simple": nur Kern-Features. "standard": alles ausser Power-Features. "pro": alles sichtbar. */
-body[data-ui-mode="simple"] [data-tier="pro"],
-body[data-ui-mode="simple"] [data-tier="standard"] { display: none !important; }
+/* P10.5/P12.3: Progressive Disclosure — 3-Tier UI-Mode */
+/* data-ui-mode="simple": NUR explizit simple-getaggte interaktive Elemente.
+   "standard": alles ausser pro-getaggt. "pro": alles sichtbar + Debug-Extras. */
+body[data-ui-mode="simple"] .tbt:not([data-tier="simple"]):not(#btn-save-primary):not(#ui-mode-select):not(#lang-switch):not(.mode-seg *),
+body[data-ui-mode="simple"] .tbm-item:not([data-tier="simple"]),
+body[data-ui-mode="simple"] .mpill:not([data-tier="simple"]),
+body[data-ui-mode="simple"] .ib:not([data-tier="simple"]) { display: none !important; }
 body[data-ui-mode="standard"] [data-tier="pro"] { display: none !important; }
+
+/* Pro-Mode: Debug-only-Elemente sichtbar machen */
+.pro-only-debug { display: none }
+body[data-ui-mode="pro"] .pro-only-debug { display: block }
+
+/* P12.3: Simple-Mode-Warn-Banner */
+.simple-warn-banner {
+  position:fixed; top:44px; left:0; right:0; z-index:1999;
+  background:rgba(251,191,36,.14); border-bottom:1px solid rgba(251,191,36,.4);
+  color:var(--yw); text-align:center; font-size:12px; padding:6px 12px;
+  font-weight:500; line-height:1.4; display:none;
+}
+.simple-warn-banner b { color:var(--yw) }
+.simple-warn-banner button {
+  margin-left:10px; padding:2px 10px; font-size:11px; font-weight:600;
+  background:transparent; border:1px solid var(--yw); color:var(--yw);
+  border-radius:10px; cursor:pointer;
+}
+.simple-warn-banner button:hover { background:rgba(251,191,36,.18) }
+body[data-ui-mode="simple"] .simple-warn-banner { display:block }
 
 /* P11.1: Planning-Mode (Raumplanung vs. Veranstaltungs-Planung) */
 body[data-planning-mode="room"]  [data-mode="event"] { display: none !important; }
