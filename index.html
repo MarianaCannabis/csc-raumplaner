@@ -1110,19 +1110,46 @@
 <div class="mover" id="m-teams">
 <div class="modal" style="max-width:640px;max-height:88vh">
   <h2>👥 Teams</h2>
-  <div style="font-size:11px;color:var(--tx3);margin-bottom:14px">
-    Teams ermöglichen Multi-User-Editing mit Rollen. Das aktuelle Projekt kann einem Team zugewiesen werden,
-    dann sehen alle Team-Mitglieder das Projekt (RLS). Rollen: <b>admin</b> (invite+remove), <b>editor</b> (schreiben), <b>viewer</b> (lesen).
+  <!-- P14: Tab-Navigation — Meine Teams / Einladung einlösen -->
+  <div style="display:flex;gap:4px;margin:6px 0 12px;border-bottom:1px solid var(--bd)">
+    <button class="tbt teams-tab active" data-tab="list" onclick="switchTeamsTab('list')" style="padding:7px 14px;border-radius:0;border-bottom:2px solid var(--gr)">📋 Meine Teams</button>
+    <button class="tbt teams-tab" data-tab="invite" onclick="switchTeamsTab('invite')" style="padding:7px 14px;border-radius:0;border-bottom:2px solid transparent">🎟 Einladung einlösen</button>
   </div>
-  <div id="teams-list" style="margin-bottom:14px;max-height:40vh;overflow-y:auto">Lade…</div>
-  <div class="mf">
-    <label style="font-size:10px;color:var(--tx3)">Neues Team erstellen</label>
-    <div style="display:flex;gap:6px">
-      <input type="text" id="teams-new-name" placeholder="Team-Name"
-        style="flex:1;padding:6px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px;box-sizing:border-box;font-size:12px">
-      <button class="mbt ok" onclick="createTeam()">➕ Erstellen</button>
+
+  <!-- Tab 1: Meine Teams -->
+  <div id="teams-tab-list">
+    <div style="font-size:11px;color:var(--tx3);margin-bottom:10px">
+      Teams ermöglichen Multi-User-Editing mit Rollen. Das aktuelle Projekt kann einem Team zugewiesen werden,
+      dann sehen alle Team-Mitglieder das Projekt. Rollen: <b>admin</b> (invite+remove), <b>editor</b> (schreiben), <b>viewer</b> (lesen).
+    </div>
+    <div id="teams-list" style="margin-bottom:14px;max-height:40vh;overflow-y:auto">Lade…</div>
+    <div class="mf">
+      <label style="font-size:10px;color:var(--tx3)">Neues Team erstellen</label>
+      <div style="display:flex;gap:6px">
+        <input type="text" id="teams-new-name" placeholder="Team-Name"
+          style="flex:1;padding:6px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px;box-sizing:border-box;font-size:12px">
+        <button class="mbt ok" onclick="createTeam()">➕ Erstellen</button>
+      </div>
     </div>
   </div>
+
+  <!-- Tab 2: Einladung einlösen -->
+  <div id="teams-tab-invite" style="display:none">
+    <div style="font-size:11px;color:var(--tx3);margin-bottom:10px">
+      Erhältst du einen Invite-Link, öffne ihn — das Tab &amp; dieser Dialog starten automatisch und du kannst beitreten.
+      Alternativ die Team-ID aus dem Link (Query-Parameter <code>?team=…</code>) hier einfügen:
+    </div>
+    <div class="mf">
+      <label style="font-size:10px;color:var(--tx3)">Team-ID aus Invite-Link</label>
+      <div style="display:flex;gap:6px">
+        <input type="text" id="teams-redeem-id" placeholder="UUID des Teams"
+          style="flex:1;padding:6px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px;box-sizing:border-box;font-size:12px;font-family:monospace">
+        <button class="mbt ok" onclick="redeemTeamInvite(document.getElementById('teams-redeem-id').value.trim())">✅ Beitreten</button>
+      </div>
+      <div style="font-size:10px;color:var(--tx3);margin-top:8px">Beim Beitreten wirst du mit Rolle <b>viewer</b> aufgenommen. Der Team-Admin kann deine Rolle später anpassen.</div>
+    </div>
+  </div>
+
   <div class="mbtns">
     <button class="mbt" data-tier="simple" onclick="closeM('m-teams')">Schließen</button>
   </div>
@@ -10073,6 +10100,42 @@ async function assignProjectToTeam(teamId){
     });
     toast('✅ Projekt dem Team zugewiesen','g');
   } catch(e){ toast('Fehler: '+e.message,'r'); }
+}
+
+// P14: Tab-Switcher im Teams-Modal — zeigt entweder Meine-Teams-Liste
+// oder das Einladung-Einlösen-Formular, nicht beides nebeneinander.
+function switchTeamsTab(tab){
+  ['list','invite'].forEach(function(t){
+    var pane = document.getElementById('teams-tab-'+t);
+    if(pane) pane.style.display = (t===tab) ? '' : 'none';
+    document.querySelectorAll('.teams-tab[data-tab="'+t+'"]').forEach(function(btn){
+      btn.classList.toggle('active', t===tab);
+      btn.style.borderBottomColor = (t===tab) ? 'var(--gr)' : 'transparent';
+    });
+  });
+}
+
+// P14: Manuelle Invite-Einlösung via Modal-Tab (wenn User die ID aus
+// dem Link kopiert statt den Link direkt zu öffnen). Wiederverwendbar
+// als Fallback wenn Auto-Redeem (unten) nicht getriggert hat.
+async function redeemTeamInvite(teamId){
+  teamId = (teamId || '').trim();
+  if(!teamId){ toast('Team-ID fehlt','r'); return; }
+  if(!/^[0-9a-f-]{30,40}$/i.test(teamId)){ toast('Kein gültiges UUID-Format','r'); return; }
+  if(!SB_TOKEN){ toast('Erst einloggen','r'); return; }
+  try {
+    const r = await fetch(SB_URL + '/rest/v1/csc_team_members', {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer '+SB_TOKEN,
+                 'Content-Type': 'application/json', 'Prefer': 'return=minimal,resolution=merge-duplicates' },
+      body: JSON.stringify({ team_id: teamId, user_id: SB_USER.id, user_email: SB_USER.email, role: 'viewer' }),
+    });
+    if(!r.ok) throw new Error('API ' + r.status);
+    toast('✅ Team beigetreten — als Viewer registriert','g');
+    document.getElementById('teams-redeem-id').value = '';
+    switchTeamsTab('list');
+    _renderTeamsList();
+  } catch(e){ toast('Beitritt fehlgeschlagen: '+e.message,'r'); }
 }
 
 // Auto-accept team invite wenn ?team=X im URL
