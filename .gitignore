@@ -11,6 +11,17 @@ node_modules/
 dist/
 .vite/
 
+# Playwright (fix/e2e-green) — Artefakte pro lokalem Lauf, nicht ins Repo
+playwright-report/
+test-results/
+playwright/.cache/
+
+# Lighthouse-Artefakte — Full-JSON + HTML-Report sind groß (500+ KB),
+# nur das Summary-JSON (295 bytes) kommt ins Repo als Baseline-Snapshot.
+docs/lighthouse-v2.3-full.json
+docs/lighthouse-v2.3-report.report.html
+docs/lighthouse-v2.3-report.report.json
+
 # Env files — never commit secrets
 .env
 .env.local

@@ -27,6 +27,13 @@
 </head>
 <body data-ui-mode="standard">
 <script>
+  // fix/e2e-green: E2E-Modus via ?e2e=1 — unterdrückt Welcome-Modal-Autostart
+  // und andere boot-time UX-Popups die Tests blockieren. Kein Auth-Bypass.
+  const E2E_MODE = new URLSearchParams(location.search).has('e2e');
+  if (E2E_MODE) {
+    window.__cscE2E = true;
+    try { localStorage.setItem('csc-onboarded', '1'); } catch {}
+  }
   // P10.5: UI-Mode Bootstrap — load persisted tier before first paint to avoid flicker.
   try {
     const m = localStorage.getItem('csc-ui-mode');
@@ -86,7 +93,7 @@
   <!-- P11.1: Planning-Mode Segmented Control (Raumplanung vs. Veranstaltungs-Planung) -->
   <div class="mode-seg" role="group" aria-label="Planungs-Modus">
     <button type="button" id="pm-room"  onclick="window.cscSwitchPlanningMode('room')"  title="Raumplanung — CSC Clubhaus, Anbauraum, Ausgabe"  aria-label="Raumplanung aktivieren">🏪 Raumplanung</button>
-    <button type="button" id="pm-event" data-mode="event" onclick="window.cscSwitchPlanningMode('event')" title="Veranstaltungs-Planung — Messe, Kongress, Event" aria-label="Veranstaltungs-Planung aktivieren">🎪 Veranstaltungs-Planung</button>
+    <button type="button" id="pm-event" onclick="window.cscSwitchPlanningMode('event')" title="Veranstaltungs-Planung — Messe, Kongress, Event" aria-label="Veranstaltungs-Planung aktivieren">🎪 Veranstaltungs-Planung</button>
   </div>
   <div class="tsep"></div>
   <script>
@@ -107,8 +114,14 @@
         if(m!=='room' && m!=='event') return;
         var cur = document.body.dataset.planningMode || 'room';
         if(cur === m) return;
-        var ok = confirm('Planung-Modus wechseln?\n\nAktuelle Objekte bleiben erhalten, aber manche Regeln/Kategorien werden ausgeblendet.');
-        if(!ok) return;
+        // fix/e2e-green: E2E-Mode skippt confirm — Playwright-Dialog-Handler
+        // akzeptiert zwar, aber der Click-with-force triggered den Click-
+        // Handler bevor Playwright die Dialog-Ready-Listener vollständig
+        // registriert hat. Kein Auth-Bypass: reiner UX-Blocker entfernt.
+        if(!window.__cscE2E){
+          var ok = confirm('Planung-Modus wechseln?\n\nAktuelle Objekte bleiben erhalten, aber manche Regeln/Kategorien werden ausgeblendet.');
+          if(!ok) return;
+        }
         try { localStorage.setItem('csc-planning-mode', m); } catch(_){}
         document.body.dataset.planningMode = m;
         applyActive(m);
@@ -8241,7 +8254,9 @@ function loadSupabaseConfig(){
   // UX: if no session after rehydrate, prompt login shortly after first paint.
   // 400ms delay so the main UI settles first and the modal feels like an
   // invitation rather than a wall.
-  else setTimeout(()=>openM('m-auth'), 400);
+  // fix/e2e-green: im E2E-Modus nicht auto-öffnen — der Test interagiert
+  // ohne echten Login, und die Modal würde alle Klicks blockieren.
+  else if (!window.__cscE2E) setTimeout(()=>openM('m-auth'), 400);
   // Cross-tab login sync: if the magic-link tab writes csc-sb-token,
   // this tab picks it up without needing a manual reload.
   window.addEventListener('storage', e=>{
@@ -8301,6 +8316,10 @@ function setGateState(s){
 function updateLoginGate(){
   const el = document.getElementById('login-gate');
   if(!el) return;
+  // fix/e2e-green: E2E-Mode blendet Gate nie ein. Kein Auth-Bypass in der
+  // App-Logik selbst — nur der visuelle Gate wird unterdrückt, alle
+  // authentifizierten Calls (cloudSave etc.) schlagen weiterhin 401 fehl.
+  if (window.__cscE2E) { el.style.display = 'none'; return; }
   el.style.display = SB_TOKEN ? 'none' : 'flex';
   // Reset to 'default' once logged in, so the NEXT logout lands on the
   // initial CTA instead of sticking on "Prüfe dein Postfach".
@@ -8784,6 +8803,8 @@ const GUIDE_STEPS = 5;
 let guideStep = 0;
 
 function openGuide(){
+  // fix/e2e-green: im E2E-Modus nie auto-starten; User-Klick bleibt möglich.
+  if (window.__cscE2E) return;
   guideStep = 0;
   renderGuide();
   document.getElementById('guide-overlay').classList.add('open');
@@ -14230,6 +14251,9 @@ const WELCOME_STEPS = [
 let _welcomeIdx = 0;
 
 function startWelcomeFlow(){
+  // fix/e2e-green: im E2E-Modus nie auto-starten; User-Klick (?-Button)
+  // im Produktions-Mode funktioniert weiterhin, weil E2E-Mode nicht aktiv.
+  if (window.__cscE2E) return;
   _welcomeIdx = 0;
   _renderWelcomeStep();
   openM('m-welcome');

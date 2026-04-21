@@ -1,12 +1,8 @@
-// P11.4 + P16 — UI-Mode Progressive Disclosure (P10.5 + P12.3 + Bug-A-Fix).
-import { test, expect } from '@playwright/test';
+// P11.4 + P16 + fix/e2e-green — UI-Mode Progressive Disclosure.
+// _fixtures.ts erledigt Welcome-Modal-Suppression + Mode-State-Reset.
+import { test, expect } from './_fixtures.js';
 
 test.beforeEach(async ({ page }) => {
-  page.on('dialog', (d) => d.accept());
-  // Reset persisted mode so each test starts fresh at Standard.
-  await page.addInitScript(() => {
-    try { localStorage.removeItem('csc-ui-mode'); } catch {}
-  });
   await page.goto('/');
 });
 

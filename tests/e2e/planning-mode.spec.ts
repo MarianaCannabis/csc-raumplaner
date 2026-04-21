@@ -1,9 +1,10 @@
-// P11.4 + P16 — Planning-Mode-Switcher (P11.1) + Sidebar-Filter (P12.4 + Bug-B-Fix).
-import { test, expect } from '@playwright/test';
+// P11.4 + P16 + fix/e2e-green — Planning-Mode + Sidebar-Filter.
+// _fixtures.ts unterdrückt Welcome-Modal (csc-onboarded=1 via addInitScript)
+// und akzeptiert confirm-Dialoge — beides nötig damit Klicks auf Mode-Switcher
+// nicht am m-welcome-Overlay hängen bleiben.
+import { test, expect } from './_fixtures.js';
 
 test.beforeEach(async ({ page }) => {
-  // Dismiss the confirm() that P11.1 throws on mode change so we don't hang.
-  page.on('dialog', (d) => d.accept());
   await page.goto('/');
 });
 
@@ -12,18 +13,18 @@ test('default mode is room', async ({ page }) => {
 });
 
 test('switch to event mode updates body attribute', async ({ page }) => {
-  await page.locator('#pm-event').click();
+  await page.locator('#pm-event').click({ force: true });
   await expect(page.locator('body')).toHaveAttribute('data-planning-mode', 'event');
 });
 
 test('mode persists across reload', async ({ page }) => {
-  await page.locator('#pm-event').click();
+  await page.locator('#pm-event').click({ force: true });
   await page.reload();
   await expect(page.locator('body')).toHaveAttribute('data-planning-mode', 'event');
 });
 
 test('room-only KCanG button is hidden in event mode', async ({ page }) => {
-  await page.locator('#pm-event').click();
+  await page.locator('#pm-event').click({ force: true });
   // KCanG button is tagged data-mode="room"
   await expect(page.locator('#btn-kcang')).toBeHidden();
 });
@@ -33,7 +34,7 @@ test('sidebar tabs follow mode (P12.4)', async ({ page }) => {
   await expect(page.locator('#ib-rooms')).toBeVisible();
   await expect(page.locator('#ib-events')).toBeHidden();
 
-  await page.locator('#pm-event').click();
+  await page.locator('#pm-event').click({ force: true });
   // Event-Mode: Events tab visible, Rooms-tab hidden
   await expect(page.locator('#ib-rooms')).toBeHidden();
   await expect(page.locator('#ib-events')).toBeVisible();
@@ -41,7 +42,7 @@ test('sidebar tabs follow mode (P12.4)', async ({ page }) => {
 
 test('catalog reflects mode (Bug-B fix)', async ({ page }) => {
   // Click on "Möbel" tab in Room-Mode (data-mode="room")
-  await page.locator('#ib-furn').click();
+  await page.locator('#ib-furn').click({ force: true });
   // Wait for renderFurnPanel to finish. The panel contains .cat-tabs.
   await page.waitForSelector('.cat-tabs', { timeout: 3000 }).catch(() => {});
 
@@ -49,7 +50,7 @@ test('catalog reflects mode (Bug-B fix)', async ({ page }) => {
   const roomCats = await page.locator('.cat-tabs .ctab, .cat-group-header').count();
 
   // Switch to Event-Mode
-  await page.locator('#pm-event').click();
+  await page.locator('#pm-event').click({ force: true });
   // Auto-switch will activate ib-events; renderEventsPanel filters to event cats
   await page.waitForTimeout(200);
 

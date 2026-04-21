@@ -36,11 +36,14 @@ const args = [
   '--output=html', '--output=json',
   `--output-path=${OUT_HTML.replace(/\.html$/, '')}`,
   '--chrome-flags=--headless=new --no-sandbox',
-  '--only-categories=performance,accessibility,best-practices,seo,pwa',
+  // PWA wurde in Lighthouse 12 entfernt — nur noch die 4 Core-Categorien.
+  '--only-categories=performance,accessibility,best-practices,seo',
   '--quiet',
 ];
 
-const proc = spawn('npx', args, { stdio: 'inherit' });
+// fix/e2e-green Bug C: Windows spawn braucht shell:true damit npx.cmd/npx.ps1
+// via PATHEXT gefunden werden. Linux/macOS ist shell:true harmlos.
+const proc = spawn('npx', args, { stdio: 'inherit', shell: true });
 
 proc.on('exit', (code) => {
   if (code !== 0) {
@@ -62,7 +65,6 @@ proc.on('exit', (code) => {
       accessibility: Math.round((report.categories.accessibility?.score ?? 0) * 100),
       bestPractices: Math.round((report.categories['best-practices']?.score ?? 0) * 100),
       seo:           Math.round((report.categories.seo?.score ?? 0) * 100),
-      pwa:           Math.round((report.categories.pwa?.score ?? 0) * 100),
     },
     metrics: {
       fcp:   report.audits['first-contentful-paint']?.numericValue,
@@ -76,9 +78,9 @@ proc.on('exit', (code) => {
   writeFileSync(OUT_JSON_FULL, JSON.stringify(report, null, 2));
   writeFileSync(OUT_SUMMARY, JSON.stringify(summary, null, 2));
 
-  const { performance: p, accessibility: a, bestPractices: b, seo: s, pwa: w } = summary.scores;
+  const { performance: p, accessibility: a, bestPractices: b, seo: s } = summary.scores;
   console.log();
-  console.log(`✅ perf: ${p} · a11y: ${a} · best-practices: ${b} · seo: ${s} · pwa: ${w}`);
+  console.log(`✅ perf: ${p} · a11y: ${a} · best-practices: ${b} · seo: ${s}`);
   console.log(`📊 ${OUT_SUMMARY}`);
   console.log(`📄 ${OUT_HTML}`);
 });
