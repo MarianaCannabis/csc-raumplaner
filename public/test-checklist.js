@@ -315,6 +315,53 @@ const ITEMS = [
       'Segmented Mode-Control nicht zu klein',
     ],
   },
+  // ── v2.3 Bedienkonzept (P12.*) ────────────────────────────────────────
+  {
+    id: 'mode-switch-visible',
+    section: 'v2.3 Bedienkonzept',
+    title: 'Mode-Switch ist sichtbar und fühlt sich an (P12.2)',
+    steps: [
+      'Topbar: Segmented Control "🏪 Raumplanung / 🎪 Veranstaltungs-Planung" ist deutlich ~36 px hoch',
+      'Aktiver Button hat grünen Glow (pulsierend alle 2.5s)',
+      'Klick auf anderen Modus → Confirm-Dialog, dann Toast "🎪 Veranstaltungs-Planung aktiv"',
+      'Im Event-Mode: subtile lila Linie am unteren Rand der Topbar',
+      'Erstmaliger Wechsel → Onboarding-Tooltip unter Topbar erscheint 5s',
+    ],
+  },
+  {
+    id: 'ui-mode-simple',
+    section: 'v2.3 Bedienkonzept',
+    title: 'UI-Mode Simple zeigt nur Basics (P12.3)',
+    steps: [
+      'UI-Mode-Select auf "🌱 Einfach"',
+      'Gelber Warn-Banner erscheint unter Topbar mit "⚖ Zurück auf Standard"',
+      'Topbar zeigt nur Save-Button + Vorlagen + KCanG + Language/UI-Mode-Select + Mode-Switcher',
+      'Viele Menu-Items sind ausgeblendet (Datei-Submenü dramatisch kürzer)',
+      'Ctrl+K öffnet Palette → dort sind ALLE Befehle weiterhin sichtbar',
+      '"Zurück auf Standard"-Button blendet Banner aus, alle Features wieder da',
+    ],
+  },
+  {
+    id: 'ui-mode-pro',
+    section: 'v2.3 Bedienkonzept',
+    title: 'UI-Mode Pro zeigt IFC/Team/Marketplace (P12.3)',
+    steps: [
+      'UI-Mode-Select auf "🚀 Profi"',
+      'Datei-Menü enthält IFC-Export, Flucht- & Rettungsplan, Sicherheitsbericht',
+      'Team-Management + Marketplace-Upload sichtbar (falls Buttons im Legacy-Code existieren)',
+    ],
+  },
+  {
+    id: 'sidebar-mode-split',
+    section: 'v2.3 Bedienkonzept',
+    title: 'Sidebar-Tabs passen sich Planungs-Modus an (P12.4)',
+    steps: [
+      'Room-Mode aktiv: linke Iconbar zeigt Räume/Möbel/Bau/Sicher/Eigene',
+      'Wechsel zu Event-Mode → nur Veranst. + Eigene sichtbar',
+      'Aktiver Tab ist nicht versehentlich ausgeblendet (Auto-Switch)',
+      'Zurück zu Room → 5 Tabs wieder da, sinnvoller Default-Tab aktiv',
+    ],
+  },
 ];
 
 // ── State helpers ───────────────────────────────────────────────────────────

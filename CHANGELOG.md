@@ -4,6 +4,44 @@ Alle bedeutsamen Änderungen an CSC Studio Pro.
 
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [2.3.0] — 2026-04-21 · Bedienkonzept-Durchzug
+
+**Sichtbare UX-Aufräumung.** Getrennte Workflows für Raumplanung vs. Veranstaltung sind jetzt spürbar, Simple-Mode reduziert die UI drastisch, Power-User bekommen Pro-Mode-Framework. Command-Palette bleibt universeller Zugriff — nichts wird wirklich verborgen, nur visuell sortiert.
+
+### Added
+- **P12.1 — Massen-Tagging:** 112 neue `data-mode` / `data-tier`-Attribute an Menu-Items. Script `scripts/mass-tag-menu.mjs` für reproduzierbaren Lauf.
+  - `data-mode="event"`: 7 Items (Messe-Budget, Packliste, Mari-Jane, …)
+  - `data-mode="room"`: 11 Items (KCanG, Hygiene, Präventionsbeauftragter, …)
+  - `data-tier="pro"`: 10 Items (IFC, Evacuation, Security-Report, AI-Audit, Team, Marketplace)
+  - `data-tier="simple"`: 98 Items (Core-Handler für Simple-Mode)
+- **P12.2 — Prominent Mode-Switcher:**
+  - Höhe 28 → 36 px, größeres Padding, CSC-Grün-Gradient auf Active-State
+  - Animierter Green-Glow (@keyframes mode-glow) pulsiert 2.5s alternate
+  - `toast("🏪 Raumplanung aktiv" / "🎪 Veranstaltungs-Planung aktiv")` bei Wechsel
+  - Event-Mode tönt Topbar-Border subtil lila (`rgba(167,139,250,.35)`)
+  - Einmaliger Onboarding-Tooltip "Menu-Items wechseln … Ctrl+K" (persist in localStorage)
+- **P12.3 — UI-Mode 3-Tier-Trennung:**
+  - Simple-Mode CSS-Selector invertiert: zeigt nur `.tbt/.tbm-item/.mpill/.ib[data-tier="simple"]` + Infrastruktur-Whitelist (save-button, ui-mode-select, lang-switch, mode-seg)
+  - `.pro-only-debug`-Utility-Klasse als Framework für zukünftige Debug-Tools
+  - Gelber Warn-Banner in Simple-Mode mit "⚖ Zurück auf Standard"-Button
+- **P12.4 — Sidebar Mode-Sensitivity:**
+  - Iconbar-Tabs mit `data-mode` getaggt (Room zeigt 5 Tabs, Event 2 Tabs)
+  - Auto-Tab-Switch bei Mode-Wechsel (via `csc-mode-change`-Listener)
+  - 3-Tab-Accordion-Design als v2.4-Roadmap dokumentiert
+
+### Changed
+- `index.html` Topbar enthält jetzt den prominenteren Mode-Switcher
+- `src/styles/main.css` erweitert um Glow-Animation, Pro-Debug-Klasse, Warn-Banner
+- Test-Checkliste in `public/test.html` um Mode-Switch-Flow + Simple-Mode-Reduktion ergänzt
+
+### Nicht in v2.3 (für v2.4 vorgesehen)
+- Sidebar DOM-Restrukturierung auf 3 Tabs/Mode mit Accordion (riskant ohne E2E-Coverage)
+- Event-Tab-Split in "Flächen" + "Messebau"
+- Full Menu-Tagging über die 112 hinaus (restliche 600+ Items bleiben untagged = universal/standard)
+
+### Bundle
+624 KB gz unverändert zu v2.2 (kein Code entfernt, nur CSS-Selectors + Tags).
+
 ## [2.2.1] — 2026-04-21 · Rebrand auf "CSC Studio Pro"
 
 **Rebrand-Release** — ausschließlich User-sichtbare Namensänderung. Keine API-, DB- oder Verhaltensänderungen.
