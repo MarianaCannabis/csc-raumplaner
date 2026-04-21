@@ -443,16 +443,16 @@
 </div>
 
 <div id="main-row" role="main" aria-label="Raumplaner-Arbeitsfläche">
-<!-- ICONBAR -->
+<!-- ICONBAR — P12.4: getaggt per planning-mode, Bau + Sicher in Room-Mode -->
 <div id="iconbar">
-  <div class="ib active" id="ib-rooms" onclick="showLeft('rooms')"><span class="ico">📐</span>Räume</div>
-  <div class="ib" id="ib-furn" onclick="showLeft('furn')"><span class="ico">🛋️</span>Möbel</div>
-  <div class="ib" id="ib-arch" onclick="showLeft('arch')"><span class="ico">🏗️</span>Bau</div>
-  <div class="ib" id="ib-security" onclick="showLeft('security')" style="color:#f87171"><span class="ico">🔒</span>Sicher</div>
+  <div class="ib active" id="ib-rooms" data-mode="room" onclick="showLeft('rooms')"><span class="ico">📐</span>Räume</div>
+  <div class="ib" id="ib-furn" data-mode="room" onclick="showLeft('furn')"><span class="ico">🛋️</span>Möbel</div>
+  <div class="ib" id="ib-arch" data-mode="room" onclick="showLeft('arch')"><span class="ico">🏗️</span>Bau</div>
+  <div class="ib" id="ib-security" data-mode="room" onclick="showLeft('security')" style="color:#f87171"><span class="ico">🔒</span>Sicher</div>
   <div class="ib" id="ib-custom" onclick="showLeft('custom')"><span class="ico">✏️</span>Eigene</div>
   <div style="flex:1"></div>
-  <div style="padding:4px 8px;font-size:8px;color:var(--tx3);text-transform:uppercase;letter-spacing:.8px;text-align:center;flex-shrink:0">Veranst.</div>
-  <div class="ib" id="ib-events" onclick="showLeft('events')"><span class="ico">🎭</span>Veranst.</div>
+  <div data-mode="event" style="padding:4px 8px;font-size:8px;color:var(--tx3);text-transform:uppercase;letter-spacing:.8px;text-align:center;flex-shrink:0">Veranst.</div>
+  <div class="ib" id="ib-events" data-mode="event" onclick="showLeft('events')"><span class="ico">🎭</span>Veranst.</div>
   <div style="height:8px;flex-shrink:0"></div>
 </div>
 
@@ -5120,9 +5120,22 @@ function showLeft(m){
     const el=document.getElementById('ib-'+x);if(el)el.classList.toggle('active',x===m);
   });
   document.getElementById('left-title').textContent =
-    m==='rooms'?'📐 Räume':m==='furn'?'🛋️ Möbel':m==='arch'?'🏗️ Baukatalog':m==='security'?'🔒 Sicherheitsebene':'✏️ Eigene Objekte';
+    m==='rooms'?'📐 Räume':m==='furn'?'🛋️ Möbel':m==='arch'?'🏗️ Baukatalog':m==='security'?'🔒 Sicherheitsebene':m==='events'?'🎭 Veranstaltungsbau':'✏️ Eigene Objekte';
   renderLeft();
 }
+
+// P12.4: beim Planning-Mode-Wechsel den Sidebar-Tab neu wählen,
+// falls der aktive Tab jetzt ausgeblendet ist (z.B. ib-events in room-mode).
+window.addEventListener('csc-mode-change', function(e){
+  var newMode = e && e.detail;
+  var roomTabs = ['rooms', 'furn', 'arch', 'security', 'custom'];
+  var eventTabs = ['events', 'custom'];
+  if (newMode === 'event' && roomTabs.includes(leftMode) && leftMode !== 'custom') {
+    showLeft('events');
+  } else if (newMode === 'room' && !roomTabs.includes(leftMode)) {
+    showLeft('rooms');
+  }
+});
 
 function renderLeft(){
   const el=document.getElementById('left-body');
