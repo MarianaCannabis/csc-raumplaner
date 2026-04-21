@@ -64,12 +64,6 @@
 </div>
 <div id="app">
 
-<!-- P12.3: Simple-Mode-Warn-Banner — nur sichtbar wenn data-ui-mode="simple" -->
-<div class="simple-warn-banner" role="alert">
-  <b>Einfach-Modus aktiv.</b> Viele Features sind ausgeblendet. Mit <b>Ctrl+K</b> weiterhin erreichbar, oder
-  <button onclick="window.setUIMode && window.setUIMode('standard')">⚖ Zurück auf Standard</button>
-</div>
-
 <!-- TOPBAR -->
 <div id="topbar">
   <!-- LOGO -->
@@ -166,6 +160,10 @@
     <option value="standard" selected>⚖ Standard</option>
     <option value="pro">🚀 Profi</option>
   </select>
+  <!-- P12-Followup Bug A: dezenter Badge statt blockierendem Banner -->
+  <button type="button" class="simple-badge" onclick="window.setUIMode && window.setUIMode('standard')"
+    title="Einfach-Modus aktiv. Klick wechselt zurück auf Standard. Ctrl+K zeigt weiterhin alle Befehle."
+    aria-label="Zurück auf Standard-Modus">⚖ Simple</button>
   <script>
     // Sync Select mit persistiertem Mode nach DOM-Mount
     (function(){ const m = document.body.dataset.uiMode; const s = document.getElementById('ui-mode-select'); if (s && m) s.value = m; })();
@@ -13421,7 +13419,13 @@ function renderCmdResults(items){
     el.innerHTML='<div style="padding:12px 16px;font-size:11px;color:var(--tx3)">Keine Ergebnisse.</div>';
     return;
   }
-  el.innerHTML=items.slice(0,12).map((c,i)=>
+  // P12-Followup Bug C: kein slice(0,12) mehr — alle Treffer rendern,
+  // Container ist scrollbar (max-height via CSS). Counter oben zeigt
+  // "N von M" damit der User weiß, dass er scrollen/filtern kann.
+  const counter = '<div class="cmd-count">'+items.length+' von '+COMMANDS.length+' Befehlen'
+    + (items.length===COMMANDS.length ? ' · tippen zum Filtern' : '')
+    +'</div>';
+  el.innerHTML = counter + items.map((c,i)=>
     '<div class="cmd-item'+(i===_cmdIdx?' sel':'')+'" onclick="execCmd('+i+')" data-idx="'+i+'">'
     +'<div class="ci-icon">'+c.icon+'</div>'
     +'<div class="ci-main"><div class="ci-label">'+c.label+'</div>'
@@ -13429,15 +13433,29 @@ function renderCmdResults(items){
     +(c.kbd?'<div class="ci-kbd">'+c.kbd+'</div>':'')
     +'</div>'
   ).join('');
+  // Ausgewähltes Element in den sichtbaren Bereich scrollen
+  const sel = el.querySelector('.cmd-item.sel');
+  if (sel && typeof sel.scrollIntoView === 'function') {
+    sel.scrollIntoView({ block: 'nearest' });
+  }
 }
 
 function cmdKeyNav(e){
-  const len=Math.min(_cmdFiltered.length,12);
+  const len = _cmdFiltered.length;
   if(e.key==='ArrowDown'){_cmdIdx=Math.min(len-1,_cmdIdx+1);renderCmdResults(_cmdFiltered);e.preventDefault();}
   else if(e.key==='ArrowUp'){_cmdIdx=Math.max(0,_cmdIdx-1);renderCmdResults(_cmdFiltered);e.preventDefault();}
   else if(e.key==='Enter'){ execCmd(_cmdIdx); }
   else if(e.key==='Escape'){ closeCmdPalette(); }
 }
+
+// P12-Followup Bug C: Debug-Zugriff auf die Palette-Interna via Browser-Konsole.
+// window.cscCommandPalette.items.length → Gesamt-Count aller registrierten Befehle.
+window.cscCommandPalette = {
+  get items() { return COMMANDS; },
+  get filtered() { return _cmdFiltered; },
+  open: openCmdPalette,
+  close: closeCmdPalette,
+};
 
 function execCmd(idx){
   const c=_cmdFiltered[idx]; if(!c) return;
@@ -15803,7 +15821,15 @@ function _panelSearch(category, value, renderFnName){
 
 function renderFurnPanel(el){
   const query=_catSearch.furn||'';
-  let catalog=[...getCatalog()];
+  // P12-Followup Bug B: in Room-Mode Event-Kategorien aus dem Möbel-Tab filtern.
+  // EVENT_CATS_LIST (oben definiert) enthält alle Event-Kategorien; Room-User
+  // sieht hier nur nicht-Event-Items. Event-Mode nutzt renderEventsPanel().
+  const planningMode = (document.body.dataset.planningMode === 'event') ? 'event' : 'room';
+  let catalog=[...getCatalog()].filter(function(i){
+    if(!i || !i.cat) return true;
+    const isEventCat = EVENT_CATS_LIST.includes(i.cat);
+    return planningMode === 'event' ? isEventCat : !isEventCat;
+  });
   if(query) catalog=catalog.filter(i=>
     i.name.toLowerCase().includes(query.toLowerCase())||
     (i.cat||'').toLowerCase().includes(query.toLowerCase())
