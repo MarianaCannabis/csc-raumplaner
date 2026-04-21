@@ -112,7 +112,38 @@ input,textarea,select,button{font-family:inherit}
 #app{display:flex;flex-direction:column;height:100vh;overflow:hidden}
 
 /* ─ TOPBAR ─────────────────────────────────────────────── */
-#topbar{grid-column:1/-1;background:#0c0c0c;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:5px;padding:0 12px;z-index:30}
+/* P15 Topbar-Responsive: flex-wrap als Safety-Net — bei Zoom ≥ 125% oder
+   Viewport < 1400px dürfen Items auf eine zweite Zeile umbrechen statt
+   off-screen zu verschwinden. min-height statt height, damit das Wrappen
+   nicht durch Container-Lock verhindert wird. row-gap sorgt für saubere
+   vertikale Abstände zwischen den wrapped rows. */
+#topbar{grid-column:1/-1;background:#0c0c0c;border-bottom:1px solid var(--bd);display:flex;flex-wrap:wrap;align-items:center;gap:5px;row-gap:4px;padding:4px 12px;min-height:40px;z-index:30}
+
+/* P15 Topbar-Responsive: Overflow-Menü (Priority+ Pattern). Der ⋯-Button
+   ist default-hidden; CSS-Media-Query oder JS-Overflow-Detektor zeigt ihn. */
+#topbar-overflow-btn { display: none; }
+#topbar-overflow-menu {
+  position: absolute; top: 100%; right: 0;
+  background: var(--bg2); border: 1px solid var(--bd2);
+  border-radius: var(--r8); box-shadow: var(--shadow-lg);
+  padding: 4px; min-width: 200px; z-index: var(--z-dropdown, 50);
+  display: none;
+}
+#topbar-overflow-menu.open { display: flex; flex-direction: column; gap: 2px; }
+#topbar-overflow-wrap { position: relative; margin-left: auto; }
+
+/* Ab 900px schmaler Viewport: Low-Priority-Items werden nicht mehr direkt
+   in der Topbar gezeigt, sondern nur über das Overflow-Menü. Der JS-Code
+   dupliziert sie beim Boot einmal ins Overflow-Menü. Die CSS-Regel unten
+   blendet die Original-Buttons aus. Priorität entspricht data-overflow-
+   priority-Attribut (höher = früher versteckt). */
+@media (max-width: 900px) {
+  #topbar-overflow-btn { display: inline-flex; }
+  #topbar [data-overflow-priority="1"] { display: none !important; }
+}
+@media (max-width: 750px) {
+  #topbar [data-overflow-priority="2"] { display: none !important; }
+}
 .logo{font-weight:800;font-size:13px;color:var(--gr);letter-spacing:-.3px;white-space:nowrap;margin-right:4px}
 .logo em{color:var(--tx2);font-style:normal;font-weight:400}
 .vbadge{font-size:9px;background:var(--gr3);color:var(--gr);padding:2px 5px;border-radius:3px;font-weight:700}
@@ -702,8 +733,8 @@ canvas{display:block}
 /* P11.2: Touch-Target-Utility — an jedes interaktive Element anwendbar, das nativ zu klein ist */
 .touch-target { min-width:44px; min-height:44px; display:inline-flex; align-items:center; justify-content:center }
 
-/* Topbar compact */
-#topbar{height:40px;padding:0 8px;gap:4px}
+/* Topbar compact (P15: height→min-height für Wrap-Support) */
+#topbar{min-height:40px;padding:4px 8px;gap:4px}
 .logo{font-size:13px}
 .vbadge{font-size:9px}
 .tbt{padding:4px 8px;font-size:11px}
@@ -1780,7 +1811,7 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 #left{width:270px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden}
 #canvas-wrap{flex:1;min-width:0;min-height:0;position:relative;overflow:hidden;background:#1a1e26}
 #right{width:300px;flex-shrink:0;background:var(--bg2);border-left:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden}
-#topbar{flex-shrink:0;height:50px;background:#0c0c0c;border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 8px;gap:4px;overflow:visible}
+#topbar{flex-shrink:0;min-height:50px;background:#0c0c0c;border-bottom:1px solid var(--bd);display:flex;flex-wrap:wrap;align-items:center;padding:4px 8px;gap:4px;row-gap:4px;overflow:visible}
 #botbar{flex-shrink:0;height:54px;background:#0c0c0c;border-top:1px solid var(--bd);display:flex;align-items:center;padding:0 8px;gap:6px}
 /* ═══════════════════════════════════════════════════════════════ */
 .qana-btn{width:100%;padding:7px 10px;text-align:left;background:var(--bg3);border:1px solid var(--bd);color:var(--tx2);border-radius:5px;cursor:pointer;font-size:11px;transition:.12s}
