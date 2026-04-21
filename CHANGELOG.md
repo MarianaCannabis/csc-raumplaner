@@ -4,6 +4,39 @@ Alle bedeutsamen Änderungen an CSC Raumplaner Pro.
 
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [2.2.0] — 2026-04-21 · Planning-Mode + Production Hardening
+
+**Major feature-release.** Getrennte Workflows für Raumplanung vs. Veranstaltungs-Planung. UX-Konsolidierung, Test-Infrastruktur, Doku-Overhaul.
+
+### Added
+- **Planning-Mode-Switcher** (P11.1): Segmented Control `🏪 Raumplanung` vs. `🎪 Veranstaltungs-Planung` in Topbar, persistiert in localStorage
+- `src/modes/planningMode.ts` + `Rule.modes`-Support in Compliance-Registry
+- 7 KCanG-Regeln als `room`-only, 1 Messe-Regel als `event`-only, 13 universal — alle via `listActiveRules()` modes-gefiltert
+- **44×44 px Touch-Targets** auf Mobile (WCAG 2.1 AA) — P11.2
+- **.modal-footer** + **.touch-target** CSS-Utility-Klassen für einheitliches Design — P11.2
+- **Real Favicons** (16/32/48/192/512 PNG + multi-size ICO) via `scripts/gen-favicons.py` — P11.4
+- **Playwright E2E-Suite**: 5 Spec-Files (smoke, planning-mode, ui-mode, command-palette, a11y) + `.github/workflows/e2e.yml` — P11.4
+- **Lighthouse-Integration**: `npm run lighthouse` Script + Anleitung — P11.4
+- `docs/P11.{1-5}-*.md` — Phase-weise Doku
+- `docs/ARCHITECTURE.md` — technischer Überblick für neue Contributors
+- 3-Tier UI-Mode (Einfach/Standard/Profi) aus v1.0 erweitert um Mode-spezifisches Tagging
+- Command-Palette: +3 UI-Mode + 2 Sprach-Switcher + 3 Basics
+
+### Changed
+- Bundle: CSS aus `index.html` ausgelagert nach `src/styles/main.css` — Vite chunked separat
+- `dist/index.html` gz 362 → 340 KB
+- `src/main.ts` importiert CSS (`import './styles/main.css'`)
+- TypeScript: `noFallthroughCasesInSwitch` + `noImplicitReturns` aktiv
+
+### Fixed
+- Broken-Flows aus P10.1: `updOP` → `updateObjProp`, `rechtsklickRaum` → `autoArrangeFurniture`
+- 6 ungenutzte Material-Factory-Aliase entfernt (ts-prune clean)
+- Duplikat "📏 Maßketten ein/aus (D)" im Ansicht-Menu entfernt
+
+### Infrastructure
+- v2.0 Feature-Complete: IFC-Export, i18n (DE/EN/NL/ES), Custom-Templates, KI-Sidebar, Teams, Pro-Framework, Marketplace (P9.1–P9.7)
+- v2.1 Hardening: Function-Inventory, Code-Cleanup, UX-Audit, Command-Palette (P10.1–P10.6)
+
 ## [1.0.0] — 2026-04-21 · Launch
 
 **Erster stabiler Release.** Nach 78+ PRs bereit für Produktiv-Einsatz.
