@@ -8682,8 +8682,9 @@ async function cloudSave(){
   let thumb = '';
   try { upTop(); rend3.render(scene,topCam); thumb = rend3.domElement.toDataURL('image/jpeg',0.5); } catch(e){}
   
+  // P15: Spinner statt Emoji — sauber animiert, kein Flicker-Text
   const btn = document.getElementById('sb-save-btn');
-  if(btn){ btn.textContent = '⏳ Speichern…'; btn.disabled = true; }
+  if(btn){ btn.innerHTML = '<span class="spinner"></span>Speichern…'; btn.disabled = true; }
   
   try {
     // Check if project with same name exists
@@ -8767,7 +8768,7 @@ async function showCloudProjects(){
     el.innerHTML = '<div class="sh" style="margin-top:6px">☁️ Cloud-Projekte</div>'
       + projects.map(p=>{
         const d = new Date(p.updated_at).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
-        return '<div class="sitem" onclick="cloudLoad(\''+p.id+'\')">'
+        return '<div class="sitem" data-cloud-id="'+p.id+'" onclick="cloudLoad(\''+p.id+'\',this)">'
           +'<div class="ri"><div class="rn">☁️ '+p.name+(p.team_id?'<span style="font-size:8px;background:var(--bg4);padding:1px 4px;border-radius:6px;color:var(--tx3);margin-left:4px">'+p.team_id+'</span>':'')+'</div>'+'<div class="rd">'+(p.author&&p.author!=='anonym'?'👤 '+p.author+' · ':'')+d+'</div></div>'
           +'<button class="sdel" onclick="cloudDelete(\''+p.id+'\');event.stopPropagation()" title="Löschen">🗑</button>'
           +'</div>';
@@ -8777,8 +8778,13 @@ async function showCloudProjects(){
   }
 }
 
-async function cloudLoad(id){
+async function cloudLoad(id, cardEl){
   if(!SB_URL || !SB_KEY) return;
+  // P15 Loading-State: die angeklickte Card bekommt .loading — CSS
+  // rendert dort einen inline-Spinner rechts + dimmt das Card ab.
+  // cardEl ist der this-Kontext des onclick; Fallback via data-attribute.
+  const card = cardEl || document.querySelector('.sitem[data-cloud-id="'+id+'"]');
+  if(card) card.classList.add('loading');
   try {
     const r = await fetch(SB_URL+'/rest/v1/csc_projects?id=eq.'+id+'&select=data',
       { headers: { 'apikey':SB_KEY, 'Authorization':'Bearer '+(SB_TOKEN||SB_KEY) } }
@@ -8786,6 +8792,7 @@ async function cloudLoad(id){
     const rows = await r.json();
     if(rows && rows[0]){ loadPD(rows[0].data); toast('☁️ Aus Cloud geladen!','g'); }
   } catch(e){ toast('Fehler: '+e.message,'r'); }
+  finally { if(card) card.classList.remove('loading'); }
 }
 
 async function cloudDelete(id){
@@ -15910,6 +15917,19 @@ function _panelSearch(category, value, renderFnName){
 
 function renderFurnPanel(el){
   const query=_catSearch.furn||'';
+  // P15 Loading-State: wenn der TS-Katalog noch nicht via src/main.ts
+  // ge-bootstrapped ist, rendern wir 6 Skeleton-Cards statt Stille.
+  // Sobald cscCatalog.newItems existiert, greift der normale Render-Pfad.
+  const tsReady = !!(window.cscCatalog && window.cscCatalog.newItems && window.cscCatalog.newItems.length);
+  if(!tsReady && typeof BUILTIN === 'undefined'){
+    el.innerHTML = '<div class="panel-search" style="padding:10px 8px"><div class="skel skel-line"></div></div>'
+      + '<div style="padding:0 8px">'
+      + Array(6).fill('<div class="skel skel-card"></div>').join('')
+      + '</div>';
+    // Poll alle 300ms bis Katalog da ist
+    setTimeout(function(){ renderFurnPanel(el); }, 300);
+    return;
+  }
   // P12-Followup Bug B: in Room-Mode Event-Kategorien aus dem Möbel-Tab filtern.
   // EVENT_CATS_LIST (oben definiert) enthält alle Event-Kategorien; Room-User
   // sieht hier nur nicht-Event-Items. Event-Mode nutzt renderEventsPanel().

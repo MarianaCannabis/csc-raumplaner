@@ -239,6 +239,54 @@ canvas{display:block}
 .amsg.sys{background:#1a1a0a;border:1px solid var(--yw);color:var(--yw);font-size:11px;align-self:center;text-align:center;width:100%;border-radius:var(--r6)}
 .amsg.load{color:var(--tx3);font-style:italic;align-self:flex-start;animation:pulse 1.4s infinite}
 @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+/* P15 Loading-States — Skeleton + Spinner.
+   .skel: grauer Block mit Pulse-Shimmer für "Content kommt gleich". Nutzer
+   versteht: UI ist nicht eingefroren, sondern wartet.
+   .spinner: rotierender Kreis für inline-Button-States während fetch(). */
+.skel {
+  display: block;
+  background: linear-gradient(90deg, var(--bg3) 0%, var(--bg4) 50%, var(--bg3) 100%);
+  background-size: 200% 100%;
+  border-radius: var(--r6);
+  animation: skel-shimmer 1.4s ease-in-out infinite;
+}
+.skel-card { height: 48px; margin-bottom: 6px; }
+.skel-line { height: 10px; margin: 4px 0; }
+.skel-line.short { width: 40%; }
+@keyframes skel-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.spinner {
+  display: inline-block;
+  width: 14px; height: 14px;
+  border: 2px solid var(--bd);
+  border-top-color: var(--gr);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  vertical-align: -2px;
+  margin-right: 6px;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* P15: sitem-state beim Laden — grauer Overlay + inline-spinner */
+.sitem.loading { opacity: 0.55; pointer-events: none; position: relative; }
+.sitem.loading::after {
+  content: ''; position: absolute; top: 50%; right: 12px;
+  width: 14px; height: 14px; margin-top: -7px;
+  border: 2px solid var(--bd); border-top-color: var(--gr);
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+}
+
+/* Reduced-motion respektieren: Animationen abschalten */
+@media (prefers-reduced-motion: reduce) {
+  .skel, .spinner, .sitem.loading::after { animation: none }
+  .skel { background: var(--bg3); }
+}
 .ai-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
 .chip{padding:4px 9px;background:var(--bg4);border:1px solid var(--bd2);border-radius:20px;font-size:10px;color:var(--tx2);cursor:pointer;transition:.12s}
 .chip:hover{border-color:var(--gr);color:var(--gr)}
