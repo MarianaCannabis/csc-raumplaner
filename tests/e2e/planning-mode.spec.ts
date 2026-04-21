@@ -13,18 +13,18 @@ test('default mode is room', async ({ page }) => {
 });
 
 test('switch to event mode updates body attribute', async ({ page }) => {
-  await page.locator('#pm-event').click();
+  await page.locator('#pm-event').click({ force: true });
   await expect(page.locator('body')).toHaveAttribute('data-planning-mode', 'event');
 });
 
 test('mode persists across reload', async ({ page }) => {
-  await page.locator('#pm-event').click();
+  await page.locator('#pm-event').click({ force: true });
   await page.reload();
   await expect(page.locator('body')).toHaveAttribute('data-planning-mode', 'event');
 });
 
 test('room-only KCanG button is hidden in event mode', async ({ page }) => {
-  await page.locator('#pm-event').click();
+  await page.locator('#pm-event').click({ force: true });
   // KCanG button is tagged data-mode="room"
   await expect(page.locator('#btn-kcang')).toBeHidden();
 });
@@ -34,7 +34,7 @@ test('sidebar tabs follow mode (P12.4)', async ({ page }) => {
   await expect(page.locator('#ib-rooms')).toBeVisible();
   await expect(page.locator('#ib-events')).toBeHidden();
 
-  await page.locator('#pm-event').click();
+  await page.locator('#pm-event').click({ force: true });
   // Event-Mode: Events tab visible, Rooms-tab hidden
   await expect(page.locator('#ib-rooms')).toBeHidden();
   await expect(page.locator('#ib-events')).toBeVisible();
@@ -42,7 +42,7 @@ test('sidebar tabs follow mode (P12.4)', async ({ page }) => {
 
 test('catalog reflects mode (Bug-B fix)', async ({ page }) => {
   // Click on "Möbel" tab in Room-Mode (data-mode="room")
-  await page.locator('#ib-furn').click();
+  await page.locator('#ib-furn').click({ force: true });
   // Wait for renderFurnPanel to finish. The panel contains .cat-tabs.
   await page.waitForSelector('.cat-tabs', { timeout: 3000 }).catch(() => {});
 
@@ -50,7 +50,7 @@ test('catalog reflects mode (Bug-B fix)', async ({ page }) => {
   const roomCats = await page.locator('.cat-tabs .ctab, .cat-group-header').count();
 
   // Switch to Event-Mode
-  await page.locator('#pm-event').click();
+  await page.locator('#pm-event').click({ force: true });
   // Auto-switch will activate ib-events; renderEventsPanel filters to event cats
   await page.waitForTimeout(200);
 

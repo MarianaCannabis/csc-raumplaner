@@ -1,0 +1,17 @@
+{
+  "url": "http://localhost:4173",
+  "runAt": "2026-04-21T21:01:28.958Z",
+  "scores": {
+    "performance": 47,
+    "accessibility": 92,
+    "bestPractices": 100,
+    "seo": 100
+  },
+  "metrics": {
+    "fcp": 5519.706,
+    "lcp": 6877.1755,
+    "cls": 0,
+    "tbt": 623,
+    "si": 5519.706
+  }
+}

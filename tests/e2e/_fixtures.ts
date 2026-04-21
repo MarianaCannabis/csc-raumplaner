@@ -1,39 +1,33 @@
-// Shared test fixtures for the E2E suite.
+// E2E test fixtures.
 //
-// Central Setup, damit jeder Spec-File die gleiche Ausgangs-Situation hat:
-//   - Welcome-Modal nicht dazwischenfunken (csc-onboarded=1)
-//   - Cookie-Banner weg (csc-cookie-dismissed=1)
-//   - Optional: UI-Mode + Planning-Mode reset pro Spec
+// Der Trick in v2.4: index.html hat einen ?e2e=1 URL-Guard (siehe dort am
+// Anfang des ersten <script>-Blocks). Alle Tests laden die Seite mit dem
+// Query-Parameter, dadurch:
+//   - Welcome-Modal #m-welcome öffnet nicht auto
+//   - Auth-Modal #m-auth öffnet nicht auto bei fehlendem Token
+//   - Login-Gate bleibt unsichtbar
 //
-// Usage in einem spec-file:
-//   import { test, expect } from './_fixtures.js';
-//   test('…', async ({ page }) => { … });
-//
-// Das base-`test` aus @playwright/test wird erweitert um einen beforeEach,
-// der die localStorage-Flags VOR dem ersten Paint setzt (addInitScript
-// läuft bei jedem navigation-event, inkl. page.goto).
+// Kein Auth-Bypass in App-Logik. Authentifizierte API-Calls schlagen
+// weiterhin 401 fehl — Tests testen UI-State, keine Server-Integration.
 
 import { test as base, expect as baseExpect } from '@playwright/test';
 
 export const test = base.extend<{}>({
-  page: async ({ page }, use) => {
-    // Alle Dialoge (confirm) akzeptieren, damit Mode-Switch + Invite-Flows
-    // nicht hängenbleiben.
+  page: async ({ page, baseURL }, use) => {
     page.on('dialog', (d) => d.accept().catch(() => {}));
 
-    // Vor dem ersten goto: Onboarding-Flags setzen + Mode-State bereinigen.
-    await page.addInitScript(() => {
-      try {
-        localStorage.setItem('csc-onboarded', '1');
-        localStorage.setItem('csc-cookie-dismissed', '1');
-        localStorage.setItem('csc-walk-tutorial-seen', '1');
-        localStorage.setItem('csc-welcome-never', '1');
-        // Mode-State zurücksetzen, damit Tests immer bei Default-Standard starten.
-        localStorage.removeItem('csc-ui-mode');
-        localStorage.removeItem('csc-planning-mode');
-        localStorage.removeItem('csc-mode-hint-seen');
-      } catch {}
-    });
+    // Playwright's baseURL + ?e2e=1 — einmalig beim ersten goto() relevant.
+    // Tests die später page.goto('/') oder page.reload() aufrufen müssen
+    // den Guard selbst neu setzen (via page.goto(pageWithE2E)). Reload
+    // behält URL inkl. Query-String.
+    const origGoto = page.goto.bind(page);
+    page.goto = async (url: string, opts?: Parameters<typeof origGoto>[1]) => {
+      // Wenn url relative + kein ?e2e drin: anhängen
+      if (!url.includes('e2e=')) {
+        url = url.includes('?') ? `${url}&e2e=1` : `${url}?e2e=1`;
+      }
+      return origGoto(url, opts);
+    };
 
     await use(page);
   },

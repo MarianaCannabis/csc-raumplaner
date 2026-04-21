@@ -8,11 +8,14 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('Ctrl+K opens the palette', async ({ page }) => {
+  // Playwright's keyboard.press braucht einen focused element — body reicht.
+  await page.locator('body').click();
   await page.keyboard.press('Control+K');
   await expect(page.locator('#cmd-palette.vis')).toBeVisible({ timeout: 2000 });
 });
 
 test('Esc closes the palette', async ({ page }) => {
+  await page.locator('body').click();
   await page.keyboard.press('Control+K');
   await page.keyboard.press('Escape');
   const hasVis = await page.locator('#cmd-palette').evaluate((el) => el.classList.contains('vis'));
@@ -27,6 +30,7 @@ test('palette exposes items via window.cscCommandPalette (Bug-C debug API)', asy
 });
 
 test('palette shows counter header (Bug-C fix)', async ({ page }) => {
+  await page.locator('body').click();
   await page.keyboard.press('Control+K');
   await page.waitForTimeout(100);
   const counter = page.locator('.cmd-count');
@@ -36,6 +40,7 @@ test('palette shows counter header (Bug-C fix)', async ({ page }) => {
 });
 
 test('palette shows MORE than 12 commands when unfiltered (Bug-C regression guard)', async ({ page }) => {
+  await page.locator('body').click();
   await page.keyboard.press('Control+K');
   await page.waitForTimeout(200);
   // The previous bug: slice(0, 12) showed only 12 rows.
@@ -45,6 +50,7 @@ test('palette shows MORE than 12 commands when unfiltered (Bug-C regression guar
 });
 
 test('palette search filters by label/sub', async ({ page }) => {
+  await page.locator('body').click();
   await page.keyboard.press('Control+K');
   await page.waitForTimeout(100);
   await page.locator('#cmd-input').fill('raum');
@@ -57,6 +63,7 @@ test('palette is mode-agnostic (Bug-C universal-access invariant)', async ({ pag
   // Switch to Simple UI-mode (which hides ~80% of topbar buttons)
   await page.locator('#ui-mode-select').selectOption('simple');
   await page.waitForTimeout(100);
+  await page.locator('body').click();
   await page.keyboard.press('Control+K');
   await page.waitForTimeout(100);
   const rowCount = await page.locator('.cmd-item').count();

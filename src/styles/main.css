@@ -64,6 +64,9 @@ body[data-ui-mode="pro"] .pro-only-debug { display: block }
 body[data-ui-mode="simple"] .simple-badge { display:inline-flex }
 
 /* P11.1: Planning-Mode (Raumplanung vs. Veranstaltungs-Planung) */
+/* Planning-Mode-Filter: zeigt mode-spezifische Menu-Items. Mode-Seg-Buttons
+   hatten data-mode="event"/"room" — das filterte sie selbst weg (chicken-
+   and-egg). fix/e2e-green: Attribute auf #pm-event/#pm-room entfernt. */
 body[data-planning-mode="room"]  [data-mode="event"] { display: none !important; }
 body[data-planning-mode="event"] [data-mode="room"]  { display: none !important; }
 
