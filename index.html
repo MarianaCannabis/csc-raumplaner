@@ -113,6 +113,21 @@
         document.body.dataset.planningMode = m;
         applyActive(m);
         window.dispatchEvent(new CustomEvent('csc-mode-change', { detail: m }));
+
+        // P12.2: Toast + einmaliger Onboarding-Hinweis
+        var label = m==='event' ? '🎪 Veranstaltungs-Planung aktiv' : '🏪 Raumplanung aktiv';
+        if(typeof toast === 'function') { try { toast(label, 'g'); } catch(_){} }
+        try {
+          if(!localStorage.getItem('csc-mode-hint-seen')) {
+            var hint = document.createElement('div');
+            hint.className = 'mode-hint';
+            hint.innerHTML = 'Menu-Items wechseln basierend auf deiner Planungsart. <b>Komplettliste jederzeit mit Ctrl+K.</b>';
+            document.body.appendChild(hint);
+            requestAnimationFrame(function(){ hint.classList.add('vis'); });
+            setTimeout(function(){ hint.classList.remove('vis'); setTimeout(function(){ hint.remove(); }, 400); }, 5500);
+            localStorage.setItem('csc-mode-hint-seen', '1');
+          }
+        } catch(_){}
       };
     })();
   </script>
