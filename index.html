@@ -48,7 +48,7 @@
     <div style="color:var(--tx2);font-size:13px;max-width:320px;text-align:center;line-height:1.5">
       Du musst eingeloggt sein, um den Raumplaner zu nutzen.<br>Magic-Link per E-Mail — kein Passwort nötig.
     </div>
-    <button class="mbt ok" onclick="openM('m-auth')" style="margin-top:8px">🔑 Jetzt einloggen</button>
+    <button class="mbt ok" data-tier="simple" onclick="openM('m-auth')" style="margin-top:8px">🔑 Jetzt einloggen</button>
   </div>
   <div id="gate-awaiting" style="display:none;flex-direction:column;align-items:center;gap:12px">
     <div style="font-size:48px">📬</div>
@@ -57,8 +57,8 @@
       Wir haben dir eine Mail geschickt. Klicke den <b>Magic-Link</b> — dieses Fenster schließt sich dann automatisch.
     </div>
     <div style="display:flex;gap:8px;margin-top:8px">
-      <button class="mbt" onclick="openM('m-auth')">Andere E-Mail</button>
-      <button class="mbt ok" onclick="openM('m-auth')">🔄 Erneut senden</button>
+      <button class="mbt" data-tier="simple" onclick="openM('m-auth')">Andere E-Mail</button>
+      <button class="mbt ok" data-tier="simple" onclick="openM('m-auth')">🔄 Erneut senden</button>
     </div>
   </div>
 </div>
@@ -72,13 +72,13 @@
   <div class="tsep"></div>
 
   <!-- UNDO/REDO -->
-  <button class="tbt icon-btn" id="undo-btn" onclick="undo()" disabled title="Rückgängig (Ctrl+Z)" aria-label="Rückgängig" onmouseenter="showUndoPreview()" onmouseleave="hideUndoPreview()">↩</button>
+  <button class="tbt icon-btn" id="undo-btn" data-tier="simple" onclick="undo()" disabled title="Rückgängig (Ctrl+Z)" aria-label="Rückgängig" onmouseenter="showUndoPreview()" onmouseleave="hideUndoPreview()">↩</button>
   <div id="undo-preview"></div>
-  <button class="tbt icon-btn" id="redo-btn" onclick="redo()" disabled title="Wiederholen (Ctrl+Y)" aria-label="Wiederholen">↪</button>
+  <button class="tbt icon-btn" id="redo-btn" data-tier="simple" onclick="redo()" disabled title="Wiederholen (Ctrl+Y)" aria-label="Wiederholen">↪</button>
   <div class="tsep"></div>
 
   <!-- P10.4: Primary Save-Button (UX-Flow 1 — aus Submenü hochgezogen) -->
-  <button class="tbt" id="btn-save-primary" onclick="saveProj()" title="Projekt speichern (Ctrl+S)"
+  <button class="tbt" id="btn-save-primary" data-tier="simple" onclick="saveProj()" title="Projekt speichern (Ctrl+S)"
     aria-label="Projekt speichern"
     style="padding:5px 12px;border:1px solid var(--gr3);background:rgba(74,222,128,0.08);color:var(--gr);font-weight:600">💾 Speichern</button>
   <div class="tsep"></div>
@@ -86,7 +86,7 @@
   <!-- P11.1: Planning-Mode Segmented Control (Raumplanung vs. Veranstaltungs-Planung) -->
   <div class="mode-seg" role="group" aria-label="Planungs-Modus">
     <button type="button" id="pm-room"  onclick="window.cscSwitchPlanningMode('room')"  title="Raumplanung — CSC Clubhaus, Anbauraum, Ausgabe"  aria-label="Raumplanung aktivieren">🏪 Raumplanung</button>
-    <button type="button" id="pm-event" onclick="window.cscSwitchPlanningMode('event')" title="Veranstaltungs-Planung — Messe, Kongress, Event" aria-label="Veranstaltungs-Planung aktivieren">🎪 Veranstaltungs-Planung</button>
+    <button type="button" id="pm-event" data-mode="event" onclick="window.cscSwitchPlanningMode('event')" title="Veranstaltungs-Planung — Messe, Kongress, Event" aria-label="Veranstaltungs-Planung aktivieren">🎪 Veranstaltungs-Planung</button>
   </div>
   <div class="tsep"></div>
   <script>
@@ -118,13 +118,13 @@
   </script>
 
   <!-- P4.3b: Prominenter Vorlagen-Button (erster Einstieg für neue User) -->
-  <button class="tbt" id="btn-templates" onclick="openTemplates()" title="Vorlagen laden — fertige CSC-Layouts + Messestände"
+  <button class="tbt" id="btn-templates" data-mode="event" data-tier="simple" onclick="openTemplates()" title="Vorlagen laden — fertige CSC-Layouts + Messestände"
     style="padding:5px 10px;border:1px solid var(--gr3);background:rgba(74,222,128,0.08);color:var(--gr);font-weight:600">📋 Vorlagen</button>
   <!-- P7 Bug-2-Fix: KCanG-Dashboard aus der Ansicht-Menu-Tiefe an die Topbar hochgezogen -->
   <button class="tbt" id="btn-kcang" data-mode="room" onclick="openKCaNGDashboard()" title="KCanG-Projektdaten + Compliance-Check (Mitglieder, Adresse, Präventionsbeauftragter, Regeln)"
     style="padding:5px 10px;border:1px solid var(--gr3);background:rgba(74,222,128,0.08);color:var(--gr);font-weight:600">🌿 KCanG</button>
   <!-- P8.2: Hilfe-Modal mit FAQ + Shortcuts + Link zum User-Guide -->
-  <button class="tbt icon-btn" id="btn-help" onclick="openHelpModal()" title="Hilfe: FAQ, Tastenkürzel, User-Guide"
+  <button class="tbt icon-btn" id="btn-help" data-tier="simple" onclick="openHelpModal()" title="Hilfe: FAQ, Tastenkürzel, User-Guide"
     style="padding:5px 10px" aria-label="Hilfe öffnen">❓</button>
   <!-- P9.2: Sprach-Umschalter -->
   <select id="lang-switch" onchange="window.cscI18n&&window.cscI18n.setLang(this.value)"
@@ -156,13 +156,13 @@
 
     <!-- 📁 DATEI -->
     <div class="tbm" id="tbm-file">
-      <button class="tbm-btn" onclick="toggleTBMenu('file')">📁 Datei <span class="tbm-arr">▾</span></button>
+      <button class="tbm-btn" data-tier="simple" onclick="toggleTBMenu('file')">📁 Datei <span class="tbm-arr">▾</span></button>
       <div class="tbm-drop" id="tbmd-file">
-        <div class="tbm-item" onclick="newProj();closeTBMenu()">🆕 Neues Projekt</div>
-        <div class="tbm-item" onclick="saveProj();closeTBMenu()">💾 Speichern <span class="tbm-kbd">Ctrl+S</span></div>
+        <div class="tbm-item" data-tier="simple" onclick="newProj();closeTBMenu()">🆕 Neues Projekt</div>
+        <div class="tbm-item" data-tier="simple" onclick="saveProj();closeTBMenu()">💾 Speichern <span class="tbm-kbd">Ctrl+S</span></div>
         <div class="tbm-item" onclick="showRight('save');closeTBMenu()">📂 Projekte öffnen</div>
         <div class="tbm-sep"></div>
-        <div class="tbm-item" onclick="dlJSON();closeTBMenu()">📥 Export .json</div>
+        <div class="tbm-item" data-tier="simple" onclick="dlJSON();closeTBMenu()">📥 Export .json</div>
         <div class="tbm-item" onclick="exportFurnitureCSV();closeTBMenu()">📊 Möbelliste .csv</div>
         <div class="tbm-item" onclick="exportBudgetCSV();closeTBMenu()">💰 Budget .csv</div>
         <div class="tbm-item" onclick="exportGLTF();closeTBMenu()">🏗 3D-Modell .gltf</div>
@@ -170,7 +170,7 @@
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="openPrintPreview();closeTBMenu()">🖨 Druckvorschau</div>
         <div class="tbm-item" data-tier="standard" data-mode="room" onclick="generateAuthorityPackage();closeTBMenu()">📦 Behörden-Paket (.zip)</div>
-        <div class="tbm-item" data-mode="room" onclick="openM('m-hygiene');closeTBMenu()">🧴 Hygiene-Konzept PDF</div>
+        <div class="tbm-item" data-mode="room" data-tier="simple" onclick="openM('m-hygiene');closeTBMenu()">🧴 Hygiene-Konzept PDF</div>
         <div class="tbm-item" data-mode="room" onclick="generateOpeningHoursSign();closeTBMenu()">⏰ Öffnungszeiten-Schild</div>
         <div class="tbm-item" onclick="takePresentationScreenshot();closeTBMenu()">📸 3D-Screenshot</div>
         <div class="tbm-item" onclick="shareByEmail();closeTBMenu()">📧 Per E-Mail teilen</div>
@@ -199,7 +199,7 @@
 
     <!-- 👁 ANSICHT -->
     <div class="tbm" id="tbm-view">
-      <button class="tbm-btn" onclick="toggleTBMenu('view')">👁 Ansicht <span class="tbm-arr">▾</span></button>
+      <button class="tbm-btn" data-tier="simple" onclick="toggleTBMenu('view')">👁 Ansicht <span class="tbm-arr">▾</span></button>
       <div class="tbm-drop" id="tbmd-view">
         <div class="tbm-label">3D-Optionen</div>
         <div class="tbm-item" onclick="window.cscFrameScene&&window.cscFrameScene();closeTBMenu()">🎯 Ansicht zentrieren</div>
@@ -219,7 +219,7 @@
         <div class="tbm-item" onclick="toggleNoteMode();closeTBMenu()" id="mi-notes">📌 Notizen</div>
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="openLayoutComparison();closeTBMenu()">🔀 Lageplan vergleichen</div>
-        <div class="tbm-item" onclick="toggleTheme();closeTBMenu()">🌙 Hell/Dunkel wechseln</div>
+        <div class="tbm-item" data-tier="simple" onclick="toggleTheme();closeTBMenu()">🌙 Hell/Dunkel wechseln</div>
         <div class="tbm-item" onclick="cycleDimStyle();closeTBMenu()">📐 Maßketten-Stil wechseln</div>
         <div class="tbm-item" onclick="toggleRoomStats();closeTBMenu()">📊 Raum-Statistik im Plan</div>
         <div class="tbm-item" onclick="openMaterialStudio();closeTBMenu()">🎨 Material & Textur Studio</div>
@@ -253,14 +253,14 @@
         <div class="tbm-sep"></div>
         <div class="tbm-label">Einstellungen</div>
         <div class="tbm-item" onclick="toggleLayerPanel();closeTBMenu()">📚 Ebenen (Layer)</div>
-        <div class="tbm-item" onclick="openM('m-display');closeTBMenu()">🎨 Darstellung</div>
-        <div class="tbm-item" onclick="openM('m-groups');closeTBMenu()">📦 Räume gruppieren</div>
+        <div class="tbm-item" data-tier="simple" onclick="openM('m-display');closeTBMenu()">🎨 Darstellung</div>
+        <div class="tbm-item" data-tier="simple" onclick="openM('m-groups');closeTBMenu()">📦 Räume gruppieren</div>
       </div>
     </div>
 
     <!-- 📊 ANALYSE -->
     <div class="tbm" id="tbm-analyse">
-      <button class="tbm-btn" onclick="toggleTBMenu('analyse')">📊 Analyse <span class="tbm-arr">▾</span></button>
+      <button class="tbm-btn" data-tier="simple" onclick="toggleTBMenu('analyse')">📊 Analyse <span class="tbm-arr">▾</span></button>
       <div class="tbm-drop" id="tbmd-analyse">
         <div class="tbm-item" onclick="openAnalysisDashboard();closeTBMenu()">📊 Analyse-Dashboard</div>
         <div class="tbm-item" onclick="toggleVisitorFlow();closeTBMenu()" id="mi-visflow">👥 Besucherfluss-Animation</div>
@@ -327,26 +327,26 @@
         <div class="tbm-item" onclick="toggleBloom();closeTBMenu()">✨ Bloom an/aus</div>
         <div class="tbm-item" onclick="openBadges();closeTBMenu()">🏆 Errungenschaften</div>
         <div class="tbm-sep"></div>
-        <div class="tbm-item" onclick="openM('m-todos');closeTBMenu()">✅ Aufgaben</div>
-        <div class="tbm-item" onclick="openM('m-prompts');closeTBMenu()">💬 Eigene KI-Befehle</div>
+        <div class="tbm-item" data-tier="simple" onclick="openM('m-todos');closeTBMenu()">✅ Aufgaben</div>
+        <div class="tbm-item" data-tier="simple" onclick="openM('m-prompts');closeTBMenu()">💬 Eigene KI-Befehle</div>
         <div class="tbm-item" onclick="openShortcutEditor();closeTBMenu()">⌨ Tastenkürzel</div>
         <div class="tbm-item" onclick="enableAutoCloudSave(!_autoCloudSave);closeTBMenu()" id="mi-autocloudsvae">☁ Auto-Cloud-Save</div>
-        <div class="tbm-item" onclick="openM('m-waittime');closeTBMenu()">⏱ Wartezeit-Simulation</div>
+        <div class="tbm-item" data-tier="simple" onclick="openM('m-waittime');closeTBMenu()">⏱ Wartezeit-Simulation</div>
         <div class="tbm-item" onclick="calcROI();openM('m-roi');closeTBMenu()">📈 ROI-Rechner</div>
         <div class="tbm-item" onclick="showGrowthPlan();closeTBMenu()">📊 Wachstumsplanung</div>
         <div class="tbm-item" onclick="toggleClimate();closeTBMenu()" id="btn-climate">🌡 Raumklima-Simulation</div>
         <div class="tbm-item" onclick="toggleWheelchair();closeTBMenu()">♿ Rollstuhl-Simulator</div>
-        <div class="tbm-item" onclick="openM('m-seasons');closeTBMenu()">🍂 Saison-Layouts</div>
+        <div class="tbm-item" data-tier="simple" onclick="openM('m-seasons');closeTBMenu()">🍂 Saison-Layouts</div>
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="aiDescribeRoom();closeTBMenu()">🔮 KI: Raum beschreiben</div>
-        <div class="tbm-item" onclick="aiSecurityAudit();closeTBMenu()">🔐 KI: Sicherheits-Audit</div>
-        <div class="tbm-item" onclick="aiAccessibleRebuild();closeTBMenu()">♿ KI: Barrierefrei-Umbau</div>
+        <div class="tbm-item" data-tier="pro" onclick="aiSecurityAudit();closeTBMenu()">🔐 KI: Sicherheits-Audit</div>
+        <div class="tbm-item" data-tier="pro" onclick="aiAccessibleRebuild();closeTBMenu()">♿ KI: Barrierefrei-Umbau</div>
       </div>
     </div>
 
     <!-- 🤝 TEILEN -->
     <div class="tbm" id="tbm-share">
-      <button class="tbm-btn" onclick="toggleTBMenu('share')">🔗 Teilen <span class="tbm-arr">▾</span></button>
+      <button class="tbm-btn" data-tier="simple" onclick="toggleTBMenu('share')">🔗 Teilen <span class="tbm-arr">▾</span></button>
       <div class="tbm-drop" id="tbmd-share">
         <div class="tbm-item" onclick="shareProject();closeTBMenu()">🔗 Projekt-Link teilen</div>
         <div class="tbm-item" onclick="openVisionBoard();closeTBMenu()">🎨 Visions-Board</div>
@@ -362,7 +362,7 @@
 
     <!-- 🏗 VORLAGEN -->
     <div class="tbm" id="tbm-tpl">
-      <button class="tbm-btn" onclick="openTemplates();closeTBMenu()" style="color:var(--bl)">🏗 Vorlagen</button>
+      <button class="tbm-btn" data-tier="simple" onclick="openTemplates();closeTBMenu()" style="color:var(--bl)">🏗 Vorlagen</button>
     </div>
 
   </div><!-- .tb-menu-group -->
@@ -371,29 +371,29 @@
 
   <!-- MOOD + KI — immer sichtbar -->
   <button class="tbt" onclick="toggleMoodPanel()" style="color:var(--yw);border-color:#3a3000;background:#1a1800" title="Stimmung/Beleuchtung">🌅</button>
-  <button class="tbt" onclick="openM('m-wizard')" style="color:var(--pu);border-color:#3a2a4a;background:#1a0d2a" title="KI Möbel-Assistent">🤖</button>
+  <button class="tbt" data-tier="simple" onclick="openM('m-wizard')" style="color:var(--pu);border-color:#3a2a4a;background:#1a0d2a" title="KI Möbel-Assistent">🤖</button>
   <button class="tbt" id="btn-guided" onclick="toggleGuidedMode()" title="Geführter Modus">🧭</button>
   <button class="tbt" onclick="toggleUndoTimeline()" title="Verlauf" id="btn-undotl">🕐</button>
   <button class="tbt" onclick="openCmdPalette()" title="Befehlspalette (Ctrl+K)" aria-label="Befehlspalette" style="color:var(--bl)">⌨</button>
   <button class="tbt" onclick="toggleVisitorFlow()" title="Besucherfluss">👥</button>
   <button class="tbt" onclick="start3DTour()" title="3D-Rundgang" aria-label="3D-Rundgang starten">🎬</button>
   <button class="tbt" onclick="openPostFXSettings()" title="Effekte & Atmosphäre" aria-label="Effekte & Atmosphäre" style="color:#fbbf24">✨</button>
-  <button id="theme-toggle" onclick="toggleTheme()" title="Hell/Dunkel">🌙 Dark</button>
-  <button class="tbt" onclick="openHelp()" style="color:var(--or)" title="Anleitung (H/F1)" aria-label="Anleitung">❓</button>
+  <button id="theme-toggle" data-tier="simple" onclick="toggleTheme()" title="Hell/Dunkel">🌙 Dark</button>
+  <button class="tbt" data-tier="simple" onclick="openHelp()" style="color:var(--or)" title="Anleitung (H/F1)" aria-label="Anleitung">❓</button>
   <div class="tsep"></div>
 
   <!-- ETAGEN -->
   <div id="floor-tabs-wrap">
     <div id="floor-tabs"></div>
-    <button class="ftab-add" onclick="openM('m-floor')" title="Etage hinzufügen">＋</button>
+    <button class="ftab-add" data-tier="simple" onclick="openM('m-floor')" title="Etage hinzufügen">＋</button>
   </div>
   <div class="tsep"></div>
 
   <!-- ANSICHT UMSCHALTEN -->
   <div class="view-toggle">
-    <button class="vt active" id="vt-2d" onclick="setView('2d')" title="2D Grundriss">⊞ 2D</button>
-    <button class="vt" id="vt-3d" onclick="setView('3d')" title="3D Ansicht">⬛ 3D</button>
-    <button class="vt" id="vt-walk" onclick="setView('walk')" title="Durchgehen">🚶</button>
+    <button class="vt active" id="vt-2d" data-tier="simple" onclick="setView('2d')" title="2D Grundriss">⊞ 2D</button>
+    <button class="vt" id="vt-3d" data-tier="simple" onclick="setView('3d')" title="3D Ansicht">⬛ 3D</button>
+    <button class="vt" id="vt-walk" data-tier="simple" onclick="setView('walk')" title="Durchgehen">🚶</button>
   </div>
 
 
@@ -415,7 +415,7 @@
   <input id="proj-lbl-edit" type="text" maxlength="80" style="display:none;font-size:11px;padding:2px 4px;background:var(--bg3);border:1px solid var(--gr);color:var(--tx);border-radius:3px;max-width:160px"
          onblur="finishInlineProjectRename()" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();} else if(event.key==='Escape'){this.value=projName;this.blur();}">
   <button id="proj-lbl-save" onclick="finishInlineProjectRename()" style="display:none;border:none;background:var(--gr);color:#0a0a0a;font-size:10px;padding:2px 6px;border-radius:3px;cursor:pointer" title="Speichern">💾</button>
-  <button class="tbt icon-btn" onclick="openM('m-rename')" title="Umbenennen">✏️</button>
+  <button class="tbt icon-btn" data-tier="simple" onclick="openM('m-rename')" title="Umbenennen">✏️</button>
 
   <!-- 3D Hint -->
   <span id="view-hint-3d" style="font-size:10px;color:var(--tx3);display:none;margin-left:8px">Klick=Wählen · G=Verschieben · Del=Löschen · RMB=Orbit</span>
@@ -457,12 +457,12 @@
   <canvas id="three-canvas"></canvas>
 
   <div id="mode-pills">
-    <button class="mpill active" id="pill-sel" onclick="set2DTool('sel')">↖ Auswählen</button>
-    <button class="mpill" id="pill-wall" onclick="set2DTool('wall')">🧱 Wand zeichnen</button>
-    <button class="mpill" id="pill-room" onclick="set2DTool('room')">⬜ Raum zeichnen</button>
+    <button class="mpill active" id="pill-sel" data-tier="simple" onclick="set2DTool('sel')">↖ Auswählen</button>
+    <button class="mpill" id="pill-wall" data-tier="simple" onclick="set2DTool('wall')">🧱 Wand zeichnen</button>
+    <button class="mpill" id="pill-room" data-tier="simple" onclick="set2DTool('room')">⬜ Raum zeichnen</button>
     <button class="mpill" id="pill-ground" onclick="openGroundMaterialPicker()">🟫 Fläche</button>
-    <button class="mpill" id="pill-measure" onclick="set2DTool('measure')">📏 Maß</button>
-    <button class="mpill" id="pill-pan" onclick="set2DTool('pan')">✋ Verschieben</button>
+    <button class="mpill" id="pill-measure" data-tier="simple" onclick="set2DTool('measure')">📏 Maß</button>
+    <button class="mpill" id="pill-pan" data-tier="simple" onclick="set2DTool('pan')">✋ Verschieben</button>
     <button class="mpill" id="pill-center-3d" onclick="window.cscFrameScene&&window.cscFrameScene()" title="Kamera auf aktuellen Inhalt zentrieren (3D)" style="background:rgba(74,222,128,0.08);border-color:var(--gr3);color:var(--gr)">🎯 Zentrieren</button>
   </div>
 
@@ -547,7 +547,7 @@
   <button class="mood-btn" id="mb-cozy" onclick="setMood('cozy')">🕯️ Gemütlich</button>
   <button class="mood-btn" id="mb-prof" onclick="setMood('prof')">💼 Professionell</button>
   <div class="mood-sep"></div>
-  <button id="mood-ai-btn" onclick="openM('m-mood-ai')" style="padding:5px 10px;background:#1a1a08;border:1px solid var(--yw);border-radius:12px;color:var(--yw);font-size:11px;cursor:pointer">✨ KI-Stimmung</button>
+  <button id="mood-ai-btn" data-tier="simple" onclick="openM('m-mood-ai')" style="padding:5px 10px;background:#1a1a08;border:1px solid var(--yw);border-radius:12px;color:var(--yw);font-size:11px;cursor:pointer">✨ KI-Stimmung</button>
   <button id="mood-toggle" onclick="toggleMoodPanel()" title="Stimmungen">🌅</button>
 </div>
 
@@ -604,7 +604,7 @@
         <span class="chip" onclick="qmsg('Erstelle eine vollständige CSC-Ausgabestelle: Empfang, Ausgabe, Lager, Sozialbereich und WC')">🌿 CSC-Anlage</span>
         <span class="chip" onclick="qmsg('Optimiere das Layout für maximalen Durchfluss')">⚡ Layout</span>
         <span class="chip" onclick="qmsg('Schätze die Kosten dieses Projekts detailliert')">💰 Kosten</span>
-        <span class="chip" onclick="qmsg('Prüfe dieses Layout rechtlich gegen KCanG und markiere Probleme')">⚖ Rechtliches</span>
+        <span class="chip" data-mode="room" onclick="qmsg('Prüfe dieses Layout rechtlich gegen KCanG und markiere Probleme')">⚖ Rechtliches</span>
         <span class="chip" onclick="qmsg('Was sind die 3 wichtigsten nächsten Schritte für dieses Projekt?')">💡 Nächste Schritte</span>
       </div>
     </div>
@@ -705,7 +705,7 @@
               onchange="projMeta.address=this.value;"
               style="flex:1;min-width:140px;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
             <button class="tbt" onclick="loadProjectPois()" title="Schulen/Kitas/Spielplätze/Sportstätten aus OpenStreetMap im 500m-Umkreis laden" style="padding:5px 8px;white-space:nowrap;font-size:11px">📍 POIs laden</button>
-            <button class="tbt" id="btn-bubatzkarte" onclick="openBubatzkarte()" title="Externe Karte zum Doppelcheck" style="padding:5px 8px;white-space:nowrap;font-size:11px">🗺️ Bubatzkarte</button>
+            <button class="tbt" id="btn-bubatzkarte" data-mode="room" onclick="openBubatzkarte()" title="Externe Karte zum Doppelcheck" style="padding:5px 8px;white-space:nowrap;font-size:11px">🗺️ Bubatzkarte</button>
           </div>
           <div id="pm-poi-status" style="font-size:10px;color:var(--tx3);margin-top:4px;min-height:14px"></div>
           <div style="font-size:10px;color:var(--tx3);margin-top:4px;line-height:1.4">
@@ -778,7 +778,7 @@
         </div>
         <button class="tbt" data-mode="event" onclick="openMesseBudget()" style="margin-top:6px;padding:6px;border-color:var(--gr3);color:var(--gr);font-size:11px">💰 Messe-Kosten schätzen</button>
         <button class="tbt" data-mode="event" onclick="openPacklist()" style="margin-top:4px;padding:6px;border-color:var(--gr3);color:var(--gr);font-size:11px">📦 Packliste generieren</button>
-        <button class="tbt" onclick="openM('m-visualize')" style="margin-top:4px;padding:6px;border-color:var(--gr3);color:var(--gr);font-size:11px">📸 Hochauflösende Visualisierung</button>
+        <button class="tbt" data-tier="simple" onclick="openM('m-visualize')" style="margin-top:4px;padding:6px;border-color:var(--gr3);color:var(--gr);font-size:11px">📸 Hochauflösende Visualisierung</button>
         <label style="font-size:11px;color:var(--tx2);display:flex;align-items:center;gap:6px;margin-top:6px">
           <input type="checkbox" id="pm-windows-filmed"
             onchange="projMeta.windowsFilmed=this.checked; if(typeof renderComplianceBadges==='function') renderComplianceBadges();">
@@ -801,8 +801,8 @@
         <details open class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
           <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:var(--gr)">💾 Speichern</summary>
           <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
-            <button class="tbt g" style="padding:8px" onclick="saveProj()">💾 Projekt speichern</button>
-            <button class="tbt" style="padding:8px;border-color:var(--gr3);color:var(--gr)" onclick="openTemplates()">📋 Vorlage laden</button>
+            <button class="tbt g" style="padding:8px" data-tier="simple" onclick="saveProj()">💾 Projekt speichern</button>
+            <button class="tbt" style="padding:8px;border-color:var(--gr3);color:var(--gr)" data-tier="simple" onclick="openTemplates()">📋 Vorlage laden</button>
             <button class="tbt" style="padding:8px" onclick="saveAsUserTemplate()">💾 Als Vorlage speichern</button>
             <button class="tbt" style="padding:8px" onclick="document.getElementById('json-up').click()">📤 .json laden</button>
             <input type="file" id="json-up" accept=".json" style="display:none" onchange="loadJSONFile(event)">
@@ -814,12 +814,12 @@
           <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:#38bdf8">📤 Export</summary>
           <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
             <button class="tbt" style="padding:8px" onclick="exportPDF()">🖨️ PDF / Druckansicht</button>
-            <button class="tbt" style="padding:8px" onclick="dlJSON()">📥 Als .json exportieren</button>
+            <button class="tbt" style="padding:8px" data-tier="simple" onclick="dlJSON()">📥 Als .json exportieren</button>
             <button class="tbt" style="padding:8px" onclick="exportFurnitureCSV()">📊 Möbelliste (.csv)</button>
             <button class="tbt" style="padding:8px" onclick="exportBudgetCSV()">💰 Budget (.csv)</button>
             <button class="tbt" style="padding:8px" onclick="exportGLTF()">🏗 3D-Modell (.gltf)</button>
             <button class="tbt" style="padding:8px" onclick="exportDXF()">📐 Grundriss (.dxf)</button>
-            <button class="tbt" style="padding:8px" onclick="exportIFC()">🏗 IFC/BIM (.ifc)</button>
+            <button class="tbt" style="padding:8px" data-tier="pro" onclick="exportIFC()">🏗 IFC/BIM (.ifc)</button>
           </div>
         </details>
 
@@ -877,7 +877,7 @@
       <details class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px;margin-top:8px">
         <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:#38bdf8">👥 Teams</summary>
         <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
-          <button class="tbt" style="padding:8px" onclick="openTeamsModal()">👥 Teams verwalten</button>
+          <button class="tbt" style="padding:8px" data-tier="pro" onclick="openTeamsModal()">👥 Teams verwalten</button>
         </div>
       </details>
 
@@ -942,7 +942,7 @@
   <h2>🎨 Credits & Lizenzen</h2>
   <div id="m-credits-body" style="font-size:11px;color:var(--tx2)">Lade…</div>
   <div class="mbtns">
-    <button class="mbt" onclick="closeM('m-credits')">Schließen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-credits')">Schließen</button>
   </div>
 </div>
 </div>
@@ -964,7 +964,7 @@
   </div>
   <div id="auth-msg" style="font-size:10px;color:var(--tx3);margin:6px 0;min-height:14px"></div>
   <div class="mbtns">
-    <button class="mbt" onclick="closeM('m-auth')">Abbrechen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-auth')">Abbrechen</button>
     <button class="mbt ok" id="auth-send-btn" onclick="sendMagicLink()">📧 Magic Link senden</button>
   </div>
 </div>
@@ -1000,7 +1000,7 @@
     </select>
   </div>
   <div class="mbtns">
-    <button class="mbt" onclick="closeM('m-design-create')">Abbrechen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-design-create')">Abbrechen</button>
     <button class="mbt ok" onclick="saveCustomDesign()">✓ Design speichern</button>
   </div>
 </div>
@@ -1030,7 +1030,7 @@
     </div>
   </div>
   <div class="mbtns" style="margin-top:8px">
-    <button class="mbt" onclick="closeM('m-vision')">Schließen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-vision')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1066,7 +1066,7 @@
   </div>
   <div id="hr-status" style="font-size:10px;color:var(--tx3);min-height:16px;margin-bottom:8px"></div>
   <div class="mbtns">
-    <button class="mbt" onclick="closeM('m-visualize')">Schließen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-visualize')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1080,7 +1080,7 @@
   <div class="mbtns">
     <button class="mbt" onclick="copyPacklistMD()">📋 Markdown kopieren</button>
     <button class="mbt" onclick="togglePacklistMD()">📝 Markdown ein/aus</button>
-    <button class="mbt" onclick="closeM('m-packlist')">Schließen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-packlist')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1103,7 +1103,7 @@
     </div>
   </div>
   <div class="mbtns">
-    <button class="mbt" onclick="closeM('m-teams')">Schließen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-teams')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1129,7 +1129,7 @@
       style="width:100%;padding:6px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px;box-sizing:border-box;font-size:12px">
   </div>
   <div class="mbtns">
-    <button class="mbt" onclick="closeM('m-save-template')">Abbrechen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-save-template')">Abbrechen</button>
     <button class="mbt ok" onclick="doSaveUserTemplate()">💾 Speichern</button>
   </div>
 </div>
@@ -1187,7 +1187,7 @@
 
   <div class="mbtns">
     <button class="mbt" onclick="startWelcomeFlow();closeM('m-help')">📚 Welcome neu zeigen</button>
-    <button class="mbt ok" onclick="closeM('m-help')">Schließen</button>
+    <button class="mbt ok" data-tier="simple" onclick="closeM('m-help')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1300,7 +1300,7 @@
   </details>
 
   <div class="mbtns">
-    <button class="mbt ok" onclick="closeM('m-kcang-dashboard')">Fertig</button>
+    <button class="mbt ok" data-tier="simple" onclick="closeM('m-kcang-dashboard')">Fertig</button>
   </div>
 </div>
 </div>
@@ -1314,7 +1314,7 @@
     ⚠ Heuristische Schätzung — reale Kosten hängen von Messe, Halle, Anbieter und Verhandlung ab. Defaults aus src/config/defaults.ts.
   </div>
   <div class="mbtns">
-    <button class="mbt" onclick="closeM('m-messe-budget')">Schließen</button>
+    <button class="mbt" data-mode="event" data-tier="simple" onclick="closeM('m-messe-budget')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1326,7 +1326,7 @@
   <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Filter oben wählen. Klick auf Karte lädt Vorlage (bestehende Räume werden ersetzt).</p>
   <div id="tpl-status" style="font-size:10px;color:var(--tx3);margin-bottom:8px;min-height:14px"></div>
   <div class="tpl-grid" id="tpl-grid"></div>
-  <div class="mbtns"><button class="mbt" onclick="closeM('m-templates')">Abbrechen</button></div>
+  <div class="mbtns"><button class="mbt" data-tier="simple" onclick="closeM('m-templates')">Abbrechen</button></div>
 </div>
 </div>
 
@@ -1354,7 +1354,7 @@
   <div id="changelog-list" style="max-height:400px;overflow-y:auto;margin:8px 0"></div>
   <div class="mbtns">
     <button class="mbt" onclick="clearChangelog()">🗑 Löschen</button>
-    <button class="mbt ok" onclick="closeM('m-changelog')">Schließen</button>
+    <button class="mbt ok" data-tier="simple" onclick="closeM('m-changelog')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1365,7 +1365,7 @@
   <h2>📊 Flächenaufteilung</h2>
   <canvas id="area-chart-canvas" width="320" height="320" style="display:block;margin:0 auto"></canvas>
   <div id="area-legend" style="margin-top:12px"></div>
-  <div class="mbtns"><button class="mbt ok" onclick="closeM('m-area')">Schließen</button></div>
+  <div class="mbtns"><button class="mbt ok" data-tier="simple" onclick="closeM('m-area')">Schließen</button></div>
 </div>
 </div>
 
@@ -1384,7 +1384,7 @@
       <button class="mbt ok" onclick="calcMaterials()" style="margin-left:auto">Berechnen</button>
     </div>
   </div>
-  <div class="mbtns"><button class="mbt" onclick="closeM('m-matcalc')">Schließen</button><button class="mbt ok" onclick="exportMaterialsCSV()">📥 CSV</button></div>
+  <div class="mbtns"><button class="mbt" data-tier="simple" onclick="closeM('m-matcalc')">Schließen</button><button class="mbt ok" onclick="exportMaterialsCSV()">📥 CSV</button></div>
 </div>
 </div>
 
@@ -1417,7 +1417,7 @@
   <div id="sh-list" style="max-height:180px;overflow-y:auto;font-size:11px"></div>
   <div class="mbtns">
     <button class="mbt" onclick="clearSmartHome()">🗑 Alle löschen</button>
-    <button class="mbt ok" onclick="closeM('m-smarthome');_shMode=null">✓ Fertig</button>
+    <button class="mbt ok" data-tier="simple" onclick="closeM('m-smarthome');_shMode=null">✓ Fertig</button>
   </div>
 </div>
 </div>
@@ -1435,7 +1435,7 @@
   <div id="timeline-chart" style="margin-bottom:10px"></div>
   <div class="mbtns">
     <button class="mbt" onclick="exportTimelineCSV()">📥 CSV</button>
-    <button class="mbt ok" onclick="closeM('m-timeline')">Schließen</button>
+    <button class="mbt ok" data-tier="simple" onclick="closeM('m-timeline')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1475,7 +1475,7 @@
   </div>
   <button class="mbt ok" onclick="runWaittimeSim()" style="width:100%">▶ Simulation starten</button>
   <div id="wt-result"></div>
-  <div class="mbtns"><button class="mbt" onclick="closeM('m-waittime')">Schließen</button></div>
+  <div class="mbtns"><button class="mbt" data-tier="simple" onclick="closeM('m-waittime')">Schließen</button></div>
 </div>
 </div>
 
@@ -1547,7 +1547,7 @@
     <input id="watermark-inp" placeholder="z.B. © CSC Marburg 2025" value="" style="width:100%;padding:6px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:12px;margin-top:5px" oninput="_watermarkText=this.value">
   </div>
 
-  <div class="mbtns"><button class="mbt ok" onclick="closeM('m-display')">✓ Fertig</button></div>
+  <div class="mbtns"><button class="mbt ok" data-tier="simple" onclick="closeM('m-display')">✓ Fertig</button></div>
 </div>
 </div>
 
@@ -1562,7 +1562,7 @@
     <button class="mbt ok" onclick="createRoomGroup()">＋</button>
   </div>
   <div id="group-list" style="max-height:250px;overflow-y:auto"></div>
-  <div class="mbtns"><button class="mbt" onclick="closeM('m-groups')">Schließen</button></div>
+  <div class="mbtns"><button class="mbt" data-tier="simple" onclick="closeM('m-groups')">Schließen</button></div>
 </div>
 </div>
 
@@ -1573,7 +1573,7 @@
   <div id="aichat-list" style="max-height:380px;overflow-y:auto"></div>
   <div class="mbtns">
     <button class="mbt" onclick="clearAIChats()">🗑 Alle löschen</button>
-    <button class="mbt ok" onclick="closeM('m-aichats')">Schließen</button>
+    <button class="mbt ok" data-tier="simple" onclick="closeM('m-aichats')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1594,7 +1594,7 @@
   <div id="fire-result"></div>
   <div class="mbtns">
     <button class="mbt ok" onclick="calcFireSafety()">🔄 Neu berechnen</button>
-    <button class="mbt" onclick="closeM('m-fire')">Schließen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-fire')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1611,7 +1611,7 @@
   <div id="acoustic-result"></div>
   <div class="mbtns">
     <button class="mbt ok" onclick="calcAcoustics()">🔄 Berechnen</button>
-    <button class="mbt" onclick="closeM('m-acoustic')">Schließen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-acoustic')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1647,7 +1647,7 @@
   <div id="energy-result"></div>
   <div class="mbtns">
     <button class="mbt ok" onclick="calcEnergy()">⚡ Berechnen</button>
-    <button class="mbt" onclick="closeM('m-energy')">Schließen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-energy')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1661,7 +1661,7 @@
   <div id="cleaning-total" style="margin-top:8px;padding:8px;background:var(--bg3);border-radius:6px"></div>
   <div class="mbtns">
     <button class="mbt ok" onclick="exportCleaningCSV()">📥 CSV</button>
-    <button class="mbt" onclick="closeM('m-cleaning')">Schließen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-cleaning')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1679,7 +1679,7 @@
     <span>Objekt</span><span>Seriennummer</span><span>Notizen</span><span></span>
   </div>
   <div id="inventory-list" style="max-height:350px;overflow-y:auto"></div>
-  <div class="mbtns"><button class="mbt" onclick="closeM('m-inventory')">Schließen</button></div>
+  <div class="mbtns"><button class="mbt" data-tier="simple" onclick="closeM('m-inventory')">Schließen</button></div>
 </div>
 </div>
 
@@ -1691,7 +1691,7 @@
   <div id="routes-result"></div>
   <div class="mbtns">
     <button class="mbt ok" onclick="calcRoutes()">🔄 Neu berechnen</button>
-    <button class="mbt" onclick="closeM('m-routes')">Schließen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-routes')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1755,7 +1755,7 @@
   <div id="todo-list" style="max-height:350px;overflow-y:auto"></div>
   <div class="mbtns">
     <button class="mbt" onclick="exportTodosCSV()">📥 CSV</button>
-    <button class="mbt ok" onclick="closeM('m-todos')">Schließen</button>
+    <button class="mbt ok" data-tier="simple" onclick="closeM('m-todos')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1770,7 +1770,7 @@
     <button class="mbt ok" onclick="saveCustomPrompt()">＋</button>
   </div>
   <div id="prompts-list" style="max-height:300px;overflow-y:auto"></div>
-  <div class="mbtns"><button class="mbt ok" onclick="closeM('m-prompts')">Schließen</button></div>
+  <div class="mbtns"><button class="mbt ok" data-tier="simple" onclick="closeM('m-prompts')">Schließen</button></div>
 </div>
 </div>
 
@@ -1781,7 +1781,7 @@
   <div id="shortcuts-list" style="max-height:380px;overflow-y:auto"></div>
   <div class="mbtns">
     <button class="mbt" onclick="resetShortcuts()">↺ Zurücksetzen</button>
-    <button class="mbt ok" onclick="closeM('m-shortcuts')">Schließen</button>
+    <button class="mbt ok" data-tier="simple" onclick="closeM('m-shortcuts')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1869,7 +1869,7 @@
 <div class="modal" style="max-width:460px">
   <h2>🏆 Errungenschaften</h2>
   <div id="badge-list-content" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0"></div>
-  <div class="mbtns"><button class="mbt ok" onclick="closeM('m-badges')">Schließen</button></div>
+  <div class="mbtns"><button class="mbt ok" data-tier="simple" onclick="closeM('m-badges')">Schließen</button></div>
 </div>
 </div>
 
@@ -1888,7 +1888,7 @@
   <div id="roi-result"></div>
   <div class="mbtns">
     <button class="mbt ok" onclick="calcROI()">📈 Berechnen</button>
-    <button class="mbt" onclick="closeM('m-roi')">Schließen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-roi')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1911,8 +1911,8 @@
   </div>
   <div class="gp-section">
     <div style="font-size:10px;color:var(--tx3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px">1. Räume</div>
-    <button class="gp-btn" onclick="set2DTool('room');toggleGuidedMode()"><span class="gp-icon">⬜</span><div><div style="font-weight:600">Raum zeichnen</div><div style="font-size:9px;color:var(--tx3)">Ziehe auf dem Grundriss</div></div></button>
-    <button class="gp-btn" onclick="openTemplates();toggleGuidedMode()"><span class="gp-icon">🏗</span><div><div style="font-weight:600">Vorlage laden</div><div style="font-size:9px;color:var(--tx3)">Fertiges CSC-Layout</div></div></button>
+    <button class="gp-btn" data-tier="simple" onclick="set2DTool('room');toggleGuidedMode()"><span class="gp-icon">⬜</span><div><div style="font-weight:600">Raum zeichnen</div><div style="font-size:9px;color:var(--tx3)">Ziehe auf dem Grundriss</div></div></button>
+    <button class="gp-btn" data-tier="simple" onclick="openTemplates();toggleGuidedMode()"><span class="gp-icon">🏗</span><div><div style="font-weight:600">Vorlage laden</div><div style="font-size:9px;color:var(--tx3)">Fertiges CSC-Layout</div></div></button>
     <button class="gp-btn" onclick="qmsg('Erstelle eine vollständige CSC-Ausgabestelle');toggleGuidedMode()"><span class="gp-icon">🤖</span><div><div style="font-weight:600">KI alles erstellen lassen</div><div style="font-size:9px;color:var(--tx3)">Automatisch planen</div></div></button>
   </div>
   <div class="gp-section">
@@ -1926,7 +1926,7 @@
     <button class="gp-btn" onclick="showCSCPanel();toggleGuidedMode()"><span class="gp-icon">🌿</span><div><div style="font-weight:600">KCanG-Checkliste</div><div style="font-size:9px;color:var(--tx3)">Alle Anforderungen prüfen</div></div></button>
     <button class="gp-btn" onclick="autoOptimizeAll();toggleGuidedMode()"><span class="gp-icon">⚡</span><div><div style="font-weight:600">Auto-Optimierung</div><div style="font-size:9px;color:var(--tx3)">Alles automatisch prüfen</div></div></button>
     <button class="gp-btn" onclick="shareProject();toggleGuidedMode()"><span class="gp-icon">🔗</span><div><div style="font-weight:600">Projekt teilen</div><div style="font-size:9px;color:var(--tx3)">Link kopieren</div></div></button>
-    <button class="gp-btn" onclick="generateAuthorityPackage();toggleGuidedMode()"><span class="gp-icon">📦</span><div><div style="font-weight:600">Behörden-Paket</div><div style="font-size:9px;color:var(--tx3)">Alle Dokumente als ZIP</div></div></button>
+    <button class="gp-btn" data-mode="room" onclick="generateAuthorityPackage();toggleGuidedMode()"><span class="gp-icon">📦</span><div><div style="font-weight:600">Behörden-Paket</div><div style="font-size:9px;color:var(--tx3)">Alle Dokumente als ZIP</div></div></button>
   </div>
 </div>
 
@@ -1944,7 +1944,7 @@
   <div id="season-content" style="min-height:80px;font-size:11px;color:var(--tx3)"></div>
   <div class="mbtns">
     <button class="mbt" onclick="saveSeason()">💾 Aktuell speichern</button>
-    <button class="mbt ok" onclick="closeM('m-seasons')">Schließen</button>
+    <button class="mbt ok" data-tier="simple" onclick="closeM('m-seasons')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1964,7 +1964,7 @@
   <div id="print-preview-content" style="background:#fff;border:1px solid #ddd;border-radius:4px;padding:16px;max-height:400px;overflow-y:auto;color:#111"></div>
   <div class="mbtns">
     <button class="mbt ok" onclick="executePrint()">🖨 Drucken</button>
-    <button class="mbt" onclick="closeM('m-printpreview')">Schließen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-printpreview')">Schließen</button>
   </div>
 </div>
 </div>
@@ -2007,8 +2007,8 @@
   </div>
   <div id="hygiene-preview" style="background:var(--bg3);border-radius:6px;padding:10px;font-size:10px;color:var(--tx2);min-height:80px"></div>
   <div class="mbtns">
-    <button class="mbt ok" onclick="generateHygienePDF()">📄 PDF erstellen</button>
-    <button class="mbt" onclick="closeM('m-hygiene')">Schließen</button>
+    <button class="mbt ok" data-mode="room" onclick="generateHygienePDF()">📄 PDF erstellen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-hygiene')">Schließen</button>
   </div>
 </div>
 </div>
@@ -2019,7 +2019,7 @@
   <h2>🧱 Wandtextur wählen</h2>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0" id="walltex-grid"></div>
   <div class="mbtns">
-    <button class="mbt" onclick="closeM('m-walltex')">Schließen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-walltex')">Schließen</button>
   </div>
 </div>
 </div>
@@ -2050,7 +2050,7 @@
     <button class="mbt" onclick="_aoEnabled=!_aoEnabled;rebuild3D()">🌑 AO: AN</button>
     <button class="mbt" onclick="toggleCeiling()">🏠 Decke</button>
   </div>
-  <div class="mbtns"><button class="mbt" onclick="closeM('m-materials')">Schließen</button></div>
+  <div class="mbtns"><button class="mbt" data-tier="simple" onclick="closeM('m-materials')">Schließen</button></div>
 </div>
 </div>
 
@@ -2167,7 +2167,7 @@
     <div class="mf"><label>Position Y (m)</label><input id="rm-py" type="number" value="0" step="0.5"></div>
   </div>
   <div class="mbtns">
-    <button class="mbt" onclick="closeM('m-room')">Abbrechen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-room')">Abbrechen</button>
     <button class="mbt ok" onclick="confirmRoom()">Erstellen</button>
   </div>
 </div></div>
@@ -2191,7 +2191,7 @@
   </div>
   <div class="mf"><label>Farbe</label><input id="co-col" type="color" value="#885533"></div>
   <div class="mbtns">
-    <button class="mbt" onclick="closeM('m-custom')">Abbrechen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-custom')">Abbrechen</button>
     <button class="mbt ok" onclick="confirmCustom()">Erstellen</button>
   </div>
 </div></div>
@@ -2202,7 +2202,7 @@
   <h2>✏️ Umbenennen</h2>
   <div class="mf"><input id="rename-in" value="Neue Ausgabestelle"></div>
   <div class="mbtns">
-    <button class="mbt" onclick="closeM('m-rename')">Abbrechen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-rename')">Abbrechen</button>
     <button class="mbt ok" onclick="doRename()">OK</button>
   </div>
 </div></div>
@@ -2217,7 +2217,7 @@
   <div id="wiz-steps"></div>
   <div class="mbtns">
     <button class="mbt" id="wiz-back" onclick="wizBack()" style="display:none">← Zurück</button>
-    <button class="mbt" onclick="closeM('m-wizard')">Abbrechen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-wizard')">Abbrechen</button>
     <button class="mbt ok" id="wiz-next" onclick="wizNext()">Weiter →</button>
   </div>
 </div></div>
@@ -2230,7 +2230,7 @@
     <textarea id="mood-desc" class="wiz-inp" rows="3" placeholder="z.B. Warme, einladende Abendatmosphäre mit Kerzenlicht und grünem Akzent..."></textarea>
   </div>
   <div class="mbtns">
-    <button class="mbt" onclick="closeM('m-mood-ai')">Abbrechen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-mood-ai')">Abbrechen</button>
     <button class="mbt ok" onclick="applyAIMood()">✨ Stimmung erzeugen</button>
   </div>
 </div></div>
@@ -2242,7 +2242,7 @@
   <div class="mf"><label>Name</label><input id="fl-name" value="Obergeschoss (OG)"></div>
   <div class="mf"><label>Höhenoffset (m)</label><input id="fl-elev" type="number" value="3.0" min="0" step="0.5"></div>
   <div class="mbtns">
-    <button class="mbt" onclick="closeM('m-floor')">Abbrechen</button>
+    <button class="mbt" data-tier="simple" onclick="closeM('m-floor')">Abbrechen</button>
     <button class="mbt ok" onclick="confirmFloor()">Erstellen</button>
   </div>
 </div>
@@ -5190,8 +5190,8 @@ function renderCustomPanel(el){
   const actions = document.createElement('div');
   actions.style.cssText = 'padding:6px 8px;display:flex;flex-direction:column;gap:4px';
   actions.innerHTML = 
-    '<button class="addbtn" onclick="openM(\'m-wizard\')" style="border-color:var(--pu);color:var(--pu)">🤖 KI-Möbel erstellen (geführt)</button>'
-    +'<button class="addbtn" onclick="openM(\'m-custom\')">✏️ Manuell erstellen</button>'
+    '<button class="addbtn" data-tier="simple" onclick="openM(\'m-wizard\')" style="border-color:var(--pu);color:var(--pu)">🤖 KI-Möbel erstellen (geführt)</button>'
+    +'<button class="addbtn" data-tier="simple" onclick="openM(\'m-custom\')">✏️ Manuell erstellen</button>'
     +'<button class="addbtn" onclick="openSharedFurnitureDB()" style="border-color:var(--gr3);color:var(--gr)">☁️ Geteilte Möbel-Datenbank laden</button>';
   el.appendChild(actions);
 
@@ -7883,7 +7883,7 @@ function renderDesignPanelFull(selObjId){
       +'<div class="pc-nm">'+p.name+'</div></div>';
   });
   h += '</div></div>';
-  h += '<button class="tbt" style="width:100%;margin-bottom:8px;border-color:var(--or);color:var(--or)" onclick="openM(\'m-design-create\')">🎨 Eigenes Design erstellen</button>';
+  h += '<button class="tbt" style="width:100%;margin-bottom:8px;border-color:var(--or);color:var(--or)" data-tier="simple" onclick="openM(\'m-design-create\')">🎨 Eigenes Design erstellen</button>';
 
   if(!selObjId){ container.innerHTML = h; return; }
 
@@ -10279,7 +10279,7 @@ function showCSCPanel(){
   h += '<button class="tbt" style="flex:1;padding:6px" onclick="optimizeLayout()">🔍 KI-Analyse</button>';
   h += '<button class="tbt" style="flex:1;padding:6px" onclick="checkAccessibility()">♿ Barrierefrei</button>';
   h += '<button class="tbt" style="flex:1;padding:6px" onclick="estimateCosts()">💰 Kosten</button>';
-  h += '<button class="tbt" style="flex:1;padding:6px" onclick="exportEvacuationPlan()">🚨 Fluchtplan</button>';
+  h += '<button class="tbt" style="flex:1;padding:6px" data-tier="pro" onclick="exportEvacuationPlan()">🚨 Fluchtplan</button>';
   h += '</div></div>';
 
   // Show as a popup panel
@@ -14020,7 +14020,7 @@ function renderDashboard(){
       <div class="dash-big-num" style="color:${todos_due?'#f87171':'#4ade80'}">${_todos.filter(t=>!t.done).length}</div>
       <div class="dash-sub">offen${todos_due?' · '+todos_due+' überfällig':''}</div>
       <div style="margin-top:8px">${_todos.slice(0,3).map(t=>`<div style="font-size:10px;color:var(--tx3);padding:2px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.done?'✅':'⬜'} ${t.text}</div>`).join('')}</div>
-      <button onclick="openM('m-todos')" style="margin-top:6px;width:100%;padding:4px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx2);font-size:10px;cursor:pointer">Alle anzeigen</button>
+      <button data-tier="simple" onclick="openM('m-todos')" style="margin-top:6px;width:100%;padding:4px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx2);font-size:10px;cursor:pointer">Alle anzeigen</button>
       <button class="dash-remove" onclick="removeDashWidget('tasks')">✕</button></div>`,
 
     phase: `<div class="dash-widget">
@@ -15974,14 +15974,14 @@ function renderCustomPanel(el){
   sb.className='panel-search';
   sb.innerHTML='<div style="display:flex;align-items:center;gap:6px;padding:5px">'
     +'<span style="font-size:11px;color:var(--tx2)">✏️ Eigene Objekte</span>'
-    +'<button onclick="openM(\'m-custom\')" class="vtb" style="margin-left:auto">＋ Neu</button></div>';
+    +'<button data-tier="simple" onclick="openM(\'m-custom\')" class="vtb" style="margin-left:auto">＋ Neu</button></div>';
   el.appendChild(sb);
   if(!customObjs.length){
     const em=document.createElement('div');
     em.style.cssText='padding:20px;text-align:center;font-size:11px;color:var(--tx3)';
     em.innerHTML='Noch keine eigenen Objekte.<br><br>'
-      +'<button class="mbt ok" onclick="openM(\'m-custom\')" style="font-size:11px">＋ Eigenes Objekt erstellen</button><br><br>'
-      +'<button class="mbt" onclick="openM(\'m-wizard\')" style="font-size:11px">🤖 KI-Möbel erstellen</button>';
+      +'<button class="mbt ok" data-tier="simple" onclick="openM(\'m-custom\')" style="font-size:11px">＋ Eigenes Objekt erstellen</button><br><br>'
+      +'<button class="mbt" data-tier="simple" onclick="openM(\'m-wizard\')" style="font-size:11px">🤖 KI-Möbel erstellen</button>';
     el.appendChild(em); return;
   }
   // Group by cat
@@ -16272,8 +16272,8 @@ async function suggestNextStep(){
     hint = '🏗️ <b>Starte dein Projekt</b><br><span style="font-size:10px;color:var(--tx3)">Canvas ist leer. Wähle wie du loslegst:</span>';
     content.innerHTML = hint;
     actions.innerHTML =
-      '<button class="mbt ok" onclick="openTemplates()" style="flex:1 1 45%;padding:8px;font-size:11px">📋 Vorlage laden</button>'+
-      '<button class="mbt ok" onclick="set2DTool(\'room\')" style="flex:1 1 45%;padding:8px;font-size:11px">⬜ Raum zeichnen</button>'+
+      '<button class="mbt ok" data-tier="simple" onclick="openTemplates()" style="flex:1 1 45%;padding:8px;font-size:11px">📋 Vorlage laden</button>'+
+      '<button class="mbt ok" data-tier="simple" onclick="set2DTool(\'room\')" style="flex:1 1 45%;padding:8px;font-size:11px">⬜ Raum zeichnen</button>'+
       '<button class="mbt ok" onclick="openGroundMaterialPicker()" style="flex:1 1 45%;padding:8px;font-size:11px">🟫 Fläche zeichnen</button>'+
       '<button class="mbt" onclick="showRight(\'save\')" style="flex:1 1 45%;padding:8px;font-size:11px">📂 Projekt laden</button>';
     return;
@@ -18298,7 +18298,7 @@ function analyzeEscapeRoutes(){
     +'<div style="margin-top:8px;padding:8px;background:'+(ok?'var(--gr4)':'rgba(248,113,113,.1)')+';border-radius:5px;font-size:10px;color:'+(ok?'#4ade80':'#f87171')+'">'
     +(ok?'✅ Fluchtwege erfüllen DIN EN 13637':'⚠️ '+( neededExits-exits.length)+' weitere Notausgänge erforderlich')
     +'</div>'
-    +'<button class="mbt ok" onclick="exportEvacuationPlan()" style="font-size:10px;width:100%;margin-top:8px">🚨 Fluchtplan exportieren</button>'
+    +'<button class="mbt ok" data-tier="pro" onclick="exportEvacuationPlan()" style="font-size:10px;width:100%;margin-top:8px">🚨 Fluchtplan exportieren</button>'
     +'</div>';
   showFloatingPanel('Fluchtweg-Analyse',h);
 }
@@ -19914,7 +19914,7 @@ function openVisualHistory(){
       '<h2>📜 Verlauf (Visual History)</h2>' +
       '<div style="font-size:11px;color:var(--tx3);margin-bottom:10px">Klick auf ein Thumbnail springt zu diesem Stand zurück. Max ' + _VISUAL_HISTORY_MAX + ' Einträge.</div>' +
       '<div id="visual-history-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;max-height:50vh;overflow-y:auto;padding:4px"></div>' +
-      '<div class="mbtns"><button class="mbt" onclick="closeM(\'m-visual-history\')">Schließen</button></div>' +
+      '<div class="mbtns"><button class="mbt" data-tier="simple" onclick="closeM(\'m-visual-history\')">Schließen</button></div>' +
       '</div>';
     document.body.appendChild(modal);
   }
@@ -21744,7 +21744,7 @@ function showImportedRegulations(){
       '<div id="regulations-list" style="max-height:60vh;overflow-y:auto;font-size:12px"></div>' +
       '<div class="mbtns">' +
       '<button class="mbt del" onclick="clearImportedRegulations()">🗑 Alle entfernen</button>' +
-      '<button class="mbt" onclick="closeM(\'m-regulations\')">Schließen</button>' +
+      '<button class="mbt" data-tier="simple" onclick="closeM(\'m-regulations\')">Schließen</button>' +
       '</div></div>';
     document.body.appendChild(modal);
   }
@@ -22213,7 +22213,7 @@ function renderRoomProps(id){
       <button class="pp-btn" onclick="dupSel()">⧉ Raum duplizieren</button>
       <button class="pp-btn" onclick="duplicateRoom('${id}',false)" style="border-color:var(--bl);color:var(--bl)">📋 Kopieren</button>
       <button class="pp-btn" onclick="duplicateRoom('${id}',true)" style="border-color:var(--pu);color:var(--pu)">🪞 Spiegeln</button>
-      <button class="pp-btn" onclick="optimizeFurnitureInRoom('${id}')" style="border-color:var(--gr);color:var(--gr)">🪄 KI-Möbel</button>
+      <button class="pp-btn" data-tier="pro" onclick="optimizeFurnitureInRoom('${id}')" style="border-color:var(--gr);color:var(--gr)">🪄 KI-Möbel</button>
       <button class="pp-btn del" onclick="removeRoom('${id}');closePropPanel()">🗑 Raum löschen</button>
     </div>
   `;
