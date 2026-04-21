@@ -19,7 +19,10 @@
   <meta property="og:locale" content="de_DE">
   <meta name="twitter:card" content="summary">
   <meta name="description" content="CSC Raumplaner Pro — Cannabis Social Club + Messestand-Planer mit KCanG-Compliance, Magic-Link-Login, 2D+3D-Ansicht, Image-Upload auf Banner/Theken, PDF-Regel-Import, Cloud-Save.">
-  <link rel="icon" href="icon-placeholder.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="icon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="icon-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="icon-192.png">
 <title>CSC Raumplaner v1.0 🌿</title>
 </head>
 <body data-ui-mode="standard">
@@ -168,21 +171,21 @@
         <div class="tbm-item" onclick="openPrintPreview();closeTBMenu()">🖨 Druckvorschau</div>
         <div class="tbm-item" data-tier="standard" data-mode="room" onclick="generateAuthorityPackage();closeTBMenu()">📦 Behörden-Paket (.zip)</div>
         <div class="tbm-item" data-mode="room" onclick="openM('m-hygiene');closeTBMenu()">🧴 Hygiene-Konzept PDF</div>
-        <div class="tbm-item" onclick="generateOpeningHoursSign();closeTBMenu()">⏰ Öffnungszeiten-Schild</div>
+        <div class="tbm-item" data-mode="room" onclick="generateOpeningHoursSign();closeTBMenu()">⏰ Öffnungszeiten-Schild</div>
         <div class="tbm-item" onclick="takePresentationScreenshot();closeTBMenu()">📸 3D-Screenshot</div>
         <div class="tbm-item" onclick="shareByEmail();closeTBMenu()">📧 Per E-Mail teilen</div>
         <div class="tbm-item" onclick="shareWhatsApp();closeTBMenu()">📱 WhatsApp</div>
         <div class="tbm-item" onclick="shareTelegram();closeTBMenu()">✈️ Telegram</div>
         <div class="tbm-item" onclick="exportToGoogleDrive();closeTBMenu()">📂 Google Drive</div>
-        <div class="tbm-item" onclick="generateSessionProtocol();closeTBMenu()">📋 Sitzungsprotokoll</div>
+        <div class="tbm-item" data-mode="room" onclick="generateSessionProtocol();closeTBMenu()">📋 Sitzungsprotokoll</div>
         <div class="tbm-item" onclick="saveNamedVersion();closeTBMenu()">🏷 Version benennen</div>
         <div class="tbm-item" data-tier="standard" onclick="generateCostReport();closeTBMenu()">💰 Kostenvoranschlag PDF</div>
         <div class="tbm-item" onclick="generateEmbedCode();closeTBMenu()">🔗 Embed-Code für Website</div>
         <div class="tbm-item" data-tier="pro" onclick="exportIFC();closeTBMenu()">🏗 IFC-Export (CAD)</div>
         <div class="tbm-item" data-tier="pro" onclick="generateSecurityReport();closeTBMenu()">🔐 Sicherheitsbericht PDF</div>
-        <div class="tbm-item" onclick="printBarcodeLabel()">🏷 Inventar-Etiketten drucken</div>
+        <div class="tbm-item" data-tier="standard" onclick="printBarcodeLabel()">🏷 Inventar-Etiketten drucken</div>
         <div class="tbm-item" onclick="openCSVImport();closeTBMenu()">📂 Räume aus CSV</div>
-        <div class="tbm-item" onclick="openSetupWizard();closeTBMenu()">🌿 Einrichtungs-Assistent</div>
+        <div class="tbm-item" data-mode="room" onclick="openSetupWizard();closeTBMenu()">🌿 Einrichtungs-Assistent</div>
         <div class="tbm-item" onclick="openFloorPlanRecognizer();closeTBMenu()">🤖 KI: Grundriss aus Foto</div>
         <div class="tbm-sep"></div>
         <div class="tbm-item" onclick="testAIConnection();closeTBMenu()">🔌 KI-Verbindung testen</div>
