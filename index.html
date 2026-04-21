@@ -12,18 +12,18 @@
   <link rel="preconnect" href="https://wvkjkdwahsqozeupoxpj.supabase.co" crossorigin>
   <link rel="dns-prefetch" href="https://ambientcg.com">
   <!-- P8.8 Open-Graph/Twitter-Card — Link-Vorschau in WhatsApp/Twitter/LinkedIn -->
-  <meta property="og:title" content="CSC Raumplaner Pro 🌿">
-  <meta property="og:description" content="Professionelle Planung für Cannabis Social Clubs und Messestände — KCanG-compliant, 3D, 260+ Items">
+  <meta property="og:title" content="CSC Studio Pro 🌿">
+  <meta property="og:description" content="Raum- und Veranstaltungsplaner für Cannabis Social Clubs — KCanG-compliant, 2D+3D, 260+ Items">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://marianacannabis.github.io/csc-raumplaner/">
   <meta property="og:locale" content="de_DE">
   <meta name="twitter:card" content="summary">
-  <meta name="description" content="CSC Raumplaner Pro — Cannabis Social Club + Messestand-Planer mit KCanG-Compliance, Magic-Link-Login, 2D+3D-Ansicht, Image-Upload auf Banner/Theken, PDF-Regel-Import, Cloud-Save.">
+  <meta name="description" content="CSC Studio Pro — Raum- und Veranstaltungsplaner für Cannabis Social Clubs mit KCanG-Compliance, Magic-Link-Login, 2D+3D-Ansicht, Image-Upload auf Banner/Theken, PDF-Regel-Import, Cloud-Save.">
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" href="icon-32.png" type="image/png" sizes="32x32">
   <link rel="icon" href="icon-192.png" type="image/png" sizes="192x192">
   <link rel="apple-touch-icon" href="icon-192.png">
-<title>CSC Raumplaner v1.0 🌿</title>
+<title>CSC Studio Pro 🌿</title>
 </head>
 <body data-ui-mode="standard">
 <script>
@@ -67,7 +67,7 @@
 <!-- TOPBAR -->
 <div id="topbar">
   <!-- LOGO -->
-  <span class="logo">🌿 CSC <em>Raumplaner</em></span>
+  <span class="logo">🌿 CSC <em>Studio Pro</em></span>
   <span class="vbadge">v3.56</span>
   <div class="tsep"></div>
 
@@ -2057,7 +2057,7 @@
 <!-- STEP-BY-STEP GUIDE -->
 <div id="guide-overlay">
 <div id="guide-box">
-  <h2>🌿 Willkommen beim CSC Raumplaner</h2>
+  <h2>🌿 Willkommen bei CSC Studio Pro</h2>
   <div class="sub">Kurze Einführung — 1 Minute · jederzeit über ❓ wieder öffnen</div>
   <div class="g-dots" id="g-dots"></div>
 
@@ -9524,7 +9524,7 @@ function generateQRCode(){
   const win = window.open('','_blank','width=300,height=350');
   if(win){
     win.document.write('<html><body style="margin:0;background:#fff;text-align:center;font-family:sans-serif">'
-      +'<h3 style="padding:12px;color:#166534">🌿 CSC Raumplaner</h3>'
+      +'<h3 style="padding:12px;color:#166534">🌿 CSC Studio Pro</h3>'
       +'<img src="'+qrUrl+'" style="width:200px;height:200px">'
       +'<p style="font-size:11px;color:#666;padding:8px">Diesen QR-Code scannen<br>um den Planer zu öffnen</p>'
       +'</body></html>');
@@ -9805,7 +9805,7 @@ async function exportMyData(){
   keysOfInterest.forEach(k => { const v = localStorage.getItem(k); if(v !== null) settings[k] = v; });
   zip.file('settings.json', JSON.stringify(settings, null, 2));
   // 6. Readme zum Bundle
-  zip.file('README.txt', '# CSC Raumplaner — Deine Daten (DSGVO Art. 20)\n\n' +
+  zip.file('README.txt', '# CSC Studio Pro — Deine Daten (DSGVO Art. 20)\n\n' +
     'Dieses ZIP enthält alle uns gespeicherten personenbezogenen Daten:\n' +
     '- user.json: Account-Info (E-Mail, User-ID)\n' +
     '- local-projects.json: Projekte im Browser-LocalStorage\n' +
@@ -10344,7 +10344,7 @@ var _tutStep = 0;
 const TUT_STEPS = [
   {
     target: null,
-    title: '🌿 Willkommen im CSC Raumplaner v3.56',
+    title: '🌿 Willkommen bei CSC Studio Pro',
     text: '<b>Der schnellste Weg zur eingerichteten Ausgabestelle:</b><br><br>'
       + '1️⃣ <b>Datei → "🤖 KI: Grundriss aus Foto"</b><br>'
       + '&nbsp;&nbsp;→ Grundriss-Foto oder PDF hochladen<br><br>'
@@ -14066,7 +14066,7 @@ function addDashWidget(){
 // ════════════════════════════════════════════════════════════════════════
 function initPWA(){
   const manifest={
-    name:'CSC Raumplaner Pro',short_name:'CSC Planer',
+    name:'CSC Studio Pro',short_name:'CSC Studio',
     start_url:location.pathname,display:'standalone',
     background_color:'#111111',theme_color:'#111111',
     icons:[{src:'https://api.qrserver.com/v1/create-qr-code/?size=192x192&data=CSC',
@@ -14086,7 +14086,7 @@ function initPWA(){
 const WELCOME_STEPS = [
   {
     icon: '🌿',
-    title: 'Willkommen beim CSC Raumplaner',
+    title: 'Willkommen bei CSC Studio Pro',
     body: 'Entwirf professionelle Grundrisse für Cannabis Social Clubs, Messestände und Events. Drei Wege loszulegen:'+
           '<ul style="margin:10px 0;padding-left:20px;font-size:12px;line-height:1.7">'+
           '<li>📋 <b>Fertige Vorlage</b> — 14 Stand-Templates (CSC/Mari-Jane/Dmexco/Boot/Gamescom)</li>'+
@@ -14169,14 +14169,14 @@ function closeWelcomeFlow(){ _welcomeClose(true); }
 const OB_STEPS=[
   {
     icon:'🌿',
-    title:'Willkommen beim CSC Raumplaner Pro!',
+    title:'Willkommen bei CSC Studio Pro!',
     text:'Dein professioneller Planungs-Assistent für Cannabis Social Club Ausgabestellen. Lass uns gemeinsam loslegen — in ca. 2 Minuten kannst du deinen ersten Plan erstellen.',
     img:`<svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:8px;margin:10px 0">
   <rect width="460" height="200" fill="#0a0f0a" rx="8"/>
   <!-- Topbar -->
   <rect x="0" y="0" width="460" height="32" fill="#111" rx="8"/>
   <rect x="0" y="20" width="460" height="12" fill="#111"/>
-  <text x="12" y="20" fill="#4ade80" font-size="11" font-weight="bold" font-family="sans-serif">🌿 CSC Raumplaner</text>
+  <text x="12" y="20" fill="#4ade80" font-size="11" font-weight="bold" font-family="sans-serif">🌿 CSC Studio Pro</text>
   <rect x="190" y="8" width="50" height="16" fill="#1a3a1a" rx="3"/>
   <text x="215" y="19" fill="#4ade80" font-size="9" text-anchor="middle" font-family="sans-serif">📁 Datei</text>
   <rect x="245" y="8" width="50" height="16" fill="#1a3a1a" rx="3"/>
@@ -14927,7 +14927,7 @@ function shareByEmail(){
     +'Projekt: '+d.name+'\nRäume: '+d.rooms.length+'\nObjekte: '+d.objects.length+'\n\n'
     +'Link zum Projekt (automatisch laden):\n'+link+'\n\n'
     +'Zum Öffnen: Link im Browser aufrufen → Projekt wird automatisch geladen.\n\n'
-    +'Erstellt mit CSC Raumplaner Pro'
+    +'Erstellt mit CSC Studio Pro'
   );
   window.open('mailto:?subject='+subject+'&body='+body);
   checkAndAwardBadge('shared_project');
@@ -20108,7 +20108,7 @@ function generateCostReport(){
     <tr><td colspan="2">🛋 Einrichtung gesamt</td><td>${total.toLocaleString('de-DE')} €</td></tr>
     <tr style="background:#c8e6c9"><td colspan="2"><strong>GESAMTKOSTEN</strong></td><td><strong>${grandTotal.toLocaleString('de-DE')} €</strong></td></tr>
     </tfoot></table>
-    <p style="font-size:10px;color:#999;margin-top:16px">Alle Preise sind Schätzwerte · Erstellt mit CSC Raumplaner Pro</p>
+    <p style="font-size:10px;color:#999;margin-top:16px">Alle Preise sind Schätzwerte · Erstellt mit CSC Studio Pro</p>
     <button class=noprint onclick=window.print() style="padding:8px 16px;background:#166534;color:#fff;border:none;border-radius:4px;cursor:pointer;margin-top:12px">🖨 Drucken / PDF</button>
   </body></html>`);
   pw.document.close();
@@ -20410,14 +20410,14 @@ function exportMaintenanceICS(){
     {label:'Reinigung Intensiv',interval:1},
     {label:'Inventur',interval:12},
   ];
-  let ics='BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//CSC Raumplaner//DE\n';
+  let ics='BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//CSC Studio Pro//DE\n';
   tasks.forEach((t,i)=>{
     const start=addM(today,t.interval);
     ics+='BEGIN:VEVENT\n'
       +'UID:csc-maint-'+i+'-'+Date.now()+'\n'
       +'DTSTART:'+icsDate(start)+'\n'
       +'SUMMARY:🔧 '+t.label+' ('+getPD().name+')\n'
-      +'DESCRIPTION:Wartungsaufgabe aus CSC Raumplaner\n'
+      +'DESCRIPTION:Wartungsaufgabe aus CSC Studio Pro\n'
       +'RRULE:FREQ=MONTHLY;INTERVAL='+t.interval+'\n'
       +'END:VEVENT\n';
   });
@@ -20493,7 +20493,7 @@ function generateEmbedCode(){
   width="800"
   height="600"
   style="border:none;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.2)"
-  title="${d.name} — CSC Raumplaner"
+  title="${d.name} — CSC Studio Pro"
   loading="lazy">
 </iframe>`;
 
@@ -20545,8 +20545,8 @@ function exportIFC(){
   const ts=new Date().toISOString().replace(/[-:.TZ]/g,'').slice(0,14);
   let ifc=`ISO-10303-21;
 HEADER;
-FILE_DESCRIPTION(('CSC Raumplaner Export','ViewDefinition [CoordinationView]'),'2;1');
-FILE_NAME('${d.name}.ifc','${new Date().toISOString()}',('CSC Raumplaner Pro'),(''),'IFC2X3','','');
+FILE_DESCRIPTION(('CSC Studio Pro Export','ViewDefinition [CoordinationView]'),'2;1');
+FILE_NAME('${d.name}.ifc','${new Date().toISOString()}',('CSC Studio Pro'),(''),'IFC2X3','','');
 FILE_SCHEMA(('IFC2X3'));
 ENDSEC;
 DATA;
@@ -22740,7 +22740,7 @@ async function wizardGenerate(){
   const k = getKey(); if(!k){ toast('Kein API Key','r'); return; }
   const load = addMsg('🤖 Erstelle Objekt…','load');
 
-  const prompt = 'Erstelle ein realistisches 3D-Möbel-Objekt für den CSC Raumplaner.\n'+
+  const prompt = 'Erstelle ein realistisches 3D-Möbel-Objekt für CSC Studio Pro.\n'+
 'Kategorie: '+(wizState.category||'Möbel')+'\nMaterial: '+(wizState.material||'Holz')+
 '\nGröße: '+(wizState.size||'Mittel')+'\nFarbe: '+(wizState.color||'Naturholz')+
 '\nBeschreibung: '+(wizState.description||'Standard')+
@@ -22942,7 +22942,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
 <div id="kcang-monitor"></div>
 <div id="lod-indicator"></div>
 <div id="present-overlay">
-  <div class="present-title" id="present-title">CSC Raumplaner</div>
+  <div class="present-title" id="present-title">CSC Studio Pro</div>
   <canvas id="present-cv" style="max-width:90vw;max-height:75vh;border-radius:8px"></canvas>
   <div style="display:flex;gap:10px;margin-top:14px;align-items:center">
     <button class="pnav-btn" onclick="presentPrev()">&#9664;</button>
@@ -22956,7 +22956,7 @@ document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
   <button id="help-close" onclick="closeHelp()">✕</button>
 
   <div style="padding:12px 20px;border-bottom:1px solid #1a2a1a;display:flex;align-items:center;gap:14px;flex-shrink:0">
-    <div style="font-size:16px;font-weight:800;color:#4ade80">🌿 CSC Raumplaner — Vollständige Anleitung</div>
+    <div style="font-size:16px;font-weight:800;color:#4ade80">🌿 CSC Studio Pro — Vollständige Anleitung</div>
     <div style="font-size:11px;color:#555">v3.56</div>
     <div style="flex:1"></div>
     <button class="tbt" onclick="startOnboarding()" style="border-color:var(--gr);color:var(--gr);padding:6px 14px">▶ Illustriertes Intro</button>

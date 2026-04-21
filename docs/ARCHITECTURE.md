@@ -1,4 +1,4 @@
-# Architektur — CSC Raumplaner Pro (v2.2)
+# Architektur — CSC Studio Pro (v2.2)
 
 Stand: 2026-04-21 · Zielgruppe: neue Contributors + externe Reviewer
 

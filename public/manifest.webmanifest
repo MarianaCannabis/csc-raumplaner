@@ -1,7 +1,7 @@
 {
-  "name": "CSC Raumplaner Pro",
-  "short_name": "CSC Planer",
-  "description": "Professionelle Planung für Cannabis Social Clubs und Messestände — KCanG-compliant, 3D, 260+ Items",
+  "name": "CSC Studio Pro",
+  "short_name": "CSC Studio",
+  "description": "Raum- und Veranstaltungsplaner für Cannabis Social Clubs",
   "start_url": "/csc-raumplaner/",
   "scope": "/csc-raumplaner/",
   "display": "standalone",

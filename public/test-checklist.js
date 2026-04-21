@@ -1,4 +1,4 @@
-// CSC Raumplaner Test-Checkliste — state + rendering + export.
+// CSC Studio Pro Test-Checkliste — state + rendering + export.
 // Pure vanilla JS, no build step. Lives at /test.html alongside index.html
 // so it deploys with every Pages push.
 
@@ -522,7 +522,7 @@ function buildMarkdownReport() {
   const state = loadState();
   const now = new Date();
   const slug = reportSlug(now);
-  let md = `# CSC Raumplaner — Test-Report\n\n`;
+  let md = `# CSC Studio Pro — Test-Report\n\n`;
   md += `**Datum:** ${now.toLocaleString('de-DE')}  \n`;
   md += `**Slug:** \`${slug}\`  \n`;
   md += `**Getestet:** ${ITEMS.filter((i) => state[i.id]?.status).length} / ${ITEMS.length}\n\n`;

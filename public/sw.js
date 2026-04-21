@@ -1,4 +1,4 @@
-// CSC Raumplaner — Service Worker
+// CSC Studio Pro — Service Worker
 // Strategy: network-first für HTML (immer frisch); cache-first für Assets
 // (statische JS/CSS/Images, ändern selten). Offline-Fallback via Cache.
 

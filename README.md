@@ -1,10 +1,10 @@
-# 🌿 CSC Raumplaner Pro
+# 🌿 CSC Studio Pro
 
-Browser-basierte Planungs-App für **Cannabis Social Clubs (KCanG)** und **Messestände** — 2D + 3D, Compliance-Live-Check, Cloud-Save, KI-Features.
+Browser-basierter Raum- und Veranstaltungsplaner für **Cannabis Social Clubs (KCanG)** — 2D + 3D, Compliance-Live-Check, Cloud-Save, KI-Features.
 
-**Live:** https://marianacannabis.github.io/csc-raumplaner/ · **Version:** 2.2.0 · **Lizenz:** MIT
+**Live:** https://marianacannabis.github.io/csc-raumplaner/ · **Version:** 2.2.1 · **Lizenz:** MIT
 
-![Version](https://img.shields.io/badge/version-2.2.0-4ade80) ![Bundle gz](https://img.shields.io/badge/bundle-624KB_gz-fbbf24) ![Tests](https://img.shields.io/badge/tests-26_passing-4ade80) ![E2E](https://img.shields.io/badge/E2E-Playwright-blue)
+![Version](https://img.shields.io/badge/version-2.2.1-4ade80) ![Bundle gz](https://img.shields.io/badge/bundle-624KB_gz-fbbf24) ![Tests](https://img.shields.io/badge/tests-26_passing-4ade80) ![E2E](https://img.shields.io/badge/E2E-Playwright-blue)
 
 ## Was kann's
 
