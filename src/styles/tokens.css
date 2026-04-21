@@ -34,7 +34,12 @@
   /* ---- Color: Text -------------------------------------------- */
   --color-text-primary:   #e8e4d8;
   --color-text-secondary: #9a9288;
-  --color-text-tertiary:  #5a5650;
+  /* fix/e2e-green-final: --color-text-tertiary schrittweise angehoben
+     bis alle WCAG-2.1-AA-Audits grün sind:
+     - #5a5650 (Baseline)         → 2.4-2.7:1 ❌
+     - #8a8278 (1. Versuch)       → 4.6:1 auf #191919, 4.25:1 auf #212121 ❌
+     - #948a7e (aktuell)          → 5.0:1 auf #191919, 4.65:1 auf #212121 ✅ */
+  --color-text-tertiary:  #948a7e;
   --color-text-disabled:  #3a3a3a;
 
   /* ---- Color: Brand (CSC Green) ------------------------------- */
