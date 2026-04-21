@@ -285,6 +285,13 @@
         <div class="tbm-item" onclick="openDashboard();closeTBMenu()">🖥 Dashboard</div>
         <div class="tbm-item" onclick="openChecklistWizard();closeTBMenu()">📋 Einrichtungs-Assistent</div>
         <div class="tbm-sep"></div>
+        <div class="tbm-label">Werkzeuge</div>
+        <!-- P15 Topbar-Cleanup: aus Topbar-Mood-Block hochverschoben -->
+        <div class="tbm-item" onclick="toggleGuidedMode();closeTBMenu()">🧭 Geführter Modus</div>
+        <div class="tbm-item" onclick="toggleUndoTimeline();closeTBMenu()">🕐 Verlaufs-Timeline</div>
+        <div class="tbm-item" onclick="openCmdPalette();closeTBMenu()">⌨ Alle Befehle anzeigen <span class="tbm-kbd">Ctrl+K</span></div>
+        <div class="tbm-item" onclick="openHelp('start');closeTBMenu()">📚 Vollständige Anleitung</div>
+        <div class="tbm-sep"></div>
         <div class="tbm-label">Einstellungen</div>
         <div class="tbm-item" onclick="toggleLayerPanel();closeTBMenu()">📚 Ebenen (Layer)</div>
         <div class="tbm-item" data-tier="simple" onclick="openM('m-display');closeTBMenu()">🎨 Darstellung</div>
@@ -394,26 +401,18 @@
       </div>
     </div>
 
-    <!-- 🏗 VORLAGEN -->
-    <div class="tbm" id="tbm-tpl">
-      <button class="tbm-btn" data-tier="simple" onclick="openTemplates();closeTBMenu()" style="color:var(--bl)">🏗 Vorlagen</button>
-    </div>
+    <!-- P15 Topbar-Cleanup: #tbm-tpl entfernt — Primary-Button
+         #btn-templates (grün, prominent) erfüllt dieselbe Aufgabe. -->
 
   </div><!-- .tb-menu-group -->
 
   <div class="tsep"></div>
 
-  <!-- MOOD + KI — immer sichtbar -->
-  <button class="tbt" onclick="toggleMoodPanel()" style="color:var(--yw);border-color:#3a3000;background:#1a1800" title="Stimmung/Beleuchtung">🌅</button>
-  <button class="tbt" data-tier="simple" onclick="openM('m-wizard')" style="color:var(--pu);border-color:#3a2a4a;background:#1a0d2a" title="KI Möbel-Assistent">🤖</button>
-  <button class="tbt" id="btn-guided" onclick="toggleGuidedMode()" title="Geführter Modus">🧭</button>
-  <button class="tbt" onclick="toggleUndoTimeline()" title="Verlauf" id="btn-undotl">🕐</button>
-  <button class="tbt" onclick="openCmdPalette()" title="Befehlspalette (Ctrl+K)" aria-label="Befehlspalette" style="color:var(--bl)">⌨</button>
-  <button class="tbt" onclick="toggleVisitorFlow()" title="Besucherfluss">👥</button>
-  <button class="tbt" onclick="start3DTour()" title="3D-Rundgang" aria-label="3D-Rundgang starten">🎬</button>
-  <button class="tbt" onclick="openPostFXSettings()" title="Effekte & Atmosphäre" aria-label="Effekte & Atmosphäre" style="color:#fbbf24">✨</button>
+  <!-- P15 Topbar-Cleanup: 8 Icon-Buttons in die Menüs verschoben / in rechtes Panel.
+       Erhalten bleiben: Command-Palette (simple-only via CSS, Zugang #cmd-palette-btn)
+       + Theme-Toggle (häufiger One-Click-Use). -->
+  <button class="tbt" id="cmd-palette-btn" onclick="openCmdPalette()" title="Befehlspalette (Ctrl+K)" aria-label="Befehlspalette öffnen" style="color:var(--bl)">⌨</button>
   <button id="theme-toggle" data-tier="simple" onclick="toggleTheme()" title="Hell/Dunkel">🌙 Dark</button>
-  <button class="tbt" data-tier="simple" onclick="openHelp()" style="color:var(--or)" title="Anleitung (H/F1)" aria-label="Anleitung">❓</button>
   <div class="tsep"></div>
 
   <!-- ETAGEN -->
@@ -431,16 +430,9 @@
   </div>
 
 
-  <div class="tsep" style="margin:0 8px"></div>
-  <!-- KI FUNCTIONS DROPDOWN -->
-  <button id="ki-dropdown-btn" onclick="toggleKIDropdown(this)" title="KI-Assistent — Alle Funktionen">
-    <span>🤖</span><span>KI-Assistent</span><span class="ki-arrow">▾</span>
-  </button>
-
-  <button class="tbt" onclick="showRight('design')" title="Design & Material" style="font-size:10px;padding:4px 8px;border-radius:12px;border:1px solid var(--bd);background:var(--bg3)">🎨 Design</button>
-  <button class="tbt" onclick="showRight('light')" title="Licht & Atmosphäre" style="font-size:10px;padding:4px 8px;border-radius:12px;border:1px solid var(--bd);background:var(--bg3)">🌅 Licht</button>
-  <button class="tbt" onclick="showRight('save')" title="Projekte & Speichern" style="font-size:10px;padding:4px 8px;border-radius:12px;border:1px solid var(--bd);background:var(--bg3)">💾 Projekt</button>
-  <div class="tsep" style="margin:0 8px"></div>
+  <!-- P15 Topbar-Cleanup: 4 Duplikat-Navigations-Buttons entfernt.
+       KI-Assistent / Design / Licht / Projekt sind erreichbar über die
+       Tabs im Rechts-Panel (#rtab-ai, #rtab-design, #rtab-light, #rtab-save). -->
   <div class="tgap"></div>
 
   <!-- PROJEKT NAME -->
@@ -1200,7 +1192,12 @@
 <div class="mover" id="m-help">
 <div class="modal" style="max-width:720px;max-height:88vh">
   <h2>❓ Hilfe &amp; FAQ</h2>
-  <div style="font-size:11px;color:var(--tx3);margin-bottom:14px">Kurz-Antworten + vollständiger User-Guide auf <a href="https://github.com/MarianaCannabis/csc-raumplaner/blob/main/docs/USER-GUIDE.md" target="_blank" rel="noopener" style="color:var(--gr)">GitHub</a>.</div>
+  <!-- P15 Topbar-Cleanup: prominenter Einstieg ins Full-Screen-Help-Overlay -->
+  <button class="mbt ok" onclick="closeM('m-help');openHelp('start')"
+    style="width:100%;margin-bottom:10px;padding:10px 14px;font-size:13px;font-weight:600">
+    📚 Vollständige Anleitung öffnen — mit Suche, Tutorial &amp; Illustriertem Intro
+  </button>
+  <div style="font-size:11px;color:var(--tx3);margin-bottom:14px">Unten schnelle FAQ-Antworten. Vollständiger User-Guide auch auf <a href="https://github.com/MarianaCannabis/csc-raumplaner/blob/main/docs/USER-GUIDE.md" target="_blank" rel="noopener" style="color:var(--gr)">GitHub</a>.</div>
 
   <details open style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px;padding:10px 12px;margin-bottom:6px">
     <summary style="cursor:pointer;font-weight:600;color:var(--gr)">🌿 Erste Schritte</summary>
@@ -22114,6 +22111,37 @@ if(!localStorage.getItem('csc-onboarded')){
   }
 renderNorthArrow();
 setTimeout(registerServiceWorker,1000);
+// P15 Topbar-Cleanup: einmaliger Info-Toast nach Update. Verweist User
+// auf die neuen Tabs im rechten Panel (Design/Licht/KI/Projekte). Flag
+// wird beim Schließen/Timeout gesetzt — danach nie wieder gezeigt.
+setTimeout(function(){
+  try {
+    if (window.__cscE2E) return;  // nie in E2E-Tests
+    if (localStorage.getItem('csc-topbar-v2-seen') === '1') return;
+    var hint = document.createElement('div');
+    hint.className = 'topbar-v2-hint';
+    hint.innerHTML =
+      '<div style="font-size:12px;line-height:1.5">' +
+      'ℹ <b>Topbar aufgeräumt.</b> Design, Licht, KI und Projekte sind jetzt im rechten Panel oben rechts →' +
+      '</div>' +
+      '<button type="button" aria-label="Schließen" style="border:0;background:transparent;color:var(--tx2);font-size:18px;cursor:pointer;padding:0 4px">✕</button>';
+    hint.style.cssText =
+      'position:fixed;top:56px;right:16px;max-width:380px;padding:12px 14px;' +
+      'background:var(--bg2);border:1px solid var(--gr3);color:var(--tx);' +
+      'border-radius:8px;z-index:2000;box-shadow:0 8px 24px rgba(0,0,0,.5);' +
+      'display:flex;align-items:flex-start;gap:8px;' +
+      'opacity:0;transition:opacity .25s';
+    document.body.appendChild(hint);
+    requestAnimationFrame(function(){ hint.style.opacity = '1'; });
+    function dismiss(){
+      try { localStorage.setItem('csc-topbar-v2-seen', '1'); } catch(_){}
+      hint.style.opacity = '0';
+      setTimeout(function(){ hint.remove(); }, 300);
+    }
+    hint.querySelector('button').addEventListener('click', dismiss);
+    setTimeout(dismiss, 5000);
+  } catch(_){}
+}, 800);
 initIndexedDB();
 if(false) setTimeout(loadAIMemoryFromCloud,2000); // csc_ai_memory disabled
 setTimeout(initTouchHandlers,600);
