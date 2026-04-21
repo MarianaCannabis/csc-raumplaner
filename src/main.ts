@@ -4,6 +4,9 @@
 //
 // P11.3: Main CSS wurde aus index.html hierher ausgelagert — Vite bundlet
 // das Stylesheet, purgecss-kompatibel und messbar separat.
+// P15: Design-Tokens zuerst importieren — main.css referenziert die CSS-
+// Custom-Properties daraus.
+import './styles/tokens.css';
 import './styles/main.css';
 import * as compliance from './compliance/index.js';
 import * as geo from './geo/overpass.js';
