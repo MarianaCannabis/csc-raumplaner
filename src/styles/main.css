@@ -38,6 +38,12 @@ details > summary:focus-visible {
 *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);height:100vh;overflow:hidden}
 
+/* P15 Topbar-Cleanup: Command-Palette-Button ist nur im Simple-Mode in der
+   Topbar sichtbar. In Standard/Pro-Mode ist Ctrl+K der Zugangspfad, plus
+   Menu-Item "⌨ Alle Befehle anzeigen" in Ansicht-Menü. */
+body[data-ui-mode="standard"] #cmd-palette-btn,
+body[data-ui-mode="pro"]      #cmd-palette-btn { display: none !important; }
+
 /* P10.5/P12.3: Progressive Disclosure — 3-Tier UI-Mode */
 /* data-ui-mode="simple": NUR explizit simple-getaggte interaktive Elemente.
    "standard": alles ausser pro-getaggt. "pro": alles sichtbar + Debug-Extras. */
