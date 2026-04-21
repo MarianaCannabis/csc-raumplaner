@@ -15048,6 +15048,17 @@ const COMMANDS = [
   {icon:'❓',label:'Anleitung',sub:'Hilfe öffnen',fn:()=>openHelp(),kbd:'H'},
   {icon:'🎙',label:'Sprachsteuerung',sub:'Aktivieren/Deaktivieren',fn:()=>toggleVoice()},
   {icon:'🖥',label:'Dashboard',sub:'Projektübersicht',fn:()=>openDashboard()},
+  // P10.6: UI-Mode Switcher (Progressive Disclosure aus P10.5)
+  {icon:'🌱',label:'UI-Modus: Einfach',sub:'Nur Basics sichtbar',fn:()=>window.setUIMode&&window.setUIMode('simple')},
+  {icon:'⚖',label:'UI-Modus: Standard',sub:'Normaler Betriebs-Modus',fn:()=>window.setUIMode&&window.setUIMode('standard')},
+  {icon:'🚀',label:'UI-Modus: Profi',sub:'Alle Features inkl. BIM/Team',fn:()=>window.setUIMode&&window.setUIMode('pro')},
+  // P10.6: Language Quick-Switch
+  {icon:'🇩🇪',label:'Sprache: Deutsch',sub:'Interface auf Deutsch',fn:()=>window.cscI18n&&window.cscI18n.setLang('de')},
+  {icon:'🇬🇧',label:'Language: English',sub:'Switch to English',fn:()=>window.cscI18n&&window.cscI18n.setLang('en')},
+  // P10.6: Recently missing — Neues Projekt aus Palette
+  {icon:'🆕',label:'Neues Projekt',sub:'Projekt-Dialog öffnen',fn:()=>typeof newProj==='function'&&newProj(),kbd:'Ctrl+N'},
+  {icon:'📂',label:'Projekte öffnen',sub:'Cloud-Liste zeigen',fn:()=>typeof showRight==='function'&&showRight('save')},
+  {icon:'📋',label:'Shortcuts-Übersicht',sub:'Alle Tastenkürzel',fn:()=>typeof openM==='function'&&openM('m-shortcuts')},
 ];
 
 let _cmdIdx = 0;
