@@ -4,6 +4,51 @@ Alle bedeutsamen Änderungen an CSC Studio Pro.
 
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [2.4.0] — 2026-04-21 · Catalog-Quality + Teams + Design-Tokens + E2E-Infrastructure
+
+**Vier eigenständige Arbeits-Pakete**, die unabhängig voneinander Wert liefern. Kein User-sichtbarer Breaking-Change, alle Additions sind abwärts-kompatibel.
+
+### Added
+- **P13 — Catalog-Quality-Pass:**
+  - `scripts/audit-catalog.mjs` — scannt 480 Items auf Duplicate-IDs, NaN/Zero/Negative-Dimensionen, implausible Ausreißer >20m
+  - `src/catalog/__tests__/catalog.test.ts` — 16 neue Vitest-Tests (5 Invariants + 11 Coverage)
+  - Exit-Code 1 bei kritischen Issues → CI-Signal
+  - Result: 0 Invariants verletzt, 5 Duplicate-Names als legitime Review-Kandidaten dokumentiert
+  - `npm run audit:catalog`
+- **P14 — Team-Management-UI:**
+  - Tab-Struktur im `#m-teams` Modal: "📋 Meine Teams" / "🎟 Einladung einlösen"
+  - `redeemTeamInvite(uuid)` Copy-Paste-Fallback für User die nur die UUID aus dem Link haben
+  - UUID-Format-Validierung, Rolle `viewer` beim manuellen Beitritt
+  - Aufbauend auf P9.5 (keine neue DB-Migration)
+- **P15 — Design-Token-System:**
+  - `src/styles/tokens.css` — semantische CSS Custom Properties (color-bg-0..4, color-text-primary/secondary, color-brand-50..900, space-0..12, radius-xs..pill, shadows, z-indices, motion)
+  - Legacy-Aliases (`--bg`, `--tx`, `--gr`, `--r6` etc.) bleiben als Refs auf die neuen Tokens erhalten
+  - Import-Order in `src/main.ts`: tokens.css vor main.css
+  - `docs/DESIGN-TOKENS-v2.md`
+- **P16 — Playwright E2E mit echten Assertions:**
+  - 29 Tests in 5 Spec-Files (smoke 3, planning-mode 6, ui-mode 6, command-palette 7, a11y 6)
+  - Explizite Bug-C Regression-Guards: Palette zeigt >12 Rows, `window.cscCommandPalette.items.length >= 50`, Mode-Agnostik
+  - Bug-A Regression-Guards: `.simple-warn-banner` nicht mehr im DOM, `.simple-badge` sichtbar in Simple-Mode
+  - Bug-B: Tab-Sichtbarkeit ändert sich beim Mode-Switch
+  - `scripts/lighthouse-baseline.mjs` für lokalen Baseline-Run
+  - `docs/LIGHTHOUSE-v2.3.md` mit User-Side-Workflow
+
+### Changed
+- `public/test-checklist.js`: komplett überarbeitet — 29 v2.3-relevante Items in 10 Sections (Core-Flows, Planning-Mode, UI-Tiers, Palette, Sidebar, Compliance, Export, KI, 3D, A11y, PWA, Freitext)
+- `package.json`: +`test:e2e`, +`test:e2e:ui`, +`lighthouse`, +`audit:catalog`, +`gen:favicons` Scripts
+
+### Deferred (ehrlich dokumentiert)
+
+- **P15 claude.ai/design-Artefakte** (Topbar-Redesign, Icon-Set, Loading-Animations, Onboarding-Carousel): nicht lieferbar ohne Browser-Zugriff auf claude.ai/design. Als v2.5-Task in `docs/DESIGN-TOKENS-v2.md` dokumentiert.
+- **P14 Role-Dropdown per Member**: braucht Migration 0008 (update-Policy auf csc_team_members) + optimistic-UI
+- **P14 Team-Switcher in Topbar**: würde Cloud-Projekt-Liste nach Team filtern — touches viel Rendering-Code
+- **P14 Presence pro Team**: Realtime-Channel-JOIN mit Team-Filter
+- **P16 Lighthouse-Baseline**: User-Side-Task (kein Chrome im Container) — `npm run lighthouse` lokal ausführen
+- **P17 JS-Split**: vollständig deferred auf v2.5. Plan in `docs/P17-JS-SPLIT-PLAN.md`. Grund: Playwright-Tests geschrieben aber nicht lokal ausgeführt — ohne grünen E2E-Pass ist ein 21k-Zeilen-Refactor zu riskant. User-Brief explizit: "Bei Anzeichen von Breakage STOPP".
+
+### Bundle
+~626 KB gz (unverändert zu v2.3 — P15-Tokens +1.3 KB, Rest reine Additions).
+
 ## [2.3.0] — 2026-04-21 · Bedienkonzept-Durchzug
 
 **Sichtbare UX-Aufräumung.** Getrennte Workflows für Raumplanung vs. Veranstaltung sind jetzt spürbar, Simple-Mode reduziert die UI drastisch, Power-User bekommen Pro-Mode-Framework. Command-Palette bleibt universeller Zugriff — nichts wird wirklich verborgen, nur visuell sortiert.
