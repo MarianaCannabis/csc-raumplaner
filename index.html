@@ -149,8 +149,10 @@
   <button class="tbt" id="btn-templates" data-mode="event" data-tier="simple" onclick="openTemplates()" title="Vorlagen laden — fertige CSC-Layouts + Messestände"
     style="padding:5px 10px;border:1px solid var(--gr3);background:rgba(74,222,128,0.08);color:var(--gr);font-weight:600">📋 Vorlagen</button>
   <!-- P7 Bug-2-Fix: KCanG-Dashboard aus der Ansicht-Menu-Tiefe an die Topbar hochgezogen -->
+  <!-- fix/e2e-green-final: vertikale margin für WCAG target-size — Nachbar-
+       Buttons dürfen vertikal nur bis 23px nah sein, sonst nicht "clickable". -->
   <button class="tbt" id="btn-kcang" data-mode="room" onclick="openKCaNGDashboard()" title="KCanG-Projektdaten + Compliance-Check (Mitglieder, Adresse, Präventionsbeauftragter, Regeln)"
-    style="padding:5px 10px;border:1px solid var(--gr3);background:rgba(74,222,128,0.08);color:var(--gr);font-weight:600">🌿 KCanG</button>
+    style="padding:8px 12px;margin:4px 2px;border:1px solid var(--gr3);background:rgba(74,222,128,0.08);color:var(--gr);font-weight:600;min-height:32px">🌿 KCanG</button>
   <!-- P8.2: Hilfe-Modal mit FAQ + Shortcuts + Link zum User-Guide -->
   <button class="tbt icon-btn" id="btn-help" data-tier="simple" onclick="openHelpModal()" title="Hilfe: FAQ, Tastenkürzel, User-Guide"
     style="padding:5px 10px" aria-label="Hilfe öffnen">❓</button>
