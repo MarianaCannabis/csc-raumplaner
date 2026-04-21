@@ -5,61 +5,37 @@
 const STORAGE_KEY = 'csc-test-report';
 
 const ITEMS = [
-  // ── Core-Flows ─────────────────────────────────────────────────────
+  // ── Core Flows (v2.3) ──────────────────────────────────────────────────
   {
     id: 'login-flow',
     section: 'Core-Flows',
     title: 'Magic-Link-Login',
     steps: [
-      'Inkognito-Fenster öffnen',
-      'URL: https://marianacannabis.github.io/csc-raumplaner/',
-      'Gate-Overlay klicken → „🔑 Jetzt einloggen"',
-      'E-Mail eintragen, „Magic Link senden"',
-      'E-Mail öffnen, Link klicken',
-      'Zurück im App-Tab: Gate verschwindet, Cloud-Box zeigt ✅ Eingeloggt',
+      'Inkognito-Fenster → https://marianacannabis.github.io/csc-raumplaner/',
+      'Login-Gate klickt, E-Mail eintragen, "Magic Link senden"',
+      'E-Mail öffnen, Link klicken → Gate verschwindet, ✅ Eingeloggt',
     ],
   },
   {
     id: 'project-create',
     section: 'Core-Flows',
-    title: 'Neues Projekt erstellen',
+    title: 'Neues Projekt erstellen + speichern',
     steps: [
-      'Menü → „🆕 Neues Projekt" wählen',
-      'Projektname oben im Topbar ändert sich',
-      'Leinwand ist leer, keine Räume',
+      'Datei-Menü → "🆕 Neues Projekt"',
+      'Primary-Save-Button in Topbar sichtbar, leuchtet grün',
+      'Ctrl+S speichert direkt, Toast "In Cloud gespeichert"',
+      'F5 → Projekt ist nach Reload in der Cloud-Liste',
     ],
   },
   {
     id: 'room-draw',
     section: 'Core-Flows',
-    title: 'Raum zeichnen',
+    title: 'Raum zeichnen + Objekt platzieren',
     steps: [
-      'Werkzeug „⬜ Raum" wählen',
-      'Diagonal auf der 2D-Leinwand ziehen',
-      'Raum erscheint mit Maß-Labels (z. B. „5.0 × 4.0 m")',
-      'Raum doppelklicken → Eigenschaften-Panel öffnet',
-    ],
-  },
-  {
-    id: 'furniture-place',
-    section: 'Core-Flows',
-    title: 'Möbel platzieren (Drag-Drop)',
-    steps: [
-      'Links im Möbelpanel ein Item wählen (z. B. „🪑 Stuhl" oder „💼 Büro (Rich)")',
-      'Item auf einen Raum ziehen',
-      'Objekt erscheint mit korrekter Größe + Orientierung',
-      'Objekt anklicken → Eigenschaften-Panel zeigt Position/Rotation',
-    ],
-  },
-  {
-    id: 'view-3d',
-    section: 'Core-Flows',
-    title: '3D-Ansicht + Schatten',
-    steps: [
-      'Topbar: „⬛ 3D" klicken',
-      'Szene wird in 3D gerendert',
-      'Schatten auf Boden sichtbar, PBR-Reflexionen auf Möbeln',
-      'Mit Maus drehen/zoomen/verschieben funktioniert',
+      'Mode auf 🏪 Raumplanung',
+      'Tool "⬜ Raum" wählen, Rechteck auf Leinwand ziehen',
+      'Möbel-Tab → Objekt draggen → auf Raum platzieren',
+      '3D-Ansicht: Objekt hat plausible Größe + Materialtextur',
     ],
   },
   {
@@ -67,302 +43,310 @@ const ITEMS = [
     section: 'Core-Flows',
     title: 'Cloud-Save + Cloud-Load',
     steps: [
-      'Nach ein paar Räumen: rechts „💾 Projekte" → „☁️ Cloud speichern"',
-      'Toast: „In Cloud gespeichert"',
-      'Seite neu laden (F5)',
-      'Rechts → Cloud-Projekte-Liste → das Projekt ist drin',
-      'Anklicken → Raumstruktur kommt zurück',
+      'Nach Änderungen Ctrl+S → Toast bestätigt',
+      'Seite neu laden → Projekt-Liste rechts zeigt den Eintrag',
+      'Projekt anklicken → Räume + Objekte sind vollständig',
     ],
   },
-  // ── KCanG-Compliance ───────────────────────────────────────────────
+
+  // ── Planning-Mode (P11.1 + P12.4 + Bug B Fix) ─────────────────────────
   {
-    id: 'poi-200m',
-    section: 'KCanG-Compliance',
-    title: '§13 KCanG: 200m-Abstand (Adresse + POIs)',
+    id: 'planning-mode-switch',
+    section: 'Planning-Mode',
+    title: 'Room ↔ Event wechselt sichtbar (Sidebar + Katalog)',
     steps: [
-      'Rechts → „💾 Projekte" → KCanG-Projektdaten',
-      'Reale Adresse eintragen (z. B. „Alexanderplatz 1, 10178 Berlin")',
-      '„📍 POIs laden" klicken → Toast mit Anzahl POIs',
-      'KCanG-Monitor zeigt Status für Abstands-Regel',
-      '„🗺️ Bubatzkarte" öffnet externe Karte zum Doppelcheck',
+      'Topbar: Segmented Control "🏪 Raumplanung / 🎪 Veranstaltungs-Planung" ~36 px hoch',
+      'Klick auf Event → Confirm-Dialog, dann Toast "🎪 Veranstaltungs-Planung aktiv"',
+      'Aktiver Button hat pulsierenden grünen Glow (alle 2.5s)',
+      'Event-Mode: subtile lila Linie am unteren Rand der Topbar',
+      'Sidebar: Räume/Möbel/Bau/Sicher verschwinden, Veranst + Eigene bleiben',
+      'Katalog-Items: nur Messe/Event-Kategorien sichtbar (NICHT alle 492)',
+      'Zurück auf Room → Tabs + Katalog kommen zurück',
     ],
   },
   {
-    id: 'kcang-members',
-    section: 'KCanG-Compliance',
-    title: 'Mitgliederzahl (§11 KCanG, max 500)',
+    id: 'mode-hint-toast',
+    section: 'Planning-Mode',
+    title: 'Onboarding-Tooltip nach erstem Mode-Switch',
     steps: [
-      'Im KCanG-Projektdaten-Feld „Mitglieder" eine Zahl eintragen',
-      'Bei > 500: KCanG-Monitor zeigt Verstoß rot',
-      'Bei ≤ 500: grün',
+      'localStorage "csc-mode-hint-seen" leeren (DevTools)',
+      'Mode einmal wechseln → 5s sichtbarer Hint unter Topbar',
+      'Hint: "Menu-Items wechseln … Komplettliste mit Ctrl+K"',
+      'Zweiter Switch: Hint kommt NICHT nochmal',
     ],
   },
   {
-    id: 'kcang-prev-officer',
-    section: 'KCanG-Compliance',
-    title: 'Präventionsbeauftragter (§23 KCanG)',
+    id: 'compliance-mode-filter',
+    section: 'Planning-Mode',
+    title: 'Compliance-Regeln nach Mode gefiltert',
     steps: [
-      'Feld „Präventionsbeauftragter (Name)" leer lassen → Regel schlägt an',
-      'Namen eintragen → Regel grün',
+      'Room-Mode: KCanG-Dashboard zeigt alle 21 Regeln (inkl. memberLimit, visualScreen, poiCscDistance)',
+      'Wechsel zu Event-Mode: KCanG-Button aus Topbar weg',
+      'Via Ctrl+K "KCanG" suchen → Dashboard erreichbar, aber nur universale Regeln (13)',
+      'Messe-Höhenbegrenzung-Regel nur in Event-Mode aktiv',
     ],
   },
+
+  // ── UI-Mode Tiers (P10.5 + P12.3 + Bug A Fix) ──────────────────────────
   {
-    id: 'kcang-window-foil',
-    section: 'KCanG-Compliance',
-    title: 'Sichtschutzfolie aller Fenster',
+    id: 'ui-mode-simple',
+    section: 'UI-Mode Tiers',
+    title: 'Simple-Mode zeigt nur 20% der Features',
     steps: [
-      'Mindestens ein Fenster-Objekt platzieren',
-      'Checkbox „Alle Fenster mit Sichtschutzfolie ausgestattet" setzen',
-      'KCanG-Regel „Sichtschutz" schaltet auf grün',
+      'UI-Mode-Select auf "🌱 Einfach"',
+      'Topbar: ~20% der Buttons weg (Datei-Menü dramatisch gekürzt)',
+      'Simple-Badge "⚖ Simple" erscheint klein neben UI-Mode-Select',
+      'Badge blockiert KEINE Buttons (kein fullwidth-Banner mehr)',
+      'Ctrl+K öffnet Palette → zeigt ALLE 55+ Befehle (unfiltered)',
+      'Klick auf Simple-Badge → wechselt zurück auf Standard',
     ],
   },
   {
-    id: 'kcang-score',
-    section: 'KCanG-Compliance',
-    title: 'Health-Score + KCanG-Monitor',
+    id: 'ui-mode-standard',
+    section: 'UI-Mode Tiers',
+    title: 'Standard zeigt 80% (Default)',
     steps: [
-      'Rechts oben: Health-Score sichtbar (0–100%)',
-      'Mehr KCanG-Regeln erfüllen → Score steigt',
-      'Menü → „🌿 KCanG Live-Monitor" aktivieren',
-      'Live-Anzeige unten zeigt passed/total',
+      'UI-Mode-Select auf "⚖ Standard"',
+      'Topbar + Menus zeigen normale Feature-Liste',
+      'IFC-Export + Flucht-Plan + Security-Report NICHT sichtbar (pro-tier)',
+      'Behörden-Paket + Kostenvoranschlag sichtbar',
     ],
   },
-  // ── KI-Features ────────────────────────────────────────────────────
   {
-    id: 'ki-chat',
+    id: 'ui-mode-pro',
+    section: 'UI-Mode Tiers',
+    title: 'Pro-Mode unlocked alles',
+    steps: [
+      'UI-Mode-Select auf "🚀 Profi"',
+      'Datei-Menü: IFC-Export, Flucht- & Rettungsplan, Sicherheitsbericht sichtbar',
+      '.pro-only-debug Elemente sichtbar (falls vorhanden)',
+      'Keine Features versteckt',
+    ],
+  },
+
+  // ── Command-Palette (P10.6 + Bug C Fix) ────────────────────────────────
+  {
+    id: 'command-palette-all',
+    section: 'Command-Palette',
+    title: 'Ctrl+K zeigt 55+ Befehle (kein Mode/Tier-Filter)',
+    steps: [
+      'Ctrl+K (oder Cmd+K) öffnet Palette',
+      'Counter oben zeigt "55 von 55 Befehlen · tippen zum Filtern"',
+      'Liste scrollt — alle Befehle erreichbar (NICHT mehr auf 12 limitiert)',
+      'Pfeil-Tasten navigieren auch >12 Einträge, Selection scrollt mit',
+      'Browser-Konsole: window.cscCommandPalette.items.length → 55+',
+    ],
+  },
+  {
+    id: 'command-palette-search',
+    section: 'Command-Palette',
+    title: 'Fuzzy-Search zeigt nur Treffer',
+    steps: [
+      '"raum" tippen → Counter "X von 55", nur Raum-Treffer',
+      '"modus" tippen → 3 UI-Mode-Switcher sichtbar',
+      '"sprache" tippen → 2 Sprach-Switcher (DE + EN)',
+      'Esc schließt Palette',
+    ],
+  },
+  {
+    id: 'command-palette-modes-agnostic',
+    section: 'Command-Palette',
+    title: 'Palette ignoriert Mode/Tier',
+    steps: [
+      'UI-Mode auf Simple, Planning-Mode auf Event',
+      'Ctrl+K → zeigt trotzdem alle Befehle (KCanG, Messe, IFC, Debug, etc.)',
+      'Befehl ausführen funktioniert auch wenn Button ausgeblendet wäre',
+    ],
+  },
+
+  // ── Sidebar Consolidation (P12.4) ──────────────────────────────────────
+  {
+    id: 'sidebar-room-tabs',
+    section: 'Sidebar',
+    title: 'Room-Mode: 5 Tabs sichtbar',
+    steps: [
+      'Room-Mode: Räume, Möbel, Bau, Sicher, Eigene',
+      'Veranst-Label + ib-events unsichtbar',
+      'Möbel-Tab aktivieren: Katalog zeigt nur CSC-Items (keine Messe/Stand/Bühne)',
+    ],
+  },
+  {
+    id: 'sidebar-event-tabs',
+    section: 'Sidebar',
+    title: 'Event-Mode: 2 Tabs + Katalog-Filter',
+    steps: [
+      'Event-Mode: nur Veranst + Eigene sichtbar',
+      'Räume/Möbel/Bau/Sicher ausgeblendet',
+      'Auto-Switch wenn aktiver Tab beim Mode-Wechsel wegfällt',
+      'Veranst-Tab zeigt nur Event-Kategorien (Bühne, Banner, Messe-Items)',
+    ],
+  },
+
+  // ── Export + Compliance ────────────────────────────────────────────────
+  {
+    id: 'kcang-dashboard',
+    section: 'Compliance',
+    title: 'KCanG-Dashboard + Health-Score',
+    steps: [
+      'Room-Mode aktiv',
+      'KCanG-Button in Topbar (grün gehighlighted)',
+      'Dashboard öffnet mit Meta-Feldern (Mitglieder, Adresse, Präventionsbeauftragter, Sichtschutz)',
+      'Health-Score rechts oben 0-100%',
+      '"Alle Fenster foliert" + Präventionsbeauftragter setzen → Score steigt',
+    ],
+  },
+  {
+    id: 'poi-200m-check',
+    section: 'Compliance',
+    title: '§13 KCanG: 200m-Abstand zu Schulen',
+    steps: [
+      'KCanG-Dashboard → Adresse eintragen (z.B. Alexanderplatz 1, Berlin)',
+      '"📍 POIs laden" klicken → Toast mit Anzahl POIs',
+      'Regel "Abstand zu Schulen" zeigt passed/failed mit POI-Liste',
+    ],
+  },
+  {
+    id: 'export-dxf',
+    section: 'Export',
+    title: 'DXF-Export (CAD-tauglich)',
+    steps: [
+      'Datei → 📐 Grundriss .dxf',
+      'Download startet, Datei in AutoCAD/LibreCAD öffnen',
+      '5 Layer sichtbar (Rooms, Walls, Doors, Furniture, Measurements)',
+    ],
+  },
+  {
+    id: 'export-pdf',
+    section: 'Export',
+    title: 'PDF / Druckvorschau',
+    steps: [
+      'Datei → 🖨 Druckvorschau',
+      'Neuer Tab öffnet mit gerendertem Grundriss',
+      'Legende, Maßstab, Raum-Liste enthalten',
+    ],
+  },
+  {
+    id: 'export-authority-package',
+    section: 'Export',
+    title: 'Behörden-Paket (ZIP) in Room-Mode',
+    steps: [
+      'Room-Mode aktiv (sonst nicht verfügbar per data-mode)',
+      'Datei → 📦 Behörden-Paket (.zip)',
+      'ZIP enthält Grundriss-PDF, Hygiene-Konzept, Compliance-Bericht',
+    ],
+  },
+
+  // ── KI-Features ────────────────────────────────────────────────────────
+  {
+    id: 'ai-chat',
     section: 'KI-Features',
-    title: 'KI-Chat (Anthropic-Proxy)',
+    title: 'KI-Sidebar-Chat',
     steps: [
-      'Rechts → „💬 KI"-Tab',
-      'Eine Frage eingeben, z. B. „Was fehlt noch an Sicherheitsausstattung?"',
-      'Antwort kommt (kein 401 / kein Fehler)',
-      'Network-Tab: Request an /functions/v1/anthropic-proxy, Status 200',
+      'Rechts → 💬 KI-Tab',
+      'Frage eingeben: "Was fehlt an Sicherheit?"',
+      'Antwort kommt, kein 401/Fehler',
+      'Network-Tab: Request an /functions/v1/anthropic-proxy → 200',
     ],
   },
   {
-    id: 'ki-cost',
+    id: 'ai-floorplan-ocr',
     section: 'KI-Features',
-    title: 'KI-Kostenschätzung',
+    title: 'KI: Grundriss aus Foto (Vision)',
     steps: [
-      'Rechts → „📈 ROI"-Rechner oder Menü „💰 Kostenschätzung"',
-      'KI rechnet → Antwort plausibel auf Deutsch',
-      'Prompt erwähnt nicht mehr „2024/2025"',
+      'Datei → 🤖 KI: Grundriss aus Foto',
+      'Foto hochladen (Skizze oder echter Grundriss)',
+      'Claude erkennt Räume, fragt ob platziert werden sollen',
+      'Bestätigen → Räume erscheinen auf Leinwand',
     ],
   },
+
+  // ── 3D-Qualität ────────────────────────────────────────────────────────
   {
-    id: 'ki-security',
-    section: 'KI-Features',
-    title: 'KI-Sicherheits-Audit',
-    steps: [
-      'Menü → „🔐 KI: Sicherheits-Audit"',
-      'Analyse läuft, Ergebnis mit konkreten Tipps',
-      'Kein JSON-Parse-Fehler in der Konsole',
-    ],
-  },
-  // ── 3D-Qualität ────────────────────────────────────────────────────
-  {
-    id: 'rich-primitives',
+    id: '3d-pbr',
     section: '3D-Qualität',
-    title: 'Rich-Primitive-Möbel (Details)',
+    title: 'PBR + HDRI + Bloom',
     steps: [
-      'Möbel aus Kategorie „💼 Büro (Rich)" ziehen, z. B. Bürostuhl',
-      '3D-Ansicht: 5-Stern-Base, Rollen, Gas-Lift, Stoff-Sitz & -Lehne sichtbar',
-      'Textur-Surface auf Stoff (Weave) + Metall (gebürstet) + Holz (Maserung)',
+      '3D-Ansicht aktiv',
+      'Metallische Objekte zeigen HDRI-Reflexionen',
+      'Stoff-Sitze haben Sheen-Effekt',
+      'LED-Panel glowen weich (Bloom)',
     ],
   },
   {
-    id: 'shadows',
+    id: '3d-walk',
     section: '3D-Qualität',
-    title: 'Soft-Shadows (PCF)',
+    title: 'Walk-Modus (Ego-Perspektive)',
     steps: [
-      '3D-Ansicht aktiv, mehrere Objekte platziert',
-      'Schatten auf dem Boden sind weich (nicht hart-kantig)',
-      'Schatten richtet sich nach Sonnen-Position (beweglich via Mood/Sun)',
+      '3D → Walk-Button',
+      'WASD bewegen, Maus dreht, Space springen',
+      'Kollision mit Wänden funktioniert',
+      'Esc verlässt Walk-Modus',
+    ],
+  },
+
+  // ── i18n + a11y ────────────────────────────────────────────────────────
+  {
+    id: 'i18n-switch',
+    section: 'i18n + A11y',
+    title: 'Sprach-Umschalter DE/EN/NL/ES',
+    steps: [
+      'Topbar: Sprach-Select auf 🇬🇧 EN → Topbar-Labels wechseln',
+      'Auf 🇳🇱 NL → niederländische Strings',
+      'Auf 🇪🇸 ES → spanische Strings',
+      'Welcome-Modal zeigt "Welcome to CSC Studio Pro" (EN)',
     ],
   },
   {
-    id: 'hdri',
-    section: '3D-Qualität',
-    title: 'HDRI-Reflexionen + Umschalter',
+    id: 'touch-targets',
+    section: 'i18n + A11y',
+    title: 'Touch-Targets 44×44 px (WCAG AA)',
     steps: [
-      'Metallische Objekte (Tresor, Kamera) zeigen HDRI-Reflexionen',
-      'Menü → „💡 Beleuchtung: Studio" / „🌙 Abend" wechselt Stimmung',
-      'Toast bestätigt Umschalt',
-      'Zweiter Wechsel ist sofort (Cache)',
+      'Chrome DevTools Mobile-Emulation <1024px',
+      'Alle Topbar-Buttons min. 44 px hoch',
+      'Menu-Items in Dropdowns tap-freundlich',
+      'Mode-Switcher nicht zu klein für Daumen',
     ],
   },
   {
-    id: 'bloom',
-    section: '3D-Qualität',
-    title: 'Bloom (LEDs / Exit-Signs)',
+    id: 'a11y-keyboard',
+    section: 'i18n + A11y',
+    title: 'Keyboard-Navigation + Focus-Visible',
     steps: [
-      'Grow-Tent oder Exit-Schild platzieren',
-      '3D-Ansicht: LED-Panel / Schild hat weiche Glow-Aureole',
-      'Menü → „✨ Bloom an/aus" toggelt den Effekt',
-      'Toast bestätigt',
-      'Nicht-emissive Objekte bloomen nicht (kein Wash-out)',
+      'Tab-Taste navigiert durch Topbar-Buttons',
+      'Sichtbarer Focus-Ring (grün) auf aktivem Element',
+      'Enter aktiviert den fokussierten Button',
+      'Esc schließt Modals',
     ],
   },
-  // ── Freitext ───────────────────────────────────────────────────────
+
+  // ── PWA + Offline ──────────────────────────────────────────────────────
+  {
+    id: 'pwa-install',
+    section: 'PWA',
+    title: 'PWA installierbar + Offline',
+    steps: [
+      'Chrome: Adressleiste zeigt Install-Icon',
+      'Installieren → App öffnet standalone',
+      'Netzwerk offline → App lädt weiterhin (Service Worker)',
+      'Auto-Save alle 30s in IndexedDB',
+    ],
+  },
+
+  // ── Freitext ───────────────────────────────────────────────────────────
   {
     id: 'feedback-missing',
     section: 'Freitext',
-    title: 'Was fehlt noch?',
-    steps: [
-      'Freier Text: Features / Items / Regeln die fehlen oder schwer zu finden waren',
-    ],
+    title: 'Was fehlt?',
+    steps: ['Welche Features oder Items wurden vermisst?'],
   },
   {
     id: 'feedback-annoying',
     section: 'Freitext',
     title: 'Was nervt?',
-    steps: [
-      'Freier Text: Bugs, unklare UI, langsame Interaktionen',
-    ],
-  },
-  // ── v2.2 Neue Flows (P11.*) ───────────────────────────────────────────
-  {
-    id: 'planning-mode-switch',
-    section: 'v2.2 Neue Features',
-    title: 'Planning-Mode-Switcher (P11.1)',
-    steps: [
-      'Topbar zeigt Segmented-Control: „🏪 Raumplanung" / „🎪 Veranstaltungs-Planung"',
-      '"Raumplanung" ist Default (grün hervorgehoben)',
-      'Auf "Veranstaltungs-Planung" klicken → Confirm-Dialog erscheint',
-      '→ OK: KCanG-Button verschwindet aus Topbar, Messe-Inputs werden sichtbar',
-      'Seite neu laden (F5): Event-Mode bleibt aktiv (localStorage)',
-      'Zurück zu Raumplanung: KCanG-Button kommt zurück',
-    ],
-  },
-  {
-    id: 'compliance-mode-filter',
-    section: 'v2.2 Neue Features',
-    title: 'Compliance-Regeln mode-gefiltert',
-    steps: [
-      'Im "Raumplanung"-Modus: KCanG-Dashboard öffnen',
-      '21 Regeln sollten geprüft werden (inkl. memberLimit, poiCscDistance, visualScreen)',
-      'Wechsel in "Veranstaltungs-Planung"',
-      'KCanG-Dashboard ist ausgeblendet (button hat data-mode="room")',
-      'Via Command-Palette "KCanG" suchen → Dashboard erreichbar, aber Regeln zeigen nur universelle (13)',
-    ],
-  },
-  {
-    id: 'ui-mode-tiers',
-    section: 'v2.2 Neue Features',
-    title: 'UI-Mode 3-Tier (Einfach/Standard/Profi)',
-    steps: [
-      'Topbar: UI-Mode-Select auf „🌱 Einfach"',
-      'IFC-Export im Datei-Menü ist ausgeblendet (pro-tier)',
-      'Behörden-Paket ist ausgeblendet (standard-tier)',
-      'Auf „🚀 Profi" umschalten: alle Einträge sichtbar',
-    ],
-  },
-  {
-    id: 'marketplace',
-    section: 'v2.2 Neue Features',
-    title: 'Template-Marketplace (P9.7)',
-    steps: [
-      'Eigenes Template speichern',
-      'Marketplace-Tab im Template-Modal öffnen',
-      'Eigenes Template publishen (status=pending)',
-      'Anderes Template aus Community laden — Download-Counter steigt',
-    ],
-  },
-  {
-    id: 'team-invite',
-    section: 'v2.2 Neue Features',
-    title: 'Team-Einladung (P9.5)',
-    steps: [
-      'Teams-Modal öffnen, neues Team erstellen',
-      'Invite-Link kopieren',
-      'In anderem Browser (Incognito): Invite-Link öffnen',
-      'Einladung annehmen → erscheint als Team-Mitglied',
-      'Projekt an Team zuweisen → anderes Mitglied sieht es in der Cloud-Liste',
-    ],
-  },
-  {
-    id: 'i18n-switch',
-    section: 'v2.2 Neue Features',
-    title: 'Sprach-Umschalter (P9.2)',
-    steps: [
-      'Topbar: Sprach-Select auf 🇬🇧 EN',
-      'Mindestens Topbar + Hauptmenü zeigen englische Strings',
-      'Auf 🇳🇱 NL: niederländische Strings',
-      'Auf 🇪🇸 ES: spanische Strings',
-      'Zurück auf 🇩🇪 DE',
-    ],
-  },
-  {
-    id: 'command-palette',
-    section: 'v2.2 Neue Features',
-    title: 'Command Palette (P9.4 / P10.6)',
-    steps: [
-      'Ctrl+K öffnet die Palette',
-      'Tippen: "raum" → zeigt "Raum zeichnen", "Raum-Statistik"',
-      'Pfeil-hoch/runter + Enter führt Befehl aus',
-      'Esc schließt',
-      '"UI-Modus" tippen → 3 Mode-Switcher sichtbar',
-    ],
-  },
-  {
-    id: 'touch-targets',
-    section: 'v2.2 Neue Features',
-    title: 'Touch-Targets 44×44 (P11.2)',
-    steps: [
-      'Mobile-Emulation in Chrome DevTools (<1024 px Breite)',
-      'Alle Topbar-Buttons sind min. 44 px hoch',
-      'Tap auf Menu-Items trifft zuverlässig',
-      'Segmented Mode-Control nicht zu klein',
-    ],
-  },
-  // ── v2.3 Bedienkonzept (P12.*) ────────────────────────────────────────
-  {
-    id: 'mode-switch-visible',
-    section: 'v2.3 Bedienkonzept',
-    title: 'Mode-Switch ist sichtbar und fühlt sich an (P12.2)',
-    steps: [
-      'Topbar: Segmented Control "🏪 Raumplanung / 🎪 Veranstaltungs-Planung" ist deutlich ~36 px hoch',
-      'Aktiver Button hat grünen Glow (pulsierend alle 2.5s)',
-      'Klick auf anderen Modus → Confirm-Dialog, dann Toast "🎪 Veranstaltungs-Planung aktiv"',
-      'Im Event-Mode: subtile lila Linie am unteren Rand der Topbar',
-      'Erstmaliger Wechsel → Onboarding-Tooltip unter Topbar erscheint 5s',
-    ],
-  },
-  {
-    id: 'ui-mode-simple',
-    section: 'v2.3 Bedienkonzept',
-    title: 'UI-Mode Simple zeigt nur Basics (P12.3)',
-    steps: [
-      'UI-Mode-Select auf "🌱 Einfach"',
-      'Gelber Warn-Banner erscheint unter Topbar mit "⚖ Zurück auf Standard"',
-      'Topbar zeigt nur Save-Button + Vorlagen + KCanG + Language/UI-Mode-Select + Mode-Switcher',
-      'Viele Menu-Items sind ausgeblendet (Datei-Submenü dramatisch kürzer)',
-      'Ctrl+K öffnet Palette → dort sind ALLE Befehle weiterhin sichtbar',
-      '"Zurück auf Standard"-Button blendet Banner aus, alle Features wieder da',
-    ],
-  },
-  {
-    id: 'ui-mode-pro',
-    section: 'v2.3 Bedienkonzept',
-    title: 'UI-Mode Pro zeigt IFC/Team/Marketplace (P12.3)',
-    steps: [
-      'UI-Mode-Select auf "🚀 Profi"',
-      'Datei-Menü enthält IFC-Export, Flucht- & Rettungsplan, Sicherheitsbericht',
-      'Team-Management + Marketplace-Upload sichtbar (falls Buttons im Legacy-Code existieren)',
-    ],
-  },
-  {
-    id: 'sidebar-mode-split',
-    section: 'v2.3 Bedienkonzept',
-    title: 'Sidebar-Tabs passen sich Planungs-Modus an (P12.4)',
-    steps: [
-      'Room-Mode aktiv: linke Iconbar zeigt Räume/Möbel/Bau/Sicher/Eigene',
-      'Wechsel zu Event-Mode → nur Veranst. + Eigene sichtbar',
-      'Aktiver Tab ist nicht versehentlich ausgeblendet (Auto-Switch)',
-      'Zurück zu Room → 5 Tabs wieder da, sinnvoller Default-Tab aktiv',
-    ],
+    steps: ['Bugs, unklare UI, langsame Interaktionen — freier Text.'],
   },
 ];
+
 
 // ── State helpers ───────────────────────────────────────────────────────────
 
