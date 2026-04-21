@@ -32,14 +32,9 @@ details > summary:focus-visible {
   clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
 }
 
-:root{
-  --bg:#111;--bg2:#191919;--bg3:#212121;--bg4:#2a2a2a;
-  --bd:#2e2e2e;--bd2:#3a3a3a;
-  --tx:#e8e4d8;--tx2:#9a9288;--tx3:#5a5650;
-  --gr:#4ade80;--gr2:#22c55e;--gr3:#14532d;--gr4:#0d3320;
-  --or:#f97316;--bl:#38bdf8;--pu:#a78bfa;--rd:#f87171;--yw:#fbbf24;
-  --r6:6px;--r8:8px;--r12:12px;
-}
+/* P15: :root-Custom-Properties wanderten nach src/styles/tokens.css.
+   Legacy-Namen (--bg, --tx, --gr, --r6, …) bleiben dort als Aliase
+   der neuen semantischen Tokens. */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);height:100vh;overflow:hidden}
 

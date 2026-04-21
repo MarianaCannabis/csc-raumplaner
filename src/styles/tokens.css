@@ -1,0 +1,150 @@
+/* =================================================================
+ * CSC Studio Pro — Design Tokens (v2.4)
+ * =================================================================
+ *
+ * Single Source of Truth für Farben, Schrift, Spacing, Radii, Shadows
+ * und Motion. Wird von main.css vor allen anderen Regeln importiert.
+ *
+ * Benennungs-Konvention:
+ *   --<semantik>-<variante>   Farbe, z.B. --color-bg-1
+ *   --space-<scale>            Spacing (4px-Raster), z.B. --space-2 = 8px
+ *   --radius-<scale>           Border-Radius, z.B. --radius-md = 8px
+ *   --shadow-<scale>
+ *   --z-<rolle>                Z-Index (semantic, keine magic numbers)
+ *   --motion-<dauer>           Transition/Animation-Dauer
+ *   --font-*                   Schrift-Stack, -Größen
+ *
+ * Legacy-Variablen (--bg, --bg2, --tx, --tx2, --gr) bleiben hier
+ * als Alias erhalten, damit existierendes CSS in main.css weiterhin
+ * funktioniert. Neue CSS-Regeln SOLLEN die semantischen Namen nutzen.
+ * ================================================================= */
+
+:root {
+  /* ---- Color: Surfaces ---------------------------------------- */
+  --color-bg-0: #0a0a0a;   /* Deepest bg (page outside panels) */
+  --color-bg-1: #111;      /* Default app bg */
+  --color-bg-2: #191919;   /* Panel bg */
+  --color-bg-3: #212121;   /* Card, button default */
+  --color-bg-4: #2a2a2a;   /* Button hover, raised elements */
+
+  /* ---- Color: Borders ---------------------------------------- */
+  --color-border-subtle: #2e2e2e;
+  --color-border-strong: #3a3a3a;
+
+  /* ---- Color: Text -------------------------------------------- */
+  --color-text-primary:   #e8e4d8;
+  --color-text-secondary: #9a9288;
+  --color-text-tertiary:  #5a5650;
+  --color-text-disabled:  #3a3a3a;
+
+  /* ---- Color: Brand (CSC Green) ------------------------------- */
+  --color-brand-50:  #f0fdf4;
+  --color-brand-400: #4ade80;  /* Primary accent */
+  --color-brand-500: #22c55e;  /* Hover/active */
+  --color-brand-700: #14532d;  /* Dark-tinted background */
+  --color-brand-900: #0d3320;  /* Deepest dark accent */
+
+  /* ---- Color: Semantic --------------------------------------- */
+  --color-success: #22c55e;
+  --color-warning: #fbbf24;
+  --color-danger:  #f87171;
+  --color-info:    #38bdf8;
+  --color-event:   #a78bfa;  /* Event-Mode Akzent */
+  --color-attention: #f97316;
+
+  /* ---- Spacing (4px grid) ------------------------------------ */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ---- Radius ------------------------------------------------ */
+  --radius-xs: 3px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+  --radius-pill: 9999px;
+
+  /* ---- Typography ------------------------------------------- */
+  --font-family-sans: 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-family-mono: 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
+
+  --font-size-xs:  10px;
+  --font-size-sm:  11px;
+  --font-size-md:  12px;  /* Default UI */
+  --font-size-lg:  14px;
+  --font-size-xl:  16px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 28px;
+
+  --font-weight-regular: 400;
+  --font-weight-medium:  500;
+  --font-weight-semi:    600;
+  --font-weight-bold:    700;
+
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.7;
+
+  /* ---- Shadows ---------------------------------------------- */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.3);
+  --shadow-md: 0 4px 10px rgba(0,0,0,.4);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,.5);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,.6);
+
+  --shadow-focus-brand: 0 0 0 2px var(--color-brand-400);
+
+  /* ---- Z-Index ---------------------------------------------- */
+  --z-behind:    -1;
+  --z-base:       0;
+  --z-sidepanel: 10;
+  --z-topbar:    30;
+  --z-dropdown:  50;
+  --z-modal:    100;
+  --z-toast:    200;
+  --z-overlay:  500;
+  --z-gate:    9000;
+
+  /* ---- Motion ------------------------------------------------ */
+  --motion-fast:    120ms;
+  --motion-normal:  180ms;
+  --motion-slow:    260ms;
+  --motion-slower:  400ms;
+
+  --ease-standard: cubic-bezier(.4,0,.2,1);
+  --ease-in:       cubic-bezier(.4,0,1,1);
+  --ease-out:      cubic-bezier(0,0,.2,1);
+
+  /* ====================================================================
+   * LEGACY-ALIASES — halten bestehende main.css-Regeln am Leben.
+   * Neue Regeln SOLLEN die semantischen Namen oben verwenden.
+   * ==================================================================== */
+  --bg:  var(--color-bg-1);
+  --bg2: var(--color-bg-2);
+  --bg3: var(--color-bg-3);
+  --bg4: var(--color-bg-4);
+  --bd:  var(--color-border-subtle);
+  --bd2: var(--color-border-strong);
+  --tx:  var(--color-text-primary);
+  --tx2: var(--color-text-secondary);
+  --tx3: var(--color-text-tertiary);
+  --gr:  var(--color-brand-400);
+  --gr2: var(--color-brand-500);
+  --gr3: var(--color-brand-700);
+  --gr4: var(--color-brand-900);
+  --or:  var(--color-attention);
+  --bl:  var(--color-info);
+  --pu:  var(--color-event);
+  --rd:  var(--color-danger);
+  --yw:  var(--color-warning);
+  --r6:  var(--radius-sm);
+  --r8:  var(--radius-md);
+  --r12: var(--radius-lg);
+}
