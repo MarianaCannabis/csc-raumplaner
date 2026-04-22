@@ -2,9 +2,9 @@ import { describe, test, expect } from 'vitest';
 import { icon, listIcons, type IconName } from './lucide.js';
 
 describe('lucide icons', () => {
-  test('listIcons() enthält exakt die 18 geplanten Icons', () => {
+  test('listIcons() enthält exakt die 19 geplanten Icons', () => {
     const names = listIcons();
-    expect(names).toHaveLength(18);
+    expect(names).toHaveLength(19);
     const expected: IconName[] = [
       'undo',
       'redo',
@@ -24,6 +24,7 @@ describe('lucide icons', () => {
       'plus',
       'more',
       'help-circle',
+      'chevron', // P15 Cluster 4d: Dropdown-Menu-Affordance
     ];
     for (const name of expected) {
       expect(names).toContain(name);
@@ -69,7 +70,6 @@ describe('lucide icons', () => {
       'sliders',
       'view',
       'clock',
-      'chevron',
     ]) {
       expect(names).not.toContain(excluded);
     }
