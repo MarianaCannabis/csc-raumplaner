@@ -73,16 +73,25 @@
 
 <!-- TOPBAR -->
 <div id="topbar">
-  <!-- LOGO -->
-  <span class="logo">🌿 CSC <em>Studio Pro</em></span>
-  <span class="vbadge">v__APP_VERSION__</span>
-  <div class="tsep"></div>
+  <!-- LOGO (P15 Cluster 4a: .tb-group.tb-brand + .tb-logo, leaf via data-icon) -->
+  <div class="tb-group tb-brand">
+    <div class="tb-logo">
+      <div class="tb-logo__mark" data-icon="leaf"></div>
+      <div class="tb-logo__text">
+        <span class="tb-logo__name">CSC Studio Pro</span>
+        <span class="tb-logo__ver">v__APP_VERSION__</span>
+      </div>
+    </div>
+  </div>
+  <span class="tb-divider"></span>
 
-  <!-- UNDO/REDO -->
-  <button class="tbt icon-btn" id="undo-btn" data-tier="simple" onclick="undo()" disabled title="Rückgängig (Ctrl+Z)" aria-label="Rückgängig" onmouseenter="showUndoPreview()" onmouseleave="hideUndoPreview()">↩</button>
-  <div id="undo-preview"></div>
-  <button class="tbt icon-btn" id="redo-btn" data-tier="simple" onclick="redo()" disabled title="Wiederholen (Ctrl+Y)" aria-label="Wiederholen">↪</button>
-  <div class="tsep"></div>
+  <!-- UNDO/REDO (P15 Cluster 4a: .tb-btn--ghost.is-compact + data-icon) -->
+  <div class="tb-group">
+    <button class="tb-btn tb-btn--ghost is-compact" id="undo-btn" data-tier="simple" onclick="undo()" disabled data-icon="undo" aria-label="Rückgängig" title="Rückgängig (Strg+Z)" onmouseenter="showUndoPreview()" onmouseleave="hideUndoPreview()"></button>
+    <div id="undo-preview"></div>
+    <button class="tb-btn tb-btn--ghost is-compact" id="redo-btn" data-tier="simple" onclick="redo()" disabled data-icon="redo" aria-label="Wiederholen" title="Wiederholen (Strg+Y)"></button>
+  </div>
+  <span class="tb-divider"></span>
 
   <!-- P10.4: Primary Save-Button (UX-Flow 1 — aus Submenü hochgezogen) -->
   <button class="tbt" id="btn-save-primary" data-tier="simple" onclick="saveProj()" title="Projekt speichern (Ctrl+S)"
