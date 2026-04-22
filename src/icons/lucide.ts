@@ -5,9 +5,9 @@
  * Icon ist eine 16×16 currentColor-stroke-Shape mit round-line-caps; der
  * Aufrufer steuert Farbe via CSS (color/stroke) und Größe via `size`.
  *
- * Scope (19 Icons, siehe design/topbar-redesign/README.md — Emoji-Mapping):
+ * Scope (20 Icons, siehe design/topbar-redesign/README.md — Emoji-Mapping):
  *   undo, redo, save, room, event, leaf, globe, file, layers, chart,
- *   share, sun, moon, square, cube, plus, more, help-circle, chevron
+ *   share, sun, moon, square, cube, plus, more, help-circle, chevron, edit-2
  *
  * Bewusst NICHT portiert: Row-2-Tools (cursor, wall, roomdraw, area,
  * ruler, move, center, box, folder, sliders), view, clock.
@@ -41,7 +41,8 @@ export type IconName =
   | 'plus'
   | 'more'
   | 'help-circle'
-  | 'chevron';
+  | 'chevron'
+  | 'edit-2';
 
 export interface IconOptions {
   /** Kantenlänge in px. Default 16 (passt zu --btn-h 32). */
@@ -84,6 +85,10 @@ const PATHS: Record<IconName, string> = {
   // chevron: Dropdown-Menu-Affordance, ersetzt den alten ▾-Unicode-Glyph
   // in Datei/Ansicht/Analyse/Teilen (P15 Cluster 4d). Aus topbar.jsx.
   chevron: '<path d="m4 6 4 4 4-4"/>',
+  // edit-2: Rename-Pen, ersetzt ✏️-Emoji beim Project-Rename-Button
+  // (P15 Cluster 4e). Lucide-Pencil-Form.
+  'edit-2':
+    '<path d="M11.3 2.7a1.5 1.5 0 0 1 2.1 2.1L5 13.3l-3 .7.7-3 8.6-8.3z"/>',
 };
 
 /**

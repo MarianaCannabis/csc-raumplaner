@@ -282,6 +282,37 @@
 }
 
 /* ==========================================================================
+   Project-Name-Label + Inline-Rename (P15 Cluster 4e)
+   ========================================================================== */
+.tb-project { margin-left: auto; padding-right: 4px; }
+.tb-project__name {
+  font-size: 12px;
+  color: var(--text-muted);
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: text;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: background 120ms ease, color 120ms ease;
+}
+.tb-project__name:hover {
+  background: var(--bg-hover);
+  color: var(--color-text-primary);
+}
+.tb-project__input {
+  font-size: 12px;
+  padding: 4px 8px;
+  background: var(--bg-panel);
+  border: 1px solid var(--brand-500);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-sm);
+  max-width: 180px;
+  font: inherit;
+}
+
+/* ==========================================================================
    Narrow / touch — enforce 44px touch target
    ========================================================================== */
 .tb--narrow-single .tb-row { height: 52px; padding: 0 8px; }

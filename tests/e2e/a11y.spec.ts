@@ -6,7 +6,9 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('icon-only topbar buttons have aria-label or title', async ({ page }) => {
-  const iconBtns = await page.locator('.icon-btn').all();
+  // P15 Cluster 4a–4e: .icon-btn wurde durch .tb-btn.is-compact ersetzt
+  // (Lucide-Icon statt Emoji-Glyph, Design-System-Klassen).
+  const iconBtns = await page.locator('.tb-btn.is-compact').all();
   expect(iconBtns.length).toBeGreaterThan(0);
   for (const btn of iconBtns) {
     const aria = await btn.getAttribute('aria-label');
