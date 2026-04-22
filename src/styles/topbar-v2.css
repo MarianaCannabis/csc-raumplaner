@@ -1,0 +1,256 @@
+/* ==========================================================================
+   P15 TOPBAR-REDESIGN — Button-Variants + Segmented-Control + Focus-Ring
+   ==========================================================================
+   Portiert aus design/topbar-redesign/topbar.css (verbatim, frameworkfrei).
+   Referenziert die neuen Design-Tokens in tokens.css (--brand-*, --bg-*,
+   --border-*, --text-*, --shadow-cta, --row-h, --btn-h, --touch).
+
+   **Additiv** — bricht bestehende .tbt-Regeln nicht. Elemente werden erst
+   geschnitten, wenn der HTML-Block in index.html auf die neuen Klassen
+   migriert wurde (nächste PR).
+
+   Die Scope-Grenzen sind im README (design/topbar-redesign/README.md)
+   unter „❌ NICHT übernehmen" dokumentiert — Row-2 (Tool-Buttons + Tab-
+   Buttons) wird NICHT in unsere Topbar integriert; die .tb-btn--tool /
+   .tb-btn--tab Klassen bleiben als CSS erhalten, weil der Branch auch
+   für spätere Cluster nutzbar bleiben soll, aber werden vom Design-
+   Contract her in der Topbar nicht aktiviert.
+   ========================================================================== */
+
+/* ==========================================================================
+   Topbar shell
+   ========================================================================== */
+.tb {
+  font-family: var(--font);
+  font-feature-settings: "cv11", "ss01";
+  color: var(--color-text-primary);
+  background: var(--bg-topbar);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  overflow: hidden;
+  user-select: none;
+  letter-spacing: -0.005em;
+}
+
+.tb-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: var(--row-h);
+  padding: 0 10px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.tb-row:last-child { border-bottom: 0; }
+.tb-row--sub { height: var(--row-h-sub); background: var(--bg-sunken); }
+
+.tb-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.tb-menus { gap: 0; }
+
+.tb-divider {
+  width: 1px;
+  height: 22px;
+  background: var(--border);
+  margin: 0 6px;
+  flex: 0 0 auto;
+}
+
+.tb-spacer { flex: 1 1 auto; min-width: 8px; }
+
+/* ==========================================================================
+   Brand (logo + version-badge)
+   ========================================================================== */
+.tb-brand { padding-right: 2px; }
+.tb-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 6px 0 4px;
+}
+.tb-logo__mark {
+  width: 28px; height: 28px;
+  display: grid; place-items: center;
+  color: var(--brand-500);
+  background: var(--brand-tint);
+  border-radius: var(--radius-sm);
+}
+.tb-logo__text {
+  display: flex; flex-direction: column;
+  line-height: 1.05;
+}
+.tb-logo__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+}
+.tb-logo__ver {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0;
+}
+
+/* ==========================================================================
+   Button base + variants
+   ========================================================================== */
+.tb-btn {
+  --h: var(--btn-h);
+  appearance: none;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--color-text-primary);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  height: var(--h);
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+.tb-btn:hover { background: var(--bg-hover); }
+.tb-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--bg-topbar), 0 0 0 4px var(--brand-500);
+}
+
+.tb-btn__icon {
+  display: inline-grid;
+  place-items: center;
+  color: var(--text-muted);
+  flex: 0 0 auto;
+}
+.tb-btn:hover .tb-btn__icon,
+.tb-btn.is-active .tb-btn__icon { color: var(--color-text-primary); }
+
+.tb-btn__label { letter-spacing: -0.005em; }
+.tb-btn__chev {
+  color: var(--text-dim);
+  margin-left: 2px;
+  display: inline-grid; place-items: center;
+}
+
+.tb-btn.is-compact {
+  padding: 0 8px;
+  min-width: var(--h);
+  justify-content: center;
+}
+
+/* --- ghost: default menu/toolbar button --- */
+.tb-btn--ghost { color: var(--text-muted); }
+.tb-btn--ghost:hover { color: var(--color-text-primary); }
+
+/* --- soft: contextual picker --- */
+.tb-btn--soft {
+  background: var(--bg-panel);
+  border-color: var(--border);
+  color: var(--color-text-primary);
+}
+.tb-btn--soft:hover { background: var(--bg-seg-item); }
+.tb-btn--soft .tb-btn__icon { color: var(--brand-500); }
+
+/* --- primary: Speichern-CTA, dominant --- */
+.tb-btn--primary {
+  background: var(--brand-500);
+  color: var(--text-on-brand);
+  font-weight: 600;
+  padding: 0 14px;
+  box-shadow: var(--shadow-cta);
+  border-color: transparent;
+}
+.tb-btn--primary .tb-btn__icon { color: var(--text-on-brand); }
+.tb-btn--primary:hover {
+  background: var(--brand-400);
+  color: var(--text-on-brand);
+}
+
+/* --- accent: outlined green CTA --- */
+.tb-btn--accent {
+  color: var(--brand-500);
+  border-color: color-mix(in oklch, var(--brand-500) 35%, transparent);
+  background: var(--brand-tint);
+}
+.tb-btn--accent .tb-btn__icon { color: var(--brand-500); }
+.tb-btn--accent:hover {
+  background: color-mix(in oklch, var(--brand-500) 18%, transparent);
+  border-color: color-mix(in oklch, var(--brand-500) 55%, transparent);
+}
+
+/* --- tool + tab (Row-2 — aus Scope ausgeschlossen, aber Klassen bleiben) --- */
+.tb-btn--tool,
+.tb-btn--tab {
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 12.5px;
+}
+.tb-btn--tool:hover, .tb-btn--tab:hover { color: var(--color-text-primary); }
+
+.tb-btn--tool.is-active {
+  color: var(--color-text-primary);
+  background: var(--bg-active);
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--brand-500) 35%, transparent);
+}
+.tb-btn--tool.is-active .tb-btn__icon { color: var(--brand-500); }
+
+.tb-btn--tab.is-active {
+  color: var(--color-text-primary);
+  background: var(--bg-panel);
+  border-color: var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.tb-btn--tab.is-active .tb-btn__icon { color: var(--brand-500); }
+
+/* ==========================================================================
+   Segmented controls (Mode + 2D/3D)
+   ========================================================================== */
+.tb-seg {
+  display: inline-flex;
+  padding: 3px;
+  background: var(--bg-seg);
+  border-radius: var(--radius-md);
+  gap: 2px;
+  border: 1px solid var(--border-subtle);
+}
+.tb-seg__item {
+  appearance: none; border: 0; background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 5px;
+  display: inline-flex; align-items: center; gap: 6px;
+  cursor: pointer;
+  letter-spacing: -0.005em;
+  transition: background 120ms ease, color 120ms ease;
+}
+.tb-seg__item .tb-btn__icon { color: currentColor; }
+.tb-seg__item:hover { color: var(--color-text-primary); }
+.tb-seg__item.is-active {
+  background: var(--bg-seg-item);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-sm);
+}
+[data-theme="light"] .tb-seg__item.is-active {
+  box-shadow: 0 1px 2px rgba(15,23,18,.06), 0 0 0 1px rgba(15,23,18,.04);
+}
+
+/* ==========================================================================
+   Narrow / touch — enforce 44px touch target
+   ========================================================================== */
+.tb--narrow-single .tb-row { height: 52px; padding: 0 8px; }
+.tb--narrow-single .tb-btn { --h: 40px; font-size: 13px; }
+.tb--narrow-single .tb-btn.is-compact { min-width: 44px; padding: 0 10px; }
+.tb--narrow-single .tb-seg__item { height: 36px; padding: 0 12px; }
+.tb--narrow-single .tb-btn--primary { padding: 0 14px; }
