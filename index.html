@@ -172,29 +172,23 @@
   <button class="tbt" id="btn-templates" data-mode="event" data-tier="simple" data-overflow-priority="1" onclick="openTemplates()" title="Vorlagen laden — fertige CSC-Layouts + Messestände"
     style="padding:5px 10px;border:1px solid var(--gr3);background:rgba(74,222,128,0.08);color:var(--gr);font-weight:600">📋 Vorlagen</button>
   <!-- P7 Bug-2-Fix: KCanG-Dashboard aus der Ansicht-Menu-Tiefe an die Topbar hochgezogen -->
-  <!-- fix/e2e-green-final: vertikale margin für WCAG target-size — Nachbar-
-       Buttons dürfen vertikal nur bis 23px nah sein, sonst nicht "clickable". -->
+  <!-- P15 Cluster 4c: KCanG-Button → .tb-btn--soft + data-icon="leaf" -->
   <!-- P15-Responsive: overflow-priority=1 → wandert bei <900px ins ⋯-Menü -->
-  <button class="tbt" id="btn-kcang" data-mode="room" data-overflow-priority="1" onclick="openKCaNGDashboard()" title="KCanG-Projektdaten + Compliance-Check (Mitglieder, Adresse, Präventionsbeauftragter, Regeln)"
-    style="padding:8px 12px;margin:4px 2px;border:1px solid var(--gr3);background:rgba(74,222,128,0.08);color:var(--gr);font-weight:600;min-height:32px">🌿 KCanG</button>
-  <!-- P8.2: Hilfe-Modal mit FAQ + Shortcuts + Link zum User-Guide -->
-  <button class="tbt icon-btn" id="btn-help" data-tier="simple" data-overflow-priority="1" onclick="openHelpModal()" title="Hilfe: FAQ, Tastenkürzel, User-Guide"
-    style="padding:5px 10px" aria-label="Hilfe öffnen">❓</button>
-  <!-- P9.2: Sprach-Umschalter (P15-Responsive: priority=2 = wandert bei <750px) -->
-  <select id="lang-switch" data-overflow-priority="2" onchange="window.cscI18n&&window.cscI18n.setLang(this.value)"
-    aria-label="Sprache wählen"
-    title="Sprache · Language · Taal · Idioma"
-    style="padding:4px 6px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:3px;font-size:11px">
+  <button class="tb-btn tb-btn--soft" id="btn-kcang" data-mode="room" data-overflow-priority="1" onclick="openKCaNGDashboard()" aria-label="KCanG-Dashboard öffnen" title="KCanG-Projektdaten + Compliance-Check (Mitglieder, Adresse, Präventionsbeauftragter, Regeln)">
+    <span class="tb-btn__icon" data-icon="leaf"></span>
+    <span class="tb-btn__label">KCanG</span>
+  </button>
+  <!-- P8.2 / P15 Cluster 4c: Help-Button → .tb-btn--ghost.is-compact + data-icon="help-circle" -->
+  <button class="tb-btn tb-btn--ghost is-compact" id="btn-help" data-tier="simple" data-overflow-priority="1" onclick="openHelpModal()" aria-label="Hilfe öffnen" title="Hilfe: FAQ, Tastenkürzel, User-Guide" data-icon="help-circle"></button>
+  <!-- P9.2 / P15 Cluster 4c: Sprach-Umschalter → .tb-select -->
+  <select id="lang-switch" class="tb-select" data-overflow-priority="2" onchange="window.cscI18n&&window.cscI18n.setLang(this.value)" aria-label="Sprache wählen" title="Sprache · Language · Taal · Idioma">
     <option value="de">🇩🇪 DE</option>
     <option value="en">🇬🇧 EN</option>
     <option value="nl">🇳🇱 NL</option>
     <option value="es">🇪🇸 ES</option>
   </select>
-  <!-- P10.5: UI-Mode Selector (Progressive Disclosure) -->
-  <select id="ui-mode-select" data-overflow-priority="2" onchange="setUIMode(this.value)"
-    aria-label="UI-Modus wählen"
-    title="UI-Modus: Einfach (nur Basics) · Standard (alles) · Profi (inkl. BIM/Team)"
-    style="padding:4px 6px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:3px;font-size:11px">
+  <!-- P10.5 / P15 Cluster 4c: UI-Mode Selector → .tb-select -->
+  <select id="ui-mode-select" class="tb-select" data-overflow-priority="2" onchange="setUIMode(this.value)" aria-label="UI-Modus wählen" title="UI-Modus: Einfach (nur Basics) · Standard (alles) · Profi (inkl. BIM/Team)">
     <option value="simple">🌱 Einfach</option>
     <option value="standard" selected>⚖ Standard</option>
     <option value="pro">🚀 Profi</option>
@@ -207,7 +201,7 @@
     // Sync Select mit persistiertem Mode nach DOM-Mount
     (function(){ const m = document.body.dataset.uiMode; const s = document.getElementById('ui-mode-select'); if (s && m) s.value = m; })();
   </script>
-  <div class="tsep"></div>
+  <span class="tb-divider"></span>
 
   <!-- DROPDOWN MENUS -->
   <div class="tb-menu-group">

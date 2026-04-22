@@ -247,6 +247,41 @@
 }
 
 /* ==========================================================================
+   Native <select> als Topbar-Element — visuell mit tb-btn abgeglichen,
+   funktional aber native. Verwendet für Sprach- und UI-Mode-Switcher
+   (P15 Cluster 4c). Native Elements behalten wir, weil der Accessibility-
+   Layer und die keyboard-Navigation eines echten <select> beim Portieren
+   zu einem Custom-Dropdown komplett neu gebaut werden müssten.
+   ========================================================================== */
+.tb-select {
+  appearance: none;
+  -webkit-appearance: none;
+  height: var(--btn-h);
+  padding: 0 26px 0 10px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 16 16' fill='none' stroke='%238a938e' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='m4 6 4 4 4-4'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 12px;
+}
+.tb-select:hover {
+  background-color: var(--bg-hover);
+  border-color: var(--border-strong);
+}
+.tb-select:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--bg-topbar), 0 0 0 4px var(--brand-500);
+}
+
+/* ==========================================================================
    Narrow / touch — enforce 44px touch target
    ========================================================================== */
 .tb--narrow-single .tb-row { height: 52px; padding: 0 8px; }
