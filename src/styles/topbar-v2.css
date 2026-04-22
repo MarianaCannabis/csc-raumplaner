@@ -73,11 +73,27 @@
   padding: 0 6px 0 4px;
 }
 .tb-logo__mark {
-  width: 28px; height: 28px;
+  width: 36px; height: 36px;
   display: grid; place-items: center;
   color: var(--brand-500);
   background: var(--brand-tint);
   border-radius: var(--radius-sm);
+  flex: 0 0 auto;
+}
+/* P15 Cluster 5: Image-Variante für echtes Logo (public/assets/csc-logo.png). */
+.tb-logo__mark--img {
+  background: transparent;
+  width: 56px; height: 32px; /* 1.75:1, matcht das 2:1-Logo mit etwas Padding */
+  padding: 0;
+}
+.tb-logo__mark--img img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.35));
+}
+[data-theme="light"] .tb-logo__mark--img img {
+  filter: drop-shadow(0 1px 2px rgba(15,23,18,.08));
 }
 .tb-logo__text {
   display: flex; flex-direction: column;
@@ -150,43 +166,59 @@
 .tb-btn--ghost { color: var(--text-muted); }
 .tb-btn--ghost:hover { color: var(--color-text-primary); }
 
-/* --- soft: contextual picker --- */
+/* --- soft: contextual picker (P15 Cluster 5: Card-ähnliche Präsenz) --- */
 .tb-btn--soft {
   background: var(--bg-panel);
   border-color: var(--border);
   color: var(--color-text-primary);
+  box-shadow: 0 0 0 1px color-mix(in oklch, var(--brand-500) 20%, transparent);
 }
 .tb-btn--soft:hover { background: var(--bg-seg-item); }
 .tb-btn--soft .tb-btn__icon { color: var(--brand-500); }
+.tb-btn--soft .tb-btn__label { font-weight: 600; }
 
-/* --- primary: Speichern-CTA, dominant --- */
+/* --- primary: Speichern-CTA, dominant (P15 Cluster 5: größere Präsenz) --- */
 .tb-btn--primary {
+  --h: 36px;
   background: var(--brand-500);
   color: var(--text-on-brand);
-  font-weight: 600;
-  padding: 0 14px;
-  box-shadow: var(--shadow-cta);
+  font-weight: 700;
+  font-size: 13.5px;
+  padding: 0 18px;
   border-color: transparent;
+  box-shadow:
+    0 0 0 1px color-mix(in oklch, var(--brand-500) 60%, transparent),
+    inset 0 1px 0 rgba(255,255,255,.25),
+    inset 0 -1px 0 rgba(0,0,0,.15),
+    0 10px 28px -8px var(--brand-glow),
+    0 2px 6px -1px rgba(0,0,0,.35);
+  transition: transform 120ms ease, background 120ms ease, color 120ms ease;
 }
 .tb-btn--primary .tb-btn__icon { color: var(--text-on-brand); }
 .tb-btn--primary:hover {
   background: var(--brand-400);
   color: var(--text-on-brand);
+  transform: translateY(-0.5px);
 }
+.tb-btn--primary:active { transform: translateY(0); }
 
-/* --- accent: outlined green CTA --- */
+/* --- accent: outlined green CTA (P15 Cluster 5: heller + prominenter) --- */
 .tb-btn--accent {
-  color: var(--brand-500);
-  border-color: color-mix(in oklch, var(--brand-500) 35%, transparent);
-  background: var(--brand-tint);
-}
-.tb-btn--accent .tb-btn__icon { color: var(--brand-500); }
-.tb-btn--accent:hover {
-  background: color-mix(in oklch, var(--brand-500) 18%, transparent);
+  --h: 34px;
+  color: var(--brand-400);
+  font-weight: 600;
   border-color: color-mix(in oklch, var(--brand-500) 55%, transparent);
+  background: color-mix(in oklch, var(--brand-500) 14%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--brand-500) 20%, transparent);
+}
+.tb-btn--accent .tb-btn__icon { color: var(--brand-400); }
+.tb-btn--accent:hover {
+  background: color-mix(in oklch, var(--brand-500) 24%, transparent);
+  border-color: color-mix(in oklch, var(--brand-500) 75%, transparent);
+  color: #d1fae5;
 }
 
-/* --- tool + tab (Row-2 — aus Scope ausgeschlossen, aber Klassen bleiben) --- */
+/* --- tool + tab (Row-2 — P15 Cluster 5: Border-Ring statt Background-Swap) --- */
 .tb-btn--tool,
 .tb-btn--tab {
   color: var(--text-muted);
@@ -195,20 +227,19 @@
 }
 .tb-btn--tool:hover, .tb-btn--tab:hover { color: var(--color-text-primary); }
 
-.tb-btn--tool.is-active {
-  color: var(--color-text-primary);
-  background: var(--bg-active);
-  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--brand-500) 35%, transparent);
-}
-.tb-btn--tool.is-active .tb-btn__icon { color: var(--brand-500); }
-
+.tb-btn--tool.is-active,
 .tb-btn--tab.is-active {
   color: var(--color-text-primary);
-  background: var(--bg-panel);
-  border-color: var(--border);
-  box-shadow: var(--shadow-sm);
+  font-weight: 600;
+  background: transparent;
+  border: 2px solid var(--brand-500);
+  padding: 0 8px;
+  box-shadow: 0 0 0 1px rgba(74,222,128,0.15), 0 0 10px -2px var(--brand-glow);
 }
-.tb-btn--tab.is-active .tb-btn__icon { color: var(--brand-500); }
+.tb-btn--tool.is-active::after,
+.tb-btn--tab.is-active::after { content: none; }
+.tb-btn--tool.is-active .tb-btn__icon,
+.tb-btn--tab.is-active .tb-btn__icon { color: var(--brand-400); }
 
 /* ==========================================================================
    Segmented controls (Mode + 2D/3D)
@@ -237,14 +268,16 @@
 }
 .tb-seg__item .tb-btn__icon { color: currentColor; }
 .tb-seg__item:hover { color: var(--color-text-primary); }
+/* P15 Cluster 5: Border-Ring statt Background-Swap — der Active-State
+   ist im Dark-Mode viel besser erkennbar (keine weiße Insel mehr, die
+   bei leichtem Kontrast untergeht). Background bleibt transparent. */
 .tb-seg__item.is-active {
-  background: var(--bg-seg-item);
+  background: transparent;
   color: var(--color-text-primary);
-  box-shadow: var(--shadow-sm);
+  font-weight: 600;
+  box-shadow: inset 0 0 0 2px var(--brand-500), 0 0 10px -2px var(--brand-glow);
 }
-[data-theme="light"] .tb-seg__item.is-active {
-  box-shadow: 0 1px 2px rgba(15,23,18,.06), 0 0 0 1px rgba(15,23,18,.04);
-}
+.tb-seg__item.is-active .tb-btn__icon { color: var(--brand-400); }
 
 /* ==========================================================================
    Native <select> als Topbar-Element — visuell mit tb-btn abgeglichen,
@@ -310,6 +343,58 @@
   border-radius: var(--radius-sm);
   max-width: 180px;
   font: inherit;
+}
+
+/* ==========================================================================
+   Light-Theme Overrides (P15 Cluster 5)
+   ==========================================================================
+   Im Light-Mode ist Brand-500 gegen den hellen Background zu grell —
+   --brand-600 (darker, more saturated) liefert besseren Kontrast.
+   ========================================================================== */
+
+[data-theme="light"] .tb-seg__item.is-active {
+  box-shadow: inset 0 0 0 2px var(--brand-600), 0 0 10px -2px var(--brand-glow);
+}
+[data-theme="light"] .tb-seg__item.is-active .tb-btn__icon {
+  color: var(--brand-600);
+}
+
+[data-theme="light"] .tb-btn--tool.is-active,
+[data-theme="light"] .tb-btn--tab.is-active {
+  border-color: var(--brand-600);
+  box-shadow: 0 0 0 1px rgba(34,197,94,0.15), 0 0 10px -2px var(--brand-glow);
+}
+[data-theme="light"] .tb-btn--tool.is-active .tb-btn__icon,
+[data-theme="light"] .tb-btn--tab.is-active .tb-btn__icon {
+  color: var(--brand-600);
+}
+
+[data-theme="light"] .tb-btn--primary {
+  background: var(--brand-600);
+  color: #ffffff;
+  box-shadow:
+    0 0 0 1px color-mix(in oklch, var(--brand-600) 60%, transparent),
+    inset 0 1px 0 rgba(255,255,255,.25),
+    inset 0 -1px 0 rgba(0,0,0,.08),
+    0 10px 28px -8px var(--brand-glow),
+    0 2px 6px -1px rgba(15,23,18,.08);
+}
+[data-theme="light"] .tb-btn--primary:hover {
+  background: var(--brand-500);
+  color: #ffffff;
+}
+[data-theme="light"] .tb-btn--primary .tb-btn__icon { color: #ffffff; }
+
+[data-theme="light"] .tb-btn--accent {
+  color: var(--brand-600);
+  border-color: color-mix(in oklch, var(--brand-600) 55%, transparent);
+  background: color-mix(in oklch, var(--brand-600) 10%, transparent);
+}
+[data-theme="light"] .tb-btn--accent .tb-btn__icon { color: var(--brand-600); }
+[data-theme="light"] .tb-btn--accent:hover {
+  background: color-mix(in oklch, var(--brand-600) 16%, transparent);
+  border-color: color-mix(in oklch, var(--brand-600) 75%, transparent);
+  color: #065f46;
 }
 
 /* ==========================================================================

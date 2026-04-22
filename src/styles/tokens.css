@@ -182,10 +182,11 @@
   --bg-topbar:   #10161385;
   --bg-panel:    #151b18;
   --bg-sunken:   #0d1210;
-  --bg-hover:    rgba(255, 255, 255, 0.045);
-  --bg-active:   rgba(74, 222, 128, 0.12);
+  --bg-hover:    rgba(255, 255, 255, 0.055);
+  --bg-active:   rgba(74, 222, 128, 0.22);
+  --bg-active-strong: rgba(74, 222, 128, 0.32);
   --bg-seg:      #1a201d;
-  --bg-seg-item: #232b27;
+  --bg-seg-item: #2a332e;
 
   /* Borders (design) */
   --border-subtle: rgba(255, 255, 255, 0.06);

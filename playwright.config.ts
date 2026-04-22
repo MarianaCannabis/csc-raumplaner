@@ -13,7 +13,10 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests/e2e',
-  timeout: 30000,
+  // P15 Cluster 5: 30s → 45s. Das 1.18 MB Logo-PNG erhöht die Page-Load-
+  // Zeit unter paralleler Test-Ausführung. 45s gibt jedem Test genug Puffer,
+  // ohne Timeout-Drift in echte Fehler zu verzögern.
+  timeout: 45000,
   expect: { timeout: 5000 },
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
