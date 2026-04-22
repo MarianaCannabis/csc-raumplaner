@@ -93,24 +93,37 @@
   </div>
   <span class="tb-divider"></span>
 
-  <!-- P10.4: Primary Save-Button (UX-Flow 1 — aus Submenü hochgezogen) -->
-  <button class="tbt" id="btn-save-primary" data-tier="simple" onclick="saveProj()" title="Projekt speichern (Ctrl+S)"
-    aria-label="Projekt speichern"
-    style="padding:5px 12px;border:1px solid var(--gr3);background:rgba(74,222,128,0.08);color:var(--gr);font-weight:600">💾 Speichern</button>
-  <div class="tsep"></div>
+  <!-- P10.4 / P15 Cluster 4b: Primary Save-Button → .tb-btn--primary + data-icon -->
+  <button class="tb-btn tb-btn--primary" id="btn-save-primary" data-tier="simple" onclick="saveProj()" aria-label="Projekt speichern" title="Projekt speichern (Strg+S)">
+    <span class="tb-btn__icon" data-icon="save"></span>
+    <span class="tb-btn__label">Speichern</span>
+  </button>
+  <span class="tb-divider"></span>
 
-  <!-- P11.1: Planning-Mode Segmented Control (Raumplanung vs. Veranstaltungs-Planung) -->
-  <div class="mode-seg" role="group" aria-label="Planungs-Modus">
-    <button type="button" id="pm-room"  onclick="window.cscSwitchPlanningMode('room')"  title="Raumplanung — CSC Clubhaus, Anbauraum, Ausgabe"  aria-label="Raumplanung aktivieren">🏪 Raumplanung</button>
-    <button type="button" id="pm-event" onclick="window.cscSwitchPlanningMode('event')" title="Veranstaltungs-Planung — Messe, Kongress, Event" aria-label="Veranstaltungs-Planung aktivieren">🎪 Veranstaltungs-Planung</button>
+  <!-- P11.1 / P15 Cluster 4b: Planning-Mode → .tb-seg / .tb-seg__item -->
+  <div class="tb-seg" role="tablist" aria-label="Planungs-Modus">
+    <button class="tb-seg__item is-active" id="pm-room" type="button" role="tab" data-mode="room" onclick="window.cscSwitchPlanningMode('room')" title="Raumplanung — CSC Clubhaus, Anbauraum, Ausgabe" aria-label="Raumplanung aktivieren">
+      <span class="tb-btn__icon" data-icon="room"></span>
+      <span>Raumplanung</span>
+    </button>
+    <button class="tb-seg__item" id="pm-event" type="button" role="tab" data-mode="event" onclick="window.cscSwitchPlanningMode('event')" title="Veranstaltungs-Planung — Messe, Kongress, Event" aria-label="Veranstaltungs-Planung aktivieren">
+      <span class="tb-btn__icon" data-icon="event"></span>
+      <span>Veranstaltungs-Planung</span>
+    </button>
   </div>
-  <div class="tsep"></div>
+  <span class="tb-divider"></span>
   <script>
     // P11.1: Mode-Switcher — liest Persistenz, setzt active-Klasse, zeigt Confirm-Dialog.
     (function(){
       function applyActive(m){
         var r = document.getElementById('pm-room'), e = document.getElementById('pm-event');
         if(!r||!e) return;
+        // P15 Cluster 4b: .is-active statt .active (BEM-Konvention der
+        // neuen .tb-seg__item-Klasse). Alte .active-Klasse wird trotzdem
+        // noch gesetzt für Rückwärtskompatibilität mit body[data-ui-mode]-
+        // Filtern in main.css, die noch auf .mode-seg button.active matchen.
+        r.classList.toggle('is-active', m==='room');
+        e.classList.toggle('is-active', m==='event');
         r.classList.toggle('active', m==='room');
         e.classList.toggle('active', m==='event');
       }

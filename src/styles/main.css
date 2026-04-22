@@ -70,11 +70,16 @@ body[data-ui-mode="pro"] .pro-only-debug { display: block }
 body[data-ui-mode="simple"] .simple-badge { display:inline-flex }
 
 /* P11.1: Planning-Mode (Raumplanung vs. Veranstaltungs-Planung) */
-/* Planning-Mode-Filter: zeigt mode-spezifische Menu-Items. Mode-Seg-Buttons
-   hatten data-mode="event"/"room" — das filterte sie selbst weg (chicken-
-   and-egg). fix/e2e-green: Attribute auf #pm-event/#pm-room entfernt. */
-body[data-planning-mode="room"]  [data-mode="event"] { display: none !important; }
-body[data-planning-mode="event"] [data-mode="room"]  { display: none !important; }
+/* Planning-Mode-Filter: zeigt mode-spezifische Menu-Items.
+   Historie: Mode-Seg-Buttons hatten data-mode="event"/"room" — das
+   filterte sie selbst weg (chicken-and-egg). fix/e2e-green hat die
+   Attribute auf #pm-event/#pm-room entfernt.
+   P15 Cluster 4b: die neuen .tb-seg__item-Switcher-Buttons brauchen
+   data-mode (User-Spec) für Semantik/Analytics. Filter exempt explicit
+   über :not(.tb-seg__item), damit die Switcher immer sichtbar bleiben
+   (das sind sie per Definition — Switcher der anderen Elemente). */
+body[data-planning-mode="room"]  [data-mode="event"]:not(.tb-seg__item) { display: none !important; }
+body[data-planning-mode="event"] [data-mode="room"]:not(.tb-seg__item)  { display: none !important; }
 
 /* P11.1/P12.2: Prominent Segmented Control für Mode-Switch in Topbar */
 .mode-seg { display:inline-flex; background:var(--bg3); border:1px solid var(--bd); border-radius:22px; overflow:hidden; height:36px; box-shadow:0 1px 3px rgba(0,0,0,.4) }
