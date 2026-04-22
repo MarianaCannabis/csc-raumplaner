@@ -8,6 +8,10 @@
 // Custom-Properties daraus.
 import './styles/tokens.css';
 import './styles/main.css';
+// P15 Topbar-Redesign: additive Button-Variants + Segmented-Control +
+// Focus-Ring aus design/topbar-redesign/. Die Klassen sind da, der HTML-
+// Block in index.html migriert cluster-für-cluster in einer Folge-PR.
+import './styles/topbar-v2.css';
 import * as compliance from './compliance/index.js';
 import * as geo from './geo/overpass.js';
 import * as defaults from './config/defaults.js';
