@@ -16,9 +16,10 @@ test('app boots and shows topbar', async ({ page }) => {
 
   await page.goto('/');
   await expect(page.locator('#topbar')).toBeVisible();
-  await expect(page.locator('.logo')).toContainText('CSC');
-  // P16: verify rebrand — the logo should say "Studio Pro" not "Raumplaner"
-  await expect(page.locator('.logo em')).toContainText('Studio Pro');
+  // P15 Cluster 4a: Logo-Markup auf .tb-logo umgestellt. Name + Version
+  // leben in dedizierten Spans, nicht mehr im .logo-em-Pattern.
+  await expect(page.locator('.tb-logo__name')).toContainText('CSC Studio Pro');
+  await expect(page.locator('.tb-logo__ver')).toContainText('v');
   expect(errors, `unexpected runtime errors: ${errors.join(' | ')}`).toEqual([]);
 });
 

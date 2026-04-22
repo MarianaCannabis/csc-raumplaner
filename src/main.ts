@@ -39,6 +39,7 @@ import type { SupportedLang } from './i18n/index.js';
 import { userTier, currentLimits, hasFeature, checkLimit, PLANS } from './config/features.js';
 import { buildPackList } from './compliance/packlist.js';
 import { registerGlobalShortcuts } from './input/keyboard.js';
+import { icon, type IconName } from './icons/lucide.js';
 
 console.info('[csc] vite entry alive', import.meta.env.MODE);
 
@@ -227,3 +228,24 @@ registerGlobalShortcuts({
   presentPrev: () => legacyWin.presentPrev?.(),
   exitPresentation: () => legacyWin.exitPresentation?.(),
 });
+
+// P15 Cluster 4a: Lucide-Icons werden per data-icon-Attribut automatisch
+// injiziert. Macht HTML frei von Inline-SVG und hält src/icons/lucide.ts
+// als Single-Source-of-Truth. Aufruf beim DOMContentLoaded, nicht beim
+// Module-Load — manche Elemente existieren erst nach dem Inline-Script.
+function populateIcons() {
+  document.querySelectorAll<HTMLElement>('[data-icon]').forEach((el) => {
+    const name = el.dataset.icon as IconName;
+    if (!name) return;
+    // Nur befüllen wenn leer — sonst doppelte Icons bei Re-Runs
+    if (el.childElementCount === 0) el.innerHTML = icon(name);
+  });
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', populateIcons);
+} else {
+  populateIcons();
+}
+// Für Widgets die Icons nach Boot brauchen (Custom-Render, etc.)
+(window as unknown as { cscPopulateIcons?: () => void }).cscPopulateIcons =
+  populateIcons;
