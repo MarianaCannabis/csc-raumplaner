@@ -706,141 +706,18 @@
   <div class="rpanel" id="rpanel-save">
     <div class="spanel-body">
       <div id="cloud-status-bar" style="padding:6px 10px;background:rgba(74,222,128,.08);border:1px solid var(--gr3);border-radius:5px;font-size:10px;color:var(--gr);margin-bottom:8px;display:flex;align-items:center;gap:6px"><span id="cloud-status-dot">⬜</span><span id="cloud-status-text">Verbindung wird geprüft…</span></div>
-      <div class="api-box">
-        <label>🔑 KI-Assistent</label>
-        <div class="api-st ok" id="api-st" style="margin-bottom:6px">⬜ Kein API Key — Key oben eingeben</div>
-        <details open style="margin-top:4px">
-          <summary style="font-size:10px;color:var(--gr);cursor:pointer;font-weight:700">🔑 API Key eingeben (erforderlich für KI)</summary>
-          <div class="api-row" style="margin-top:5px">
-            <input class="api-inp" id="api-inp" type="password" placeholder="sk-ant-api03-… (von console.anthropic.com)" autocomplete="off">
-            <button class="api-save" onclick="doSaveKey()">💾 Speichern</button><button class="api-save" onclick="testAIConnection()" style="margin-left:4px;background:var(--bg3)">🔌 Test</button>
-          </div>
-          <div style="font-size:9px;color:var(--tx3);margin-top:3px">Key kostenlos auf <a href="https://console.anthropic.com" target="_blank" style="color:var(--bl)">console.anthropic.com</a> — ohne Key keine KI</div>
-        </details>
-      </div>
-      <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px;padding:10px;margin-bottom:10px">
-        <div style="font-size:10px;font-weight:700;color:var(--gr);margin-bottom:8px">👤 Meine Identität</div>
-        <label style="font-size:10px;color:var(--tx3)">Name (erscheint beim Speichern)</label>
-        <input id="inp-username" placeholder="z.B. Max Mustermann"
-          oninput="localStorage.setItem('csc-username',this.value)"
-          style="width:100%;padding:5px 8px;margin:3px 0 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
-        <label style="font-size:10px;color:var(--tx3)">Team / CSC-Name (für Projekt-Trennung)</label>
-        <input id="inp-teamid" placeholder="z.B. CSC-Berlin"
-          oninput="localStorage.setItem('csc-teamid',this.value)"
-          style="width:100%;padding:5px 8px;margin-top:3px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
+
+      <!-- P15: Bridge-Card → KCanG-Dashboard (nur Room-Mode, Metadaten leben jetzt dort) -->
+      <div class="kcang-bridge" data-mode="room" style="padding:8px 10px;margin-bottom:10px;border:1px solid var(--gr3);border-radius:6px;background:rgba(74,222,128,.06)">
+        <div style="font-size:11px;color:var(--gr);line-height:1.4;margin-bottom:6px">🌿 Projekt-Metadaten (Mitglieder, Adresse, Compliance) jetzt im KCanG-Dashboard</div>
+        <button class="tbt" id="btn-open-kcang-dashboard" onclick="openKCaNGDashboard()" style="width:100%;padding:6px;border-color:var(--gr3);color:var(--gr);font-size:11px">🌿 Dashboard öffnen</button>
       </div>
 
-      <!-- KCanG-PROJEKTDATEN (meta input for compliance rules) -->
-      <div style="padding:10px;margin-bottom:12px;border:1px solid var(--bd);border-radius:6px;background:var(--bg3)">
-        <div class="sh" style="margin-top:0">KCanG-Projektdaten</div>
-        <div class="mf">
-          <label style="font-size:10px;color:var(--tx3)">Mitglieder</label>
-          <input type="number" id="pm-members" min="0" max="500"
-            onchange="projMeta.memberCount=+this.value; if(typeof renderComplianceBadges==='function') renderComplianceBadges();"
-            style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
-        </div>
-        <div class="mf">
-          <label style="font-size:10px;color:var(--tx3)">Adresse (für § 13 KCanG 200m-Standort-Check)</label>
-          <div style="display:flex;gap:5px;flex-wrap:wrap">
-            <input type="text" id="pm-address" placeholder="Straße, PLZ Ort"
-              onchange="projMeta.address=this.value;"
-              style="flex:1;min-width:140px;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
-            <button class="tbt" onclick="loadProjectPois()" title="Schulen/Kitas/Spielplätze/Sportstätten aus OpenStreetMap im 500m-Umkreis laden" style="padding:5px 8px;white-space:nowrap;font-size:11px">📍 POIs laden</button>
-            <button class="tbt" id="btn-bubatzkarte" data-mode="room" onclick="openBubatzkarte()" title="Externe Karte zum Doppelcheck" style="padding:5px 8px;white-space:nowrap;font-size:11px">🗺️ Bubatzkarte</button>
-          </div>
-          <div id="pm-poi-status" style="font-size:10px;color:var(--tx3);margin-top:4px;min-height:14px"></div>
-          <div style="font-size:10px;color:var(--tx3);margin-top:4px;line-height:1.4">
-            ℹ️ Externer Abgleich: <a href="https://bubatzkarte.de" target="_blank" rel="noopener noreferrer" style="color:var(--gr)">bubatzkarte.de</a> zeigt § 5 KCanG Konsum-Zonen (100 m) basierend auf OSM. Für unseren § 13 200 m-Standort-Check siehe oben.
-          </div>
-        </div>
-        <label style="font-size:11px;color:var(--tx2);display:flex;align-items:center;gap:6px;margin-top:6px">
-          <input type="checkbox" id="pm-age-ver"
-            onchange="projMeta.ageVerification=this.checked; if(typeof renderComplianceBadges==='function') renderComplianceBadges();">
-          Altersprüfung beim Eingang (18+)
-        </label>
-        <div class="mf" style="margin-top:8px">
-          <label style="font-size:10px;color:var(--tx3)">Präventionsbeauftragter (§ 23 KCanG)</label>
-          <input type="text" id="pm-prev-officer" placeholder="Name, z.B. Max Mustermann"
-            onchange="projMeta.preventionOfficer=this.value; if(typeof renderComplianceBadges==='function') renderComplianceBadges();"
-            style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
-        </div>
-        <div class="mf" data-mode="event" style="margin-top:8px">
-          <label style="font-size:10px;color:var(--tx3)" title="Messe-Mode: alle platzierten Objekte werden gegen diesen Wert geprüft. Leer lassen = aus.">Messe-Höhenbegrenzung (m)</label>
-          <input type="number" id="pm-max-height" min="0" step="0.1" placeholder="z.B. 2.5"
-            onchange="projMeta.maxHeight=this.value?+this.value:null; if(typeof renderComplianceBadges==='function') renderComplianceBadges();"
-            style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
-        </div>
-        <div class="mf" data-mode="event" style="margin-top:6px">
-          <label style="font-size:10px;color:var(--tx3)">Messetage (Dauer)</label>
-          <input type="number" id="pm-messe-days" min="1" max="14" step="1" placeholder="3"
-            onchange="projMeta.messeDays=this.value?+this.value:null;"
-            style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
-        </div>
-
-        <!-- P5.3: Audit-Fix-Actions — user-konfigurierbare Parameter -->
-        <div class="mf" style="margin-top:12px;padding-top:10px;border-top:1px solid var(--bd)">
-          <div style="font-size:10px;color:var(--gr);margin-bottom:6px">⚙ Berechnungs-Parameter</div>
-        </div>
-        <div class="mf">
-          <label style="font-size:10px;color:var(--tx3)" title="ASR A1.2 Standard = 2.0 m²/Person. Konferenz-Layout ggf. 1.5, gemütliches Lounge 3.0.">Kapazität: m²/Person</label>
-          <input type="number" id="pm-sqm-per-person" min="0.5" max="10" step="0.1" placeholder="2.0"
-            onchange="projMeta.sqmPerPerson=this.value?+this.value:null; if(typeof renderComplianceBadges==='function') renderComplianceBadges();"
-            style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
-        </div>
-        <div class="mf" style="margin-top:6px">
-          <label style="font-size:10px;color:var(--tx3)" title="Wenn gesetzt: Feuerlöscher-Bedarf zusätzlich zu ASR-Regel auch über ceil(Personen/100) auslegen.">Geplante Personenzahl (Fire-Safety)</label>
-          <input type="number" id="pm-planned-people" min="0" max="2000" step="1" placeholder="auto"
-            onchange="projMeta.plannedPeopleCount=this.value?+this.value:null; if(typeof renderComplianceBadges==='function') renderComplianceBadges();"
-            style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
-        </div>
-        <div class="mf" style="margin-top:6px">
-          <label style="font-size:10px;color:var(--tx3)" title="Dämmstandard beeinflusst Energiebedarf im Energie-Ausweis.">Dämmstandard (Energie)</label>
-          <select id="pm-energy-class"
-            onchange="projMeta.energyClass=this.value||null;"
-            style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
-            <option value="">Standard (GEG 2024)</option>
-            <option value="GEG2024">GEG 2024 — Neubau</option>
-            <option value="EnEV2016">EnEV 2016 — Bestand</option>
-            <option value="KfW55">KfW-55 — saniert</option>
-            <option value="KfW40">KfW-40 — hochsaniert</option>
-          </select>
-        </div>
-        <div class="mf" style="margin-top:6px">
-          <label style="font-size:10px;color:var(--tx3)" title="Budget-Obergrenze. Warnung wenn geschätzte Kosten überschritten.">Budget-Obergrenze (€)</label>
-          <input type="number" id="pm-budget-cap" min="0" step="100" placeholder="keine"
-            onchange="projMeta.budgetCap=this.value?+this.value:null;"
-            style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
-        </div>
-        <div class="mf" style="margin-top:6px">
-          <label style="font-size:10px;color:var(--tx3)" title="AI-Security-Audit Schwellwert (0-100). Score darunter = als kritisch markiert.">AI-Security-Schwellwert (%)</label>
-          <input type="number" id="pm-security-threshold" min="0" max="100" step="5" placeholder="60"
-            onchange="projMeta.securityThresholdPct=this.value?+this.value:null;"
-            style="width:100%;padding:5px 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
-        </div>
-        <button class="tbt" data-mode="event" onclick="openMesseBudget()" style="margin-top:6px;padding:6px;border-color:var(--gr3);color:var(--gr);font-size:11px">💰 Messe-Kosten schätzen</button>
-        <button class="tbt" data-mode="event" onclick="openPacklist()" style="margin-top:4px;padding:6px;border-color:var(--gr3);color:var(--gr);font-size:11px">📦 Packliste generieren</button>
-        <button class="tbt" data-tier="simple" onclick="openM('m-visualize')" style="margin-top:4px;padding:6px;border-color:var(--gr3);color:var(--gr);font-size:11px">📸 Hochauflösende Visualisierung</button>
-        <label style="font-size:11px;color:var(--tx2);display:flex;align-items:center;gap:6px;margin-top:6px">
-          <input type="checkbox" id="pm-windows-filmed"
-            onchange="projMeta.windowsFilmed=this.checked; if(typeof renderComplianceBadges==='function') renderComplianceBadges();">
-          Alle Fenster mit Sichtschutzfolie (§ 14 KCanG)
-        </label>
-        <div style="font-size:10px;color:var(--tx3);padding:8px;margin-top:10px;border-left:2px solid var(--or,#f97316);line-height:1.5;background:rgba(249,115,22,.06)">
-          ⚠️ Compliance-Prüfung basiert auf KCanG (Stand April 2024, keine bestätigten Novellen 2025/2026).
-          Länder-Ausführungsverordnungen nicht berücksichtigt. Für Genehmigungsverfahren
-          bitte Fachanwalt oder Landesbehörde hinzuziehen.
-        </div>
-        <div style="font-size:9px;color:var(--tx3);margin-top:4px" title="Kosten/Energie-Konstanten aus src/config/defaults.ts — Miete, Personal, Baukosten, Strompreis, CO₂-Faktor etc.">
-          Default-Werte zuletzt geprüft: <span id="defaults-last-verified">—</span>
-        </div>
-      </div>
-
-      <!-- P5.4: Projekte-Panel aufgeräumt in 3 Collapsible-Sections -->
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
 
-        <!-- 💾 Speichern -->
+        <!-- 💾 Projekt-Speicherung (default offen) -->
         <details open class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
-          <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:var(--gr)">💾 Speichern</summary>
+          <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:var(--gr)">💾 Projekt-Speicherung</summary>
           <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
             <button class="tbt g" style="padding:8px" data-tier="simple" onclick="saveProj()">💾 Projekt speichern</button>
             <button class="tbt" style="padding:8px;border-color:var(--gr3);color:var(--gr)" data-tier="simple" onclick="openTemplates()">📋 Vorlage laden</button>
@@ -850,7 +727,38 @@
           </div>
         </details>
 
-        <!-- 📤 Export -->
+        <!-- ☁ Cloud-Speicher (default offen, weil aktiv genutzt) -->
+        <details open class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
+          <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:#38bdf8">☁️ Cloud-Speicher</summary>
+          <div style="padding:6px 8px 10px">
+            <div class="api-box" style="border-color:#38bdf8;margin-top:0;margin-bottom:6px;background:#0a1520" id="supabase-box">
+              <div id="sb-status" style="font-size:10px;color:var(--tx3);margin-bottom:6px">Nicht verbunden</div>
+              <div style="font-size:10px;color:#4ade80;margin:4px 0">✓ Verbunden mit: wvkjkdwahsqozeupoxpj.supabase.co</div>
+              <div id="auth-status" style="font-size:10px;color:var(--tx3);margin:4px 0">🔒 Nicht eingeloggt</div>
+              <div style="display:flex;gap:5px;margin:6px 0">
+                <button class="tbt" id="auth-signin-btn" style="flex:1;padding:6px;border-color:#38bdf8;color:#38bdf8" onclick="cloudSignIn()">🔑 Einloggen</button>
+                <button class="tbt" id="auth-signout-btn" style="flex:1;padding:6px;display:none" onclick="cloudSignOut()">🚪 Ausloggen</button>
+              </div>
+              <div style="font-size:9px;color:var(--tx3)">Projekte werden automatisch in der Cloud gespeichert.</div>
+              <input id="sb-url" type="hidden" value="https://wvkjkdwahsqozeupoxpj.supabase.co">
+              <input id="sb-key" type="hidden" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtycW1icWt6Y2xwaXhqaG94YW1kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU3MTg4OTUsImV4cCI6MjA4MTI5NDg5NX0.h-sQZvIzGiP1ENWKNDUp90T8ZLngDvCsGuZ6ZRIGGBE">
+            </div>
+            <div style="display:flex;gap:5px;margin-bottom:6px">
+              <button class="tbt" id="sb-save-btn" style="flex:1;padding:8px;border-color:#38bdf8;color:#38bdf8;display:none" onclick="cloudSave()">☁️ Cloud speichern</button>
+              <button class="tbt" id="sb-load-btn" style="flex:1;padding:8px;display:none" onclick="showCloudProjects()">📂 Cloud laden</button>
+            </div>
+            <div id="cloud-list" style="margin-bottom:8px"></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin:6px 0 4px">
+              <div class="sh" style="margin:0">Versionen</div>
+              <button class="tbt" onclick="saveVersion()" style="padding:3px 8px;font-size:10px">📌 Merken</button>
+            </div>
+            <div id="version-list" style="margin-bottom:12px"></div>
+            <div class="sh">Lokal gespeicherte Projekte</div>
+            <div id="saved-list"></div>
+          </div>
+        </details>
+
+        <!-- 📤 Export (default zu) -->
         <details class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
           <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:#38bdf8">📤 Export</summary>
           <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
@@ -864,7 +772,7 @@
           </div>
         </details>
 
-        <!-- 📜 Historie -->
+        <!-- 📜 Historie (default zu) -->
         <details class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
           <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:#fbbf24">📜 Historie</summary>
           <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
@@ -873,8 +781,8 @@
           </div>
         </details>
 
-        <!-- P6.8: Messeordnung-Import -->
-        <details class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
+        <!-- 📄 Messeordnung (default zu, nur Event-Mode) -->
+        <details class="rp-sec" data-mode="event" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
           <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:#a78bfa">📄 Messeordnung</summary>
           <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
             <input type="file" id="regulation-upload" accept="application/pdf" style="display:none" onchange="handleRegulationUpload(event)">
@@ -883,57 +791,37 @@
             <div id="regulation-status" style="font-size:10px;color:var(--tx3);margin-top:2px"></div>
           </div>
         </details>
-      </div>
-      <div style="height:1px;background:var(--bd);margin:8px 0"></div>
-      <!-- SUPABASE CLOUD -->
-      <div style="font-size:9px;font-weight:700;color:#38bdf8;text-transform:uppercase;letter-spacing:.4px;margin:14px 0 5px">☁️ Cloud-Speicher</div>
-      <div class="api-box" style="border-color:#38bdf8;margin-top:0;background:#0a1520" id="supabase-box">
-        <label style="color:#38bdf8">☁️ Cloud-Speicher (Supabase)</label>
-        <div id="sb-status" style="font-size:10px;color:var(--tx3);margin-bottom:6px">Nicht verbunden</div>
-        <div style="font-size:10px;color:#4ade80;margin:4px 0">✓ Verbunden mit: wvkjkdwahsqozeupoxpj.supabase.co</div>
-        <div id="auth-status" style="font-size:10px;color:var(--tx3);margin:4px 0">🔒 Nicht eingeloggt</div>
-        <div style="display:flex;gap:5px;margin:6px 0">
-          <button class="tbt" id="auth-signin-btn" style="flex:1;padding:6px;border-color:#38bdf8;color:#38bdf8" onclick="cloudSignIn()">🔑 Einloggen</button>
-          <button class="tbt" id="auth-signout-btn" style="flex:1;padding:6px;display:none" onclick="cloudSignOut()">🚪 Ausloggen</button>
-        </div>
-        <div style="font-size:9px;color:var(--tx3)">Projekte werden automatisch in der Cloud gespeichert.</div>
-        <!-- Hidden inputs needed for JS compatibility -->
-        <input id="sb-url" type="hidden" value="https://wvkjkdwahsqozeupoxpj.supabase.co">
-        <input id="sb-key" type="hidden" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtycW1icWt6Y2xwaXhqaG94YW1kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU3MTg4OTUsImV4cCI6MjA4MTI5NDg5NX0.h-sQZvIzGiP1ENWKNDUp90T8ZLngDvCsGuZ6ZRIGGBE">
-      </div>
-      <div style="display:flex;gap:5px;margin-bottom:6px">
-        <button class="tbt" id="sb-save-btn" style="flex:1;padding:8px;border-color:#38bdf8;color:#38bdf8;display:none" onclick="cloudSave()">☁️ Cloud speichern</button>
-        <button class="tbt" id="sb-load-btn" style="flex:1;padding:8px;display:none" onclick="showCloudProjects()">📂 Cloud laden</button>
-      </div>
-      <div id="cloud-list" style="margin-bottom:8px"></div>
 
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
-        <div class="sh" style="margin:0">Versionen</div>
-        <button class="tbt" onclick="saveVersion()" style="padding:3px 8px;font-size:10px">📌 Merken</button>
-      </div>
-      <div id="version-list" style="margin-bottom:12px"></div>
-      <div class="sh">Lokal gespeicherte Projekte</div>
-      <div id="saved-list"></div>
-      <!-- P9.5: Teams -->
-      <details class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px;margin-top:8px">
-        <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:#38bdf8">👥 Teams</summary>
-        <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
-          <button class="tbt" style="padding:8px" data-tier="pro" onclick="openTeamsModal()">👥 Teams verwalten</button>
-        </div>
-      </details>
-
-      <!-- P8.3: DSGVO-Daten-Werkzeuge -->
-      <details class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px;margin-top:8px">
-        <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:#a78bfa">🔒 Datenschutz / DSGVO</summary>
-        <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
-          <button class="tbt" style="padding:8px" onclick="exportMyData()">📤 Meine Daten exportieren (Art. 20)</button>
-          <button class="tbt" style="padding:8px;border-color:#ef4444;color:#ef4444" onclick="deleteMyAccount()">🗑 Account löschen (Art. 17)</button>
-          <div style="font-size:10px;color:var(--tx3);line-height:1.4;padding-top:4px">
-            <a href="privacy.html" target="_blank" style="color:var(--gr)">Datenschutzerklärung</a> ·
-            <a href="impressum.html" target="_blank" style="color:var(--gr)">Impressum</a>
+        <!-- 🪪 Meine Identität (default zu) -->
+        <details class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
+          <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:var(--tx2)">🪪 Meine Identität</summary>
+          <div style="padding:6px 8px 10px">
+            <label style="font-size:10px;color:var(--tx3)">Name (erscheint beim Speichern)</label>
+            <input id="inp-username" placeholder="z.B. Max Mustermann"
+              oninput="localStorage.setItem('csc-username',this.value)"
+              style="width:100%;padding:5px 8px;margin:3px 0 8px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
+            <label style="font-size:10px;color:var(--tx3)">Team / CSC-Name (für Projekt-Trennung)</label>
+            <input id="inp-teamid" placeholder="z.B. CSC-Berlin"
+              oninput="localStorage.setItem('csc-teamid',this.value)"
+              style="width:100%;padding:5px 8px;margin-top:3px;background:var(--bg2);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px;box-sizing:border-box">
           </div>
-        </div>
-      </details>
+        </details>
+
+        <!-- 🔒 Datenschutz / DSGVO (default zu) -->
+        <details class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
+          <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:#a78bfa">🔒 Datenschutz / DSGVO</summary>
+          <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
+            <button class="tbt" style="padding:8px" onclick="exportMyData()">📤 Meine Daten exportieren (Art. 20)</button>
+            <button class="tbt" style="padding:8px;border-color:#ef4444;color:#ef4444" onclick="deleteMyAccount()">🗑 Account löschen (Art. 17)</button>
+            <div style="font-size:10px;color:var(--tx3);line-height:1.4;padding-top:4px">
+              <a href="privacy.html" target="_blank" style="color:var(--gr)">Datenschutzerklärung</a> ·
+              <a href="impressum.html" target="_blank" style="color:var(--gr)">Impressum</a>
+            </div>
+          </div>
+        </details>
+
+      </div>
+
       <div style="margin-top:14px;padding-top:8px;border-top:1px solid var(--bd);text-align:center">
         <button class="tbt" onclick="openCredits()" style="padding:5px 10px;font-size:10px;color:var(--tx3)">🎨 Credits</button>
       </div>
@@ -5546,27 +5434,11 @@ async function shareCustomObj(id){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// API KEY
+// API KEY — entfernt in P15: nach dem P0-Security-Refactor werden alle
+// Anthropic-Calls über die anthropic-proxy Edge-Function geroutet, der
+// lokale "csc-key" wurde nie mehr gelesen. Ein einmaliges Aufräumen
+// passiert weiter unten im INIT-Block (localStorage.removeItem).
 // ════════════════════════════════════════════════════════════════════════
-function doSaveKey(){
-  const k=document.getElementById('api-inp').value.trim();
-  if(!k){toast('Key fehlt','r');return;}
-  localStorage.setItem('csc-key',k);updateApiSt();toast('🔑 Key gespeichert','g');
-}
-function updateApiSt(){
-  const k=getKey();const st=document.getElementById('api-st');
-  if(!st)return;
-  if(k){
-    st.style.color='var(--gr)';
-    st.textContent='✅ Key aktiv ('+k.slice(0,12)+'…)';
-  } else {
-    st.style.color='var(--rd)';
-    st.textContent='❌ Kein Key — bitte eingeben';
-  }
-  st.className='api-st '+(k?'ok':'none');
-  const inp=document.getElementById('api-inp');if(inp&&k)inp.value=k;
-  const btn=document.getElementById('ai-key-btn');if(btn)btn.style.display=k?'none':'flex';
-}
 
 // ════════════════════════════════════════════════════════════════════════
 // FILE UPLOAD (PDF / DOCX / IMAGE)
@@ -13450,6 +13322,7 @@ const COMMANDS = [
   // Save/Share
   {icon:'💾',label:'Speichern',sub:'Projekt speichern',fn:()=>saveProj(),kbd:'Ctrl+S'},
   {icon:'☁',label:'Cloud speichern',sub:'In Supabase speichern',fn:()=>cloudSave()},
+  {icon:'👥',label:'Teams verwalten',sub:'Multi-User + Projekt-Assignment (Pro)',fn:()=>openTeamsModal()},
   {icon:'🔗',label:'Teilen',sub:'Link kopieren',fn:()=>shareProject()},
   {icon:'📥',label:'Export JSON',sub:'Datei herunterladen',fn:()=>dlJSON()},
   {icon:'📊',label:'CSV Möbel',sub:'Möbelliste exportieren',fn:()=>exportFurnitureCSV()},
@@ -22064,7 +21937,8 @@ function animate(t){
 // ════════════════════════════════════════════════════════════════════════
 window.addEventListener('resize',()=>{resizeCv();resize3D();draw2D();});
 resizeCv();resize3D();
-updateApiSt();
+// P15: toter localStorage-Key einmalig aufräumen (siehe API-KEY Kommentar oben).
+try{ localStorage.removeItem('csc-key'); }catch(e){}
 setTimeout(()=>showRight('props'),200);
 startRealtime();
 // Auto-save every 2 minutes
@@ -23066,8 +22940,6 @@ function refreshSel3D(){
 // MOOD TOGGLE BUTTON POSITION
 // ════════════════════════════════════════════════════════════════════════
 document.getElementById('mood-panel').classList.remove('vis');
-// Bind from topbar
-document.addEventListener('DOMContentLoaded',()=>{ updateApiSt(); });
 
 </script>
 
