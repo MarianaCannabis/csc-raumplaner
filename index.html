@@ -9833,25 +9833,10 @@ async function deleteMyAccount(){
 }
 
 
-// P8.2: Keyboard-Shortcut-Overlay beim Druck von ? oder F1
-document.addEventListener('keydown', (e) => {
-  if(e.target && e.target.matches && e.target.matches('input,textarea,select')) return;
-  if(e.key === '?' || e.key === 'F1'){
-    e.preventDefault();
-    openHelpModal();
-  }
-});
-
-// P9.4: Ctrl+K / Cmd+K öffnet/fokussiert KI-Input
-document.addEventListener('keydown', (e) => {
-  if((e.ctrlKey || e.metaKey) && e.key === 'k' && !e.shiftKey){
-    e.preventDefault();
-    // Right-Panel auf AI-Tab wechseln + Input fokussieren
-    if(typeof showRight === 'function') showRight('ai');
-    const inp = document.getElementById('ai-inp');
-    if(inp){ inp.focus(); inp.select(); }
-  }
-});
+// P17.2: F1/? und Ctrl+K-AI-Fokus wurden nach src/input/keyboard.ts
+// extrahiert (registerGlobalShortcuts, wire-up in src/main.ts). Das
+// preventDefault bei Ctrl+K passiert weiterhin im Command-Palette-
+// Handler unten (Zeile ~13445).
 
 // P9.4: Chat-Historie pro Projekt in localStorage persistieren.
 // Wird bei jedem addMsg mit type 'ai' oder 'user' aktualisiert.
@@ -10339,14 +10324,9 @@ function searchHelp(q){
   });
 }
 
-// Override H key to open help
-document.addEventListener('keydown',e=>{
-  if(e.target.matches('input,textarea')) return;
-  if(e.key==='F1'){ e.preventDefault(); openHelp(); }
-  if(e.key==='Escape' && document.getElementById('help-overlay').classList.contains('open')){
-    closeHelp();
-  }
-});
+// P17.2: F1 → openHelp() und Esc → closeHelp() (wenn Help-Overlay offen)
+// leben jetzt in src/input/keyboard.ts / src/main.ts (isHelpOverlayOpen-
+// Gate ruft denselben DOM-Check auf). Kein Verhalten-Unterschied.
 
 // ── TUTORIAL SYSTEM ───────────────────────────────────────────────────
 var _tutStep = 0;
@@ -14754,16 +14734,9 @@ document.addEventListener('keydown', e=>{
   if(e.key==='y'||( e.key==='z'&&e.shiftKey)){ e.preventDefault(); redo(); }
 });
 
-// ? key = keyboard overlay
-document.addEventListener('keydown', e=>{
-  if(e.target.matches('input,textarea')) return;
-  if(e.key==='?'||e.key==='Shift+/'){ document.getElementById('kbd-overlay')?.classList.add('vis'); }
-  if(e.key==='f'||e.key==='F'){ fitViewToRooms(); } // F = fit
-  if(e.key==='v'||e.key==='V'){ set2DTool('sel'); }
-  if(e.key==='l'||e.key==='L'){ toggleRuler(); }
-  if(e.key==='d'||e.key==='D'){ toggleDimensions(); }
-  if(e.key==='n'&&!e.ctrlKey){ toggleNoteMode(); }
-});
+// P17.2: ?/F/V/L/D/N-Shortcuts sowie ?-triggered #kbd-overlay-Open
+// wurden nach src/input/keyboard.ts extrahiert (showKbdOverlay,
+// fitView, selectTool, toggleRuler, toggleDimensions, toggleNoteMode).
 
 // ════════════════════════════════════════════════════════════════════════
 // 8. FIT VIEW
@@ -19055,12 +19028,9 @@ function goToSlide(idx){
 function presentNext(){goToSlide(_presentSlide+1);}
 function presentPrev(){goToSlide(_presentSlide-1);}
 
-document.addEventListener('keydown',e=>{
-  if(!_presentMode) return;
-  if(e.key==='ArrowRight'||e.key===' ') presentNext();
-  if(e.key==='ArrowLeft') presentPrev();
-  if(e.key==='Escape') exitPresentation();
-});
+// P17.2: Präsentations-Mode Slide-Navigation (ArrowRight/Space/
+// ArrowLeft/Esc) lebt jetzt in src/input/keyboard.ts, gated via
+// isPresenting() → _presentMode. Kein Verhalten-Unterschied.
 
 // ── 5. LICHTTEMPERATUR ────────────────────────────────────────────────
 function setLightTemperature(temp){

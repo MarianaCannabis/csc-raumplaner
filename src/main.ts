@@ -34,6 +34,7 @@ import { t, setLang, LANG, availableLanguages } from './i18n/index.js';
 import type { SupportedLang } from './i18n/index.js';
 import { userTier, currentLimits, hasFeature, checkLimit, PLANS } from './config/features.js';
 import { buildPackList } from './compliance/packlist.js';
+import { registerGlobalShortcuts } from './input/keyboard.js';
 
 console.info('[csc] vite entry alive', import.meta.env.MODE);
 
@@ -172,4 +173,53 @@ window.cscPlan = { tier: userTier, limits: currentLimits, has: hasFeature, check
 queueMicrotask(() => {
   const el = document.getElementById('defaults-last-verified');
   if (el) el.textContent = defaults.latestLastVerified();
+});
+
+// P17.2: Global-Keyboard-Shortcuts (Teil-Extraktion). Liest die Legacy-
+// Handler aus window.*, damit der Wire-Up zur Boot-Zeit keine Top-Level-
+// Referenz mehr braucht (die Funktionen sind erst definiert, wenn das
+// inline-Script-Block in index.html durchgelaufen ist — type="module"
+// ist deferred, also sind wir hier garantiert nach den Legacy-Globals).
+// Nicht extrahiert: siehe Kommentar in src/input/keyboard.ts.
+type LegacyWindow = Window & {
+  openHelpModal?: () => void;
+  openHelp?: () => void;
+  closeHelp?: () => void;
+  showRight?: (panel: string) => void;
+  fitViewToRooms?: () => void;
+  set2DTool?: (tool: string) => void;
+  toggleRuler?: () => void;
+  toggleDimensions?: () => void;
+  toggleNoteMode?: () => void;
+  presentNext?: () => void;
+  presentPrev?: () => void;
+  exitPresentation?: () => void;
+  _presentMode?: boolean;
+};
+const legacyWin = window as LegacyWindow;
+registerGlobalShortcuts({
+  openHelpModal: () => legacyWin.openHelpModal?.(),
+  openHelp: () => legacyWin.openHelp?.(),
+  showKbdOverlay: () =>
+    document.getElementById('kbd-overlay')?.classList.add('vis'),
+  closeHelp: () => legacyWin.closeHelp?.(),
+  isHelpOverlayOpen: () =>
+    !!document.getElementById('help-overlay')?.classList.contains('open'),
+  focusAI: () => {
+    legacyWin.showRight?.('ai');
+    const inp = document.getElementById('ai-inp') as HTMLInputElement | null;
+    if (inp) {
+      inp.focus();
+      inp.select();
+    }
+  },
+  fitView: () => legacyWin.fitViewToRooms?.(),
+  selectTool: () => legacyWin.set2DTool?.('sel'),
+  toggleRuler: () => legacyWin.toggleRuler?.(),
+  toggleDimensions: () => legacyWin.toggleDimensions?.(),
+  toggleNoteMode: () => legacyWin.toggleNoteMode?.(),
+  isPresenting: () => !!legacyWin._presentMode,
+  presentNext: () => legacyWin.presentNext?.(),
+  presentPrev: () => legacyWin.presentPrev?.(),
+  exitPresentation: () => legacyWin.exitPresentation?.(),
 });
