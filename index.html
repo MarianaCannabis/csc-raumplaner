@@ -204,11 +204,15 @@
   <span class="tb-divider"></span>
 
   <!-- DROPDOWN MENUS -->
-  <div class="tb-menu-group">
+  <div class="tb-group tb-menus">
 
-    <!-- 📁 DATEI -->
+    <!-- 📁 DATEI (P15 Cluster 4d: .tb-btn--ghost + data-icon) -->
     <div class="tbm" id="tbm-file">
-      <button class="tbm-btn" data-tier="simple" onclick="toggleTBMenu('file')">📁 Datei <span class="tbm-arr">▾</span></button>
+      <button class="tb-btn tb-btn--ghost tbm-btn" data-tier="simple" onclick="toggleTBMenu('file')" aria-haspopup="true" aria-expanded="false">
+        <span class="tb-btn__icon" data-icon="file"></span>
+        <span class="tb-btn__label">Datei</span>
+        <span class="tb-btn__chev" data-icon="chevron"></span>
+      </button>
       <div class="tbm-drop" id="tbmd-file">
         <div class="tbm-item" data-tier="simple" onclick="newProj();closeTBMenu()">🆕 Neues Projekt</div>
         <div class="tbm-item" data-tier="simple" onclick="saveProj();closeTBMenu()">💾 Speichern <span class="tbm-kbd">Ctrl+S</span></div>
@@ -249,9 +253,13 @@
       </div>
     </div>
 
-    <!-- 👁 ANSICHT -->
+    <!-- 👁 ANSICHT (P15 Cluster 4d: .tb-btn--ghost + data-icon) -->
     <div class="tbm" id="tbm-view">
-      <button class="tbm-btn" data-tier="simple" onclick="toggleTBMenu('view')">👁 Ansicht <span class="tbm-arr">▾</span></button>
+      <button class="tb-btn tb-btn--ghost tbm-btn" data-tier="simple" onclick="toggleTBMenu('view')" aria-haspopup="true" aria-expanded="false">
+        <span class="tb-btn__icon" data-icon="layers"></span>
+        <span class="tb-btn__label">Ansicht</span>
+        <span class="tb-btn__chev" data-icon="chevron"></span>
+      </button>
       <div class="tbm-drop" id="tbmd-view">
         <div class="tbm-label">3D-Optionen</div>
         <div class="tbm-item" onclick="window.cscFrameScene&&window.cscFrameScene();closeTBMenu()">🎯 Ansicht zentrieren</div>
@@ -317,9 +325,13 @@
       </div>
     </div>
 
-    <!-- 📊 ANALYSE -->
+    <!-- 📊 ANALYSE (P15 Cluster 4d: .tb-btn--ghost + data-icon) -->
     <div class="tbm" id="tbm-analyse">
-      <button class="tbm-btn" data-tier="simple" onclick="toggleTBMenu('analyse')">📊 Analyse <span class="tbm-arr">▾</span></button>
+      <button class="tb-btn tb-btn--ghost tbm-btn" data-tier="simple" onclick="toggleTBMenu('analyse')" aria-haspopup="true" aria-expanded="false">
+        <span class="tb-btn__icon" data-icon="chart"></span>
+        <span class="tb-btn__label">Analyse</span>
+        <span class="tb-btn__chev" data-icon="chevron"></span>
+      </button>
       <div class="tbm-drop" id="tbmd-analyse">
         <div class="tbm-item" onclick="openAnalysisDashboard();closeTBMenu()">📊 Analyse-Dashboard</div>
         <div class="tbm-item" onclick="toggleVisitorFlow();closeTBMenu()" id="mi-visflow">👥 Besucherfluss-Animation</div>
@@ -403,9 +415,13 @@
       </div>
     </div>
 
-    <!-- 🤝 TEILEN -->
+    <!-- 🤝 TEILEN (P15 Cluster 4d: .tb-btn--ghost + data-icon) -->
     <div class="tbm" id="tbm-share">
-      <button class="tbm-btn" data-tier="simple" onclick="toggleTBMenu('share')">🔗 Teilen <span class="tbm-arr">▾</span></button>
+      <button class="tb-btn tb-btn--ghost tbm-btn" data-tier="simple" onclick="toggleTBMenu('share')" aria-haspopup="true" aria-expanded="false">
+        <span class="tb-btn__icon" data-icon="share"></span>
+        <span class="tb-btn__label">Teilen</span>
+        <span class="tb-btn__chev" data-icon="chevron"></span>
+      </button>
       <div class="tbm-drop" id="tbmd-share">
         <div class="tbm-item" onclick="shareProject();closeTBMenu()">🔗 Projekt-Link teilen</div>
         <div class="tbm-item" onclick="openVisionBoard();closeTBMenu()">🎨 Visions-Board</div>
@@ -422,7 +438,7 @@
     <!-- P15 Topbar-Cleanup: #tbm-tpl entfernt — Primary-Button
          #btn-templates (grün, prominent) erfüllt dieselbe Aufgabe. -->
 
-  </div><!-- .tb-menu-group -->
+  </div><!-- .tb-group.tb-menus (früher .tb-menu-group) -->
 
   <div class="tsep"></div>
 
@@ -11408,7 +11424,7 @@ function toggleTBMenu(id){
   closeTBMenu();
   _openMenu = id;
   drop.classList.add('open');
-  if(btn) btn.classList.add('open');
+  if(btn){ btn.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
   // Update active states for toggle items
   updateMenuActiveStates();
 }
@@ -11416,6 +11432,8 @@ function toggleTBMenu(id){
 function closeTBMenu(){
   document.querySelectorAll('.tbm-drop.open').forEach(d=>d.classList.remove('open'));
   document.querySelectorAll('.tbm-btn.open').forEach(b=>b.classList.remove('open'));
+  // P15 Cluster 4d: a11y — aria-expanded auf allen Dropdown-Triggern zurücksetzen.
+  document.querySelectorAll('.tbm-btn[aria-expanded]').forEach(b=>b.setAttribute('aria-expanded','false'));
   _openMenu = null;
 }
 

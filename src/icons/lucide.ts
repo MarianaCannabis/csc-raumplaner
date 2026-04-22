@@ -5,14 +5,17 @@
  * Icon ist eine 16×16 currentColor-stroke-Shape mit round-line-caps; der
  * Aufrufer steuert Farbe via CSS (color/stroke) und Größe via `size`.
  *
- * Scope (18 Icons, siehe design/topbar-redesign/README.md — Emoji-Mapping):
+ * Scope (19 Icons, siehe design/topbar-redesign/README.md — Emoji-Mapping):
  *   undo, redo, save, room, event, leaf, globe, file, layers, chart,
- *   share, sun, moon, square, cube, plus, more, help-circle
+ *   share, sun, moon, square, cube, plus, more, help-circle, chevron
  *
  * Bewusst NICHT portiert: Row-2-Tools (cursor, wall, roomdraw, area,
- * ruler, move, center, box, folder, sliders), view, clock, chevron.
+ * ruler, move, center, box, folder, sliders), view, clock.
  * Row-2 gehört in unsere Architektur nicht in die Topbar; view/clock
- * kommen in der App nicht vor; chevron wird via CSS oder Emoji gelöst.
+ * kommen in der App nicht vor.
+ *
+ * chevron: P15 Cluster 4d nachgereicht für die Dropdown-Menü-Trigger
+ * (Datei/Ansicht/Analyse/Teilen) — ersetzt den alten ▾-Unicode-Glyph.
  *
  * Usage:
  *   import { icon } from './icons/lucide.js';
@@ -37,7 +40,8 @@ export type IconName =
   | 'cube'
   | 'plus'
   | 'more'
-  | 'help-circle';
+  | 'help-circle'
+  | 'chevron';
 
 export interface IconOptions {
   /** Kantenlänge in px. Default 16 (passt zu --btn-h 32). */
@@ -77,6 +81,9 @@ const PATHS: Record<IconName, string> = {
   // für den ❓-Button erforderlich. Lucide-Standard-Form: Kreis + ?-Glyph.
   'help-circle':
     '<circle cx="8" cy="8" r="6"/><path d="M6.4 6a1.6 1.6 0 0 1 3.2.2c0 .8-.6 1.2-1.2 1.5-.5.3-.8.7-.8 1.3"/><circle cx="8" cy="11.4" r=".55" fill="currentColor" stroke="none"/>',
+  // chevron: Dropdown-Menu-Affordance, ersetzt den alten ▾-Unicode-Glyph
+  // in Datei/Ansicht/Analyse/Teilen (P15 Cluster 4d). Aus topbar.jsx.
+  chevron: '<path d="m4 6 4 4 4-4"/>',
 };
 
 /**
