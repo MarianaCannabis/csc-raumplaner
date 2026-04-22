@@ -10,15 +10,35 @@ import pkg from './package.json' with { type: 'json' };
 //                                index.html (define wirkt nicht auf HTML)
 const APP_VERSION = pkg.version;
 
-// P17: Catalog-Daten-Extraktion. BUILTIN + ARCH-Arrays werden aus
-// data/*.json geladen und zur Build-Zeit in index.html injiziert — die
-// Arrays sind 665 Zeilen Daten, die aus dem HTML-Monolith raus sollten.
-// Runtime-Verhalten identisch: BUILTIN/ARCH bleiben synchron verfügbar
-// beim Inline-Script-Execution, nur Source-Line-Count der index.html
-// schrumpft. Die Arrays werden beim Build als kompaktes JSON-Literal
-// injiziert (kein per-Element pretty-print, sonst bläht es wieder auf).
+// P17: Catalog-Daten-Extraktion + Literal-Optimierung.
+// BUILTIN + ARCH-Arrays werden aus data/*.json (source-of-truth, human-
+// readable) geladen und zur Build-Zeit als **JS-Object-Literal** mit
+// unquoted keys in index.html injiziert — nicht als JSON-Text. Grund:
+// "id":"x" kostet mehr Bytes als id:"x", und die Differenz komprimiert
+// nur teilweise weg (pretty→compact JSON: −1.4 KB gz; compact JSON→JS-
+// literal: weitere −0.4 KB gz, zusammen ≈ −1.8 KB gz gegen pretty-JSON).
+// Runtime identisch: ein JS-Object-Literal parst nach dem gleichen
+// JavaScript-Wert wie JSON.parse() — kein Verhalten-Unterschied.
+function toJsLiteral(value: unknown): string {
+  if (value === null) return 'null';
+  if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+  if (typeof value === 'string') return JSON.stringify(value); // Escape-sicher
+  if (Array.isArray(value)) return '[' + value.map(toJsLiteral).join(',') + ']';
+  if (typeof value === 'object') {
+    return '{' + Object.entries(value as Record<string, unknown>)
+      .map(([k, v]) => {
+        // Nur unquoted, wenn der Key ein valider JS-Identifier ist —
+        // bei numerischen oder Sonderzeichen-Keys fällt's zurück auf JSON.
+        const key = /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(k) ? k : JSON.stringify(k);
+        return key + ':' + toJsLiteral(v);
+      })
+      .join(',') + '}';
+  }
+  return 'null';
+}
 function loadCatalog(name: string) {
-  return readFileSync(`./data/${name}.json`, 'utf8').trim();
+  const parsed = JSON.parse(readFileSync(`./data/${name}.json`, 'utf8'));
+  return toJsLiteral(parsed);
 }
 const BUILTIN_JSON = loadCatalog('builtin');
 const ARCH_JSON = loadCatalog('arch');
