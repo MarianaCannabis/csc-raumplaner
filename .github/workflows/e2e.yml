@@ -16,7 +16,11 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-      - run: npm ci
+      # Using `npm install` instead of `npm ci`: the lockfile is authored on
+      # Windows and the Linux runner pulls different platform-conditional
+      # @emnapi optional deps — known npm bug (npm/cli#4828). Same reasoning
+      # as pages.yml + test.yml.
+      - run: npm install --no-audit --no-fund
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
       - name: Unit tests
