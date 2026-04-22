@@ -1,0 +1,3735 @@
+[
+  {
+    "id": "emp-theke",
+    "cat": "Empfang",
+    "icon": "🏪",
+    "name": "Empfangstheke",
+    "w": 2,
+    "d": 0.7,
+    "h": 1,
+    "col": 12086298
+  },
+  {
+    "id": "scanner",
+    "cat": "Empfang",
+    "icon": "📱",
+    "name": "Scanner Terminal",
+    "w": 0.4,
+    "d": 0.4,
+    "h": 1.2,
+    "col": 3820122
+  },
+  {
+    "id": "w-sofa",
+    "cat": "Empfang",
+    "icon": "🛋️",
+    "name": "Warte-Sofa",
+    "w": 2.1,
+    "d": 0.85,
+    "h": 0.75,
+    "col": 2973264
+  },
+  {
+    "id": "w-stuhl",
+    "cat": "Empfang",
+    "icon": "🪑",
+    "name": "Warte-Stuhl",
+    "w": 0.55,
+    "d": 0.55,
+    "h": 0.8,
+    "col": 2973264
+  },
+  {
+    "id": "aus-theke",
+    "cat": "Ausgabe",
+    "icon": "🌿",
+    "name": "Ausgabetheke",
+    "w": 2.5,
+    "d": 0.7,
+    "h": 1,
+    "col": 4880896
+  },
+  {
+    "id": "ber-tisch",
+    "cat": "Ausgabe",
+    "icon": "📋",
+    "name": "Beratungsplatz",
+    "w": 1.2,
+    "d": 0.65,
+    "h": 0.75,
+    "col": 5917237
+  },
+  {
+    "id": "kasse",
+    "cat": "Ausgabe",
+    "icon": "💰",
+    "name": "Kassensystem",
+    "w": 0.5,
+    "d": 0.4,
+    "h": 1.1,
+    "col": 1710618
+  },
+  {
+    "id": "locker",
+    "cat": "Ausgabe",
+    "icon": "🔐",
+    "name": "Ausgabefach",
+    "w": 0.5,
+    "d": 0.5,
+    "h": 1.8,
+    "col": 6320256
+  },
+  {
+    "id": "kuehlschr",
+    "cat": "Lager",
+    "icon": "❄️",
+    "name": "Kühlschrank",
+    "w": 0.7,
+    "d": 0.7,
+    "h": 2,
+    "col": 8956603
+  },
+  {
+    "id": "regal",
+    "cat": "Lager",
+    "icon": "📦",
+    "name": "Lagerregal",
+    "w": 1,
+    "d": 0.4,
+    "h": 2,
+    "col": 8020032
+  },
+  {
+    "id": "tresor",
+    "cat": "Lager",
+    "icon": "🔒",
+    "name": "Tresor",
+    "w": 0.55,
+    "d": 0.5,
+    "h": 0.65,
+    "col": 2236962
+  },
+  {
+    "id": "l-sofa",
+    "cat": "Sozial",
+    "icon": "🛋️",
+    "name": "Lounge-Sofa",
+    "w": 2.2,
+    "d": 0.9,
+    "h": 0.75,
+    "col": 5909136
+  },
+  {
+    "id": "ctisch",
+    "cat": "Sozial",
+    "icon": "🪵",
+    "name": "Couchtisch",
+    "w": 1.1,
+    "d": 0.55,
+    "h": 0.42,
+    "col": 8018480
+  },
+  {
+    "id": "etisch",
+    "cat": "Sozial",
+    "icon": "🍽️",
+    "name": "Esstisch",
+    "w": 1.8,
+    "d": 0.9,
+    "h": 0.75,
+    "col": 8018480
+  },
+  {
+    "id": "stuhl",
+    "cat": "Sozial",
+    "icon": "🪑",
+    "name": "Stuhl",
+    "w": 0.5,
+    "d": 0.5,
+    "h": 0.85,
+    "col": 4868714
+  },
+  {
+    "id": "pflanze-gr",
+    "cat": "Sozial",
+    "icon": "🌿",
+    "name": "Pflanze groß",
+    "w": 0.6,
+    "d": 0.6,
+    "h": 1.5,
+    "col": 2783786
+  },
+  {
+    "id": "pflanze-kl",
+    "cat": "Sozial",
+    "icon": "🌱",
+    "name": "Pflanze klein",
+    "w": 0.3,
+    "d": 0.3,
+    "h": 0.5,
+    "col": 3836474
+  },
+  {
+    "id": "kueche-z",
+    "cat": "Küche",
+    "icon": "🍳",
+    "name": "Küchenzeile",
+    "w": 2.4,
+    "d": 0.6,
+    "h": 0.9,
+    "col": 14540253
+  },
+  {
+    "id": "kaffeemsch",
+    "cat": "Küche",
+    "icon": "☕",
+    "name": "Kaffeemaschine",
+    "w": 0.36,
+    "d": 0.3,
+    "h": 0.48,
+    "col": 1118481
+  },
+  {
+    "id": "barhocker",
+    "cat": "Küche",
+    "icon": "🪑",
+    "name": "Barhocker",
+    "w": 0.4,
+    "d": 0.4,
+    "h": 1,
+    "col": 9068592
+  },
+  {
+    "id": "kschr-kl",
+    "cat": "Küche",
+    "icon": "🧊",
+    "name": "Mini-Kühlschr.",
+    "w": 0.5,
+    "d": 0.55,
+    "h": 1.45,
+    "col": 13426158
+  },
+  {
+    "id": "infowand",
+    "cat": "Info",
+    "icon": "📌",
+    "name": "Infowand",
+    "w": 1.5,
+    "d": 0.08,
+    "h": 1.8,
+    "col": 6957712
+  },
+  {
+    "id": "pinnwand",
+    "cat": "Info",
+    "icon": "📋",
+    "name": "Pinnwand",
+    "w": 1.2,
+    "d": 0.08,
+    "h": 0.9,
+    "col": 12619786
+  },
+  {
+    "id": "monitor",
+    "cat": "Info",
+    "icon": "📺",
+    "name": "Monitor/TV",
+    "w": 1.2,
+    "d": 0.08,
+    "h": 0.7,
+    "col": 657930
+  },
+  {
+    "id": "emp-theke-l",
+    "cat": "Empfang",
+    "icon": "🏪",
+    "name": "Empfangstheke L-Form",
+    "w": 3,
+    "d": 0.7,
+    "h": 1,
+    "col": 12086298
+  },
+  {
+    "id": "emp-theke-u",
+    "cat": "Empfang",
+    "icon": "🏪",
+    "name": "Empfangstheke U-Form",
+    "w": 3.5,
+    "d": 1.4,
+    "h": 1,
+    "col": 12086298
+  },
+  {
+    "id": "rezeption",
+    "cat": "Empfang",
+    "icon": "🖥️",
+    "name": "Rezeptionspult",
+    "w": 1.6,
+    "d": 0.8,
+    "h": 1.1,
+    "col": 2763322
+  },
+  {
+    "id": "w-bank",
+    "cat": "Empfang",
+    "icon": "🪑",
+    "name": "Wartebank 3-Sitzer",
+    "w": 1.8,
+    "d": 0.6,
+    "h": 0.8,
+    "col": 3820122
+  },
+  {
+    "id": "w-sessel",
+    "cat": "Empfang",
+    "icon": "🪑",
+    "name": "Wartesessel",
+    "w": 0.7,
+    "d": 0.7,
+    "h": 0.85,
+    "col": 2973264
+  },
+  {
+    "id": "info-desk",
+    "cat": "Empfang",
+    "icon": "ℹ️",
+    "name": "Info-Desk",
+    "w": 1.2,
+    "d": 0.6,
+    "h": 0.9,
+    "col": 3816026
+  },
+  {
+    "id": "aus-theke-l",
+    "cat": "Ausgabe",
+    "icon": "🌿",
+    "name": "Ausgabetheke groß",
+    "w": 3.5,
+    "d": 0.7,
+    "h": 1,
+    "col": 4880896
+  },
+  {
+    "id": "ber-platz-2",
+    "cat": "Ausgabe",
+    "icon": "📋",
+    "name": "Beratungszone",
+    "w": 2.4,
+    "d": 1.2,
+    "h": 0.75,
+    "col": 5917237
+  },
+  {
+    "id": "display-kl",
+    "cat": "Ausgabe",
+    "icon": "🖼️",
+    "name": "Produktdisplay klein",
+    "w": 0.6,
+    "d": 0.3,
+    "h": 1.4,
+    "col": 1710634
+  },
+  {
+    "id": "display-gr",
+    "cat": "Ausgabe",
+    "icon": "🖼️",
+    "name": "Produktdisplay groß",
+    "w": 1.2,
+    "d": 0.3,
+    "h": 1.6,
+    "col": 1710634
+  },
+  {
+    "id": "tablett-disp",
+    "cat": "Ausgabe",
+    "icon": "📱",
+    "name": "Tablett-Ständer",
+    "w": 0.3,
+    "d": 0.3,
+    "h": 1.2,
+    "col": 1118481
+  },
+  {
+    "id": "schilder-w",
+    "cat": "Ausgabe",
+    "icon": "🔖",
+    "name": "Schilderhalter Wand",
+    "w": 0.5,
+    "d": 0.08,
+    "h": 0.6,
+    "col": 8947848
+  },
+  {
+    "id": "regal-hoch",
+    "cat": "Lager",
+    "icon": "📦",
+    "name": "Hochregal 2.4m",
+    "w": 1.2,
+    "d": 0.5,
+    "h": 2.4,
+    "col": 8020032
+  },
+  {
+    "id": "regal-breit",
+    "cat": "Lager",
+    "icon": "📦",
+    "name": "Breitregal 2m",
+    "w": 2,
+    "d": 0.5,
+    "h": 2,
+    "col": 8020032
+  },
+  {
+    "id": "rollwagen",
+    "cat": "Lager",
+    "icon": "🛒",
+    "name": "Rollwagen",
+    "w": 0.6,
+    "d": 0.45,
+    "h": 0.9,
+    "col": 8947848
+  },
+  {
+    "id": "kuehl-gr",
+    "cat": "Lager",
+    "icon": "❄️",
+    "name": "Kühlschrank groß",
+    "w": 0.9,
+    "d": 0.85,
+    "h": 2.1,
+    "col": 8956603
+  },
+  {
+    "id": "safe-boden",
+    "cat": "Lager",
+    "icon": "🔒",
+    "name": "Bodentresor",
+    "w": 0.4,
+    "d": 0.4,
+    "h": 0.25,
+    "col": 2236962
+  },
+  {
+    "id": "abfall",
+    "cat": "Lager",
+    "icon": "🗑️",
+    "name": "Abfallbehälter",
+    "w": 0.35,
+    "d": 0.35,
+    "h": 0.65,
+    "col": 4473924
+  },
+  {
+    "id": "sofa-2",
+    "cat": "Sozial",
+    "icon": "🛋️",
+    "name": "2-Sitzer Sofa",
+    "w": 1.5,
+    "d": 0.85,
+    "h": 0.75,
+    "col": 5909136
+  },
+  {
+    "id": "sofa-eck",
+    "cat": "Sozial",
+    "icon": "🛋️",
+    "name": "Ecksofa",
+    "w": 2.8,
+    "d": 2.2,
+    "h": 0.75,
+    "col": 2763386
+  },
+  {
+    "id": "ottomane",
+    "cat": "Sozial",
+    "icon": "🪑",
+    "name": "Ottomane/Hocker",
+    "w": 0.6,
+    "d": 0.6,
+    "h": 0.4,
+    "col": 4864618
+  },
+  {
+    "id": "stehlampe",
+    "cat": "Sozial",
+    "icon": "💡",
+    "name": "Stehlampe",
+    "w": 0.3,
+    "d": 0.3,
+    "h": 1.6,
+    "col": 9075296
+  },
+  {
+    "id": "beistelltisch",
+    "cat": "Sozial",
+    "icon": "🪵",
+    "name": "Beistelltisch",
+    "w": 0.5,
+    "d": 0.5,
+    "h": 0.55,
+    "col": 8018480
+  },
+  {
+    "id": "tv-bank",
+    "cat": "Sozial",
+    "icon": "📺",
+    "name": "TV-Bank",
+    "w": 1.8,
+    "d": 0.45,
+    "h": 0.45,
+    "col": 2763306
+  },
+  {
+    "id": "buecher",
+    "cat": "Sozial",
+    "icon": "📚",
+    "name": "Bücherregal",
+    "w": 0.8,
+    "d": 0.3,
+    "h": 2,
+    "col": 6969920
+  },
+  {
+    "id": "spieltisch",
+    "cat": "Sozial",
+    "icon": "🎮",
+    "name": "Spieltisch",
+    "w": 1.4,
+    "d": 1,
+    "h": 0.75,
+    "col": 3820074
+  },
+  {
+    "id": "pflanze-xl",
+    "cat": "Sozial",
+    "icon": "🌳",
+    "name": "Pflanze XL (Baum)",
+    "w": 1,
+    "d": 1,
+    "h": 2.2,
+    "col": 1727002
+  },
+  {
+    "id": "blumentopf",
+    "cat": "Sozial",
+    "icon": "🪴",
+    "name": "Blumentopf Keramik",
+    "w": 0.25,
+    "d": 0.25,
+    "h": 0.3,
+    "col": 11558960
+  },
+  {
+    "id": "kueche-insel",
+    "cat": "Küche",
+    "icon": "🍳",
+    "name": "Kücheninsel",
+    "w": 1.6,
+    "d": 1,
+    "h": 0.9,
+    "col": 13421772
+  },
+  {
+    "id": "spuele",
+    "cat": "Küche",
+    "icon": "🚿",
+    "name": "Spüle",
+    "w": 0.8,
+    "d": 0.55,
+    "h": 0.88,
+    "col": 11184810
+  },
+  {
+    "id": "backofen",
+    "cat": "Küche",
+    "icon": "♨️",
+    "name": "Backofen",
+    "w": 0.6,
+    "d": 0.55,
+    "h": 0.9,
+    "col": 1710618
+  },
+  {
+    "id": "mikrowelle",
+    "cat": "Küche",
+    "icon": "📦",
+    "name": "Mikrowelle",
+    "w": 0.5,
+    "d": 0.38,
+    "h": 0.3,
+    "col": 1710618
+  },
+  {
+    "id": "kasse-bar",
+    "cat": "Küche",
+    "icon": "💰",
+    "name": "Bar-Kasse",
+    "w": 0.4,
+    "d": 0.35,
+    "h": 0.5,
+    "col": 1118481
+  },
+  {
+    "id": "bartresen",
+    "cat": "Küche",
+    "icon": "🍺",
+    "name": "Bartresen",
+    "w": 2.5,
+    "d": 0.65,
+    "h": 1.05,
+    "col": 4861984
+  },
+  {
+    "id": "schreibtisch",
+    "cat": "Info",
+    "icon": "🖥️",
+    "name": "Schreibtisch",
+    "w": 1.4,
+    "d": 0.7,
+    "h": 0.75,
+    "col": 15789284
+  },
+  {
+    "id": "buero-stuhl",
+    "cat": "Info",
+    "icon": "🪑",
+    "name": "Bürostuhl",
+    "w": 0.6,
+    "d": 0.6,
+    "h": 1.1,
+    "col": 1118481
+  },
+  {
+    "id": "aktenschr",
+    "cat": "Info",
+    "icon": "🗄️",
+    "name": "Aktenschrank",
+    "w": 0.8,
+    "d": 0.45,
+    "h": 1.8,
+    "col": 9079450
+  },
+  {
+    "id": "drucker",
+    "cat": "Info",
+    "icon": "🖨️",
+    "name": "Drucker/Scanner",
+    "w": 0.5,
+    "d": 0.4,
+    "h": 0.35,
+    "col": 2236962
+  },
+  {
+    "id": "monitor-gr",
+    "cat": "Info",
+    "icon": "📺",
+    "name": "Monitor groß (50\")",
+    "w": 1.4,
+    "d": 0.1,
+    "h": 0.85,
+    "col": 657930
+  },
+  {
+    "id": "whiteboard",
+    "cat": "Info",
+    "icon": "📋",
+    "name": "Whiteboard",
+    "w": 1.8,
+    "d": 0.06,
+    "h": 1.2,
+    "col": 16316664
+  },
+  {
+    "id": "aussen-tisch",
+    "cat": "Außen",
+    "icon": "🪑",
+    "name": "Außentisch",
+    "w": 1.2,
+    "d": 0.7,
+    "h": 0.75,
+    "col": 5921370
+  },
+  {
+    "id": "aussen-bank",
+    "cat": "Außen",
+    "icon": "🪑",
+    "name": "Außenbank",
+    "w": 1.5,
+    "d": 0.45,
+    "h": 0.78,
+    "col": 5921370
+  },
+  {
+    "id": "sonnenschirm",
+    "cat": "Außen",
+    "icon": "☂️",
+    "name": "Sonnenschirm",
+    "w": 2.5,
+    "d": 2.5,
+    "h": 2.2,
+    "col": 4876858
+  },
+  {
+    "id": "blumenkuebel",
+    "cat": "Außen",
+    "icon": "🌺",
+    "name": "Blumenkübel groß",
+    "w": 0.6,
+    "d": 0.6,
+    "h": 0.6,
+    "col": 9064496
+  },
+  {
+    "id": "server-schr",
+    "cat": "Technik",
+    "icon": "🖥️",
+    "name": "Serverschrank",
+    "w": 0.6,
+    "d": 0.8,
+    "h": 2,
+    "col": 1710634
+  },
+  {
+    "id": "netzwerk-sw",
+    "cat": "Technik",
+    "icon": "📡",
+    "name": "Netzwerkswitch",
+    "w": 0.44,
+    "d": 0.25,
+    "h": 0.06,
+    "col": 1710618
+  },
+  {
+    "id": "ups",
+    "cat": "Technik",
+    "icon": "🔋",
+    "name": "USV (Notstrom)",
+    "w": 0.6,
+    "d": 0.3,
+    "h": 0.5,
+    "col": 2763306
+  },
+  {
+    "id": "klimaanlage",
+    "cat": "Technik",
+    "icon": "❄️",
+    "name": "Klimagerät Wand",
+    "w": 0.9,
+    "d": 0.22,
+    "h": 0.3,
+    "col": 15658734
+  },
+  {
+    "id": "person",
+    "cat": "Sonstiges",
+    "icon": "🧍",
+    "name": "Person (Maßstab)",
+    "w": 0.5,
+    "d": 0.3,
+    "h": 1.75,
+    "col": 4868714
+  },
+  {
+    "id": "wc-klo",
+    "cat": "WC",
+    "icon": "🚽",
+    "name": "WC",
+    "w": 0.4,
+    "d": 0.7,
+    "h": 0.8,
+    "col": 15658734
+  },
+  {
+    "id": "wc-beck",
+    "cat": "WC",
+    "icon": "🚿",
+    "name": "Waschbecken",
+    "w": 0.6,
+    "d": 0.5,
+    "h": 0.85,
+    "col": 15658734
+  },
+  {
+    "id": "wc-kab",
+    "cat": "WC",
+    "icon": "🚪",
+    "name": "WC-Kabine",
+    "w": 1,
+    "d": 1.2,
+    "h": 2.2,
+    "col": 13421772
+  },
+  {
+    "id": "emp-theke-rund",
+    "cat": "Empfang",
+    "icon": "⭕",
+    "name": "Runde Empfangstheke",
+    "w": 2,
+    "d": 2,
+    "h": 1,
+    "col": 9067562
+  },
+  {
+    "id": "emp-theke-glas",
+    "cat": "Empfang",
+    "icon": "🔷",
+    "name": "Glastheke Empfang",
+    "w": 2.4,
+    "d": 0.6,
+    "h": 1.1,
+    "col": 8965375
+  },
+  {
+    "id": "w-bank-2",
+    "cat": "Empfang",
+    "icon": "🪑",
+    "name": "Wartesitzbank 2er",
+    "w": 1.2,
+    "d": 0.5,
+    "h": 0.45,
+    "col": 4871528
+  },
+  {
+    "id": "w-bank-3",
+    "cat": "Empfang",
+    "icon": "🪑",
+    "name": "Wartesitzbank 3er",
+    "w": 1.8,
+    "d": 0.5,
+    "h": 0.45,
+    "col": 4871528
+  },
+  {
+    "id": "nummerndisp",
+    "cat": "Empfang",
+    "icon": "🔢",
+    "name": "Nummernausgabe",
+    "w": 0.3,
+    "d": 0.3,
+    "h": 1.5,
+    "col": 2963272
+  },
+  {
+    "id": "absperrpfosten",
+    "cat": "Empfang",
+    "icon": "🚧",
+    "name": "Absperrpfosten",
+    "w": 0.1,
+    "d": 0.1,
+    "h": 1,
+    "col": 12623904
+  },
+  {
+    "id": "rollstuhlrampe",
+    "cat": "Empfang",
+    "icon": "♿",
+    "name": "Rollstuhlrampe",
+    "w": 1.2,
+    "d": 1.5,
+    "h": 0.1,
+    "col": 13421772
+  },
+  {
+    "id": "emp-monitor",
+    "cat": "Empfang",
+    "icon": "🖥",
+    "name": "Info-Monitor Wand",
+    "w": 1.2,
+    "d": 0.1,
+    "h": 0.7,
+    "col": 1710638
+  },
+  {
+    "id": "garderobenst",
+    "cat": "Empfang",
+    "icon": "🧥",
+    "name": "Garderobenständer",
+    "w": 0.5,
+    "d": 0.5,
+    "h": 1.8,
+    "col": 9139029
+  },
+  {
+    "id": "aus-theke-u",
+    "cat": "Ausgabe",
+    "icon": "🌿",
+    "name": "Ausgabetheke U-Form",
+    "w": 3,
+    "d": 2.5,
+    "h": 1,
+    "col": 1467700
+  },
+  {
+    "id": "wieggeraet",
+    "cat": "Ausgabe",
+    "icon": "⚖",
+    "name": "Präzisionswaage",
+    "w": 0.3,
+    "d": 0.3,
+    "h": 0.1,
+    "col": 4871528
+  },
+  {
+    "id": "etikdrucker",
+    "cat": "Ausgabe",
+    "icon": "🖨",
+    "name": "Etikettendrucker",
+    "w": 0.2,
+    "d": 0.3,
+    "h": 0.2,
+    "col": 2963272
+  },
+  {
+    "id": "kasse-ipad",
+    "cat": "Ausgabe",
+    "icon": "📱",
+    "name": "iPad-Kasse",
+    "w": 0.25,
+    "d": 0.2,
+    "h": 0.5,
+    "col": 1710638
+  },
+  {
+    "id": "ausgabe-tresor",
+    "cat": "Ausgabe",
+    "icon": "🔐",
+    "name": "Ausgabe-Tresor",
+    "w": 0.6,
+    "d": 0.5,
+    "h": 0.8,
+    "col": 2963272
+  },
+  {
+    "id": "produktdisp",
+    "cat": "Ausgabe",
+    "icon": "🌿",
+    "name": "Produktdisplay",
+    "w": 0.8,
+    "d": 0.4,
+    "h": 1.5,
+    "col": 1717024
+  },
+  {
+    "id": "altersverif",
+    "cat": "Ausgabe",
+    "icon": "🪪",
+    "name": "Ausweisscanner",
+    "w": 0.25,
+    "d": 0.15,
+    "h": 0.15,
+    "col": 2963272
+  },
+  {
+    "id": "regal-modul",
+    "cat": "Lager",
+    "icon": "🗄",
+    "name": "Lagerregal Modul",
+    "w": 1,
+    "d": 0.5,
+    "h": 2.2,
+    "col": 8947848
+  },
+  {
+    "id": "kuehlvitrine",
+    "cat": "Lager",
+    "icon": "❄",
+    "name": "Kühlvitrine",
+    "w": 1.2,
+    "d": 0.7,
+    "h": 2,
+    "col": 4885146
+  },
+  {
+    "id": "kuehlzelle",
+    "cat": "Lager",
+    "icon": "🧊",
+    "name": "Kühlzelle 2x2m",
+    "w": 2,
+    "d": 2,
+    "h": 2.5,
+    "col": 2775674
+  },
+  {
+    "id": "hubwagen",
+    "cat": "Lager",
+    "icon": "🛒",
+    "name": "Hubwagen",
+    "w": 0.8,
+    "d": 1.2,
+    "h": 1.2,
+    "col": 12623904
+  },
+  {
+    "id": "verpackungsst",
+    "cat": "Lager",
+    "icon": "📦",
+    "name": "Verpackungsstation",
+    "w": 1.5,
+    "d": 0.7,
+    "h": 0.9,
+    "col": 13150320
+  },
+  {
+    "id": "abfallcont",
+    "cat": "Lager",
+    "icon": "🗑",
+    "name": "Abfallcontainer",
+    "w": 0.6,
+    "d": 0.6,
+    "h": 1,
+    "col": 4473924
+  },
+  {
+    "id": "couch-2",
+    "cat": "Sozial",
+    "icon": "🛋",
+    "name": "2er Couch",
+    "w": 1.6,
+    "d": 0.85,
+    "h": 0.75,
+    "col": 4876890
+  },
+  {
+    "id": "couch-3",
+    "cat": "Sozial",
+    "icon": "🛋",
+    "name": "3er Couch",
+    "w": 2.2,
+    "d": 0.85,
+    "h": 0.75,
+    "col": 4876890
+  },
+  {
+    "id": "sessel",
+    "cat": "Sozial",
+    "icon": "🪑",
+    "name": "Lounge-Sessel",
+    "w": 0.85,
+    "d": 0.85,
+    "h": 0.85,
+    "col": 5917322
+  },
+  {
+    "id": "hocker-bar",
+    "cat": "Sozial",
+    "icon": "🪑",
+    "name": "Barhocker",
+    "w": 0.4,
+    "d": 0.4,
+    "h": 0.75,
+    "col": 8018490
+  },
+  {
+    "id": "stehtisch",
+    "cat": "Sozial",
+    "icon": "🪑",
+    "name": "Stehtisch",
+    "w": 0.7,
+    "d": 0.7,
+    "h": 1.1,
+    "col": 9071178
+  },
+  {
+    "id": "pool-tisch",
+    "cat": "Sozial",
+    "icon": "🎱",
+    "name": "Billardtisch",
+    "w": 2.5,
+    "d": 1.4,
+    "h": 0.85,
+    "col": 1727018
+  },
+  {
+    "id": "darts",
+    "cat": "Sozial",
+    "icon": "🎯",
+    "name": "Dartscheibe",
+    "w": 0.5,
+    "d": 0.1,
+    "h": 0.5,
+    "col": 2763306
+  },
+  {
+    "id": "flipper",
+    "cat": "Sozial",
+    "icon": "🎮",
+    "name": "Flipper/Arcade",
+    "w": 0.7,
+    "d": 1.5,
+    "h": 2,
+    "col": 2767498
+  },
+  {
+    "id": "jukebox",
+    "cat": "Sozial",
+    "icon": "🎵",
+    "name": "Jukebox",
+    "w": 0.7,
+    "d": 0.4,
+    "h": 1.6,
+    "col": 9054826
+  },
+  {
+    "id": "pflanze-haeng",
+    "cat": "Sozial",
+    "icon": "🪴",
+    "name": "Hängepflanze",
+    "w": 0.4,
+    "d": 0.4,
+    "h": 0.6,
+    "col": 2976314
+  },
+  {
+    "id": "trennwand",
+    "cat": "Sozial",
+    "icon": "🪟",
+    "name": "Trennwand/Paravent",
+    "w": 1.8,
+    "d": 0.05,
+    "h": 1.8,
+    "col": 13150320
+  },
+  {
+    "id": "teppich-gr",
+    "cat": "Sozial",
+    "icon": "🟫",
+    "name": "Teppich groß",
+    "w": 3,
+    "d": 2,
+    "h": 0.01,
+    "col": 9067066
+  },
+  {
+    "id": "sideboard",
+    "cat": "Sozial",
+    "icon": "🗄",
+    "name": "Sideboard",
+    "w": 1.6,
+    "d": 0.45,
+    "h": 0.8,
+    "col": 6969930
+  },
+  {
+    "id": "aquarium",
+    "cat": "Sozial",
+    "icon": "🐠",
+    "name": "Aquarium",
+    "w": 1.2,
+    "d": 0.5,
+    "h": 0.6,
+    "col": 1722986
+  },
+  {
+    "id": "kueche-l-form",
+    "cat": "Küche",
+    "icon": "🍳",
+    "name": "Küchenzeile L-Form",
+    "w": 3,
+    "d": 3,
+    "h": 0.9,
+    "col": 10127994
+  },
+  {
+    "id": "getr-kuehl",
+    "cat": "Küche",
+    "icon": "🍺",
+    "name": "Getränkekühlschrank",
+    "w": 0.6,
+    "d": 0.6,
+    "h": 1.85,
+    "col": 2771562
+  },
+  {
+    "id": "wasserspender",
+    "cat": "Küche",
+    "icon": "💧",
+    "name": "Wasserspender",
+    "w": 0.3,
+    "d": 0.3,
+    "h": 1.5,
+    "col": 4885179
+  },
+  {
+    "id": "snack-auto",
+    "cat": "Küche",
+    "icon": "🍪",
+    "name": "Snack-Automat",
+    "w": 0.9,
+    "d": 0.8,
+    "h": 1.8,
+    "col": 4868714
+  },
+  {
+    "id": "getr-auto",
+    "cat": "Küche",
+    "icon": "🥤",
+    "name": "Getränkeautomat",
+    "w": 0.8,
+    "d": 0.7,
+    "h": 1.9,
+    "col": 3816026
+  },
+  {
+    "id": "geschirrsp",
+    "cat": "Küche",
+    "icon": "🫧",
+    "name": "Geschirrspüler",
+    "w": 0.6,
+    "d": 0.6,
+    "h": 0.85,
+    "col": 10132122
+  },
+  {
+    "id": "besprtisch",
+    "cat": "Büro",
+    "icon": "📋",
+    "name": "Besprechungstisch",
+    "w": 2.4,
+    "d": 1.2,
+    "h": 0.75,
+    "col": 9075290
+  },
+  {
+    "id": "aktenwand",
+    "cat": "Büro",
+    "icon": "📁",
+    "name": "Aktenwand",
+    "w": 2,
+    "d": 0.4,
+    "h": 2.2,
+    "col": 6969930
+  },
+  {
+    "id": "flipchart",
+    "cat": "Büro",
+    "icon": "📊",
+    "name": "Flipchart",
+    "w": 0.7,
+    "d": 0.6,
+    "h": 1.8,
+    "col": 16777215
+  },
+  {
+    "id": "beamer",
+    "cat": "Büro",
+    "icon": "📽",
+    "name": "Beamer",
+    "w": 0.3,
+    "d": 0.3,
+    "h": 0.15,
+    "col": 2763322
+  },
+  {
+    "id": "leinwand",
+    "cat": "Büro",
+    "icon": "⬜",
+    "name": "Leinwand",
+    "w": 2,
+    "d": 0.05,
+    "h": 1.5,
+    "col": 16448250
+  },
+  {
+    "id": "aktenvernichter",
+    "cat": "Büro",
+    "icon": "🗑",
+    "name": "Aktenvernichter",
+    "w": 0.3,
+    "d": 0.3,
+    "h": 0.6,
+    "col": 4868682
+  },
+  {
+    "id": "netzwerkschr",
+    "cat": "Technik",
+    "icon": "🖥",
+    "name": "Netzwerkschrank",
+    "w": 0.6,
+    "d": 0.8,
+    "h": 2,
+    "col": 1710634
+  },
+  {
+    "id": "klimasplit",
+    "cat": "Technik",
+    "icon": "❄",
+    "name": "Split-Klimaanlage",
+    "w": 1,
+    "d": 0.25,
+    "h": 0.3,
+    "col": 14540253
+  },
+  {
+    "id": "wlan-ap",
+    "cat": "Technik",
+    "icon": "📶",
+    "name": "WLAN Access Point",
+    "w": 0.25,
+    "d": 0.25,
+    "h": 0.05,
+    "col": 16777215
+  },
+  {
+    "id": "ups-anlage",
+    "cat": "Technik",
+    "icon": "🔋",
+    "name": "USV Anlage",
+    "w": 0.6,
+    "d": 0.4,
+    "h": 0.6,
+    "col": 2763338
+  },
+  {
+    "id": "strom-verteiler",
+    "cat": "Technik",
+    "icon": "⚡",
+    "name": "Stromverteiler",
+    "w": 0.4,
+    "d": 0.2,
+    "h": 0.6,
+    "col": 3816010
+  },
+  {
+    "id": "aussenst",
+    "cat": "Außen",
+    "icon": "🪑",
+    "name": "Außenstuhl",
+    "w": 0.5,
+    "d": 0.5,
+    "h": 0.85,
+    "col": 9071178
+  },
+  {
+    "id": "aussentisch",
+    "cat": "Außen",
+    "icon": "🪵",
+    "name": "Außentisch",
+    "w": 1.2,
+    "d": 0.8,
+    "h": 0.75,
+    "col": 9071178
+  },
+  {
+    "id": "sonnenschirm",
+    "cat": "Außen",
+    "icon": "⛱",
+    "name": "Sonnenschirm",
+    "w": 2.5,
+    "d": 2.5,
+    "h": 2.5,
+    "col": 15777840
+  },
+  {
+    "id": "fahrradst",
+    "cat": "Außen",
+    "icon": "🚲",
+    "name": "Fahrradständer",
+    "w": 2,
+    "d": 0.5,
+    "h": 1,
+    "col": 8947848
+  },
+  {
+    "id": "blumenkuebel",
+    "cat": "Außen",
+    "icon": "🌸",
+    "name": "Blumenkübel groß",
+    "w": 0.6,
+    "d": 0.6,
+    "h": 0.5,
+    "col": 9067066
+  },
+  {
+    "id": "person-sit",
+    "cat": "Sonstiges",
+    "icon": "🧍",
+    "name": "Person sitzend",
+    "w": 0.5,
+    "d": 0.5,
+    "h": 1.2,
+    "col": 4868714
+  },
+  {
+    "id": "person-roll",
+    "cat": "Sonstiges",
+    "icon": "♿",
+    "name": "Rollstuhlfahrer",
+    "w": 0.65,
+    "d": 1,
+    "h": 1.2,
+    "col": 3824266
+  },
+  {
+    "id": "person-gehe",
+    "cat": "Sonstiges",
+    "icon": "🚶",
+    "name": "Person gehend",
+    "w": 0.5,
+    "d": 0.8,
+    "h": 1.75,
+    "col": 5917290
+  },
+  {
+    "id": "emp-locker",
+    "cat": "Empfang",
+    "icon": "🗄",
+    "name": "Garderobenschrank",
+    "w": 1.2,
+    "d": 0.5,
+    "h": 1.8,
+    "col": 4868682
+  },
+  {
+    "id": "emp-spind",
+    "cat": "Empfang",
+    "icon": "🔐",
+    "name": "Schließfachanlage",
+    "w": 1.8,
+    "d": 0.4,
+    "h": 1.8,
+    "col": 5921370
+  },
+  {
+    "id": "emp-ticketauto",
+    "cat": "Empfang",
+    "icon": "🎫",
+    "name": "Ticketautomat",
+    "w": 0.4,
+    "d": 0.4,
+    "h": 1.3,
+    "col": 3368499
+  },
+  {
+    "id": "aus-rfid",
+    "cat": "Ausgabe",
+    "icon": "📡",
+    "name": "RFID-Kontrollgate",
+    "w": 1,
+    "d": 0.2,
+    "h": 1.2,
+    "col": 3368516
+  },
+  {
+    "id": "aus-rollbehälter",
+    "cat": "Ausgabe",
+    "icon": "📦",
+    "name": "Rollbehälter",
+    "w": 0.6,
+    "d": 0.4,
+    "h": 0.9,
+    "col": 11184810
+  },
+  {
+    "id": "lag-palette",
+    "cat": "Lager",
+    "icon": "📦",
+    "name": "Europalette",
+    "w": 1.2,
+    "d": 0.8,
+    "h": 0.15,
+    "col": 10516544
+  },
+  {
+    "id": "lag-stapler",
+    "cat": "Lager",
+    "icon": "🔧",
+    "name": "Handgabelstapler",
+    "w": 0.7,
+    "d": 1.5,
+    "h": 1.2,
+    "col": 16106776
+  },
+  {
+    "id": "lag-sicherheitsschrank",
+    "cat": "Lager",
+    "icon": "🔐",
+    "name": "Sicherheitsschrank",
+    "w": 0.8,
+    "d": 0.5,
+    "h": 1.8,
+    "col": 3815994
+  },
+  {
+    "id": "soz-pouf",
+    "cat": "Sozial",
+    "icon": "🪑",
+    "name": "Pouf/Sitzkissen",
+    "w": 0.8,
+    "d": 0.8,
+    "h": 0.4,
+    "col": 7031850
+  },
+  {
+    "id": "soz-bar-theke",
+    "cat": "Sozial",
+    "icon": "🍺",
+    "name": "Bar-Theke offen",
+    "w": 2.5,
+    "d": 0.6,
+    "h": 1.1,
+    "col": 5911840
+  },
+  {
+    "id": "soz-dj-pult",
+    "cat": "Sozial",
+    "icon": "🎧",
+    "name": "DJ-Pult",
+    "w": 1.5,
+    "d": 0.7,
+    "h": 1,
+    "col": 2236962
+  },
+  {
+    "id": "soz-raumteiler",
+    "cat": "Sozial",
+    "icon": "🪟",
+    "name": "Akustik-Raumteiler",
+    "w": 1.6,
+    "d": 0.05,
+    "h": 1.5,
+    "col": 13156528
+  },
+  {
+    "id": "kue-espresso",
+    "cat": "Küche",
+    "icon": "☕",
+    "name": "Espressomaschine Profi",
+    "w": 0.6,
+    "d": 0.5,
+    "h": 0.5,
+    "col": 3355443
+  },
+  {
+    "id": "kue-tiefkuehl",
+    "cat": "Küche",
+    "icon": "❄",
+    "name": "Tiefkühlschrank",
+    "w": 0.7,
+    "d": 0.7,
+    "h": 2,
+    "col": 14540253
+  },
+  {
+    "id": "kue-ausgabe",
+    "cat": "Küche",
+    "icon": "🍽",
+    "name": "Speiseausgabe Theke",
+    "w": 2,
+    "d": 0.7,
+    "h": 0.9,
+    "col": 13421772
+  },
+  {
+    "id": "bue-stehtisch",
+    "cat": "Büro",
+    "icon": "🖥",
+    "name": "Höhenverstellbarer Tisch",
+    "w": 1.4,
+    "d": 0.7,
+    "h": 0.75,
+    "col": 15261904
+  },
+  {
+    "id": "bue-raumteiler",
+    "cat": "Büro",
+    "icon": "🪟",
+    "name": "Akustik-Trennwand",
+    "w": 1.6,
+    "d": 0.05,
+    "h": 1.5,
+    "col": 13156528
+  },
+  {
+    "id": "bue-dokschrank",
+    "cat": "Büro",
+    "icon": "📁",
+    "name": "Dokumentenschrank",
+    "w": 0.9,
+    "d": 0.5,
+    "h": 1.8,
+    "col": 5921370
+  },
+  {
+    "id": "wc-urinal",
+    "cat": "WC",
+    "icon": "🚽",
+    "name": "Urinal",
+    "w": 0.35,
+    "d": 0.35,
+    "h": 0.6,
+    "col": 16777215
+  },
+  {
+    "id": "wc-dusche",
+    "cat": "WC",
+    "icon": "🚿",
+    "name": "Duschkabine 90x90",
+    "w": 0.9,
+    "d": 0.9,
+    "h": 2.2,
+    "col": 14544622
+  },
+  {
+    "id": "wc-wickel",
+    "cat": "WC",
+    "icon": "👶",
+    "name": "Wickeltisch klappbar",
+    "w": 0.8,
+    "d": 0.5,
+    "h": 0.8,
+    "col": 16774624
+  },
+  {
+    "id": "aus-müllhäuschen",
+    "cat": "Außen",
+    "icon": "🗑",
+    "name": "Müllhäuschen",
+    "w": 1.5,
+    "d": 1.2,
+    "h": 1.8,
+    "col": 6710886
+  },
+  {
+    "id": "aus-poller",
+    "cat": "Außen",
+    "icon": "🔴",
+    "name": "Poller (Anfahrschutz)",
+    "w": 0.2,
+    "d": 0.2,
+    "h": 0.6,
+    "col": 15610675
+  },
+  {
+    "id": "tec-nas",
+    "cat": "Technik",
+    "icon": "💾",
+    "name": "NAS Datenspeicher",
+    "w": 0.3,
+    "d": 0.3,
+    "h": 0.2,
+    "col": 4473924
+  },
+  {
+    "id": "tec-vpn",
+    "cat": "Technik",
+    "icon": "🔒",
+    "name": "VPN-Router",
+    "w": 0.2,
+    "d": 0.2,
+    "h": 0.05,
+    "col": 2245666
+  },
+  {
+    "id": "tec-zeiterfassung",
+    "cat": "Technik",
+    "icon": "⏱",
+    "name": "Zeiterfassungs-Terminal",
+    "w": 0.08,
+    "d": 0.05,
+    "h": 0.15,
+    "col": 2245666
+  },
+  {
+    "id": "soz-tischkicker",
+    "cat": "Sozial",
+    "icon": "⚽",
+    "name": "Tischkicker",
+    "w": 1.4,
+    "d": 0.75,
+    "h": 0.9,
+    "col": 4880896
+  },
+  {
+    "id": "soz-musikbox",
+    "cat": "Sozial",
+    "icon": "🎵",
+    "name": "Musikbox/Jukebox",
+    "w": 0.7,
+    "d": 0.55,
+    "h": 1.65,
+    "col": 16739072
+  },
+  {
+    "id": "soz-dartautomat",
+    "cat": "Sozial",
+    "icon": "🎯",
+    "name": "Dart-Automat",
+    "w": 0.55,
+    "d": 0.2,
+    "h": 1.8,
+    "col": 2236962
+  },
+  {
+    "id": "soz-tischtennis",
+    "cat": "Sozial",
+    "icon": "🏓",
+    "name": "Tischtennisplatte",
+    "w": 1.53,
+    "d": 2.74,
+    "h": 0.76,
+    "col": 3368499
+  },
+  {
+    "id": "soz-pooltisch",
+    "cat": "Sozial",
+    "icon": "🎱",
+    "name": "Billardtisch groß",
+    "w": 1.22,
+    "d": 2.44,
+    "h": 0.8,
+    "col": 1727002
+  },
+  {
+    "id": "soz-spielkonsole",
+    "cat": "Sozial",
+    "icon": "🎮",
+    "name": "Gaming-Station",
+    "w": 1.2,
+    "d": 0.6,
+    "h": 0.8,
+    "col": 2236962
+  },
+  {
+    "id": "soz-schallplatten",
+    "cat": "Sozial",
+    "icon": "💿",
+    "name": "Schallplattenregal",
+    "w": 0.8,
+    "d": 0.3,
+    "h": 1.2,
+    "col": 3811866
+  },
+  {
+    "id": "soz-beamer-tisch",
+    "cat": "Sozial",
+    "icon": "📽",
+    "name": "Beamer-Tisch",
+    "w": 0.4,
+    "d": 0.4,
+    "h": 0.75,
+    "col": 3355443
+  },
+  {
+    "id": "soz-hängematte",
+    "cat": "Sozial",
+    "icon": "🏕",
+    "name": "Hängematte (im Rahmen)",
+    "w": 1,
+    "d": 2,
+    "h": 1.2,
+    "col": 12092939
+  },
+  {
+    "id": "soz-barstuhl-h",
+    "cat": "Sozial",
+    "icon": "🪑",
+    "name": "Barhocker Holz",
+    "w": 0.4,
+    "d": 0.4,
+    "h": 1.1,
+    "col": 9136404
+  },
+  {
+    "id": "soz-chesterfield",
+    "cat": "Sozial",
+    "icon": "🛋",
+    "name": "Chesterfield-Sofa",
+    "w": 2.1,
+    "d": 0.85,
+    "h": 0.8,
+    "col": 9118976
+  },
+  {
+    "id": "soz-mediacenter",
+    "cat": "Sozial",
+    "icon": "📺",
+    "name": "TV-Media-Center",
+    "w": 1.8,
+    "d": 0.45,
+    "h": 0.55,
+    "col": 1118481
+  },
+  {
+    "id": "soz-weinkuehl",
+    "cat": "Sozial",
+    "icon": "🍷",
+    "name": "Weinkühlschrank",
+    "w": 0.6,
+    "d": 0.6,
+    "h": 0.85,
+    "col": 3355494
+  },
+  {
+    "id": "soz-kamin",
+    "cat": "Sozial",
+    "icon": "🔥",
+    "name": "Kaminofen",
+    "w": 0.6,
+    "d": 0.5,
+    "h": 1,
+    "col": 3355443
+  },
+  {
+    "id": "soz-kaminwand",
+    "cat": "Sozial",
+    "icon": "🔥",
+    "name": "Wandkamin elektr.",
+    "w": 1.2,
+    "d": 0.2,
+    "h": 0.6,
+    "col": 2236962
+  },
+  {
+    "id": "soz-sitzsack",
+    "cat": "Sozial",
+    "icon": "🪑",
+    "name": "XXL-Sitzsack",
+    "w": 1,
+    "d": 1,
+    "h": 0.6,
+    "col": 7031850
+  },
+  {
+    "id": "soz-hängelampe2",
+    "cat": "Sozial",
+    "icon": "💡",
+    "name": "Pendelleuchte Vintage",
+    "w": 0.4,
+    "d": 0.4,
+    "h": 1.5,
+    "col": 13934615
+  },
+  {
+    "id": "soz-bücherecke",
+    "cat": "Sozial",
+    "icon": "📚",
+    "name": "Lese-Ecke mit Regal",
+    "w": 1.5,
+    "d": 1.5,
+    "h": 2,
+    "col": 5913114
+  },
+  {
+    "id": "emp-wartekabine",
+    "cat": "Empfang",
+    "icon": "🏠",
+    "name": "Wartekabine/Booth",
+    "w": 1.5,
+    "d": 1.5,
+    "h": 2,
+    "col": 4868682
+  },
+  {
+    "id": "emp-nummerngerät",
+    "cat": "Empfang",
+    "icon": "🔢",
+    "name": "Wartemarken-Gerät",
+    "w": 0.2,
+    "d": 0.15,
+    "h": 0.35,
+    "col": 3368499
+  },
+  {
+    "id": "emp-visitenkartenst",
+    "cat": "Empfang",
+    "icon": "📇",
+    "name": "Visitenkartenständer",
+    "w": 0.15,
+    "d": 0.1,
+    "h": 0.25,
+    "col": 11184810
+  },
+  {
+    "id": "emp-empfangsliege",
+    "cat": "Empfang",
+    "icon": "🛋",
+    "name": "Empfangsliege",
+    "w": 1.8,
+    "d": 0.6,
+    "h": 0.45,
+    "col": 2973264
+  },
+  {
+    "id": "emp-selfcheck",
+    "cat": "Empfang",
+    "icon": "📱",
+    "name": "Self-Check-In Kiosk",
+    "w": 0.5,
+    "d": 0.4,
+    "h": 1.5,
+    "col": 2245666
+  },
+  {
+    "id": "aus-übergabefach",
+    "cat": "Ausgabe",
+    "icon": "🔒",
+    "name": "Übergabe-Safe (Wand)",
+    "w": 0.4,
+    "d": 0.35,
+    "h": 0.4,
+    "col": 4473924,
+    "arch": "wall-item"
+  },
+  {
+    "id": "aus-quittungsdrucker",
+    "cat": "Ausgabe",
+    "icon": "🖨",
+    "name": "Quittungsdrucker",
+    "w": 0.2,
+    "d": 0.25,
+    "h": 0.25,
+    "col": 5592405
+  },
+  {
+    "id": "aus-produktständer",
+    "cat": "Ausgabe",
+    "icon": "🧺",
+    "name": "Produktständer drehbar",
+    "w": 0.6,
+    "d": 0.6,
+    "h": 1.6,
+    "col": 8947848
+  },
+  {
+    "id": "aus-gewichtskontrolle",
+    "cat": "Ausgabe",
+    "icon": "⚖",
+    "name": "Abwiege-Station",
+    "w": 0.8,
+    "d": 0.6,
+    "h": 0.9,
+    "col": 3368499
+  },
+  {
+    "id": "lag-kühltunnel",
+    "cat": "Lager",
+    "icon": "❄",
+    "name": "Kühltunnel",
+    "w": 1,
+    "d": 2,
+    "h": 2.2,
+    "col": 8956620
+  },
+  {
+    "id": "lag-trockenraum",
+    "cat": "Lager",
+    "icon": "🌡",
+    "name": "Trockenraum-Zone",
+    "w": 2,
+    "d": 2,
+    "h": 0.01,
+    "col": 4289331248,
+    "arch": "floor"
+  },
+  {
+    "id": "lag-dokumentenbox",
+    "cat": "Lager",
+    "icon": "📁",
+    "name": "Dokumentenbox Wand",
+    "w": 0.4,
+    "d": 0.15,
+    "h": 0.3,
+    "col": 8947848,
+    "arch": "wall-item"
+  },
+  {
+    "id": "lag-scanner-wand",
+    "cat": "Lager",
+    "icon": "📡",
+    "name": "Barcode-Scanner Wand",
+    "w": 0.1,
+    "d": 0.08,
+    "h": 0.15,
+    "col": 2245666,
+    "arch": "wall-item"
+  },
+  {
+    "id": "lag-rolltor",
+    "cat": "Lager",
+    "icon": "🔒",
+    "name": "Rolltor Lager (3m)",
+    "w": 3,
+    "d": 0.1,
+    "h": 2.5,
+    "col": 8947848,
+    "arch": "door"
+  },
+  {
+    "id": "kue-friteuse",
+    "cat": "Küche",
+    "icon": "🍟",
+    "name": "Fritteuse",
+    "w": 0.4,
+    "d": 0.5,
+    "h": 0.4,
+    "col": 4473924
+  },
+  {
+    "id": "kue-toaster",
+    "cat": "Küche",
+    "icon": "🍞",
+    "name": "Toaster-Gerät",
+    "w": 0.4,
+    "d": 0.35,
+    "h": 0.3,
+    "col": 8947848
+  },
+  {
+    "id": "kue-mixer",
+    "cat": "Küche",
+    "icon": "🥤",
+    "name": "Stand-Mixer/Blender",
+    "w": 0.2,
+    "d": 0.2,
+    "h": 0.45,
+    "col": 3368499
+  },
+  {
+    "id": "kue-kühlvitrine",
+    "cat": "Küche",
+    "icon": "🧊",
+    "name": "Kühlvitrine für Getränke",
+    "w": 0.9,
+    "d": 0.6,
+    "h": 2,
+    "col": 11197951
+  },
+  {
+    "id": "kue-snacktheke",
+    "cat": "Küche",
+    "icon": "🍿",
+    "name": "Snackbar-Theke",
+    "w": 1.8,
+    "d": 0.6,
+    "h": 0.95,
+    "col": 13934615
+  },
+  {
+    "id": "kue-zapfanlage",
+    "cat": "Küche",
+    "icon": "🍺",
+    "name": "Zapfanlage",
+    "w": 0.4,
+    "d": 0.35,
+    "h": 0.8,
+    "col": 8947848
+  },
+  {
+    "id": "kue-eismaschine",
+    "cat": "Küche",
+    "icon": "🧊",
+    "name": "Eiswürfelmaschine",
+    "w": 0.4,
+    "d": 0.45,
+    "h": 0.85,
+    "col": 12303291
+  },
+  {
+    "id": "bue-telefonkabine",
+    "cat": "Büro",
+    "icon": "📞",
+    "name": "Phone-Box (schallgedämmt)",
+    "w": 1.2,
+    "d": 1.2,
+    "h": 2.2,
+    "col": 3368499
+  },
+  {
+    "id": "bue-präsentationsst",
+    "cat": "Büro",
+    "icon": "🖥",
+    "name": "Präsentationsständer",
+    "w": 0.55,
+    "d": 0.55,
+    "h": 1.6,
+    "col": 2236962
+  },
+  {
+    "id": "bue-pinnwand",
+    "cat": "Büro",
+    "icon": "📌",
+    "name": "Pinnwand groß",
+    "w": 1.8,
+    "d": 0.05,
+    "h": 1.2,
+    "col": 13934615,
+    "arch": "wall-item"
+  },
+  {
+    "id": "bue-locker",
+    "cat": "Büro",
+    "icon": "🔐",
+    "name": "Mitarbeiter-Spindanlage",
+    "w": 1.8,
+    "d": 0.5,
+    "h": 1.8,
+    "col": 6710886
+  },
+  {
+    "id": "bue-empfangstheke-mini",
+    "cat": "Büro",
+    "icon": "💼",
+    "name": "Mini-Empfangstheke Büro",
+    "w": 1.2,
+    "d": 0.6,
+    "h": 0.75,
+    "col": 10518624
+  },
+  {
+    "id": "inf-standdisplay",
+    "cat": "Info",
+    "icon": "📋",
+    "name": "Kundenstopper A1",
+    "w": 0.6,
+    "d": 0.25,
+    "h": 1.8,
+    "col": 8947848
+  },
+  {
+    "id": "inf-ledflipchart",
+    "cat": "Info",
+    "icon": "📊",
+    "name": "Digitales Flipchart",
+    "w": 0.75,
+    "d": 0.1,
+    "h": 1.8,
+    "col": 2236962
+  },
+  {
+    "id": "inf-kasseler",
+    "cat": "Info",
+    "icon": "📣",
+    "name": "Kasselen/Säulendisplay",
+    "w": 0.5,
+    "d": 0.5,
+    "h": 1.8,
+    "col": 3368499
+  },
+  {
+    "id": "inf-lautsprecher",
+    "cat": "Info",
+    "icon": "🔊",
+    "name": "Standlautsprecher",
+    "w": 0.3,
+    "d": 0.3,
+    "h": 1,
+    "col": 2236962
+  },
+  {
+    "id": "wc-handtuchsp",
+    "cat": "WC",
+    "icon": "🧻",
+    "name": "Handtuchspender",
+    "w": 0.3,
+    "d": 0.1,
+    "h": 0.4,
+    "col": 16777215,
+    "arch": "wall-item"
+  },
+  {
+    "id": "wc-papiersp",
+    "cat": "WC",
+    "icon": "🧻",
+    "name": "WC-Papierhalter",
+    "w": 0.15,
+    "d": 0.1,
+    "h": 0.2,
+    "col": 16777215,
+    "arch": "wall-item"
+  },
+  {
+    "id": "wc-föhn",
+    "cat": "WC",
+    "icon": "💨",
+    "name": "Händetrockner",
+    "w": 0.25,
+    "d": 0.15,
+    "h": 0.3,
+    "col": 8947848,
+    "arch": "wall-item"
+  },
+  {
+    "id": "wc-badezimmerschrank",
+    "cat": "WC",
+    "icon": "🪞",
+    "name": "Spiegelschrank",
+    "w": 0.8,
+    "d": 0.15,
+    "h": 0.6,
+    "col": 16777215,
+    "arch": "wall-item"
+  },
+  {
+    "id": "tec-poe-switch",
+    "cat": "Technik",
+    "icon": "🌐",
+    "name": "PoE-Switch 24-Port",
+    "w": 0.44,
+    "d": 0.25,
+    "h": 0.04,
+    "col": 2245666
+  },
+  {
+    "id": "tec-glasfaser",
+    "cat": "Technik",
+    "icon": "💡",
+    "name": "Glasfaser-Verteiler",
+    "w": 0.15,
+    "d": 0.1,
+    "h": 0.15,
+    "col": 3718648,
+    "arch": "wall-item"
+  },
+  {
+    "id": "tec-smartpanel",
+    "cat": "Technik",
+    "icon": "📱",
+    "name": "Smart-Home Panel",
+    "w": 0.12,
+    "d": 0.03,
+    "h": 0.2,
+    "col": 2245666,
+    "arch": "wall-item"
+  },
+  {
+    "id": "tec-wlan-decke",
+    "cat": "Technik",
+    "icon": "📡",
+    "name": "WLAN Access Point Decke",
+    "w": 0.2,
+    "d": 0.2,
+    "h": 0.04,
+    "col": 16777215,
+    "arch": "ceil"
+  },
+  {
+    "id": "eve-buehne-s",
+    "cat": "Bühne",
+    "icon": "🎭",
+    "name": "Bühne 4×2m",
+    "w": 4,
+    "d": 2,
+    "h": 0.6,
+    "col": 2236962
+  },
+  {
+    "id": "eve-buehne-m",
+    "cat": "Bühne",
+    "icon": "🎭",
+    "name": "Bühne 6×4m",
+    "w": 6,
+    "d": 4,
+    "h": 0.6,
+    "col": 2236962
+  },
+  {
+    "id": "eve-buehne-l",
+    "cat": "Bühne",
+    "icon": "🎭",
+    "name": "Bühne 8×6m",
+    "w": 8,
+    "d": 6,
+    "h": 0.6,
+    "col": 2236962
+  },
+  {
+    "id": "eve-podium-1",
+    "cat": "Bühne",
+    "icon": "🎙",
+    "name": "Rednerpult/Podium",
+    "w": 0.6,
+    "d": 0.5,
+    "h": 1.1,
+    "col": 3355443
+  },
+  {
+    "id": "eve-podium-kl",
+    "cat": "Bühne",
+    "icon": "🎙",
+    "name": "Mini-Podest 1×1m",
+    "w": 1,
+    "d": 1,
+    "h": 0.4,
+    "col": 3355443
+  },
+  {
+    "id": "eve-podest-r",
+    "cat": "Bühne",
+    "icon": "⬛",
+    "name": "Podest rund (Ø1.2m)",
+    "w": 1.2,
+    "d": 1.2,
+    "h": 0.4,
+    "col": 4473924
+  },
+  {
+    "id": "eve-treppe-bühne",
+    "cat": "Bühne",
+    "icon": "🪜",
+    "name": "Bühnentreppe 3-stufig",
+    "w": 0.8,
+    "d": 0.9,
+    "h": 0.6,
+    "col": 5592405
+  },
+  {
+    "id": "eve-catwalk",
+    "cat": "Bühne",
+    "icon": "👗",
+    "name": "Catwalk/Laufsteg (4m)",
+    "w": 1,
+    "d": 4,
+    "h": 0.4,
+    "col": 1118481
+  },
+  {
+    "id": "eve-buehnenvorhang",
+    "cat": "Bühne",
+    "icon": "🎭",
+    "name": "Bühnenvorhang",
+    "w": 3,
+    "d": 0.1,
+    "h": 3,
+    "col": 9109504
+  },
+  {
+    "id": "eve-backdrop",
+    "cat": "Bühne",
+    "icon": "🖼",
+    "name": "Backdrop/Hintergrundwand",
+    "w": 4,
+    "d": 0.15,
+    "h": 2.5,
+    "col": 3368499
+  },
+  {
+    "id": "eve-kulisse",
+    "cat": "Bühne",
+    "icon": "🎭",
+    "name": "Kulissenelement",
+    "w": 1,
+    "d": 0.1,
+    "h": 2.5,
+    "col": 5592405
+  },
+  {
+    "id": "eve-stuhlreihe-5",
+    "cat": "Bestuhlung",
+    "icon": "🪑",
+    "name": "Stuhlreihe 5er",
+    "w": 2.5,
+    "d": 0.45,
+    "h": 0.8,
+    "col": 4473924
+  },
+  {
+    "id": "eve-stuhlreihe-10",
+    "cat": "Bestuhlung",
+    "icon": "🪑",
+    "name": "Stuhlreihe 10er",
+    "w": 5,
+    "d": 0.45,
+    "h": 0.8,
+    "col": 4473924
+  },
+  {
+    "id": "eve-klappstuhl",
+    "cat": "Bestuhlung",
+    "icon": "🪑",
+    "name": "Klappstuhl Einzel",
+    "w": 0.45,
+    "d": 0.45,
+    "h": 0.8,
+    "col": 8947848
+  },
+  {
+    "id": "eve-konferenzst",
+    "cat": "Bestuhlung",
+    "icon": "🪑",
+    "name": "Konferenzstuhl",
+    "w": 0.5,
+    "d": 0.5,
+    "h": 0.9,
+    "col": 2237030
+  },
+  {
+    "id": "eve-vip-sessel",
+    "cat": "Bestuhlung",
+    "icon": "🛋",
+    "name": "VIP-Sessel",
+    "w": 0.7,
+    "d": 0.7,
+    "h": 0.85,
+    "col": 9118976
+  },
+  {
+    "id": "eve-stehpult",
+    "cat": "Bestuhlung",
+    "icon": "📋",
+    "name": "Stehpult/Hochtisch",
+    "w": 0.6,
+    "d": 0.6,
+    "h": 1.1,
+    "col": 5592405
+  },
+  {
+    "id": "eve-klapptisch-1",
+    "cat": "Bestuhlung",
+    "icon": "📋",
+    "name": "Klapptisch 1.8m",
+    "w": 1.8,
+    "d": 0.75,
+    "h": 0.75,
+    "col": 8947848
+  },
+  {
+    "id": "eve-klapptisch-2",
+    "cat": "Bestuhlung",
+    "icon": "📋",
+    "name": "Klapptisch Rund Ø1.2m",
+    "w": 1.2,
+    "d": 1.2,
+    "h": 0.75,
+    "col": 8947848
+  },
+  {
+    "id": "eve-bistrotisch",
+    "cat": "Bestuhlung",
+    "icon": "☕",
+    "name": "Bistrotisch (Ø0.6m)",
+    "w": 0.6,
+    "d": 0.6,
+    "h": 1.05,
+    "col": 5592405
+  },
+  {
+    "id": "eve-buffettisch",
+    "cat": "Bestuhlung",
+    "icon": "🍽",
+    "name": "Buffet-Tisch 2m",
+    "w": 2,
+    "d": 0.75,
+    "h": 0.9,
+    "col": 16777215
+  },
+  {
+    "id": "eve-konftisch-r",
+    "cat": "Bestuhlung",
+    "icon": "⚫",
+    "name": "Konferenztisch rund Ø2m",
+    "w": 2,
+    "d": 2,
+    "h": 0.75,
+    "col": 3355443
+  },
+  {
+    "id": "eve-konftisch-6",
+    "cat": "Bestuhlung",
+    "icon": "📋",
+    "name": "Konferenztisch 6-Pers.",
+    "w": 3,
+    "d": 1.2,
+    "h": 0.75,
+    "col": 2236962
+  },
+  {
+    "id": "eve-konftisch-12",
+    "cat": "Bestuhlung",
+    "icon": "📋",
+    "name": "Konferenztisch 12-Pers.",
+    "w": 5,
+    "d": 1.4,
+    "h": 0.75,
+    "col": 2236962
+  },
+  {
+    "id": "eve-banketttisch",
+    "cat": "Bestuhlung",
+    "icon": "🍽",
+    "name": "Bankettisch 3m",
+    "w": 3,
+    "d": 0.8,
+    "h": 0.75,
+    "col": 16777215
+  },
+  {
+    "id": "eve-barsteher",
+    "cat": "Bestuhlung",
+    "icon": "🍸",
+    "name": "Barsteher (3er-Set)",
+    "w": 0.4,
+    "d": 0.4,
+    "h": 1.1,
+    "col": 5592405
+  },
+  {
+    "id": "eve-lounge-set",
+    "cat": "Bestuhlung",
+    "icon": "🛋",
+    "name": "Lounge-Set (Sofa+Tisch)",
+    "w": 2.5,
+    "d": 1.8,
+    "h": 0.8,
+    "col": 2973264
+  },
+  {
+    "id": "eve-tribüne-2",
+    "cat": "Bestuhlung",
+    "icon": "🪑",
+    "name": "Tribüne 2-reihig",
+    "w": 4,
+    "d": 2,
+    "h": 1.2,
+    "col": 4473924
+  },
+  {
+    "id": "eve-tribüne-4",
+    "cat": "Bestuhlung",
+    "icon": "🪑",
+    "name": "Tribüne 4-reihig",
+    "w": 4,
+    "d": 3.5,
+    "h": 2,
+    "col": 4473924
+  },
+  {
+    "id": "eve-leinwand-s",
+    "cat": "Veranst-Technik",
+    "icon": "📽",
+    "name": "Leinwand 2×1.5m",
+    "w": 2,
+    "d": 0.1,
+    "h": 1.5,
+    "col": 16777215
+  },
+  {
+    "id": "eve-leinwand-m",
+    "cat": "Veranst-Technik",
+    "icon": "📽",
+    "name": "Leinwand 3×2.25m",
+    "w": 3,
+    "d": 0.1,
+    "h": 2.25,
+    "col": 16777215
+  },
+  {
+    "id": "eve-leinwand-l",
+    "cat": "Veranst-Technik",
+    "icon": "📽",
+    "name": "Leinwand 4×3m",
+    "w": 4,
+    "d": 0.1,
+    "h": 3,
+    "col": 16777215
+  },
+  {
+    "id": "eve-led-wand-s",
+    "cat": "Veranst-Technik",
+    "icon": "📺",
+    "name": "LED-Wand 4×2.5m",
+    "w": 4,
+    "d": 0.15,
+    "h": 2.5,
+    "col": 1118481
+  },
+  {
+    "id": "eve-led-wand-m",
+    "cat": "Veranst-Technik",
+    "icon": "📺",
+    "name": "LED-Wand 8×4m",
+    "w": 8,
+    "d": 0.2,
+    "h": 4,
+    "col": 1118481
+  },
+  {
+    "id": "eve-beamer-profi",
+    "cat": "Veranst-Technik",
+    "icon": "📽",
+    "name": "Profi-Beamer (auf Stativ)",
+    "w": 0.4,
+    "d": 0.4,
+    "h": 1.4,
+    "col": 3355443
+  },
+  {
+    "id": "eve-monitor-70",
+    "cat": "Veranst-Technik",
+    "icon": "📺",
+    "name": "70\" Info-Monitor auf Stativ",
+    "w": 1.6,
+    "d": 0.5,
+    "h": 1.5,
+    "col": 1118481
+  },
+  {
+    "id": "eve-monitor-55",
+    "cat": "Veranst-Technik",
+    "icon": "📺",
+    "name": "55\" Monitor auf Stativ",
+    "w": 1.3,
+    "d": 0.5,
+    "h": 1.4,
+    "col": 1118481
+  },
+  {
+    "id": "eve-kamera-video",
+    "cat": "Veranst-Technik",
+    "icon": "🎥",
+    "name": "Videokamera auf Stativ",
+    "w": 0.3,
+    "d": 0.3,
+    "h": 1.5,
+    "col": 3355443
+  },
+  {
+    "id": "eve-kamera-crane",
+    "cat": "Veranst-Technik",
+    "icon": "🎥",
+    "name": "Kamera-Kran",
+    "w": 0.5,
+    "d": 2,
+    "h": 1.8,
+    "col": 4473924
+  },
+  {
+    "id": "eve-mischpult",
+    "cat": "Veranst-Technik",
+    "icon": "🎚",
+    "name": "Ton-Mischpult",
+    "w": 1.5,
+    "d": 0.8,
+    "h": 0.85,
+    "col": 2236962
+  },
+  {
+    "id": "eve-lichtkonsole",
+    "cat": "Veranst-Technik",
+    "icon": "💡",
+    "name": "Licht-Steuerpult",
+    "w": 1.2,
+    "d": 0.6,
+    "h": 0.85,
+    "col": 1118481
+  },
+  {
+    "id": "eve-laptop-präs",
+    "cat": "Veranst-Technik",
+    "icon": "💻",
+    "name": "Präsentations-Laptop",
+    "w": 0.35,
+    "d": 0.25,
+    "h": 0.2,
+    "col": 8947848
+  },
+  {
+    "id": "eve-prompter",
+    "cat": "Veranst-Technik",
+    "icon": "📝",
+    "name": "Teleprompter",
+    "w": 0.4,
+    "d": 0.4,
+    "h": 1.5,
+    "col": 3355443
+  },
+  {
+    "id": "eve-streaming",
+    "cat": "Veranst-Technik",
+    "icon": "📡",
+    "name": "Streaming-Setup",
+    "w": 0.8,
+    "d": 0.6,
+    "h": 0.9,
+    "col": 2236962
+  },
+  {
+    "id": "eve-switcher",
+    "cat": "Veranst-Technik",
+    "icon": "🔄",
+    "name": "Video-Switcher",
+    "w": 0.5,
+    "d": 0.35,
+    "h": 0.1,
+    "col": 3355443
+  },
+  {
+    "id": "eve-scheinwerfer",
+    "cat": "Veranst-Licht",
+    "icon": "💡",
+    "name": "Scheinwerfer 500W",
+    "w": 0.3,
+    "d": 0.3,
+    "h": 0.4,
+    "col": 16776960
+  },
+  {
+    "id": "eve-moving-head",
+    "cat": "Veranst-Licht",
+    "icon": "🔆",
+    "name": "Moving Head Spot",
+    "w": 0.25,
+    "d": 0.35,
+    "h": 0.5,
+    "col": 16766720
+  },
+  {
+    "id": "eve-par-can",
+    "cat": "Veranst-Licht",
+    "icon": "💡",
+    "name": "PAR-Scheinwerfer",
+    "w": 0.2,
+    "d": 0.2,
+    "h": 0.25,
+    "col": 16755200
+  },
+  {
+    "id": "eve-lichtrigg-3",
+    "cat": "Veranst-Licht",
+    "icon": "🔧",
+    "name": "Lichtrigg-Traverse 3m",
+    "w": 3,
+    "d": 0.3,
+    "h": 0.3,
+    "col": 8947848
+  },
+  {
+    "id": "eve-lichtrigg-6",
+    "cat": "Veranst-Licht",
+    "icon": "🔧",
+    "name": "Lichtrigg-Traverse 6m",
+    "w": 6,
+    "d": 0.3,
+    "h": 0.3,
+    "col": 8947848
+  },
+  {
+    "id": "eve-stativ-licht",
+    "cat": "Veranst-Licht",
+    "icon": "🔦",
+    "name": "Licht-Stativ",
+    "w": 0.2,
+    "d": 0.2,
+    "h": 2,
+    "col": 8947848
+  },
+  {
+    "id": "eve-nebelmaschine",
+    "cat": "Veranst-Licht",
+    "icon": "🌫",
+    "name": "Nebelmaschine",
+    "w": 0.4,
+    "d": 0.3,
+    "h": 0.2,
+    "col": 8947848
+  },
+  {
+    "id": "eve-laser",
+    "cat": "Veranst-Licht",
+    "icon": "🔴",
+    "name": "Laser-Show",
+    "w": 0.2,
+    "d": 0.2,
+    "h": 0.15,
+    "col": 16711680
+  },
+  {
+    "id": "eve-led-strip-bühne",
+    "cat": "Veranst-Licht",
+    "icon": "🌈",
+    "name": "LED-Strip Bühnenrand",
+    "w": 4,
+    "d": 0.05,
+    "h": 0.05,
+    "col": 43775
+  },
+  {
+    "id": "eve-follow-spot",
+    "cat": "Veranst-Licht",
+    "icon": "🔦",
+    "name": "Follow-Spot Verfolgerscheinw.",
+    "w": 0.35,
+    "d": 0.5,
+    "h": 0.4,
+    "col": 16777215
+  },
+  {
+    "id": "eve-pa-box-s",
+    "cat": "Beschallung",
+    "icon": "🔊",
+    "name": "PA-Box klein (800W)",
+    "w": 0.3,
+    "d": 0.35,
+    "h": 0.55,
+    "col": 2236962
+  },
+  {
+    "id": "eve-pa-box-m",
+    "cat": "Beschallung",
+    "icon": "🔊",
+    "name": "PA-Box mittel (1500W)",
+    "w": 0.4,
+    "d": 0.45,
+    "h": 0.8,
+    "col": 2236962
+  },
+  {
+    "id": "eve-pa-box-l",
+    "cat": "Beschallung",
+    "icon": "🔊",
+    "name": "PA-Box groß (3000W)",
+    "w": 0.5,
+    "d": 0.55,
+    "h": 1,
+    "col": 2236962
+  },
+  {
+    "id": "eve-subwoofer",
+    "cat": "Beschallung",
+    "icon": "💥",
+    "name": "Subwoofer",
+    "w": 0.6,
+    "d": 0.6,
+    "h": 0.6,
+    "col": 1118481
+  },
+  {
+    "id": "eve-monitor-box",
+    "cat": "Beschallung",
+    "icon": "🔊",
+    "name": "Bühnen-Monitorbox",
+    "w": 0.5,
+    "d": 0.35,
+    "h": 0.25,
+    "col": 3355443
+  },
+  {
+    "id": "eve-stativ-ls",
+    "cat": "Beschallung",
+    "icon": "🎵",
+    "name": "Lautsprecher-Stativ",
+    "w": 0.2,
+    "d": 0.2,
+    "h": 2,
+    "col": 8947848
+  },
+  {
+    "id": "eve-mikrofon-st",
+    "cat": "Beschallung",
+    "icon": "🎤",
+    "name": "Mikrofon auf Stativ",
+    "w": 0.15,
+    "d": 0.15,
+    "h": 1.6,
+    "col": 3355443
+  },
+  {
+    "id": "eve-mikrofon-tisch",
+    "cat": "Beschallung",
+    "icon": "🎤",
+    "name": "Tischmikrofon",
+    "w": 0.08,
+    "d": 0.08,
+    "h": 0.35,
+    "col": 3355443
+  },
+  {
+    "id": "eve-konferenz-mikro",
+    "cat": "Beschallung",
+    "icon": "🎙",
+    "name": "Konferenzmikro-Set",
+    "w": 0.2,
+    "d": 0.2,
+    "h": 0.08,
+    "col": 1118481
+  },
+  {
+    "id": "eve-induktiv",
+    "cat": "Beschallung",
+    "icon": "👂",
+    "name": "Induktionsschleife",
+    "w": 5,
+    "d": 0.02,
+    "h": 0.01,
+    "col": 8947848
+  },
+  {
+    "id": "eve-pa-rigg",
+    "cat": "Beschallung",
+    "icon": "🔊",
+    "name": "PA-Rigg/Line-Array",
+    "w": 0.4,
+    "d": 0.4,
+    "h": 2,
+    "col": 1118481
+  },
+  {
+    "id": "eve-messewand-s",
+    "cat": "Messestand",
+    "icon": "🖼",
+    "name": "Messewand 2×2.5m",
+    "w": 2,
+    "d": 0.1,
+    "h": 2.5,
+    "col": 3368499
+  },
+  {
+    "id": "eve-messewand-m",
+    "cat": "Messestand",
+    "icon": "🖼",
+    "name": "Messewand 3×2.5m",
+    "w": 3,
+    "d": 0.1,
+    "h": 2.5,
+    "col": 3368499
+  },
+  {
+    "id": "eve-messewand-l",
+    "cat": "Messestand",
+    "icon": "🖼",
+    "name": "Messewand 4×2.5m",
+    "w": 4,
+    "d": 0.1,
+    "h": 2.5,
+    "col": 3368499
+  },
+  {
+    "id": "eve-display-t",
+    "cat": "Messestand",
+    "icon": "🏷",
+    "name": "Roll-Up Banner 0.8m",
+    "w": 0.85,
+    "d": 0.1,
+    "h": 2,
+    "col": 3368499
+  },
+  {
+    "id": "eve-rollup-xl",
+    "cat": "Messestand",
+    "icon": "🏷",
+    "name": "Roll-Up XL 1.5m",
+    "w": 1.5,
+    "d": 0.1,
+    "h": 2.2,
+    "col": 3368499
+  },
+  {
+    "id": "eve-popup-wand",
+    "cat": "Messestand",
+    "icon": "🖼",
+    "name": "Pop-up Display (3×3)",
+    "w": 3,
+    "d": 0.2,
+    "h": 2.3,
+    "col": 3368499
+  },
+  {
+    "id": "eve-faltwand",
+    "cat": "Messestand",
+    "icon": "🖼",
+    "name": "Falt-Display 4-teilig",
+    "w": 2,
+    "d": 0.1,
+    "h": 2,
+    "col": 3368499
+  },
+  {
+    "id": "eve-theke-messe",
+    "cat": "Messestand",
+    "icon": "🏪",
+    "name": "Messe-Theke/Counter",
+    "w": 1,
+    "d": 0.5,
+    "h": 1,
+    "col": 3368499
+  },
+  {
+    "id": "eve-infoständer",
+    "cat": "Messestand",
+    "icon": "📋",
+    "name": "Info-Ständer Messe",
+    "w": 0.3,
+    "d": 0.3,
+    "h": 1.6,
+    "col": 8947848
+  },
+  {
+    "id": "eve-vitrine-messe",
+    "cat": "Messestand",
+    "icon": "🔲",
+    "name": "Glasvitrine Messe",
+    "w": 1,
+    "d": 0.5,
+    "h": 1.2,
+    "col": 11197951
+  },
+  {
+    "id": "eve-octostand",
+    "cat": "Messestand",
+    "icon": "⬛",
+    "name": "Oktanorm-System 2×2m",
+    "w": 2,
+    "d": 0.1,
+    "h": 2.5,
+    "col": 11184810
+  },
+  {
+    "id": "eve-octoeck",
+    "cat": "Messestand",
+    "icon": "⬛",
+    "name": "Oktanorm-Ecke",
+    "w": 0.1,
+    "d": 0.1,
+    "h": 2.5,
+    "col": 11184810
+  },
+  {
+    "id": "eve-textilwand",
+    "cat": "Messestand",
+    "icon": "🖼",
+    "name": "Textil-Spannwand 3m",
+    "w": 3,
+    "d": 0.08,
+    "h": 2.5,
+    "col": 2973264
+  },
+  {
+    "id": "eve-regalstand",
+    "cat": "Messestand",
+    "icon": "📦",
+    "name": "Messe-Regalwand",
+    "w": 2,
+    "d": 0.4,
+    "h": 2,
+    "col": 8947848
+  },
+  {
+    "id": "eve-produktsockel",
+    "cat": "Messestand",
+    "icon": "⬛",
+    "name": "Produktsockel hoch",
+    "w": 0.5,
+    "d": 0.5,
+    "h": 1,
+    "col": 2236962
+  },
+  {
+    "id": "eve-produktsockel-m",
+    "cat": "Messestand",
+    "icon": "⬛",
+    "name": "Produktsockel mittel",
+    "w": 0.4,
+    "d": 0.4,
+    "h": 0.6,
+    "col": 3355443
+  },
+  {
+    "id": "eve-messeecke",
+    "cat": "Messestand",
+    "icon": "🏢",
+    "name": "Messestand-Ecke 3×3m",
+    "w": 3,
+    "d": 3,
+    "h": 2.5,
+    "col": 3368499
+  },
+  {
+    "id": "eve-reihenstand",
+    "cat": "Messestand",
+    "icon": "🏢",
+    "name": "Reihenstand 3×2m",
+    "w": 3,
+    "d": 2,
+    "h": 2.5,
+    "col": 2973264
+  },
+  {
+    "id": "eve-buffet-warm",
+    "cat": "Catering",
+    "icon": "🍲",
+    "name": "Warmhaltebuffet 2m",
+    "w": 2,
+    "d": 0.6,
+    "h": 0.9,
+    "col": 14540253
+  },
+  {
+    "id": "eve-buffet-kalt",
+    "cat": "Catering",
+    "icon": "🥗",
+    "name": "Kaltbuffet/Salatbar",
+    "w": 2,
+    "d": 0.7,
+    "h": 0.9,
+    "col": 16777215
+  },
+  {
+    "id": "eve-getränke-bar",
+    "cat": "Catering",
+    "icon": "🥤",
+    "name": "Getränke-Bar",
+    "w": 2.5,
+    "d": 0.8,
+    "h": 1.05,
+    "col": 5911840
+  },
+  {
+    "id": "eve-sektempfang",
+    "cat": "Catering",
+    "icon": "🥂",
+    "name": "Sektempfang-Tisch",
+    "w": 1.2,
+    "d": 0.6,
+    "h": 0.9,
+    "col": 16777215
+  },
+  {
+    "id": "eve-kaffeewagen",
+    "cat": "Catering",
+    "icon": "☕",
+    "name": "Kaffeewagen mobil",
+    "w": 0.8,
+    "d": 0.6,
+    "h": 1,
+    "col": 5911840
+  },
+  {
+    "id": "eve-desserttheke",
+    "cat": "Catering",
+    "icon": "🍰",
+    "name": "Dessert-Vitrine",
+    "w": 1.2,
+    "d": 0.6,
+    "h": 1.2,
+    "col": 16777215
+  },
+  {
+    "id": "eve-servierw",
+    "cat": "Catering",
+    "icon": "🍽",
+    "name": "Servierwagen",
+    "w": 0.7,
+    "d": 0.45,
+    "h": 0.85,
+    "col": 12303291
+  },
+  {
+    "id": "eve-chafing-dish",
+    "cat": "Catering",
+    "icon": "🫕",
+    "name": "Chafing Dish (Warmhaltegefäß)",
+    "w": 0.35,
+    "d": 0.55,
+    "h": 0.2,
+    "col": 12303291
+  },
+  {
+    "id": "eve-sektständer",
+    "cat": "Catering",
+    "icon": "🥂",
+    "name": "Sektkühler-Ständer",
+    "w": 0.35,
+    "d": 0.35,
+    "h": 0.9,
+    "col": 13421772
+  },
+  {
+    "id": "eve-cocktailwagen",
+    "cat": "Catering",
+    "icon": "🍹",
+    "name": "Cocktail-Wagen",
+    "w": 0.7,
+    "d": 0.5,
+    "h": 1,
+    "col": 5911840
+  },
+  {
+    "id": "eve-candybar",
+    "cat": "Catering",
+    "icon": "🍬",
+    "name": "Candy-Bar/Süßigkeitenbar",
+    "w": 1.5,
+    "d": 0.6,
+    "h": 1.5,
+    "col": 16751001
+  },
+  {
+    "id": "eve-eis-stand",
+    "cat": "Catering",
+    "icon": "🍦",
+    "name": "Eis-Stand",
+    "w": 1,
+    "d": 0.8,
+    "h": 1.2,
+    "col": 16777215
+  },
+  {
+    "id": "eve-blumenarrang",
+    "cat": "Dekoration",
+    "icon": "💐",
+    "name": "Blumenarrangement",
+    "w": 0.5,
+    "d": 0.5,
+    "h": 0.6,
+    "col": 16737962
+  },
+  {
+    "id": "eve-blumenbukett",
+    "cat": "Dekoration",
+    "icon": "🌸",
+    "name": "Blumenbukett Einzel",
+    "w": 0.3,
+    "d": 0.3,
+    "h": 0.4,
+    "col": 16737962
+  },
+  {
+    "id": "eve-pflanzenwand",
+    "cat": "Dekoration",
+    "icon": "🌿",
+    "name": "Pflanzenwand 2×2m",
+    "w": 2,
+    "d": 0.2,
+    "h": 2,
+    "col": 3368499
+  },
+  {
+    "id": "eve-ballon-bogen",
+    "cat": "Dekoration",
+    "icon": "🎈",
+    "name": "Ballon-Bogen",
+    "w": 2,
+    "d": 0.5,
+    "h": 2,
+    "col": 16737792
+  },
+  {
+    "id": "eve-flagge-innen",
+    "cat": "Dekoration",
+    "icon": "🚩",
+    "name": "Fahnen-Standfuß",
+    "w": 0.3,
+    "d": 0.3,
+    "h": 2,
+    "col": 3368499
+  },
+  {
+    "id": "eve-flaggen-3",
+    "cat": "Dekoration",
+    "icon": "🏁",
+    "name": "Flaggen-Gruppe 3er",
+    "w": 1.2,
+    "d": 0.3,
+    "h": 2,
+    "col": 3368499
+  },
+  {
+    "id": "eve-rote-teppich",
+    "cat": "Dekoration",
+    "icon": "🔴",
+    "name": "Roter Teppich 1×4m",
+    "w": 1,
+    "d": 4,
+    "h": 0.01,
+    "col": 13369344
+  },
+  {
+    "id": "eve-säule-deko",
+    "cat": "Dekoration",
+    "icon": "🏛",
+    "name": "Deko-Säule (Ø0.3m)",
+    "w": 0.3,
+    "d": 0.3,
+    "h": 1.8,
+    "col": 14540253
+  },
+  {
+    "id": "eve-bogengestell",
+    "cat": "Dekoration",
+    "icon": "🌸",
+    "name": "Blumen-Bogen/Torbogen",
+    "w": 2,
+    "d": 0.3,
+    "h": 2.3,
+    "col": 16737962
+  },
+  {
+    "id": "eve-laterne",
+    "cat": "Dekoration",
+    "icon": "🏮",
+    "name": "Papier-Laterne hängend",
+    "w": 0.4,
+    "d": 0.4,
+    "h": 0.5,
+    "col": 16737792
+  },
+  {
+    "id": "eve-kerzenst",
+    "cat": "Dekoration",
+    "icon": "🕯",
+    "name": "Kerzenständer groß",
+    "w": 0.2,
+    "d": 0.2,
+    "h": 1.2,
+    "col": 13934615
+  },
+  {
+    "id": "eve-photo-rahmen",
+    "cat": "Dekoration",
+    "icon": "🖼",
+    "name": "Deko-Bilderrahmen",
+    "w": 0.8,
+    "d": 0.05,
+    "h": 1,
+    "col": 13934615
+  },
+  {
+    "id": "eve-branded-wand",
+    "cat": "Dekoration",
+    "icon": "🏷",
+    "name": "Branded-Wall (Fotowall)",
+    "w": 3,
+    "d": 0.15,
+    "h": 2.5,
+    "col": 3368499
+  },
+  {
+    "id": "eve-step-repeat",
+    "cat": "Dekoration",
+    "icon": "📸",
+    "name": "Step&Repeat-Wand",
+    "w": 2.5,
+    "d": 0.15,
+    "h": 2.2,
+    "col": 1118481
+  },
+  {
+    "id": "eve-selfie-point",
+    "cat": "Dekoration",
+    "icon": "🤳",
+    "name": "Selfie-Station",
+    "w": 1,
+    "d": 0.8,
+    "h": 2,
+    "col": 3368499
+  },
+  {
+    "id": "eve-eingang-gate",
+    "cat": "Eingang",
+    "icon": "🚧",
+    "name": "Einlass-Gate/Schranke",
+    "w": 1.2,
+    "d": 0.5,
+    "h": 1,
+    "col": 16737792
+  },
+  {
+    "id": "eve-absperrband",
+    "cat": "Eingang",
+    "icon": "🚧",
+    "name": "Absperrband-Ständer",
+    "w": 0.2,
+    "d": 0.2,
+    "h": 0.95,
+    "col": 13934615
+  },
+  {
+    "id": "eve-absperrgitter",
+    "cat": "Eingang",
+    "icon": "🚧",
+    "name": "Crowd-Control Gitter 2m",
+    "w": 2,
+    "d": 0.1,
+    "h": 1.1,
+    "col": 8947848
+  },
+  {
+    "id": "eve-kassenhäuschen",
+    "cat": "Eingang",
+    "icon": "🎫",
+    "name": "Kasse/Einlasskabine",
+    "w": 1.2,
+    "d": 1,
+    "h": 2.2,
+    "col": 3368499
+  },
+  {
+    "id": "eve-scan-gate",
+    "cat": "Eingang",
+    "icon": "📡",
+    "name": "Ticket-Scanner Gate",
+    "w": 0.6,
+    "d": 0.8,
+    "h": 2,
+    "col": 2245666
+  },
+  {
+    "id": "eve-garderoben-st",
+    "cat": "Eingang",
+    "icon": "🧥",
+    "name": "Garderoben-Ständer",
+    "w": 0.6,
+    "d": 0.6,
+    "h": 1.7,
+    "col": 8947848
+  },
+  {
+    "id": "eve-garderobe-1m",
+    "cat": "Eingang",
+    "icon": "🧥",
+    "name": "Garderoben-Tresen 1m",
+    "w": 1,
+    "d": 0.5,
+    "h": 1,
+    "col": 5592405
+  },
+  {
+    "id": "eve-stanchion",
+    "cat": "Eingang",
+    "icon": "🔴",
+    "name": "VIP-Absperrung (Velours)",
+    "w": 0.2,
+    "d": 0.2,
+    "h": 1,
+    "col": 9109504
+  },
+  {
+    "id": "eve-würfelsitz",
+    "cat": "Eingang",
+    "icon": "🎫",
+    "name": "Würfelsitz für Ordner",
+    "w": 0.45,
+    "d": 0.45,
+    "h": 0.45,
+    "col": 3355443
+  },
+  {
+    "id": "eve-workshop-set",
+    "cat": "Workshop",
+    "icon": "✏",
+    "name": "Workshop-Tisch mit 4 Stühlen",
+    "w": 1.6,
+    "d": 0.8,
+    "h": 0.75,
+    "col": 15261904
+  },
+  {
+    "id": "eve-flipchart",
+    "cat": "Workshop",
+    "icon": "📊",
+    "name": "Flipchart",
+    "w": 0.7,
+    "d": 0.5,
+    "h": 1.8,
+    "col": 8947848
+  },
+  {
+    "id": "eve-moderationskoffer",
+    "cat": "Workshop",
+    "icon": "🧩",
+    "name": "Moderationskoffer",
+    "w": 0.6,
+    "d": 0.25,
+    "h": 0.9,
+    "col": 5592405
+  },
+  {
+    "id": "eve-whiteboard-m",
+    "cat": "Workshop",
+    "icon": "📋",
+    "name": "Whiteboard 1.8×1.2m",
+    "w": 1.8,
+    "d": 0.1,
+    "h": 1.2,
+    "col": 16777215
+  },
+  {
+    "id": "eve-steh-schreib",
+    "cat": "Workshop",
+    "icon": "✏",
+    "name": "Stehtisch Schreibhöhe",
+    "w": 0.7,
+    "d": 0.7,
+    "h": 1.05,
+    "col": 8947848
+  },
+  {
+    "id": "eve-locker-bags",
+    "cat": "Workshop",
+    "icon": "🔐",
+    "name": "Gepäck-Locker-Station",
+    "w": 1.8,
+    "d": 0.5,
+    "h": 1.8,
+    "col": 6710886
+  },
+  {
+    "id": "eve-lade-station",
+    "cat": "Workshop",
+    "icon": "🔌",
+    "name": "Handy-Ladestation",
+    "w": 0.5,
+    "d": 0.3,
+    "h": 0.9,
+    "col": 2245666
+  },
+  {
+    "id": "eve-networking-zone",
+    "cat": "Workshop",
+    "icon": "🤝",
+    "name": "Networking-Tisch rund",
+    "w": 1.4,
+    "d": 1.4,
+    "h": 0.75,
+    "col": 3368499
+  },
+  {
+    "id": "eve-brainstorm",
+    "cat": "Workshop",
+    "icon": "💡",
+    "name": "Brainstorming-Wand (mit Haftnotizen)",
+    "w": 2.4,
+    "d": 0.1,
+    "h": 1.2,
+    "col": 16766720
+  },
+  {
+    "id": "eve-teamtisch",
+    "cat": "Workshop",
+    "icon": "👥",
+    "name": "Teamtisch U-Form",
+    "w": 3,
+    "d": 2,
+    "h": 0.75,
+    "col": 5592405
+  },
+  {
+    "id": "eve-pavillon-3x3",
+    "cat": "Outdoor",
+    "icon": "⛺",
+    "name": "Pavillon 3×3m",
+    "w": 3,
+    "d": 3,
+    "h": 2.8,
+    "col": 16777215
+  },
+  {
+    "id": "eve-pavillon-6x3",
+    "cat": "Outdoor",
+    "icon": "⛺",
+    "name": "Zelt/Pavillon 6×3m",
+    "w": 6,
+    "d": 3,
+    "h": 2.8,
+    "col": 16777215
+  },
+  {
+    "id": "eve-partyzelt",
+    "cat": "Outdoor",
+    "icon": "⛺",
+    "name": "Party-Zelt 10×5m",
+    "w": 10,
+    "d": 5,
+    "h": 3.5,
+    "col": 16777215
+  },
+  {
+    "id": "eve-holzpalette-tisch",
+    "cat": "Outdoor",
+    "icon": "📦",
+    "name": "Palettentisch",
+    "w": 1.2,
+    "d": 0.8,
+    "h": 0.45,
+    "col": 10516544
+  },
+  {
+    "id": "eve-biertisch-set",
+    "cat": "Outdoor",
+    "icon": "🍺",
+    "name": "Biertisch-Garnitur",
+    "w": 2.2,
+    "d": 0.8,
+    "h": 0.75,
+    "col": 10516544
+  },
+  {
+    "id": "eve-sonnenschirm-event",
+    "cat": "Outdoor",
+    "icon": "☂",
+    "name": "Markt-Sonnenschirm (Ø3m)",
+    "w": 3,
+    "d": 3,
+    "h": 2.4,
+    "col": 16737792
+  },
+  {
+    "id": "eve-heizpilz",
+    "cat": "Outdoor",
+    "icon": "🔥",
+    "name": "Heizpilz (Gasstrahler)",
+    "w": 0.6,
+    "d": 0.6,
+    "h": 2.2,
+    "col": 8947848
+  },
+  {
+    "id": "eve-stehtisch-outdoor",
+    "cat": "Outdoor",
+    "icon": "🍸",
+    "name": "Stehtisch wetterfest",
+    "w": 0.7,
+    "d": 0.7,
+    "h": 1.1,
+    "col": 5592405
+  },
+  {
+    "id": "eve-bauzaun",
+    "cat": "Outdoor",
+    "icon": "🚧",
+    "name": "Bauzaun/Eventgitter 2m",
+    "w": 2,
+    "d": 0.1,
+    "h": 2,
+    "col": 16737792
+  },
+  {
+    "id": "eve-fotobooth",
+    "cat": "Extras",
+    "icon": "📸",
+    "name": "Fotobooth-Kabine",
+    "w": 1.5,
+    "d": 1.5,
+    "h": 2.2,
+    "col": 3368499
+  },
+  {
+    "id": "eve-grüner-schirm",
+    "cat": "Extras",
+    "icon": "🟩",
+    "name": "Greenscreen (3×3m)",
+    "w": 3,
+    "d": 0.1,
+    "h": 2.5,
+    "col": 43520
+  },
+  {
+    "id": "eve-rad-tombola",
+    "cat": "Extras",
+    "icon": "🎡",
+    "name": "Tombola-Rad",
+    "w": 0.7,
+    "d": 0.3,
+    "h": 1.5,
+    "col": 16737792
+  },
+  {
+    "id": "eve-glücksrad",
+    "cat": "Extras",
+    "icon": "🎡",
+    "name": "Glücksrad digitial",
+    "w": 0.6,
+    "d": 0.6,
+    "h": 1.8,
+    "col": 3368499
+  },
+  {
+    "id": "eve-hochzeitstisch",
+    "cat": "Extras",
+    "icon": "💍",
+    "name": "Hochzeitstisch (Sweetheart)",
+    "w": 1.8,
+    "d": 0.8,
+    "h": 0.75,
+    "col": 16777215
+  },
+  {
+    "id": "eve-redemikro",
+    "cat": "Extras",
+    "icon": "🎙",
+    "name": "Drahtloses Headset-Set",
+    "w": 0.05,
+    "d": 0.05,
+    "h": 0.15,
+    "col": 1118481
+  },
+  {
+    "id": "eve-verdunkelung",
+    "cat": "Extras",
+    "icon": "⬛",
+    "name": "Verdunkelungsrollo 3m",
+    "w": 3,
+    "d": 0.1,
+    "h": 2.5,
+    "col": 1118481
+  },
+  {
+    "id": "eve-wlan-router-event",
+    "cat": "Extras",
+    "icon": "📡",
+    "name": "Event-WLAN Router",
+    "w": 0.2,
+    "d": 0.15,
+    "h": 0.05,
+    "col": 2245666
+  },
+  {
+    "id": "eve-power-dist",
+    "cat": "Extras",
+    "icon": "⚡",
+    "name": "Stromverteiler Event (63A)",
+    "w": 0.4,
+    "d": 0.3,
+    "h": 0.2,
+    "col": 15623680
+  },
+  {
+    "id": "eve-kabelbrücke",
+    "cat": "Extras",
+    "icon": "🔧",
+    "name": "Kabelbrücke (2m)",
+    "w": 2,
+    "d": 0.3,
+    "h": 0.06,
+    "col": 8947848
+  },
+  {
+    "id": "eve-kabeltrommeln",
+    "cat": "Extras",
+    "icon": "🔌",
+    "name": "Kabeltrommel 50m",
+    "w": 0.35,
+    "d": 0.35,
+    "h": 0.3,
+    "col": 16737792
+  },
+  {
+    "id": "eve-werkzeugwagen",
+    "cat": "Extras",
+    "icon": "🔧",
+    "name": "Werkzeugwagen Technik",
+    "w": 0.7,
+    "d": 0.45,
+    "h": 0.95,
+    "col": 16106776
+  },
+  {
+    "id": "eve-transport-karre",
+    "cat": "Extras",
+    "icon": "🛒",
+    "name": "Transport-Sackkarre",
+    "w": 0.5,
+    "d": 0.8,
+    "h": 1.2,
+    "col": 8947848
+  },
+  {
+    "id": "eve-akkumulde",
+    "cat": "Extras",
+    "icon": "🔋",
+    "name": "Akku-Ladestation",
+    "w": 0.4,
+    "d": 0.35,
+    "h": 0.6,
+    "col": 2245666
+  }
+]
