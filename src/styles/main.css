@@ -81,27 +81,14 @@ body[data-ui-mode="simple"] .simple-badge { display:inline-flex }
 body[data-planning-mode="room"]  [data-mode="event"]:not(.tb-seg__item) { display: none !important; }
 body[data-planning-mode="event"] [data-mode="room"]:not(.tb-seg__item)  { display: none !important; }
 
-/* P11.1/P12.2: Prominent Segmented Control für Mode-Switch in Topbar */
-.mode-seg { display:inline-flex; background:var(--bg3); border:1px solid var(--bd); border-radius:22px; overflow:hidden; height:36px; box-shadow:0 1px 3px rgba(0,0,0,.4) }
-.mode-seg button { padding:0 18px; font-size:12.5px; border:0; background:transparent; color:var(--tx2); cursor:pointer; transition:.18s; white-space:nowrap; font-weight:700; min-height:36px; letter-spacing:.2px; position:relative }
-.mode-seg button:hover { color:var(--tx) }
-.mode-seg button.active {
-  background:linear-gradient(180deg, var(--gr3) 0%, var(--gr4) 100%);
-  color:var(--gr);
-  box-shadow:inset 0 0 0 1px rgba(74,222,128,.4), 0 0 12px rgba(74,222,128,.25);
-  animation:mode-glow 2.5s ease-in-out infinite alternate;
-}
-@keyframes mode-glow {
-  from { box-shadow:inset 0 0 0 1px rgba(74,222,128,.4), 0 0 8px rgba(74,222,128,.18) }
-  to   { box-shadow:inset 0 0 0 1px rgba(74,222,128,.6), 0 0 18px rgba(74,222,128,.35) }
-}
-@media (max-width: 720px) { .mode-seg { height:32px } .mode-seg button { padding:0 12px; font-size:11px; min-height:32px } }
+/* P15 Cluster 4f: .mode-seg-Block entfernt — ersetzt durch .tb-seg in
+   topbar-v2.css (Cluster 4b). @keyframes mode-glow ebenfalls raus — kein
+   anderer Selector ruft die Animation auf. */
 
 /* P12.2: Subtile Lila-Akzent in Topbar wenn Event-Mode aktiv */
 body[data-planning-mode="event"] #topbar { box-shadow:inset 0 -2px 0 rgba(167,139,250,.35) }
-body[data-planning-mode="event"] .vbadge { background:rgba(167,139,250,.15); color:var(--pu) }
-/* P15 Cluster 4a: Event-Mode-Farbe für neues .tb-logo__ver (Replacement
-   für .vbadge). Alte Regel oben bleibt noch aktiv für spätere Cluster. */
+/* P15 Cluster 4a / 4f: Event-Mode-Farbe für .tb-logo__ver + __mark
+   (Replacement der alten .vbadge-Regel, die in 4f entfernt wurde). */
 body[data-planning-mode="event"] .tb-logo__ver { color:var(--pu) }
 body[data-planning-mode="event"] .tb-logo__mark { color:var(--pu); background:rgba(167,139,250,.10) }
 
@@ -153,9 +140,8 @@ input,textarea,select,button{font-family:inherit}
 @media (max-width: 750px) {
   #topbar [data-overflow-priority="2"] { display: none !important; }
 }
-.logo{font-weight:800;font-size:13px;color:var(--gr);letter-spacing:-.3px;white-space:nowrap;margin-right:4px}
-.logo em{color:var(--tx2);font-style:normal;font-weight:400}
-.vbadge{font-size:9px;background:var(--gr3);color:var(--gr);padding:2px 5px;border-radius:3px;font-weight:700}
+/* P15 Cluster 4f: .logo / .logo em / .vbadge entfernt — ersetzt durch
+   .tb-logo* aus topbar-v2.css (Cluster 4a). */
 .tbt{padding:5px 10px;background:var(--bg3);border:1px solid var(--bd);border-radius:var(--r6);color:var(--tx2);font-size:12px;cursor:pointer;white-space:nowrap;transition:.12s}
 .tbt:hover{background:var(--bg4);color:var(--tx);border-color:var(--bd2)}
 .tbt.g{background:var(--gr3);border-color:var(--gr);color:var(--gr)}
@@ -164,11 +150,10 @@ input,textarea,select,button{font-family:inherit}
 .tgap{flex:1}
 #proj-lbl{font-size:12px;color:var(--tx3);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
-/* View mode toggle */
-.view-toggle{display:flex;background:var(--bg3);border:1px solid var(--bd);border-radius:20px;overflow:hidden}
-.vt{padding:5px 12px;font-size:12px;cursor:pointer;color:var(--tx2);transition:.12s;border:none;background:transparent}
-.vt:hover{color:var(--tx)}
-.vt.active{background:var(--gr3);color:var(--gr)}
+/* P15 Cluster 4f: .view-toggle + .vt-Regeln entfernt — ersetzt durch
+   .tb-seg + .tb-seg__item aus topbar-v2.css (Cluster 4e). Die legacy
+   Klassen bleiben noch als 3-Klassen-Overlap auf den Buttons stehen,
+   werden aber von den neuen Regeln überschrieben. */
 
 /* ─ ICONBAR ─────────────────────────────────────────────── */
 #iconbar{background:#0c0c0c;border-right:1px solid var(--bd);display:flex;flex-direction:column;align-items:center;padding:8px 0;gap:3px;overflow:hidden}
@@ -419,8 +404,8 @@ canvas{display:block}
 .ftab{padding:4px 10px;background:var(--bg3);border:1px solid var(--bd);border-radius:var(--r4);font-size:11px;cursor:pointer;color:var(--tx2);transition:.12s;white-space:nowrap}
 .ftab:hover{background:var(--bg4);color:var(--tx)}
 .ftab.active{background:var(--bl2,#0c2230);border-color:#38bdf8;color:#38bdf8}
-.ftab-add{padding:4px 7px;background:transparent;border:1px dashed var(--bd2);border-radius:var(--r4);font-size:11px;cursor:pointer;color:var(--tx3);transition:.12s}
-.ftab-add:hover{border-color:#38bdf8;color:#38bdf8}
+/* P15 Cluster 4f: .ftab-add entfernt — ersetzt durch
+   .tb-btn--ghost.is-compact + data-icon="plus" (Cluster 4e, #btn-floor-add). */
 /* ── WALL TOOL PILL ──────────────────────────────────────────────── */
 #pill-wall{border-color:#1a3a50}
 #pill-wall.active{background:rgba(56,189,248,.12)!important;border-color:#38bdf8!important;color:#38bdf8!important}
@@ -718,12 +703,13 @@ canvas{display:block}
 
 
 /* ══ DROPDOWN MENU SYSTEM v3.56 ══════════════════════════════════ */
-.tb-menu-group{display:flex;align-items:center;gap:2px}
+/* P15 Cluster 4f: .tb-menu-group entfernt (→ .tb-group.tb-menus in 4d),
+   .tbm-btn base + :hover entfernt (→ .tb-btn--ghost aus topbar-v2.css),
+   .tbm-arr entfernt (→ Lucide-chevron aus 4d).
+   .tbm-btn.open BEHALTEN als Active-State-Indicator (grüner Rahmen +
+   Brand-Tint beim offenen Dropdown — kein Equivalent in topbar-v2.css). */
 .tbm{position:relative}
-.tbm-btn{padding:4px 9px;background:transparent;border:1px solid transparent;border-radius:var(--r4);font-size:11px;cursor:pointer;color:var(--tx2);transition:.12s;white-space:nowrap;display:flex;align-items:center;gap:3px}
-.tbm-btn:hover{background:var(--bg3);border-color:var(--bd);color:var(--tx)}
 .tbm-btn.open{background:var(--bg4);border-color:var(--bd2);color:var(--tx)}
-.tbm-arr{font-size:8px;opacity:.5}
 .tbm-drop{position:absolute;top:calc(100% + 3px);left:0;min-width:220px;background:var(--bg2);border:1px solid var(--bd2);border-radius:var(--r8);z-index:300;display:none;box-shadow:0 6px 24px rgba(0,0,0,.6);padding:4px 0;max-height:80vh;overflow-y:auto}
 .tbm-drop.open{display:block}
 .tbm-item{padding:7px 14px;font-size:12px;color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:.1s;white-space:nowrap}
@@ -733,8 +719,9 @@ canvas{display:block}
 .tbm-label{padding:5px 14px 2px;font-size:9px;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;font-weight:700}
 .tbm-kbd{font-size:9px;background:var(--bg4);border:1px solid var(--bd);border-radius:3px;padding:1px 5px;color:var(--tx3);font-family:monospace}
 
-/* Icon-only buttons */
-.icon-btn{padding:4px 7px!important;min-width:28px}
+/* P15 Cluster 4f: .icon-btn entfernt — ersetzt durch .tb-btn.is-compact
+   aus topbar-v2.css (Cluster 4a–4e). Keine HTML-Elemente haben die
+   Klasse mehr. */
 
 /* P11.2: Utility-Klasse für einheitliche Modal-Footer (rechte Button-Reihe) */
 .modal-footer { display:flex; justify-content:flex-end; gap:8px; padding-top:10px; margin-top:10px; border-top:1px solid var(--bd) }
@@ -744,8 +731,9 @@ canvas{display:block}
 
 /* Topbar compact (P15: height→min-height für Wrap-Support) */
 #topbar{min-height:40px;padding:4px 8px;gap:4px}
-.logo{font-size:13px}
-.vbadge{font-size:9px}
+/* P15 Cluster 4f: .logo + .vbadge Mobile-Overrides entfernt (Klassen
+   existieren nach 4a nicht mehr). .tbt-Override behalten — .tbt wird
+   weiterhin app-weit genutzt (rpanel-save Buttons, Bridge-Card, etc.). */
 .tbt{padding:4px 8px;font-size:11px}
 
 /* Active state indicators for menu items */
@@ -1382,15 +1370,17 @@ body.light-mode #right{background:#f0f0eb;border-color:#ddd}
    ausreichenden Tap-Target via min-height + align-self:stretch. */
 @media (max-width: 1023px) {
   #topbar { height: 48px !important; }
-  .tbt, .mpill, .tbm-item, .mbt, .cmd-item, .mode-seg button,
+  /* P15 Cluster 4f: .mode-seg button entfernt — .tb-seg__item greift
+     via button-Selector + eigene Narrow-Override in topbar-v2.css.
+     .icon-btn ebenfalls raus (→ .tb-btn.is-compact).
+     .tbt behält seinen Platz — wird app-weit außerhalb der Topbar
+     noch genutzt. */
+  .tbt, .mpill, .tbm-item, .mbt, .cmd-item,
   button[class*="btn"], select, input[type="button"], input[type="submit"]
   { min-height: 44px !important; }
-  .icon-btn, .ib, .touch-target { min-width: 44px !important; min-height: 44px !important; }
-  /* Primary-Save-Button braucht padding-Override (Inline-Style ist 5px 12px) */
+  .ib, .touch-target { min-width: 44px !important; min-height: 44px !important; }
+  /* Primary-Save-Button braucht padding-Override */
   #btn-save-primary { padding: 8px 14px !important; min-height: 44px !important; }
-  /* Mode-Seg ist per Default 36px — auf Mobile auf 44px anheben */
-  .mode-seg { height: 44px !important; }
-  .mode-seg button { min-height: 44px !important; }
 }
 
 /* Responsive — Tablet (600-1023px): seitliche Drawer wie bisher */
