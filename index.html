@@ -446,34 +446,43 @@
        Erhalten bleiben: Command-Palette (simple-only via CSS, Zugang #cmd-palette-btn)
        + Theme-Toggle (häufiger One-Click-Use). -->
   <button class="tbt" id="cmd-palette-btn" onclick="openCmdPalette()" title="Befehlspalette (Ctrl+K)" aria-label="Befehlspalette öffnen" style="color:var(--bl)">⌨</button>
-  <!-- P15-Responsive: Theme-Toggle ist bei <750px im Overflow-Menü -->
-  <button id="theme-toggle" data-tier="simple" data-overflow-priority="2" onclick="toggleTheme()" title="Hell/Dunkel">🌙 Dark</button>
-  <div class="tsep"></div>
+  <!-- P15 Cluster 4e: Theme-Toggle → .tb-btn--ghost.is-compact + data-icon
+       (Icon wechselt per JS zwischen moon/sun je nach aktivem Theme) -->
+  <button class="tb-btn tb-btn--ghost is-compact" id="theme-toggle" data-tier="simple" data-overflow-priority="2" onclick="toggleTheme()" aria-label="Hell/Dunkel umschalten" title="Hell/Dunkel" data-icon="moon"></button>
+  <span class="tb-divider"></span>
 
   <!-- P15 Topbar-Responsive: Overflow-Menü (Priority+) — wird bei <900px
        via CSS-Media-Query sichtbar, beim Boot JS-populated mit Clones der
-       data-overflow-priority-Buttons. Alt: im Zweifel flex-wrap:wrap auf
-       dem Topbar-Container sorgt, dass Items nie off-screen landen. -->
+       data-overflow-priority-Buttons. -->
+  <!-- P15 Cluster 4e: Overflow-Trigger → .tb-btn--ghost.is-compact + data-icon="more" -->
   <div id="topbar-overflow-wrap">
-    <button type="button" id="topbar-overflow-btn" class="tbt icon-btn"
+    <button type="button" id="topbar-overflow-btn" class="tb-btn tb-btn--ghost is-compact"
       onclick="toggleTopbarOverflow()" title="Weitere Aktionen"
       aria-label="Weitere Topbar-Aktionen" aria-haspopup="true" aria-expanded="false"
-      style="padding:5px 10px">⋯</button>
+      data-icon="more"></button>
     <div id="topbar-overflow-menu" role="menu" aria-label="Überlauf-Menü"></div>
   </div>
 
-  <!-- ETAGEN -->
-  <div id="floor-tabs-wrap">
+  <!-- ETAGEN (P15 Cluster 4e: .tb-group wrapper + .tb-btn--ghost für Add-Button) -->
+  <div class="tb-group" id="floor-tabs-wrap">
     <div id="floor-tabs"></div>
-    <button class="ftab-add" data-tier="simple" onclick="openM('m-floor')" title="Etage hinzufügen">＋</button>
+    <button class="tb-btn tb-btn--ghost is-compact" id="btn-floor-add" data-tier="simple" onclick="openM('m-floor')" aria-label="Etage hinzufügen" title="Etage hinzufügen" data-icon="plus"></button>
   </div>
-  <div class="tsep"></div>
+  <span class="tb-divider"></span>
 
-  <!-- ANSICHT UMSCHALTEN -->
-  <div class="view-toggle">
-    <button class="vt active" id="vt-2d" data-tier="simple" onclick="setView('2d')" title="2D Grundriss">⊞ 2D</button>
-    <button class="vt" id="vt-3d" data-tier="simple" onclick="setView('3d')" title="3D Ansicht">⬛ 3D</button>
-    <button class="vt" id="vt-walk" data-tier="simple" onclick="setView('walk')" title="Durchgehen">🚶</button>
+  <!-- ANSICHT UMSCHALTEN (P15 Cluster 4e: .view-toggle → .tb-seg) -->
+  <div class="tb-seg view-toggle" role="tablist" aria-label="Ansicht-Modus">
+    <button class="tb-seg__item vt is-active active" id="vt-2d" type="button" role="tab" data-tier="simple" onclick="setView('2d')" aria-label="2D Grundriss" title="2D Grundriss">
+      <span class="tb-btn__icon" data-icon="square"></span>
+      <span>2D</span>
+    </button>
+    <button class="tb-seg__item vt" id="vt-3d" type="button" role="tab" data-tier="simple" onclick="setView('3d')" aria-label="3D Ansicht" title="3D Ansicht">
+      <span class="tb-btn__icon" data-icon="cube"></span>
+      <span>3D</span>
+    </button>
+    <button class="tb-seg__item vt" id="vt-walk" type="button" role="tab" data-tier="simple" onclick="setView('walk')" aria-label="Durchgehen (Egoperspektive)" title="Durchgehen">
+      <span class="tb-btn__icon" aria-hidden="true">🚶</span>
+    </button>
   </div>
 
 
@@ -482,13 +491,14 @@
        Tabs im Rechts-Panel (#rtab-ai, #rtab-design, #rtab-light, #rtab-save). -->
   <div class="tgap"></div>
 
-  <!-- PROJEKT NAME -->
-  <span id="proj-lbl" style="font-size:11px;color:var(--tx2);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:text;padding:2px 4px;border-radius:3px"
-        title="Klick zum Umbennen" onclick="startInlineProjectRename()">Neue Ausgabestelle</span>
-  <input id="proj-lbl-edit" type="text" maxlength="80" style="display:none;font-size:11px;padding:2px 4px;background:var(--bg3);border:1px solid var(--gr);color:var(--tx);border-radius:3px;max-width:160px"
-         onblur="finishInlineProjectRename()" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();} else if(event.key==='Escape'){this.value=projName;this.blur();}">
-  <button id="proj-lbl-save" onclick="finishInlineProjectRename()" style="display:none;border:none;background:var(--gr);color:#0a0a0a;font-size:10px;padding:2px 6px;border-radius:3px;cursor:pointer" title="Speichern">💾</button>
-  <button class="tbt icon-btn" data-tier="simple" onclick="openM('m-rename')" title="Umbenennen">✏️</button>
+  <!-- PROJEKT NAME (P15 Cluster 4e: .tb-group.tb-project) -->
+  <div class="tb-group tb-project">
+    <span id="proj-lbl" class="tb-project__name" title="Klick zum Umbenennen" onclick="startInlineProjectRename()">Neue Ausgabestelle</span>
+    <input id="proj-lbl-edit" class="tb-project__input" type="text" maxlength="80" style="display:none"
+           onblur="finishInlineProjectRename()" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();} else if(event.key==='Escape'){this.value=projName;this.blur();}">
+    <button id="proj-lbl-save" class="tb-btn tb-btn--primary is-compact" style="display:none" onclick="finishInlineProjectRename()" aria-label="Projektname speichern" title="Speichern" data-icon="save"></button>
+    <button class="tb-btn tb-btn--ghost is-compact" id="btn-rename" data-tier="simple" onclick="openM('m-rename')" aria-label="Projekt umbenennen" title="Umbenennen" data-icon="edit-2"></button>
+  </div>
 
   <!-- 3D Hint -->
   <span id="view-hint-3d" style="font-size:10px;color:var(--tx3);display:none;margin-left:8px">Klick=Wählen · G=Verschieben · Del=Löschen · RMB=Orbit</span>
@@ -4404,7 +4414,12 @@ function setView(v){
   currentView=v;
   const h=document.getElementById('view-hint-3d');
   if(h) h.style.display=v==='3d'?'inline':'none';
-  ['2d','3d','walk'].forEach(x=>document.getElementById('vt-'+x).classList.toggle('active',x===v));
+  // P15 Cluster 4e: neben legacy .active auch BEM .is-active pflegen.
+  ['2d','3d','walk'].forEach(x=>{
+    const el=document.getElementById('vt-'+x); if(!el) return;
+    el.classList.toggle('active',x===v);
+    el.classList.toggle('is-active',x===v);
+  });
   const is2d=v==='2d';
   fpCv.style.display=is2d?'block':'none';
   tCv.style.display=is2d?'none':'block';
@@ -20788,22 +20803,33 @@ function deleteObj(id){
 
 
 // ── LIGHT/DARK MODE TOGGLE ─────────────────────────────────────────
+// P15 Cluster 4e: Zusätzlich zum Legacy body.light-mode wird jetzt
+// html[data-theme="light"|"dark"] gesetzt. Die neuen .tb-*-Tokens aus
+// topbar-v2.css hängen an [data-theme], die Legacy-Rules in main.css
+// an body.light-mode — beide Systeme koexistieren.
+function _applyThemeIcon(isLight){
+  const btn=document.getElementById('theme-toggle');
+  if(!btn) return;
+  btn.setAttribute('data-icon', isLight ? 'sun' : 'moon');
+  btn.innerHTML='';
+  const populate=window.cscPopulateIcons;
+  if(typeof populate==='function') populate();
+}
 function toggleTheme(){
   const body=document.body;
   const isLight=body.classList.toggle('light-mode');
-  const btn=document.getElementById('theme-toggle');
-  if(btn){btn.textContent=isLight?'🌑 Dark':'🌙 Dark';}
-  localStorage.setItem('csc-theme',isLight?'light':'dark');
+  document.documentElement.setAttribute('data-theme', isLight ? 'light' : 'dark');
+  _applyThemeIcon(isLight);
+  localStorage.setItem('csc-theme', isLight ? 'light' : 'dark');
   // Redraw canvas with new colors
   draw2D();
 }
 function initTheme(){
   const saved=localStorage.getItem('csc-theme');
-  if(saved==='light'){
-    document.body.classList.add('light-mode');
-    const btn=document.getElementById('theme-toggle');
-    if(btn)btn.textContent='🌑 Dark';
-  }
+  const isLight = saved === 'light';
+  if(isLight) document.body.classList.add('light-mode');
+  document.documentElement.setAttribute('data-theme', isLight ? 'light' : 'dark');
+  _applyThemeIcon(isLight);
 }
 
 
