@@ -230,12 +230,9 @@ canvas{display:block}
 
 /* ─ RIGHT AI PANEL ──────────────────────────────────────── */
 /* moved to v3.56 flex rules */
-.rtabs{display:flex;border-bottom:1px solid var(--bd);flex-shrink:0}
-.rtab{flex:1;padding:9px 4px;text-align:center;font-size:11px;cursor:pointer;color:var(--tx3);border-bottom:2px solid transparent;transition:.12s}
-.rtab.active{color:var(--gr);border-color:var(--gr)}
-
-.rpanel{flex:1;display:none;flex-direction:column;overflow:hidden;min-height:0}
-.rpanel.active{display:flex}
+/* P15 Cluster 7b: .rtabs/.rtab/.rpanel + active-State → src/styles/surfaces.css
+   (.rp-tabs/.rp-tab/.rp-pane). Die legacy Klassen bleiben im HTML als
+   Aliase (wie bei 7a mit .ib/.lph/.lpb), das CSS dahinter wohnt in surfaces.css. */
 /* Phase 4 – light panel */
 .lp-body{flex:1;overflow-y:auto;padding:10px;scrollbar-width:thin;scrollbar-color:var(--bd2) transparent}
 .lp-sect{background:var(--bg3);border:1px solid var(--bd);border-radius:var(--r6);padding:8px 10px;margin-bottom:7px}
@@ -761,7 +758,8 @@ body.light-mode{--bg:#f5f5f0;--bg2:#ffffff;--bg3:#ebebeb;--bg4:#e0e0d8;
   --gr4:rgba(22,101,52,.1);--gr3:#16a34a;--yw2:rgba(180,140,0,.2)}
 body.light-mode #topbar{background:#fff;border-color:#ddd}
 body.light-mode #left-panel{background:#f0f0eb;border-color:#ddd}
-body.light-mode #right{background:#f0f0eb;border-color:#ddd}
+/* P15 Cluster 7b: body.light-mode #right (first) → [data-theme="light"]
+   in surfaces.css. */
 
 /* Layer panel */
 #layer-panel{position:fixed;bottom:48px;left:260px;background:var(--bg2);
@@ -1741,11 +1739,10 @@ body.light-mode #botbar{ background:#fff; border-color:#b8b5a8; }
 /* P15 Cluster 7a: body.light-mode #left/#iconbar → [data-theme="light"]
    in surfaces.css. Beide Mechanismen werden von toggleTheme() synchron
    gesetzt (siehe Cluster 4e). */
-body.light-mode #right{ background:#f5f4ee; border-color:#b8b5a8; }
+/* P15 Cluster 7b: body.light-mode #right → [data-theme="light"] in surfaces.css. */
 body.light-mode #canvas-wrap{ background:#1a1e26; }
-body.light-mode .rtab{ background:#e8e5dc; color:#2c2c1c; border-color:#b8b5a8; }
-body.light-mode .rtab.active{ background:#fff; color:#14532d; }
-body.light-mode .rpanel{ background:#f5f4ee; }
+/* P15 Cluster 7b: body.light-mode .rtab(+.active) + .rpanel → [data-theme="light"]
+   in surfaces.css (.rp-tab / .rp-pane). */
 body.light-mode .mover{ background:#fff; border-color:#b8b5a8; }
 body.light-mode .tbt{ color:#2c2c1c; }
 body.light-mode .tbt:hover{ background:#e0ddd4; }
@@ -1755,7 +1752,8 @@ body.light-mode .amsg.user{ background:#fef9c3; color:#111; border-color:#fde68a
    in surfaces.css (.sb-panel__header / .sb-rail__item). */
 body.light-mode .tbm{ background:#fff; border-color:#b8b5a8; }
 body.light-mode .tbm-item:hover{ background:#e8f5e9; color:#14532d; }
-body.light-mode .rtab{ border-color:#b8b5a8; }
+/* P15 Cluster 7b: body.light-mode .rtab border-override — ersetzt durch
+   [data-theme="light"] .rp-tab in surfaces.css. */
 body.light-mode .amsg{ border-color:#b8b5a8; }
 body.light-mode input,body.light-mode textarea,body.light-mode select{
   background:#fff !important;color:#111 !important;border-color:#b8b5a8 !important;
@@ -1802,7 +1800,8 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
    (.sb-rail + .sb-panel — mit Width-, Background- und Border-Definition
    jetzt in einer Datei statt über 3 CSS-Blöcke verteilt). */
 #canvas-wrap{flex:1;min-width:0;min-height:0;position:relative;overflow:hidden;background:#1a1e26}
-#right{width:300px;flex-shrink:0;background:var(--bg2);border-left:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden}
+/* P15 Cluster 7b: #right Layout → src/styles/surfaces.css (#right.rp-panel —
+   Width 300px, Background, Border-Left, Flex-Column in einer Datei). */
 #topbar{flex-shrink:0;min-height:50px;background:#0c0c0c;border-bottom:1px solid var(--bd);display:flex;flex-wrap:wrap;align-items:center;padding:4px 8px;gap:4px;row-gap:4px;overflow:visible}
 #botbar{flex-shrink:0;height:54px;background:#0c0c0c;border-top:1px solid var(--bd);display:flex;align-items:center;padding:0 8px;gap:6px}
 /* ═══════════════════════════════════════════════════════════════ */

@@ -5,10 +5,11 @@
  * Icon ist eine 16×16 currentColor-stroke-Shape mit round-line-caps; der
  * Aufrufer steuert Farbe via CSS (color/stroke) und Größe via `size`.
  *
- * Scope (25 Icons, siehe design/topbar-redesign/README.md — Emoji-Mapping):
+ * Scope (29 Icons, siehe design/topbar-redesign/README.md — Emoji-Mapping):
  *   undo, redo, save, room, event, leaf, globe, file, layers, chart,
  *   share, sun, moon, square, cube, plus, more, help-circle, chevron, edit-2,
- *   house, sofa, building, shield, star (P15 Cluster 7a — Sidebar-Rail)
+ *   house, sofa, building, shield, star (P15 Cluster 7a — Sidebar-Rail),
+ *   bot, palette, sunrise, settings (P15 Cluster 7b — Right-Panel-Tabs)
  *
  * Bewusst NICHT portiert: Row-2-Tools (cursor, wall, roomdraw, area,
  * ruler, move, center, box, folder, sliders), view, clock.
@@ -48,7 +49,11 @@ export type IconName =
   | 'sofa'
   | 'building'
   | 'shield'
-  | 'star';
+  | 'star'
+  | 'bot'
+  | 'palette'
+  | 'sunrise'
+  | 'settings';
 
 export interface IconOptions {
   /** Kantenlänge in px. Default 16 (passt zu --btn-h 32). */
@@ -101,6 +106,11 @@ const PATHS: Record<IconName, string> = {
   building: '<rect x="3" y="2.5" width="10" height="11" rx=".5"/><path d="M5.5 5h1M9.5 5h1M5.5 7.5h1M9.5 7.5h1M5.5 10h1M9.5 10h1"/><path d="M6.5 13.5v-2h3v2"/>',
   shield: '<path d="M8 2 3 4v4.5c0 2.8 2 4.6 5 5.5 3-0.9 5-2.7 5-5.5V4L8 2z"/>',
   star: '<path d="m8 2 1.8 3.7 4.1.6-3 2.9.7 4L8 11.3 4.4 13.2l.7-4-3-2.9 4.1-.6L8 2z"/>',
+  // P15 Cluster 7b — Right-Panel-Tabs (ersetzt Emoji-Glyphen in rtab-*).
+  bot: '<rect x="2.5" y="5.5" width="11" height="7" rx="1.5"/><path d="M8 3V2M5.5 5.5V4M10.5 5.5V4"/><circle cx="6" cy="9" r=".7" fill="currentColor" stroke="none"/><circle cx="10" cy="9" r=".7" fill="currentColor" stroke="none"/>',
+  palette: '<path d="M8 2a6 6 0 1 0 0 12c.6 0 1-.5 1-1 0-.3-.1-.5-.3-.7-.2-.2-.3-.5-.3-.8 0-.6.5-1 1-1H11a3 3 0 0 0 3-3c0-3.3-2.7-6-6-6z"/><circle cx="5" cy="6.5" r=".7" fill="currentColor" stroke="none"/><circle cx="8" cy="5" r=".7" fill="currentColor" stroke="none"/><circle cx="11" cy="6.5" r=".7" fill="currentColor" stroke="none"/><circle cx="12" cy="9.5" r=".7" fill="currentColor" stroke="none"/>',
+  sunrise: '<circle cx="8" cy="9" r="2.5"/><path d="M8 4V2.5M2.5 9H4M12 9h1.5M4 5l1 1M11 5l1-1"/><path d="M2 12.5h12"/><path d="M5 10.5 8 7l3 3.5"/>',
+  settings: '<circle cx="8" cy="8" r="2"/><path d="M13 8a5 5 0 0 0-.1-.9l1.2-.9-1-1.7-1.4.4c-.5-.5-1-.9-1.7-1.1L9.6 2H6.4L6 3.8c-.6.2-1.2.6-1.7 1.1l-1.4-.4-1 1.7 1.2.9A5 5 0 0 0 3 8c0 .3 0 .6.1.9l-1.2.9 1 1.7 1.4-.4c.5.5 1 .9 1.7 1.1l.4 1.8h3.2l.4-1.8c.6-.2 1.2-.6 1.7-1.1l1.4.4 1-1.7-1.2-.9c.1-.3.1-.6.1-.9z"/>',
 };
 
 /**
