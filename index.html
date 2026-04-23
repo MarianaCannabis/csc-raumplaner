@@ -505,26 +505,41 @@
 </div>
 
 <div id="main-row" role="main" aria-label="Raumplaner-Arbeitsfläche">
-<!-- ICONBAR — P12.4: getaggt per planning-mode, Bau + Sicher in Room-Mode -->
-<div id="iconbar">
-  <div class="ib active" id="ib-rooms" data-mode="room" onclick="showLeft('rooms')"><span class="ico">📐</span>Räume</div>
-  <div class="ib" id="ib-furn" data-mode="room" onclick="showLeft('furn')"><span class="ico">🛋️</span>Möbel</div>
-  <div class="ib" id="ib-arch" data-mode="room" onclick="showLeft('arch')"><span class="ico">🏗️</span>Bau</div>
-  <div class="ib" id="ib-security" data-mode="room" onclick="showLeft('security')" style="color:#f87171"><span class="ico">🔒</span>Sicher</div>
-  <div class="ib" id="ib-custom" onclick="showLeft('custom')"><span class="ico">✏️</span>Eigene</div>
+<!-- ICONBAR (P15 Cluster 7a: .sb-rail + .sb-rail__item, IDs + data-mode 1:1 erhalten) -->
+<div id="iconbar" class="sb-rail">
+  <div class="sb-rail__item ib is-active active" id="ib-rooms" data-mode="room" onclick="showLeft('rooms')">
+    <span class="sb-rail__item__icon" data-icon="house"></span>
+    <span class="sb-rail__item__label">Räume</span>
+  </div>
+  <div class="sb-rail__item ib" id="ib-furn" data-mode="room" onclick="showLeft('furn')">
+    <span class="sb-rail__item__icon" data-icon="sofa"></span>
+    <span class="sb-rail__item__label">Möbel</span>
+  </div>
+  <div class="sb-rail__item ib" id="ib-arch" data-mode="room" onclick="showLeft('arch')">
+    <span class="sb-rail__item__icon" data-icon="building"></span>
+    <span class="sb-rail__item__label">Bau</span>
+  </div>
+  <div class="sb-rail__item ib" id="ib-security" data-mode="room" onclick="showLeft('security')">
+    <span class="sb-rail__item__icon" data-icon="shield"></span>
+    <span class="sb-rail__item__label">Sicher</span>
+  </div>
+  <div class="sb-rail__item ib" id="ib-custom" onclick="showLeft('custom')">
+    <span class="sb-rail__item__icon" data-icon="star"></span>
+    <span class="sb-rail__item__label">Eigene</span>
+  </div>
   <div style="flex:1"></div>
-  <div data-mode="event" style="padding:4px 8px;font-size:8px;color:var(--tx3);text-transform:uppercase;letter-spacing:.8px;text-align:center;flex-shrink:0">Veranst.</div>
-  <div class="ib" id="ib-events" data-mode="event" onclick="showLeft('events')"><span class="ico">🎭</span>Veranst.</div>
+  <div class="sb-rail__section-label" data-mode="event">Veranst.</div>
+  <div class="sb-rail__item ib" id="ib-events" data-mode="event" onclick="showLeft('events')">
+    <span class="sb-rail__item__icon" data-icon="event"></span>
+    <span class="sb-rail__item__label">Veranst.</span>
+  </div>
   <div style="height:8px;flex-shrink:0"></div>
 </div>
 
-<!-- LEFT PANEL -->
-<div id="left">
-  <div class="lph" id="left-title">📐 Räume</div>
-  <div class="lpb" id="left-body"></div>
-  <!-- EIGENSCHAFTEN PANEL -->
-  
-
+<!-- LEFT PANEL (P15 Cluster 7a: .sb-panel / .sb-panel__header / .sb-panel__body) -->
+<div id="left" class="sb-panel">
+  <div class="sb-panel__header lph" id="left-title">📐 Räume</div>
+  <div class="sb-panel__body lpb" id="left-body"></div>
 </div>
 
 <!-- CANVAS AREA -->
@@ -4440,8 +4455,11 @@ function setView(v){
 // ════════════════════════════════════════════════════════════════════════
 function showLeft(m){
   leftMode=m;
+  // P15 Cluster 7a: beide Klassen togglen — .active (legacy, breit im
+  // Codebase referenziert) + .is-active (BEM, surfaces.css-Matcher).
   ['rooms','furn','arch','security','events','custom'].forEach(x=>{
-    const el=document.getElementById('ib-'+x);if(el)el.classList.toggle('active',x===m);
+    const el=document.getElementById('ib-'+x);
+    if(el){ el.classList.toggle('active',x===m); el.classList.toggle('is-active',x===m); }
   });
   document.getElementById('left-title').textContent =
     m==='rooms'?'📐 Räume':m==='furn'?'🛋️ Möbel':m==='arch'?'🏗️ Baukatalog':m==='security'?'🔒 Sicherheitsebene':m==='events'?'🎭 Veranstaltungsbau':'✏️ Eigene Objekte';
