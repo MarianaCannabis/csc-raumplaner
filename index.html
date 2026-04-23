@@ -665,18 +665,33 @@
   </div>
 </div>
 
-<!-- RIGHT PANEL -->
-<div id="right">
-  <div class="rtabs">
-    <div class="rtab" id="rtab-ai" onclick="showRight('ai')">🤖 KI-Assistent</div>
-    <div class="rtab" id="rtab-design" onclick="showRight('design')">🎨 Design</div>
-    <div class="rtab" id="rtab-light" onclick="showRight('light')">🌅 Licht</div>
-    <div class="rtab" id="rtab-save" onclick="showRight('save')">💾 Projekte</div>
-    <div class="rtab active" id="rtab-props" onclick="showRight('props')">⚙ Eigenschaften</div>
+<!-- RIGHT PANEL (P15 Cluster 7b: .rp-panel + .rp-tabs + .rp-tab + .rp-pane) -->
+<div id="right" class="rp-panel">
+  <div class="rtabs rp-tabs">
+    <div class="rtab rp-tab" id="rtab-ai" onclick="showRight('ai')">
+      <span class="rp-tab__icon" data-icon="bot"></span>
+      <span class="rp-tab__label">KI-Assistent</span>
+    </div>
+    <div class="rtab rp-tab" id="rtab-design" onclick="showRight('design')">
+      <span class="rp-tab__icon" data-icon="palette"></span>
+      <span class="rp-tab__label">Design</span>
+    </div>
+    <div class="rtab rp-tab" id="rtab-light" onclick="showRight('light')">
+      <span class="rp-tab__icon" data-icon="sunrise"></span>
+      <span class="rp-tab__label">Licht</span>
+    </div>
+    <div class="rtab rp-tab" id="rtab-save" onclick="showRight('save')">
+      <span class="rp-tab__icon" data-icon="save"></span>
+      <span class="rp-tab__label">Projekte</span>
+    </div>
+    <div class="rtab rp-tab is-active active" id="rtab-props" onclick="showRight('props')">
+      <span class="rp-tab__icon" data-icon="settings"></span>
+      <span class="rp-tab__label">Eigenschaften</span>
+    </div>
   </div>
 
   <!-- AI PANEL -->
-  <div class="rpanel" id="rpanel-ai">
+  <div class="rpanel rp-pane" id="rpanel-ai">
     <div id="ai-msgs" style="flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px;min-height:0">
       <div class="amsg ai">
         <div class="ailbl">🤖 KI-Assistent</div>
@@ -708,7 +723,7 @@
     </div>
   </div><!-- /rpanel-ai -->
 
-  <div class="rpanel" id="rpanel-light">
+  <div class="rpanel rp-pane" id="rpanel-light">
     <div class="lp-body">
       <div class="sh">Stimmungs-Presets</div>
       <div class="mood-grid">
@@ -754,13 +769,13 @@
   </div>
 
   <!-- DESIGN PANEL (Phase 6) -->
-  <div class="rpanel" id="rpanel-design">
+  <div class="rpanel rp-pane" id="rpanel-design">
     <div class="dc-panel" id="design-panel-body">
       <!-- Populated by renderDesignPanel() -->
     </div>
   </div>
   <!-- SAVE PANEL -->
-  <div class="rpanel" id="rpanel-save">
+  <div class="rpanel rp-pane" id="rpanel-save">
     <div class="spanel-body">
       <div id="cloud-status-bar" style="padding:6px 10px;background:rgba(74,222,128,.08);border:1px solid var(--gr3);border-radius:5px;font-size:10px;color:var(--gr);margin-bottom:8px;display:flex;align-items:center;gap:6px"><span id="cloud-status-dot">⬜</span><span id="cloud-status-text">Verbindung wird geprüft…</span></div>
 
@@ -886,7 +901,7 @@
   </div>
 
   <!-- EIGENSCHAFTEN PANEL -->
-  <div class="rpanel active" id="rpanel-props">
+  <div class="rpanel rp-pane is-active active" id="rpanel-props">
     <div id="rpanel-props-content" style="flex:1;overflow-y:auto;min-height:0">
       <div id="props-default-view">
         <div style="padding:8px 10px;font-size:10px;color:var(--tx3);border-bottom:1px solid var(--bd)">Klicke ein Objekt oder Raum an</div>
@@ -5221,9 +5236,13 @@ function doPrint(){
 function openM(id){document.getElementById(id).classList.add('open');}
 function closeM(id){document.getElementById(id).classList.remove('open');}
 function showRight(p){
+  // P15 Cluster 7b: beide Klassen togglen — .active (legacy, breit
+  // referenziert) + .is-active (BEM, surfaces.css-Matcher).
   ['ai','design','light','save','props'].forEach(x=>{
-    document.getElementById('rpanel-'+x)?.classList.toggle('active',x===p);
-    document.getElementById('rtab-'+x)?.classList.toggle('active',x===p);
+    const pane = document.getElementById('rpanel-'+x);
+    const tab  = document.getElementById('rtab-'+x);
+    if(pane){ pane.classList.toggle('active',x===p); pane.classList.toggle('is-active',x===p); }
+    if(tab) { tab.classList.toggle('active',x===p);  tab.classList.toggle('is-active',x===p);  }
   });
   if(p==='design') renderDesignPanelFull(selId&&!selIsRoom&&!selIsWall?selId:null);
 }
