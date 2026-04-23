@@ -103,15 +103,16 @@ docs/
 
 > Performance-Baseline ist v2.4-spezifisch; Hauptoptimierung erfolgt in v2.5 über den in [`docs/P17-JS-SPLIT-PLAN.md`](docs/P17-JS-SPLIT-PLAN.md) dokumentierten JS-Split.
 
-### Sonstige Gates
+### Sonstige Gates (v2.5.0)
 
 | Gate | Ziel | Aktuell |
 |---|---|---|
-| Bundle-Size gz | <400 KB | **626 KB** (index.html-JS-Split offen) |
-| Unit-Tests | passing | **42/42 ✅** |
-| E2E-Tests | 28/28 passing | **28/28 ✅** (`fix/e2e-green-final`, 55s Laufzeit) |
+| Bundle-Size gz | <400 KB | **~435 KB** (index.html + CSS + JS; index.html-JS-Split weiterhin offen) |
+| Unit-Tests | passing | **61/61 ✅** (v2.4.2: 48 → v2.5.0: 61, +13 durch Lucide + Keyboard-Module) |
+| E2E-Tests | 41/41 passing | **41/41 ✅** (~1.6 min Laufzeit) |
 | TS strict | clean | **✅** (+ noFallthroughCasesInSwitch, noImplicitReturns) |
 | WCAG 2.1 AA Touch-Targets | 44×44 px | **✅** (P11.2 + P-Bug-Bash) |
+| Topbar-Design-System | Lucide-Icons + `[data-theme]` | **✅** v2.5.0 (6 Cluster 4a–4f + v2-Iteration) |
 
 ## Roadmap
 

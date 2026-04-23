@@ -4,6 +4,37 @@ Alle bedeutsamen Änderungen an CSC Studio Pro.
 
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [2.5.0] — 2026-04-23 · Topbar-Redesign komplett + echtes CSC-Branding
+
+**Minor-Release.** Die komplette Topbar wurde über 6 Cluster (4a–4f) auf ein neues `.tb-*` Design-System migriert und um eine zweite Design-Iteration + echtes CSC-Logo ergänzt.
+
+### Added
+- **Neues Design-System** (`src/styles/topbar-v2.css` + tokens): Button-Variants primary/ghost/soft/accent/tool/tab, Segmented-Control, Focus-Ring, Light-Theme-Support via `[data-theme]`
+- **Lucide-Icon-Set** (`src/icons/lucide.ts`): 20 Icons (undo, redo, save, room, event, leaf, globe, file, layers, chart, share, sun, moon, square, cube, plus, more, help-circle, chevron, edit-2) + `icon(name, opts)` vanilla-JS-API + `[data-icon]` Auto-Populate
+- **Light-Theme** aktivierbar: `toggleTheme()` setzt `html[data-theme]`, Brand-600 für Active-States
+- **Echtes CSC-Logo** statt Lucide-Leaf — `public/assets/csc-logo.png` (320×160, 21 KB)
+- **Border-Ring Active-States** für Mode-Seg + View-Toggle + Tool/Tab (klar erkennbar statt Background-Swap)
+
+### Changed
+- Topbar-HTML komplett auf `.tb-*` Klassen migriert
+- Icon-Auto-Populate via `data-icon`-Attribut (kein Emoji-Dschungel mehr)
+- Primary-Button (Speichern) mit 5-Layer-Shadow-Stack + Hover-Lift
+
+### Removed
+- Alte Topbar-CSS-Klassen: `.tbt`, `.logo`, `.vbadge`, `.mode-seg`, `.view-toggle`, `.vt`, `.ftab-add`, `.tb-menu-group`, `.tbm-btn` base, `.tbm-arr`, `.icon-btn` — keine HTML-Referenzen mehr
+
+### Fixed
+- Logo-PNG war 1.18 MB / 12500×6250 — auf 21 KB / 320×160 optimiert (−98%)
+- Test-Infra-Workarounds aus Cluster-5 zurückgedreht (nicht mehr nötig mit kleinem Logo)
+
+### Metrics
+- Topbar-Clusters: 4a + 4b + 4c + 4d + 4e + 4f + v2-Iteration = 7 PRs
+- Unit-Tests: 48 → 61 (+13)
+- E2E-Tests: 41 stabil
+- CSS-Chunk gzip: 17.34 → 18.94 KB (+1.6 KB für neues Design-System)
+- JS-Chunk gzip: 69.59 → 70.62 KB (+1.03 KB für Lucide-Icon-Modul + Theme-Logic)
+- Logo-Asset: 1.18 MB → 21 KB
+
 ## [2.4.2] — 2026-04-22 · Release-Workflow Fix (vbadge + SW-Cache)
 
 **Patch-Release.** Zwei Bugs, die den Release-Workflow kaputt gemacht hätten, behoben:

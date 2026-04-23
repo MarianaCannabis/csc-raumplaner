@@ -26,10 +26,7 @@ test('switch to event mode updates body attribute', async ({ page }) => {
 
 test('mode persists across reload', async ({ page }) => {
   await switchMode(page, 'event');
-  // P15 Cluster 5: Logo-PNG (1.18 MB) kann unter parallelem Test-Load >30s
-  // brauchen bis zum load-Event. Die Planning-Mode-IIFE läuft aber schon bei
-  // DOMContentLoaded — also warten wir nur darauf, nicht auf das image-load.
-  await page.reload({ waitUntil: 'domcontentloaded' });
+  await page.reload();
   await expect(page.locator('body')).toHaveAttribute('data-planning-mode', 'event');
 });
 
