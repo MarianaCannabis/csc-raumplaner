@@ -12,6 +12,10 @@ import './styles/main.css';
 // Focus-Ring aus design/topbar-redesign/. Die Klassen sind da, der HTML-
 // Block in index.html migriert cluster-für-cluster in einer Folge-PR.
 import './styles/topbar-v2.css';
+// P15 Cluster 7a — Surface-Design-System: Sidebar (Rail + Panel). Nach
+// topbar-v2, damit surface-eigene Properties topbar-Resets überschreiben
+// können, ohne dass wir mit Specificity kämpfen.
+import './styles/surfaces.css';
 import * as compliance from './compliance/index.js';
 import * as geo from './geo/overpass.js';
 import * as defaults from './config/defaults.js';

@@ -1,0 +1,199 @@
+/* ==========================================================================
+   P15 Cluster 7a — Surface-Design-System: Sidebar (Rail + Panel)
+   ==========================================================================
+   Neue BEM-Klassen für den linken Rail (#iconbar) + Möbel-Panel (#left).
+   Referenziert die tokens.css-Variablen, die Topbar-v2 eingeführt hat —
+   teilt sich also Brand-Farben, Hover-Surfaces, Light-Theme-Kippen.
+
+   .tb-*-Klassen werden NICHT wiederverwendet — Sidebar ist ihre eigene
+   Surface mit eigenem Layout-Contract (Rail 64px, Panel 270px).
+
+   Scope-Grenze (siehe docs/topbar-redesign/README.md): Right-Panel kommt
+   in Cluster 7b, Modals in 7c, Popover in 7d.
+   ========================================================================== */
+
+/* ==========================================================================
+   Rail (#iconbar) — 6 Navigation-Items vertikal
+   ========================================================================== */
+#iconbar.sb-rail {
+  width: 64px;
+  flex-shrink: 0;
+  background: var(--bg-app);
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 8px 0;
+  gap: 3px;
+  overflow: hidden;
+}
+
+.sb-rail__item {
+  width: 48px;
+  height: 46px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+  border: 1px solid transparent;
+  font-size: 9px;
+  color: var(--text-muted);
+  gap: 2px;
+  user-select: none;
+  flex-shrink: 0;
+}
+.sb-rail__item:hover {
+  background: var(--bg-hover);
+  color: var(--color-text-primary);
+}
+.sb-rail__item:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--bg-app), 0 0 0 4px var(--brand-500);
+}
+.sb-rail__item.is-active,
+.sb-rail__item.active {
+  /* Beide Klassen gleich gestylt — showLeft() toggelt beide
+     (.active legacy, .is-active BEM). */
+  background: var(--bg-active);
+  color: var(--color-text-primary);
+  border-color: color-mix(in oklch, var(--brand-500) 35%, transparent);
+  font-weight: 600;
+}
+.sb-rail__item.is-active .sb-rail__item__icon,
+.sb-rail__item.active .sb-rail__item__icon {
+  color: var(--brand-400);
+}
+
+.sb-rail__item__icon {
+  display: inline-grid;
+  place-items: center;
+  color: var(--text-muted);
+  line-height: 1;
+  width: 18px;
+  height: 18px;
+}
+.sb-rail__item__icon svg { width: 18px; height: 18px; }
+.sb-rail__item:hover .sb-rail__item__icon { color: var(--color-text-primary); }
+
+.sb-rail__item__label {
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+/* #ib-security behält seine rote Tinte für „gefährliche Kategorie"-Hinweis.
+   Keine Override via inline-style mehr — hier sauber deklariert. */
+#ib-security {
+  color: #f87171;
+}
+#ib-security:hover { color: #fca5a5; }
+#ib-security.is-active,
+#ib-security.active {
+  border-color: color-mix(in oklch, #f87171 45%, transparent);
+  color: #fecaca;
+}
+
+/* Event-Section-Label (uppercase Divider vor #ib-events) */
+.sb-rail__section-label {
+  padding: 4px 8px;
+  font-size: 8px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Panel (#left) — 270px Möbel-/Room-/Arch-Katalog-Scroller
+   ========================================================================== */
+#left.sb-panel {
+  width: 270px;
+  flex-shrink: 0;
+  background: var(--bg-panel);
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sb-panel__header {
+  padding: 10px 12px 7px;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--brand-500);
+  letter-spacing: 0.01em;
+}
+
+.sb-panel__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 10px 10px 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+/* UX/sidebar-scroll (aus dem alten .lpb-Regel-Block übernommen):
+   verhindert, dass Kategorie-Render-Funktionen einen zweiten inneren
+   Scroll-Container aufmachen. Äußerer .sb-panel__body scrollt, die
+   Kinder wachsen natürlich. */
+.sb-panel__body > div[style*="overflow-y:auto"] {
+  overflow: visible !important;
+}
+
+/* ==========================================================================
+   Light-Theme-Overrides (P15 Cluster 7a)
+   ========================================================================== */
+[data-theme="light"] #iconbar.sb-rail {
+  background: var(--bg-app);
+  border-right-color: var(--border-subtle);
+}
+[data-theme="light"] .sb-rail__item {
+  color: var(--text-muted);
+}
+[data-theme="light"] .sb-rail__item:hover {
+  background: var(--bg-hover);
+  color: var(--color-text-primary);
+}
+[data-theme="light"] .sb-rail__item.is-active,
+[data-theme="light"] .sb-rail__item.active {
+  background: color-mix(in oklch, var(--brand-600) 12%, transparent);
+  color: var(--color-text-primary);
+  border-color: color-mix(in oklch, var(--brand-600) 45%, transparent);
+}
+[data-theme="light"] .sb-rail__item.is-active .sb-rail__item__icon,
+[data-theme="light"] .sb-rail__item.active .sb-rail__item__icon {
+  color: var(--brand-600);
+}
+[data-theme="light"] #ib-security.is-active,
+[data-theme="light"] #ib-security.active {
+  background: color-mix(in oklch, #dc2626 10%, transparent);
+  border-color: color-mix(in oklch, #dc2626 45%, transparent);
+  color: #b91c1c;
+}
+[data-theme="light"] #left.sb-panel {
+  background: var(--bg-panel);
+  border-right-color: var(--border-subtle);
+}
+[data-theme="light"] .sb-panel__header {
+  background: var(--bg-sunken);
+  border-bottom-color: var(--border-subtle);
+  color: var(--brand-600);
+}
+
+/* ==========================================================================
+   Narrow / touch — enforce 44px touch target (übersetzt aus main.css
+   ============================================================================
+   Alte Regel: `.ib, .touch-target { min-width: 44px !important; min-height: 44px !important; }`
+   — die neue BEM-Klasse wird mit aufgenommen, damit die WCAG-2.1-AA-
+   Garantie aus P11.2 bestehen bleibt. */
+@media (max-width: 1023px) {
+  .sb-rail__item { min-width: 44px !important; min-height: 44px !important; }
+}
