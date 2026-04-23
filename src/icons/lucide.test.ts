@@ -2,9 +2,9 @@ import { describe, test, expect } from 'vitest';
 import { icon, listIcons, type IconName } from './lucide.js';
 
 describe('lucide icons', () => {
-  test('listIcons() enthält exakt die 29 geplanten Icons', () => {
+  test('listIcons() enthält exakt die 33 geplanten Icons', () => {
     const names = listIcons();
-    expect(names).toHaveLength(29);
+    expect(names).toHaveLength(33);
     const expected: IconName[] = [
       'undo',
       'redo',
@@ -37,6 +37,11 @@ describe('lucide icons', () => {
       'palette',
       'sunrise',
       'settings',
+      // P15 Cluster 7c: KCanG-Modal Headers
+      'list-checks',
+      'shield-check',
+      'map-pin',
+      'sliders',
     ];
     for (const name of expected) {
       expect(names).toContain(name);
@@ -79,7 +84,9 @@ describe('lucide icons', () => {
       'center',
       'box',
       'folder',
-      'sliders',
+      // 'sliders' wurde in Cluster 7c als Advanced-Parameter-Icon aufgenommen
+      // (eigene Form, nicht das Row-2-Tool aus topbar.jsx) — daher nicht mehr
+      // in der Exklusions-Liste.
       'view',
       'clock',
     ]) {
