@@ -16,6 +16,8 @@ import './styles/topbar-v2.css';
 // topbar-v2, damit surface-eigene Properties topbar-Resets überschreiben
 // können, ohne dass wir mit Specificity kämpfen.
 import './styles/surfaces.css';
+// P15 Cluster 7x — Help-Button-Pulse (Variante A, first-session-only).
+import './styles/help-pulse.css';
 import * as compliance from './compliance/index.js';
 import * as geo from './geo/overpass.js';
 import * as defaults from './config/defaults.js';
@@ -253,3 +255,25 @@ if (document.readyState === 'loading') {
 // Für Widgets die Icons nach Boot brauchen (Custom-Render, etc.)
 (window as unknown as { cscPopulateIcons?: () => void }).cscPopulateIcons =
   populateIcons;
+
+// P15 Cluster 7x — Help-Button Pulse (Variante A, first-session-only).
+// localStorage['csc-help-seen'] markiert, ob der User die Hilfe bereits
+// einmal geöffnet hat. Ohne Eintrag: .is-pulsing auf #btn-help. Ein Click
+// auf den Button setzt den Storage + entfernt die Klasse — ab da still.
+// Reduced-motion wird vom Stylesheet selbst gehandhabt (Media-Query).
+function initHelpPulse() {
+  const btn = document.getElementById('btn-help');
+  if (!btn) return;
+  let seen = false;
+  try { seen = localStorage.getItem('csc-help-seen') === '1'; } catch { /* private-mode */ }
+  if (!seen) btn.classList.add('is-pulsing');
+  btn.addEventListener('click', () => {
+    try { localStorage.setItem('csc-help-seen', '1'); } catch { /* ignore */ }
+    btn.classList.remove('is-pulsing');
+  }, { once: false });
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initHelpPulse);
+} else {
+  initHelpPulse();
+}
