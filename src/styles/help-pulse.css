@@ -1,0 +1,44 @@
+/* ==========================================================================
+   P15 Cluster 7x — Help-Button-Emphasis (Variante A · Pulse)
+   ==========================================================================
+   First-session-Affordance auf #btn-help: subtiler Brand-Glow-Ring pulsiert,
+   bis der User den Button einmal geklickt hat. localStorage['csc-help-seen']
+   trägt den Zustand — gesetzt beim Click, geprüft beim Boot.
+
+   Implementierung inferriert aus der Behavior-Spec im Prompt (--brand-glow
+   + --brand-400 + 40%-Ring für reduced-motion). Die referenzierten
+   Design-Files design/topbar-redesign/help-variants.{jsx,css,html} waren
+   zum Zeitpunkt des Commits nicht im Repo — die visuelle Interpretation
+   hier ist plausibles Default, bereit für späteren Austausch.
+
+   Scope: nur .help-btn + .help-btn.is-pulsing. Keine A/B/C-Varianten-
+   Scaffolding. Keine neuen Tokens — nutzt --brand-glow und --brand-400
+   aus tokens.css (P15 Cluster 4e / v2-Iteration).
+   ========================================================================== */
+
+.help-btn.is-pulsing {
+  position: relative;
+  animation: help-pulse 1.8s ease-in-out infinite;
+}
+.help-btn.is-pulsing .tb-btn__icon,
+.help-btn.is-pulsing > svg {
+  color: var(--brand-400);
+}
+
+@keyframes help-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 var(--brand-glow), 0 0 0 1px color-mix(in oklch, var(--brand-400) 25%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 4px var(--brand-glow), 0 0 0 1px color-mix(in oklch, var(--brand-400) 55%, transparent);
+  }
+}
+
+/* Reduced-motion: keine Animation, stattdessen statischer 40%-Brand-Ring.
+   Das Signal bleibt, die Motion-Empfindlichen werden respektiert. */
+@media (prefers-reduced-motion: reduce) {
+  .help-btn.is-pulsing {
+    animation: none;
+    box-shadow: 0 0 0 2px color-mix(in oklch, var(--brand-400) 40%, transparent);
+  }
+}
