@@ -5,9 +5,10 @@
  * Icon ist eine 16×16 currentColor-stroke-Shape mit round-line-caps; der
  * Aufrufer steuert Farbe via CSS (color/stroke) und Größe via `size`.
  *
- * Scope (20 Icons, siehe design/topbar-redesign/README.md — Emoji-Mapping):
+ * Scope (25 Icons, siehe design/topbar-redesign/README.md — Emoji-Mapping):
  *   undo, redo, save, room, event, leaf, globe, file, layers, chart,
- *   share, sun, moon, square, cube, plus, more, help-circle, chevron, edit-2
+ *   share, sun, moon, square, cube, plus, more, help-circle, chevron, edit-2,
+ *   house, sofa, building, shield, star (P15 Cluster 7a — Sidebar-Rail)
  *
  * Bewusst NICHT portiert: Row-2-Tools (cursor, wall, roomdraw, area,
  * ruler, move, center, box, folder, sliders), view, clock.
@@ -42,7 +43,12 @@ export type IconName =
   | 'more'
   | 'help-circle'
   | 'chevron'
-  | 'edit-2';
+  | 'edit-2'
+  | 'house'
+  | 'sofa'
+  | 'building'
+  | 'shield'
+  | 'star';
 
 export interface IconOptions {
   /** Kantenlänge in px. Default 16 (passt zu --btn-h 32). */
@@ -89,6 +95,12 @@ const PATHS: Record<IconName, string> = {
   // (P15 Cluster 4e). Lucide-Pencil-Form.
   'edit-2':
     '<path d="M11.3 2.7a1.5 1.5 0 0 1 2.1 2.1L5 13.3l-3 .7.7-3 8.6-8.3z"/>',
+  // P15 Cluster 7a — Sidebar-Rail (ersetzt Emoji-Glyphen in ib-*).
+  house: '<path d="M2.5 7.5 8 3l5.5 4.5"/><path d="M4 7v6.5h8V7"/><path d="M7 13.5V10h2v3.5"/>',
+  sofa: '<path d="M2 8V6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2"/><path d="M10 8V6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2"/><path d="M2.5 8h11a1 1 0 0 1 1 1v2.5H1.5V9a1 1 0 0 1 1-1z"/><path d="M3 11.5v1.5M13 11.5v1.5"/>',
+  building: '<rect x="3" y="2.5" width="10" height="11" rx=".5"/><path d="M5.5 5h1M9.5 5h1M5.5 7.5h1M9.5 7.5h1M5.5 10h1M9.5 10h1"/><path d="M6.5 13.5v-2h3v2"/>',
+  shield: '<path d="M8 2 3 4v4.5c0 2.8 2 4.6 5 5.5 3-0.9 5-2.7 5-5.5V4L8 2z"/>',
+  star: '<path d="m8 2 1.8 3.7 4.1.6-3 2.9.7 4L8 11.3 4.4 13.2l.7-4-3-2.9 4.1-.6L8 2z"/>',
 };
 
 /**

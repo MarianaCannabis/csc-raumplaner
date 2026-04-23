@@ -155,22 +155,14 @@ input,textarea,select,button{font-family:inherit}
    Klassen bleiben noch als 3-Klassen-Overlap auf den Buttons stehen,
    werden aber von den neuen Regeln überschrieben. */
 
-/* ─ ICONBAR ─────────────────────────────────────────────── */
-#iconbar{background:#0c0c0c;border-right:1px solid var(--bd);display:flex;flex-direction:column;align-items:center;padding:8px 0;gap:3px;overflow:hidden}
-.ib{width:48px;height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:var(--r8);cursor:pointer;transition:.12s;border:1px solid transparent;font-size:9px;color:var(--tx3);gap:1px}
-.ib .ico{font-size:18px;line-height:1}
-.ib:hover{background:var(--bg3);color:var(--tx2)}
-.ib.active{background:var(--bg3);border-color:var(--bd2);color:var(--gr)}
+/* P15 Cluster 7a: #iconbar + .ib CSS → src/styles/surfaces.css (.sb-rail*).
+   .ib-Klasse bleibt als Alias auf den HTML-Elementen für body[data-ui-mode=
+   "simple"]-Filter + mobile-Touch-Target-Regel. */
 .ibsep{width:36px;height:1px;background:var(--bd);margin:3px 0}
 
-/* ─ LEFT PANEL ──────────────────────────────────────────── */
-/* moved to v3.56 flex rules */
-.lph{padding:10px 12px 7px;border-bottom:1px solid var(--bd);flex-shrink:0;font-size:11px;font-weight:600;color:var(--gr)}
-.lpb{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:10px 10px 0;scrollbar-width:thin;scrollbar-color:var(--bd2) transparent}
-/* UX/sidebar-scroll: verhindert das die Kategorie-Render-Funktionen einen
-   zweiten inneren Scroll-Container aufmachen (nested-scroll frisst sonst
-   Events am Rand). Der äußere .lpb scrollt, die Kinder wachsen natürlich. */
-.lpb > div[style*="overflow-y:auto"]{overflow:visible!important}
+/* P15 Cluster 7a: .lph/.lpb CSS → src/styles/surfaces.css
+   (.sb-panel__header/.sb-panel__body). Aliases bleiben im HTML für
+   Rückwärtskompatibilität, CSS wird zentral von surfaces.css getragen. */
 .sh{font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;margin-top:10px}
 .sh:first-child{margin-top:0}
 
@@ -1746,8 +1738,9 @@ body.light-mode{
 body.light-mode #app{ background:#e8e5dc; }
 body.light-mode #topbar{ background:#fff; border-color:#b8b5a8; color:#111 }
 body.light-mode #botbar{ background:#fff; border-color:#b8b5a8; }
-body.light-mode #left{ background:#f5f4ee; border-color:#b8b5a8; }
-body.light-mode #iconbar{ background:#e8e5dc; border-color:#b8b5a8; }
+/* P15 Cluster 7a: body.light-mode #left/#iconbar → [data-theme="light"]
+   in surfaces.css. Beide Mechanismen werden von toggleTheme() synchron
+   gesetzt (siehe Cluster 4e). */
 body.light-mode #right{ background:#f5f4ee; border-color:#b8b5a8; }
 body.light-mode #canvas-wrap{ background:#1a1e26; }
 body.light-mode .rtab{ background:#e8e5dc; color:#2c2c1c; border-color:#b8b5a8; }
@@ -1758,9 +1751,8 @@ body.light-mode .tbt{ color:#2c2c1c; }
 body.light-mode .tbt:hover{ background:#e0ddd4; }
 body.light-mode .amsg.ai{ background:#e8f5e9; color:#111; border-color:#86efac; }
 body.light-mode .amsg.user{ background:#fef9c3; color:#111; border-color:#fde68a; }
-body.light-mode .lph{ background:#e8e5dc; border-color:#b8b5a8; color:#14532d; }
-body.light-mode .ib{ color:#2c2c1c; }
-body.light-mode .ib:hover,.ib.active{ color:#14532d; background:#e8f5e9; }
+/* P15 Cluster 7a: body.light-mode .lph / .ib → [data-theme="light"]
+   in surfaces.css (.sb-panel__header / .sb-rail__item). */
 body.light-mode .tbm{ background:#fff; border-color:#b8b5a8; }
 body.light-mode .tbm-item:hover{ background:#e8f5e9; color:#14532d; }
 body.light-mode .rtab{ border-color:#b8b5a8; }
@@ -1806,8 +1798,9 @@ body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
 #rpanel-props .mat-btn.sel{border-color:var(--gr);background:var(--gr4);color:var(--gr)}
 /* ══ v3.56 FLEX LAYOUT ══════════════════════════════════════════ */
 #main-row{display:flex;flex:1;min-height:0;overflow:hidden}
-#iconbar{width:64px;flex-shrink:0;background:#0c0c0c;border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden}
-#left{width:270px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden}
+/* P15 Cluster 7a: #iconbar + #left Layout → src/styles/surfaces.css
+   (.sb-rail + .sb-panel — mit Width-, Background- und Border-Definition
+   jetzt in einer Datei statt über 3 CSS-Blöcke verteilt). */
 #canvas-wrap{flex:1;min-width:0;min-height:0;position:relative;overflow:hidden;background:#1a1e26}
 #right{width:300px;flex-shrink:0;background:var(--bg2);border-left:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden}
 #topbar{flex-shrink:0;min-height:50px;background:#0c0c0c;border-bottom:1px solid var(--bd);display:flex;flex-wrap:wrap;align-items:center;padding:4px 8px;gap:4px;row-gap:4px;overflow:visible}
