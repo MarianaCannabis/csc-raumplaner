@@ -5,16 +5,18 @@
  * Icon ist eine 16×16 currentColor-stroke-Shape mit round-line-caps; der
  * Aufrufer steuert Farbe via CSS (color/stroke) und Größe via `size`.
  *
- * Scope (29 Icons, siehe design/topbar-redesign/README.md — Emoji-Mapping):
+ * Scope (33 Icons, siehe design/topbar-redesign/README.md — Emoji-Mapping):
  *   undo, redo, save, room, event, leaf, globe, file, layers, chart,
  *   share, sun, moon, square, cube, plus, more, help-circle, chevron, edit-2,
  *   house, sofa, building, shield, star (P15 Cluster 7a — Sidebar-Rail),
- *   bot, palette, sunrise, settings (P15 Cluster 7b — Right-Panel-Tabs)
+ *   bot, palette, sunrise, settings (P15 Cluster 7b — Right-Panel-Tabs),
+ *   list-checks, shield-check, map-pin, sliders (P15 Cluster 7c — KCanG-Modal)
  *
  * Bewusst NICHT portiert: Row-2-Tools (cursor, wall, roomdraw, area,
- * ruler, move, center, box, folder, sliders), view, clock.
+ * ruler, move, center, box, folder), view, clock.
  * Row-2 gehört in unsere Architektur nicht in die Topbar; view/clock
- * kommen in der App nicht vor.
+ * kommen in der App nicht vor. (sliders wurde in 7c als Parameter-Icon
+ * aufgenommen, siehe Emoji-Mapping oben.)
  *
  * chevron: P15 Cluster 4d nachgereicht für die Dropdown-Menü-Trigger
  * (Datei/Ansicht/Analyse/Teilen) — ersetzt den alten ▾-Unicode-Glyph.
@@ -53,7 +55,11 @@ export type IconName =
   | 'bot'
   | 'palette'
   | 'sunrise'
-  | 'settings';
+  | 'settings'
+  | 'list-checks'
+  | 'shield-check'
+  | 'map-pin'
+  | 'sliders';
 
 export interface IconOptions {
   /** Kantenlänge in px. Default 16 (passt zu --btn-h 32). */
@@ -111,6 +117,15 @@ const PATHS: Record<IconName, string> = {
   palette: '<path d="M8 2a6 6 0 1 0 0 12c.6 0 1-.5 1-1 0-.3-.1-.5-.3-.7-.2-.2-.3-.5-.3-.8 0-.6.5-1 1-1H11a3 3 0 0 0 3-3c0-3.3-2.7-6-6-6z"/><circle cx="5" cy="6.5" r=".7" fill="currentColor" stroke="none"/><circle cx="8" cy="5" r=".7" fill="currentColor" stroke="none"/><circle cx="11" cy="6.5" r=".7" fill="currentColor" stroke="none"/><circle cx="12" cy="9.5" r=".7" fill="currentColor" stroke="none"/>',
   sunrise: '<circle cx="8" cy="9" r="2.5"/><path d="M8 4V2.5M2.5 9H4M12 9h1.5M4 5l1 1M11 5l1-1"/><path d="M2 12.5h12"/><path d="M5 10.5 8 7l3 3.5"/>',
   settings: '<circle cx="8" cy="8" r="2"/><path d="M13 8a5 5 0 0 0-.1-.9l1.2-.9-1-1.7-1.4.4c-.5-.5-1-.9-1.7-1.1L9.6 2H6.4L6 3.8c-.6.2-1.2.6-1.7 1.1l-1.4-.4-1 1.7 1.2.9A5 5 0 0 0 3 8c0 .3 0 .6.1.9l-1.2.9 1 1.7 1.4-.4c.5.5 1 .9 1.7 1.1l.4 1.8h3.2l.4-1.8c.6-.2 1.2-.6 1.7-1.1l1.4.4 1-1.7-1.2-.9c.1-.3.1-.6.1-.9z"/>',
+  // P15 Cluster 7c — KCanG-Dashboard-Modal Headers + POI-Button + Advanced.
+  'list-checks':
+    '<path d="M2.5 4.5h8M2.5 8h8M2.5 11.5h8"/><path d="M12.5 3.5l1 1 2-2M12.5 7l1 1 2-2M12.5 10.5l1 1 2-2"/>',
+  'shield-check':
+    '<path d="M8 2 3 4v4.5c0 2.8 2 4.6 5 5.5 3-.9 5-2.7 5-5.5V4L8 2z"/><path d="m5.5 8 2 2 3.5-3.5"/>',
+  'map-pin':
+    '<path d="M8 1.5c-2.8 0-5 2.2-5 5 0 3.8 5 8 5 8s5-4.2 5-8c0-2.8-2.2-5-5-5z"/><circle cx="8" cy="6.5" r="1.75"/>',
+  sliders:
+    '<path d="M2.5 4h11M2.5 8h11M2.5 12h11"/><circle cx="5" cy="4" r="1.3" fill="var(--bg-panel,#151b18)"/><circle cx="10" cy="8" r="1.3" fill="var(--bg-panel,#151b18)"/><circle cx="7" cy="12" r="1.3" fill="var(--bg-panel,#151b18)"/>',
 };
 
 /**

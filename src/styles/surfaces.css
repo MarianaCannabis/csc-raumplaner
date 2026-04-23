@@ -330,3 +330,229 @@
 [data-theme="light"] .rp-tab.active .rp-tab__icon {
   color: var(--brand-600);
 }
+
+/* ==========================================================================
+   KCanG-Dashboard Modal (P15 Cluster 7c)
+   ==========================================================================
+   Eigenständiger .kc-*-Namespace — Modal-Chrome (.mover/.modal/.mbtns) ist
+   shared across many modals und bleibt unangetastet. Hier nur der INHALT
+   des KCanG-Dashboards (Metadaten-Card, Compliance-Status-Card, Advanced-
+   Parameter). Alle inline-Styles aus index.html 1246–1338 wandern hierher.
+
+   Hard-Requirement: .kc-rules ist scrollbar und rendert ALLE Regeln aus
+   getKCaNGChecklist() (17+ Einträge, nicht 8 wie im Mockup).
+   ========================================================================== */
+
+#m-kcang-dashboard .modal {
+  max-width: 680px;
+  max-height: 88vh;
+}
+
+.kc-subtitle {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+}
+
+/* Cards — gemeinsamer Shell für Metadaten + Status */
+.kc-meta,
+.kc-status {
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 12px;
+}
+.kc-meta { margin-bottom: 14px; }
+
+.kc-meta__title,
+.kc-status__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--brand-400);
+  margin-bottom: 8px;
+}
+.kc-meta__title svg,
+.kc-status__title svg { width: 14px; height: 14px; }
+
+.kc-meta__grid,
+.kc-advanced__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.kc-field--full { grid-column: 1 / -1; }
+
+.kc-field__label {
+  display: block;
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-bottom: 3px;
+}
+
+.kc-field__input {
+  width: 100%;
+  padding: 6px 8px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  color: var(--color-text-primary);
+  border-radius: 4px;
+  font-size: 12px;
+  box-sizing: border-box;
+  font: inherit;
+  font-family: var(--font);
+}
+.kc-field__input:focus-visible {
+  outline: none;
+  border-color: var(--brand-500);
+  box-shadow: 0 0 0 2px var(--brand-glow);
+}
+
+.kc-field--advanced .kc-field__input { font-size: 11px; padding: 5px 8px; }
+
+.kc-field__check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.kc-field__check input[type="checkbox"] { accent-color: var(--brand-500); }
+
+.kc-addr-row {
+  display: flex;
+  gap: 6px;
+}
+.kc-addr-row .kc-field__input { flex: 1; }
+
+.kc-poi-btn {
+  padding: 4px 10px;
+  font-size: 11px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  color: var(--color-text-primary);
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+.kc-poi-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+  color: var(--brand-400);
+}
+.kc-poi-btn svg { width: 12px; height: 12px; }
+
+/* Compliance-Status-Card — Header mit Score-Badge rechts */
+.kc-status__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.kc-status__head .kc-status__title { margin-bottom: 0; }
+
+.kc-score {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+/* Rules-Liste — MUSS scrollen (17+ Einträge) */
+.kc-rules {
+  font-size: 11px;
+  color: var(--text-muted);
+  max-height: 40vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+.kc-rule {
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+.kc-rule:last-child { border-bottom: 0; }
+
+.kc-rule__icon { flex-shrink: 0; line-height: 1.3; }
+
+.kc-rule__body { flex: 1; min-width: 0; }
+
+.kc-rule__label { line-height: 1.3; }
+
+.kc-rule__details {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+.kc-rule--pass .kc-rule__label { color: var(--brand-400); }
+.kc-rule--fail .kc-rule__label { color: #ef4444; }
+.kc-rule--null .kc-rule__label { color: var(--text-dim); }
+
+.kc-rules__empty,
+.kc-rules__error {
+  padding: 8px;
+  text-align: center;
+  color: var(--text-dim);
+}
+.kc-rules__error { color: #ef4444; }
+
+/* Advanced-Parameter <details> */
+.kc-advanced {
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  margin-top: 12px;
+}
+.kc-advanced__summary {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  color: #a78bfa;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+}
+.kc-advanced__summary svg { width: 14px; height: 14px; }
+.kc-advanced__grid { padding: 8px 12px 12px; }
+
+/* ==========================================================================
+   Light-Theme-Overrides für KCanG-Modal (P15 Cluster 7c)
+   ========================================================================== */
+[data-theme="light"] .kc-meta,
+[data-theme="light"] .kc-status,
+[data-theme="light"] .kc-advanced {
+  background: var(--bg-sunken);
+  border-color: var(--border-subtle);
+}
+[data-theme="light"] .kc-meta__title,
+[data-theme="light"] .kc-status__title {
+  color: var(--brand-600);
+}
+[data-theme="light"] .kc-field__input {
+  background: #ffffff;
+  border-color: var(--border-subtle);
+  color: var(--color-text-primary);
+}
+[data-theme="light"] .kc-poi-btn {
+  background: #ffffff;
+  border-color: var(--border);
+}
+[data-theme="light"] .kc-poi-btn:hover { color: var(--brand-600); }
+[data-theme="light"] .kc-rule--pass .kc-rule__label { color: var(--brand-600); }
+[data-theme="light"] .kc-rule--fail .kc-rule__label { color: #b91c1c; }
