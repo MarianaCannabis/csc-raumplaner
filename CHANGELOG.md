@@ -4,6 +4,17 @@ Alle bedeutsamen Änderungen an CSC Studio Pro.
 
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [2.6.1] — 2026-04-24 · Hotfix Magic-Link-Login
+
+**Patch-Release.** Behebt einen Production-Blocker seit v2.6.0: Magic-Link-Klick landete wieder auf dem Login-Modal statt einzuloggen.
+
+### Fixed
+- **Magic-Link-Login race condition**: `handleAuthRedirect()` lief im inline-Script-Block bevor `window.cscAuth` durch das deferred ES-Module installiert war — der `#access_token=…`-Fragment-Parse wurde nie ausgeführt. Fix: Hash-Parse nach `src/auth/magicLink.ts` extrahiert und in `src/main.ts` direkt nach der Bridge-Installation aufgerufen. Legacy-Funktion in `index.html` bleibt als No-op kompatibel für den Legacy-Aufruf bei `:7603`.
+
+### Added
+- `src/auth/magicLink.ts` mit purer Helper-Funktion `consumeMagicLinkFromHash(hash, opts)` — Callback-basierte Side-Effect-Injection (saveRefresh / replaceHistory / onSuccess), jeder Callback try-catch-isoliert.
+- +11 Vitest-Tests in `src/auth/__tests__/magicLink.test.ts`, Test-Suite-Total 134 → **145**.
+
 ## [2.6.0] — 2026-04-24 · Surface-Redesign-Welle komplett
 
 **Minor-Release.** Nach der Topbar in v2.5.0 sind jetzt ALLE User-facing Surfaces auf das neue Design-System umgestellt: Sidebar, Right-Panel, KCanG-Dashboard-Modal, NextStep-Popover und Save-Panel-Chrome. Light-Theme greift auf allen Surfaces konsistent. Eine UX-Semantik-Korrektur (Analyse-Tools aus Eigenschaften-Pane nach Projekte-Tab) rundet den Release ab.
