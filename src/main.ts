@@ -46,8 +46,14 @@ import { userTier, currentLimits, hasFeature, checkLimit, PLANS } from './config
 import { buildPackList } from './compliance/packlist.js';
 import { registerGlobalShortcuts } from './input/keyboard.js';
 import { icon, type IconName } from './icons/lucide.js';
+import { installBridge as installPersistBridge } from './persist/index.js';
 
 console.info('[csc] vite entry alive', import.meta.env.MODE);
+
+// P-TrackA Phase 1: Persistence-Namespace auf window.cscPersist exposen.
+// Legacy-Funktionen in index.html (saveProj/saveVersion/…) delegieren an
+// diese Bridge. Siehe src/persist/*.ts für die extrahierte Logik.
+installPersistBridge();
 
 // Bridge GLTFExporter onto the globally-available legacy THREE (from CDN).
 // Der legacy exportGLTF()-Handler ruft `new THREE.GLTFExporter()` — ohne

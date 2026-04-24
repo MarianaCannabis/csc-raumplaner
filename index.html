@@ -2477,13 +2477,13 @@ window.fetchRetry = async function(url, opts, retries){
   setInterval(() => {
     try {
       if(typeof _idb !== 'undefined' && _idb && typeof saveToIDB === 'function') saveToIDB();
-      // localStorage-Autosave als Fallback (existing System)
+      // localStorage-Autosave als Fallback (existing System).
+      // P-TrackA Phase 1: delegate to window.cscPersist.autosave.write
+      // (persist-module ist zu diesem Zeitpunkt schon via src/main.ts
+      // installiert — defensives Guard trotzdem fürs Extra-Safety).
       if(typeof getPD === 'function' && typeof _autoSaveReady !== 'undefined' && _autoSaveReady){
-        try {
-          const state = JSON.stringify({ data: getPD(), _ts: Date.now() });
-          localStorage.setItem('csc-autosave', state);
-          localStorage.setItem('csc-autosave-ts', String(Date.now()));
-        } catch(e){ /* Quota exceeded — silent skip */ }
+        const state = JSON.stringify({ data: getPD(), _ts: Date.now() });
+        if(window.cscPersist) window.cscPersist.autosave.write(state);
       }
     } catch(e){ /* never interrupt the app on autosave errors */ }
   }, 30000);
@@ -5186,22 +5186,43 @@ async function loadProjectPois(){
     toast('POI-Fehler: ' + msg.slice(0,60),'r');
   }
 }
+// P-TrackA Phase 1: saveProj/updateSavedUI/delSave delegieren an
+// window.cscPersist.local (src/persist/localProjects.ts). Soft-Limit-
+// Check, Toast, Telemetrie + UI-Render bleiben hier (Legacy-Globals).
+// Defensive-Fallbacks auf raw localStorage, weil die Funktionen schon
+// beim Inline-Script-Parse aufgerufen werden (z.B. updateSavedUI() in
+// Zeile 21407), bevor der deferred Module-Script installPersistBridge()
+// ausgeführt hat.
+function _localLoadAll(){
+  if(window.cscPersist) return window.cscPersist.local.loadAll();
+  try { return JSON.parse(localStorage.getItem('csc-saves3')||'{}'); } catch(_){ return {}; }
+}
+function _localSave(name, data){
+  if(window.cscPersist){ window.cscPersist.local.save(name, data); return; }
+  const s = _localLoadAll(); s[name] = { data, at: new Date().toISOString() };
+  try { localStorage.setItem('csc-saves3', JSON.stringify(s)); } catch(_){}
+}
+function _localDelete(name){
+  if(window.cscPersist){ window.cscPersist.local.delete(name); return; }
+  const s = _localLoadAll(); delete s[name];
+  try { localStorage.setItem('csc-saves3', JSON.stringify(s)); } catch(_){}
+}
+function _localCountExcluding(name){
+  return Object.keys(_localLoadAll()).filter(k => k !== name).length;
+}
 function saveProj(){
   // P9.6: Soft-Limit-Check (Free-Tier: max 3 Projekte)
   if(window.cscPlan){
-    const saves=JSON.parse(localStorage.getItem('csc-saves3')||'{}');
-    const existing = Object.keys(saves).filter(k => k !== projName).length;
-    if(!window.cscPlan.check('projects', existing)) return; // bricht bei Limit
+    if(!window.cscPlan.check('projects', _localCountExcluding(projName))) return; // bricht bei Limit
   }
-  const saves=JSON.parse(localStorage.getItem('csc-saves3')||'{}');
-  saves[projName]={data:getPD(),at:new Date().toISOString()};
-  localStorage.setItem('csc-saves3',JSON.stringify(saves));
+  _localSave(projName, getPD());
   updateSavedUI();toast('💾 Gespeichert: '+projName,'g');
   if(window.cscTelemetry) window.cscTelemetry.track('project_saved', { target: 'local' });
 }
 function updateSavedUI(){
   const el=document.getElementById('saved-list');
-  const saves=JSON.parse(localStorage.getItem('csc-saves3')||'{}');
+  if(!el) return;
+  const saves=_localLoadAll();
   const keys=Object.keys(saves);
   if(!keys.length){el.innerHTML='<div style="font-size:11px;color:var(--tx3);padding:8px">Keine gespeicherten Projekte.</div>';return;}
   el.innerHTML=keys.map(k=>{const s=saves[k];return`<div class="sitem" onclick="loadPD(${JSON.stringify(s.data).replace(/</g,'&lt;')})">
@@ -5209,7 +5230,7 @@ function updateSavedUI(){
     <button class="sdel" onclick="delSave('${k}');event.stopPropagation()">🗑</button>
   </div>`;}).join('');
 }
-function delSave(k){const s=JSON.parse(localStorage.getItem('csc-saves3')||'{}');delete s[k];localStorage.setItem('csc-saves3',JSON.stringify(s));updateSavedUI();}
+function delSave(k){ _localDelete(k); updateSavedUI(); }
 function dlJSON(){const b=new Blob([JSON.stringify(getPD(),null,2)],{type:'application/json'});const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(b),download:projName.replace(/[^a-z0-9]/gi,'_')+'.json'});a.click();}
 function loadJSONFile(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{loadPD(JSON.parse(ev.target.result));toast('📂 Geladen!','g');}catch(ex){toast('Fehler: '+ex,'r');}};r.readAsText(f);e.target.value='';}
 function newProj(){if(!confirm('Neues Projekt?'))return;loadPD({name:'Neue Ausgabestelle',rooms:[],objects:[],measures:[]});}
@@ -5362,10 +5383,9 @@ if(!localStorage.getItem('csc-onboarded')){
         if(msgs.length) logChange(msgs.join(', '));
       }
     }
-    try {
-      localStorage.setItem('csc-autosave', state);
-      localStorage.setItem('csc-autosave-ts', Date.now().toString());
-    } catch(e) {}
+    // P-TrackA Phase 1: delegate to window.cscPersist.autosave.write
+    // (silent-fail für Private-Mode + Quota wie bisher).
+    if(window.cscPersist) window.cscPersist.autosave.write(state);
   }
 }
 
@@ -9049,30 +9069,40 @@ function exportEvacuationPlan(){
 }
 
 // ── 11. VERSIONSVERLAUF ───────────────────────────────────────────────
+// P-TrackA Phase 1: Core-State + Storage → src/persist/versionHistory.ts.
+// Wrappers mit Fallback auf raw localStorage, weil loadVersionHistory()
+// beim Inline-Script-Parse aufgerufen wird (Zeile 21411) — vor dem
+// deferred Module-Script und damit vor installPersistBridge().
 var _versionHistory = [];
 var MAX_VERSIONS = 10;
 
+function _versListRaw(){
+  try { const j = localStorage.getItem('csc-versions'); return j ? JSON.parse(j) : []; }
+  catch(_){ return []; }
+}
+function _versListAny(){
+  return window.cscPersist ? window.cscPersist.versions.list() : _versListRaw();
+}
+
 function saveVersion(label){
-  const data = getPD();
-  _versionHistory.unshift({
-    label: label || new Date().toLocaleString('de-DE'),
-    data, ts: Date.now()
-  });
-  if(_versionHistory.length > MAX_VERSIONS) _versionHistory.pop();
-  try { localStorage.setItem('csc-versions', JSON.stringify(_versionHistory)); } catch(e){}
+  if(window.cscPersist){
+    _versionHistory = window.cscPersist.versions.push(getPD(), label);
+  } else {
+    const v = { label: label || new Date().toLocaleString('de-DE'), data: getPD(), ts: Date.now() };
+    _versionHistory = [v, ..._versListRaw()].slice(0, MAX_VERSIONS);
+    try { localStorage.setItem('csc-versions', JSON.stringify(_versionHistory)); } catch(_){}
+  }
   toast('📌 Version gespeichert','g');
   renderVersionHistory();
 }
 
 function loadVersionHistory(){
-  try {
-    const saved = localStorage.getItem('csc-versions');
-    if(saved) _versionHistory = JSON.parse(saved);
-  } catch(e){}
+  _versionHistory = _versListAny();
 }
 
 function renderVersionHistory(){
   const el = document.getElementById('version-list'); if(!el) return;
+  _versionHistory = _versListAny();
   if(!_versionHistory.length){
     el.innerHTML='<div style="font-size:11px;color:var(--tx3);padding:8px">Keine Versionen gespeichert.<br>Klicke "📌 Version merken" um den aktuellen Stand zu sichern.</div>';
     return;
@@ -9087,14 +9117,22 @@ function renderVersionHistory(){
 }
 
 function restoreVersion(i){
-  if(!confirm('Version "'+_versionHistory[i].label+'" wiederherstellen? Aktuelle Änderungen gehen verloren.')) return;
-  loadPD(_versionHistory[i].data);
+  const list = _versListAny();
+  const v = list[i];
+  if(!v) return;
+  if(!confirm('Version "'+v.label+'" wiederherstellen? Aktuelle Änderungen gehen verloren.')) return;
+  loadPD(v.data);
   toast('🔄 Version wiederhergestellt','g');
 }
 
 function deleteVersion(i){
-  _versionHistory.splice(i,1);
-  try{ localStorage.setItem('csc-versions',JSON.stringify(_versionHistory)); }catch(e){}
+  if(window.cscPersist){
+    _versionHistory = window.cscPersist.versions.remove(i);
+  } else {
+    _versionHistory = _versListRaw();
+    _versionHistory.splice(i, 1);
+    try { localStorage.setItem('csc-versions', JSON.stringify(_versionHistory)); } catch(_){}
+  }
   renderVersionHistory();
 }
 
@@ -21562,6 +21600,11 @@ loadVisionShare();
 // expliziten „Letzten Stand wiederherstellen?"-Prompt).
 window._pendingAutoRestore = null;
 (function collectPendingRestore(){
+  // P-TrackA Phase 1: diese IIFE läuft bei Parse-Zeit des Inline-<script>
+  // — das ist VOR dem deferred-Module-Load von src/main.ts, also ist
+  // window.cscPersist.autosave hier noch nicht registriert. Daher Zugriff
+  // auf localStorage direkt (Keys sind in src/persist/autosave.ts als
+  // STORAGE_KEY und TS_KEY konstant dokumentiert).
   if(localStorage.getItem('csc-never-restore') === '1') return;
   const saved = localStorage.getItem('csc-autosave');
   const ts    = +(localStorage.getItem('csc-autosave-ts')||0);
