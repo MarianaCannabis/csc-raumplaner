@@ -785,3 +785,12 @@
   text-align: center;
 }
 
+/* P15 Cluster 7e — Hint-Zeile im leeren Eigenschaften-Pane
+   ("Klicke ein Objekt oder Raum an"). */
+.sp-default-hint {
+  padding: 8px 10px;
+  font-size: 10px;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
