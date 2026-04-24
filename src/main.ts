@@ -83,6 +83,21 @@ function _syncLegacyGlobals(snap: authState.AuthState): void {
 _syncLegacyGlobals(authState.getAuthState());
 authState.subscribe(_syncLegacyGlobals);
 
+// P-TrackA Phase 2b.2: Auth-State-Changes triggern automatisch das UI-
+// Refresh (Login-Gate + Auth-Status-Pill). Die index.html-Funktionen
+// lesen window.SB_TOKEN/SB_USER, die der Mirror-Sync oben schon aktuell
+// hält — d.h. zum Zeitpunkt dieses Aufrufs liefern sie den neuen State.
+// Vorher musste jede Auth-Mutation-Site updateAuthStatus()+updateLoginGate()
+// manuell aufrufen; jetzt laufen beide einmal zentral.
+authState.subscribe(() => {
+  const w = window as unknown as {
+    updateAuthStatus?: () => void;
+    updateLoginGate?: () => void;
+  };
+  try { w.updateAuthStatus?.(); } catch (e) { console.warn('[auth] updateAuthStatus threw', e); }
+  try { w.updateLoginGate?.(); } catch (e) { console.warn('[auth] updateLoginGate threw', e); }
+});
+
 // Bridge GLTFExporter onto the globally-available legacy THREE (from CDN).
 // Der legacy exportGLTF()-Handler ruft `new THREE.GLTFExporter()` — ohne
 // diese Zuweisung hat er kein GLTFExporter. Früher kam er aus einem
