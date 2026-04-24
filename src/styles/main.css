@@ -733,14 +733,10 @@ canvas{display:block}
 
 
 /* ══ v3.56 ════════════════════════════════════════════════════════ */
-/* Light mode */
-body.light-mode{--bg:#f5f5f0;--bg2:#ffffff;--bg3:#ebebeb;--bg4:#e0e0d8;
-  --tx:#111;--tx2:#333;--tx3:#777;--bd:#ccc;--bd2:#aaa;
-  --gr4:rgba(22,101,52,.1);--gr3:#16a34a;--yw2:rgba(180,140,0,.2)}
-body.light-mode #topbar{background:#fff;border-color:#ddd}
-body.light-mode #left-panel{background:#f0f0eb;border-color:#ddd}
-/* P15 Cluster 7b: body.light-mode #right (first) → [data-theme="light"]
-   in surfaces.css. */
+/* P15 Cluster 8d: dupliziertes Light-Token-Block (mit abweichenden
+   Werten) + #topbar/#left-panel-Component-Overrides ersatzlos entfernt.
+   Token-Single-Source-of-Truth ist src/styles/tokens.css
+   [data-theme="light"]; #topbar-Override weiter unten greift. */
 
 /* Layer panel */
 #layer-panel{position:fixed;bottom:48px;left:260px;background:var(--bg2);
@@ -1705,50 +1701,29 @@ body.light-mode #left-panel{background:#f0f0eb;border-color:#ddd}
 /* ══════════════════════════════════════════════════════════════ */
 
 
-/* ── LIGHT MODE ──────────────────────────────────────────────── */
-body.light-mode{
-  --bg:#f0ede4; --bg2:#ffffff; --bg3:#e8e5dc; --bg4:#dedad0;
-  --tx:#111108; --tx2:#2c2c1c; --tx3:#666655;
-  --bd:#b8b5a8; --bd2:#a0a090;
-  --gr:#14532d; --gr3:#86efac; --gr4:rgba(20,83,45,.1);
-  --rd:#b91c1c; --yw:#b45309; --bl:#1d4ed8;
-  --or:#c2410c; --r12:10px;
-  color-scheme: light;
-}
-body.light-mode #app{ background:#e8e5dc; }
-body.light-mode #topbar{ background:#fff; border-color:#b8b5a8; color:#111 }
-body.light-mode #botbar{ background:#fff; border-color:#b8b5a8; }
-/* P15 Cluster 7a: body.light-mode #left/#iconbar → [data-theme="light"]
-   in surfaces.css. Beide Mechanismen werden von toggleTheme() synchron
-   gesetzt (siehe Cluster 4e). */
-/* P15 Cluster 7b: body.light-mode #right → [data-theme="light"] in surfaces.css. */
-body.light-mode #canvas-wrap{ background:#1a1e26; }
-/* P15 Cluster 7b: body.light-mode .rtab(+.active) + .rpanel → [data-theme="light"]
-   in surfaces.css (.rp-tab / .rp-pane). */
-/* P15 Cluster 8c: body.light-mode .mover entfernt — die neue .mdl-overlay
-   bleibt bewusst dunkel (Backdrop-Dimming), Light-Theme-Styling fürs
-   .mdl-dialog kommt aus [data-theme="light"] .mdl-* in surfaces.css. */
-/* P15 Cluster 8a: body.light-mode .tbt — Light-Theme-Farben kommen jetzt
-   aus dem Token-Override body.light-mode { --bg3, --bd, --tx2, ... },
-   der .tb-btn--ghost.is-compact-tbt automatisch korrekt thematisiert. */
-body.light-mode .amsg.ai{ background:#e8f5e9; color:#111; border-color:#86efac; }
-body.light-mode .amsg.user{ background:#fef9c3; color:#111; border-color:#fde68a; }
-/* P15 Cluster 7a: body.light-mode .lph / .ib → [data-theme="light"]
-   in surfaces.css (.sb-panel__header / .sb-rail__item). */
-body.light-mode .tbm{ background:#fff; border-color:#b8b5a8; }
-body.light-mode .tbm-item:hover{ background:#e8f5e9; color:#14532d; }
-/* P15 Cluster 7b: body.light-mode .rtab border-override — ersetzt durch
-   [data-theme="light"] .rp-tab in surfaces.css. */
-body.light-mode .amsg{ border-color:#b8b5a8; }
-body.light-mode input,body.light-mode textarea,body.light-mode select{
+/* ── LIGHT THEME — COMPONENT OVERRIDES ─────────────────────────
+   P15 Cluster 8d: `body.light-mode` komplett entfernt. Tokens leben
+   in src/styles/tokens.css [data-theme="light"]; component-spezifische
+   Overrides die nicht rein tokenbar sind, stehen hier als
+   `[data-theme="light"] X`. Surfaces-Overrides (Sidebar, Right-Panel,
+   Modal-System, Topbar-v2) leben in ihren jeweiligen *.css-Dateien. */
+[data-theme="light"] #app{ background:#e8e5dc; }
+[data-theme="light"] #topbar{ background:#fff; border-color:#b8b5a8; color:#111 }
+[data-theme="light"] #botbar{ background:#fff; border-color:#b8b5a8; }
+[data-theme="light"] #canvas-wrap{ background:#1a1e26; }
+[data-theme="light"] .amsg.ai{ background:#e8f5e9; color:#111; border-color:#86efac; }
+[data-theme="light"] .amsg.user{ background:#fef9c3; color:#111; border-color:#fde68a; }
+[data-theme="light"] .tbm{ background:#fff; border-color:#b8b5a8; }
+[data-theme="light"] .tbm-item:hover{ background:#e8f5e9; color:#14532d; }
+[data-theme="light"] .amsg{ border-color:#b8b5a8; }
+[data-theme="light"] input,
+[data-theme="light"] textarea,
+[data-theme="light"] select{
   background:#fff !important;color:#111 !important;border-color:#b8b5a8 !important;
 }
-body.light-mode .ainput{ background:#f5f4ee !important; color:#111 !important; }
-body.light-mode .asend{ background:#14532d !important; }
-body.light-mode #health-score{ background:rgba(255,255,255,.9); }
-/* P15 Cluster 8c: body.light-mode .btn/.mbt/.ok entfernt — .mdl-btn hat
-   eigene [data-theme="light"]-Overrides in surfaces.css. .btn/.ok sind
-   leer und können raus; .btn (andere Klasse) bleibt unberührt. */
+[data-theme="light"] .ainput{ background:#f5f4ee !important; color:#111 !important; }
+[data-theme="light"] .asend{ background:#14532d !important; }
+[data-theme="light"] #health-score{ background:rgba(255,255,255,.9); }
 
 /* Toggle button */
 #theme-toggle{

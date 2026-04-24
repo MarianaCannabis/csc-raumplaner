@@ -11837,9 +11837,15 @@ function renderComparePane(side, data){
 // ════════════════════════════════════════════════════════════════════════
 
 // ── 1. DARK/LIGHT MODE ───────────────────────────────────────────────
+// Paralleler Theme-Pfad aus v3.56 — wird nur von den #btn-dark/#btn-light
+// Buttons im Welcome-Modal aufgerufen und hält einen zweiten localStorage-
+// Key (csc-darkmode). Konsolidierung mit toggleTheme() ist out-of-scope
+// für Cluster 8d (separate Storage-Keys, eigener _darkMode-Flag, eigene
+// Button-State-Updates); hier wird nur die body.classList-Manipulation
+// durch das moderne data-theme-Attribut ersetzt.
 function setColorMode(dark){
   _darkMode = dark;
-  document.body.classList.toggle('light-mode', !dark);
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
   localStorage.setItem('csc-darkmode', dark?'1':'0');
   const btnD=document.getElementById('btn-dark');
   const btnL=document.getElementById('btn-light');
@@ -20903,8 +20909,11 @@ function _applyThemeIcon(isLight){
   if(typeof populate==='function') populate();
 }
 function toggleTheme(){
-  const body=document.body;
-  const isLight=body.classList.toggle('light-mode');
+  // P15 Cluster 8d: body.light-mode-Legacy entfernt — data-theme auf
+  // <html> ist Single-Source-of-Truth (surfaces.css + tokens.css lesen
+  // nur [data-theme="light"]).
+  const current = document.documentElement.getAttribute('data-theme');
+  const isLight = current !== 'light';
   document.documentElement.setAttribute('data-theme', isLight ? 'light' : 'dark');
   _applyThemeIcon(isLight);
   localStorage.setItem('csc-theme', isLight ? 'light' : 'dark');
@@ -20914,7 +20923,6 @@ function toggleTheme(){
 function initTheme(){
   const saved=localStorage.getItem('csc-theme');
   const isLight = saved === 'light';
-  if(isLight) document.body.classList.add('light-mode');
   document.documentElement.setAttribute('data-theme', isLight ? 'light' : 'dark');
   _applyThemeIcon(isLight);
 }

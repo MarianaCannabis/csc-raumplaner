@@ -237,4 +237,29 @@
 
   --shadow-cta: 0 1px 0 rgba(0,0,0,.04), 0 1px 2px rgba(15,23,18,.08),
                 0 8px 24px -10px var(--brand-glow);
+
+  /* P15 Cluster 8d: Legacy-Token-Aliases (--bg, --bg3, --tx, --bd, ...)
+     werden von sehr vielen Legacy-Selectoren in main.css gelesen. Werte
+     hier aus dem ehemaligen body.light-mode-Block in main.css übernommen
+     (Stand v3.56). Wenn neu gebauter Code nur Modern-Tokens nutzen soll,
+     können diese Aliases später granular herausgezogen werden. */
+  --bg:  #f0ede4;
+  --bg2: #ffffff;
+  --bg3: #e8e5dc;
+  --bg4: #dedad0;
+  --tx:  #111108;
+  --tx2: #2c2c1c;
+  --tx3: #666655;
+  --bd:  #b8b5a8;
+  --bd2: #a0a090;
+  --gr:  #14532d;
+  --gr3: #86efac;
+  --gr4: rgba(20, 83, 45, 0.1);
+  --rd:  #b91c1c;
+  --yw:  #b45309;
+  --bl:  #1d4ed8;
+  --or:  #c2410c;
+  --yw2: rgba(180, 140, 0, 0.2);
+  --r12: 10px;
+  color-scheme: light;
 }
