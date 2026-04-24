@@ -4,6 +4,17 @@ Alle bedeutsamen Änderungen an CSC Studio Pro.
 
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [2.6.2] — 2026-04-24 · Hotfix Login-Modal-Race + Cloud-Save-Owner
+
+**Patch-Release.** Zwei unabhängige Bugs nach v2.6.1 gefixt.
+
+### Fixed
+- **Login-Modal-Race**: Nach erfolgreichem Magic-Link-Login öffnete sich das Login-Modal trotzdem ca. 400ms später. `index.html:7617` schedulet zur Boot-Zeit ein `setTimeout(()=>openM('m-auth'), 400)` ohne Re-Check ob zwischenzeitlich ein Token da ist. Hotfix v2.6.1's `consumeMagicLinkFromHash` läuft bei t=50–200ms, aber das geschedulte `openM` feuert bei t=400ms blind. **Fix**: Callback re-checkt `SB_TOKEN` zur Feuer-Zeit.
+- **Cloud-Save HTTP 400**: `saveCloudProject()` POSTete den Body ohne `owner`-Feld; Supabase RLS-Policy `csc_projects_owner_ins` (mit `WITH CHECK (auth.uid() = owner)`) lehnte jedes Insert ab. **Fix**: `CloudSaveBody.owner` ist jetzt required (TypeScript-Compiler schützt vor weiteren Missbrauchs-Sites). PATCH-Pfad in `saveCloudProject` strippt `owner` via Destructure (RLS verbietet Update des owner-Feldes ohnehin). `cloudSave`-Wrapper injiziert `owner` aus `window.cscAuth.getAuthState().user.id` mit frühen Guards wenn User-State fehlt.
+
+### Added
+- +3 Vitest-Tests in `src/persist/__tests__/cloudProjects.test.ts`: POST-body enthält `owner`, PATCH-body strippt `owner`, Input-body wird nicht mutiert. Test-Suite 145 → **148**.
+
 ## [2.6.1] — 2026-04-24 · Hotfix Magic-Link-Login
 
 **Patch-Release.** Behebt einen Production-Blocker seit v2.6.0: Magic-Link-Klick landete wieder auf dem Login-Modal statt einzuloggen.
