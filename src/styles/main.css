@@ -47,7 +47,8 @@ body[data-ui-mode="pro"]      #cmd-palette-btn { display: none !important; }
 /* P10.5/P12.3: Progressive Disclosure — 3-Tier UI-Mode */
 /* data-ui-mode="simple": NUR explizit simple-getaggte interaktive Elemente.
    "standard": alles ausser pro-getaggt. "pro": alles sichtbar + Debug-Extras. */
-body[data-ui-mode="simple"] .tbt:not([data-tier="simple"]):not(#btn-save-primary):not(#ui-mode-select):not(#lang-switch):not(.mode-seg *),
+/* P15 Cluster 8a: .tbt → .tb-btn--ghost.is-compact-tbt migriert. */
+body[data-ui-mode="simple"] .tb-btn--ghost.is-compact-tbt:not([data-tier="simple"]):not(#btn-save-primary):not(#ui-mode-select):not(#lang-switch):not(.mode-seg *),
 body[data-ui-mode="simple"] .tbm-item:not([data-tier="simple"]),
 body[data-ui-mode="simple"] .mpill:not([data-tier="simple"]),
 body[data-ui-mode="simple"] .ib:not([data-tier="simple"]) { display: none !important; }
@@ -142,10 +143,10 @@ input,textarea,select,button{font-family:inherit}
 }
 /* P15 Cluster 4f: .logo / .logo em / .vbadge entfernt — ersetzt durch
    .tb-logo* aus topbar-v2.css (Cluster 4a). */
-.tbt{padding:5px 10px;background:var(--bg3);border:1px solid var(--bd);border-radius:var(--r6);color:var(--tx2);font-size:12px;cursor:pointer;white-space:nowrap;transition:.12s}
-.tbt:hover{background:var(--bg4);color:var(--tx);border-color:var(--bd2)}
-.tbt.g{background:var(--gr3);border-color:var(--gr);color:var(--gr)}
-.tbt.g:hover{background:#166534}
+/* P15 Cluster 8a: .tbt-Klasse komplett entfernt — ersetzt durch
+   .tb-btn.tb-btn--ghost.is-compact-tbt (topbar-v2.css) für die
+   44 panel-seitigen Sites. .tbt.g → .tb-btn.tb-btn--accent.
+   teams-tab .tbt → .tb-btn.tb-btn--tab. */
 .tsep{width:1px;height:24px;background:var(--bd);margin:0 2px}
 .tgap{flex:1}
 #proj-lbl{font-size:12px;color:var(--tx3);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -721,9 +722,9 @@ canvas{display:block}
 /* Topbar compact (P15: height→min-height für Wrap-Support) */
 #topbar{min-height:40px;padding:4px 8px;gap:4px}
 /* P15 Cluster 4f: .logo + .vbadge Mobile-Overrides entfernt (Klassen
-   existieren nach 4a nicht mehr). .tbt-Override behalten — .tbt wird
-   weiterhin app-weit genutzt (rpanel-save Buttons, Bridge-Card, etc.). */
-.tbt{padding:4px 8px;font-size:11px}
+   existieren nach 4a nicht mehr). P15 Cluster 8a: .tbt → .is-compact-tbt,
+   Narrow-Override zieht die Panel-Chips noch enger. */
+.tb-btn--ghost.is-compact-tbt{padding:4px 8px;font-size:11px}
 
 /* Active state indicators for menu items */
 .tbm-item.toggled::before{content:'✓ ';color:var(--gr)}
@@ -1362,9 +1363,9 @@ body.light-mode #left-panel{background:#f0f0eb;border-color:#ddd}
   /* P15 Cluster 4f: .mode-seg button entfernt — .tb-seg__item greift
      via button-Selector + eigene Narrow-Override in topbar-v2.css.
      .icon-btn ebenfalls raus (→ .tb-btn.is-compact).
-     .tbt behält seinen Platz — wird app-weit außerhalb der Topbar
-     noch genutzt. */
-  .tbt, .mpill, .tbm-item, .mbt, .cmd-item,
+     P15 Cluster 8a: .tbt → .tb-btn--ghost.is-compact-tbt — durch
+     button[class*="btn"] bereits abgedeckt, explizite Nennung entfällt. */
+  .mpill, .tbm-item, .mbt, .cmd-item,
   button[class*="btn"], select, input[type="button"], input[type="submit"]
   { min-height: 44px !important; }
   .ib, .touch-target { min-width: 44px !important; min-height: 44px !important; }
@@ -1400,7 +1401,8 @@ body.light-mode #left-panel{background:#f0f0eb;border-color:#ddd}
     border-radius:2px;margin:8px auto 4px;opacity:.5}
   #mobile-left-btn,#mobile-right-btn{display:flex!important;bottom:16px}
   #topbar{ padding:0 6px!important; gap:4px!important }
-  #topbar .tbt, #topbar .tbm-btn{ padding:6px 8px!important; font-size:11px!important }
+  /* P15 Cluster 8a: .tbt → .tb-btn--ghost.is-compact-tbt. */
+  #topbar .tb-btn--ghost.is-compact-tbt, #topbar .tbm-btn{ padding:6px 8px!important; font-size:11px!important }
   .modal{ width:96vw!important; max-height:88vh!important }
   /* Property-Panel overlay vollflächig */
   #prop-panel{ max-width:none!important; width:100vw!important; left:0!important; right:0!important }
@@ -1741,8 +1743,9 @@ body.light-mode #canvas-wrap{ background:#1a1e26; }
 /* P15 Cluster 7b: body.light-mode .rtab(+.active) + .rpanel → [data-theme="light"]
    in surfaces.css (.rp-tab / .rp-pane). */
 body.light-mode .mover{ background:#fff; border-color:#b8b5a8; }
-body.light-mode .tbt{ color:#2c2c1c; }
-body.light-mode .tbt:hover{ background:#e0ddd4; }
+/* P15 Cluster 8a: body.light-mode .tbt — Light-Theme-Farben kommen jetzt
+   aus dem Token-Override body.light-mode { --bg3, --bd, --tx2, ... },
+   der .tb-btn--ghost.is-compact-tbt automatisch korrekt thematisiert. */
 body.light-mode .amsg.ai{ background:#e8f5e9; color:#111; border-color:#86efac; }
 body.light-mode .amsg.user{ background:#fef9c3; color:#111; border-color:#fde68a; }
 /* P15 Cluster 7a: body.light-mode .lph / .ib → [data-theme="light"]
