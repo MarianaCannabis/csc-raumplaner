@@ -725,7 +725,7 @@
 
   <div class="rpanel rp-pane" id="rpanel-light">
     <div class="lp-body">
-      <div class="sh">Stimmungs-Presets</div>
+      <div class="form-kicker">Stimmungs-Presets</div>
       <div class="mood-grid">
         <div class="mbtn active" id="lmbtn-day" onclick="applyMoodFull('day')"><span class="mic">☀️</span>Tag</div>
         <div class="mbtn" id="lmbtn-golden" onclick="applyMoodFull('golden')"><span class="mic">🌇</span>Golden</div>
@@ -736,34 +736,34 @@
       </div>
       <button class="add-btn" style="border-color:var(--yw);color:var(--yw);margin-bottom:10px" onclick="aiLightPrompt()">✨ KI-Stimmung beschreiben</button>
 
-      <div class="sh">Sonne</div>
+      <div class="form-kicker">Sonne</div>
       <div class="lp-sect">
-        <div class="lp-row"><label>Ein</label><input type="checkbox" id="sun-on" checked onchange="applyLightSliders()"><input type="color" id="sun-color" value="#fff5e0" onchange="applyLightSliders()"><label style="width:auto;margin-left:4px">Farbe</label></div>
-        <div class="lp-row"><label>Stärke</label><input type="range" id="sun-str" min="0" max="4" step="0.05" value="1.8" oninput="this.nextSibling.textContent=(+this.value).toFixed(2);applyLightSliders()"><span>1.80</span></div>
-        <div class="lp-row"><label>Azimut</label><input type="range" id="sun-az" min="0" max="360" step="1" value="210" oninput="this.nextSibling.textContent=this.value+'°';applyLightSliders()"><span>210°</span></div>
-        <div class="lp-row"><label>Höhe</label><input type="range" id="sun-el" min="5" max="85" step="1" value="55" oninput="this.nextSibling.textContent=this.value+'°';applyLightSliders()"><span>55°</span></div>
-        <div class="lp-row"><label>Schatten</label><input type="checkbox" id="sun-shad" checked onchange="applyLightSliders()"></div>
+        <div class="form-slider-row"><label>Ein</label><input type="checkbox" id="sun-on" checked onchange="applyLightSliders()"><input type="color" id="sun-color" value="#fff5e0" onchange="applyLightSliders()"><label style="width:auto;margin-left:4px">Farbe</label></div>
+        <div class="form-slider-row"><label>Stärke</label><input type="range" id="sun-str" min="0" max="4" step="0.05" value="1.8" oninput="this.nextSibling.textContent=(+this.value).toFixed(2);applyLightSliders()"><span>1.80</span></div>
+        <div class="form-slider-row"><label>Azimut</label><input type="range" id="sun-az" min="0" max="360" step="1" value="210" oninput="this.nextSibling.textContent=this.value+'°';applyLightSliders()"><span>210°</span></div>
+        <div class="form-slider-row"><label>Höhe</label><input type="range" id="sun-el" min="5" max="85" step="1" value="55" oninput="this.nextSibling.textContent=this.value+'°';applyLightSliders()"><span>55°</span></div>
+        <div class="form-slider-row"><label>Schatten</label><input type="checkbox" id="sun-shad" checked onchange="applyLightSliders()"></div>
       </div>
 
-      <div class="sh">Umgebungslicht</div>
+      <div class="form-kicker">Umgebungslicht</div>
       <div class="lp-sect">
-        <div class="lp-row"><label>Ein</label><input type="checkbox" id="hemi-on" checked onchange="applyLightSliders()"><input type="color" id="hemi-sky" value="#c8e0ff" onchange="applyLightSliders()"><input type="color" id="hemi-gnd" value="#d4c09a" onchange="applyLightSliders()"></div>
-        <div class="lp-row"><label>Stärke</label><input type="range" id="hemi-str" min="0" max="2" step="0.05" value="0.65" oninput="this.nextSibling.textContent=(+this.value).toFixed(2);applyLightSliders()"><span>0.65</span></div>
+        <div class="form-slider-row"><label>Ein</label><input type="checkbox" id="hemi-on" checked onchange="applyLightSliders()"><input type="color" id="hemi-sky" value="#c8e0ff" onchange="applyLightSliders()"><input type="color" id="hemi-gnd" value="#d4c09a" onchange="applyLightSliders()"></div>
+        <div class="form-slider-row"><label>Stärke</label><input type="range" id="hemi-str" min="0" max="2" step="0.05" value="0.65" oninput="this.nextSibling.textContent=(+this.value).toFixed(2);applyLightSliders()"><span>0.65</span></div>
       </div>
 
-      <div class="sh">Fülllicht</div>
+      <div class="form-kicker">Fülllicht</div>
       <div class="lp-sect">
-        <div class="lp-row"><label>Ein</label><input type="checkbox" id="fill-on" checked onchange="applyLightSliders()"><input type="color" id="fill-color" value="#9ab8d8" onchange="applyLightSliders()"></div>
-        <div class="lp-row"><label>Stärke</label><input type="range" id="fill-str" min="0" max="2" step="0.05" value="0.4" oninput="this.nextSibling.textContent=(+this.value).toFixed(2);applyLightSliders()"><span>0.40</span></div>
+        <div class="form-slider-row"><label>Ein</label><input type="checkbox" id="fill-on" checked onchange="applyLightSliders()"><input type="color" id="fill-color" value="#9ab8d8" onchange="applyLightSliders()"></div>
+        <div class="form-slider-row"><label>Stärke</label><input type="range" id="fill-str" min="0" max="2" step="0.05" value="0.4" oninput="this.nextSibling.textContent=(+this.value).toFixed(2);applyLightSliders()"><span>0.40</span></div>
       </div>
 
-      <div class="sh">Raumlichter &amp; Rendering</div>
+      <div class="form-kicker">Raumlichter &amp; Rendering</div>
       <div class="lp-sect">
-        <div class="lp-row"><label>Raumlicht</label><input type="range" id="room-str" min="0" max="3" step="0.05" value="0.85" oninput="this.nextSibling.textContent=(+this.value).toFixed(2);applyLightSliders()"><span>0.85</span></div>
-        <div class="lp-row"><label>Lichtfarbe</label><input type="color" id="room-col" value="#fff5e0" onchange="applyLightSliders()"></div>
-        <div class="lp-row"><label>Belichtung</label><input type="range" id="exposure" min="0.3" max="2.5" step="0.05" value="1.1" oninput="this.nextSibling.textContent=(+this.value).toFixed(2);applyLightSliders()"><span>1.10</span></div>
-        <div class="lp-row"><label>Nebel</label><input type="range" id="fog-dens" min="0" max="0.06" step="0.001" value="0.013" oninput="this.nextSibling.textContent=(+this.value).toFixed(3);applyLightSliders()"><span>0.013</span></div>
-        <div class="lp-row"><label>Himmel</label><input type="color" id="sky-color" value="#c8dff0" onchange="applyLightSliders()"></div>
+        <div class="form-slider-row"><label>Raumlicht</label><input type="range" id="room-str" min="0" max="3" step="0.05" value="0.85" oninput="this.nextSibling.textContent=(+this.value).toFixed(2);applyLightSliders()"><span>0.85</span></div>
+        <div class="form-slider-row"><label>Lichtfarbe</label><input type="color" id="room-col" value="#fff5e0" onchange="applyLightSliders()"></div>
+        <div class="form-slider-row"><label>Belichtung</label><input type="range" id="exposure" min="0.3" max="2.5" step="0.05" value="1.1" oninput="this.nextSibling.textContent=(+this.value).toFixed(2);applyLightSliders()"><span>1.10</span></div>
+        <div class="form-slider-row"><label>Nebel</label><input type="range" id="fog-dens" min="0" max="0.06" step="0.001" value="0.013" oninput="this.nextSibling.textContent=(+this.value).toFixed(3);applyLightSliders()"><span>0.013</span></div>
+        <div class="form-slider-row"><label>Himmel</label><input type="color" id="sky-color" value="#c8dff0" onchange="applyLightSliders()"></div>
       </div>
     </div>
   </div>
@@ -825,7 +825,7 @@
         <details open class="rp-sec sp-sec">
           <summary class="sp-sec__summary sp-sec__summary--blue"><span data-icon="cloud"></span> Cloud-Speicher</summary>
           <div class="sp-sec__body" style="gap:0">
-            <div class="api-box" style="border-color:#38bdf8;margin-top:0;margin-bottom:6px;background:#0a1520" id="supabase-box">
+            <div class="sp-api-box" style="border-color:#38bdf8;margin-top:0;margin-bottom:6px;background:#0a1520" id="supabase-box">
               <div id="sb-status" style="font-size:10px;color:var(--tx3);margin-bottom:6px">Nicht verbunden</div>
               <div style="font-size:10px;color:#4ade80;margin:4px 0">✓ Verbunden mit: wvkjkdwahsqozeupoxpj.supabase.co</div>
               <div id="auth-status" style="font-size:10px;color:var(--tx3);margin:4px 0">🔒 Nicht eingeloggt</div>
@@ -843,11 +843,11 @@
             </div>
             <div id="cloud-list" style="margin-bottom:8px"></div>
             <div style="display:flex;align-items:center;justify-content:space-between;margin:6px 0 4px">
-              <div class="sh" style="margin:0">Versionen</div>
+              <div class="form-kicker" style="margin:0">Versionen</div>
               <button class="tb-btn tb-btn--ghost is-compact-tbt" onclick="saveVersion()" style="padding:3px 8px;font-size:10px">📌 Merken</button>
             </div>
             <div id="version-list" style="margin-bottom:12px"></div>
-            <div class="sh">Lokal gespeicherte Projekte</div>
+            <div class="form-kicker">Lokal gespeicherte Projekte</div>
             <div id="saved-list"></div>
           </div>
         </details>
@@ -970,7 +970,7 @@
     Wir senden dir einen <b>Magic Link</b> per E-Mail. Klicke den Link in der
     Mail — du wirst automatisch eingeloggt. Kein Passwort nötig.
   </div>
-  <div class="mf">
+  <div class="form-field">
     <label>E-Mail-Adresse</label>
     <input id="auth-email" type="email" placeholder="deine@email.de" style="width:100%" autocomplete="email">
   </div>
@@ -987,21 +987,21 @@
 <div class="mover" id="m-design-create">
 <div class="modal" style="max-width:420px">
   <h2>🎨 Eigenes Design erstellen</h2>
-  <div class="mf">
+  <div class="form-field">
     <label>Design-Name</label>
     <input id="dc-name" value="Mein Design" style="width:100%">
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-    <div class="mf"><label>Frontfarbe</label><input type="color" id="dc-front" value="#C4A572" style="width:100%"></div>
-    <div class="mf"><label>Akzentfarbe</label><input type="color" id="dc-accent" value="#654321" style="width:100%"></div>
-    <div class="mf"><label>Arbeitsplatte</label><input type="color" id="dc-top" value="#3E2723" style="width:100%"></div>
-    <div class="mf"><label>Rahmenfarbe</label><input type="color" id="dc-frame" value="#F5F0E8" style="width:100%"></div>
-    <div class="mf"><label>LED-Farbe</label><input type="color" id="dc-led" value="#1B4332" style="width:100%"></div>
-    <div class="mf"><label>Bodenfarbe</label><input type="color" id="dc-floor" value="#c8a060" style="width:100%"></div>
-    <div class="mf"><label>Wandfarbe</label><input type="color" id="dc-wall" value="#e8dcc8" style="width:100%"></div>
-    <div class="mf"><label>Sofa-Farbe</label><input type="color" id="dc-sofa" value="#2d5040" style="width:100%"></div>
+    <div class="form-field"><label>Frontfarbe</label><input type="color" id="dc-front" value="#C4A572" style="width:100%"></div>
+    <div class="form-field"><label>Akzentfarbe</label><input type="color" id="dc-accent" value="#654321" style="width:100%"></div>
+    <div class="form-field"><label>Arbeitsplatte</label><input type="color" id="dc-top" value="#3E2723" style="width:100%"></div>
+    <div class="form-field"><label>Rahmenfarbe</label><input type="color" id="dc-frame" value="#F5F0E8" style="width:100%"></div>
+    <div class="form-field"><label>LED-Farbe</label><input type="color" id="dc-led" value="#1B4332" style="width:100%"></div>
+    <div class="form-field"><label>Bodenfarbe</label><input type="color" id="dc-floor" value="#c8a060" style="width:100%"></div>
+    <div class="form-field"><label>Wandfarbe</label><input type="color" id="dc-wall" value="#e8dcc8" style="width:100%"></div>
+    <div class="form-field"><label>Sofa-Farbe</label><input type="color" id="dc-sofa" value="#2d5040" style="width:100%"></div>
   </div>
-  <div class="mf">
+  <div class="form-field">
     <label>Muster</label>
     <select id="dc-pattern" style="width:100%;padding:5px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px">
       <option value="uniform">Einheitlich</option>
@@ -1114,7 +1114,7 @@
       dann sehen alle Team-Mitglieder das Projekt. Rollen: <b>admin</b> (invite+remove), <b>editor</b> (schreiben), <b>viewer</b> (lesen).
     </div>
     <div id="teams-list" style="margin-bottom:14px;max-height:40vh;overflow-y:auto">Lade…</div>
-    <div class="mf">
+    <div class="form-field">
       <label style="font-size:10px;color:var(--tx3)">Neues Team erstellen</label>
       <div style="display:flex;gap:6px">
         <input type="text" id="teams-new-name" placeholder="Team-Name"
@@ -1130,7 +1130,7 @@
       Erhältst du einen Invite-Link, öffne ihn — das Tab &amp; dieser Dialog starten automatisch und du kannst beitreten.
       Alternativ die Team-ID aus dem Link (Query-Parameter <code>?team=…</code>) hier einfügen:
     </div>
-    <div class="mf">
+    <div class="form-field">
       <label style="font-size:10px;color:var(--tx3)">Team-ID aus Invite-Link</label>
       <div style="display:flex;gap:6px">
         <input type="text" id="teams-redeem-id" placeholder="UUID des Teams"
@@ -1152,17 +1152,17 @@
 <div class="modal" style="max-width:520px">
   <h2>💾 Aktuelles Projekt als Vorlage speichern</h2>
   <div style="font-size:11px;color:var(--tx3);margin-bottom:10px">Die Vorlage wird in deinem Account gespeichert und erscheint im Template-Modal unter „Meine Vorlagen".</div>
-  <div class="mf">
+  <div class="form-field">
     <label style="font-size:10px;color:var(--tx3)">Name</label>
     <input type="text" id="tpl-save-name" placeholder="z.B. Mein Workshop-Setup"
       style="width:100%;padding:6px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px;box-sizing:border-box;font-size:12px">
   </div>
-  <div class="mf" style="margin-top:8px">
+  <div class="form-field" style="margin-top:8px">
     <label style="font-size:10px;color:var(--tx3)">Beschreibung</label>
     <textarea id="tpl-save-desc" rows="2" placeholder="Kurze Beschreibung"
       style="width:100%;padding:6px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px;box-sizing:border-box;font-size:12px"></textarea>
   </div>
-  <div class="mf" style="margin-top:8px">
+  <div class="form-field" style="margin-top:8px">
     <label style="font-size:10px;color:var(--tx3)">Tags (Komma-getrennt)</label>
     <input type="text" id="tpl-save-tags" placeholder="messe, workshop, eigene"
       style="width:100%;padding:6px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px;box-sizing:border-box;font-size:12px">
@@ -1504,10 +1504,10 @@
   <h2>⏱ Wartezeit-Simulation</h2>
   <p style="font-size:11px;color:var(--tx3);margin-bottom:12px">Simuliert die durchschnittliche Wartezeit bei deiner Ausgabestation.</p>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
-    <div class="mf"><label>Mitglieder gesamt</label><input id="wt-members" type="number" value="50" min="1" max="500" style="width:100%"></div>
-    <div class="mf"><label>Ausgabeplätze</label><input id="wt-counters" type="number" value="2" min="1" max="20" style="width:100%"></div>
-    <div class="mf"><label>Ausgabedauer (Min.)</label><input id="wt-service" type="number" value="3" min="0.5" max="30" step="0.5" style="width:100%"></div>
-    <div class="mf"><label>Ankunftsrate (/Std.)</label><input id="wt-arrival" type="number" value="20" min="1" max="200" style="width:100%"></div>
+    <div class="form-field"><label>Mitglieder gesamt</label><input id="wt-members" type="number" value="50" min="1" max="500" style="width:100%"></div>
+    <div class="form-field"><label>Ausgabeplätze</label><input id="wt-counters" type="number" value="2" min="1" max="20" style="width:100%"></div>
+    <div class="form-field"><label>Ausgabedauer (Min.)</label><input id="wt-service" type="number" value="3" min="0.5" max="30" step="0.5" style="width:100%"></div>
+    <div class="form-field"><label>Ankunftsrate (/Std.)</label><input id="wt-arrival" type="number" value="20" min="1" max="200" style="width:100%"></div>
   </div>
   <button class="mbt ok" onclick="runWaittimeSim()" style="width:100%">▶ Simulation starten</button>
   <div id="wt-result"></div>
@@ -1658,17 +1658,17 @@
   <h2>⚡ Energie-Check</h2>
   <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Stromverbrauch, Heizungsbedarf und Einsparungen.</p>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
-    <div class="mf"><label>Beleuchtungstyp</label>
+    <div class="form-field"><label>Beleuchtungstyp</label>
       <select id="en-light" style="width:100%;padding:5px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px">
         <option value="led">LED (8W/m²)</option>
         <option value="halogen">Halogen (35W/m²)</option>
         <option value="mixed">Gemischt</option>
       </select>
     </div>
-    <div class="mf"><label>Betriebsstd./Tag</label>
+    <div class="form-field"><label>Betriebsstd./Tag</label>
       <input id="en-hours" type="number" value="8" min="1" max="24" style="width:100%">
     </div>
-    <div class="mf"><label>Heiztyp</label>
+    <div class="form-field"><label>Heiztyp</label>
       <select id="en-heat" style="width:100%;padding:5px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px">
         <option value="gas">Gas (0.08€/kWh)</option>
         <option value="heat_pump">Wärmepumpe (0.22€/kWh)</option>
@@ -1676,7 +1676,7 @@
         <option value="district">Fernwärme (0.12€/kWh)</option>
       </select>
     </div>
-    <div class="mf"><label>Strom €/kWh</label>
+    <div class="form-field"><label>Strom €/kWh</label>
       <input id="en-price" type="number" value="0.32" step="0.01" style="width:100%">
     </div>
   </div>
@@ -1914,12 +1914,12 @@
 <div class="modal" style="max-width:440px">
   <h2>📈 ROI-Rechner</h2>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
-    <div class="mf"><label>Mitglieder gesamt</label><input id="roi-members" type="number" value="100" style="width:100%"></div>
-    <div class="mf"><label>Mitgliedsbeitrag €/Mon.</label><input id="roi-fee" type="number" value="35" style="width:100%"></div>
-    <div class="mf"><label>Miete €/Mon.</label><input id="roi-rent" type="number" value="1200" style="width:100%"></div>
-    <div class="mf"><label>Personal €/Mon.</label><input id="roi-staff" type="number" value="2000" style="width:100%"></div>
-    <div class="mf"><label>Sonstige Kosten €/Mon.</label><input id="roi-other" type="number" value="500" style="width:100%"></div>
-    <div class="mf"><label>Einrichtungskosten €</label><input id="roi-setup" type="number" value="" placeholder="Auto" style="width:100%"></div>
+    <div class="form-field"><label>Mitglieder gesamt</label><input id="roi-members" type="number" value="100" style="width:100%"></div>
+    <div class="form-field"><label>Mitgliedsbeitrag €/Mon.</label><input id="roi-fee" type="number" value="35" style="width:100%"></div>
+    <div class="form-field"><label>Miete €/Mon.</label><input id="roi-rent" type="number" value="1200" style="width:100%"></div>
+    <div class="form-field"><label>Personal €/Mon.</label><input id="roi-staff" type="number" value="2000" style="width:100%"></div>
+    <div class="form-field"><label>Sonstige Kosten €/Mon.</label><input id="roi-other" type="number" value="500" style="width:100%"></div>
+    <div class="form-field"><label>Einrichtungskosten €</label><input id="roi-setup" type="number" value="" placeholder="Auto" style="width:100%"></div>
   </div>
   <div id="roi-result"></div>
   <div class="mbtns">
@@ -2030,16 +2030,16 @@
 <div class="modal" style="max-width:480px">
   <h2>🧴 Hygiene-Konzept</h2>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
-    <div class="mf"><label>Reinigungsintervall</label>
+    <div class="form-field"><label>Reinigungsintervall</label>
       <select id="hy-clean" style="width:100%;padding:5px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px">
         <option>Täglich</option><option>2× täglich</option><option>Wöchentlich</option>
       </select></div>
-    <div class="mf"><label>Desinfektion</label>
+    <div class="form-field"><label>Desinfektion</label>
       <select id="hy-desin" style="width:100%;padding:5px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px">
         <option>Handdesinfektion</option><option>Flächendesinfektion</option><option>Beides</option>
       </select></div>
-    <div class="mf"><label>Verantwortlich</label><input id="hy-resp" placeholder="Name" style="width:100%"></div>
-    <div class="mf"><label>Letzte Schulung</label><input id="hy-train" type="date" style="width:100%"></div>
+    <div class="form-field"><label>Verantwortlich</label><input id="hy-resp" placeholder="Name" style="width:100%"></div>
+    <div class="form-field"><label>Letzte Schulung</label><input id="hy-train" type="date" style="width:100%"></div>
   </div>
   <div id="hygiene-preview" style="background:var(--bg3);border-radius:6px;padding:10px;font-size:10px;color:var(--tx2);min-height:80px"></div>
   <div class="mbtns">
@@ -2187,20 +2187,20 @@
 <div class="mover" id="m-room">
 <div class="modal">
   <h2>📐 Raum anlegen</h2>
-  <div class="mf"><label>Name</label><input id="rm-name" value="Empfangsbereich"></div>
+  <div class="form-field"><label>Name</label><input id="rm-name" value="Empfangsbereich"></div>
   <div class="mgrid3">
-    <div class="mf"><label>Breite (m)</label><input id="rm-w" type="number" value="8" min="1" max="60" step="0.5"></div>
-    <div class="mf"><label>Tiefe (m)</label><input id="rm-d" type="number" value="7" min="1" max="60" step="0.5"></div>
-    <div class="mf"><label>Höhe (m)</label><input id="rm-h" type="number" value="2.8" min="1.8" max="8" step="0.1"></div>
+    <div class="form-field"><label>Breite (m)</label><input id="rm-w" type="number" value="8" min="1" max="60" step="0.5"></div>
+    <div class="form-field"><label>Tiefe (m)</label><input id="rm-d" type="number" value="7" min="1" max="60" step="0.5"></div>
+    <div class="form-field"><label>Höhe (m)</label><input id="rm-h" type="number" value="2.8" min="1.8" max="8" step="0.1"></div>
   </div>
   <div class="mgrid3">
-    <div class="mf"><label>Bodenfarbe</label><input id="rm-fc" type="color" value="#c8b99a"></div>
-    <div class="mf"><label>Wandfarbe</label><input id="rm-wc" type="color" value="#d8d0c0"></div>
-    <div class="mf"><label>Deckenfarbe</label><input id="rm-cc" type="color" value="#f0ece0"></div>
+    <div class="form-field"><label>Bodenfarbe</label><input id="rm-fc" type="color" value="#c8b99a"></div>
+    <div class="form-field"><label>Wandfarbe</label><input id="rm-wc" type="color" value="#d8d0c0"></div>
+    <div class="form-field"><label>Deckenfarbe</label><input id="rm-cc" type="color" value="#f0ece0"></div>
   </div>
   <div class="mgrid2">
-    <div class="mf"><label>Position X (m)</label><input id="rm-px" type="number" value="0" step="0.5"></div>
-    <div class="mf"><label>Position Y (m)</label><input id="rm-py" type="number" value="0" step="0.5"></div>
+    <div class="form-field"><label>Position X (m)</label><input id="rm-px" type="number" value="0" step="0.5"></div>
+    <div class="form-field"><label>Position Y (m)</label><input id="rm-py" type="number" value="0" step="0.5"></div>
   </div>
   <div class="mbtns">
     <button class="mbt" data-tier="simple" onclick="closeM('m-room')">Abbrechen</button>
@@ -2213,19 +2213,19 @@
 <div class="modal">
   <h2>✏️ Eigenes Objekt</h2>
   <div class="mgrid2">
-    <div class="mf"><label>Name</label><input id="co-name" value="Mein Objekt"></div>
-    <div class="mf"><label>Kategorie</label><input id="co-cat" value="Eigene" list="co-catlist"><datalist id="co-catlist"></datalist></div>
+    <div class="form-field"><label>Name</label><input id="co-name" value="Mein Objekt"></div>
+    <div class="form-field"><label>Kategorie</label><input id="co-cat" value="Eigene" list="co-catlist"><datalist id="co-catlist"></datalist></div>
   </div>
-  <div class="mf"><label>Symbol</label>
+  <div class="form-field"><label>Symbol</label>
     <input id="co-icon" value="📦" style="width:70px;font-size:18px;text-align:center">
     <div class="ep-row" id="ep-row"></div>
   </div>
   <div class="mgrid3">
-    <div class="mf"><label>Breite (m)</label><input id="co-w" type="number" value="1.0" min="0.1" step="0.1"></div>
-    <div class="mf"><label>Tiefe (m)</label><input id="co-d" type="number" value="0.6" min="0.1" step="0.1"></div>
-    <div class="mf"><label>Höhe (m)</label><input id="co-h" type="number" value="1.0" min="0.1" step="0.1"></div>
+    <div class="form-field"><label>Breite (m)</label><input id="co-w" type="number" value="1.0" min="0.1" step="0.1"></div>
+    <div class="form-field"><label>Tiefe (m)</label><input id="co-d" type="number" value="0.6" min="0.1" step="0.1"></div>
+    <div class="form-field"><label>Höhe (m)</label><input id="co-h" type="number" value="1.0" min="0.1" step="0.1"></div>
   </div>
-  <div class="mf"><label>Farbe</label><input id="co-col" type="color" value="#885533"></div>
+  <div class="form-field"><label>Farbe</label><input id="co-col" type="color" value="#885533"></div>
   <div class="mbtns">
     <button class="mbt" data-tier="simple" onclick="closeM('m-custom')">Abbrechen</button>
     <button class="mbt ok" onclick="confirmCustom()">Erstellen</button>
@@ -2236,7 +2236,7 @@
 <div class="mover" id="m-rename">
 <div class="modal" style="max-width:320px">
   <h2>✏️ Umbenennen</h2>
-  <div class="mf"><input id="rename-in" value="Neue Ausgabestelle"></div>
+  <div class="form-field"><input id="rename-in" value="Neue Ausgabestelle"></div>
   <div class="mbtns">
     <button class="mbt" data-tier="simple" onclick="closeM('m-rename')">Abbrechen</button>
     <button class="mbt ok" onclick="doRename()">OK</button>
@@ -2262,7 +2262,7 @@
 <div class="mover" id="m-mood-ai">
 <div class="modal" style="max-width:360px">
   <h2>🌅 KI-Stimmung erstellen</h2>
-  <div class="mf"><label>Beschreibe die gewünschte Atmosphäre</label>
+  <div class="form-field"><label>Beschreibe die gewünschte Atmosphäre</label>
     <textarea id="mood-desc" class="wiz-inp" rows="3" placeholder="z.B. Warme, einladende Abendatmosphäre mit Kerzenlicht und grünem Akzent..."></textarea>
   </div>
   <div class="mbtns">
@@ -2275,8 +2275,8 @@
 <div class="mover" id="m-floor">
 <div class="modal" style="max-width:300px">
   <h2>🏢 Etage hinzufügen</h2>
-  <div class="mf"><label>Name</label><input id="fl-name" value="Obergeschoss (OG)"></div>
-  <div class="mf"><label>Höhenoffset (m)</label><input id="fl-elev" type="number" value="3.0" min="0" step="0.5"></div>
+  <div class="form-field"><label>Name</label><input id="fl-name" value="Obergeschoss (OG)"></div>
+  <div class="form-field"><label>Höhenoffset (m)</label><input id="fl-elev" type="number" value="3.0" min="0" step="0.5"></div>
   <div class="mbtns">
     <button class="mbt" data-tier="simple" onclick="closeM('m-floor')">Abbrechen</button>
     <button class="mbt ok" onclick="confirmFloor()">Erstellen</button>
@@ -4525,7 +4525,7 @@ function renderLeft(){
 }
 
 function renderRoomsPanel(el){
-  let h='<div class="sh">Räume ('+rooms.length+')</div>';
+  let h='<div class="form-kicker">Räume ('+rooms.length+')</div>';
   rooms.forEach(r=>{
     const sel=selId===r.id&&selIsRoom;
     h+=`<div class="rc${sel?' active':''}" onclick="setSelection('${r.id}',true);focusRoom('${r.id}')">
@@ -4538,7 +4538,7 @@ function renderRoomsPanel(el){
     if(sel) h += renderRoomInlineProps(r);
   });
   h+=`<button class="addbtn" onclick="openRoomModal()">＋ Raum hinzufügen</button>`;
-  h+=`<div class="sh">Werkzeuge</div>
+  h+=`<div class="form-kicker">Werkzeuge</div>
   <div style="font-size:10px;color:var(--tx3);line-height:1.8;padding:4px 0">
   <b>Raum zeichnen:</b> Pill oben → ⬜ drücken, dann auf Grundriss ziehen<br>
   <b>Doppelklick</b> auf Raum = Eigenschaften bearbeiten<br>
@@ -8048,7 +8048,7 @@ async function showCloudProjects(){
       el.innerHTML = '<div style="font-size:10px;color:var(--tx3);padding:4px">Keine Cloud-Projekte</div>';
       return;
     }
-    el.innerHTML = '<div class="sh" style="margin-top:6px">☁️ Cloud-Projekte</div>'
+    el.innerHTML = '<div class="form-kicker" style="margin-top:6px">☁️ Cloud-Projekte</div>'
       + projects.map(p=>{
         const d = new Date(p.updated_at).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
         return '<div class="sitem" data-cloud-id="'+p.id+'" onclick="cloudLoad(\''+p.id+'\',this)">'
@@ -22476,14 +22476,14 @@ document.getElementById('mood-panel').classList.remove('vis');
   <input id="recog-file" type="file" accept="image/*,video/*,.pdf,.png,.jpg,.jpeg,.webp,.bmp,.tiff,.docx,.dxf,.dwg" multiple style="display:none" onchange="loadRecogFiles(this)">
   <div id="recog-options" style="margin-top:12px;display:none">
     <div style="display:flex;gap:8px;margin-bottom:8px">
-      <div class="mf" style="flex:1"><label>Maßstab</label>
+      <div class="form-field" style="flex:1"><label>Maßstab</label>
         <select id="recog-scale" style="width:100%;padding:5px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px">
           <option value="auto">Automatisch erkennen</option>
           <option value="1:50">1:50</option>
           <option value="1:100">1:100</option>
           <option value="1:200">1:200</option>
         </select></div>
-      <div class="mf" style="flex:1"><label>Gebäudetyp</label>
+      <div class="form-field" style="flex:1"><label>Gebäudetyp</label>
         <select id="recog-type" style="width:100%;padding:5px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px">
           <option>CSC / Ausgabestelle</option>
           <option>Büro</option>
