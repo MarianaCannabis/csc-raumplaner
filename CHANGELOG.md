@@ -4,6 +4,18 @@ Alle bedeutsamen Änderungen an CSC Studio Pro.
 
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [2.6.3] — 2026-04-25 · Defense-in-depth Cloud-Save
+
+**Patch-Release.** Härtet den Persist-Layer nach v2.6.2 an drei Stellen gegen künftigen Drift zwischen Modul-Signatur und JS-Callsite.
+
+### Fixed / Hardened
+- **`window.cscPersist` ist jetzt typisiert**. Neue `PersistBridge`-Type wird aus `buildBridge()` als `ReturnType<typeof buildBridge>` abgeleitet und als Window-Interface-Extension deklariert. `tsc --noEmit` findet ab jetzt jede TypeScript-Call-Site die ein `CloudSaveBody` ohne owner baut oder eine veränderte Signatur übersieht.
+- **Runtime-Guard in `saveCloudProject()`**: Früher Throw wenn `body.owner` kein non-leerer String ist. Fehlermeldung verweist direkt auf RLS-Policy + Wrapper-Contract. Legacy-Inline-JS in `index.html` wäre für `tsc` unsichtbar; dieser Guard fängt's trotzdem.
+- **Anti-Race Mutex im `cloudSave`-Wrapper**: Inflight-Promise in `_cloudSaveInflight` geshared. Zweiter Klick (oder Auto-Save + manueller Save) bekommen denselben laufenden Promise, feuern keinen zweiten POST. Business-Logik lebt jetzt in `_cloudSaveImpl()`; `cloudSave()` ist die dünne Deduplication-Schicht.
+
+### Added
+- +2 Vitest-Tests für Runtime-Guard: leerer owner-String + undefined owner (untyped-JS-Caller simuliert). Test-Suite 148 → **150**.
+
 ## [2.6.2] — 2026-04-24 · Hotfix Login-Modal-Race + Cloud-Save-Owner
 
 **Patch-Release.** Zwei unabhängige Bugs nach v2.6.1 gefixt.
