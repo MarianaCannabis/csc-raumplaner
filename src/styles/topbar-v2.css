@@ -171,8 +171,8 @@
    die nicht so transparent-flach wirken sollen wie die Topbar-Compacts.
    Topbar-Consumer nutzen weiterhin .is-compact (transparent/ghost),
    panel-seitige Consumer bekommen .is-compact-tbt (opak + border).
-   Legacy-Tokens --bg3/--bd/--tx2 sorgen via body.light-mode-Overrides in
-   main.css für korrektes Theming ohne extra [data-theme="light"]-Regeln. */
+   Legacy-Tokens --bg3/--bd/--tx2 sorgen via tokens.css [data-theme="light"]-
+   Overrides für korrektes Theming ohne extra surfaces-Regeln. */
 .tb-btn.is-compact-tbt {
   --h: auto;
   height: auto;
