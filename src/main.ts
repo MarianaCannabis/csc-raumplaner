@@ -47,6 +47,7 @@ import { buildPackList } from './compliance/packlist.js';
 import { registerGlobalShortcuts } from './input/keyboard.js';
 import { icon, type IconName } from './icons/lucide.js';
 import { installBridge as installPersistBridge } from './persist/index.js';
+import * as authSupabase from './auth/supabase.js';
 
 console.info('[csc] vite entry alive', import.meta.env.MODE);
 
@@ -54,6 +55,13 @@ console.info('[csc] vite entry alive', import.meta.env.MODE);
 // Legacy-Funktionen in index.html (saveProj/saveVersion/…) delegieren an
 // diese Bridge. Siehe src/persist/*.ts für die extrahierte Logik.
 installPersistBridge();
+
+// P-TrackA Phase 2a: Auth-Core-Helpers auf window.cscAuth exposen.
+// Pure Helpers + Async-Cores (kein State, kein DOM) — index.html-
+// Wrappers holen sich von hier die JWT-Parsing-, URL-Bau- und
+// Fetch-Logik, der State-Management (SB_TOKEN/USER) bleibt Phase 2a
+// weiterhin in index.html-Globals. Siehe src/auth/supabase.ts.
+(window as unknown as { cscAuth?: typeof authSupabase }).cscAuth = authSupabase;
 
 // Bridge GLTFExporter onto the globally-available legacy THREE (from CDN).
 // Der legacy exportGLTF()-Handler ruft `new THREE.GLTFExporter()` — ohne

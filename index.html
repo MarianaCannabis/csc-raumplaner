@@ -7614,11 +7614,14 @@ function loadSupabaseConfig(){
 // ────────────────────────────────────────────────────────────────────────
 // AUTH — Magic Link via Supabase GoTrue (no SDK needed)
 // ────────────────────────────────────────────────────────────────────────
+// P-TrackA Phase 2a: delegate to window.cscAuth.tokenExpired
+// (buffer 30s statt der 120s-Default im Pure-Helper). Fallback wenn
+// Module noch nicht geladen.
 function tokenExpired(token){
+  if(window.cscAuth) return window.cscAuth.tokenExpired(token, 30000);
   if(!token) return true;
   try{
     const payload = JSON.parse(atob(token.split('.')[1]));
-    // exp is in seconds, treat tokens that expire within 30s as expired.
     return !payload.exp || (payload.exp * 1000) < (Date.now() + 30000);
   }catch(e){ return true; }
 }
@@ -7696,40 +7699,35 @@ function rehydrateAuth(){
 // dem stored refresh_token und schreibt access+refresh zurück in
 // localStorage. Läuft vor aiFetch + cloud-Calls + einmal pro 5 Min als
 // silent-keepalive. force=true umgeht das "noch >2 Min gültig"-Shortcut.
+// P-TrackA Phase 2a: refreshTokenIfNeeded delegiert die JWT-Staleness-
+// Prüfung und den /auth/v1/token-POST an src/auth/supabase.ts. State
+// (SB_TOKEN/SB_USER) + Dedup (_refreshInFlight) + DOM-Side-Effects
+// (updateAuthStatus, console.info) bleiben hier.
 let _refreshInFlight = null;
 async function refreshTokenIfNeeded(force){
   if(!SB_URL) return false;
   const refresh = localStorage.getItem('csc-sb-refresh') || '';
-  // Shortcut wenn Token noch lange lebt und kein force verlangt ist
-  if(!force && SB_TOKEN){
-    try {
-      const payload = JSON.parse(atob(SB_TOKEN.split('.')[1]));
-      const expiresIn = (payload.exp * 1000) - Date.now();
-      if(expiresIn > 120000) return true;
-    } catch(e){ /* fallthrough: refreshen */ }
+  // Shortcut wenn Token noch lange lebt und kein force verlangt ist.
+  // Pure-Core-Aufruf via window.cscAuth (nach Module-Load).
+  if(!force && SB_TOKEN && window.cscAuth && !window.cscAuth.tokenExpired(SB_TOKEN)){
+    return true;
   }
   if(!refresh) return false;
-  // De-dupe: wenn bereits ein Refresh fliegt, auf dasselbe Promise warten.
   if(_refreshInFlight) return _refreshInFlight;
   _refreshInFlight = (async () => {
     try {
-      const r = await fetch(SB_URL + '/auth/v1/token?grant_type=refresh_token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'apikey': SB_KEY },
-        body: JSON.stringify({ refresh_token: refresh }),
-      });
-      if(!r.ok) return false;
-      const data = await r.json();
-      if(!data.access_token) return false;
-      SB_TOKEN = data.access_token;
-      localStorage.setItem('csc-sb-token', data.access_token);
-      if(data.refresh_token) localStorage.setItem('csc-sb-refresh', data.refresh_token);
-      // User-Info neu parsen (sub/email aus dem neuen Payload)
-      try {
-        const payload = JSON.parse(atob(data.access_token.split('.')[1]));
-        SB_USER = { id: payload.sub, email: payload.email || (SB_USER && SB_USER.email) || '' };
+      const result = window.cscAuth
+        ? await window.cscAuth.performTokenRefresh(SB_URL, SB_KEY, refresh)
+        : { ok: false };
+      if(!result.ok) return false;
+      SB_TOKEN = result.token;
+      localStorage.setItem('csc-sb-token', result.token);
+      if(result.refreshToken) localStorage.setItem('csc-sb-refresh', result.refreshToken);
+      if(result.user){
+        // Email aus dem neuen Payload übernehmen, Fallback auf bisherigen User
+        SB_USER = { id: result.user.id, email: result.user.email || (SB_USER && SB_USER.email) || '' };
         localStorage.setItem('csc-sb-user', JSON.stringify(SB_USER));
-      } catch(e){}
+      }
       if(typeof updateAuthStatus === 'function') updateAuthStatus();
       console.info('[csc] token refreshed');
       return true;
@@ -7770,23 +7768,20 @@ function handleAuthLoss(){
   }, INTERVAL_MS);
 })();
 
+// P-TrackA Phase 2a: handleAuthRedirect delegiert das Fragment-Parsing
+// an window.cscAuth.parseAuthRedirectFragment. State-Writes + URL-
+// Cleanup + Toast bleiben hier (tied an SB_TOKEN/SB_USER-Globals).
 function handleAuthRedirect(){
-  // Supabase GoTrue returns tokens in the URL fragment (#access_token=…)
-  if(!location.hash || location.hash.indexOf('access_token=') < 0) return;
-  const params = new URLSearchParams(location.hash.slice(1));
-  const at = params.get('access_token');
-  const rt = params.get('refresh_token');
-  if(!at) return;
-  SB_TOKEN = at;
-  try {
-    const payload = JSON.parse(atob(at.split('.')[1]));
-    SB_USER = { id: payload.sub, email: payload.email || '' };
-  } catch(e){ SB_USER = null; }
+  if(!window.cscAuth){ return; /* Module-Load-Window — rehydrateAuth later */ }
+  const parsed = window.cscAuth.parseAuthRedirectFragment(location.hash);
+  if(!parsed) return;
+  SB_TOKEN = parsed.accessToken;
+  SB_USER = parsed.user;
   localStorage.setItem('csc-sb-token', SB_TOKEN);
   if(SB_USER) localStorage.setItem('csc-sb-user', JSON.stringify(SB_USER));
   // P-Auth: Refresh-Token persistieren, damit refreshTokenIfNeeded()
   // nach der 1h-Access-Token-TTL ohne Re-Login einen neuen holen kann.
-  if(rt) localStorage.setItem('csc-sb-refresh', rt);
+  if(parsed.refreshToken) localStorage.setItem('csc-sb-refresh', parsed.refreshToken);
   // Clean the URL so the token doesn't stay visible / leak to history
   try { history.replaceState(null, '', location.pathname + location.search); } catch(e){}
   toast('✅ Eingeloggt!','g');
@@ -7814,53 +7809,41 @@ function cloudSignIn(){
   }
 }
 
-// GitHub Pages project sites live under /<repo>/ — if the page was opened as
-// /<repo>/index.html, location.pathname keeps the filename and Supabase's
-// redirect-URL allowlist normalizes it away. Strip any trailing file and
-// ensure a trailing slash so we always hand GoTrue the folder URL that the
-// Dashboard's allowed Redirect URLs match.
+// P-TrackA Phase 2a: getRedirectUrl wrappt den Pure-Helper
+// window.cscAuth.buildRedirectUrl — Fallback-Implementation für den
+// Pre-Module-Load-Fall.
 function getRedirectUrl(){
-  let base = location.origin + location.pathname;
-  base = base.replace(/\/[^/]*\.\w+$/, '/');
-  if(!base.endsWith('/')) base += '/';
-  return base;
+  return window.cscAuth
+    ? window.cscAuth.buildRedirectUrl(location.origin, location.pathname)
+    : (function(){
+        let base = location.origin + location.pathname;
+        base = base.replace(/\/[^/]*\.\w+$/, '/');
+        if(!base.endsWith('/')) base += '/';
+        return base;
+      })();
 }
 
+// P-TrackA Phase 2a: sendMagicLink delegiert den Fetch-Teil an
+// window.cscAuth.postMagicLink. DOM-Updates (msg/btn/toast/setGateState)
+// + Close-Modal bleiben hier (tied an Legacy-UI-IDs).
 async function sendMagicLink(){
   const email = (document.getElementById('auth-email')?.value || '').trim();
   const msg = document.getElementById('auth-msg');
   const btn = document.getElementById('auth-send-btn');
-  if(!email || !/.+@.+\..+/.test(email)){
-    if(msg){ msg.textContent = '❌ Bitte eine gültige E-Mail eintragen'; msg.style.color = '#f87171'; }
-    return;
-  }
-  if(!SB_URL || !SB_KEY){
-    if(msg){ msg.textContent = '❌ Supabase nicht konfiguriert'; msg.style.color = '#f87171'; }
-    return;
-  }
   if(btn){ btn.disabled = true; btn.textContent = '⏳ Sende…'; }
   try {
     const redirectTo = getRedirectUrl();
     console.log('redirect_to query param:', redirectTo);
-    const r = await fetch(SB_URL + '/auth/v1/otp?redirect_to=' + encodeURIComponent(redirectTo), {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': SB_KEY
-      },
-      body: JSON.stringify({
-        email: email,
-        create_user: true
-      })
-    });
-    if(r.ok){
+    const result = window.cscAuth
+      ? await window.cscAuth.postMagicLink(SB_URL, SB_KEY, email, redirectTo)
+      : { ok: false, error: 'Auth-Modul noch nicht geladen' };
+    if(result.ok){
       if(msg){ msg.textContent = '📧 Link gesendet! Prüfe dein Postfach.'; msg.style.color = '#4ade80'; }
       toast('📬 Prüfe dein Postfach','b');
       setTimeout(()=>closeM('m-auth'), 2000);
       setGateState('awaiting');
     } else {
-      const err = await r.text().catch(()=>'');
-      if(msg){ msg.textContent = '❌ Fehler: ' + err.slice(0,120); msg.style.color = '#f87171'; }
+      if(msg){ msg.textContent = '❌ ' + (result.error || 'Fehler'); msg.style.color = '#f87171'; }
     }
   } catch(e){
     if(msg){ msg.textContent = '❌ Netzwerkfehler: ' + e.message; msg.style.color = '#f87171'; }
@@ -7869,18 +7852,10 @@ async function sendMagicLink(){
   }
 }
 
+// P-TrackA Phase 2a: cloudSignOut delegiert den Logout-POST an
+// window.cscAuth.postSignOut. State-Reset + DOM-Updates bleiben hier.
 async function cloudSignOut(){
-  if(SB_URL && SB_TOKEN){
-    try {
-      await fetch(SB_URL+'/auth/v1/logout', {
-        method: 'POST',
-        headers: {
-          'apikey': SB_KEY,
-          'Authorization': 'Bearer ' + SB_TOKEN
-        }
-      });
-    } catch(e){ /* best-effort */ }
-  }
+  if(window.cscAuth) await window.cscAuth.postSignOut(SB_URL, SB_KEY, SB_TOKEN);
   SB_TOKEN = ''; SB_USER = null;
   localStorage.removeItem('csc-sb-token');
   localStorage.removeItem('csc-sb-user');
