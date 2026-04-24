@@ -55,7 +55,7 @@
     <div style="color:var(--tx2);font-size:13px;max-width:320px;text-align:center;line-height:1.5">
       Du musst eingeloggt sein, um den Raumplaner zu nutzen.<br>Magic-Link per E-Mail — kein Passwort nötig.
     </div>
-    <button class="mbt ok" data-tier="simple" onclick="openM('m-auth')" style="margin-top:8px">🔑 Jetzt einloggen</button>
+    <button class="mdl-btn mdl-btn--primary" data-tier="simple" onclick="openM('m-auth')" style="margin-top:8px">🔑 Jetzt einloggen</button>
   </div>
   <div id="gate-awaiting" style="display:none;flex-direction:column;align-items:center;gap:12px">
     <div style="font-size:48px">📬</div>
@@ -64,8 +64,8 @@
       Wir haben dir eine Mail geschickt. Klicke den <b>Magic-Link</b> — dieses Fenster schließt sich dann automatisch.
     </div>
     <div style="display:flex;gap:8px;margin-top:8px">
-      <button class="mbt" data-tier="simple" onclick="openM('m-auth')">Andere E-Mail</button>
-      <button class="mbt ok" data-tier="simple" onclick="openM('m-auth')">🔄 Erneut senden</button>
+      <button class="mdl-btn" data-tier="simple" onclick="openM('m-auth')">Andere E-Mail</button>
+      <button class="mdl-btn mdl-btn--primary" data-tier="simple" onclick="openM('m-auth')">🔄 Erneut senden</button>
     </div>
   </div>
 </div>
@@ -949,19 +949,19 @@
 
 
 <!-- CREDITS / ATTRIBUTION MODAL -->
-<div class="mover" id="m-credits">
-<div class="modal" style="max-width:480px">
+<div class="mdl-overlay" id="m-credits">
+<div class="mdl-dialog" style="max-width:480px">
   <h2>🎨 Credits & Lizenzen</h2>
   <div id="m-credits-body" style="font-size:11px;color:var(--tx2)">Lade…</div>
-  <div class="mbtns">
-    <button class="mbt" data-tier="simple" onclick="closeM('m-credits')">Schließen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-credits')">Schließen</button>
   </div>
 </div>
 </div>
 
 <!-- CLOUD SIGN-IN MODAL (Magic Link) -->
-<div class="mover" id="m-auth">
-<div class="modal" style="max-width:380px">
+<div class="mdl-overlay" id="m-auth">
+<div class="mdl-dialog" style="max-width:380px">
   <h2>🔑 Cloud-Login</h2>
   <div style="font-size:12px;color:var(--tx);margin-bottom:8px;font-weight:600;line-height:1.4">
     Zum Loslegen bitte einmal anmelden — Magic-Link per E-Mail.
@@ -975,17 +975,17 @@
     <input id="auth-email" type="email" placeholder="deine@email.de" style="width:100%" autocomplete="email">
   </div>
   <div id="auth-msg" style="font-size:10px;color:var(--tx3);margin:6px 0;min-height:14px"></div>
-  <div class="mbtns">
-    <button class="mbt" data-tier="simple" onclick="closeM('m-auth')">Abbrechen</button>
-    <button class="mbt ok" id="auth-send-btn" onclick="sendMagicLink()">📧 Magic Link senden</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-auth')">Abbrechen</button>
+    <button class="mdl-btn mdl-btn--primary" id="auth-send-btn" onclick="sendMagicLink()">📧 Magic Link senden</button>
   </div>
 </div>
 </div>
 
 
 <!-- DESIGN CREATOR MODAL -->
-<div class="mover" id="m-design-create">
-<div class="modal" style="max-width:420px">
+<div class="mdl-overlay" id="m-design-create">
+<div class="mdl-dialog" style="max-width:420px">
   <h2>🎨 Eigenes Design erstellen</h2>
   <div class="form-field">
     <label>Design-Name</label>
@@ -1011,17 +1011,17 @@
       <option value="checkerboard">Schachbrett</option>
     </select>
   </div>
-  <div class="mbtns">
-    <button class="mbt" data-tier="simple" onclick="closeM('m-design-create')">Abbrechen</button>
-    <button class="mbt ok" onclick="saveCustomDesign()">✓ Design speichern</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-design-create')">Abbrechen</button>
+    <button class="mdl-btn mdl-btn--primary" onclick="saveCustomDesign()">✓ Design speichern</button>
   </div>
 </div>
 </div>
 
 
 <!-- VISION BOARD -->
-<div class="mover" id="m-vision">
-<div class="modal" style="max-width:520px">
+<div class="mdl-overlay" id="m-vision">
+<div class="mdl-dialog" style="max-width:520px">
   <h2>🎨 Visions-Board — Ideen & Vorbilder</h2>
   <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">
     Lade Inspirationsbilder, Skizzen oder Referenzfotos hoch. Erstelle dann einen Teilen-Link der das gesamte Projekt + Bilder enthält.
@@ -1031,25 +1031,25 @@
   </div>
   <input type="file" id="vision-file-inp" accept="image/*,video/*" multiple style="display:none" onchange="addVisionImages(event)">
   <div style="margin-top:10px">
-    <button class="mbt ok" onclick="shareWithVision()" style="width:100%">🔗 Teilen-Link mit Visions-Board erstellen</button>
+    <button class="mdl-btn mdl-btn--primary" onclick="shareWithVision()" style="width:100%">🔗 Teilen-Link mit Visions-Board erstellen</button>
   </div>
   <div id="vision-link-box" style="display:none">
     <div style="font-size:11px;color:var(--gr);margin-bottom:4px">✓ Link erstellt — jetzt kopieren und teilen:</div>
     <input class="vlink-inp" id="vision-link-inp" readonly onclick="this.select()">
     <div style="display:flex;gap:6px;margin-top:6px">
-      <button class="mbt ok" onclick="navigator.clipboard.writeText(document.getElementById('vision-link-inp').value).then(()=>toast('📋 Kopiert!','g'))" style="flex:1">📋 Kopieren</button>
-      <button class="mbt" onclick="printVisionBoard()" style="flex:1">🖨 Drucken</button>
+      <button class="mdl-btn mdl-btn--primary" onclick="navigator.clipboard.writeText(document.getElementById('vision-link-inp').value).then(()=>toast('📋 Kopiert!','g'))" style="flex:1">📋 Kopieren</button>
+      <button class="mdl-btn" onclick="printVisionBoard()" style="flex:1">🖨 Drucken</button>
     </div>
   </div>
-  <div class="mbtns" style="margin-top:8px">
-    <button class="mbt" data-tier="simple" onclick="closeM('m-vision')">Schließen</button>
+  <div class="mdl-actions" style="margin-top:8px">
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-vision')">Schließen</button>
   </div>
 </div>
 </div>
 
 <!-- P4.8: HIGH-RES-RENDERING-MODAL -->
-<div class="mover" id="m-visualize">
-<div class="modal" style="max-width:520px">
+<div class="mdl-overlay" id="m-visualize">
+<div class="mdl-dialog" style="max-width:520px">
   <h2>📸 Visualisierung — hochauflösende Renderings</h2>
   <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">
     Wählt Perspektive + Auflösung. Download als PNG. Empfehlung: 2K für Mail, 4K für Print.
@@ -1077,29 +1077,29 @@
     </select>
   </div>
   <div id="hr-status" style="font-size:10px;color:var(--tx3);min-height:16px;margin-bottom:8px"></div>
-  <div class="mbtns">
-    <button class="mbt" data-tier="simple" onclick="closeM('m-visualize')">Schließen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-visualize')">Schließen</button>
   </div>
 </div>
 </div>
 
 <!-- P4.7: PACKLISTE-MODAL -->
-<div class="mover" id="m-packlist">
-<div class="modal" style="max-width:640px">
+<div class="mdl-overlay" id="m-packlist">
+<div class="mdl-dialog" style="max-width:640px">
   <h2>📦 Packliste</h2>
   <div id="m-packlist-body" style="font-size:11px;color:var(--tx2);max-height:60vh;overflow-y:auto">Lade…</div>
   <textarea id="m-packlist-md" style="display:none;width:100%;height:240px;background:var(--bg2);color:var(--tx);border:1px solid var(--bd);border-radius:4px;padding:8px;font-family:monospace;font-size:10px;margin-top:8px" readonly></textarea>
-  <div class="mbtns">
-    <button class="mbt" onclick="copyPacklistMD()">📋 Markdown kopieren</button>
-    <button class="mbt" onclick="togglePacklistMD()">📝 Markdown ein/aus</button>
-    <button class="mbt" data-tier="simple" onclick="closeM('m-packlist')">Schließen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" onclick="copyPacklistMD()">📋 Markdown kopieren</button>
+    <button class="mdl-btn" onclick="togglePacklistMD()">📝 Markdown ein/aus</button>
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-packlist')">Schließen</button>
   </div>
 </div>
 </div>
 
 <!-- P9.5: Teams-Modal -->
-<div class="mover" id="m-teams">
-<div class="modal" style="max-width:640px;max-height:88vh">
+<div class="mdl-overlay" id="m-teams">
+<div class="mdl-dialog" style="max-width:640px;max-height:88vh">
   <h2>👥 Teams</h2>
   <!-- P14: Tab-Navigation — Meine Teams / Einladung einlösen -->
   <div style="display:flex;gap:4px;margin:6px 0 12px;border-bottom:1px solid var(--bd)">
@@ -1119,7 +1119,7 @@
       <div style="display:flex;gap:6px">
         <input type="text" id="teams-new-name" placeholder="Team-Name"
           style="flex:1;padding:6px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px;box-sizing:border-box;font-size:12px">
-        <button class="mbt ok" onclick="createTeam()">➕ Erstellen</button>
+        <button class="mdl-btn mdl-btn--primary" onclick="createTeam()">➕ Erstellen</button>
       </div>
     </div>
   </div>
@@ -1135,21 +1135,21 @@
       <div style="display:flex;gap:6px">
         <input type="text" id="teams-redeem-id" placeholder="UUID des Teams"
           style="flex:1;padding:6px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px;box-sizing:border-box;font-size:12px;font-family:monospace">
-        <button class="mbt ok" onclick="redeemTeamInvite(document.getElementById('teams-redeem-id').value.trim())">✅ Beitreten</button>
+        <button class="mdl-btn mdl-btn--primary" onclick="redeemTeamInvite(document.getElementById('teams-redeem-id').value.trim())">✅ Beitreten</button>
       </div>
       <div style="font-size:10px;color:var(--tx3);margin-top:8px">Beim Beitreten wirst du mit Rolle <b>viewer</b> aufgenommen. Der Team-Admin kann deine Rolle später anpassen.</div>
     </div>
   </div>
 
-  <div class="mbtns">
-    <button class="mbt" data-tier="simple" onclick="closeM('m-teams')">Schließen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-teams')">Schließen</button>
   </div>
 </div>
 </div>
 
 <!-- P9.3: Save-as-user-template Modal -->
-<div class="mover" id="m-save-template">
-<div class="modal" style="max-width:520px">
+<div class="mdl-overlay" id="m-save-template">
+<div class="mdl-dialog" style="max-width:520px">
   <h2>💾 Aktuelles Projekt als Vorlage speichern</h2>
   <div style="font-size:11px;color:var(--tx3);margin-bottom:10px">Die Vorlage wird in deinem Account gespeichert und erscheint im Template-Modal unter „Meine Vorlagen".</div>
   <div class="form-field">
@@ -1167,19 +1167,19 @@
     <input type="text" id="tpl-save-tags" placeholder="messe, workshop, eigene"
       style="width:100%;padding:6px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px;box-sizing:border-box;font-size:12px">
   </div>
-  <div class="mbtns">
-    <button class="mbt" data-tier="simple" onclick="closeM('m-save-template')">Abbrechen</button>
-    <button class="mbt ok" onclick="doSaveUserTemplate()">💾 Speichern</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-save-template')">Abbrechen</button>
+    <button class="mdl-btn mdl-btn--primary" onclick="doSaveUserTemplate()">💾 Speichern</button>
   </div>
 </div>
 </div>
 
 <!-- P8.2: Hilfe-Modal — FAQ + Shortcuts + User-Guide-Link -->
-<div class="mover" id="m-help">
-<div class="modal" style="max-width:720px;max-height:88vh">
+<div class="mdl-overlay" id="m-help">
+<div class="mdl-dialog" style="max-width:720px;max-height:88vh">
   <h2>❓ Hilfe &amp; FAQ</h2>
   <!-- P15 Topbar-Cleanup: prominenter Einstieg ins Full-Screen-Help-Overlay -->
-  <button class="mbt ok" onclick="closeM('m-help');openHelp('start')"
+  <button class="mdl-btn mdl-btn--primary" onclick="closeM('m-help');openHelp('start')"
     style="width:100%;margin-bottom:10px;padding:10px 14px;font-size:13px;font-weight:600">
     📚 Vollständige Anleitung öffnen — mit Suche, Tutorial &amp; Illustriertem Intro
   </button>
@@ -1229,16 +1229,16 @@
     </div>
   </details>
 
-  <div class="mbtns">
-    <button class="mbt" onclick="startWelcomeFlow();closeM('m-help')">📚 Welcome neu zeigen</button>
-    <button class="mbt ok" data-tier="simple" onclick="closeM('m-help')">Schließen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" onclick="startWelcomeFlow();closeM('m-help')">📚 Welcome neu zeigen</button>
+    <button class="mdl-btn mdl-btn--primary" data-tier="simple" onclick="closeM('m-help')">Schließen</button>
   </div>
 </div>
 </div>
 
 <!-- P7 Onboarding-Rework: schlanker 3-Step-Welcome-Flow (dismissable) -->
-<div class="mover" id="m-welcome">
-<div class="modal" style="max-width:520px">
+<div class="mdl-overlay" id="m-welcome">
+<div class="mdl-dialog" style="max-width:520px">
   <div id="welcome-step-content"></div>
   <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px">
     <label style="font-size:10px;color:var(--tx3);display:flex;align-items:center;gap:4px;cursor:pointer">
@@ -1246,16 +1246,16 @@
     </label>
     <div style="display:flex;gap:4px" id="welcome-dots"></div>
     <div style="display:flex;gap:6px">
-      <button class="mbt" id="welcome-back" onclick="_welcomeStep(-1)" style="display:none">←</button>
-      <button class="mbt ok" id="welcome-next" onclick="_welcomeStep(1)">Weiter →</button>
+      <button class="mdl-btn" id="welcome-back" onclick="_welcomeStep(-1)" style="display:none">←</button>
+      <button class="mdl-btn mdl-btn--primary" id="welcome-next" onclick="_welcomeStep(1)">Weiter →</button>
     </div>
   </div>
 </div>
 </div>
 
 <!-- P7 Bug-2-Fix / P15 Cluster 7c — KCanG-Dashboard Modal, .kc-*-Surface -->
-<div class="mover" id="m-kcang-dashboard">
-<div class="modal">
+<div class="mdl-overlay" id="m-kcang-dashboard">
+<div class="mdl-dialog">
   <h2><span class="tb-btn__icon" data-icon="leaf"></span> KCanG-Dashboard</h2>
   <div class="kc-subtitle">Projekt-Metadaten + Live-Compliance-Check. Alle Felder speichern automatisch.</div>
 
@@ -1335,34 +1335,34 @@
     </div>
   </details>
 
-  <div class="mbtns">
-    <button class="mbt ok" data-tier="simple" onclick="closeM('m-kcang-dashboard')">Fertig</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn mdl-btn--primary" data-tier="simple" onclick="closeM('m-kcang-dashboard')">Fertig</button>
   </div>
 </div>
 </div>
 
 <!-- P4.6: MESSE-BUDGET-MODAL -->
-<div class="mover" id="m-messe-budget">
-<div class="modal" style="max-width:540px">
+<div class="mdl-overlay" id="m-messe-budget">
+<div class="mdl-dialog" style="max-width:540px">
   <h2>💰 Messe-Kostenschätzung</h2>
   <div id="m-budget-body" style="font-size:11px;color:var(--tx2);line-height:1.6">Lade…</div>
   <div style="font-size:9px;color:var(--tx3);margin-top:10px;padding:6px;border-left:2px solid var(--or,#f97316);background:rgba(249,115,22,0.06);line-height:1.5">
     ⚠ Heuristische Schätzung — reale Kosten hängen von Messe, Halle, Anbieter und Verhandlung ab. Defaults aus src/config/defaults.ts.
   </div>
-  <div class="mbtns">
-    <button class="mbt" data-mode="event" data-tier="simple" onclick="closeM('m-messe-budget')">Schließen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" data-mode="event" data-tier="simple" onclick="closeM('m-messe-budget')">Schließen</button>
   </div>
 </div>
 </div>
 
 <!-- RAUMVORLAGEN -->
-<div class="mover" id="m-templates">
-<div class="modal" style="max-width:560px">
+<div class="mdl-overlay" id="m-templates">
+<div class="mdl-dialog" style="max-width:560px">
   <h2>📋 Vorlagen — CSC-Layouts + Messestände</h2>
   <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Filter oben wählen. Klick auf Karte lädt Vorlage (bestehende Räume werden ersetzt).</p>
   <div id="tpl-status" style="font-size:10px;color:var(--tx3);margin-bottom:8px;min-height:14px"></div>
   <div class="tpl-grid" id="tpl-grid"></div>
-  <div class="mbtns"><button class="mbt" data-tier="simple" onclick="closeM('m-templates')">Abbrechen</button></div>
+  <div class="mdl-actions"><button class="mdl-btn" data-tier="simple" onclick="closeM('m-templates')">Abbrechen</button></div>
 </div>
 </div>
 
@@ -1384,31 +1384,31 @@
 </div>
 
 <!-- CHANGELOG MODAL -->
-<div class="mover" id="m-changelog">
-<div class="modal" style="max-width:480px">
+<div class="mdl-overlay" id="m-changelog">
+<div class="mdl-dialog" style="max-width:480px">
   <h2>📋 Änderungs-Protokoll</h2>
   <div id="changelog-list" style="max-height:400px;overflow-y:auto;margin:8px 0"></div>
-  <div class="mbtns">
-    <button class="mbt" onclick="clearChangelog()">🗑 Löschen</button>
-    <button class="mbt ok" data-tier="simple" onclick="closeM('m-changelog')">Schließen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" onclick="clearChangelog()">🗑 Löschen</button>
+    <button class="mdl-btn mdl-btn--primary" data-tier="simple" onclick="closeM('m-changelog')">Schließen</button>
   </div>
 </div>
 </div>
 
 <!-- AREA ANALYSIS MODAL -->
-<div class="mover" id="m-area">
-<div class="modal" style="max-width:480px">
+<div class="mdl-overlay" id="m-area">
+<div class="mdl-dialog" style="max-width:480px">
   <h2>📊 Flächenaufteilung</h2>
   <canvas id="area-chart-canvas" width="320" height="320" style="display:block;margin:0 auto"></canvas>
   <div id="area-legend" style="margin-top:12px"></div>
-  <div class="mbtns"><button class="mbt ok" data-tier="simple" onclick="closeM('m-area')">Schließen</button></div>
+  <div class="mdl-actions"><button class="mdl-btn mdl-btn--primary" data-tier="simple" onclick="closeM('m-area')">Schließen</button></div>
 </div>
 </div>
 
 
 <!-- MATERIAL CALCULATOR -->
-<div class="mover" id="m-matcalc">
-<div class="modal" style="max-width:500px">
+<div class="mdl-overlay" id="m-matcalc">
+<div class="mdl-dialog" style="max-width:500px">
   <h2>🧱 Materialmengen-Rechner</h2>
   <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Berechnet Bodenfliesen, Wandfarbe und Bodenbelag basierend auf deinen Räumen.</p>
   <div id="matcalc-content"></div>
@@ -1417,16 +1417,16 @@
     <div style="display:flex;gap:10px;align-items:center;font-size:11px">
       <label>Fliesen: <input type="number" id="mc-tile-waste" value="10" min="0" max="50" style="width:50px;padding:3px;background:var(--bg3);border:1px solid var(--bd);border-radius:3px;color:var(--tx)"> %</label>
       <label>Farbe: <input type="number" id="mc-paint-waste" value="15" min="0" max="50" style="width:50px;padding:3px;background:var(--bg3);border:1px solid var(--bd);border-radius:3px;color:var(--tx)"> %</label>
-      <button class="mbt ok" onclick="calcMaterials()" style="margin-left:auto">Berechnen</button>
+      <button class="mdl-btn mdl-btn--primary" onclick="calcMaterials()" style="margin-left:auto">Berechnen</button>
     </div>
   </div>
-  <div class="mbtns"><button class="mbt" data-tier="simple" onclick="closeM('m-matcalc')">Schließen</button><button class="mbt ok" onclick="exportMaterialsCSV()">📥 CSV</button></div>
+  <div class="mdl-actions"><button class="mdl-btn" data-tier="simple" onclick="closeM('m-matcalc')">Schließen</button><button class="mdl-btn mdl-btn--primary" onclick="exportMaterialsCSV()">📥 CSV</button></div>
 </div>
 </div>
 
 <!-- SMART HOME PLANER -->
-<div class="mover" id="m-smarthome">
-<div class="modal" style="max-width:480px">
+<div class="mdl-overlay" id="m-smarthome">
+<div class="mdl-dialog" style="max-width:480px">
   <h2>🏠 Smart Home Planung</h2>
   <p style="font-size:11px;color:var(--tx3);margin-bottom:8px">Steckdosen, LAN, WLAN und KNX auf dem Grundriss markieren.</p>
   <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px" id="sh-legend">
@@ -1451,27 +1451,27 @@
   </div>
   <div style="font-size:11px;color:var(--tx3);margin-bottom:8px">Klicke auf den Grundriss um Elemente zu setzen. Rechtsklick auf Markierung = löschen.</div>
   <div id="sh-list" style="max-height:180px;overflow-y:auto;font-size:11px"></div>
-  <div class="mbtns">
-    <button class="mbt" onclick="clearSmartHome()">🗑 Alle löschen</button>
-    <button class="mbt ok" data-tier="simple" onclick="closeM('m-smarthome');_shMode=null">✓ Fertig</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" onclick="clearSmartHome()">🗑 Alle löschen</button>
+    <button class="mdl-btn mdl-btn--primary" data-tier="simple" onclick="closeM('m-smarthome');_shMode=null">✓ Fertig</button>
   </div>
 </div>
 </div>
 
 <!-- ZEITPLAN -->
-<div class="mover" id="m-timeline">
-<div class="modal" style="max-width:560px">
+<div class="mdl-overlay" id="m-timeline">
+<div class="mdl-dialog" style="max-width:560px">
   <h2>📅 Zeitplan — Umbaumaßnahmen</h2>
   <div style="display:flex;gap:6px;margin-bottom:10px">
     <input id="tl-task" placeholder="Aufgabe (z.B. Bodenverlegung)" style="flex:1;padding:6px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:11px">
     <input id="tl-start" type="date" style="width:120px;padding:6px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:11px">
     <input id="tl-end" type="date" style="width:120px;padding:6px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:11px">
-    <button class="mbt ok" onclick="addTimelineTask()">＋</button>
+    <button class="mdl-btn mdl-btn--primary" onclick="addTimelineTask()">＋</button>
   </div>
   <div id="timeline-chart" style="margin-bottom:10px"></div>
-  <div class="mbtns">
-    <button class="mbt" onclick="exportTimelineCSV()">📥 CSV</button>
-    <button class="mbt ok" data-tier="simple" onclick="closeM('m-timeline')">Schließen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" onclick="exportTimelineCSV()">📥 CSV</button>
+    <button class="mdl-btn mdl-btn--primary" data-tier="simple" onclick="closeM('m-timeline')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1499,8 +1499,8 @@
 
 
 <!-- WARTEZEIT SIMULATION -->
-<div class="mover" id="m-waittime">
-<div class="modal" style="max-width:460px">
+<div class="mdl-overlay" id="m-waittime">
+<div class="mdl-dialog" style="max-width:460px">
   <h2>⏱ Wartezeit-Simulation</h2>
   <p style="font-size:11px;color:var(--tx3);margin-bottom:12px">Simuliert die durchschnittliche Wartezeit bei deiner Ausgabestation.</p>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
@@ -1509,9 +1509,9 @@
     <div class="form-field"><label>Ausgabedauer (Min.)</label><input id="wt-service" type="number" value="3" min="0.5" max="30" step="0.5" style="width:100%"></div>
     <div class="form-field"><label>Ankunftsrate (/Std.)</label><input id="wt-arrival" type="number" value="20" min="1" max="200" style="width:100%"></div>
   </div>
-  <button class="mbt ok" onclick="runWaittimeSim()" style="width:100%">▶ Simulation starten</button>
+  <button class="mdl-btn mdl-btn--primary" onclick="runWaittimeSim()" style="width:100%">▶ Simulation starten</button>
   <div id="wt-result"></div>
-  <div class="mbtns"><button class="mbt" data-tier="simple" onclick="closeM('m-waittime')">Schließen</button></div>
+  <div class="mdl-actions"><button class="mdl-btn" data-tier="simple" onclick="closeM('m-waittime')">Schließen</button></div>
 </div>
 </div>
 
@@ -1530,15 +1530,15 @@
 </div>
 
 <!-- DISPLAY SETTINGS -->
-<div class="mover" id="m-display">
-<div class="modal" style="max-width:440px">
+<div class="mdl-overlay" id="m-display">
+<div class="mdl-dialog" style="max-width:440px">
   <h2>🎨 Darstellungs-Einstellungen</h2>
 
   <div class="psec">
     <div class="psh">🌗 Dark/Light Mode</div>
     <div style="display:flex;gap:8px;margin-top:6px">
-      <button class="mbt" onclick="setColorMode(true)" id="btn-dark" style="flex:1">🌙 Dark</button>
-      <button class="mbt ok" onclick="setColorMode(false)" id="btn-light" style="flex:1">☀️ Light</button>
+      <button class="mdl-btn" onclick="setColorMode(true)" id="btn-dark" style="flex:1">🌙 Dark</button>
+      <button class="mdl-btn mdl-btn--primary" onclick="setColorMode(false)" id="btn-light" style="flex:1">☀️ Light</button>
     </div>
   </div>
 
@@ -1583,33 +1583,33 @@
     <input id="watermark-inp" placeholder="z.B. © CSC Marburg 2025" value="" style="width:100%;padding:6px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:12px;margin-top:5px" oninput="_watermarkText=this.value">
   </div>
 
-  <div class="mbtns"><button class="mbt ok" data-tier="simple" onclick="closeM('m-display')">✓ Fertig</button></div>
+  <div class="mdl-actions"><button class="mdl-btn mdl-btn--primary" data-tier="simple" onclick="closeM('m-display')">✓ Fertig</button></div>
 </div>
 </div>
 
 <!-- ROOM GROUPS -->
-<div class="mover" id="m-groups">
-<div class="modal" style="max-width:440px">
+<div class="mdl-overlay" id="m-groups">
+<div class="mdl-dialog" style="max-width:440px">
   <h2>📦 Räume gruppieren</h2>
   <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Fasse mehrere Räume zu einem Bereich zusammen (z.B. "Ausgabe-Zone", "Personal-Bereich").</p>
   <div style="display:flex;gap:6px;margin-bottom:10px">
     <input id="grp-name" placeholder="Bereichsname" style="flex:1;padding:6px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:12px">
     <input type="color" id="grp-color" value="#4ade80" style="width:38px;height:34px;cursor:pointer;border:1px solid var(--bd);border-radius:4px">
-    <button class="mbt ok" onclick="createRoomGroup()">＋</button>
+    <button class="mdl-btn mdl-btn--primary" onclick="createRoomGroup()">＋</button>
   </div>
   <div id="group-list" style="max-height:250px;overflow-y:auto"></div>
-  <div class="mbtns"><button class="mbt" data-tier="simple" onclick="closeM('m-groups')">Schließen</button></div>
+  <div class="mdl-actions"><button class="mdl-btn" data-tier="simple" onclick="closeM('m-groups')">Schließen</button></div>
 </div>
 </div>
 
 <!-- KI CHATVERLÄUFE -->
-<div class="mover" id="m-aichats">
-<div class="modal" style="max-width:500px">
+<div class="mdl-overlay" id="m-aichats">
+<div class="mdl-dialog" style="max-width:500px">
   <h2>💬 Gespeicherte KI-Gespräche</h2>
   <div id="aichat-list" style="max-height:380px;overflow-y:auto"></div>
-  <div class="mbtns">
-    <button class="mbt" onclick="clearAIChats()">🗑 Alle löschen</button>
-    <button class="mbt ok" data-tier="simple" onclick="closeM('m-aichats')">Schließen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" onclick="clearAIChats()">🗑 Alle löschen</button>
+    <button class="mdl-btn mdl-btn--primary" data-tier="simple" onclick="closeM('m-aichats')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1623,21 +1623,21 @@
 
 
 <!-- BRANDSCHUTZ -->
-<div class="mover" id="m-fire">
-<div class="modal" style="max-width:460px">
+<div class="mdl-overlay" id="m-fire">
+<div class="mdl-dialog" style="max-width:460px">
   <h2>🧯 Brandschutz-Berechnung</h2>
   <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Nach DIN EN 3 / ASR A2.2 — automatisch basierend auf deinen Räumen.</p>
   <div id="fire-result"></div>
-  <div class="mbtns">
-    <button class="mbt ok" onclick="calcFireSafety()">🔄 Neu berechnen</button>
-    <button class="mbt" data-tier="simple" onclick="closeM('m-fire')">Schließen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn mdl-btn--primary" onclick="calcFireSafety()">🔄 Neu berechnen</button>
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-fire')">Schließen</button>
   </div>
 </div>
 </div>
 
 <!-- AKUSTIK -->
-<div class="mover" id="m-acoustic">
-<div class="modal" style="max-width:460px">
+<div class="mdl-overlay" id="m-acoustic">
+<div class="mdl-dialog" style="max-width:460px">
   <h2>🔊 Akustik-Planung</h2>
   <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Nachhallzeit nach Sabine-Formel schätzen.</p>
   <div style="margin-bottom:10px">
@@ -1645,16 +1645,16 @@
     <div id="acoustic-floors"></div>
   </div>
   <div id="acoustic-result"></div>
-  <div class="mbtns">
-    <button class="mbt ok" onclick="calcAcoustics()">🔄 Berechnen</button>
-    <button class="mbt" data-tier="simple" onclick="closeM('m-acoustic')">Schließen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn mdl-btn--primary" onclick="calcAcoustics()">🔄 Berechnen</button>
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-acoustic')">Schließen</button>
   </div>
 </div>
 </div>
 
 <!-- ENERGIE -->
-<div class="mover" id="m-energy">
-<div class="modal" style="max-width:460px">
+<div class="mdl-overlay" id="m-energy">
+<div class="mdl-dialog" style="max-width:460px">
   <h2>⚡ Energie-Check</h2>
   <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Stromverbrauch, Heizungsbedarf und Einsparungen.</p>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
@@ -1681,53 +1681,53 @@
     </div>
   </div>
   <div id="energy-result"></div>
-  <div class="mbtns">
-    <button class="mbt ok" onclick="calcEnergy()">⚡ Berechnen</button>
-    <button class="mbt" data-tier="simple" onclick="closeM('m-energy')">Schließen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn mdl-btn--primary" onclick="calcEnergy()">⚡ Berechnen</button>
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-energy')">Schließen</button>
   </div>
 </div>
 </div>
 
 <!-- REINIGUNGSPLAN -->
-<div class="mover" id="m-cleaning">
-<div class="modal" style="max-width:460px">
+<div class="mdl-overlay" id="m-cleaning">
+<div class="mdl-dialog" style="max-width:460px">
   <h2>🧹 Reinigungsplan</h2>
   <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Zeitaufwand und Häufigkeit basierend auf Raumtyp und Fläche.</p>
   <div id="cleaning-result"></div>
   <div id="cleaning-total" style="margin-top:8px;padding:8px;background:var(--bg3);border-radius:6px"></div>
-  <div class="mbtns">
-    <button class="mbt ok" onclick="exportCleaningCSV()">📥 CSV</button>
-    <button class="mbt" data-tier="simple" onclick="closeM('m-cleaning')">Schließen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn mdl-btn--primary" onclick="exportCleaningCSV()">📥 CSV</button>
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-cleaning')">Schließen</button>
   </div>
 </div>
 </div>
 
 <!-- INVENTARLISTE -->
-<div class="mover" id="m-inventory">
-<div class="modal" style="max-width:580px">
+<div class="mdl-overlay" id="m-inventory">
+<div class="mdl-dialog" style="max-width:580px">
   <h2>📋 Inventarliste</h2>
   <div style="display:flex;gap:6px;margin-bottom:8px">
     <input id="inv-search" placeholder="🔍 Suche…" style="flex:1;padding:5px 8px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:11px" oninput="renderInventory(this.value)">
-    <button class="mbt ok" onclick="exportInventoryCSV()">📥 CSV</button>
-    <button class="mbt" onclick="generateInventoryQR()">📱 QR alle</button>
+    <button class="mdl-btn mdl-btn--primary" onclick="exportInventoryCSV()">📥 CSV</button>
+    <button class="mdl-btn" onclick="generateInventoryQR()">📱 QR alle</button>
   </div>
   <div class="inv-row" style="font-weight:700;font-size:10px;color:var(--tx3);text-transform:uppercase;border-bottom:2px solid var(--bd2)">
     <span>Objekt</span><span>Seriennummer</span><span>Notizen</span><span></span>
   </div>
   <div id="inventory-list" style="max-height:350px;overflow-y:auto"></div>
-  <div class="mbtns"><button class="mbt" data-tier="simple" onclick="closeM('m-inventory')">Schließen</button></div>
+  <div class="mdl-actions"><button class="mdl-btn" data-tier="simple" onclick="closeM('m-inventory')">Schließen</button></div>
 </div>
 </div>
 
 <!-- LIEFERWEGE -->
-<div class="mover" id="m-routes">
-<div class="modal" style="max-width:440px">
+<div class="mdl-overlay" id="m-routes">
+<div class="mdl-dialog" style="max-width:440px">
   <h2>🚚 Lieferwege & Raumrouten</h2>
   <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Optimale Route vom Lager zur Ausgabe und Versorgungswege.</p>
   <div id="routes-result"></div>
-  <div class="mbtns">
-    <button class="mbt ok" onclick="calcRoutes()">🔄 Neu berechnen</button>
-    <button class="mbt" data-tier="simple" onclick="closeM('m-routes')">Schließen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn mdl-btn--primary" onclick="calcRoutes()">🔄 Neu berechnen</button>
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-routes')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1758,7 +1758,7 @@
   </div>
   <div id="cwiz-steps" style="max-height:340px;overflow-y:auto"></div>
   <div style="padding:8px 12px;border-top:1px solid var(--bd)">
-    <button class="mbt ok" onclick="cwizNextStep()" style="width:100%" id="cwiz-btn">Weiter →</button>
+    <button class="mdl-btn mdl-btn--primary" onclick="cwizNextStep()" style="width:100%" id="cwiz-btn">Weiter →</button>
   </div>
 </div>
 
@@ -1779,45 +1779,45 @@
 </div>
 
 <!-- TODOS MODAL -->
-<div class="mover" id="m-todos">
-<div class="modal" style="max-width:500px">
+<div class="mdl-overlay" id="m-todos">
+<div class="mdl-dialog" style="max-width:500px">
   <h2>✅ Aufgaben</h2>
   <div style="display:flex;gap:6px;margin-bottom:8px">
     <input id="todo-inp" placeholder="Neue Aufgabe…" style="flex:1;padding:6px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:11px" onkeydown="if(event.key==='Enter')addTodo()">
     <input id="todo-assign" placeholder="Verantwortl." style="width:100px;padding:6px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:11px">
     <input id="todo-remind" type="date" style="width:120px;padding:6px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:11px">
-    <button class="mbt ok" onclick="addTodo()">＋</button>
+    <button class="mdl-btn mdl-btn--primary" onclick="addTodo()">＋</button>
   </div>
   <div id="todo-list" style="max-height:350px;overflow-y:auto"></div>
-  <div class="mbtns">
-    <button class="mbt" onclick="exportTodosCSV()">📥 CSV</button>
-    <button class="mbt ok" data-tier="simple" onclick="closeM('m-todos')">Schließen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" onclick="exportTodosCSV()">📥 CSV</button>
+    <button class="mdl-btn mdl-btn--primary" data-tier="simple" onclick="closeM('m-todos')">Schließen</button>
   </div>
 </div>
 </div>
 
 <!-- CUSTOM PROMPTS -->
-<div class="mover" id="m-prompts">
-<div class="modal" style="max-width:480px">
+<div class="mdl-overlay" id="m-prompts">
+<div class="mdl-dialog" style="max-width:480px">
   <h2>💬 Eigene KI-Befehle</h2>
   <div style="display:flex;gap:6px;margin-bottom:8px">
     <input id="prompt-label" placeholder="Name (z.B. 'Sicherheit prüfen')" style="width:140px;padding:6px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:11px">
     <input id="prompt-text" placeholder="Dein KI-Befehl…" style="flex:1;padding:6px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:11px" onkeydown="if(event.key==='Enter')saveCustomPrompt()">
-    <button class="mbt ok" onclick="saveCustomPrompt()">＋</button>
+    <button class="mdl-btn mdl-btn--primary" onclick="saveCustomPrompt()">＋</button>
   </div>
   <div id="prompts-list" style="max-height:300px;overflow-y:auto"></div>
-  <div class="mbtns"><button class="mbt ok" data-tier="simple" onclick="closeM('m-prompts')">Schließen</button></div>
+  <div class="mdl-actions"><button class="mdl-btn mdl-btn--primary" data-tier="simple" onclick="closeM('m-prompts')">Schließen</button></div>
 </div>
 </div>
 
 <!-- SHORTCUTS EDITOR -->
-<div class="mover" id="m-shortcuts">
-<div class="modal" style="max-width:460px">
+<div class="mdl-overlay" id="m-shortcuts">
+<div class="mdl-dialog" style="max-width:460px">
   <h2>⌨ Tastenkürzel anpassen</h2>
   <div id="shortcuts-list" style="max-height:380px;overflow-y:auto"></div>
-  <div class="mbtns">
-    <button class="mbt" onclick="resetShortcuts()">↺ Zurücksetzen</button>
-    <button class="mbt ok" data-tier="simple" onclick="closeM('m-shortcuts')">Schließen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" onclick="resetShortcuts()">↺ Zurücksetzen</button>
+    <button class="mdl-btn mdl-btn--primary" data-tier="simple" onclick="closeM('m-shortcuts')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1831,8 +1831,8 @@
   <div id="ob-text" class="ob-text"></div>
   <div class="ob-dots" id="ob-dots"></div>
   <div style="display:flex;gap:8px;justify-content:center">
-    <button class="mbt" id="ob-skip" onclick="finishOnboarding()">Überspringen</button>
-    <button class="mbt ok" id="ob-next" onclick="obNext()">Weiter →</button>
+    <button class="mdl-btn" id="ob-skip" onclick="finishOnboarding()">Überspringen</button>
+    <button class="mdl-btn mdl-btn--primary" id="ob-next" onclick="obNext()">Weiter →</button>
   </div>
 </div>
 </div>
@@ -1901,17 +1901,17 @@
 </div>
 
 <!-- BADGE LIST MODAL -->
-<div class="mover" id="m-badges">
-<div class="modal" style="max-width:460px">
+<div class="mdl-overlay" id="m-badges">
+<div class="mdl-dialog" style="max-width:460px">
   <h2>🏆 Errungenschaften</h2>
   <div id="badge-list-content" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0"></div>
-  <div class="mbtns"><button class="mbt ok" data-tier="simple" onclick="closeM('m-badges')">Schließen</button></div>
+  <div class="mdl-actions"><button class="mdl-btn mdl-btn--primary" data-tier="simple" onclick="closeM('m-badges')">Schließen</button></div>
 </div>
 </div>
 
 <!-- ROI RECHNER -->
-<div class="mover" id="m-roi">
-<div class="modal" style="max-width:440px">
+<div class="mdl-overlay" id="m-roi">
+<div class="mdl-dialog" style="max-width:440px">
   <h2>📈 ROI-Rechner</h2>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
     <div class="form-field"><label>Mitglieder gesamt</label><input id="roi-members" type="number" value="100" style="width:100%"></div>
@@ -1922,9 +1922,9 @@
     <div class="form-field"><label>Einrichtungskosten €</label><input id="roi-setup" type="number" value="" placeholder="Auto" style="width:100%"></div>
   </div>
   <div id="roi-result"></div>
-  <div class="mbtns">
-    <button class="mbt ok" onclick="calcROI()">📈 Berechnen</button>
-    <button class="mbt" data-tier="simple" onclick="closeM('m-roi')">Schließen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn mdl-btn--primary" onclick="calcROI()">📈 Berechnen</button>
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-roi')">Schließen</button>
   </div>
 </div>
 </div>
@@ -1967,8 +1967,8 @@
 </div>
 
 <!-- SEASON MODAL -->
-<div class="mover" id="m-seasons">
-<div class="modal" style="max-width:440px">
+<div class="mdl-overlay" id="m-seasons">
+<div class="mdl-dialog" style="max-width:440px">
   <h2>🍂 Saison-Layouts</h2>
   <p style="font-size:11px;color:var(--tx3);margin-bottom:10px">Speichere unterschiedliche Layouts für verschiedene Saisons oder Szenarien.</p>
   <div style="display:flex;gap:6px;margin-bottom:12px" id="season-tabs">
@@ -1978,17 +1978,17 @@
     <button class="season-tab" onclick="selectSeason('event',this)">🎉 Event</button>
   </div>
   <div id="season-content" style="min-height:80px;font-size:11px;color:var(--tx3)"></div>
-  <div class="mbtns">
-    <button class="mbt" onclick="saveSeason()">💾 Aktuell speichern</button>
-    <button class="mbt ok" data-tier="simple" onclick="closeM('m-seasons')">Schließen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" onclick="saveSeason()">💾 Aktuell speichern</button>
+    <button class="mdl-btn mdl-btn--primary" data-tier="simple" onclick="closeM('m-seasons')">Schließen</button>
   </div>
 </div>
 </div>
 
 
 <!-- PRINT PREVIEW -->
-<div class="mover" id="m-printpreview">
-<div class="modal" style="max-width:620px">
+<div class="mdl-overlay" id="m-printpreview">
+<div class="mdl-dialog" style="max-width:620px">
   <h2>🖨 Druckvorschau</h2>
   <div style="display:flex;gap:10px;margin-bottom:10px;font-size:11px">
     <label><input type="checkbox" id="pp-3d" checked> 3D Screenshot</label>
@@ -1998,9 +1998,9 @@
     <label><input type="checkbox" id="pp-budget"> Budget</label>
   </div>
   <div id="print-preview-content" style="background:#fff;border:1px solid #ddd;border-radius:4px;padding:16px;max-height:400px;overflow-y:auto;color:#111"></div>
-  <div class="mbtns">
-    <button class="mbt ok" onclick="executePrint()">🖨 Drucken</button>
-    <button class="mbt" data-tier="simple" onclick="closeM('m-printpreview')">Schließen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn mdl-btn--primary" onclick="executePrint()">🖨 Drucken</button>
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-printpreview')">Schließen</button>
   </div>
 </div>
 </div>
@@ -2026,8 +2026,8 @@
 </div>
 
 <!-- HYGIENE KONZEPT MODAL -->
-<div class="mover" id="m-hygiene">
-<div class="modal" style="max-width:480px">
+<div class="mdl-overlay" id="m-hygiene">
+<div class="mdl-dialog" style="max-width:480px">
   <h2>🧴 Hygiene-Konzept</h2>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
     <div class="form-field"><label>Reinigungsintervall</label>
@@ -2042,33 +2042,33 @@
     <div class="form-field"><label>Letzte Schulung</label><input id="hy-train" type="date" style="width:100%"></div>
   </div>
   <div id="hygiene-preview" style="background:var(--bg3);border-radius:6px;padding:10px;font-size:10px;color:var(--tx2);min-height:80px"></div>
-  <div class="mbtns">
-    <button class="mbt ok" data-mode="room" onclick="generateHygienePDF()">📄 PDF erstellen</button>
-    <button class="mbt" data-tier="simple" onclick="closeM('m-hygiene')">Schließen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn mdl-btn--primary" data-mode="room" onclick="generateHygienePDF()">📄 PDF erstellen</button>
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-hygiene')">Schließen</button>
   </div>
 </div>
 </div>
 
 <!-- WALL TEXTURE MODAL -->
-<div class="mover" id="m-walltex">
-<div class="modal" style="max-width:500px">
+<div class="mdl-overlay" id="m-walltex">
+<div class="mdl-dialog" style="max-width:500px">
   <h2>🧱 Wandtextur wählen</h2>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0" id="walltex-grid"></div>
-  <div class="mbtns">
-    <button class="mbt" data-tier="simple" onclick="closeM('m-walltex')">Schließen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-walltex')">Schließen</button>
   </div>
 </div>
 </div>
 
 
 <!-- MATERIAL / DESIGN STUDIO -->
-<div class="mover" id="m-materials">
-<div class="modal" style="max-width:560px">
+<div class="mdl-overlay" id="m-materials">
+<div class="mdl-dialog" style="max-width:560px">
   <h2>🎨 Material & Textur Studio</h2>
   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px" id="mat-room-sel">
     <select id="mat-room-id" style="flex:1;padding:6px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);border-radius:4px;font-size:11px">
     </select>
-    <button class="mbt ok" onclick="applyMaterialsToRoom()" style="flex:0">✓ Anwenden</button>
+    <button class="mdl-btn mdl-btn--primary" onclick="applyMaterialsToRoom()" style="flex:0">✓ Anwenden</button>
   </div>
   <!-- Floor Pattern -->
   <div style="font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;margin-bottom:5px">🟫 Bodenmuster</div>
@@ -2082,11 +2082,11 @@
   <!-- Effects -->
   <div style="font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;margin:10px 0 5px">✨ Effekte</div>
   <div style="display:flex;gap:6px;flex-wrap:wrap">
-    <button id="glow-toggle" class="mbt" onclick="_glowEnabled=!_glowEnabled;this.textContent=(_glowEnabled?'💡 Glow: AN':'💡 Glow: AUS');rebuild3D()">💡 Glow: AN</button>
-    <button class="mbt" onclick="_aoEnabled=!_aoEnabled;rebuild3D()">🌑 AO: AN</button>
-    <button class="mbt" onclick="toggleCeiling()">🏠 Decke</button>
+    <button id="glow-toggle" class="mdl-btn" onclick="_glowEnabled=!_glowEnabled;this.textContent=(_glowEnabled?'💡 Glow: AN':'💡 Glow: AUS');rebuild3D()">💡 Glow: AN</button>
+    <button class="mdl-btn" onclick="_aoEnabled=!_aoEnabled;rebuild3D()">🌑 AO: AN</button>
+    <button class="mdl-btn" onclick="toggleCeiling()">🏠 Decke</button>
   </div>
-  <div class="mbtns"><button class="mbt" data-tier="simple" onclick="closeM('m-materials')">Schließen</button></div>
+  <div class="mdl-actions"><button class="mdl-btn" data-tier="simple" onclick="closeM('m-materials')">Schließen</button></div>
 </div>
 </div>
 
@@ -2131,8 +2131,8 @@
   <div class="g-nav">
     <button class="g-skip" onclick="closeGuide()">Guide überspringen</button>
     <div class="g-btns">
-      <button class="mbt" id="g-prev" onclick="guideNav(-1)" style="display:none">← Zurück</button>
-      <button class="mbt ok" id="g-next" onclick="guideNav(1)">Weiter →</button>
+      <button class="mdl-btn" id="g-prev" onclick="guideNav(-1)" style="display:none">← Zurück</button>
+      <button class="mdl-btn mdl-btn--primary" id="g-next" onclick="guideNav(1)">Weiter →</button>
     </div>
   </div>
 </div>
@@ -2184,8 +2184,8 @@
 </div><!-- /app -->
 
 <!-- MODAL: ADD ROOM -->
-<div class="mover" id="m-room">
-<div class="modal">
+<div class="mdl-overlay" id="m-room">
+<div class="mdl-dialog">
   <h2>📐 Raum anlegen</h2>
   <div class="form-field"><label>Name</label><input id="rm-name" value="Empfangsbereich"></div>
   <div class="mgrid3">
@@ -2202,15 +2202,15 @@
     <div class="form-field"><label>Position X (m)</label><input id="rm-px" type="number" value="0" step="0.5"></div>
     <div class="form-field"><label>Position Y (m)</label><input id="rm-py" type="number" value="0" step="0.5"></div>
   </div>
-  <div class="mbtns">
-    <button class="mbt" data-tier="simple" onclick="closeM('m-room')">Abbrechen</button>
-    <button class="mbt ok" onclick="confirmRoom()">Erstellen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-room')">Abbrechen</button>
+    <button class="mdl-btn mdl-btn--primary" onclick="confirmRoom()">Erstellen</button>
   </div>
 </div></div>
 
 <!-- MODAL: CUSTOM OBJECT -->
-<div class="mover" id="m-custom">
-<div class="modal">
+<div class="mdl-overlay" id="m-custom">
+<div class="mdl-dialog">
   <h2>✏️ Eigenes Objekt</h2>
   <div class="mgrid2">
     <div class="form-field"><label>Name</label><input id="co-name" value="Mein Objekt"></div>
@@ -2226,60 +2226,60 @@
     <div class="form-field"><label>Höhe (m)</label><input id="co-h" type="number" value="1.0" min="0.1" step="0.1"></div>
   </div>
   <div class="form-field"><label>Farbe</label><input id="co-col" type="color" value="#885533"></div>
-  <div class="mbtns">
-    <button class="mbt" data-tier="simple" onclick="closeM('m-custom')">Abbrechen</button>
-    <button class="mbt ok" onclick="confirmCustom()">Erstellen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-custom')">Abbrechen</button>
+    <button class="mdl-btn mdl-btn--primary" onclick="confirmCustom()">Erstellen</button>
   </div>
 </div></div>
 
 <!-- MODAL: RENAME -->
-<div class="mover" id="m-rename">
-<div class="modal" style="max-width:320px">
+<div class="mdl-overlay" id="m-rename">
+<div class="mdl-dialog" style="max-width:320px">
   <h2>✏️ Umbenennen</h2>
   <div class="form-field"><input id="rename-in" value="Neue Ausgabestelle"></div>
-  <div class="mbtns">
-    <button class="mbt" data-tier="simple" onclick="closeM('m-rename')">Abbrechen</button>
-    <button class="mbt ok" onclick="doRename()">OK</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-rename')">Abbrechen</button>
+    <button class="mdl-btn mdl-btn--primary" onclick="doRename()">OK</button>
   </div>
 </div></div>
 
 <!-- THREE.JS -->
 
 <!-- AI FURNITURE WIZARD -->
-<div class="mover" id="m-wizard">
-<div class="modal" style="max-width:420px">
+<div class="mdl-overlay" id="m-wizard">
+<div class="mdl-dialog" style="max-width:420px">
   <h2>🤖 KI-Möbel erstellen</h2>
   <div class="wiz-progress" id="wiz-prog"></div>
   <div id="wiz-steps"></div>
-  <div class="mbtns">
-    <button class="mbt" id="wiz-back" onclick="wizBack()" style="display:none">← Zurück</button>
-    <button class="mbt" data-tier="simple" onclick="closeM('m-wizard')">Abbrechen</button>
-    <button class="mbt ok" id="wiz-next" onclick="wizNext()">Weiter →</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" id="wiz-back" onclick="wizBack()" style="display:none">← Zurück</button>
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-wizard')">Abbrechen</button>
+    <button class="mdl-btn mdl-btn--primary" id="wiz-next" onclick="wizNext()">Weiter →</button>
   </div>
 </div></div>
 
 <!-- MOOD AI MODAL -->
-<div class="mover" id="m-mood-ai">
-<div class="modal" style="max-width:360px">
+<div class="mdl-overlay" id="m-mood-ai">
+<div class="mdl-dialog" style="max-width:360px">
   <h2>🌅 KI-Stimmung erstellen</h2>
   <div class="form-field"><label>Beschreibe die gewünschte Atmosphäre</label>
     <textarea id="mood-desc" class="wiz-inp" rows="3" placeholder="z.B. Warme, einladende Abendatmosphäre mit Kerzenlicht und grünem Akzent..."></textarea>
   </div>
-  <div class="mbtns">
-    <button class="mbt" data-tier="simple" onclick="closeM('m-mood-ai')">Abbrechen</button>
-    <button class="mbt ok" onclick="applyAIMood()">✨ Stimmung erzeugen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-mood-ai')">Abbrechen</button>
+    <button class="mdl-btn mdl-btn--primary" onclick="applyAIMood()">✨ Stimmung erzeugen</button>
   </div>
 </div></div>
 
 <!-- MODAL: ADD FLOOR -->
-<div class="mover" id="m-floor">
-<div class="modal" style="max-width:300px">
+<div class="mdl-overlay" id="m-floor">
+<div class="mdl-dialog" style="max-width:300px">
   <h2>🏢 Etage hinzufügen</h2>
   <div class="form-field"><label>Name</label><input id="fl-name" value="Obergeschoss (OG)"></div>
   <div class="form-field"><label>Höhenoffset (m)</label><input id="fl-elev" type="number" value="3.0" min="0" step="0.5"></div>
-  <div class="mbtns">
-    <button class="mbt" data-tier="simple" onclick="closeM('m-floor')">Abbrechen</button>
-    <button class="mbt ok" onclick="confirmFloor()">Erstellen</button>
+  <div class="mdl-actions">
+    <button class="mdl-btn" data-tier="simple" onclick="closeM('m-floor')">Abbrechen</button>
+    <button class="mdl-btn mdl-btn--primary" onclick="confirmFloor()">Erstellen</button>
   </div>
 </div>
 </div>
@@ -5273,8 +5273,20 @@ function doPrint(){
 // ════════════════════════════════════════════════════════════════════════
 // MODALS + RIGHT PANEL
 // ════════════════════════════════════════════════════════════════════════
-function openM(id){document.getElementById(id).classList.add('open');}
-function closeM(id){document.getElementById(id).classList.remove('open');}
+// P15 Cluster 8c: beide Klassen togglen — .open (legacy) + .is-open (BEM,
+// surfaces.css-Matcher). Analog zu showLeft/showRight aus 7a/7b.
+function openM(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.classList.add('open');
+  el.classList.add('is-open');
+}
+function closeM(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.classList.remove('open');
+  el.classList.remove('is-open');
+}
 function showRight(p){
   // P15 Cluster 7b: beide Klassen togglen — .active (legacy, breit
   // referenziert) + .is-active (BEM, surfaces.css-Matcher).
@@ -11831,8 +11843,8 @@ function setColorMode(dark){
   localStorage.setItem('csc-darkmode', dark?'1':'0');
   const btnD=document.getElementById('btn-dark');
   const btnL=document.getElementById('btn-light');
-  if(btnD) btnD.className='mbt'+(dark?' ok':'');
-  if(btnL) btnL.className='mbt'+(!dark?' ok':'');
+  if(btnD) btnD.className='mdl-btn'+(dark?' mdl-btn--primary':'');
+  if(btnL) btnL.className='mdl-btn'+(!dark?' mdl-btn--primary':'');
 }
 function loadColorMode(){
   const saved=localStorage.getItem('csc-darkmode');
@@ -13331,7 +13343,7 @@ function saveCustomPrompt(){
 function renderPromptsList(){
   const el=document.getElementById('prompts-list'); if(!el) return;
   el.innerHTML=_customPrompts.map(p=>'<div style="display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid var(--bd)">'
-    +'<button class="mbt ok" onclick="qmsg(\''+p.text.replace(/'/g,"\\'")+'\')" style="flex:0;padding:3px 8px;font-size:10px">▶</button>'
+    +'<button class="mdl-btn mdl-btn--primary" onclick="qmsg(\''+p.text.replace(/'/g,"\\'")+'\')" style="flex:0;padding:3px 8px;font-size:10px">▶</button>'
     +'<div style="flex:1"><div style="font-size:11px;font-weight:600;color:var(--tx)">'+p.label+'</div>'
     +'<div style="font-size:10px;color:var(--tx3)">'+p.text.slice(0,50)+'…</div></div>'
     +'<button onclick="deleteCustomPrompt(\''+p.id+'\')" style="background:none;border:none;color:var(--rd);cursor:pointer">🗑</button>'
@@ -13577,9 +13589,9 @@ function _renderWelcomeStep(){
       '<h2 style="text-align:center;margin:0 0 10px;font-size:16px">' + s.title + '</h2>' +
       '<div style="color:var(--tx2);font-size:12px;line-height:1.5">' + s.body + '</div>' +
       (s.cta ? '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:14px">' +
-        '<button class="mbt ok" onclick="_welcomeClose(true);openTemplates()" style="padding:10px 6px;font-size:11px">📋 Vorlage</button>' +
-        '<button class="mbt ok" onclick="_welcomeClose(true);set2DTool(\'room\')" style="padding:10px 6px;font-size:11px">⬜ Leer</button>' +
-        '<button class="mbt" onclick="_welcomeClose(true);showRight(\'save\')" style="padding:10px 6px;font-size:11px">📂 Laden</button>' +
+        '<button class="mdl-btn mdl-btn--primary" onclick="_welcomeClose(true);openTemplates()" style="padding:10px 6px;font-size:11px">📋 Vorlage</button>' +
+        '<button class="mdl-btn mdl-btn--primary" onclick="_welcomeClose(true);set2DTool(\'room\')" style="padding:10px 6px;font-size:11px">⬜ Leer</button>' +
+        '<button class="mdl-btn" onclick="_welcomeClose(true);showRight(\'save\')" style="padding:10px 6px;font-size:11px">📂 Laden</button>' +
         '</div>' : '');
   }
   if(dots){
@@ -14391,7 +14403,7 @@ function showGrowthPlan(){
       +(need>0?'<div style="font-size:10px;color:var(--tx3);margin-top:2px">+'+(need)+' Personen benötigt · ca. '+extraRooms+' zusätzliche Räume</div>':'<div style="font-size:10px;color:#4ade80;margin-top:2px">✓ Aktuelle Planung reicht aus</div>')
       +'</div>';
   });
-  h+='<button class="mbt ok" onclick="this.closest(\'div[id]\').remove();qmsg(\'Plane Erweiterung für 50% mehr Mitglieder\')" style="width:100%;margin-top:8px">🤖 KI: Erweiterung planen</button>';
+  h+='<button class="mdl-btn mdl-btn--primary" onclick="this.closest(\'div[id]\').remove();qmsg(\'Plane Erweiterung für 50% mehr Mitglieder\')" style="width:100%;margin-top:8px">🤖 KI: Erweiterung planen</button>';
   h+='</div>';
   const div=document.createElement('div');
   div.id='growth-popup'; div.setAttribute('id','growth-popup');
@@ -14610,7 +14622,7 @@ function selectSeason(name, btn){
     el.innerHTML='<div style="background:var(--bg3);border-radius:5px;padding:8px;margin-bottom:8px">'
       +'<div style="font-size:11px;color:var(--tx)">Gespeichert: '+saved.rooms.length+' Räume, '+saved.objects.length+' Objekte</div>'
       +'<div style="font-size:10px;color:var(--tx3)">'+new Date(saved.ts).toLocaleDateString('de-DE')+'</div></div>'
-      +'<button class="mbt ok" onclick="loadSeason(\''+name+'\')" style="width:100%">📂 Laden</button>';
+      +'<button class="mdl-btn mdl-btn--primary" onclick="loadSeason(\''+name+'\')" style="width:100%">📂 Laden</button>';
   } else {
     el.innerHTML='<div style="color:var(--tx3);margin-bottom:8px">Kein gespeichertes Layout für diese Saison.</div>';
   }
@@ -15439,8 +15451,8 @@ function renderCustomPanel(el){
     const em=document.createElement('div');
     em.style.cssText='padding:20px;text-align:center;font-size:11px;color:var(--tx3)';
     em.innerHTML='Noch keine eigenen Objekte.<br><br>'
-      +'<button class="mbt ok" data-tier="simple" onclick="openM(\'m-custom\')" style="font-size:11px">＋ Eigenes Objekt erstellen</button><br><br>'
-      +'<button class="mbt" data-tier="simple" onclick="openM(\'m-wizard\')" style="font-size:11px">🤖 KI-Möbel erstellen</button>';
+      +'<button class="mdl-btn mdl-btn--primary" data-tier="simple" onclick="openM(\'m-custom\')" style="font-size:11px">＋ Eigenes Objekt erstellen</button><br><br>'
+      +'<button class="mdl-btn" data-tier="simple" onclick="openM(\'m-wizard\')" style="font-size:11px">🤖 KI-Möbel erstellen</button>';
     el.appendChild(em); return;
   }
   // Group by cat
@@ -15722,19 +15734,19 @@ async function suggestNextStep(){
       hint = '🔄 <b>Letzter Stand verfügbar</b> — '+p.roomCount+' Raum/Räume, gespeichert vor '+agoTxt+'.<br>Wiederherstellen?';
       content.innerHTML = hint;
       actions.innerHTML =
-        '<button class="mbt ok" onclick="acceptPendingRestore()" style="flex:1;padding:6px 8px;font-size:11px">✅ Ja, laden</button>'+
-        '<button class="mbt" onclick="dismissPendingRestore()" style="flex:1;padding:6px 8px;font-size:11px">Nein, leer starten</button>'+
-        '<button class="mbt" onclick="neverRestoreAgain()" style="flex:1;padding:6px 8px;font-size:10px;color:var(--tx3)">Nicht mehr fragen</button>';
+        '<button class="mdl-btn mdl-btn--primary" onclick="acceptPendingRestore()" style="flex:1;padding:6px 8px;font-size:11px">✅ Ja, laden</button>'+
+        '<button class="mdl-btn" onclick="dismissPendingRestore()" style="flex:1;padding:6px 8px;font-size:11px">Nein, leer starten</button>'+
+        '<button class="mdl-btn" onclick="neverRestoreAgain()" style="flex:1;padding:6px 8px;font-size:10px;color:var(--tx3)">Nicht mehr fragen</button>';
       return;
     }
     // Empty canvas — show 4 prominente Start-Optionen
     hint = '🏗️ <b>Starte dein Projekt</b><br><span style="font-size:10px;color:var(--tx3)">Canvas ist leer. Wähle wie du loslegst:</span>';
     content.innerHTML = hint;
     actions.innerHTML =
-      '<button class="mbt ok" data-tier="simple" onclick="openTemplates()" style="flex:1 1 45%;padding:8px;font-size:11px">📋 Vorlage laden</button>'+
-      '<button class="mbt ok" data-tier="simple" onclick="set2DTool(\'room\')" style="flex:1 1 45%;padding:8px;font-size:11px">⬜ Raum zeichnen</button>'+
-      '<button class="mbt ok" onclick="openGroundMaterialPicker()" style="flex:1 1 45%;padding:8px;font-size:11px">🟫 Fläche zeichnen</button>'+
-      '<button class="mbt" onclick="showRight(\'save\')" style="flex:1 1 45%;padding:8px;font-size:11px">📂 Projekt laden</button>';
+      '<button class="mdl-btn mdl-btn--primary" data-tier="simple" onclick="openTemplates()" style="flex:1 1 45%;padding:8px;font-size:11px">📋 Vorlage laden</button>'+
+      '<button class="mdl-btn mdl-btn--primary" data-tier="simple" onclick="set2DTool(\'room\')" style="flex:1 1 45%;padding:8px;font-size:11px">⬜ Raum zeichnen</button>'+
+      '<button class="mdl-btn mdl-btn--primary" onclick="openGroundMaterialPicker()" style="flex:1 1 45%;padding:8px;font-size:11px">🟫 Fläche zeichnen</button>'+
+      '<button class="mdl-btn" onclick="showRight(\'save\')" style="flex:1 1 45%;padding:8px;font-size:11px">📂 Projekt laden</button>';
     return;
   }
   if(!rooms.length){
@@ -15755,7 +15767,7 @@ async function suggestNextStep(){
     btns=[{label:'📦 Behörden-Paket',fn:'generateAuthorityPackage()'}];
   }
   content.innerHTML=hint;
-  actions.innerHTML=btns.map(b=>'<button class="mbt ok" onclick="'+b.fn+';document.getElementById(\'nextstep-panel\').classList.remove(\'vis\')" style="flex:1;padding:5px 8px;font-size:10px">'+b.label+'</button>').join('');
+  actions.innerHTML=btns.map(b=>'<button class="mdl-btn mdl-btn--primary" onclick="'+b.fn+';document.getElementById(\'nextstep-panel\').classList.remove(\'vis\')" style="flex:1;padding:5px 8px;font-size:10px">'+b.label+'</button>').join('');
 }
 
 // ── 9. DIFF-ANSICHT ────────────────────────────────────────────────
@@ -17728,7 +17740,7 @@ function calcCO2Footprint(){
     +kpiRow('🌳 Bäume nötig',Math.round(co2/22)+' Bäume','#4ade80')
     +'<div style="margin-top:8px;font-size:10px;color:var(--tx3)" title="'+_co2Note.replace(/"/g,'&quot;')+'">CO₂-Faktor Strom Deutschland: '+CO2_FACTOR_DE_GRAMS_PER_KWH+' g/kWh (UBA, Stand 2024 — letzter verfügbarer Jahreswert) · LED-Beleuchtung</div>'
     +'<div style="margin-top:6px">'
-    +'<button class="mbt ok" onclick="calcEnergy();openM(\'m-energy\')" style="font-size:10px;width:100%">⚡ Energie-Details</button>'
+    +'<button class="mdl-btn mdl-btn--primary" onclick="calcEnergy();openM(\'m-energy\')" style="font-size:10px;width:100%">⚡ Energie-Details</button>'
     +'</div></div>';
   showFloatingPanel('CO₂-Analyse',h);
 }
@@ -17757,7 +17769,7 @@ function analyzeEscapeRoutes(){
     +'<div style="margin-top:8px;padding:8px;background:'+(ok?'var(--gr4)':'rgba(248,113,113,.1)')+';border-radius:5px;font-size:10px;color:'+(ok?'#4ade80':'#f87171')+'">'
     +(ok?'✅ Fluchtwege erfüllen DIN EN 13637':'⚠️ '+( neededExits-exits.length)+' weitere Notausgänge erforderlich')
     +'</div>'
-    +'<button class="mbt ok" data-tier="pro" onclick="exportEvacuationPlan()" style="font-size:10px;width:100%;margin-top:8px">🚨 Fluchtplan exportieren</button>'
+    +'<button class="mdl-btn mdl-btn--primary" data-tier="pro" onclick="exportEvacuationPlan()" style="font-size:10px;width:100%;margin-top:8px">🚨 Fluchtplan exportieren</button>'
     +'</div>';
   showFloatingPanel('Fluchtweg-Analyse',h);
 }
@@ -17798,7 +17810,7 @@ function analyzeInventoryValue(){
     +kpiRow('📊 Gesamt',totalVal.toLocaleString('de-DE')+'€','#4ade80')
     +kpiRow('📉 Abschreibung 5J',(deprec).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,'.')+' €','#fbbf24')
     +kpiRow('💎 Restwert 5J',(totalVal-deprec).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,'.')+' €','#9a9288')
-    +'<button class="mbt ok" onclick="exportInventoryCSV()" style="font-size:10px;width:100%;margin-top:8px">📥 CSV Inventar</button>'
+    +'<button class="mdl-btn mdl-btn--primary" onclick="exportInventoryCSV()" style="font-size:10px;width:100%;margin-top:8px">📥 CSV Inventar</button>'
     +'</div>';
   showFloatingPanel('Inventarwert',h);
 }
@@ -17878,7 +17890,7 @@ function openAnalysisDashboard(){
          'Inventarwert':'analyzeInventoryValue()',
          'Flächeneffizienz':'analyzeSpaceEfficiency()',
          'Notfall-Szenario':'runEmergencyScenario()'}[a]
-      +'" class="mbt" style="flex:1;padding:4px 6px;font-size:9px;min-width:80px">'+a+'</button>'
+      +'" class="mdl-btn" style="flex:1;padding:4px 6px;font-size:9px;min-width:80px">'+a+'</button>'
     ).join('')+'</div>';
   showFloatingPanel('📊 Analyse-Dashboard',h);
 }
@@ -18137,7 +18149,7 @@ function calcCleaningScore(){
     +'<div style="margin-top:8px;padding:6px;background:var(--bg3);border-radius:5px;font-size:10px;color:var(--tx2)">'
     +'⏱ Tagesaufwand: ca. '+dailyMin+' Min. · '+Math.round(dailyMin/60*22)+' Std./Monat'
     +'</div>'
-    +'<button class="mbt ok" onclick="openCleaning()" style="width:100%;margin-top:8px;font-size:10px">📋 Detailplan öffnen</button>'
+    +'<button class="mdl-btn mdl-btn--primary" onclick="openCleaning()" style="width:100%;margin-top:8px;font-size:10px">📋 Detailplan öffnen</button>'
     +'</div>';
   showFloatingPanel('Reinigungseffizienz',h);
 }
@@ -18217,7 +18229,7 @@ async function calcAISecurityScore(){
     h+='<div id="ai-sec-loading" style="font-size:10px;color:var(--tx3);padding:6px 0">🤖 KI analysiert…</div>';
   }
 
-  h+='<button class="mbt ok" onclick="autoOptimizeAll()" style="width:100%;margin-top:8px;font-size:10px">⚡ Auto-Fix Sicherheit</button></div>';
+  h+='<button class="mdl-btn mdl-btn--primary" onclick="autoOptimizeAll()" style="width:100%;margin-top:8px;font-size:10px">⚡ Auto-Fix Sicherheit</button></div>';
   showFloatingPanel('KI-Sicherheit',h);
 
   // AI enhancement async
@@ -18287,7 +18299,7 @@ function analyzeNoise(){
     +kpiRow('🔊 Schallpegel (Ø)',total+' dB',total<=55?'#4ade80':total<=65?'#fbbf24':'#f87171')
     +kpiRow('📦 Lärmquellen',noiseItems.length+' Geräte','#9a9288')
     +kpiRow('🛡 Empfehlung',total>65?'Schallschutz nötig':'OK',total<=65?'#4ade80':'#f87171')
-    +'<button class="mbt ok" onclick="calcAcoustics();openM(\'m-acoustic\')" style="width:100%;margin-top:8px;font-size:10px">🔊 Akustik Details</button>'
+    +'<button class="mdl-btn mdl-btn--primary" onclick="calcAcoustics();openM(\'m-acoustic\')" style="width:100%;margin-top:8px;font-size:10px">🔊 Akustik Details</button>'
     +'</div>';
   showFloatingPanel('Schallschutz',h2);
 }
@@ -18697,7 +18709,7 @@ function calcCleaningScore(){
       +'<div style="display:flex;justify-content:space-between;font-size:9px;color:var(--tx3)"><span>'+f.icon+' '+f.label+'</span><span>'+Math.round(f.score)+'</span></div>'
       +'<div class="clean-eff-bar"><div class="clean-eff-fill" style="width:'+Math.round(f.score)+'%;background:'+(f.score>=75?'#4ade80':f.score>=50?'#fbbf24':'#f87171')+'"></div></div>'
     +'</div>').join('')
-    +'<button class="mbt ok" onclick="openCleaning()" style="width:100%;margin-top:8px;font-size:10px">📋 Detailplan</button>'
+    +'<button class="mdl-btn mdl-btn--primary" onclick="openCleaning()" style="width:100%;margin-top:8px;font-size:10px">📋 Detailplan</button>'
     +'</div>');
 }
 
@@ -18730,7 +18742,7 @@ async function calcAISecurityScore(){
       +'<div style="font-size:8px;color:var(--tx3)">'+sc.hint+'</div></div>';
   });
   h+='<div id="ai-sec-tip" style="font-size:10px;color:var(--tx3);margin-top:6px">🤖 KI analysiert…</div>'
-    +'<button class="mbt ok" onclick="autoOptimizeAll()" style="width:100%;margin-top:6px;font-size:10px">⚡ Auto-Fix</button></div>';
+    +'<button class="mdl-btn mdl-btn--primary" onclick="autoOptimizeAll()" style="width:100%;margin-top:6px;font-size:10px">⚡ Auto-Fix</button></div>';
   showFloatingPanel('KI-Sicherheit',h);
   if(total<90){
     callAI('Gib 2 kurze Sicherheitstipps fuer einen CSC (Score '+total+'/100). Antworte NUR: ["Tipp1","Tipp2"]',
@@ -19376,12 +19388,12 @@ function openVisualHistory(){
   if(!modal){
     modal = document.createElement('div');
     modal.id = 'm-visual-history';
-    modal.className = 'mover';
-    modal.innerHTML = '<div class="modal" style="max-width:720px;max-height:80vh">' +
+    modal.className = 'mdl-overlay';
+    modal.innerHTML = '<div class="mdl-dialog" style="max-width:720px;max-height:80vh">' +
       '<h2>📜 Verlauf (Visual History)</h2>' +
       '<div style="font-size:11px;color:var(--tx3);margin-bottom:10px">Klick auf ein Thumbnail springt zu diesem Stand zurück. Max ' + _VISUAL_HISTORY_MAX + ' Einträge.</div>' +
       '<div id="visual-history-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;max-height:50vh;overflow-y:auto;padding:4px"></div>' +
-      '<div class="mbtns"><button class="mbt" data-tier="simple" onclick="closeM(\'m-visual-history\')">Schließen</button></div>' +
+      '<div class="mdl-actions"><button class="mdl-btn" data-tier="simple" onclick="closeM(\'m-visual-history\')">Schließen</button></div>' +
       '</div>';
     document.body.appendChild(modal);
   }
@@ -19797,7 +19809,7 @@ function generateShiftPlan(){
     +'<table class="shift-table"><thead><tr><th>Tag</th>'
     +Array(shifts*Math.min(roles.length,staffPerShift)).fill(0).map((_,i)=>'<th>Slot '+(i+1)+'</th>').join('')
     +'</tr></thead><tbody>'+tableRows+'</tbody></table></div>'
-    +'<button class="mbt ok" onclick="exportShiftCSV('+openHours+','+openFrom+','+counters+')" style="width:100%;margin-top:8px;font-size:10px">📥 CSV exportieren</button>'
+    +'<button class="mdl-btn mdl-btn--primary" onclick="exportShiftCSV('+openHours+','+openFrom+','+counters+')" style="width:100%;margin-top:8px;font-size:10px">📥 CSV exportieren</button>'
     +'</div>';
   showFloatingPanel('Personalplan',h);
 }
@@ -19861,7 +19873,7 @@ function generateMaintenanceCalendar(){
         +' · alle '+t.interval+(t.interval===1?' Monat':' Monate')+'</div></div>'
         +'<span class="maint-due '+cls+'">'+status+'</span></div>';
     }).join('')
-    +'<button class="mbt ok" onclick="exportMaintenanceICS()" style="width:100%;margin-top:8px;font-size:10px">📅 In Kalender exportieren (.ics)</button>'
+    +'<button class="mdl-btn mdl-btn--primary" onclick="exportMaintenanceICS()" style="width:100%;margin-top:8px;font-size:10px">📅 In Kalender exportieren (.ics)</button>'
     +'</div>';
   showFloatingPanel('Wartungskalender',h);
 }
@@ -19970,8 +19982,8 @@ function generateEmbedCode(){
     +'<div style="font-size:10px;color:var(--tx3);margin-bottom:6px">Kopiere diesen Code in deine Website (HTML):</div>'
     +'<textarea readonly style="width:100%;height:120px;background:var(--bg3);border:1px solid var(--bd);color:var(--tx);font-family:monospace;font-size:10px;padding:8px;border-radius:4px;resize:none">'+code+'</textarea>'
     +'<div style="display:flex;gap:6px;margin-top:8px">'
-    +'<button onclick="navigator.clipboard.writeText(this.parentNode.previousSibling.value);toast(\'📋 Code kopiert!\',\'g\')" class="mbt ok" style="flex:1">📋 Kopieren</button>'
-    +'<button onclick="this.closest(\'div[style]\').remove()" class="mbt">Schließen</button>'
+    +'<button onclick="navigator.clipboard.writeText(this.parentNode.previousSibling.value);toast(\'📋 Code kopiert!\',\'g\')" class="mdl-btn mdl-btn--primary" style="flex:1">📋 Kopieren</button>'
+    +'<button onclick="this.closest(\'div[style]\').remove()" class="mdl-btn">Schließen</button>'
     +'</div>';
   document.body.appendChild(div);
   setTimeout(()=>document.addEventListener('click',e=>{if(!div.contains(e.target))div.remove();},{once:true}),100);
@@ -20421,7 +20433,7 @@ function showShiftGantt(){
     +'</div>'
     +kpiRow('👤 Vollzeitstellen',fte+' FTE','#4ade80')
     +kpiRow('💰 Personalkosten',Math.round(fte*((window.cscDefaults?.FTE_COST?.value)||2800)).toLocaleString('de-DE')+'€/Mon.','#f87171')
-    +'<button class="mbt ok" onclick="exportShiftCSV('+openH+','+openFrom+','+counters+')" style="width:100%;margin-top:8px;font-size:10px">📥 CSV exportieren</button>'
+    +'<button class="mdl-btn mdl-btn--primary" onclick="exportShiftCSV('+openH+','+openFrom+','+counters+')" style="width:100%;margin-top:8px;font-size:10px">📥 CSV exportieren</button>'
     +'</div>';
   showFloatingPanel('Wochenplan Gantt',h);
 }
@@ -20587,7 +20599,7 @@ function analyzeLux(){
         +(ok?'':' · '+Math.ceil((needed-lux)/800)+' weitere empfohlen')+'</div>'
         +'</div>';
     }).join('')
-    +'<button class="mbt ok" onclick="toggleLuxView();document.querySelector(\'#lux-canvas\').classList.contains(\'vis\')&&renderLuxOverlay()" '
+    +'<button class="mdl-btn mdl-btn--primary" onclick="toggleLuxView();document.querySelector(\'#lux-canvas\').classList.contains(\'vis\')&&renderLuxOverlay()" '
     +'style="width:100%;margin-top:6px;font-size:10px">🗺 Lux-Karte im Grundriss</button>'
     +'</div>';
   showFloatingPanel('Lux-Analyse',h);
@@ -21233,14 +21245,14 @@ function showImportedRegulations(){
   if(!modal){
     modal = document.createElement('div');
     modal.id = 'm-regulations';
-    modal.className = 'mover';
-    modal.innerHTML = '<div class="modal" style="max-width:640px;max-height:80vh">' +
+    modal.className = 'mdl-overlay';
+    modal.innerHTML = '<div class="mdl-dialog" style="max-width:640px;max-height:80vh">' +
       '<h2>📄 Importierte Messe-Regeln</h2>' +
       '<div style="font-size:11px;color:var(--tx3);margin-bottom:10px" id="regulations-source"></div>' +
       '<div id="regulations-list" style="max-height:60vh;overflow-y:auto;font-size:12px"></div>' +
-      '<div class="mbtns">' +
-      '<button class="mbt del" onclick="clearImportedRegulations()">🗑 Alle entfernen</button>' +
-      '<button class="mbt" data-tier="simple" onclick="closeM(\'m-regulations\')">Schließen</button>' +
+      '<div class="mdl-actions">' +
+      '<button class="mdl-btn mdl-btn--danger" onclick="clearImportedRegulations()">🗑 Alle entfernen</button>' +
+      '<button class="mdl-btn" data-tier="simple" onclick="closeM(\'m-regulations\')">Schließen</button>' +
       '</div></div>';
     document.body.appendChild(modal);
   }
@@ -22445,8 +22457,8 @@ document.getElementById('mood-panel').classList.remove('vis');
   </div>
   <div id="setup-content"></div>
   <div style="display:flex;gap:8px;margin-top:16px" id="setup-btns">
-    <button class="mbt" id="setup-back" onclick="setupNav(-1)" style="display:none">← Zurück</button>
-    <button class="mbt ok" id="setup-next" onclick="setupNav(1)" style="flex:1">Weiter →</button>
+    <button class="mdl-btn" id="setup-back" onclick="setupNav(-1)" style="display:none">← Zurück</button>
+    <button class="mdl-btn mdl-btn--primary" id="setup-next" onclick="setupNav(1)" style="flex:1">Weiter →</button>
   </div>
 </div>
 </div>
@@ -22498,9 +22510,9 @@ document.getElementById('mood-panel').classList.remove('vis');
   </div>
   <div id="recog-status" style="font-size:11px;color:var(--tx3);margin:8px 0;min-height:16px"></div>
   <div style="display:flex;gap:8px">
-    <button class="mbt ok" id="recog-btn" onclick="runFloorPlanRecognition()"
+    <button class="mdl-btn mdl-btn--primary" id="recog-btn" onclick="runFloorPlanRecognition()"
       style="flex:1" disabled>🤖 Grundriss erkennen</button>
-    <button class="mbt" onclick="document.getElementById('fp-recog-panel').classList.remove('vis')">Abbrechen</button>
+    <button class="mdl-btn" onclick="document.getElementById('fp-recog-panel').classList.remove('vis')">Abbrechen</button>
   </div>
 </div>
 
@@ -23219,9 +23231,9 @@ document.getElementById('mood-panel').classList.remove('vis');
     <h4 id="tut-title"></h4>
     <p id="tut-text"></p>
     <div class="tut-btns">
-      <button class="mbt" id="tut-skip" onclick="endTutorial()" style="opacity:.6">Beenden</button>
-      <button class="mbt" id="tut-prev" onclick="tutNav(-1)">← Zurück</button>
-      <button class="mbt ok" id="tut-next" onclick="tutNav(1)">Weiter →</button>
+      <button class="mdl-btn" id="tut-skip" onclick="endTutorial()" style="opacity:.6">Beenden</button>
+      <button class="mdl-btn" id="tut-prev" onclick="tutNav(-1)">← Zurück</button>
+      <button class="mdl-btn mdl-btn--primary" id="tut-next" onclick="tutNav(1)">Weiter →</button>
     </div>
   </div>
 </div>

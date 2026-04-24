@@ -343,7 +343,7 @@
    getKCaNGChecklist() (17+ Einträge, nicht 8 wie im Mockup).
    ========================================================================== */
 
-#m-kcang-dashboard .modal {
+#m-kcang-dashboard .mdl-dialog {
   max-width: 680px;
   max-height: 88vh;
 }
@@ -908,4 +908,105 @@
 [data-theme="light"] .form-field select:focus { border-color: var(--brand-600); }
 [data-theme="light"] .form-slider-row input[type=range] { accent-color: var(--brand-600); }
 [data-theme="light"] .form-slider-row input[type=checkbox] { accent-color: var(--brand-600); }
+
+/* ==========================================================================
+   Modal-System (P15 Cluster 8c)
+   ==========================================================================
+   .mdl-overlay  Full-Viewport-Backdrop (inset 0, ~82% black).
+   .mdl-dialog   Inner-Container (Panel-bg + Border + Padding, scrollbar).
+   .mdl-actions  Footer-Buttonbar (flex-end, gap 7px).
+   .mdl-btn      Default-Button (neutrale Chip-Variante).
+   .mdl-btn--primary / .mdl-btn--danger  Varianten.
+
+   Dual-Class-Toggle: .is-open (BEM, preferred) und .open (legacy alias)
+   werden beide vom openM/closeM-Helper gesetzt — Analog zu showLeft/
+   showRight + applyActive aus Cluster 7a/7b.
+   ========================================================================== */
+
+.mdl-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  z-index: 9500;
+  align-items: center;
+  justify-content: center;
+}
+.mdl-overlay.is-open,
+.mdl-overlay.open { display: flex; }
+
+.mdl-dialog {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  width: 400px;
+  max-width: 96vw;
+  max-height: 92vh;
+  overflow-y: auto;
+}
+.mdl-dialog h2 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: var(--brand-500);
+}
+
+.mdl-actions {
+  display: flex;
+  gap: 7px;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+.mdl-btn {
+  padding: 8px 17px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  cursor: pointer;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-sunken);
+  color: var(--text-muted);
+}
+.mdl-btn:hover {
+  background: var(--bg-hover);
+  color: var(--color-text-primary);
+}
+
+.mdl-btn--primary {
+  background: color-mix(in oklch, var(--brand-500) 25%, transparent);
+  border-color: var(--brand-500);
+  color: var(--brand-400);
+}
+.mdl-btn--primary:hover {
+  background: color-mix(in oklch, var(--brand-500) 40%, transparent);
+  color: var(--color-text-primary);
+}
+
+.mdl-btn--danger {
+  background: color-mix(in oklch, #ef4444 22%, transparent);
+  border-color: #ef4444;
+  color: #fca5a5;
+}
+.mdl-btn--danger:hover {
+  background: color-mix(in oklch, #ef4444 40%, transparent);
+  color: #fff;
+}
+
+/* Light-Theme-Feinschliff — Brand-500 zu grell gegen hellen Bg. */
+[data-theme="light"] .mdl-dialog h2 { color: var(--brand-600); }
+[data-theme="light"] .mdl-btn--primary {
+  background: color-mix(in oklch, var(--brand-600) 18%, transparent);
+  border-color: var(--brand-600);
+  color: var(--brand-600);
+}
+[data-theme="light"] .mdl-btn--primary:hover {
+  background: color-mix(in oklch, var(--brand-600) 35%, transparent);
+  color: var(--color-text-primary);
+}
+[data-theme="light"] .mdl-btn--danger {
+  background: color-mix(in oklch, #dc2626 15%, transparent);
+  border-color: #dc2626;
+  color: #b91c1c;
+}
 
