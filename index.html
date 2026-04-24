@@ -7976,11 +7976,26 @@ function setSbMsg(msg, type){
   el.style.color = type==='r'?'#f87171': type==='g'?'#4ade80':'#38bdf8';
 }
 
+// Track A Phase 2b.2: Cloud-Persist extrahiert nach src/persist/cloudProjects.ts.
+// Die 4 Funktionen hier sind dünne UI-Wrapper — Spinner, Confirm-Dialog,
+// Thumbnail-Rendering und Tabelle-fehlt-Hint bleiben bewusst inline,
+// weil sie tief in Legacy-Globals (rend3/scene/topCam, addMsg, toast)
+// verdrahtet sind. Netzwerk-Logik + 401-Retry leben im Modul.
+function _cloudCtxAndRefresh(){
+  const ctx = { url: SB_URL, key: SB_KEY, token: SB_TOKEN || '' };
+  const refresh = async () => {
+    if(typeof refreshTokenIfNeeded === 'function'){
+      const ok = await refreshTokenIfNeeded(true);
+      if(ok) return SB_TOKEN || null;
+    }
+    return null;
+  };
+  return { ctx, refresh };
+}
+
 async function cloudSave(){
   if(!navigator.onLine){ queueOfflineAction('cloud_save',{}); toast('📵 Offline — wird synchronisiert','b'); return; }
   if(!SB_URL || !SB_KEY){ toast('Supabase nicht verbunden','r'); return; }
-  // Token proaktiv auffrischen, sonst feuert die 1h-TTL mitten im Save
-  // und der User verliert gerade gespeicherte Arbeit an ein 401.
   if(typeof refreshTokenIfNeeded === 'function') await refreshTokenIfNeeded();
   // P4.2: warn when embedded image maps will make the payload hefty.
   // 5 MB base64 ≈ 6.7 MB JSON; at that size the upload stalls noticeably.
@@ -7993,71 +8008,30 @@ async function cloudSave(){
     }
   }
   const data = getPD();
-  // Take a small 3D screenshot
   let thumb = '';
   try { upTop(); rend3.render(scene,topCam); thumb = rend3.domElement.toDataURL('image/jpeg',0.5); } catch(e){}
-  
-  // P15: Spinner statt Emoji — sauber animiert, kein Flicker-Text
   const btn = document.getElementById('sb-save-btn');
   if(btn){ btn.innerHTML = '<span class="spinner"></span>Speichern…'; btn.disabled = true; }
-  
   try {
-    // Check if project with same name exists
-    const checkR = await fetch(
-      SB_URL+'/rest/v1/csc_projects?name=eq.'+encodeURIComponent(projName)+'&select=id',
-      { headers: { 'apikey':SB_KEY, 'Authorization':'Bearer '+(SB_TOKEN||SB_KEY) } }
+    const { ctx, refresh } = _cloudCtxAndRefresh();
+    const _tid = localStorage.getItem('csc-teamid') || '';
+    const _aut = localStorage.getItem('csc-username') || 'anonym';
+    await window.cscPersist.cloud.save(
+      ctx,
+      { name: projName, data: data, thumbnail: thumb, team_id: _tid, author: _aut },
+      refresh,
     );
-    // Table missing?
-    if(checkR.status===404||checkR.status===406){
-      const errBody = await checkR.text();
-      if(btn){ btn.textContent='☁️ Cloud speichern'; btn.disabled=false; }
+    toast('☁️ In Cloud gespeichert: '+projName,'g');
+    showCloudProjects();
+  } catch(e){
+    if(e && e.name === 'TableMissingError'){
       toast('❌ Tabelle fehlt in Supabase! Bitte SQL ausführen (siehe Anleitung)','r');
       addMsg('⚠️ Supabase Tabelle "csc_projects" existiert nicht.\n\nBitte in Supabase → SQL Editor ausführen:\n\nCREATE TABLE IF NOT EXISTS csc_projects (\n  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,\n  name text NOT NULL,\n  data jsonb NOT NULL,\n  created_at timestamptz DEFAULT now()\n);\nALTER TABLE csc_projects ENABLE ROW LEVEL SECURITY;\nCREATE POLICY "Public access" ON csc_projects FOR ALL USING (true) WITH CHECK (true);','sys');
-      return;
-    }
-    const existing = await checkR.json();
-    
-    const _tid=localStorage.getItem('csc-teamid')||'';
-    const _aut=localStorage.getItem('csc-username')||'anonym';
-    const body = JSON.stringify({ name: projName, data: data, thumbnail: thumb, team_id: _tid, author: _aut });
-    
-    let r;
-    if(existing && existing.length > 0){
-      // Update existing
-      r = await fetch(SB_URL+'/rest/v1/csc_projects?id=eq.'+existing[0].id, {
-        method: 'PATCH',
-        headers: { 'apikey':SB_KEY, 'Authorization':'Bearer '+(SB_TOKEN||SB_KEY),
-                   'Content-Type':'application/json', 'Prefer':'return=minimal' },
-        body: body
-      });
+    } else if(e && e.name === 'AuthError'){
+      if(typeof handleAuthLoss === 'function') handleAuthLoss();
     } else {
-      // Insert new
-      r = await fetch(SB_URL+'/rest/v1/csc_projects', {
-        method: 'POST',
-        headers: { 'apikey':SB_KEY, 'Authorization':'Bearer '+(SB_TOKEN||SB_KEY),
-                   'Content-Type':'application/json', 'Prefer':'return=minimal' },
-        body: body
-      });
+      toast('Cloud-Fehler: '+(e && e.message ? e.message : e),'r');
     }
-    
-    if(r.ok || r.status===201 || r.status===204){
-      toast('☁️ In Cloud gespeichert: '+projName,'g');
-      showCloudProjects();
-    } else if(r.status === 401){
-      // Letzter Versuch: Refresh + Retry
-      const refreshed = typeof refreshTokenIfNeeded === 'function'
-        ? await refreshTokenIfNeeded(true) : false;
-      if(refreshed){
-        toast('🔄 Token erneuert — bitte nochmal speichern klicken','b');
-      } else if(typeof handleAuthLoss === 'function'){
-        handleAuthLoss();
-      }
-    } else {
-      const err = await r.text();
-      toast('Cloud-Fehler: '+err.slice(0,60),'r');
-    }
-  } catch(e){
-    toast('Cloud-Fehler: '+e.message,'r');
   } finally {
     if(btn){ btn.textContent = '☁️ Cloud speichern'; btn.disabled = false; }
   }
@@ -8067,19 +8041,13 @@ async function showCloudProjects(){
   if(!SB_URL || !SB_KEY) return;
   const el = document.getElementById('cloud-list'); if(!el) return;
   el.innerHTML = '<div style="font-size:10px;color:var(--tx3);padding:4px">☁️ Lade…</div>';
-  
   try {
-    const r = await fetch(
-      SB_URL+'/rest/v1/csc_projects?select=id,name,updated_at&order=updated_at.desc&limit=20',
-      { headers: { 'apikey':SB_KEY, 'Authorization':'Bearer '+(SB_TOKEN||SB_KEY) } }
-    );
-    const projects = await r.json();
-    
+    const { ctx, refresh } = _cloudCtxAndRefresh();
+    const projects = await window.cscPersist.cloud.fetchAll(ctx, refresh);
     if(!projects.length){
       el.innerHTML = '<div style="font-size:10px;color:var(--tx3);padding:4px">Keine Cloud-Projekte</div>';
       return;
     }
-    
     el.innerHTML = '<div class="sh" style="margin-top:6px">☁️ Cloud-Projekte</div>'
       + projects.map(p=>{
         const d = new Date(p.updated_at).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
@@ -8095,17 +8063,12 @@ async function showCloudProjects(){
 
 async function cloudLoad(id, cardEl){
   if(!SB_URL || !SB_KEY) return;
-  // P15 Loading-State: die angeklickte Card bekommt .loading — CSS
-  // rendert dort einen inline-Spinner rechts + dimmt das Card ab.
-  // cardEl ist der this-Kontext des onclick; Fallback via data-attribute.
   const card = cardEl || document.querySelector('.sitem[data-cloud-id="'+id+'"]');
   if(card) card.classList.add('loading');
   try {
-    const r = await fetch(SB_URL+'/rest/v1/csc_projects?id=eq.'+id+'&select=data',
-      { headers: { 'apikey':SB_KEY, 'Authorization':'Bearer '+(SB_TOKEN||SB_KEY) } }
-    );
-    const rows = await r.json();
-    if(rows && rows[0]){ loadPD(rows[0].data); toast('☁️ Aus Cloud geladen!','g'); }
+    const { ctx, refresh } = _cloudCtxAndRefresh();
+    const data = await window.cscPersist.cloud.load(ctx, id, refresh);
+    if(data){ loadPD(data); toast('☁️ Aus Cloud geladen!','g'); }
   } catch(e){ toast('Fehler: '+e.message,'r'); }
   finally { if(card) card.classList.remove('loading'); }
 }
@@ -8113,9 +8076,8 @@ async function cloudLoad(id, cardEl){
 async function cloudDelete(id){
   if(!SB_URL || !SB_KEY || !confirm('Cloud-Projekt löschen?')) return;
   try {
-    await fetch(SB_URL+'/rest/v1/csc_projects?id=eq.'+id,
-      { method:'DELETE', headers:{'apikey':SB_KEY,'Authorization':'Bearer '+(SB_TOKEN||SB_KEY)} }
-    );
+    const { ctx, refresh } = _cloudCtxAndRefresh();
+    await window.cscPersist.cloud.delete(ctx, id, refresh);
     showCloudProjects(); toast('🗑 Cloud-Projekt gelöscht','b');
   } catch(e){ toast('Fehler: '+e.message,'r'); }
 }
@@ -20198,17 +20160,25 @@ function loadFromIDB(){
   return;
 }
 
+// Track A Phase 2b.2: Offline-Queue extrahiert nach src/persist/offlineQueue.ts.
+// Das Modul persistiert die Queue in localStorage und registriert einen
+// eigenen 'online'-Listener für Auto-Flush. Die Legacy-Funktionen hier
+// sind dünne Delegator-Wrapper; der `_offlineQueue`-Fallback-Array oben
+// bleibt als Safety-Net für den Fall, dass der Persist-Bridge noch nicht
+// initialisiert ist (z.B. in einem edge-case-Boot).
 function queueOfflineAction(type,data){
-  _offlineQueue.push({type,data,ts:Date.now()});
-  if(_idb){
-    try{
-      const tx=_idb.transaction('offline_queue','readwrite');
-      tx.objectStore('offline_queue').add({type,data:JSON.stringify(data),ts:Date.now()});
-    }catch(e){}
+  if(window.cscPersist && window.cscPersist.offline){
+    window.cscPersist.offline.queue(type, data);
+  } else {
+    _offlineQueue.push({type,data,ts:Date.now()});
   }
 }
 
 async function processOfflineQueue(){
+  if(window.cscPersist && window.cscPersist.offline){
+    return window.cscPersist.offline.flush();
+  }
+  // Fallback: pre-module-load. Sollte im Produktivbetrieb nie greifen.
   if(!navigator.onLine||!_offlineQueue.length) return;
   const toProcess=[..._offlineQueue];
   _offlineQueue=[];
@@ -20218,9 +20188,19 @@ async function processOfflineQueue(){
   if(toProcess.length) toast('☁ '+toProcess.length+' Offline-Änderungen synchronisiert','g');
 }
 
-// Online/offline detection
+// User-Feedback-Toasts — der Modul-eigene Auto-Flush-Listener schweigt.
 window.addEventListener('online', ()=>{ toast('✅ Wieder online — synchronisiere…','g'); processOfflineQueue(); });
 window.addEventListener('offline', ()=>{ toast('📵 Offline-Modus aktiv — Änderungen werden gepuffert','b'); });
+
+// Handler registrieren sobald Persist-Bridge verfügbar. type="module"
+// ist deferred — d.h. zum Zeitpunkt von DOMContentLoaded ist cscPersist
+// garantiert installiert. Der Handler ruft cloudSave() (ohne Argumente,
+// so wie die alte processOfflineQueue es tat).
+document.addEventListener('DOMContentLoaded', function(){
+  if(window.cscPersist && window.cscPersist.offline){
+    window.cscPersist.offline.register('cloud_save', async () => { await cloudSave(); });
+  }
+});
 
 // Override cloudSave to use offline queue when offline
 // Offline check integrated into cloudSave directly (hoisting-safe)
