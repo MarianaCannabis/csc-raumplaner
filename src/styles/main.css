@@ -360,18 +360,10 @@ canvas{display:block}
 .pbtn.del:hover{background:#3f1111}
 
 /* ─ MODALS ──────────────────────────────────────────────── */
-.mover{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9500;align-items:center;justify-content:center}
-.mover.open{display:flex}
-.modal{background:var(--bg2);border:1px solid var(--bd2);border-radius:var(--r12);padding:22px;width:400px;max-width:96vw;max-height:92vh;overflow-y:auto}
-.modal h2{font-size:14px;font-weight:700;margin-bottom:14px;color:var(--gr)}
-/* P15 Cluster 8b: .mf → .form-field (generic Form-Primitive in surfaces.css). */
+/* P15 Cluster 8c: .mover/.modal/.mbtns/.mbt/.mbt.ok → .mdl-* Modal-System
+   (surfaces.css). P15 Cluster 8b: .mf → .form-field. */
 .mgrid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
 .mgrid2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.mbtns{display:flex;gap:7px;justify-content:flex-end;margin-top:14px}
-.mbt{padding:8px 17px;border-radius:var(--r6);font-size:13px;cursor:pointer;border:1px solid var(--bd);background:var(--bg3);color:var(--tx2)}
-.mbt:hover{background:var(--bg4);color:var(--tx)}
-.mbt.ok{background:var(--gr3);border-color:var(--gr);color:var(--gr)}
-.mbt.ok:hover{background:#166534}
 .ep-row{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px}
 .ep{padding:3px 5px;background:var(--bg3);border:1px solid var(--bd);border-radius:3px;cursor:pointer;font-size:15px}
 .ep:hover,.ep.sel{border-color:var(--gr);background:var(--gr4)}
@@ -400,7 +392,7 @@ canvas{display:block}
 .wall-card.locked{border-color:#3a3a2a;opacity:.65}
 .wdot{width:26px;height:4px;background:#38bdf8;border-radius:2px;flex-shrink:0}
 /* ── FLOOR MODAL ─────────────────────────────────────────────────── */
-#m-floor{} /* uses .mover already */
+#m-floor{} /* uses .mdl-overlay/.mdl-dialog from surfaces.css */
 
 
 /* ── PHASE 3: wall-snap placement ───────────────────────── */
@@ -703,7 +695,7 @@ canvas{display:block}
 
 /* P11.2: Utility-Klasse für einheitliche Modal-Footer (rechte Button-Reihe) */
 .modal-footer { display:flex; justify-content:flex-end; gap:8px; padding-top:10px; margin-top:10px; border-top:1px solid var(--bd) }
-.modal-footer .mbt { min-width:90px }
+.modal-footer .mdl-btn { min-width:90px }
 /* P11.2: Touch-Target-Utility — an jedes interaktive Element anwendbar, das nativ zu klein ist */
 .touch-target { min-width:44px; min-height:44px; display:inline-flex; align-items:center; justify-content:center }
 
@@ -1353,7 +1345,9 @@ body.light-mode #left-panel{background:#f0f0eb;border-color:#ddd}
      .icon-btn ebenfalls raus (→ .tb-btn.is-compact).
      P15 Cluster 8a: .tbt → .tb-btn--ghost.is-compact-tbt — durch
      button[class*="btn"] bereits abgedeckt, explizite Nennung entfällt. */
-  .mpill, .tbm-item, .mbt, .cmd-item,
+  /* P15 Cluster 8c: .mbt → .mdl-btn — bereits durch button[class*="btn"]
+     abgedeckt, explizite Nennung entfällt. */
+  .mpill, .tbm-item, .cmd-item,
   button[class*="btn"], select, input[type="button"], input[type="submit"]
   { min-height: 44px !important; }
   .ib, .touch-target { min-width: 44px !important; min-height: 44px !important; }
@@ -1391,7 +1385,8 @@ body.light-mode #left-panel{background:#f0f0eb;border-color:#ddd}
   #topbar{ padding:0 6px!important; gap:4px!important }
   /* P15 Cluster 8a: .tbt → .tb-btn--ghost.is-compact-tbt. */
   #topbar .tb-btn--ghost.is-compact-tbt, #topbar .tbm-btn{ padding:6px 8px!important; font-size:11px!important }
-  .modal{ width:96vw!important; max-height:88vh!important }
+  /* P15 Cluster 8c: .modal → .mdl-dialog. */
+  .mdl-dialog{ width:96vw!important; max-height:88vh!important }
   /* Property-Panel overlay vollflächig */
   #prop-panel{ max-width:none!important; width:100vw!important; left:0!important; right:0!important }
   #mode-pills{ flex-wrap:wrap!important; top:46px!important; right:8px!important; max-width:calc(100vw - 16px) }
@@ -1730,7 +1725,9 @@ body.light-mode #botbar{ background:#fff; border-color:#b8b5a8; }
 body.light-mode #canvas-wrap{ background:#1a1e26; }
 /* P15 Cluster 7b: body.light-mode .rtab(+.active) + .rpanel → [data-theme="light"]
    in surfaces.css (.rp-tab / .rp-pane). */
-body.light-mode .mover{ background:#fff; border-color:#b8b5a8; }
+/* P15 Cluster 8c: body.light-mode .mover entfernt — die neue .mdl-overlay
+   bleibt bewusst dunkel (Backdrop-Dimming), Light-Theme-Styling fürs
+   .mdl-dialog kommt aus [data-theme="light"] .mdl-* in surfaces.css. */
 /* P15 Cluster 8a: body.light-mode .tbt — Light-Theme-Farben kommen jetzt
    aus dem Token-Override body.light-mode { --bg3, --bd, --tx2, ... },
    der .tb-btn--ghost.is-compact-tbt automatisch korrekt thematisiert. */
@@ -1749,7 +1746,9 @@ body.light-mode input,body.light-mode textarea,body.light-mode select{
 body.light-mode .ainput{ background:#f5f4ee !important; color:#111 !important; }
 body.light-mode .asend{ background:#14532d !important; }
 body.light-mode #health-score{ background:rgba(255,255,255,.9); }
-body.light-mode .btn,.mbt,.ok{ border-color:#b8b5a8 !important; }
+/* P15 Cluster 8c: body.light-mode .btn/.mbt/.ok entfernt — .mdl-btn hat
+   eigene [data-theme="light"]-Overrides in surfaces.css. .btn/.ok sind
+   leer und können raus; .btn (andere Klasse) bleibt unberührt. */
 
 /* Toggle button */
 #theme-toggle{
