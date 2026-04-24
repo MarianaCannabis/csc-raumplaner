@@ -4,6 +4,56 @@ Alle bedeutsamen Änderungen an CSC Studio Pro.
 
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [2.6.0] — 2026-04-24 · Surface-Redesign-Welle komplett
+
+**Minor-Release.** Nach der Topbar in v2.5.0 sind jetzt ALLE User-facing Surfaces auf das neue Design-System umgestellt: Sidebar, Right-Panel, KCanG-Dashboard-Modal, NextStep-Popover und Save-Panel-Chrome. Light-Theme greift auf allen Surfaces konsistent. Eine UX-Semantik-Korrektur (Analyse-Tools aus Eigenschaften-Pane nach Projekte-Tab) rundet den Release ab.
+
+### Added
+- **BEM-Surface-Design-System** — vier neue Namespaces:
+  `.sb-*` (Sidebar, Cluster 7a), `.rp-*` (Right-Panel + Tabs, 7b),
+  `.kc-*` (KCanG-Modal, 7c), `.sp-*`/`.ns-*` (Save-Panel + NextStep, 7d).
+  Alle mit Light-Theme-Overrides via `[data-theme="light"]`.
+- **Lucide-Icon-Set erweitert** auf 39 Icons (v2.5.0: 20) —
+  Sidebar-Rail: `house`, `sofa`, `building`, `shield`, `star` (7a);
+  Right-Panel: `bot`, `palette`, `sunrise`, `settings` (7b);
+  KCanG-Modal: `list-checks`, `shield-check`, `map-pin`, `sliders` (7c);
+  Save-Panel + NextStep: `lightbulb`, `x`, `cloud`, `download`, `history` (7d);
+  Quick-Analyses-Header: `activity` (7e).
+- **Help-Button-Pulse** (Cluster 7x, Variante A): Brand-Glow-Ring pulsiert beim ersten Session-Launch, stoppt nach erstem Klick (persistent via `csc-help-seen` localStorage). Reduced-Motion-Fallback mit statischem 40%-Brand-Ring (WCAG 2.3.3).
+- **Analyse-Tools unter Projekte-Tab** (Cluster 7e): 12 Quick-Analyses (Heizlast, Lux, Brandschutz, Barrierefreiheit, Schichtplan, Wartungskalender, Warteschlange, Sicherheitsbewertung, ROI, Fluchtweg, Break-Even, Analyse-Dashboard) als neues Collapsible zwischen KCanG-Bridge und Projekt-Speicherung.
+
+### Changed
+- **Sidebar-Rail + Möbel-Panel** auf `.sb-rail`/`.sb-rail__item` + `.sb-panel`/`.sb-panel__header`/`.sb-panel__body` (7a). Emoji-Glyphen in Rail-Items ersetzt durch Lucide-Icons, `#ib-security` rote Tinte saubere ID-Regel statt Inline-Style.
+- **Right-Panel + 5-Tab-Bar** auf `.rp-panel`/`.rp-tabs`/`.rp-tab` + `.rp-pane` (7b). Active-Indikator jetzt 2px Brand-Underline statt Background-Swap. Emoji-Tab-Glyphen durch Lucide-Icons ersetzt.
+- **KCanG-Dashboard-Modal** auf `.kc-*`-BEM-Namespace (7c) — Metadata-Card mit Grid-Layout, Compliance-Rules-Scroller mit 17/17 Regeln live, Advanced-Parameters-Collapsible. Status-Modifier `.kc-rule--pass/--fail/--null` statt variabler Inline-Colors. XSS-Härtung aus P0.3 beibehalten.
+- **Cloud-Status-Bar** State-Modifier `.sp-status--pending/--ok/--error` (7d) — JS `updateSbStatus()` toggelt Klassen statt Inline-Styles.
+- **NextStep-Popover** auf `.ns-popover`-BEM (7d) mit lightbulb- und x-Icons.
+- **Save-Panel-Chrome** (KCanG-Bridge + 7 Collapsibles) auf `.sp-bridge` und `.sp-sec`-BEM mit 5 Farb-Modifiern (7d).
+- **Eigenschaften-Pane-Default-State** zeigt nur noch Hint „Klicke ein Objekt oder Raum an" — Quick-Analyses nach Projekte-Tab umgezogen (7e).
+- `showLeft()` / `showRight()` / `updateSbStatus()` togglen synchron beide Klassen (`.active` Legacy + `.is-active` BEM). Gleicher Alias-Pattern wie in v2.5.0 (4b/4e).
+
+### Removed
+- ~380 LOC Legacy-Inline-Styles aus `index.html` (Sidebar + Right-Panel + KCanG-Modal + Save-Panel + NextStep kumuliert).
+- Legacy-CSS-Regeln aus `src/styles/main.css`:
+  - `.ib`/`.lph`/`.lpb` + Layout-Block + `body.light-mode`-Overrides (7a)
+  - `.rtab`/`.rtab.active` + `#right` Layout + Light-Mode-Varianten (7b)
+  - Dreifach-duplizierte `#nextstep-panel` Legacy-Regeln (7d)
+
+  `.ib`/`.lph`/`.lpb`/`.rtab`/`.rpanel` bleiben als Marker-Klassen im HTML für `[data-ui-mode="simple"]`-Filter und Touch-Target-Regeln.
+
+### Fixed
+- **Quick-Analyses-Fehlplatzierung** (Cluster 7e, UX-Bug pre-existing): 12 Analyse-Tool-Shortcuts waren im Eigenschaften-Pane-Empty-State obwohl thematisch Projekt-Tools. Jetzt unter Projekte-Tab korrekt einsortiert.
+
+### Metrics
+- Surface-Cluster: 7a + 7b + 7c + 7d + 7e + 7x = 6 PRs (#136 + #138 + #139 + #140 + #141 + #137)
+- Unit-Tests: 61 stabil (Icon-Tests wachsen proportional mit Icon-Count)
+- E2E-Tests: 41 stabil (`right-panel.spec.ts` Section-Count 7 → 8 in 7e angepasst)
+- Icons: 20 → 39 (+19)
+- `dist/index.html` gzip: 345.49 → **346.11 KB** (+0.62 KB für BEM-Markup)
+- CSS-Chunk gzip: 18.94 → **20.71 KB** (+1.77 KB für surfaces.css + help-pulse.css über alle Cluster)
+- JS-Chunk gzip: 70.62 → **71.69 KB** (+1.07 KB für `showLeft`/`showRight` Alias-Toggle + `initHelpPulse` + 19 neue Icons + `updateSbStatus`-Class-Toggle)
+- Service-Worker-Cache-Key: `csc-v2.5.0` → `csc-v2.6.0` (Auto-Bump beim Build via `__APP_VERSION__`)
+
 ## [2.5.0] — 2026-04-23 · Topbar-Redesign komplett + echtes CSC-Branding
 
 **Minor-Release.** Die komplette Topbar wurde über 6 Cluster (4a–4f) auf ein neues `.tb-*` Design-System migriert und um eine zweite Design-Iteration + echtes CSC-Logo ergänzt.
