@@ -1284,9 +1284,8 @@ body.light-mode #left-panel{background:#f0f0eb;border-color:#ddd}
 .mat-badge{display:inline-block;padding:2px 6px;border-radius:10px;
   font-size:9px;cursor:pointer;margin:2px}
 
-/* Next step panel */
-#nextstep-panel{flex-shrink:0;background:var(--bg3);border-top:2px solid var(--gr3);max-height:200px;overflow-y:auto}
-#nextstep-panel.vis{display:block}
+/* P15 Cluster 7d: #nextstep-panel Styling → surfaces.css (.ns-popover).
+   .vis-Klasse war ungenutzt (suggestNextStep toggelt .style.display direkt). */
 
 
 /* ══ v3.56 REALISTIC ═════════════════════════════════════════════ */
@@ -1625,8 +1624,7 @@ body.light-mode #left-panel{background:#f0f0eb;border-color:#ddd}
 .ki-menu-section{padding:5px 14px 3px;font-size:9px;color:var(--tx3);
   text-transform:uppercase;letter-spacing:.5px;background:var(--bg3)}
 
-/* Nächster Schritt — anchored right of canvas */
-#nextstep-panel{flex-shrink:0;background:var(--bg3);border-top:2px solid var(--gr3);max-height:200px;overflow-y:auto}
+/* P15 Cluster 7d: duplicate #nextstep-panel — → surfaces.css (.ns-popover). */
 /* ══════════════════════════════════════════════════════════════ */
 
 
@@ -1684,8 +1682,7 @@ body.light-mode #left-panel{background:#f0f0eb;border-color:#ddd}
 #info-panel .ip-close{background:none;border:none;color:var(--tx3);cursor:pointer;font-size:16px}
 #info-panel .ip-body{padding:0}
 
-/* Nächster Schritt — fixed bottom right of canvas */
-#nextstep-panel{flex-shrink:0;background:var(--bg3);border-top:2px solid var(--gr3);max-height:200px;overflow-y:auto}
+/* P15 Cluster 7d: duplicate #nextstep-panel — → surfaces.css (.ns-popover). */
 
 /* KI dropdown */
 #ki-dropdown-btn{

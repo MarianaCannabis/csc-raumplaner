@@ -556,3 +556,232 @@
 [data-theme="light"] .kc-poi-btn:hover { color: var(--brand-600); }
 [data-theme="light"] .kc-rule--pass .kc-rule__label { color: var(--brand-600); }
 [data-theme="light"] .kc-rule--fail .kc-rule__label { color: #b91c1c; }
+
+/* ==========================================================================
+   NextStep-Popover (P15 Cluster 7d)
+   ==========================================================================
+   Bottom-Overlay im Right-Panel — von suggestNextStep() per
+   element.style.display getoggled. Default-Display ist none (kein .ns-
+   popover.vis-State nötig).
+   ========================================================================== */
+
+.ns-popover {
+  flex-shrink: 0;
+  background: var(--bg-sunken);
+  border-top: 2px solid color-mix(in oklch, var(--brand-500) 40%, transparent);
+  max-height: 220px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+.ns-popover__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.ns-popover__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--brand-400);
+}
+.ns-popover__title svg { width: 14px; height: 14px; }
+
+.ns-popover__close {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 2px 4px;
+  line-height: 1;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 4px;
+  transition: color 120ms ease, background 120ms ease;
+}
+.ns-popover__close:hover { color: var(--color-text-primary); background: var(--bg-hover); }
+.ns-popover__close svg { width: 14px; height: 14px; }
+
+.ns-popover__body {
+  padding: 10px 12px;
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.ns-popover__actions {
+  padding: 0 12px 10px;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+[data-theme="light"] .ns-popover {
+  background: var(--bg-sunken);
+  border-top-color: color-mix(in oklch, var(--brand-600) 40%, transparent);
+}
+[data-theme="light"] .ns-popover__title { color: var(--brand-600); }
+
+/* ==========================================================================
+   Save-Panel-Chrome (P15 Cluster 7d)
+   ==========================================================================
+   Drei zusammengehörige Surfaces im #rpanel-save:
+     .sp-status   Cloud-Connection-Badge (verbunden/pending/error)
+     .sp-bridge   KCanG-Dashboard-Bridge-Card
+     .sp-sec      Details-Collapsible (7× im Save-Panel — identisches Muster)
+
+   Scope-Grenze (Cluster 7d): ALLE anderen Klassen innerhalb der
+   Collapsibles (.api-box, .sh, .mf, .tbt, .tbt.g) bleiben Legacy —
+   sie sind app-weit geteilt.
+   ========================================================================== */
+
+/* Cloud-Status-Bar — 3 States via Modifier-Klasse */
+.sp-status {
+  padding: 6px 10px;
+  border-radius: 5px;
+  font-size: 10px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid transparent;
+  background: rgba(148, 163, 184, 0.08);
+  color: var(--text-muted);
+  transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+.sp-status--pending {
+  background: rgba(148, 163, 184, 0.08);
+  border-color: var(--border-subtle);
+  color: var(--text-muted);
+}
+.sp-status--ok {
+  background: rgba(74, 222, 128, 0.08);
+  border-color: color-mix(in oklch, var(--brand-500) 35%, transparent);
+  color: var(--brand-400);
+}
+.sp-status--error {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #f87171;
+}
+.sp-status__dot { flex-shrink: 0; line-height: 1; }
+.sp-status__text { flex: 1; min-width: 0; }
+
+[data-theme="light"] .sp-status--ok {
+  background: rgba(34, 197, 94, 0.10);
+  color: var(--brand-600);
+  border-color: color-mix(in oklch, var(--brand-600) 35%, transparent);
+}
+[data-theme="light"] .sp-status--error {
+  background: rgba(220, 38, 38, 0.08);
+  color: #b91c1c;
+}
+
+/* KCanG-Bridge-Card (Room-Mode only via data-mode="room") */
+.sp-bridge {
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  border: 1px solid color-mix(in oklch, var(--brand-500) 35%, transparent);
+  border-radius: 6px;
+  background: color-mix(in oklch, var(--brand-500) 6%, transparent);
+}
+.sp-bridge__text {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--brand-400);
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+.sp-bridge__text svg { width: 14px; height: 14px; }
+.sp-bridge__btn {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid color-mix(in oklch, var(--brand-500) 35%, transparent);
+  color: var(--brand-400);
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+.sp-bridge__btn:hover {
+  background: color-mix(in oklch, var(--brand-500) 14%, transparent);
+  border-color: color-mix(in oklch, var(--brand-500) 55%, transparent);
+  color: #d1fae5;
+}
+.sp-bridge__btn svg { width: 14px; height: 14px; }
+
+[data-theme="light"] .sp-bridge {
+  background: color-mix(in oklch, var(--brand-600) 8%, transparent);
+  border-color: color-mix(in oklch, var(--brand-600) 35%, transparent);
+}
+[data-theme="light"] .sp-bridge__text { color: var(--brand-600); }
+[data-theme="light"] .sp-bridge__btn {
+  border-color: color-mix(in oklch, var(--brand-600) 35%, transparent);
+  color: var(--brand-600);
+}
+
+/* Sections-Spalte — flex column für die 7× details */
+.sp-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+/* Details-Collapsibles */
+.sp-sec {
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+}
+.sp-sec__summary {
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  list-style: none; /* hide native triangle in most browsers */
+  user-select: none;
+}
+.sp-sec__summary::-webkit-details-marker { display: none; }
+.sp-sec__summary:hover { background: var(--bg-hover); }
+.sp-sec[open] > .sp-sec__summary { border-bottom: 1px solid var(--border-subtle); }
+
+/* Color-Modifier per Section */
+.sp-sec__summary--green   { color: var(--brand-400); }
+.sp-sec__summary--blue    { color: #38bdf8; }
+.sp-sec__summary--yellow  { color: #fbbf24; }
+.sp-sec__summary--purple  { color: #a78bfa; }
+.sp-sec__summary--neutral { color: var(--text-muted); }
+
+[data-theme="light"] .sp-sec__summary--green { color: var(--brand-600); }
+
+.sp-sec__body {
+  padding: 6px 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Ein "Footer-Divider" für die Credits-Link-Reihe unten im Save-Panel. */
+.sp-footer {
+  margin-top: 14px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-subtle);
+  text-align: center;
+}
+

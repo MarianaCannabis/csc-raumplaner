@@ -5,12 +5,13 @@
  * Icon ist eine 16×16 currentColor-stroke-Shape mit round-line-caps; der
  * Aufrufer steuert Farbe via CSS (color/stroke) und Größe via `size`.
  *
- * Scope (33 Icons, siehe design/topbar-redesign/README.md — Emoji-Mapping):
+ * Scope (38 Icons, siehe design/topbar-redesign/README.md — Emoji-Mapping):
  *   undo, redo, save, room, event, leaf, globe, file, layers, chart,
  *   share, sun, moon, square, cube, plus, more, help-circle, chevron, edit-2,
  *   house, sofa, building, shield, star (P15 Cluster 7a — Sidebar-Rail),
  *   bot, palette, sunrise, settings (P15 Cluster 7b — Right-Panel-Tabs),
- *   list-checks, shield-check, map-pin, sliders (P15 Cluster 7c — KCanG-Modal)
+ *   list-checks, shield-check, map-pin, sliders (P15 Cluster 7c — KCanG-Modal),
+ *   lightbulb, x, cloud, download, history (P15 Cluster 7d — NextStep + Save-Chrome)
  *
  * Bewusst NICHT portiert: Row-2-Tools (cursor, wall, roomdraw, area,
  * ruler, move, center, box, folder), view, clock.
@@ -59,7 +60,12 @@ export type IconName =
   | 'list-checks'
   | 'shield-check'
   | 'map-pin'
-  | 'sliders';
+  | 'sliders'
+  | 'lightbulb'
+  | 'x'
+  | 'cloud'
+  | 'download'
+  | 'history';
 
 export interface IconOptions {
   /** Kantenlänge in px. Default 16 (passt zu --btn-h 32). */
@@ -126,6 +132,16 @@ const PATHS: Record<IconName, string> = {
     '<path d="M8 1.5c-2.8 0-5 2.2-5 5 0 3.8 5 8 5 8s5-4.2 5-8c0-2.8-2.2-5-5-5z"/><circle cx="8" cy="6.5" r="1.75"/>',
   sliders:
     '<path d="M2.5 4h11M2.5 8h11M2.5 12h11"/><circle cx="5" cy="4" r="1.3" fill="var(--bg-panel,#151b18)"/><circle cx="10" cy="8" r="1.3" fill="var(--bg-panel,#151b18)"/><circle cx="7" cy="12" r="1.3" fill="var(--bg-panel,#151b18)"/>',
+  // P15 Cluster 7d — NextStep-Popover + Save-Panel-Chrome.
+  lightbulb:
+    '<path d="M5.5 10c-.8-.6-1.5-1.6-1.5-3a4 4 0 0 1 8 0c0 1.4-.7 2.4-1.5 3V12h-5v-2z"/><path d="M6 14h4M7 15.5h2"/>',
+  x: '<path d="m4 4 8 8M12 4l-8 8"/>',
+  cloud:
+    '<path d="M5 11.5a2.5 2.5 0 0 1 0-5 3.5 3.5 0 0 1 6.8-1 2.8 2.8 0 0 1 .7 5.5 .5 .5 0 0 1-.2 .05H5.5a.5 .5 0 0 1-.5-.05z"/>',
+  download:
+    '<path d="M8 2v8M4.5 6.5 8 10l3.5-3.5"/><path d="M2.5 12.5h11v1h-11z" fill="currentColor" stroke="none"/>',
+  history:
+    '<circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2 2"/><path d="M2.5 5.5c.7-1.5 2-2.7 3.5-3.3"/>',
 };
 
 /**

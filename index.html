@@ -777,20 +777,23 @@
   <!-- SAVE PANEL -->
   <div class="rpanel rp-pane" id="rpanel-save">
     <div class="spanel-body">
-      <div id="cloud-status-bar" style="padding:6px 10px;background:rgba(74,222,128,.08);border:1px solid var(--gr3);border-radius:5px;font-size:10px;color:var(--gr);margin-bottom:8px;display:flex;align-items:center;gap:6px"><span id="cloud-status-dot">⬜</span><span id="cloud-status-text">Verbindung wird geprüft…</span></div>
+      <!-- P15 Cluster 7d: .sp-status (3-State via Modifier-Klasse, default pending) -->
+      <div id="cloud-status-bar" class="sp-status sp-status--pending"><span id="cloud-status-dot" class="sp-status__dot">⬜</span><span id="cloud-status-text" class="sp-status__text">Verbindung wird geprüft…</span></div>
 
       <!-- P15: Bridge-Card → KCanG-Dashboard (nur Room-Mode, Metadaten leben jetzt dort) -->
-      <div class="kcang-bridge" data-mode="room" style="padding:8px 10px;margin-bottom:10px;border:1px solid var(--gr3);border-radius:6px;background:rgba(74,222,128,.06)">
-        <div style="font-size:11px;color:var(--gr);line-height:1.4;margin-bottom:6px">🌿 Projekt-Metadaten (Mitglieder, Adresse, Compliance) jetzt im KCanG-Dashboard</div>
-        <button class="tbt" id="btn-open-kcang-dashboard" onclick="openKCaNGDashboard()" style="width:100%;padding:6px;border-color:var(--gr3);color:var(--gr);font-size:11px">🌿 Dashboard öffnen</button>
+      <!-- P15 Cluster 7d: .sp-bridge Card (Room-Mode only) -->
+      <div class="sp-bridge kcang-bridge" data-mode="room">
+        <div class="sp-bridge__text"><span data-icon="leaf"></span> Projekt-Metadaten (Mitglieder, Adresse, Compliance) jetzt im KCanG-Dashboard</div>
+        <button class="sp-bridge__btn" id="btn-open-kcang-dashboard" onclick="openKCaNGDashboard()"><span data-icon="leaf"></span> Dashboard öffnen</button>
       </div>
 
-      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
+      <!-- P15 Cluster 7d: .sp-sections flex-column wrapper -->
+      <div class="sp-sections">
 
         <!-- 💾 Projekt-Speicherung (default offen) -->
-        <details open class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
-          <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:var(--gr)">💾 Projekt-Speicherung</summary>
-          <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
+        <details open class="rp-sec sp-sec">
+          <summary class="sp-sec__summary sp-sec__summary--green"><span data-icon="save"></span> Projekt-Speicherung</summary>
+          <div class="sp-sec__body">
             <button class="tbt g" style="padding:8px" data-tier="simple" onclick="saveProj()">💾 Projekt speichern</button>
             <button class="tbt" style="padding:8px;border-color:var(--gr3);color:var(--gr)" data-tier="simple" onclick="openTemplates()">📋 Vorlage laden</button>
             <button class="tbt" style="padding:8px" onclick="saveAsUserTemplate()">💾 Als Vorlage speichern</button>
@@ -800,9 +803,9 @@
         </details>
 
         <!-- ☁ Cloud-Speicher (default offen, weil aktiv genutzt) -->
-        <details open class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
-          <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:#38bdf8">☁️ Cloud-Speicher</summary>
-          <div style="padding:6px 8px 10px">
+        <details open class="rp-sec sp-sec">
+          <summary class="sp-sec__summary sp-sec__summary--blue"><span data-icon="cloud"></span> Cloud-Speicher</summary>
+          <div class="sp-sec__body" style="gap:0">
             <div class="api-box" style="border-color:#38bdf8;margin-top:0;margin-bottom:6px;background:#0a1520" id="supabase-box">
               <div id="sb-status" style="font-size:10px;color:var(--tx3);margin-bottom:6px">Nicht verbunden</div>
               <div style="font-size:10px;color:#4ade80;margin:4px 0">✓ Verbunden mit: wvkjkdwahsqozeupoxpj.supabase.co</div>
@@ -831,9 +834,9 @@
         </details>
 
         <!-- 📤 Export (default zu) -->
-        <details class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
-          <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:#38bdf8">📤 Export</summary>
-          <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
+        <details class="rp-sec sp-sec">
+          <summary class="sp-sec__summary sp-sec__summary--blue"><span data-icon="download"></span> Export</summary>
+          <div class="sp-sec__body">
             <button class="tbt" style="padding:8px" onclick="exportPDF()">🖨️ PDF / Druckansicht</button>
             <button class="tbt" style="padding:8px" data-tier="simple" onclick="dlJSON()">📥 Als .json exportieren</button>
             <button class="tbt" style="padding:8px" onclick="exportFurnitureCSV()">📊 Möbelliste (.csv)</button>
@@ -845,18 +848,18 @@
         </details>
 
         <!-- 📜 Historie (default zu) -->
-        <details class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
-          <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:#fbbf24">📜 Historie</summary>
-          <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
+        <details class="rp-sec sp-sec">
+          <summary class="sp-sec__summary sp-sec__summary--yellow"><span data-icon="history"></span> Historie</summary>
+          <div class="sp-sec__body">
             <button class="tbt" style="padding:8px" onclick="showChangelog()">📋 Änderungsprotokoll</button>
             <button class="tbt" style="padding:8px" onclick="openVisualHistory()">🖼 Visual History</button>
           </div>
         </details>
 
         <!-- 📄 Messeordnung (default zu, nur Event-Mode) -->
-        <details class="rp-sec" data-mode="event" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
-          <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:#a78bfa">📄 Messeordnung</summary>
-          <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
+        <details class="rp-sec sp-sec" data-mode="event">
+          <summary class="sp-sec__summary sp-sec__summary--purple">📄 Messeordnung</summary>
+          <div class="sp-sec__body">
             <input type="file" id="regulation-upload" accept="application/pdf" style="display:none" onchange="handleRegulationUpload(event)">
             <button class="tbt" style="padding:8px" onclick="document.getElementById('regulation-upload').click()">📄 PDF importieren (Claude extrahiert)</button>
             <button class="tbt" style="padding:8px;display:none" id="btn-view-regulations" onclick="showImportedRegulations()">👁 Regeln ansehen</button>
@@ -865,9 +868,9 @@
         </details>
 
         <!-- 🪪 Meine Identität (default zu) -->
-        <details class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
-          <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:var(--tx2)">🪪 Meine Identität</summary>
-          <div style="padding:6px 8px 10px">
+        <details class="rp-sec sp-sec">
+          <summary class="sp-sec__summary sp-sec__summary--neutral">🪪 Meine Identität</summary>
+          <div class="sp-sec__body" style="gap:0">
             <label style="font-size:10px;color:var(--tx3)">Name (erscheint beim Speichern)</label>
             <input id="inp-username" placeholder="z.B. Max Mustermann"
               oninput="localStorage.setItem('csc-username',this.value)"
@@ -880,9 +883,9 @@
         </details>
 
         <!-- 🔒 Datenschutz / DSGVO (default zu) -->
-        <details class="rp-sec" style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px">
-          <summary style="padding:8px 10px;cursor:pointer;font-size:11px;font-weight:600;color:#a78bfa">🔒 Datenschutz / DSGVO</summary>
-          <div style="padding:6px 8px 10px;display:flex;flex-direction:column;gap:5px">
+        <details class="rp-sec sp-sec">
+          <summary class="sp-sec__summary sp-sec__summary--purple">🔒 Datenschutz / DSGVO</summary>
+          <div class="sp-sec__body">
             <button class="tbt" style="padding:8px" onclick="exportMyData()">📤 Meine Daten exportieren (Art. 20)</button>
             <button class="tbt" style="padding:8px;border-color:#ef4444;color:#ef4444" onclick="deleteMyAccount()">🗑 Account löschen (Art. 17)</button>
             <div style="font-size:10px;color:var(--tx3);line-height:1.4;padding-top:4px">
@@ -894,7 +897,7 @@
 
       </div>
 
-      <div style="margin-top:14px;padding-top:8px;border-top:1px solid var(--bd);text-align:center">
+      <div class="sp-footer">
         <button class="tbt" onclick="openCredits()" style="padding:5px 10px;font-size:10px;color:var(--tx3)">🎨 Credits</button>
       </div>
     </div>
@@ -924,13 +927,14 @@
     </div>
   </div>
   <!-- NÄCHSTER SCHRITT: own dedicated area at bottom of right panel -->
-  <div id="nextstep-panel" style="display:none;border-top:2px solid var(--gr3);flex-shrink:0;background:var(--bg3);max-height:220px;overflow-y:auto">
-    <div style="padding:8px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd)">
-      <div style="font-size:11px;font-weight:700;color:var(--gr)">💡 Nächster Schritt</div>
-      <button onclick="document.getElementById('nextstep-panel').style.display='none'" style="background:none;border:none;color:var(--tx3);cursor:pointer;font-size:18px;padding:0 4px;line-height:1">✕</button>
+  <!-- P15 Cluster 7d: .ns-popover — default display:none, von suggestNextStep() getoggled -->
+  <div id="nextstep-panel" class="ns-popover" style="display:none">
+    <div class="ns-popover__head">
+      <div class="ns-popover__title"><span data-icon="lightbulb"></span> Nächster Schritt</div>
+      <button class="ns-popover__close" onclick="document.getElementById('nextstep-panel').style.display='none'" aria-label="Schließen"><span data-icon="x"></span></button>
     </div>
-    <div id="nextstep-content" style="padding:10px 12px;font-size:11px;color:var(--tx2);line-height:1.6"></div>
-    <div style="padding:0 12px 10px;display:flex;gap:5px;flex-wrap:wrap" id="nextstep-actions"></div>
+    <div id="nextstep-content" class="ns-popover__body"></div>
+    <div id="nextstep-actions" class="ns-popover__actions"></div>
   </div>
 
 </div>
@@ -7853,9 +7857,11 @@ function updateSbStatus(connected){
   if(dot&&txt){
     dot.textContent=connected?'🟢':'🔴';
     txt.textContent=connected?'☁️ Verbunden — Cloud aktiv':'🔴 Nicht verbunden';
-    if(bar){bar.style.background=connected?'rgba(74,222,128,.08)':'rgba(248,113,113,.08)';
-      bar.style.borderColor=connected?'var(--gr3)':'var(--rd)';
-      bar.style.color=connected?'var(--gr)':'var(--rd)';}
+    // P15 Cluster 7d: Status-Klassen-Toggle statt inline-Style.
+    if(bar){
+      bar.classList.remove('sp-status--pending','sp-status--ok','sp-status--error');
+      bar.classList.add(connected?'sp-status--ok':'sp-status--error');
+    }
   }
   const el = document.getElementById('sb-status');
   const saveBtn = document.getElementById('sb-save-btn');
