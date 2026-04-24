@@ -48,6 +48,7 @@ import { registerGlobalShortcuts } from './input/keyboard.js';
 import { icon, type IconName } from './icons/lucide.js';
 import { installBridge as installPersistBridge } from './persist/index.js';
 import * as authSupabase from './auth/supabase.js';
+import * as authState from './auth/state.js';
 
 console.info('[csc] vite entry alive', import.meta.env.MODE);
 
@@ -56,12 +57,31 @@ console.info('[csc] vite entry alive', import.meta.env.MODE);
 // diese Bridge. Siehe src/persist/*.ts für die extrahierte Logik.
 installPersistBridge();
 
-// P-TrackA Phase 2a: Auth-Core-Helpers auf window.cscAuth exposen.
-// Pure Helpers + Async-Cores (kein State, kein DOM) — index.html-
-// Wrappers holen sich von hier die JWT-Parsing-, URL-Bau- und
-// Fetch-Logik, der State-Management (SB_TOKEN/USER) bleibt Phase 2a
-// weiterhin in index.html-Globals. Siehe src/auth/supabase.ts.
-(window as unknown as { cscAuth?: typeof authSupabase }).cscAuth = authSupabase;
+// P-TrackA Phase 2a/2b.1: Auth-API auf window.cscAuth exposen.
+// Phase 2a: Pure Helpers + Async-Cores aus supabase.ts.
+// Phase 2b.1: State-Module aus state.ts (getAuthState, setToken,
+//             subscribe, clearAuth) — Single-Source-of-Truth.
+// Beide werden flach gemergt: Legacy-Call-Sites kennen window.cscAuth
+// als eine einzige Auth-Namespace.
+(window as unknown as { cscAuth?: typeof authSupabase & typeof authState }).cscAuth = {
+  ...authSupabase,
+  ...authState,
+};
+
+// P-TrackA Phase 2b.1: Mirror-Sync von State → Legacy-Globals.
+// Die `var SB_TOKEN / SB_USER`-Deklarationen in index.html bleiben als
+// lesbare Mirrors — sonst würde `SB_TOKEN`-Reads in Inline-Script-Scope
+// einen ReferenceError werfen (sloppy-mode resolve läuft bei var-scope,
+// nicht via window-Properties). Das State-Modul ist single source of
+// truth; ein Subscriber hier hält die Globals synchron. Erster Sync-Run
+// bei Module-Load überträgt den hydrierten State aus localStorage.
+type LegacyGlobals = { SB_TOKEN?: string; SB_USER?: authState.AuthUser | null };
+function _syncLegacyGlobals(snap: authState.AuthState): void {
+  (window as LegacyGlobals).SB_TOKEN = snap.token;
+  (window as LegacyGlobals).SB_USER = snap.user;
+}
+_syncLegacyGlobals(authState.getAuthState());
+authState.subscribe(_syncLegacyGlobals);
 
 // Bridge GLTFExporter onto the globally-available legacy THREE (from CDN).
 // Der legacy exportGLTF()-Handler ruft `new THREE.GLTFExporter()` — ohne
