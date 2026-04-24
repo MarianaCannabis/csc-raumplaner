@@ -47,6 +47,7 @@ import { buildPackList } from './compliance/packlist.js';
 import { registerGlobalShortcuts } from './input/keyboard.js';
 import { icon, type IconName } from './icons/lucide.js';
 import { installBridge as installPersistBridge } from './persist/index.js';
+import type { PersistBridge } from './persist/index.js';
 import * as authSupabase from './auth/supabase.js';
 import * as authState from './auth/state.js';
 import { consumeMagicLinkFromHash } from './auth/magicLink.js';
@@ -125,7 +126,16 @@ if (typeof window !== 'undefined') {
 // diese Zuweisung hat er kein GLTFExporter. Früher kam er aus einem
 // separaten CDN-Tag; der ist entfernt (duplicate-Warning), der Exporter
 // kommt jetzt aus dem npm-Bundle (single source of truth).
-declare global { interface Window { THREE: any } }
+declare global {
+  interface Window {
+    THREE: any;
+    /** Hotfix v2.6.3: typisiert, damit zukünftiger Drift zwischen
+     *  Modul-Signatur (persist/*) und TS-Callsite bei Build-Time
+     *  gefangen wird. Legacy-JS in index.html ist weiterhin untyped —
+     *  dafür gibt's den Runtime-Guard in saveCloudProject. */
+    cscPersist: PersistBridge;
+  }
+}
 if (typeof window !== 'undefined' && (window as any).THREE) {
   (window as any).THREE.GLTFExporter = GLTFExporter;
 }

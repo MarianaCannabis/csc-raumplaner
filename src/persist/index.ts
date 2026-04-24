@@ -23,12 +23,11 @@ export { local, versions, autosave, cloud, offline };
 export type { ProjectState, SavedProject, ProjectVersion, AutosaveRecord };
 
 /**
- * Initialisiert den window.cscPersist-Namespace. Wird von src/main.ts
- * beim Boot einmal aufgerufen — dann können die Legacy-Funktionen in
- * index.html delegieren.
+ * Baut das Bridge-Objekt. Extrahiert damit ReturnType<typeof buildBridge>
+ * als PersistBridge-Type (für window.cscPersist-Signatur in main.ts).
  */
-export function installBridge(): void {
-  const bridge = {
+function buildBridge() {
+  return {
     local: {
       save: local.saveProject,
       delete: local.deleteProject,
@@ -72,5 +71,24 @@ export function installBridge(): void {
       clear: offline.clearQueue,
     },
   };
-  (window as unknown as { cscPersist?: typeof bridge }).cscPersist = bridge;
+}
+
+/**
+ * PersistBridge — das Shape von window.cscPersist. Wird in main.ts als
+ * Window-Interface-Extension deklariert, damit zukünftiger src/-Code
+ * tatsächlich Type-Safety gegen Drift zwischen Modul und Wrapper hat.
+ * Hotfix v2.6.3: diese Typisierung hätte den owner-Drift in v2.6.2
+ * bei Build-Time gefangen — zumindest für TypeScript-Callsites. Für
+ * die Legacy-Inline-Scripts in index.html bleibt der zusätzliche
+ * Runtime-Guard in saveCloudProject die Netz-untenrum-Sicherung.
+ */
+export type PersistBridge = ReturnType<typeof buildBridge>;
+
+/**
+ * Initialisiert den window.cscPersist-Namespace. Wird von src/main.ts
+ * beim Boot einmal aufgerufen — dann können die Legacy-Funktionen in
+ * index.html delegieren.
+ */
+export function installBridge(): void {
+  (window as unknown as { cscPersist?: PersistBridge }).cscPersist = buildBridge();
 }
