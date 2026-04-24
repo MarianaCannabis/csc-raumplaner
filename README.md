@@ -136,6 +136,40 @@ Issues + Feature-Requests: [GitHub Issues](https://github.com/MarianaCannabis/cs
 
 PR-Guidelines: Squash-merge mit aussagekräftigem Titel (Konvention: `P<phase>.<x>: <kurzer Titel>`). Vitest-Tests für neue TS-Module.
 
+### Dependency-Updates (CDN-Scripts)
+
+Die vier CDN-Scripts in `index.html` (three.js, pdf.js, mammoth, jszip) sind mit **Subresource-Integrity-Hashes** (SHA-384) gehärtet. Ein kompromittierter CDN kann keinen alternativen Payload mehr ausliefern — der Browser verwirft das Script bei Hash-Mismatch.
+
+**Wenn die CDN-URL (Version) geändert wird, MUSS der Hash neu berechnet werden**:
+
+```bash
+# Ein Script neu hashen (Beispiel: jszip auf v3.11.0 bumpen)
+curl -sL "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.11.0/jszip.min.js" \
+  | openssl dgst -sha384 -binary \
+  | openssl base64 -A
+
+# Alle vier auf einmal
+for url in \
+  "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" \
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js" \
+  "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js" \
+  "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"; do
+  echo "=== $url ==="
+  curl -sL "$url" | openssl dgst -sha384 -binary | openssl base64 -A
+  echo
+done
+```
+
+Dann `integrity="sha384-..."` im jeweiligen `<script>`-Tag in `index.html` aktualisieren.
+
+**Staging-Test nach Bump**:
+- Dev-Server starten (`npm run dev`)
+- DevTools-Console öffnen
+- Prüfen: KEIN `Failed to find a valid digest in the 'integrity' attribute`-Error
+- 3D-Szene (three.js), PDF-Upload (pdf.js), DOCX-Import (mammoth), ZIP-Export (jszip) alle funktional
+
+Der pdf.js-Worker (`pdf.worker.min.js`, in JS als `workerSrc` gesetzt) wird via `new Worker()` geladen — SRI-Attribute wirken nicht auf Worker-Scripts. Gleiche URL-Domain + Version wie die Haupt-Library macht das trotzdem konsistent.
+
 ## Credits
 
 - **Poly Haven** — HDRIs (studio_small_08, dikhololo_night) · CC0
