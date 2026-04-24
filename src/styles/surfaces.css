@@ -638,8 +638,8 @@
      .sp-sec      Details-Collapsible (7× im Save-Panel — identisches Muster)
 
    Scope-Grenze (Cluster 7d): ALLE anderen Klassen innerhalb der
-   Collapsibles (.api-box, .sh, .mf, .tbt, .tbt.g) bleiben Legacy —
-   sie sind app-weit geteilt.
+   Collapsibles (.api-box, .sh, .mf) bleiben Legacy — sie sind app-weit
+   geteilt. (Cluster 8a hat .tbt/.tbt.g bereits auf .tb-btn migriert.)
    ========================================================================== */
 
 /* Cloud-Status-Bar — 3 States via Modifier-Klasse */

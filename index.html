@@ -169,7 +169,7 @@
 
   <!-- P4.3b: Prominenter Vorlagen-Button (erster Einstieg für neue User) -->
   <!-- P15-Responsive: overflow-priority=1 → wandert bei <900px ins ⋯-Menü -->
-  <button class="tbt" id="btn-templates" data-mode="event" data-tier="simple" data-overflow-priority="1" onclick="openTemplates()" title="Vorlagen laden — fertige CSC-Layouts + Messestände"
+  <button class="tb-btn tb-btn--ghost is-compact-tbt" id="btn-templates" data-mode="event" data-tier="simple" data-overflow-priority="1" onclick="openTemplates()" title="Vorlagen laden — fertige CSC-Layouts + Messestände"
     style="padding:5px 10px;border:1px solid var(--gr3);background:rgba(74,222,128,0.08);color:var(--gr);font-weight:600">📋 Vorlagen</button>
   <!-- P7 Bug-2-Fix: KCanG-Dashboard aus der Ansicht-Menu-Tiefe an die Topbar hochgezogen -->
   <!-- P15 Cluster 4c: KCanG-Button → .tb-btn--soft + data-icon="leaf" -->
@@ -445,7 +445,7 @@
   <!-- P15 Topbar-Cleanup: 8 Icon-Buttons in die Menüs verschoben / in rechtes Panel.
        Erhalten bleiben: Command-Palette (simple-only via CSS, Zugang #cmd-palette-btn)
        + Theme-Toggle (häufiger One-Click-Use). -->
-  <button class="tbt" id="cmd-palette-btn" onclick="openCmdPalette()" title="Befehlspalette (Ctrl+K)" aria-label="Befehlspalette öffnen" style="color:var(--bl)">⌨</button>
+  <button class="tb-btn tb-btn--ghost is-compact-tbt" id="cmd-palette-btn" onclick="openCmdPalette()" title="Befehlspalette (Ctrl+K)" aria-label="Befehlspalette öffnen" style="color:var(--bl)">⌨</button>
   <!-- P15 Cluster 4e: Theme-Toggle → .tb-btn--ghost.is-compact + data-icon
        (Icon wechselt per JS zwischen moon/sun je nach aktivem Theme) -->
   <button class="tb-btn tb-btn--ghost is-compact" id="theme-toggle" data-tier="simple" data-overflow-priority="2" onclick="toggleTheme()" aria-label="Hell/Dunkel umschalten" title="Hell/Dunkel" data-icon="moon"></button>
@@ -813,10 +813,10 @@
         <details open class="rp-sec sp-sec">
           <summary class="sp-sec__summary sp-sec__summary--green"><span data-icon="save"></span> Projekt-Speicherung</summary>
           <div class="sp-sec__body">
-            <button class="tbt g" style="padding:8px" data-tier="simple" onclick="saveProj()">💾 Projekt speichern</button>
-            <button class="tbt" style="padding:8px;border-color:var(--gr3);color:var(--gr)" data-tier="simple" onclick="openTemplates()">📋 Vorlage laden</button>
-            <button class="tbt" style="padding:8px" onclick="saveAsUserTemplate()">💾 Als Vorlage speichern</button>
-            <button class="tbt" style="padding:8px" onclick="document.getElementById('json-up').click()">📤 .json laden</button>
+            <button class="tb-btn tb-btn--accent" style="padding:8px" data-tier="simple" onclick="saveProj()">💾 Projekt speichern</button>
+            <button class="tb-btn tb-btn--ghost is-compact-tbt" style="padding:8px;border-color:var(--gr3);color:var(--gr)" data-tier="simple" onclick="openTemplates()">📋 Vorlage laden</button>
+            <button class="tb-btn tb-btn--ghost is-compact-tbt" style="padding:8px" onclick="saveAsUserTemplate()">💾 Als Vorlage speichern</button>
+            <button class="tb-btn tb-btn--ghost is-compact-tbt" style="padding:8px" onclick="document.getElementById('json-up').click()">📤 .json laden</button>
             <input type="file" id="json-up" accept=".json" style="display:none" onchange="loadJSONFile(event)">
           </div>
         </details>
@@ -830,21 +830,21 @@
               <div style="font-size:10px;color:#4ade80;margin:4px 0">✓ Verbunden mit: wvkjkdwahsqozeupoxpj.supabase.co</div>
               <div id="auth-status" style="font-size:10px;color:var(--tx3);margin:4px 0">🔒 Nicht eingeloggt</div>
               <div style="display:flex;gap:5px;margin:6px 0">
-                <button class="tbt" id="auth-signin-btn" style="flex:1;padding:6px;border-color:#38bdf8;color:#38bdf8" onclick="cloudSignIn()">🔑 Einloggen</button>
-                <button class="tbt" id="auth-signout-btn" style="flex:1;padding:6px;display:none" onclick="cloudSignOut()">🚪 Ausloggen</button>
+                <button class="tb-btn tb-btn--ghost is-compact-tbt" id="auth-signin-btn" style="flex:1;padding:6px;border-color:#38bdf8;color:#38bdf8" onclick="cloudSignIn()">🔑 Einloggen</button>
+                <button class="tb-btn tb-btn--ghost is-compact-tbt" id="auth-signout-btn" style="flex:1;padding:6px;display:none" onclick="cloudSignOut()">🚪 Ausloggen</button>
               </div>
               <div style="font-size:9px;color:var(--tx3)">Projekte werden automatisch in der Cloud gespeichert.</div>
               <input id="sb-url" type="hidden" value="https://wvkjkdwahsqozeupoxpj.supabase.co">
               <input id="sb-key" type="hidden" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtycW1icWt6Y2xwaXhqaG94YW1kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU3MTg4OTUsImV4cCI6MjA4MTI5NDg5NX0.h-sQZvIzGiP1ENWKNDUp90T8ZLngDvCsGuZ6ZRIGGBE">
             </div>
             <div style="display:flex;gap:5px;margin-bottom:6px">
-              <button class="tbt" id="sb-save-btn" style="flex:1;padding:8px;border-color:#38bdf8;color:#38bdf8;display:none" onclick="cloudSave()">☁️ Cloud speichern</button>
-              <button class="tbt" id="sb-load-btn" style="flex:1;padding:8px;display:none" onclick="showCloudProjects()">📂 Cloud laden</button>
+              <button class="tb-btn tb-btn--ghost is-compact-tbt" id="sb-save-btn" style="flex:1;padding:8px;border-color:#38bdf8;color:#38bdf8;display:none" onclick="cloudSave()">☁️ Cloud speichern</button>
+              <button class="tb-btn tb-btn--ghost is-compact-tbt" id="sb-load-btn" style="flex:1;padding:8px;display:none" onclick="showCloudProjects()">📂 Cloud laden</button>
             </div>
             <div id="cloud-list" style="margin-bottom:8px"></div>
             <div style="display:flex;align-items:center;justify-content:space-between;margin:6px 0 4px">
               <div class="sh" style="margin:0">Versionen</div>
-              <button class="tbt" onclick="saveVersion()" style="padding:3px 8px;font-size:10px">📌 Merken</button>
+              <button class="tb-btn tb-btn--ghost is-compact-tbt" onclick="saveVersion()" style="padding:3px 8px;font-size:10px">📌 Merken</button>
             </div>
             <div id="version-list" style="margin-bottom:12px"></div>
             <div class="sh">Lokal gespeicherte Projekte</div>
@@ -856,13 +856,13 @@
         <details class="rp-sec sp-sec">
           <summary class="sp-sec__summary sp-sec__summary--blue"><span data-icon="download"></span> Export</summary>
           <div class="sp-sec__body">
-            <button class="tbt" style="padding:8px" onclick="exportPDF()">🖨️ PDF / Druckansicht</button>
-            <button class="tbt" style="padding:8px" data-tier="simple" onclick="dlJSON()">📥 Als .json exportieren</button>
-            <button class="tbt" style="padding:8px" onclick="exportFurnitureCSV()">📊 Möbelliste (.csv)</button>
-            <button class="tbt" style="padding:8px" onclick="exportBudgetCSV()">💰 Budget (.csv)</button>
-            <button class="tbt" style="padding:8px" onclick="exportGLTF()">🏗 3D-Modell (.gltf)</button>
-            <button class="tbt" style="padding:8px" onclick="exportDXF()">📐 Grundriss (.dxf)</button>
-            <button class="tbt" style="padding:8px" data-tier="pro" onclick="exportIFC()">🏗 IFC/BIM (.ifc)</button>
+            <button class="tb-btn tb-btn--ghost is-compact-tbt" style="padding:8px" onclick="exportPDF()">🖨️ PDF / Druckansicht</button>
+            <button class="tb-btn tb-btn--ghost is-compact-tbt" style="padding:8px" data-tier="simple" onclick="dlJSON()">📥 Als .json exportieren</button>
+            <button class="tb-btn tb-btn--ghost is-compact-tbt" style="padding:8px" onclick="exportFurnitureCSV()">📊 Möbelliste (.csv)</button>
+            <button class="tb-btn tb-btn--ghost is-compact-tbt" style="padding:8px" onclick="exportBudgetCSV()">💰 Budget (.csv)</button>
+            <button class="tb-btn tb-btn--ghost is-compact-tbt" style="padding:8px" onclick="exportGLTF()">🏗 3D-Modell (.gltf)</button>
+            <button class="tb-btn tb-btn--ghost is-compact-tbt" style="padding:8px" onclick="exportDXF()">📐 Grundriss (.dxf)</button>
+            <button class="tb-btn tb-btn--ghost is-compact-tbt" style="padding:8px" data-tier="pro" onclick="exportIFC()">🏗 IFC/BIM (.ifc)</button>
           </div>
         </details>
 
@@ -870,8 +870,8 @@
         <details class="rp-sec sp-sec">
           <summary class="sp-sec__summary sp-sec__summary--yellow"><span data-icon="history"></span> Historie</summary>
           <div class="sp-sec__body">
-            <button class="tbt" style="padding:8px" onclick="showChangelog()">📋 Änderungsprotokoll</button>
-            <button class="tbt" style="padding:8px" onclick="openVisualHistory()">🖼 Visual History</button>
+            <button class="tb-btn tb-btn--ghost is-compact-tbt" style="padding:8px" onclick="showChangelog()">📋 Änderungsprotokoll</button>
+            <button class="tb-btn tb-btn--ghost is-compact-tbt" style="padding:8px" onclick="openVisualHistory()">🖼 Visual History</button>
           </div>
         </details>
 
@@ -880,8 +880,8 @@
           <summary class="sp-sec__summary sp-sec__summary--purple">📄 Messeordnung</summary>
           <div class="sp-sec__body">
             <input type="file" id="regulation-upload" accept="application/pdf" style="display:none" onchange="handleRegulationUpload(event)">
-            <button class="tbt" style="padding:8px" onclick="document.getElementById('regulation-upload').click()">📄 PDF importieren (Claude extrahiert)</button>
-            <button class="tbt" style="padding:8px;display:none" id="btn-view-regulations" onclick="showImportedRegulations()">👁 Regeln ansehen</button>
+            <button class="tb-btn tb-btn--ghost is-compact-tbt" style="padding:8px" onclick="document.getElementById('regulation-upload').click()">📄 PDF importieren (Claude extrahiert)</button>
+            <button class="tb-btn tb-btn--ghost is-compact-tbt" style="padding:8px;display:none" id="btn-view-regulations" onclick="showImportedRegulations()">👁 Regeln ansehen</button>
             <div id="regulation-status" style="font-size:10px;color:var(--tx3);margin-top:2px"></div>
           </div>
         </details>
@@ -905,8 +905,8 @@
         <details class="rp-sec sp-sec">
           <summary class="sp-sec__summary sp-sec__summary--purple">🔒 Datenschutz / DSGVO</summary>
           <div class="sp-sec__body">
-            <button class="tbt" style="padding:8px" onclick="exportMyData()">📤 Meine Daten exportieren (Art. 20)</button>
-            <button class="tbt" style="padding:8px;border-color:#ef4444;color:#ef4444" onclick="deleteMyAccount()">🗑 Account löschen (Art. 17)</button>
+            <button class="tb-btn tb-btn--ghost is-compact-tbt" style="padding:8px" onclick="exportMyData()">📤 Meine Daten exportieren (Art. 20)</button>
+            <button class="tb-btn tb-btn--ghost is-compact-tbt" style="padding:8px;border-color:#ef4444;color:#ef4444" onclick="deleteMyAccount()">🗑 Account löschen (Art. 17)</button>
             <div style="font-size:10px;color:var(--tx3);line-height:1.4;padding-top:4px">
               <a href="privacy.html" target="_blank" style="color:var(--gr)">Datenschutzerklärung</a> ·
               <a href="impressum.html" target="_blank" style="color:var(--gr)">Impressum</a>
@@ -917,7 +917,7 @@
       </div>
 
       <div class="sp-footer">
-        <button class="tbt" onclick="openCredits()" style="padding:5px 10px;font-size:10px;color:var(--tx3)">🎨 Credits</button>
+        <button class="tb-btn tb-btn--ghost is-compact-tbt" onclick="openCredits()" style="padding:5px 10px;font-size:10px;color:var(--tx3)">🎨 Credits</button>
       </div>
     </div>
   </div>
@@ -1055,16 +1055,16 @@
     Wählt Perspektive + Auflösung. Download als PNG. Empfehlung: 2K für Mail, 4K für Print.
   </p>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px">
-    <button class="tbt" onclick="renderHighResPreset('front',2048,1152)" style="flex-direction:column;padding:10px 6px;min-height:64px">
+    <button class="tb-btn tb-btn--ghost is-compact-tbt" onclick="renderHighResPreset('front',2048,1152)" style="flex-direction:column;padding:10px 6px;min-height:64px">
       <div style="font-size:20px">⬆</div><div style="font-size:10px">Front</div>
     </button>
-    <button class="tbt" onclick="renderHighResPreset('side',2048,1152)" style="flex-direction:column;padding:10px 6px;min-height:64px">
+    <button class="tb-btn tb-btn--ghost is-compact-tbt" onclick="renderHighResPreset('side',2048,1152)" style="flex-direction:column;padding:10px 6px;min-height:64px">
       <div style="font-size:20px">➡</div><div style="font-size:10px">Seite</div>
     </button>
-    <button class="tbt" onclick="renderHighResPreset('above',2048,2048)" style="flex-direction:column;padding:10px 6px;min-height:64px">
+    <button class="tb-btn tb-btn--ghost is-compact-tbt" onclick="renderHighResPreset('above',2048,2048)" style="flex-direction:column;padding:10px 6px;min-height:64px">
       <div style="font-size:20px">🔽</div><div style="font-size:10px">Draufsicht</div>
     </button>
-    <button class="tbt" onclick="renderHighResPreset('perspective',2048,1152)" style="flex-direction:column;padding:10px 6px;min-height:64px">
+    <button class="tb-btn tb-btn--ghost is-compact-tbt" onclick="renderHighResPreset('perspective',2048,1152)" style="flex-direction:column;padding:10px 6px;min-height:64px">
       <div style="font-size:20px">📐</div><div style="font-size:10px">Perspektive</div>
     </button>
   </div>
@@ -1103,8 +1103,8 @@
   <h2>👥 Teams</h2>
   <!-- P14: Tab-Navigation — Meine Teams / Einladung einlösen -->
   <div style="display:flex;gap:4px;margin:6px 0 12px;border-bottom:1px solid var(--bd)">
-    <button class="tbt teams-tab active" data-tab="list" onclick="switchTeamsTab('list')" style="padding:7px 14px;border-radius:0;border-bottom:2px solid var(--gr)">📋 Meine Teams</button>
-    <button class="tbt teams-tab" data-tab="invite" onclick="switchTeamsTab('invite')" style="padding:7px 14px;border-radius:0;border-bottom:2px solid transparent">🎟 Einladung einlösen</button>
+    <button class="tb-btn tb-btn--tab teams-tab is-active" data-tab="list" onclick="switchTeamsTab('list')" style="padding:7px 14px;border-radius:0;border-bottom:2px solid var(--gr)">📋 Meine Teams</button>
+    <button class="tb-btn tb-btn--tab teams-tab" data-tab="invite" onclick="switchTeamsTab('invite')" style="padding:7px 14px;border-radius:0;border-bottom:2px solid transparent">🎟 Einladung einlösen</button>
   </div>
 
   <!-- Tab 1: Meine Teams -->
@@ -1372,8 +1372,8 @@
   <div style="padding:10px 12px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
     <div style="font-size:12px;font-weight:700;color:var(--gr)">💰 Möbelbudget</div>
     <div style="display:flex;gap:6px">
-      <button class="tbt" onclick="exportBudgetCSV()" style="padding:3px 8px;font-size:10px">📥 CSV</button>
-      <button class="tbt" onclick="document.getElementById('budget-panel').classList.remove('vis')" style="padding:3px 6px">✕</button>
+      <button class="tb-btn tb-btn--ghost is-compact-tbt" onclick="exportBudgetCSV()" style="padding:3px 8px;font-size:10px">📥 CSV</button>
+      <button class="tb-btn tb-btn--ghost is-compact-tbt" onclick="document.getElementById('budget-panel').classList.remove('vis')" style="padding:3px 6px">✕</button>
     </div>
   </div>
   <div id="budget-list" style="max-height:300px;overflow-y:auto"></div>
@@ -1480,10 +1480,10 @@
 <div id="compare-panel">
   <div style="padding:8px 14px;background:var(--bg2);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;flex-shrink:0">
     <div style="font-size:13px;font-weight:700;color:var(--gr)">🔀 Lageplan-Vergleich</div>
-    <button class="tbt" onclick="loadCompareSnapshot()" style="font-size:11px">📂 Vergleich laden</button>
+    <button class="tb-btn tb-btn--ghost is-compact-tbt" onclick="loadCompareSnapshot()" style="font-size:11px">📂 Vergleich laden</button>
     <input type="file" id="compare-file" accept=".json" style="display:none" onchange="loadCompareFile(event)">
     <div style="flex:1"></div>
-    <button class="tbt" onclick="closeComparison()">✕ Schließen</button>
+    <button class="tb-btn tb-btn--ghost is-compact-tbt" onclick="closeComparison()">✕ Schließen</button>
   </div>
   <div class="compare-panes">
     <div class="compare-pane">
@@ -1773,7 +1773,7 @@
       <option value="construction">🔨 Umbau/Bau</option>
       <option value="operation">✅ Betrieb</option>
     </select>
-    <button class="tbt" onclick="closeDashboard()">✕ Schließen</button>
+    <button class="tb-btn tb-btn--ghost is-compact-tbt" onclick="closeDashboard()">✕ Schließen</button>
   </div>
   <div id="dash-grid" class="dash-grid"></div>
 </div>
@@ -7301,7 +7301,7 @@ function renderDesignPanelFull(selObjId){
       +'<div class="pc-nm">'+p.name+'</div></div>';
   });
   h += '</div></div>';
-  h += '<button class="tbt" style="width:100%;margin-bottom:8px;border-color:var(--or);color:var(--or)" data-tier="simple" onclick="openM(\'m-design-create\')">🎨 Eigenes Design erstellen</button>';
+  h += '<button class="tb-btn tb-btn--ghost is-compact-tbt" style="width:100%;margin-bottom:8px;border-color:var(--or);color:var(--or)" data-tier="simple" onclick="openM(\'m-design-create\')">🎨 Eigenes Design erstellen</button>';
 
   if(!selObjId){ container.innerHTML = h; return; }
 
@@ -9336,9 +9336,9 @@ async function _renderTeamsList(){
         '<div><b>'+t.name.replace(/[<>]/g,'')+'</b> ' +
           (isOwner?'<span style="font-size:10px;color:var(--gr)">Owner</span>':'')+'</div>' +
         '<div style="display:flex;gap:4px">' +
-          '<button class="tbt" style="font-size:10px;padding:3px 8px" onclick="assignProjectToTeam(\''+t.id+'\')">📌 Projekt zuweisen</button>' +
-          '<button class="tbt" style="font-size:10px;padding:3px 8px" onclick="navigator.clipboard.writeText(\''+inviteLink+'\').then(()=>toast(\'🔗 Invite-Link kopiert\',\'g\'))">🔗 Invite</button>' +
-          (isOwner ? '<button class="tbt" style="font-size:10px;padding:3px 8px;color:#ef4444" onclick="deleteTeam(\''+t.id+'\')">🗑</button>' : '') +
+          '<button class="tb-btn tb-btn--ghost is-compact-tbt" style="font-size:10px;padding:3px 8px" onclick="assignProjectToTeam(\''+t.id+'\')">📌 Projekt zuweisen</button>' +
+          '<button class="tb-btn tb-btn--ghost is-compact-tbt" style="font-size:10px;padding:3px 8px" onclick="navigator.clipboard.writeText(\''+inviteLink+'\').then(()=>toast(\'🔗 Invite-Link kopiert\',\'g\'))">🔗 Invite</button>' +
+          (isOwner ? '<button class="tb-btn tb-btn--ghost is-compact-tbt" style="font-size:10px;padding:3px 8px;color:#ef4444" onclick="deleteTeam(\''+t.id+'\')">🗑</button>' : '') +
         '</div></div>' +
         '<div id="team-members-'+t.id+'" style="margin-top:8px;font-size:10px;color:var(--tx3)">Lade Mitglieder…</div>' +
       '</div>';
@@ -9423,7 +9423,8 @@ function switchTeamsTab(tab){
     var pane = document.getElementById('teams-tab-'+t);
     if(pane) pane.style.display = (t===tab) ? '' : 'none';
     document.querySelectorAll('.teams-tab[data-tab="'+t+'"]').forEach(function(btn){
-      btn.classList.toggle('active', t===tab);
+      // Cluster 8a: .tb-btn--tab nutzt .is-active (BEM). Kein Legacy-.active mehr.
+      btn.classList.toggle('is-active', t===tab);
       btn.style.borderBottomColor = (t===tab) ? 'var(--gr)' : 'transparent';
     });
   });
@@ -9699,10 +9700,10 @@ function showCSCPanel(){
   });
 
   h += '<div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap">';
-  h += '<button class="tbt" style="flex:1;padding:6px" onclick="optimizeLayout()">🔍 KI-Analyse</button>';
-  h += '<button class="tbt" style="flex:1;padding:6px" onclick="checkAccessibility()">♿ Barrierefrei</button>';
-  h += '<button class="tbt" style="flex:1;padding:6px" onclick="estimateCosts()">💰 Kosten</button>';
-  h += '<button class="tbt" style="flex:1;padding:6px" data-tier="pro" onclick="exportEvacuationPlan()">🚨 Fluchtplan</button>';
+  h += '<button class="tb-btn tb-btn--ghost is-compact-tbt" style="flex:1;padding:6px" onclick="optimizeLayout()">🔍 KI-Analyse</button>';
+  h += '<button class="tb-btn tb-btn--ghost is-compact-tbt" style="flex:1;padding:6px" onclick="checkAccessibility()">♿ Barrierefrei</button>';
+  h += '<button class="tb-btn tb-btn--ghost is-compact-tbt" style="flex:1;padding:6px" onclick="estimateCosts()">💰 Kosten</button>';
+  h += '<button class="tb-btn tb-btn--ghost is-compact-tbt" style="flex:1;padding:6px" data-tier="pro" onclick="exportEvacuationPlan()">🚨 Fluchtplan</button>';
   h += '</div></div>';
 
   // Show as a popup panel
@@ -10439,7 +10440,7 @@ function renderTemplateChipBar(){
   ];
   chipBar.innerHTML = chips.map(c=>{
     const n = counts[c.id] != null ? ' ('+counts[c.id]+')' : '';
-    return '<button class="tbt'+(_tplFilter===c.id?' g':'')+'" style="padding:4px 10px;font-size:11px" onclick="setTplFilter(\''+c.id+'\')">'+
+    return '<button class="tb-btn is-compact-tbt '+(_tplFilter===c.id?'tb-btn--accent':'tb-btn--ghost')+'" style="padding:4px 10px;font-size:11px" onclick="setTplFilter(\''+c.id+'\')">'+
       c.icon+' '+c.label+n+'</button>';
   }).join('');
 }
@@ -22546,9 +22547,9 @@ document.getElementById('mood-panel').classList.remove('vis');
     <div style="font-size:16px;font-weight:800;color:#4ade80">🌿 CSC Studio Pro — Vollständige Anleitung</div>
     <div style="font-size:11px;color:#555">v__APP_VERSION__</div>
     <div style="flex:1"></div>
-    <button class="tbt" onclick="startOnboarding()" style="border-color:var(--gr);color:var(--gr);padding:6px 14px">▶ Illustriertes Intro</button>
-    <button class="tbt" onclick="startTutorial()" style="padding:6px 14px">🎯 Interaktives Tutorial</button>
-    <button class="tbt" onclick="closeHelp()" style="padding:6px 14px">Schließen</button>
+    <button class="tb-btn tb-btn--ghost is-compact-tbt" onclick="startOnboarding()" style="border-color:var(--gr);color:var(--gr);padding:6px 14px">▶ Illustriertes Intro</button>
+    <button class="tb-btn tb-btn--ghost is-compact-tbt" onclick="startTutorial()" style="padding:6px 14px">🎯 Interaktives Tutorial</button>
+    <button class="tb-btn tb-btn--ghost is-compact-tbt" onclick="closeHelp()" style="padding:6px 14px">Schließen</button>
   </div>
 
   <div class="help-search">
