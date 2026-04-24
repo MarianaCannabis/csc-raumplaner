@@ -49,6 +49,7 @@ import { icon, type IconName } from './icons/lucide.js';
 import { installBridge as installPersistBridge } from './persist/index.js';
 import * as authSupabase from './auth/supabase.js';
 import * as authState from './auth/state.js';
+import { consumeMagicLinkFromHash } from './auth/magicLink.js';
 
 console.info('[csc] vite entry alive', import.meta.env.MODE);
 
@@ -97,6 +98,27 @@ authState.subscribe(() => {
   try { w.updateAuthStatus?.(); } catch (e) { console.warn('[auth] updateAuthStatus threw', e); }
   try { w.updateLoginGate?.(); } catch (e) { console.warn('[auth] updateLoginGate threw', e); }
 });
+
+// Hotfix v2.6.1: Magic-Link-Redirect verarbeiten. Die Legacy-Funktion
+// handleAuthRedirect() in index.html lief BEVOR window.cscAuth installiert
+// war und returnte früh — in Production resultierte das nach jedem
+// Magic-Link-Klick in erneutem Login-Prompt. Hier am Module-Boot ist die
+// Bridge fertig, und der Subscribe oben triggert updateLoginGate +
+// updateAuthStatus automatisch nach setToken().
+if (typeof window !== 'undefined') {
+  consumeMagicLinkFromHash(window.location.hash, {
+    saveRefresh: (rt) => {
+      try { localStorage.setItem('csc-sb-refresh', rt); } catch { /* quota / private-mode */ }
+    },
+    replaceHistory: () => {
+      history.replaceState(null, '', location.pathname + location.search);
+    },
+    onSuccess: () => {
+      const toast = (window as unknown as { toast?: (msg: string, kind: string) => void }).toast;
+      if (typeof toast === 'function') toast('✅ Eingeloggt!', 'g');
+    },
+  });
+}
 
 // Bridge GLTFExporter onto the globally-available legacy THREE (from CDN).
 // Der legacy exportGLTF()-Handler ruft `new THREE.GLTFExporter()` — ohne

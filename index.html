@@ -7780,23 +7780,14 @@ function handleAuthLoss(){
   }, INTERVAL_MS);
 })();
 
-// P-TrackA Phase 2a: handleAuthRedirect delegiert das Fragment-Parsing
-// an window.cscAuth.parseAuthRedirectFragment. State-Writes + URL-
-// Cleanup + Toast bleiben hier (tied an SB_TOKEN/SB_USER-Globals).
-function handleAuthRedirect(){
-  if(!window.cscAuth){ return; /* Module-Load-Window — rehydrateAuth later */ }
-  const parsed = window.cscAuth.parseAuthRedirectFragment(location.hash);
-  if(!parsed) return;
-  // P-TrackA Phase 2b.1: setToken persistiert Token+User atomisch.
-  window.cscAuth.setToken(parsed.accessToken, parsed.user);
-  // P-Auth: Refresh-Token persistieren, damit refreshTokenIfNeeded()
-  // nach der 1h-Access-Token-TTL ohne Re-Login einen neuen holen kann.
-  // (refresh-Token lebt separate von Token+User im State-Modul.)
-  if(parsed.refreshToken) localStorage.setItem('csc-sb-refresh', parsed.refreshToken);
-  // Clean the URL so the token doesn't stay visible / leak to history
-  try { history.replaceState(null, '', location.pathname + location.search); } catch(e){}
-  toast('✅ Eingeloggt!','g');
-}
+// Hotfix v2.6.1: Hash-Parsing wurde nach src/main.ts verschoben.
+// Der Inline-Script-Boot feuerte handleAuthRedirect() bevor
+// window.cscAuth existierte (ES-Module ist deferred) — der Hash wurde
+// nie geparst, User landete wieder beim Login-Modal. Jetzt übernimmt
+// consumeMagicLinkFromHash() in src/auth/magicLink.ts den Job direkt
+// nach dem authState.subscribe-Setup. Diese Funktion bleibt als No-op
+// kompatibel für den Legacy-Aufruf bei :7603.
+function handleAuthRedirect(){ /* moved to src/main.ts — no-op */ }
 
 // P3.1: Credits modal — renders the TS-maintained CREDITS list, with a
 // fallback message if the Vite module hasn't loaded (pre-boot case).
