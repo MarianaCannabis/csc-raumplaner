@@ -7614,7 +7614,10 @@ function loadSupabaseConfig(){
   // invitation rather than a wall.
   // fix/e2e-green: im E2E-Modus nicht auto-öffnen — der Test interagiert
   // ohne echten Login, und die Modal würde alle Klicks blockieren.
-  else if (!window.__cscE2E) setTimeout(()=>openM('m-auth'), 400);
+  // Hotfix v2.6.2: Re-Check zur Feuer-Zeit. Wenn main.ts/consumeMagicLink
+  // zwischenzeitlich den Hash geparsed + setToken aufgerufen hat (typisch
+  // 50-200ms nach Boot), ist SB_TOKEN gesetzt — dann Modal nicht öffnen.
+  else if (!window.__cscE2E) setTimeout(()=>{ if (!SB_TOKEN) openM('m-auth'); }, 400);
   // Cross-tab login sync: if the magic-link tab writes csc-sb-token,
   // this tab picks it up without needing a manual reload.
   window.addEventListener('storage', e=>{
@@ -7999,6 +8002,20 @@ function _cloudCtxAndRefresh(){
 async function cloudSave(){
   if(!navigator.onLine){ queueOfflineAction('cloud_save',{}); toast('📵 Offline — wird synchronisiert','b'); return; }
   if(!SB_URL || !SB_KEY){ toast('Supabase nicht verbunden','r'); return; }
+  // Hotfix v2.6.2: owner ist Pflicht für RLS-Policy csc_projects_owner_ins.
+  // Frühzeitiger Guard, damit der User kein 400 von Supabase sieht wenn
+  // ein Edge-Case (Modul-Boot-Race, defektes Token) den User-State fehlt.
+  const auth = window.cscAuth ? window.cscAuth.getAuthState() : null;
+  if(!auth || !auth.token){
+    toast('Bitte zuerst einloggen','b');
+    if(typeof cloudSignIn === 'function') cloudSignIn();
+    return;
+  }
+  if(!auth.user || !auth.user.id){
+    toast('Nicht eingeloggt — bitte erneut anmelden','r');
+    if(typeof cloudSignIn === 'function') cloudSignIn();
+    return;
+  }
   if(typeof refreshTokenIfNeeded === 'function') await refreshTokenIfNeeded();
   // P4.2: warn when embedded image maps will make the payload hefty.
   // 5 MB base64 ≈ 6.7 MB JSON; at that size the upload stalls noticeably.
@@ -8021,7 +8038,7 @@ async function cloudSave(){
     const _aut = localStorage.getItem('csc-username') || 'anonym';
     await window.cscPersist.cloud.save(
       ctx,
-      { name: projName, data: data, thumbnail: thumb, team_id: _tid, author: _aut },
+      { name: projName, data: data, thumbnail: thumb, team_id: _tid, author: _aut, owner: auth.user.id },
       refresh,
     );
     toast('☁️ In Cloud gespeichert: '+projName,'g');

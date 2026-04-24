@@ -46,7 +46,7 @@ describe('persist/cloudProjects', () => {
       .mockResolvedValueOnce(mkResponse(204));
     const r = await cloud.saveCloudProject(
       CTX,
-      { name: 'P', data: { a: 1 } },
+      { name: 'P', data: { a: 1 }, owner: 'user-1' },
       undefined,
       fetchFn as unknown as typeof fetch,
     );
@@ -63,7 +63,7 @@ describe('persist/cloudProjects', () => {
       .mockResolvedValueOnce(mkResponse(201));
     const r = await cloud.saveCloudProject(
       CTX,
-      { name: 'Neu', data: {} },
+      { name: 'Neu', data: {}, owner: 'user-1' },
       undefined,
       fetchFn as unknown as typeof fetch,
     );
@@ -71,6 +71,59 @@ describe('persist/cloudProjects', () => {
     const [postUrl, postInit] = fetchFn.mock.calls[1]!;
     expect(postUrl).toBe('https://demo.supabase.co/rest/v1/csc_projects');
     expect((postInit as RequestInit).method).toBe('POST');
+  });
+
+  test('saveCloudProject INSERT: body enthält owner-Feld (Hotfix v2.6.2 RLS)', async () => {
+    const fetchFn = vi
+      .fn()
+      .mockResolvedValueOnce(mkResponse(200, []))
+      .mockResolvedValueOnce(mkResponse(201));
+    await cloud.saveCloudProject(
+      CTX,
+      { name: 'Neu', data: { a: 1 }, owner: 'user-42' },
+      undefined,
+      fetchFn as unknown as typeof fetch,
+    );
+    const [, postInit] = fetchFn.mock.calls[1]!;
+    const body = JSON.parse((postInit as RequestInit).body as string);
+    expect(body.owner).toBe('user-42');
+    expect(body.name).toBe('Neu');
+  });
+
+  test('saveCloudProject PATCH: body hat KEIN owner-Feld (Hotfix v2.6.2)', async () => {
+    const fetchFn = vi
+      .fn()
+      .mockResolvedValueOnce(mkResponse(200, [{ id: 'existing-7' }]))
+      .mockResolvedValueOnce(mkResponse(204));
+    await cloud.saveCloudProject(
+      CTX,
+      { name: 'P', data: { a: 1 }, owner: 'user-42', team_id: 't1' },
+      undefined,
+      fetchFn as unknown as typeof fetch,
+    );
+    const [, patchInit] = fetchFn.mock.calls[1]!;
+    const body = JSON.parse((patchInit as RequestInit).body as string);
+    expect(body).not.toHaveProperty('owner');
+    // team_id und andere Felder bleiben erhalten
+    expect(body.team_id).toBe('t1');
+    expect(body.name).toBe('P');
+  });
+
+  test('saveCloudProject PATCH: Eingabe-body wird nicht mutiert (defensive)', async () => {
+    const fetchFn = vi
+      .fn()
+      .mockResolvedValueOnce(mkResponse(200, [{ id: 'x-1' }]))
+      .mockResolvedValueOnce(mkResponse(204));
+    const input = { name: 'P', data: {}, owner: 'user-9' };
+    await cloud.saveCloudProject(
+      CTX,
+      input,
+      undefined,
+      fetchFn as unknown as typeof fetch,
+    );
+    // PATCH-Pfad macht {owner, ...rest}-Destructure — Eingabe-Objekt
+    // darf NICHT mutiert werden (Caller-Side-Effect-Kontrakt).
+    expect(input.owner).toBe('user-9');
   });
 
   test('fetchAllCloudProjects returnt array', async () => {

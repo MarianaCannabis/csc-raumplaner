@@ -34,6 +34,16 @@ export interface CloudSaveBody {
   thumbnail?: string;
   team_id?: string;
   author?: string;
+  /**
+   * Required für RLS-Policy `csc_projects_owner_ins` (WITH CHECK
+   * auth.uid() = owner). Ohne diesen Wert wird jeder INSERT von
+   * Supabase mit HTTP 400/403 abgelehnt. Wrapper muss hier
+   * authState.getAuthState().user.id durchreichen.
+   *
+   * Hotfix v2.6.2: bewusst NICHT-optional, damit der TypeScript-
+   * Compiler jede Call-Site markiert die owner vergisst.
+   */
+  owner: string;
 }
 
 /**
@@ -120,19 +130,28 @@ export async function saveCloudProject(
   fetchFn: typeof fetch = fetch,
 ): Promise<{ id: string | null; created: boolean }> {
   const existingId = await findProjectByName(ctx, body.name, refresh, fetchFn);
-  const payload = JSON.stringify(body);
   const commonHeaders = { 'Content-Type': 'application/json', Prefer: 'return=minimal' };
   if (existingId) {
+    // Hotfix v2.6.2: owner wird beim PATCH bewusst NICHT mitgesendet.
+    // RLS-Policy csc_projects_owner_upd erlaubt die Zeile nur wenn
+    // auth.uid() == owner; ein Client-Attempt owner zu ändern würde
+    // ohnehin abgelehnt, und ein explizites Mitsenden des bereits
+    // passenden owner ist unnötiger Netzwerk-Ballast.
+    const { owner: _omitOwner, ...patchBody } = body;
+    void _omitOwner;
+    const patchPayload = JSON.stringify(patchBody);
     const r = await fetchWithAuthRetry(
       ctx,
       ctx.url + '/rest/v1/csc_projects?id=eq.' + existingId,
-      { method: 'PATCH', headers: commonHeaders, body: payload },
+      { method: 'PATCH', headers: commonHeaders, body: patchPayload },
       refresh,
       fetchFn,
     );
     if (!r.ok && r.status !== 204) throw new Error('Cloud-Update HTTP ' + r.status);
     return { id: existingId, created: false };
   }
+  // INSERT-Pfad: owner MUSS im Body stehen — siehe CloudSaveBody.owner.
+  const payload = JSON.stringify(body);
   const r = await fetchWithAuthRetry(
     ctx,
     ctx.url + '/rest/v1/csc_projects',
