@@ -5,13 +5,14 @@
  * Icon ist eine 16×16 currentColor-stroke-Shape mit round-line-caps; der
  * Aufrufer steuert Farbe via CSS (color/stroke) und Größe via `size`.
  *
- * Scope (38 Icons, siehe design/topbar-redesign/README.md — Emoji-Mapping):
+ * Scope (39 Icons, siehe design/topbar-redesign/README.md — Emoji-Mapping):
  *   undo, redo, save, room, event, leaf, globe, file, layers, chart,
  *   share, sun, moon, square, cube, plus, more, help-circle, chevron, edit-2,
  *   house, sofa, building, shield, star (P15 Cluster 7a — Sidebar-Rail),
  *   bot, palette, sunrise, settings (P15 Cluster 7b — Right-Panel-Tabs),
  *   list-checks, shield-check, map-pin, sliders (P15 Cluster 7c — KCanG-Modal),
- *   lightbulb, x, cloud, download, history (P15 Cluster 7d — NextStep + Save-Chrome)
+ *   lightbulb, x, cloud, download, history (P15 Cluster 7d — NextStep + Save-Chrome),
+ *   activity (P15 Cluster 7e — Analyse-Tools Collapsible-Header)
  *
  * Bewusst NICHT portiert: Row-2-Tools (cursor, wall, roomdraw, area,
  * ruler, move, center, box, folder), view, clock.
@@ -65,7 +66,8 @@ export type IconName =
   | 'x'
   | 'cloud'
   | 'download'
-  | 'history';
+  | 'history'
+  | 'activity';
 
 export interface IconOptions {
   /** Kantenlänge in px. Default 16 (passt zu --btn-h 32). */
@@ -142,6 +144,9 @@ const PATHS: Record<IconName, string> = {
     '<path d="M8 2v8M4.5 6.5 8 10l3.5-3.5"/><path d="M2.5 12.5h11v1h-11z" fill="currentColor" stroke="none"/>',
   history:
     '<circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2 2"/><path d="M2.5 5.5c.7-1.5 2-2.7 3.5-3.3"/>',
+  // P15 Cluster 7e — Analyse-Tools Collapsible-Header (Pulse/Heartbeat-Form).
+  activity:
+    '<path d="M1.5 8h3l2-5 3 10 2-5h3"/>',
 };
 
 /**

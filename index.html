@@ -790,6 +790,25 @@
       <!-- P15 Cluster 7d: .sp-sections flex-column wrapper -->
       <div class="sp-sections">
 
+        <!-- 📊 Analyse-Tools (default zu, aus Eigenschaften hochgezogen P15/7e) -->
+        <details class="rp-sec sp-sec">
+          <summary class="sp-sec__summary sp-sec__summary--blue"><span data-icon="activity"></span> Analyse-Tools</summary>
+          <div class="sp-sec__body" id="quick-analyses" style="gap:0;padding:4px 0">
+            <div class="qa-item" onclick="openAnalysisDashboard()">📊 Analyse-Dashboard</div>
+            <div class="qa-item" onclick="calcHeatLoad()">🌡 Heizlast-Berechnung</div>
+            <div class="qa-item" onclick="analyzeLux()">💡 Lux-Berechnung</div>
+            <div class="qa-item" onclick="calcBreakEven()">📈 Break-Even-Rechner</div>
+            <div class="qa-item" onclick="calcFireSafety()">🧯 Brandschutz</div>
+            <div class="qa-item" onclick="calcAccessibilityScore()">♿ Barrierefreiheit</div>
+            <div class="qa-item" onclick="showShiftGantt()">📅 Schichtplan</div>
+            <div class="qa-item" onclick="generateMaintenanceCalendar()">🗓 Wartungskalender</div>
+            <div class="qa-item" onclick="analyzeWaitQueue()">⏱ Warteschlange</div>
+            <div class="qa-item" onclick="calcAISecurityScore()">🔐 Sicherheitsbewertung</div>
+            <div class="qa-item" onclick="calcROI()">💰 ROI-Rechner</div>
+            <div class="qa-item" onclick="analyzeEscapeRoutes()">🚪 Fluchtweg-Analyse</div>
+          </div>
+        </details>
+
         <!-- 💾 Projekt-Speicherung (default offen) -->
         <details open class="rp-sec sp-sec">
           <summary class="sp-sec__summary sp-sec__summary--green"><span data-icon="save"></span> Projekt-Speicherung</summary>
@@ -907,21 +926,9 @@
   <div class="rpanel rp-pane is-active active" id="rpanel-props">
     <div id="rpanel-props-content" style="flex:1;overflow-y:auto;min-height:0">
       <div id="props-default-view">
-        <div style="padding:8px 10px;font-size:10px;color:var(--tx3);border-bottom:1px solid var(--bd)">Klicke ein Objekt oder Raum an</div>
-        <div id="quick-analyses" style="padding:4px 0">
-          <div class="qa-item" onclick="openAnalysisDashboard()">📊 Analyse-Dashboard</div>
-          <div class="qa-item" onclick="calcHeatLoad()">🌡 Heizlast-Berechnung</div>
-          <div class="qa-item" onclick="analyzeLux()">💡 Lux-Berechnung</div>
-          <div class="qa-item" onclick="calcBreakEven()">📈 Break-Even-Rechner</div>
-          <div class="qa-item" onclick="calcFireSafety()">🧯 Brandschutz</div>
-          <div class="qa-item" onclick="calcAccessibilityScore()">♿ Barrierefreiheit</div>
-          <div class="qa-item" onclick="showShiftGantt()">📅 Schichtplan</div>
-          <div class="qa-item" onclick="generateMaintenanceCalendar()">🗓 Wartungskalender</div>
-          <div class="qa-item" onclick="analyzeWaitQueue()">⏱ Warteschlange</div>
-          <div class="qa-item" onclick="calcAISecurityScore()">🔐 Sicherheitsbewertung</div>
-          <div class="qa-item" onclick="calcROI()">💰 ROI-Rechner</div>
-          <div class="qa-item" onclick="analyzeEscapeRoutes()">🚪 Fluchtweg-Analyse</div>
-        </div>
+        <!-- P15 Cluster 7e: Quick-Analyses-Liste wanderte unter #rpanel-save. Hier
+             bleibt nur noch der Hint-Text für den Empty-State. -->
+        <div class="sp-default-hint">Klicke ein Objekt oder Raum an</div>
       </div>
       <div id="props-obj-view" style="display:none"></div>
     </div>

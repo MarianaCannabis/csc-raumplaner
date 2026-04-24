@@ -88,13 +88,16 @@ test('P15: Sections sind als <details> collapsible', async ({ page }) => {
   await page.evaluate(() => (window as any).showRight('save'));
   const savePanel = page.locator('#rpanel-save');
 
-  // Jede der 7 Sinnbereich-Sections lebt als <details class="rp-sec">.
+  // P15 Cluster 7e: 7 → 8 Sinnbereich-Sections. Analyse-Tools ist
+  // aus #props-default-view hierher gewandert (thematisch "Projekt-
+  // Analysen", nicht "Objekt-Eigenschaften").
   // Nicht alle sind im Room-Mode sichtbar (📄 Messeordnung = data-mode="event"),
   // deshalb zählen wir im DOM (nicht via :visible).
   const sections = savePanel.locator('details.rp-sec');
-  await expect(sections).toHaveCount(7);
+  await expect(sections).toHaveCount(8);
 
-  // Mindestens eines ist beim Boot offen (Speicherung + Cloud per Freigabe).
+  // Mindestens zwei sind beim Boot offen (Speicherung + Cloud per Freigabe —
+  // Analyse-Tools default zu).
   const openSections = savePanel.locator('details.rp-sec[open]');
   expect(await openSections.count()).toBeGreaterThanOrEqual(2);
 });
