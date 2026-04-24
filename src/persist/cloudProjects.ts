@@ -129,6 +129,18 @@ export async function saveCloudProject(
   refresh?: RefreshFn,
   fetchFn: typeof fetch = fetch,
 ): Promise<{ id: string | null; created: boolean }> {
+  // Hotfix v2.6.3: Runtime-Guard für untyped JS-Callsites. CloudSaveBody.owner
+  // ist auf Type-Ebene required, aber window.cscPersist.cloud.save wird
+  // aus Inline-Script (index.html) ohne TypeScript aufgerufen. Ohne diesen
+  // Check würde ein fehlendes owner-Feld durchflutschen und dann 400 auf
+  // RLS-Policy csc_projects_owner_ins ergeben — der Root-Cause wäre dem
+  // Caller aus dem HTTP-Fehler nicht ersichtlich.
+  if (typeof body.owner !== 'string' || body.owner.length === 0) {
+    throw new Error(
+      'saveCloudProject: body.owner ist Pflicht (RLS csc_projects_owner_ins). ' +
+        'Wrapper muss authState.getAuthState().user.id durchreichen.',
+    );
+  }
   const existingId = await findProjectByName(ctx, body.name, refresh, fetchFn);
   const commonHeaders = { 'Content-Type': 'application/json', Prefer: 'return=minimal' };
   if (existingId) {

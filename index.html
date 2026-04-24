@@ -7999,10 +7999,20 @@ function _cloudCtxAndRefresh(){
   return { ctx, refresh };
 }
 
+// Hotfix v2.6.3: Anti-Race Mutex. User klickt „Speichern" während Auto-Save
+// schon läuft → zweites Request feuert parallel, könnte bei find-existing
+// in Race-Condition geraten. Inflight-Promise wird geshared: Caller bekommt
+// den laufenden Save, startet keinen zweiten.
+var _cloudSaveInflight = null;
 async function cloudSave(){
+  if(_cloudSaveInflight){ return _cloudSaveInflight; }
+  _cloudSaveInflight = _cloudSaveImpl().finally(() => { _cloudSaveInflight = null; });
+  return _cloudSaveInflight;
+}
+async function _cloudSaveImpl(){
   if(!navigator.onLine){ queueOfflineAction('cloud_save',{}); toast('📵 Offline — wird synchronisiert','b'); return; }
   if(!SB_URL || !SB_KEY){ toast('Supabase nicht verbunden','r'); return; }
-  // Hotfix v2.6.2: owner ist Pflicht für RLS-Policy csc_projects_owner_ins.
+  // Hotfix v2.6.2/v2.6.3: owner ist Pflicht für RLS-Policy csc_projects_owner_ins.
   // Frühzeitiger Guard, damit der User kein 400 von Supabase sieht wenn
   // ein Edge-Case (Modul-Boot-Race, defektes Token) den User-State fehlt.
   const auth = window.cscAuth ? window.cscAuth.getAuthState() : null;

@@ -109,6 +109,33 @@ describe('persist/cloudProjects', () => {
     expect(body.name).toBe('P');
   });
 
+  test('saveCloudProject: leerer owner-String → früh Error (Hotfix v2.6.3 Runtime-Guard)', async () => {
+    const fetchFn = vi.fn();
+    await expect(
+      cloud.saveCloudProject(
+        CTX,
+        { name: 'P', data: {}, owner: '' },
+        undefined,
+        fetchFn as unknown as typeof fetch,
+      ),
+    ).rejects.toThrow(/owner ist Pflicht/);
+    expect(fetchFn).not.toHaveBeenCalled();
+  });
+
+  test('saveCloudProject: undefined owner (Untyped-JS-Caller) → früh Error', async () => {
+    const fetchFn = vi.fn();
+    await expect(
+      cloud.saveCloudProject(
+        CTX,
+        // Simuliert einen untyped JS-Caller der body.owner vergisst
+        { name: 'P', data: {} } as unknown as Parameters<typeof cloud.saveCloudProject>[1],
+        undefined,
+        fetchFn as unknown as typeof fetch,
+      ),
+    ).rejects.toThrow(/owner ist Pflicht/);
+    expect(fetchFn).not.toHaveBeenCalled();
+  });
+
   test('saveCloudProject PATCH: Eingabe-body wird nicht mutiert (defensive)', async () => {
     const fetchFn = vi
       .fn()
