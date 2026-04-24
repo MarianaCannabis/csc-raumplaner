@@ -638,8 +638,10 @@
      .sp-sec      Details-Collapsible (7× im Save-Panel — identisches Muster)
 
    Scope-Grenze (Cluster 7d): ALLE anderen Klassen innerhalb der
-   Collapsibles (.api-box, .sh, .mf) bleiben Legacy — sie sind app-weit
-   geteilt. (Cluster 8a hat .tbt/.tbt.g bereits auf .tb-btn migriert.)
+   Collapsibles bleiben entweder Legacy (app-weit geteilt) oder sind
+   in Folge-Clustern längst migriert: Cluster 8a hat .tbt → .tb-btn,
+   Cluster 8b hat .api-box → .sp-api-box und die Form-Primitives
+   (.sh/.mf/.lp-row) in eine generische .form-*-Familie extrahiert.
    ========================================================================== */
 
 /* Cloud-Status-Bar — 3 States via Modifier-Klasse */
@@ -793,4 +795,117 @@
   color: var(--text-dim);
   border-bottom: 1px solid var(--border-subtle);
 }
+
+/* P15 Cluster 8b — Save-Panel Cloud-API-Status-Card (ersetzt .api-box).
+   Einziger Site im Save-Panel, surface-lokal im sp-* Namespace. */
+.sp-api-box {
+  padding: 10px;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  margin-bottom: 10px;
+}
+.sp-api-box label {
+  display: block;
+  font-size: 10px;
+  color: var(--brand-500);
+  font-weight: 700;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+[data-theme="light"] .sp-api-box label { color: var(--brand-600); }
+
+/* ==========================================================================
+   Form-Primitives (P15 Cluster 8b)
+   ==========================================================================
+   Cross-surface generische Form-Building-Blocks: .form-field (Label +
+   Input-Wrapper), .form-kicker (Section-Header Uppercase 9px),
+   .form-slider-row (Slider-Zeile im Light-Panel / künftige RP-Slider).
+   Ersetzen .mf / .sh / .lp-row aus dem Legacy-CSS — via Tokens
+   automatisch theming-fähig für Dark + Light.
+   ========================================================================== */
+
+/* .form-field — Form-Field-Container mit Label + Input. */
+.form-field { margin-bottom: 10px; }
+.form-field label {
+  display: block;
+  font-size: 9px;
+  color: var(--text-dim);
+  margin-bottom: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.form-field input,
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  padding: 8px 9px;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+  font-size: 13px;
+  outline: none;
+  font-family: inherit;
+}
+.form-field input[type=color] { height: 34px; cursor: pointer; padding: 2px; }
+.form-field input:focus,
+.form-field select:focus { border-color: var(--brand-500); }
+.form-field select option { background: var(--bg-panel); }
+
+/* .form-kicker — Section-Header (Uppercase 9px, Abschnitts-Trenner). */
+.form-kicker {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+.form-kicker:first-child { margin-top: 0; }
+
+/* .form-slider-row — Slider-Zeile im Light-Panel (Label + Range/Color/Checkbox). */
+.form-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  font-size: 10px;
+}
+.form-slider-row label {
+  width: 54px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.form-slider-row input[type=range] {
+  flex: 1;
+  accent-color: var(--brand-500);
+  height: 3px;
+}
+.form-slider-row input[type=color] {
+  width: 26px;
+  height: 20px;
+  padding: 1px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  cursor: pointer;
+  background: var(--bg-sunken);
+}
+.form-slider-row input[type=checkbox] { accent-color: var(--brand-500); }
+.form-slider-row span {
+  width: 30px;
+  text-align: right;
+  color: var(--text-dim);
+  flex-shrink: 0;
+  font-size: 10px;
+}
+
+/* Light-Theme-Feinschliff — Brand-500 gegen hellen Hintergrund zu grell,
+   --brand-600 liefert besseren Kontrast. Alles andere regeln die Tokens. */
+[data-theme="light"] .form-field input:focus,
+[data-theme="light"] .form-field select:focus { border-color: var(--brand-600); }
+[data-theme="light"] .form-slider-row input[type=range] { accent-color: var(--brand-600); }
+[data-theme="light"] .form-slider-row input[type=checkbox] { accent-color: var(--brand-600); }
 
