@@ -2497,8 +2497,13 @@ var currentMood;           // lighting/mood preset; buildSkySphere() reads this
 var dragCatPos   = null;   // position while dragging from catalog
 var SB_URL       = '';     // Supabase URL
 var SB_KEY       = '';     // Supabase anon key (public JWT for REST transport)
-var SB_TOKEN     = '';     // Supabase user access token (from sign-in)
-var SB_USER      = null;   // Signed-in user: {id,email}
+// P-TrackA Phase 2b.1: Canonical state lebt in src/auth/state.ts (Module-
+// singleton mit subscribe + Cross-Tab-Sync). Die var-Globals hier sind
+// gespiegelte Lesbare — setToken()/clearAuth() im Modul schreiben sowohl
+// Module-State als auch diese Globals, damit die ~10 Legacy-Read-Sites
+// (var-scope-bound) ohne jede Zeile-Touch weiterarbeiten.
+var SB_TOKEN     = '';
+var SB_USER      = null;
 var projMeta     = {};     // KCanG project meta: {memberCount, address, ageVerification, pois?, geocode?}
 var grab3d       = false;  // 3D grab mode active
 var grab3dLast   = null;   // last mouse pos during grab
@@ -7671,28 +7676,25 @@ function updateLoginGate(){
 }
 
 function rehydrateAuth(){
-  const tok = localStorage.getItem('csc-sb-token') || '';
-  const usr = localStorage.getItem('csc-sb-user') || '';
+  // P-TrackA Phase 2b.1: State-Modul hydriert sich bereits beim Import
+  // aus localStorage (siehe src/auth/state.ts). Wir prüfen hier nur noch
+  // ob der bereits-geladene Token ggf. expired ist und cleanen dann
+  // via clearAuth(). Der Property-Proxy (SB_TOKEN/SB_USER) macht die
+  // Read-Zugriffe weiter oben transparent.
   const refresh = localStorage.getItem('csc-sb-refresh') || '';
-  // Wenn Token expired aber refresh vorhanden ist → lazy refresh. Wir
-  // setzen SB_USER + SB_TOKEN provisorisch aus localStorage; der erste
-  // aiFetch/cloudSave triggert refreshTokenIfNeeded und lädt einen
-  // frischen Access-Token. So vermeidet der erste Reload nach Ablauf
-  // der 1h-TTL einen harten Logout.
+  const tok = window.cscAuth ? window.cscAuth.getAuthState().token : (localStorage.getItem('csc-sb-token') || '');
   if(!tok && !refresh){
-    SB_TOKEN = ''; SB_USER = null;
+    if(window.cscAuth) window.cscAuth.clearAuth();
     return;
   }
-  if(!tok || tokenExpired(tok)){
-    if(!refresh){
-      if(tok){ localStorage.removeItem('csc-sb-token'); localStorage.removeItem('csc-sb-user'); }
-      SB_TOKEN = ''; SB_USER = null;
-      return;
-    }
-    // Bleiben "halb-eingeloggt" bis der nächste Call refresh triggert.
+  if(tok && tokenExpired(tok) && !refresh){
+    // Stale Token + kein refresh → vollständiger Logout
+    if(window.cscAuth) window.cscAuth.clearAuth();
+    return;
   }
-  if(tok) SB_TOKEN = tok;
-  try { SB_USER = usr ? JSON.parse(usr) : null; } catch(e){ SB_USER = null; }
+  // Ansonsten: state-Modul hat bereits Token+User geladen, oder wir
+  // sind "halb-eingeloggt" bis der nächste Call refreshTokenIfNeeded
+  // triggert.
 }
 
 // Token-Auto-Refresh. Ruft /auth/v1/token?grant_type=refresh_token mit
@@ -7720,14 +7722,14 @@ async function refreshTokenIfNeeded(force){
         ? await window.cscAuth.performTokenRefresh(SB_URL, SB_KEY, refresh)
         : { ok: false };
       if(!result.ok) return false;
-      SB_TOKEN = result.token;
-      localStorage.setItem('csc-sb-token', result.token);
+      // P-TrackA Phase 2b.1: setToken handhabt localStorage-Write + Listener-Notify
+      // atomisch. Email-Fallback auf den bisherigen SB_USER (via Proxy-Getter).
+      const prevUser = window.cscAuth.getAuthState().user;
+      const nextUser = result.user
+        ? { id: result.user.id, email: result.user.email || (prevUser && prevUser.email) || '' }
+        : prevUser;
+      window.cscAuth.setToken(result.token, nextUser);
       if(result.refreshToken) localStorage.setItem('csc-sb-refresh', result.refreshToken);
-      if(result.user){
-        // Email aus dem neuen Payload übernehmen, Fallback auf bisherigen User
-        SB_USER = { id: result.user.id, email: result.user.email || (SB_USER && SB_USER.email) || '' };
-        localStorage.setItem('csc-sb-user', JSON.stringify(SB_USER));
-      }
       if(typeof updateAuthStatus === 'function') updateAuthStatus();
       console.info('[csc] token refreshed');
       return true;
@@ -7743,12 +7745,10 @@ async function refreshTokenIfNeeded(force){
 
 // Hard auth-loss: wenn refresh-token auch tot ist, UI zurück auf Login.
 function handleAuthLoss(){
-  SB_TOKEN = ''; SB_USER = null;
-  try {
-    localStorage.removeItem('csc-sb-token');
-    localStorage.removeItem('csc-sb-user');
-    localStorage.removeItem('csc-sb-refresh');
-  } catch(e){}
+  // P-TrackA Phase 2b.1: clearAuth cleant Token+User+localStorage atomisch.
+  // csc-sb-refresh bleibt separate (nicht Teil des State-Moduls).
+  if(window.cscAuth) window.cscAuth.clearAuth();
+  try { localStorage.removeItem('csc-sb-refresh'); } catch(e){}
   if(typeof updateAuthStatus === 'function') updateAuthStatus();
   if(typeof updateLoginGate === 'function') updateLoginGate();
   if(typeof toast === 'function') toast('🔑 Sitzung abgelaufen — bitte neu einloggen','r');
@@ -7775,12 +7775,11 @@ function handleAuthRedirect(){
   if(!window.cscAuth){ return; /* Module-Load-Window — rehydrateAuth later */ }
   const parsed = window.cscAuth.parseAuthRedirectFragment(location.hash);
   if(!parsed) return;
-  SB_TOKEN = parsed.accessToken;
-  SB_USER = parsed.user;
-  localStorage.setItem('csc-sb-token', SB_TOKEN);
-  if(SB_USER) localStorage.setItem('csc-sb-user', JSON.stringify(SB_USER));
+  // P-TrackA Phase 2b.1: setToken persistiert Token+User atomisch.
+  window.cscAuth.setToken(parsed.accessToken, parsed.user);
   // P-Auth: Refresh-Token persistieren, damit refreshTokenIfNeeded()
   // nach der 1h-Access-Token-TTL ohne Re-Login einen neuen holen kann.
+  // (refresh-Token lebt separate von Token+User im State-Modul.)
   if(parsed.refreshToken) localStorage.setItem('csc-sb-refresh', parsed.refreshToken);
   // Clean the URL so the token doesn't stay visible / leak to history
   try { history.replaceState(null, '', location.pathname + location.search); } catch(e){}
@@ -7852,13 +7851,13 @@ async function sendMagicLink(){
   }
 }
 
-// P-TrackA Phase 2a: cloudSignOut delegiert den Logout-POST an
-// window.cscAuth.postSignOut. State-Reset + DOM-Updates bleiben hier.
+// P-TrackA Phase 2a/2b.1: cloudSignOut delegiert den Logout-POST an
+// window.cscAuth.postSignOut. State-Reset jetzt über clearAuth() (atomisch).
 async function cloudSignOut(){
-  if(window.cscAuth) await window.cscAuth.postSignOut(SB_URL, SB_KEY, SB_TOKEN);
-  SB_TOKEN = ''; SB_USER = null;
-  localStorage.removeItem('csc-sb-token');
-  localStorage.removeItem('csc-sb-user');
+  if(window.cscAuth){
+    await window.cscAuth.postSignOut(SB_URL, SB_KEY, SB_TOKEN);
+    window.cscAuth.clearAuth();
+  }
   updateAuthStatus();
   toast('🚪 Ausgeloggt','b');
 }
