@@ -21,6 +21,12 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Refactor (Strangler P17)
 
+- **versionHistory extrahiert** nach `src/legacy/versionHistory.ts` (P17.21).
+  saveVersion/loadVersionHistory/renderVersionHistory/restoreVersion/
+  deleteVersion. Wrapper um window.cscPersist.versions (P-TrackA Phase 1
+  Bridge) — keine Cloud-Calls. localStorage-Fallback wenn Bridge nicht
+  bereit. +14 Vitest-Tests inkl. Bridge-mock + localStorage-Path.
+  Bundle: −337 B gz.
 - **tbMenu extrahiert** nach `src/legacy/tbMenu.ts` (P17.20). Topbar-
   Dropdown-System: toggleTBMenu/closeTBMenu mit module-internal
   _openMenu-Tracking. updateMenuActiveStates bleibt Caller-side via
