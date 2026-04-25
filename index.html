@@ -5340,6 +5340,10 @@ function toast(msg, type){
 // ════════════════════════════════════════════════════════════════════════
 // UNDO / REDO SYSTEM
 // ════════════════════════════════════════════════════════════════════════
+// P17.13: Stack-Management nach src/legacy/undoRedo.ts. undoStack +
+// undoIdx sind jetzt module-internal; die Inline-Vars hier bleiben als
+// Read-only-Shadow für Diagnose (line 5385 nutzt undoStack[undoIdx-1]
+// für changelog-diff).
 let undoStack = [];
 let undoIdx   = -1;
 const MAX_HISTORY = 50;
@@ -5355,11 +5359,16 @@ function snapshot(){
     curFloor: curFloor,
     wallExcl: _wallExclusions,
   });
-  // Discard any redo-future when a new action is taken
+  // P17.13: Stack-Management — Inline ist die Source-of-Truth (nutzt der
+  // changelog-diff bei :5385+). Modul ist Spiegel für Test-API + spätere
+  // Folge-Module die undo/redo programmatisch nutzen wollen.
   undoStack = undoStack.slice(0, undoIdx + 1);
   undoStack.push(state);
   if(undoStack.length > MAX_HISTORY) undoStack.shift();
   undoIdx = undoStack.length - 1;
+  if(typeof window._undoRedo_pushSnapshot === 'function'){
+    window._undoRedo_pushSnapshot(state);
+  }
   _updUndoBtns();
   // P6.4: Visual History — parallele Stack mit Thumbnail je Snapshot.
   // Läuft in einem separaten Frame-Budget via requestIdleCallback damit
@@ -5404,12 +5413,14 @@ if(!localStorage.getItem('csc-onboarded')){
 function undo(){
   if(undoIdx <= 0) return;
   undoIdx--;
+  if(typeof window._undoRedo_undo === 'function') window._undoRedo_undo();
   _restoreSnapshot(undoStack[undoIdx]);
 }
 
 function redo(){
   if(undoIdx >= undoStack.length - 1) return;
   undoIdx++;
+  if(typeof window._undoRedo_redo === 'function') window._undoRedo_redo();
   _restoreSnapshot(undoStack[undoIdx]);
 }
 

@@ -6,7 +6,7 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 - **onclick-Handler:** 720
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 850
-- **TS-Exports:** 381
+- **TS-Exports:** 391
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -226,7 +226,7 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 ### src/legacy/exports3d.ts
 
 - `exportGLTF` (line 58)
-- `exportDXF` (line 102)
+- `exportDXF` (line 103)
 
 ### src/legacy/inlineRename.ts
 
@@ -256,6 +256,19 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 ### src/legacy/toast.ts
 
 - `toast` (line 16)
+
+### src/legacy/undoRedo.ts
+
+- `setUpdateButtonsCallback` (line 24)
+- `pushSnapshot` (line 29)
+- `undo` (line 38)
+- `redo` (line 46)
+- `canUndo` (line 53)
+- `canRedo` (line 57)
+- `getStackSize` (line 61)
+- `getCurrentIdx` (line 65)
+- `_resetForTests` (line 70)
+- `MAX_HISTORY_LIMIT` (line 76)
 
 ### src/legacy/userTemplatesRead.ts
 
