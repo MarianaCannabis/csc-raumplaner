@@ -3,10 +3,10 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 ## Zusammenfassung
 
-- **onclick-Handler:** 718
+- **onclick-Handler:** 715
 - **addEventListener-Bindings:** 128
-- **HTML-Top-Level-Functions:** 849
-- **TS-Exports:** 408
+- **HTML-Top-Level-Functions:** 848
+- **TS-Exports:** 415
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -303,6 +303,16 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `setView` (line 54)
 - `fitViewToRooms` (line 88)
 - `switchFloor` (line 108)
+
+### src/legacy/welcomeFlow.ts
+
+- `startWelcomeFlow` (line 58)
+- `renderWelcomeStep` (line 65)
+- `welcomeStep` (line 112)
+- `closeWelcomeFlow` (line 117)
+- `_resetForTests` (line 131)
+- `_getCurrentIdx` (line 136)
+- `WELCOME_STEP_COUNT` (line 140)
 
 ### src/modes/planningMode.ts
 
