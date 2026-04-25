@@ -3,10 +3,10 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 ## Zusammenfassung
 
-- **onclick-Handler:** 726
+- **onclick-Handler:** 724
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 851
-- **TS-Exports:** 351
+- **TS-Exports:** 353
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -203,6 +203,11 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `calcHealthScore` (line 68)
 - `renderComplianceBadges` (line 124)
 - `showHealthDetails` (line 167)
+
+### src/legacy/errorBoundary.ts
+
+- `showCrashModal` (line 18)
+- `_resetCrashShownForTests` (line 47)
 
 ### src/legacy/toast.ts
 
@@ -565,65 +570,65 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 | Function | Line |
 |---|---|
 | `_loadTelemetryScripts` | 2342 |
-| `_showCrashModal` | 2422 |
-| `loadSharedFurniture` | 2619 |
-| `saveSharedFurniture` | 2636 |
-| `deleteSharedFurniture` | 2663 |
-| `aiFetch` | 2680 |
-| `callAI` | 2707 |
-| `aiText` | 2755 |
-| `aiJSON` | 2761 |
-| `testAIConnection` | 2775 |
-| `loadCustom` | 2817 |
-| `saveCustom` | 2818 |
-| `getCatalog` | 2828 |
-| `getArchCatalog` | 2836 |
-| `getSecurityCatalog` | 2837 |
-| `toggleCatGroup` | 2838 |
-| `findItem` | 2850 |
-| `m2px` | 2878 |
-| `px2m` | 2879 |
-| `wx2cx` | 2880 |
-| `wy2cy` | 2881 |
-| `cx2wx` | 2882 |
-| `cy2wy` | 2883 |
-| `snapM` | 2884 |
-| `resizeCv` | 2886 |
-| `draw2D` | 2892 |
-| `drawGrid` | 2992 |
-| `drawRoom2D` | 3015 |
-| `drawGround2D` | 3077 |
-| `hitGround` | 3114 |
-| `hitGroundResizeHandle` | 3131 |
-| `_getImgCached` | 3146 |
-| `drawObj2D` | 3157 |
-| `drawMeasure` | 3259 |
-| `hitObj` | 3280 |
-| `hitRoom` | 3290 |
-| `hitRoomResizeHandle` | 3298 |
-| `startCatalogDrag` | 3564 |
-| `placeFromCatalog` | 3574 |
-| `quickAddRoom` | 3598 |
-| `addRoom` | 3604 |
-| `addObject` | 3626 |
-| `removeRoom` | 3650 |
-| `quickAddGround` | 3658 |
-| `addGround` | 3668 |
-| `removeGround` | 3685 |
-| `selectGround` | 3694 |
-| `openGroundMaterialPicker` | 3704 |
-| `closeGroundMaterialPicker` | 3724 |
-| `openGroundPropPanel` | 3730 |
-| `closeGroundPropPanel` | 3776 |
-| `syncGroundPropPanel` | 3780 |
-| `deleteSelectedGround` | 3790 |
-| `setSelection` | 3795 |
-| `updateSelBotBar` | 3823 |
-| `applySelProps` | 3859 |
-| `rotateSel` | 3869 |
-| `dupSel` | 3888 |
-| `deleteSel` | 3894 |
-| `removeFreeWall` | 3902 |
+| `_showCrashModal` | 2432 |
+| `loadSharedFurniture` | 2625 |
+| `saveSharedFurniture` | 2642 |
+| `deleteSharedFurniture` | 2669 |
+| `aiFetch` | 2686 |
+| `callAI` | 2713 |
+| `aiText` | 2761 |
+| `aiJSON` | 2767 |
+| `testAIConnection` | 2781 |
+| `loadCustom` | 2823 |
+| `saveCustom` | 2824 |
+| `getCatalog` | 2834 |
+| `getArchCatalog` | 2842 |
+| `getSecurityCatalog` | 2843 |
+| `toggleCatGroup` | 2844 |
+| `findItem` | 2856 |
+| `m2px` | 2884 |
+| `px2m` | 2885 |
+| `wx2cx` | 2886 |
+| `wy2cy` | 2887 |
+| `cx2wx` | 2888 |
+| `cy2wy` | 2889 |
+| `snapM` | 2890 |
+| `resizeCv` | 2892 |
+| `draw2D` | 2898 |
+| `drawGrid` | 2998 |
+| `drawRoom2D` | 3021 |
+| `drawGround2D` | 3083 |
+| `hitGround` | 3120 |
+| `hitGroundResizeHandle` | 3137 |
+| `_getImgCached` | 3152 |
+| `drawObj2D` | 3163 |
+| `drawMeasure` | 3265 |
+| `hitObj` | 3286 |
+| `hitRoom` | 3296 |
+| `hitRoomResizeHandle` | 3304 |
+| `startCatalogDrag` | 3570 |
+| `placeFromCatalog` | 3580 |
+| `quickAddRoom` | 3604 |
+| `addRoom` | 3610 |
+| `addObject` | 3632 |
+| `removeRoom` | 3656 |
+| `quickAddGround` | 3664 |
+| `addGround` | 3674 |
+| `removeGround` | 3691 |
+| `selectGround` | 3700 |
+| `openGroundMaterialPicker` | 3710 |
+| `closeGroundMaterialPicker` | 3730 |
+| `openGroundPropPanel` | 3736 |
+| `closeGroundPropPanel` | 3782 |
+| `syncGroundPropPanel` | 3786 |
+| `deleteSelectedGround` | 3796 |
+| `setSelection` | 3801 |
+| `updateSelBotBar` | 3829 |
+| `applySelProps` | 3865 |
+| `rotateSel` | 3875 |
+| `dupSel` | 3894 |
+| `deleteSel` | 3900 |
+| `removeFreeWall` | 3908 |
 
 ---
 

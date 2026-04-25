@@ -21,6 +21,14 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Refactor (Strangler P17)
 
+- **error-boundary extrahiert** nach `src/legacy/errorBoundary.ts` (P17.4).
+  `_showCrashModal` (~14 LOC) wandert in TS strict + 7 Vitest-Tests.
+  Listener-Registrierung (`window.addEventListener('error'/'unhandledrejection',
+  …)`) bleibt **bewusst inline** — Boot-Time-Coverage darf nicht durch
+  Module-Boot-Verzögerung verloren gehen. Inline-`_showCrashModal` ist
+  jetzt ein Boot-Shim der via `window.showCrashModal` aufs Modul
+  resolved oder console-only-Fallback bei Boot-Race. Bundle: −451 B
+  raw / −35 B gz.
 - **aiMessages extrahiert** nach `src/legacy/aiMessages.ts` (P17.3).
   `addMsg` (74 Caller) + `renderAIText` (XSS-hardening + Markdown).
   +14 Vitest-Tests inkl. XSS-Regression. Pure DOM, kein Closure-Wrap
