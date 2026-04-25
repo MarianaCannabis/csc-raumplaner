@@ -15943,85 +15943,14 @@ function _computeSceneBounds(){
     w:maxX-minX, d:maxZ-minZ };
 }
 
+// P17.9: renderHighResPreset + _renderSceneToDataURL extrahiert nach
+// src/legacy/renderPresets.ts (erstes P17-Modul mit Three.js-Touch).
+// Closure-Wrap in main.ts liefert scene + _computeSceneBounds zur
+// Aufrufzeit. Tests mocken WebGLRenderer (jsdom hat keinen Context).
 function renderHighResPreset(preset, defaultW, defaultH){
-  const sel = document.getElementById('hr-size');
-  let W = defaultW, H = defaultH;
-  if(sel && sel.value){
-    const parts = sel.value.split('x');
-    if(parts.length===2){ W = +parts[0]||W; H = +parts[1]||H; }
+  if(typeof window.renderHighResPreset === 'function' && window.renderHighResPreset !== renderHighResPreset){
+    return window.renderHighResPreset(preset, defaultW, defaultH);
   }
-  const status = document.getElementById('hr-status');
-  if(status) status.textContent = '⏳ Rendere '+W+'×'+H+' ('+preset+')…';
-  // Defer so the status text paints before the synchronous render work.
-  setTimeout(()=>{
-    try {
-      const url = _renderSceneToDataURL(preset, W, H);
-      const link = Object.assign(document.createElement('a'), {
-        href: url,
-        download: (projName||'projekt').replace(/[^a-z0-9]/gi,'_')+'_'+preset+'_'+W+'x'+H+'.png',
-      });
-      link.click();
-      if(status) status.textContent = '✅ PNG heruntergeladen ('+preset+', '+W+'×'+H+')';
-      toast('📸 '+preset+' — '+W+'×'+H+' gespeichert','g');
-    } catch(err){
-      console.warn('[csc] highres render failed', err);
-      if(status) status.textContent = '❌ Fehler: '+(err&&err.message||err);
-      toast('Render fehlgeschlagen','r');
-    }
-  }, 50);
-}
-
-function _renderSceneToDataURL(preset, width, height){
-  if(!window.THREE || !scene) throw new Error('Three.js/Szene nicht bereit');
-  const bounds = _computeSceneBounds();
-  // Spawn an isolated renderer against a detached canvas.
-  const canvas = document.createElement('canvas');
-  canvas.width = width; canvas.height = height;
-  const r = new THREE.WebGLRenderer({ canvas, antialias:true, preserveDrawingBuffer:true, alpha:false });
-  r.setPixelRatio(1); // explicit — we already sized the canvas exactly
-  r.setSize(width, height, false);
-  r.shadowMap.enabled = true;
-  r.shadowMap.type = THREE.PCFSoftShadowMap;
-  r.toneMapping = THREE.ACESFilmicToneMapping;
-  r.toneMappingExposure = 0.9;
-  // Build preset camera
-  const aspect = width / height;
-  let cam;
-  const maxDim = Math.max(bounds.w, bounds.d, bounds.maxY);
-  if(preset === 'above'){
-    // Orthographic top-down, sized to bbox with margin
-    const halfW = bounds.w/2 * 1.15;
-    const halfD = bounds.d/2 * 1.15;
-    // Fit the wider of the two sides to the requested aspect so nothing clips
-    const wantH = halfW / aspect;
-    const h = Math.max(wantH, halfD);
-    const w = h * aspect;
-    cam = new THREE.OrthographicCamera(-w, w, h, -h, 0.1, 200);
-    cam.position.set(bounds.cx, Math.max(bounds.maxY*2, 20), bounds.cz);
-    cam.lookAt(bounds.cx, 0, bounds.cz);
-  } else {
-    cam = new THREE.PerspectiveCamera(55, aspect, 0.1, 300);
-    if(preset === 'front'){
-      // Looking along +Z: camera at -Z side
-      cam.position.set(bounds.cx, bounds.maxY*0.7, bounds.minZ - maxDim*0.9);
-      cam.lookAt(bounds.cx, bounds.maxY*0.4, bounds.cz);
-    } else if(preset === 'side'){
-      cam.position.set(bounds.maxX + maxDim*0.9, bounds.maxY*0.7, bounds.cz);
-      cam.lookAt(bounds.cx, bounds.maxY*0.4, bounds.cz);
-    } else {
-      // perspective — 3/4 isometric
-      cam.position.set(bounds.maxX + maxDim*0.7, maxDim*0.8, bounds.minZ - maxDim*0.7);
-      cam.lookAt(bounds.cx, bounds.maxY*0.3, bounds.cz);
-    }
-  }
-  r.render(scene, cam);
-  const dataUrl = canvas.toDataURL('image/png');
-  // Release the GL context so the browser reclaims it promptly. Without
-  // this, spinning up multiple high-res renders leaks WebGL contexts and
-  // the browser eventually refuses to create new ones.
-  r.forceContextLoss();
-  r.dispose();
-  return dataUrl;
 }
 
 

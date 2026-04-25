@@ -5,8 +5,8 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 - **onclick-Handler:** 722
 - **addEventListener-Bindings:** 128
-- **HTML-Top-Level-Functions:** 851
-- **TS-Exports:** 369
+- **HTML-Top-Level-Functions:** 850
+- **TS-Exports:** 371
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -223,6 +223,11 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `doRename` (line 88)
 - `startInlineProjectRename` (line 101)
 - `finishInlineProjectRename` (line 118)
+
+### src/legacy/renderPresets.ts
+
+- `renderHighResPreset` (line 80)
+- `renderSceneToDataURL` (line 129)
 
 ### src/legacy/saves.ts
 

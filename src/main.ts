@@ -55,6 +55,7 @@ import { updateSbStatus, setSbMsg } from './legacy/sbStatus.js';
 import * as inlineRename from './legacy/inlineRename.js';
 import * as authUI from './legacy/authUI.js';
 import * as saves from './legacy/saves.js';
+import * as renderPresets from './legacy/renderPresets.js';
 import * as complianceBridge from './legacy/complianceBridge.js';
 import type { CompletedRoom, SceneObject } from './legacy/types.js';
 import * as authSupabase from './auth/supabase.js';
@@ -187,6 +188,10 @@ declare global {
     delSave: (name: string) => void;
     saveAsUserTemplate: () => void;
     doSaveUserTemplate: () => Promise<void>;
+    /** P17.9: High-Res-Render-Preset aus src/legacy/renderPresets.ts.
+     *  Three.js-touch — erstes P17-Modul mit WebGL-Pipeline. Closure-Wrap
+     *  liefert scene/_computeSceneBounds zur Aufrufzeit. */
+    renderHighResPreset: (preset: string, defaultW: number, defaultH: number) => void;
   }
 }
 if (typeof window !== 'undefined' && (window as any).THREE) {
@@ -334,6 +339,38 @@ window.updateSavedUI = () => saves.updateSavedUI(buildLocalSaveDeps());
 window.delSave = (name) => saves.delSave(name, buildLocalSaveDeps());
 window.saveAsUserTemplate = () => saves.saveAsUserTemplate(buildTemplateSaveDeps());
 window.doSaveUserTemplate = () => saves.doSaveUserTemplate(buildTemplateSaveDeps());
+
+// P17.9: High-Res-Render — Closure-Wrap. Liest scene + _computeSceneBounds
+// zur Aufrufzeit (rend3 ist nicht needed im Modul; wir spawnen einen
+// eigenen WebGLRenderer). renderToDataURL ist die Three.js-Pipeline aus
+// dem Modul — closures binden scene + bounds zur Aufrufzeit.
+window.renderHighResPreset = (preset, defaultW, defaultH) => {
+  const w = window as unknown as {
+    scene?: import('three').Scene;
+    _computeSceneBounds?: () => renderPresets.SceneBounds;
+    projName?: string;
+    toast?: (msg: string, type?: string) => void;
+  };
+  renderPresets.renderHighResPreset(preset, defaultW, defaultH, {
+    getSizeOverride: () => {
+      const sel = document.getElementById('hr-size') as HTMLSelectElement | null;
+      return sel?.value || null;
+    },
+    setStatus: (text: string) => {
+      const status = document.getElementById('hr-status');
+      if (status) status.textContent = text;
+    },
+    toast: w.toast ?? (() => {}),
+    projName: w.projName ?? 'Projekt',
+    renderToDataURL: (preset2, width, height) =>
+      renderPresets.renderSceneToDataURL(preset2, width, height, {
+        scene: w.scene ?? null,
+        computeBounds: w._computeSceneBounds ?? (() => {
+          throw new Error('_computeSceneBounds nicht verfügbar');
+        }),
+      }),
+  });
+};
 
 // P17.2: Compliance-Bridge — Closures wrap deps automatisch aus den Legacy-
 // Globals. Inline-Caller in index.html (8 Sites) bleiben so kompatibel ohne
