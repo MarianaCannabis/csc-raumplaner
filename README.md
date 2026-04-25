@@ -103,6 +103,19 @@ docs/
 
 > Performance-Baseline ist v2.4-spezifisch; Hauptoptimierung erfolgt in v2.5 über den in [`docs/P17-JS-SPLIT-PLAN.md`](docs/P17-JS-SPLIT-PLAN.md) dokumentierten JS-Split.
 
+### Lighthouse-Gates (CI)
+
+| Score | Floor | Aktuell (Baseline 2026-04-21) |
+|---|---|---|
+| Accessibility | ≥ 95 | 96 |
+| Best Practices | ≥ 95 | 100 |
+| SEO | ≥ 95 | 100 |
+| Performance | ≥ 50 | 61 (Ziel v2.5+/JS-Split: 90) |
+
+CI-Workflow: `.github/workflows/lighthouse.yml`. Lokal:
+`npm run build && npm run preview &` + `npm run lighthouse` (kein
+Threshold-Fail lokal — nur Reporting).
+
 ### Sonstige Gates (v2.5.0)
 
 | Gate | Ziel | Aktuell |

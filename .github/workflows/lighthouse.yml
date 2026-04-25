@@ -1,0 +1,58 @@
+name: Lighthouse
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm }
+      - run: npm install --no-audit --no-fund
+
+      - name: Build
+        run: npm run build
+
+      - name: Start preview server
+        run: |
+          npm run preview -- --port 4173 > /tmp/preview.log 2>&1 &
+          echo "PREVIEW_PID=$!" >> $GITHUB_ENV
+
+      - name: Wait for preview
+        run: |
+          for i in {1..30}; do
+            if curl -sf http://localhost:4173 > /dev/null; then
+              echo "preview up after ${i}s"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "preview server didn't respond in 30s"
+          cat /tmp/preview.log
+          exit 1
+
+      - name: Lighthouse (with thresholds)
+        env:
+          LH_CI: '1'
+        run: npm run lighthouse
+
+      - name: Stop preview
+        if: always()
+        run: |
+          if [ -n "${PREVIEW_PID:-}" ]; then
+            kill $PREVIEW_PID 2>/dev/null || true
+          fi
+
+      - name: Upload Lighthouse report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: |
+            docs/lighthouse-v2.3-report.html
+            docs/lighthouse-v2.3-summary.json
+          retention-days: 30
