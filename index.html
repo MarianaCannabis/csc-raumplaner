@@ -13235,91 +13235,27 @@ function initPWA(){
 // ════════════════════════════════════════════════════════════════════════
 // P7 ONBOARDING-REWORK — schlanker 3-Step-Welcome
 // ════════════════════════════════════════════════════════════════════════
-// Ersetzt den Legacy-OB_STEPS-Flow für First-Time-User (kürzer + direkter).
-// Das illustrierte OB_STEPS-Tutorial bleibt als Opt-in via Hilfe-Menü.
-const WELCOME_STEPS = [
-  {
-    icon: '🌿',
-    title: 'Willkommen bei CSC Studio Pro',
-    body: 'Entwirf professionelle Grundrisse für Cannabis Social Clubs, Messestände und Events. Drei Wege loszulegen:'+
-          '<ul style="margin:10px 0;padding-left:20px;font-size:12px;line-height:1.7">'+
-          '<li>📋 <b>Fertige Vorlage</b> — 14 Stand-Templates (CSC/Mari-Jane/Dmexco/Boot/Gamescom)</li>'+
-          '<li>⬜ <b>Leer starten</b> — Räume selbst zeichnen</li>'+
-          '<li>📂 <b>Projekt laden</b> — aus Datei oder Cloud</li></ul>',
-  },
-  {
-    icon: '🎯',
-    title: 'Was der Planner kann',
-    body: '<ul style="margin:10px 0;padding-left:20px;font-size:12px;line-height:1.7">'+
-          '<li>Räume zeichnen + möblieren (~260 Rich-Primitive-Items)</li>'+
-          '<li>KCanG-Compliance live prüfen (🌿-Button in der Topbar)</li>'+
-          '<li>Fotos auf Banner/Rückwände hochladen</li>'+
-          '<li>Export als DXF/PDF/IFC/CSV/GLTF</li>'+
-          '<li>Messeordnung als PDF importieren → Claude extrahiert Regeln</li>'+
-          '<li>3D-Rundgang mit WASD + Maus</li></ul>',
-  },
-  {
-    icon: '🚀',
-    title: 'Los geht\'s',
-    body: 'Klick unten auf einen der Start-Wege. Du kannst den Plan jederzeit umwerfen — alles ist umkehrbar via Strg+Z oder 🖼 Visual History.',
-    cta: true,
-  },
-];
-
-let _welcomeIdx = 0;
-
+// P17.17: Welcome-Flow extrahiert nach src/legacy/welcomeFlow.ts.
 function startWelcomeFlow(){
-  // fix/e2e-green: im E2E-Modus nie auto-starten; User-Klick (?-Button)
-  // im Produktions-Mode funktioniert weiterhin, weil E2E-Mode nicht aktiv.
-  if (window.__cscE2E) return;
-  _welcomeIdx = 0;
-  _renderWelcomeStep();
-  openM('m-welcome');
-}
-
-function _renderWelcomeStep(){
-  const s = WELCOME_STEPS[_welcomeIdx];
-  if(!s){ closeWelcomeFlow(); return; }
-  const content = document.getElementById('welcome-step-content');
-  const dots = document.getElementById('welcome-dots');
-  const back = document.getElementById('welcome-back');
-  const next = document.getElementById('welcome-next');
-  if(content){
-    content.innerHTML = '<div style="font-size:32px;text-align:center;margin-bottom:8px">' + s.icon + '</div>' +
-      '<h2 style="text-align:center;margin:0 0 10px;font-size:16px">' + s.title + '</h2>' +
-      '<div style="color:var(--tx2);font-size:12px;line-height:1.5">' + s.body + '</div>' +
-      (s.cta ? '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:14px">' +
-        '<button class="mdl-btn mdl-btn--primary" onclick="_welcomeClose(true);openTemplates()" style="padding:10px 6px;font-size:11px">📋 Vorlage</button>' +
-        '<button class="mdl-btn mdl-btn--primary" onclick="_welcomeClose(true);set2DTool(\'room\')" style="padding:10px 6px;font-size:11px">⬜ Leer</button>' +
-        '<button class="mdl-btn" onclick="_welcomeClose(true);showRight(\'save\')" style="padding:10px 6px;font-size:11px">📂 Laden</button>' +
-        '</div>' : '');
+  if(typeof window.startWelcomeFlow === 'function' && window.startWelcomeFlow !== startWelcomeFlow){
+    return window.startWelcomeFlow();
   }
-  if(dots){
-    dots.innerHTML = WELCOME_STEPS.map((_, i) => '<span style="width:8px;height:8px;border-radius:50%;background:' +
-      (i === _welcomeIdx ? 'var(--gr)' : 'var(--bd)') + '"></span>').join('');
-  }
-  if(back) back.style.display = _welcomeIdx > 0 ? 'inline-block' : 'none';
-  if(next) next.textContent = _welcomeIdx < WELCOME_STEPS.length - 1 ? 'Weiter →' : '✓ Fertig';
-  if(next) next.onclick = () => _welcomeIdx < WELCOME_STEPS.length - 1 ? _welcomeStep(1) : _welcomeClose(true);
 }
-
+function closeWelcomeFlow(){
+  if(typeof window.closeWelcomeFlow === 'function' && window.closeWelcomeFlow !== closeWelcomeFlow){
+    return window.closeWelcomeFlow();
+  }
+}
 function _welcomeStep(delta){
-  _welcomeIdx = Math.max(0, Math.min(WELCOME_STEPS.length - 1, _welcomeIdx + delta));
-  _renderWelcomeStep();
-}
-
-function _welcomeClose(mark){
-  const cb = document.getElementById('welcome-never');
-  if(mark){
-    try {
-      localStorage.setItem('csc-onboarded', '1');
-      if(cb && cb.checked) localStorage.setItem('csc-welcome-never', '1');
-    } catch(e){}
+  if(typeof window._welcomeStep === 'function' && window._welcomeStep !== _welcomeStep){
+    return window._welcomeStep(delta);
   }
-  closeM('m-welcome');
 }
-
-function closeWelcomeFlow(){ _welcomeClose(true); }
+function _welcomeClose(mark){
+  if(typeof window._welcomeClose === 'function' && window._welcomeClose !== _welcomeClose){
+    return window._welcomeClose(mark);
+  }
+}
 
 // Legacy OB_STEPS (illustrated tutorial) — bleibt als Opt-in via
 // Hilfe-Menü '▶ Illustriertes Intro'. Kein First-Time-Auto-Trigger mehr.

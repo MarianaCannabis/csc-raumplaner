@@ -63,6 +63,7 @@ import * as undoRedo from './legacy/undoRedo.js';
 import * as viewControls from './legacy/viewControls.js';
 import * as theme from './legacy/theme.js';
 import * as changelog from './legacy/changelog.js';
+import * as welcomeFlow from './legacy/welcomeFlow.js';
 import * as complianceBridge from './legacy/complianceBridge.js';
 import type { CompletedRoom, SceneObject } from './legacy/types.js';
 import * as authSupabase from './auth/supabase.js';
@@ -243,6 +244,12 @@ declare global {
     _pushVisualHistory: (state: string) => void;
     openVisualHistory: () => void;
     _restoreFromVisualHistory: (idx: number) => void;
+    /** P17.17: Welcome-Flow aus src/legacy/welcomeFlow.ts. Multi-Step
+     *  Onboarding; localStorage-Persistenz für 'never-show-again'. */
+    startWelcomeFlow: () => void;
+    closeWelcomeFlow: () => void;
+    _welcomeStep: (delta: number) => void;
+    _welcomeClose: (mark: boolean) => void;
   }
 }
 if (typeof window !== 'undefined' && (window as any).THREE) {
@@ -572,6 +579,24 @@ window.openVisualHistory = () => {
   const w = window as unknown as { openM?: (id: string) => void };
   changelog.openVisualHistory({ openM: w.openM ?? (() => {}) });
 };
+// P17.17: Welcome-Flow.
+function buildWelcomeDeps(): welcomeFlow.WelcomeFlowDeps {
+  const w = window as unknown as {
+    __cscE2E?: boolean;
+    openM?: (id: string) => void;
+    closeM?: (id: string) => void;
+  };
+  return {
+    e2eMode: !!w.__cscE2E,
+    openM: w.openM ?? (() => {}),
+    closeM: w.closeM ?? (() => {}),
+  };
+}
+window.startWelcomeFlow = () => welcomeFlow.startWelcomeFlow(buildWelcomeDeps());
+window.closeWelcomeFlow = () => welcomeFlow.closeWelcomeFlow(buildWelcomeDeps());
+window._welcomeStep = (delta) => welcomeFlow.welcomeStep(delta, buildWelcomeDeps());
+window._welcomeClose = (mark) => welcomeFlow.closeWelcomeFlow(buildWelcomeDeps(), mark);
+
 window._restoreFromVisualHistory = (idx: number) => {
   const w = window as unknown as {
     _restoreSnapshot?: (state: string) => void;
