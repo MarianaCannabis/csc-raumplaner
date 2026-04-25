@@ -5,8 +5,8 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 - **onclick-Handler:** 715
 - **addEventListener-Bindings:** 128
-- **HTML-Top-Level-Functions:** 848
-- **TS-Exports:** 415
+- **HTML-Top-Level-Functions:** 847
+- **TS-Exports:** 422
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -276,6 +276,16 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 ### src/legacy/toast.ts
 
 - `toast` (line 16)
+
+### src/legacy/tutorial.ts
+
+- `startTutorial` (line 79)
+- `endTutorial` (line 87)
+- `tutNav` (line 94)
+- `renderTutStep` (line 110)
+- `_resetForTests` (line 155)
+- `_getCurrentStep` (line 159)
+- `TUT_STEP_COUNT` (line 163)
 
 ### src/legacy/undoRedo.ts
 

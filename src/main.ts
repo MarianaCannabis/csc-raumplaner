@@ -64,6 +64,7 @@ import * as viewControls from './legacy/viewControls.js';
 import * as theme from './legacy/theme.js';
 import * as changelog from './legacy/changelog.js';
 import * as welcomeFlow from './legacy/welcomeFlow.js';
+import * as tutorial from './legacy/tutorial.js';
 import * as complianceBridge from './legacy/complianceBridge.js';
 import type { CompletedRoom, SceneObject } from './legacy/types.js';
 import * as authSupabase from './auth/supabase.js';
@@ -250,6 +251,11 @@ declare global {
     closeWelcomeFlow: () => void;
     _welcomeStep: (delta: number) => void;
     _welcomeClose: (mark: boolean) => void;
+    /** P17.18: Tutorial aus src/legacy/tutorial.ts. Step-basiertes
+     *  Overlay mit Highlight auf Topbar/Sidebar-Elementen. */
+    startTutorial: () => void;
+    endTutorial: () => void;
+    tutNav: (dir: number) => void;
   }
 }
 if (typeof window !== 'undefined' && (window as any).THREE) {
@@ -596,6 +602,14 @@ window.startWelcomeFlow = () => welcomeFlow.startWelcomeFlow(buildWelcomeDeps())
 window.closeWelcomeFlow = () => welcomeFlow.closeWelcomeFlow(buildWelcomeDeps());
 window._welcomeStep = (delta) => welcomeFlow.welcomeStep(delta, buildWelcomeDeps());
 window._welcomeClose = (mark) => welcomeFlow.closeWelcomeFlow(buildWelcomeDeps(), mark);
+
+// P17.18: Tutorial.
+window.startTutorial = () => {
+  const w = window as unknown as { closeHelp?: () => void };
+  tutorial.startTutorial({ closeHelp: w.closeHelp });
+};
+window.endTutorial = tutorial.endTutorial;
+window.tutNav = tutorial.tutNav;
 
 window._restoreFromVisualHistory = (idx: number) => {
   const w = window as unknown as {
