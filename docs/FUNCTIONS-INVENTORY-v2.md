@@ -180,9 +180,9 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 ### src/i18n/index.ts
 
-- `t` (line 45)
-- `setLang` (line 49)
-- `availableLanguages` (line 56)
+- `t` (line 70)
+- `setLang` (line 74)
+- `availableLanguages` (line 89)
 
 ### src/icons/lucide.ts
 
