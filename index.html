@@ -4465,28 +4465,10 @@ function resize3D(){
 // ════════════════════════════════════════════════════════════════════════
 // VIEW SWITCHING
 // ════════════════════════════════════════════════════════════════════════
+// P17.14: setView extrahiert nach src/legacy/viewControls.ts.
 function setView(v){
-  currentView=v;
-  const h=document.getElementById('view-hint-3d');
-  if(h) h.style.display=v==='3d'?'inline':'none';
-  // P15 Cluster 4e: neben legacy .active auch BEM .is-active pflegen.
-  ['2d','3d','walk'].forEach(x=>{
-    const el=document.getElementById('vt-'+x); if(!el) return;
-    el.classList.toggle('active',x===v);
-    el.classList.toggle('is-active',x===v);
-  });
-  const is2d=v==='2d';
-  fpCv.style.display=is2d?'block':'none';
-  tCv.style.display=is2d?'none':'block';
-  document.getElementById('mode-pills').style.display=is2d?'flex':'none';
-
-  const fph=document.getElementById('fp-walk');
-  if(v==='walk'){
-    cam3=fpCam3; fph.classList.add('vis'); grid3.visible=false;
-  } else if(v==='3d'){
-    cam3=oCam; fph.classList.remove('vis'); grid3.visible=true; document.exitPointerLock();
-  } else {
-    document.exitPointerLock(); draw2D();
+  if(typeof window.setView === 'function' && window.setView !== setView){
+    return window.setView(v);
   }
 }
 
@@ -5470,13 +5452,11 @@ function renderFloorTabs(){
   }).join('');
 }
 
+// P17.14: switchFloor extrahiert nach src/legacy/viewControls.ts.
 function switchFloor(id){
-  curFloor = id;
-  // Deselect anything from previous floor
-  selId=null; selIsRoom=false; selIsWall=false;
-  renderFloorTabs(); renderLeft(); draw2D(); rebuild3D();
-  updateSelBotBar();
-  toast('🏢 Etage: '+floors.find(f=>f.id===id)?.name,'b');
+  if(typeof window.switchFloor === 'function' && window.switchFloor !== switchFloor){
+    return window.switchFloor(id);
+  }
 }
 
 function confirmFloor(){
@@ -13925,17 +13905,11 @@ document.addEventListener('keydown', e=>{
 // ════════════════════════════════════════════════════════════════════════
 // 8. FIT VIEW
 // ════════════════════════════════════════════════════════════════════════
+// P17.14: fitViewToRooms extrahiert nach src/legacy/viewControls.ts.
 function fitViewToRooms(){
-  if(!rooms.length) return;
-  const allX=rooms.flatMap(r=>[r.x,r.x+r.w]);
-  const allY=rooms.flatMap(r=>[r.y,r.y+r.d]);
-  const minX=Math.min(...allX)-1, maxX=Math.max(...allX)+1;
-  const minY=Math.min(...allY)-1, maxY=Math.max(...allY)+1;
-  const pw=fpCv.width-60, ph=fpCv.height-60;
-  vpZoom=Math.min(pw/(maxX-minX), ph/(maxY-minY), 80);
-  vpX=fpCv.width/2-(minX+maxX)/2*vpZoom;
-  vpY=fpCv.height/2-(minY+maxY)/2*vpZoom;
-  draw2D(); toast('🎯 Ansicht angepasst','b');
+  if(typeof window.fitViewToRooms === 'function' && window.fitViewToRooms !== fitViewToRooms){
+    return window.fitViewToRooms();
+  }
 }
 
 // ════════════════════════════════════════════════════════════════════════
