@@ -5,8 +5,8 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 - **onclick-Handler:** 726
 - **addEventListener-Bindings:** 128
-- **HTML-Top-Level-Functions:** 850
-- **TS-Exports:** 346
+- **HTML-Top-Level-Functions:** 848
+- **TS-Exports:** 349
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -192,6 +192,12 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 ### src/input/keyboard.ts
 
 - `registerGlobalShortcuts` (line 70)
+
+### src/legacy/complianceBridge.ts
+
+- `calcHealthScore` (line 68)
+- `renderComplianceBadges` (line 124)
+- `showHealthDetails` (line 167)
 
 ### src/legacy/toast.ts
 

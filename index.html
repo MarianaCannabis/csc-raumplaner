@@ -15511,96 +15511,32 @@ function renderCustomPanel(el){
 // v3.56 — ECHTZEIT COMPLIANCE / HEALTH SCORE / SMART UX / REALISTIC 3D
 // ════════════════════════════════════════════════════════════════════════
 
-// ── 1. HEALTH SCORE ──────────────────────────────────────────────────
+// P17.2: calcHealthScore / renderComplianceBadges / showHealthDetails
+// extrahiert nach src/legacy/complianceBridge.ts (window-bound in main.ts
+// als Closure-Wrapper über buildComplianceDeps).
+//
+// Boot-Shims (Pattern aus P17.1): das inline-script enthält INDIREKTE
+// Caller (z.B. setTimeout(suggestNextStep, 3000) bei :5378, der intern
+// calcHealthScore aufruft). Vorab-Grep hat die nicht erfasst, weil sie
+// die Function nicht direkt im setTimeout-Argument referenzieren.
+// Die Shims hoisten den Symbol-Namen im inline-script-Scope und
+// resolven zur Aufrufzeit auf window.X (das main.ts setzt). Identitäts-
+// Guard verhindert Recursion vor Module-Boot (no-op statt Crash).
 function calcHealthScore(){
-  // P2.1a: delegate the arithmetic to src/compliance/metrics.ts; side
-  // effects (_healthScore global, #hs-fill / #hs-label DOM) stay here
-  // because they are legacy concerns outside the module's scope.
-  let score;
-  const flags = {
-    autosaveEnabled: !!localStorage.getItem('csc-autosave'),
-    cloudConnected: !!(SB_URL && SB_KEY),
-  };
-  if(window.cscCompliance && window.cscCompliance.metrics && typeof window.cscCompliance.metrics.calcHealthScore === 'function'){
-    try {
-      const b = window.cscCompliance.metrics.calcHealthScore(
-        { rooms: rooms, objects: objects, meta: projMeta },
-        flags
-      );
-      score = b.score;
-    } catch(err){
-      console.warn('[metrics] calcHealthScore delegate failed, using legacy fallback', err);
-    }
+  if(typeof window.calcHealthScore === 'function' && window.calcHealthScore !== calcHealthScore){
+    return window.calcHealthScore();
   }
-  if(score == null){
-    // Legacy fallback — pre-P2.1a inline path (identical math + weights).
-    score = 0;
-    const checks=getKCaNGChecklist();
-    score += (checks.filter(c=>c.passed).length/checks.length)*40;
-    if(rooms.length>=3) score+=15;
-    else if(rooms.length>=1) score+=7;
-    if(objects.length>=10) score+=15;
-    else if(objects.length>=3) score+=7;
-    const secTypes=['sec-cam-ceil','sec-smoke','sec-ext'];
-    score += (secTypes.filter(t=>objects.some(o=>o.typeId===t)).length/secTypes.length)*15;
-    if(flags.autosaveEnabled) score+=8;
-    if(flags.cloudConnected) score+=7;
-    score = Math.round(score);
-  }
-
-  _healthScore = score;
-  const fill=document.getElementById('hs-fill');
-  const label=document.getElementById('hs-label');
-  const col=_healthScore>=80?'#4ade80':_healthScore>=50?'#fbbf24':'#f87171';
-  if(fill){ fill.style.width=_healthScore+'%'; fill.style.background=col; }
-  if(label){ label.textContent=_healthScore+'%'; label.style.color=col; }
-  return _healthScore;
+  return 0;
 }
-
-function showHealthDetails(){
-  const score=calcHealthScore();
-  const checks=getKCaNGChecklist();
-  const missing=checks.filter(c=>!c.passed).map(c=>c.label);
-  const msg='🎯 Projekt-Score: '+score+'%\n\n'
-    +(missing.length?'Noch fehlend:\n'+missing.slice(0,5).map(m=>'• '+m).join('\n')
-      :'✅ Alle wichtigen Anforderungen erfüllt!');
-  addMsg(msg,'sys'); showRight('ai');
-}
-
-// ── 2. ECHTZEIT COMPLIANCE BADGES ─────────────────────────────────
 function renderComplianceBadges(){
-  if(!_realtimeCompliance||currentView!=='2d') return;
-  document.querySelectorAll('.comp-badge').forEach(e=>e.remove());
-  const wrap=document.getElementById('canvas-wrap'); if(!wrap) return;
-
-  // P1.5: drive from the TS registry. If the Vite module hasn't loaded yet
-  // (deferred module), skip rather than run a stale inline copy — the
-  // badges will paint on the next draw2D after main.ts finishes importing.
-  const reg = window.cscCompliance;
-  if(!reg || typeof reg.evaluateForRoom !== 'function'){
-    calcHealthScore();
-    return;
+  if(typeof window.renderComplianceBadges === 'function' && window.renderComplianceBadges !== renderComplianceBadges){
+    return window.renderComplianceBadges();
   }
-
-  const BADGE_W = 22; // step between stacked badges on the same room
-
-  rooms.filter(r=>(r.floorId||'eg')===curFloor).forEach(r=>{
-    const results = reg.evaluateForRoom({rooms:rooms, objects:objects, meta:projMeta}, r);
-    const failing = results.filter(e=>e.passed === false);
-    failing.forEach((entry, i)=>{
-      const cx = wx2cx(r.x + r.w - 0.5) + 2 - i * BADGE_W;
-      const cy = wy2cy(r.y + 0.3) + 2;
-      const badge = document.createElement('div');
-      badge.className = 'comp-badge';
-      badge.style.left = cx + 'px';
-      badge.style.top  = cy + 'px';
-      badge.style.cursor = 'default';
-      badge.textContent = entry.rule.icon || '⚠️';
-      badge.title = (entry.rule.label) + (entry.details ? '\n' + entry.details : '');
-      wrap.appendChild(badge);
-    });
-  });
-  calcHealthScore();
+}
+function showHealthDetails(){
+  if(typeof window.showHealthDetails === 'function' && window.showHealthDetails !== showHealthDetails){
+    return window.showHealthDetails();
+  }
 }
 
 // ── 3. DOPPELKLICK UMBENENNEN ──────────────────────────────────────

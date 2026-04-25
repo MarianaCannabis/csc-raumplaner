@@ -17,6 +17,16 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Refactor (Strangler P17)
 
+- **compliance-bridge extrahiert** nach `src/legacy/complianceBridge.ts`
+  (P17.2). Drei Funktionen: `calcHealthScore`, `renderComplianceBadges`,
+  `showHealthDetails`. Dependencies via DI (kein direktes Lesen von
+  Legacy-Globals im Modul). +14 Vitest-Tests, window-Bindings als
+  Closure-Wrapper in `main.ts` (`buildComplianceDeps()` liest die
+  Legacy-Globals zur Aufrufzeit). Boot-Shims wie in P17.1, weil das
+  inline-script INDIREKTE Caller hat (`setTimeout(suggestNextStep, 3000)`
+  ruft intern `calcHealthScore`). Bundle: −2,745 B raw / −826 B gz.
+  Neuer `src/legacy/types.ts` mit Minimal-Shapes für `CompletedRoom` +
+  `SceneObject` — wird wachsend von Folge-Modulen genutzt.
 - **toast() extrahiert** nach `src/legacy/toast.ts` (P17.1 Pilot).
   3 neue Vitest-Tests, window-Binding in `main.ts` für 304 inline-script-
   Caller. Inline-script behält einen schlanken Boot-Shim (`function toast`

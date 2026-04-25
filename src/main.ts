@@ -49,6 +49,8 @@ import { icon, type IconName } from './icons/lucide.js';
 import { installBridge as installPersistBridge } from './persist/index.js';
 import type { PersistBridge } from './persist/index.js';
 import { toast } from './legacy/toast.js';
+import * as complianceBridge from './legacy/complianceBridge.js';
+import type { CompletedRoom, SceneObject } from './legacy/types.js';
 import * as authSupabase from './auth/supabase.js';
 import * as authState from './auth/state.js';
 import { consumeMagicLinkFromHash } from './auth/magicLink.js';
@@ -140,6 +142,12 @@ declare global {
      *  window-Bindung unten. Folge-Module der P17-Serie hängen sich
      *  an dieselbe Stelle. */
     toast: typeof toast;
+    /** P17.2: Compliance-Bridge — Closure-Wrapper um die deps-DI-Funktionen
+     *  in complianceBridge. Inline-Caller im index.html callen diese ohne
+     *  deps-Argument; der Wrapper liest die Legacy-Globals zur Aufrufzeit. */
+    calcHealthScore: () => number;
+    renderComplianceBadges: () => void;
+    showHealthDetails: () => void;
   }
 }
 if (typeof window !== 'undefined' && (window as any).THREE) {
@@ -147,6 +155,54 @@ if (typeof window !== 'undefined' && (window as any).THREE) {
 }
 // P17.1: toast() global verfügbar machen für die 304 Caller in index.html.
 window.toast = toast;
+
+// P17.2: Compliance-Bridge — Closures wrap deps automatisch aus den Legacy-
+// Globals. Inline-Caller in index.html (8 Sites) bleiben so kompatibel ohne
+// deps-Argument-Migration. Wenn alle Caller migriert sind, kann die Closure
+// entfallen und die DI-Funktionen direkt zugänglich sein.
+function buildComplianceDeps(): complianceBridge.ComplianceBridgeDeps {
+  const w = window as unknown as {
+    rooms?: readonly CompletedRoom[];
+    objects?: readonly SceneObject[];
+    projMeta?: Record<string, unknown>;
+    curFloor?: string;
+    currentView?: '2d' | '3d';
+    _realtimeCompliance?: boolean;
+    SB_URL?: string;
+    SB_KEY?: string;
+    getKCaNGChecklist?: () => Array<{ passed: boolean; label: string }>;
+    wx2cx?: (x: number) => number;
+    wy2cy?: (y: number) => number;
+    cscCompliance?: complianceBridge.ComplianceBridgeDeps['registry'];
+    addMsg?: (msg: string, type: string) => void;
+    showRight?: (panel: string) => void;
+  };
+  return {
+    rooms: w.rooms ?? [],
+    objects: w.objects ?? [],
+    projMeta: w.projMeta ?? {},
+    curFloor: w.curFloor ?? 'eg',
+    currentView: w.currentView ?? '2d',
+    realtimeCompliance: !!w._realtimeCompliance,
+    cloudConnected: !!(w.SB_URL && w.SB_KEY),
+    autosaveEnabled: !!localStorage.getItem('csc-autosave'),
+    getKCaNGChecklist: w.getKCaNGChecklist ?? (() => []),
+    wx2cx: w.wx2cx ?? ((x: number) => x),
+    wy2cy: w.wy2cy ?? ((y: number) => y),
+    registry: w.cscCompliance,
+    addMsg: w.addMsg,
+    showRight: w.showRight,
+  };
+}
+window.calcHealthScore = () => {
+  const score = complianceBridge.calcHealthScore(buildComplianceDeps());
+  // Legacy: ein paar Inline-Sites lesen aus _healthScore. Hier den Wert
+  // synchron in den globalen State zurückspielen, damit kein Drift entsteht.
+  (window as unknown as { _healthScore?: number })._healthScore = score;
+  return score;
+};
+window.renderComplianceBadges = () => complianceBridge.renderComplianceBadges(buildComplianceDeps());
+window.showHealthDetails = () => complianceBridge.showHealthDetails(buildComplianceDeps());
 const _allRules = compliance.listRules();
 const _projectRules = _allRules.filter((r) => (r.scope ?? 'project') === 'project').length;
 const _roomRules = _allRules.filter((r) => r.scope === 'room').length;
