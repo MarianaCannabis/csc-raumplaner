@@ -21,6 +21,11 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Refactor (Strangler P17)
 
+- **userTemplatesRead extrahiert** nach `src/legacy/userTemplatesRead.ts`
+  (P17.11). 3 Funktionen + module-internal Cache: `loadUserTemplates`
+  (TTL 60s), `deleteUserTemplate`, `applyUserTemplate`. Cache-Invalidation-
+  Hook mit P17.8 (saves.ts) verbunden — Save invalidiert Read-Cache automatisch.
+  +12 Vitest-Tests inkl. Cache-Hit/Miss/Invalidation. Bundle: −131 B gz.
 - **export-family extrahiert** nach `src/legacy/exports.ts` (P17.10).
   3 Funktionen: `exportPDF` (HTML/SVG → Print-Window), `exportFurnitureCSV`
   (Detail + Aggregiert mit UTF-8 BOM), `exportBudgetCSV`. +10 Vitest-
