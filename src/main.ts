@@ -58,6 +58,7 @@ import * as saves from './legacy/saves.js';
 import * as renderPresets from './legacy/renderPresets.js';
 import * as exports10 from './legacy/exports.js';
 import * as userTemplatesRead from './legacy/userTemplatesRead.js';
+import * as exports3d from './legacy/exports3d.js';
 import * as complianceBridge from './legacy/complianceBridge.js';
 import type { CompletedRoom, SceneObject } from './legacy/types.js';
 import * as authSupabase from './auth/supabase.js';
@@ -204,6 +205,11 @@ declare global {
     loadUserTemplates: () => Promise<userTemplatesRead.UserTemplate[]>;
     deleteUserTemplate: (id: string) => Promise<void>;
     applyUserTemplate: (id: string) => void;
+    /** P17.12: 3D-Exports (GLTF + DXF) aus src/legacy/exports3d.ts.
+     *  GLTF nutzt three/examples GLTFExporter (npm-bundle), DXF ist
+     *  pure String-Math. */
+    exportGLTF: () => Promise<void>;
+    exportDXF: () => void;
   }
 }
 if (typeof window !== 'undefined' && (window as any).THREE) {
@@ -410,6 +416,38 @@ function buildUserTemplatesUIDeps(): userTemplatesRead.UserTemplatesUIDeps {
 window.loadUserTemplates = () => userTemplatesRead.loadUserTemplates(buildUserTemplatesDeps());
 window.deleteUserTemplate = (id) => userTemplatesRead.deleteUserTemplate(id, buildUserTemplatesUIDeps());
 window.applyUserTemplate = (id) => userTemplatesRead.applyUserTemplate(id, buildUserTemplatesUIDeps());
+
+// P17.12: 3D-Exports (GLTF + DXF).
+window.exportGLTF = () => {
+  const w = window as unknown as { scene?: import('three').Scene; projName?: string; toast?: (m: string, t?: string) => void };
+  return exports3d.exportGLTF({
+    scene: w.scene ?? null,
+    projName: w.projName ?? 'Projekt',
+    toast: w.toast ?? (() => {}),
+  });
+};
+window.exportDXF = () => {
+  const w = window as unknown as {
+    rooms?: import('./legacy/types.js').CompletedRoom[];
+    objects?: import('./legacy/types.js').SceneObject[];
+    walls?: { x1: number; z1: number; x2: number; z2: number }[];
+    measures?: { ax: number; ay: number; bx: number; by: number }[];
+    grounds?: { x: number; y: number; w: number; d: number }[];
+    projName?: string;
+    findItem?: (id: string) => { cat?: string; name?: string; w?: number; d?: number; h?: number } | null | undefined;
+    toast?: (m: string, t?: string) => void;
+  };
+  return exports3d.exportDXF({
+    rooms: w.rooms ?? [],
+    objects: w.objects ?? [],
+    walls: w.walls ?? [],
+    measures: w.measures ?? [],
+    grounds: w.grounds,
+    projName: w.projName ?? 'Projekt',
+    findItem: w.findItem ?? (() => null),
+    toast: w.toast ?? (() => {}),
+  });
+};
 
 window.renderHighResPreset = (preset, defaultW, defaultH) => {
   const w = window as unknown as {
