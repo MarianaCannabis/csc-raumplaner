@@ -60,6 +60,7 @@ import * as exports10 from './legacy/exports.js';
 import * as userTemplatesRead from './legacy/userTemplatesRead.js';
 import * as exports3d from './legacy/exports3d.js';
 import * as undoRedo from './legacy/undoRedo.js';
+import * as viewControls from './legacy/viewControls.js';
 import * as complianceBridge from './legacy/complianceBridge.js';
 import type { CompletedRoom, SceneObject } from './legacy/types.js';
 import * as authSupabase from './auth/supabase.js';
@@ -219,6 +220,12 @@ declare global {
     _undoRedo_redo: () => string | null;
     _undoRedo_canUndo: () => boolean;
     _undoRedo_canRedo: () => boolean;
+    /** P17.14: View-Controls aus src/legacy/viewControls.ts.
+     *  Tightly-coupled mit Three.js + Canvas; Closure-Wrapper schaufelt
+     *  ~10 Legacy-Globals durch. */
+    setView: (v: viewControls.ViewMode) => void;
+    fitViewToRooms: () => void;
+    switchFloor: (id: string) => void;
   }
 }
 if (typeof window !== 'undefined' && (window as any).THREE) {
@@ -441,6 +448,75 @@ undoRedo.setUpdateButtonsCallback(() => {
   const w = window as unknown as { _updUndoBtns?: () => void };
   if (typeof w._updUndoBtns === 'function') w._updUndoBtns();
 });
+// P17.14: View-Controls — drei separate Closure-Wrapper. Größere Anzahl
+// von Legacy-Globals (cam3, scene-helpers, vpZoom, etc.); jeder Wrapper
+// liest die aktuellen Werte zur Aufrufzeit aus window.*.
+window.setView = (v) => {
+  const w = window as unknown as {
+    fpCv?: HTMLCanvasElement;
+    tCv?: HTMLCanvasElement;
+    fpCam3?: unknown;
+    oCam?: unknown;
+    grid3?: { visible: boolean };
+    draw2D?: () => void;
+    currentView?: viewControls.ViewMode;
+    cam3?: unknown;
+  };
+  viewControls.setView(v, {
+    setCurrentView: (val) => { w.currentView = val; },
+    fpCv: w.fpCv ?? null,
+    tCv: w.tCv ?? null,
+    exitPointerLock: () => document.exitPointerLock(),
+    draw2D: w.draw2D ?? (() => {}),
+    setCam3: (cam) => { w.cam3 = cam; },
+    fpCam3: w.fpCam3,
+    oCam: w.oCam,
+    setGrid3Visible: (vis) => { if (w.grid3) w.grid3.visible = vis; },
+  });
+};
+window.fitViewToRooms = () => {
+  const w = window as unknown as {
+    rooms?: import('./legacy/types.js').CompletedRoom[];
+    fpCv?: HTMLCanvasElement;
+    vpZoom?: number; vpX?: number; vpY?: number;
+    draw2D?: () => void;
+    toast?: (msg: string, type?: string) => void;
+  };
+  viewControls.fitViewToRooms({
+    rooms: w.rooms ?? [],
+    fpCv: w.fpCv ?? null,
+    setVpZoom: (v) => { w.vpZoom = v; },
+    setVpX: (v) => { w.vpX = v; },
+    setVpY: (v) => { w.vpY = v; },
+    draw2D: w.draw2D ?? (() => {}),
+    toast: w.toast ?? (() => {}),
+  });
+};
+window.switchFloor = (id) => {
+  const w = window as unknown as {
+    curFloor?: string;
+    selId?: string | null; selIsRoom?: boolean; selIsWall?: boolean;
+    floors?: ReadonlyArray<{ id: string; name: string }>;
+    renderFloorTabs?: () => void;
+    renderLeft?: () => void;
+    draw2D?: () => void;
+    rebuild3D?: () => void;
+    updateSelBotBar?: () => void;
+    toast?: (msg: string, type?: string) => void;
+  };
+  viewControls.switchFloor(id, {
+    setCurFloor: (i) => { w.curFloor = i; },
+    setSel: (s, r, wall) => { w.selId = s; w.selIsRoom = r; w.selIsWall = wall; },
+    floors: w.floors ?? [],
+    renderFloorTabs: w.renderFloorTabs ?? (() => {}),
+    renderLeft: w.renderLeft ?? (() => {}),
+    draw2D: w.draw2D ?? (() => {}),
+    rebuild3D: w.rebuild3D ?? (() => {}),
+    updateSelBotBar: w.updateSelBotBar ?? (() => {}),
+    toast: w.toast ?? (() => {}),
+  });
+};
+
 window._undoRedo_pushSnapshot = undoRedo.pushSnapshot;
 window._undoRedo_undo = undoRedo.undo;
 window._undoRedo_redo = undoRedo.redo;
