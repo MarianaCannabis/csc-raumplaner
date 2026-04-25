@@ -4,6 +4,16 @@ Alle bedeutsamen Änderungen an CSC Studio Pro.
 
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [2.6.5] — 2026-04-25
+
+### Fixed
+
+- **Realtime-Session-Cleanup**: DELETE auf `csc_project_sessions` aus
+  `stopRealtimeCollab` und Sign-out-Path nutzt jetzt `keepalive: true`,
+  damit der Browser das Request beim `beforeunload` nicht mehr mit
+  `NS_BINDING_ABORTED` abbricht. Stale Geister-Sessions in der DB
+  werden vermieden.
+
 ## [2.6.4] — 2026-04-25
 
 ### Fixed
