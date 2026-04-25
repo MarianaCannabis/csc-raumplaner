@@ -21,6 +21,11 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Refactor (Strangler P17)
 
+- **welcome-flow extrahiert** nach `src/legacy/welcomeFlow.ts` (P17.17).
+  3-Step-Onboarding: startWelcomeFlow, welcomeStep, closeWelcomeFlow,
+  renderWelcomeStep. Module-internal _idx-State + WELCOME_STEPS-Array.
+  localStorage-Persistenz für csc-onboarded + csc-welcome-never. +13
+  Vitest-Tests. Bundle: −1,206 B gz.
 - **changelog + visual-history extrahiert** nach `src/legacy/changelog.ts`
   (P17.16). Section A: logChange/getChangelog/loadChangelog/clearChangelog/
   showChangelog mit localStorage-Persistenz. Section B: pushVisualHistory/
