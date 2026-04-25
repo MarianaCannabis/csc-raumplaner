@@ -11557,14 +11557,11 @@ function renderComparePane(side, data){
 // für Cluster 8d (separate Storage-Keys, eigener _darkMode-Flag, eigene
 // Button-State-Updates); hier wird nur die body.classList-Manipulation
 // durch das moderne data-theme-Attribut ersetzt.
+// P17.15: setColorMode extrahiert nach src/legacy/theme.ts.
 function setColorMode(dark){
-  _darkMode = dark;
-  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-  localStorage.setItem('csc-darkmode', dark?'1':'0');
-  const btnD=document.getElementById('btn-dark');
-  const btnL=document.getElementById('btn-light');
-  if(btnD) btnD.className='mdl-btn'+(dark?' mdl-btn--primary':'');
-  if(btnL) btnL.className='mdl-btn'+(!dark?' mdl-btn--primary':'');
+  if(typeof window.setColorMode === 'function' && window.setColorMode !== setColorMode){
+    return window.setColorMode(dark);
+  }
 }
 function loadColorMode(){
   const saved=localStorage.getItem('csc-darkmode');
@@ -20465,31 +20462,18 @@ function deleteObj(id){
 // html[data-theme="light"|"dark"] gesetzt. Die neuen .tb-*-Tokens aus
 // topbar-v2.css hängen an [data-theme], die Legacy-Rules in main.css
 // an body.light-mode — beide Systeme koexistieren.
-function _applyThemeIcon(isLight){
-  const btn=document.getElementById('theme-toggle');
-  if(!btn) return;
-  btn.setAttribute('data-icon', isLight ? 'sun' : 'moon');
-  btn.innerHTML='';
-  const populate=window.cscPopulateIcons;
-  if(typeof populate==='function') populate();
-}
+// P17.15: Theme-Family extrahiert nach src/legacy/theme.ts.
+// _applyThemeIcon ist module-internal (kein eigener Inline-Shim nötig —
+// keine externen Caller).
 function toggleTheme(){
-  // P15 Cluster 8d: body.light-mode-Legacy entfernt — data-theme auf
-  // <html> ist Single-Source-of-Truth (surfaces.css + tokens.css lesen
-  // nur [data-theme="light"]).
-  const current = document.documentElement.getAttribute('data-theme');
-  const isLight = current !== 'light';
-  document.documentElement.setAttribute('data-theme', isLight ? 'light' : 'dark');
-  _applyThemeIcon(isLight);
-  localStorage.setItem('csc-theme', isLight ? 'light' : 'dark');
-  // Redraw canvas with new colors
-  draw2D();
+  if(typeof window.toggleTheme === 'function' && window.toggleTheme !== toggleTheme){
+    return window.toggleTheme();
+  }
 }
 function initTheme(){
-  const saved=localStorage.getItem('csc-theme');
-  const isLight = saved === 'light';
-  document.documentElement.setAttribute('data-theme', isLight ? 'light' : 'dark');
-  _applyThemeIcon(isLight);
+  if(typeof window.initTheme === 'function' && window.initTheme !== initTheme){
+    return window.initTheme();
+  }
 }
 
 

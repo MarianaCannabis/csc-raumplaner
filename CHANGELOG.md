@@ -21,6 +21,11 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Refactor (Strangler P17)
 
+- **theme extrahiert** nach `src/legacy/theme.ts` (P17.15).
+  4 Funktionen (intern + 3 export): `applyThemeIcon`, `toggleTheme`,
+  `initTheme`, `setColorMode`. data-theme als Single-Source-of-Truth
+  (Cluster 8d). +13 Tests inkl. localStorage-Persistenz, Icon-Toggle,
+  setColorMode-Doppel-State (Welcome-Modal-Pfad). Bundle: −187 B gz.
 - **viewControls extrahiert** nach `src/legacy/viewControls.ts` (P17.14).
   3 Funktionen: `setView` (2D/3D/walk-Toggle), `fitViewToRooms`, `switchFloor`.
   Tightly-coupled mit Three.js + Canvas — Closure-Wrapper für ~10 Legacy-
