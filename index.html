@@ -9429,13 +9429,12 @@ async function redeemTeamInvite(teamId){
 // ════════════════════════════════════════════════════════════════════════
 // P9.3: User-generierte Templates (Save/Load/Delete via Supabase)
 // ════════════════════════════════════════════════════════════════════════
+// P17.11: Cache + load/delete/apply nach src/legacy/userTemplatesRead.ts.
+// _userTemplatesCache + _userTemplatesLoadedAt sind jetzt module-internal;
+// die Inline-Shadow-Vars bleiben aber bestehen für rückwärtskompatible
+// Direkt-Reads (keine Caller außer den extrahierten Functions).
 let _userTemplatesCache = [];
 let _userTemplatesLoadedAt = 0;
-
-// P17.8 Section B: saveAsUserTemplate + doSaveUserTemplate extrahiert
-// nach src/legacy/saves.ts. Cache (_userTemplatesCache/_userTemplatesLoadedAt)
-// bleibt inline-side, weil loadUserTemplates noch ein P17-Modul wird.
-// invalidateTemplatesCache-Callback im Closure-Wrap synchronisiert.
 function saveAsUserTemplate(){
   if(typeof window.saveAsUserTemplate === 'function' && window.saveAsUserTemplate !== saveAsUserTemplate){
     return window.saveAsUserTemplate();
@@ -9447,38 +9446,20 @@ async function doSaveUserTemplate(){
   }
 }
 async function loadUserTemplates(){
-  if(!SB_TOKEN) return [];
-  if(_userTemplatesCache.length && Date.now() - _userTemplatesLoadedAt < 60000) return _userTemplatesCache;
-  try {
-    const r = await fetch(SB_URL + '/rest/v1/csc_user_templates?select=*&order=updated_at.desc',
-      { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_TOKEN } });
-    if(!r.ok) return [];
-    _userTemplatesCache = await r.json();
-    _userTemplatesLoadedAt = Date.now();
-    return _userTemplatesCache;
-  } catch(e){ return []; }
+  if(typeof window.loadUserTemplates === 'function' && window.loadUserTemplates !== loadUserTemplates){
+    return window.loadUserTemplates();
+  }
+  return [];
 }
 async function deleteUserTemplate(id){
-  if(!confirm('Vorlage endgültig löschen?')) return;
-  try {
-    await fetch(SB_URL + '/rest/v1/csc_user_templates?id=eq.' + id, {
-      method: 'DELETE',
-      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_TOKEN },
-    });
-    _userTemplatesCache = [];
-    if(typeof openTemplates === 'function') openTemplates();
-    toast('🗑 Vorlage gelöscht','b');
-  } catch(e){ toast('Löschen fehlgeschlagen: ' + e.message,'r'); }
+  if(typeof window.deleteUserTemplate === 'function' && window.deleteUserTemplate !== deleteUserTemplate){
+    return window.deleteUserTemplate(id);
+  }
 }
 async function applyUserTemplate(id){
-  const t = (_userTemplatesCache || []).find(x => x.id === id);
-  if(!t){ toast('Vorlage nicht gefunden','r'); return; }
-  if(!confirm('Vorlage „' + t.name + '" laden? Aktuelle Räume werden ersetzt.')) return;
-  closeM('m-templates');
-  try {
-    loadPD(t.data);
-    toast('✅ Vorlage geladen: ' + t.name,'g');
-  } catch(e){ toast('Laden fehlgeschlagen: ' + e.message,'r'); }
+  if(typeof window.applyUserTemplate === 'function' && window.applyUserTemplate !== applyUserTemplate){
+    return window.applyUserTemplate(id);
+  }
 }
 
 // P9.7 Marketplace: Template laden + Downloads-Counter erhöhen
