@@ -9065,7 +9065,12 @@ async function optimizeLayout(){
 
 // ── 14. KAPAZITÄTS- UND CHECKLISTEN-PANEL ────────────────────────────
 // P8.2: Hilfe-Modal — FAQ + Shortcuts + User-Guide-Link
-function openHelpModal(){ openM('m-help'); }
+// P17.19: openHelpModal extrahiert nach src/legacy/helpModal.ts.
+function openHelpModal(){
+  if(typeof window.openHelpModal === 'function' && window.openHelpModal !== openHelpModal){
+    return window.openHelpModal();
+  }
+}
 
 // P9.2: i18n — beim Sprach-Wechsel betroffene Elements re-labeln.
 // Nicht das ganze DOM re-rendern, sondern nur die Elemente mit
@@ -9609,20 +9614,21 @@ function showCSCPanel(){
 // ════════════════════════════════════════════════════════════════════════
 // INTERAKTIVE ANLEITUNG v3.56
 // ════════════════════════════════════════════════════════════════════════
+// P17.19: openHelp/closeHelp/showHelpPage extrahiert nach src/legacy/helpModal.ts.
 function openHelp(page){
-  document.getElementById('help-overlay').classList.add('open');
-  showHelpPage(page||'start');
+  if(typeof window.openHelp === 'function' && window.openHelp !== openHelp){
+    return window.openHelp(page);
+  }
 }
 function closeHelp(){
-  document.getElementById('help-overlay').classList.remove('open');
+  if(typeof window.closeHelp === 'function' && window.closeHelp !== closeHelp){
+    return window.closeHelp();
+  }
 }
 function showHelpPage(id){
-  document.querySelectorAll('.help-page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.help-item').forEach(i=>i.classList.remove('active'));
-  const page=document.getElementById('hp-'+id);
-  if(page) page.classList.add('active');
-  const item=document.querySelector('[data-page="'+id+'"]');
-  if(item){ item.classList.add('active'); item.scrollIntoView({block:'nearest'}); }
+  if(typeof window.showHelpPage === 'function' && window.showHelpPage !== showHelpPage){
+    return window.showHelpPage(id);
+  }
 }
 function searchHelp(q){
   const pages=document.querySelectorAll('.help-page');

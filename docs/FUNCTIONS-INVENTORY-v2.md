@@ -6,7 +6,7 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 - **onclick-Handler:** 715
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 847
-- **TS-Exports:** 422
+- **TS-Exports:** 426
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -240,6 +240,13 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 - `exportGLTF` (line 58)
 - `exportDXF` (line 103)
+
+### src/legacy/helpModal.ts
+
+- `openHelpModal` (line 14)
+- `openHelp` (line 18)
+- `closeHelp` (line 24)
+- `showHelpPage` (line 29)
 
 ### src/legacy/inlineRename.ts
 

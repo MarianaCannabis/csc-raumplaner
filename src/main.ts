@@ -65,6 +65,7 @@ import * as theme from './legacy/theme.js';
 import * as changelog from './legacy/changelog.js';
 import * as welcomeFlow from './legacy/welcomeFlow.js';
 import * as tutorial from './legacy/tutorial.js';
+import * as helpModal from './legacy/helpModal.js';
 import * as complianceBridge from './legacy/complianceBridge.js';
 import type { CompletedRoom, SceneObject } from './legacy/types.js';
 import * as authSupabase from './auth/supabase.js';
@@ -256,6 +257,12 @@ declare global {
     startTutorial: () => void;
     endTutorial: () => void;
     tutNav: (dir: number) => void;
+    /** P17.19: Help-Modal-Family aus src/legacy/helpModal.ts. Zwei
+     *  separate Help-Systeme (#m-help via openM + #help-overlay). */
+    openHelpModal: () => void;
+    openHelp: (page?: string) => void;
+    closeHelp: () => void;
+    showHelpPage: (id: string) => void;
   }
 }
 if (typeof window !== 'undefined' && (window as any).THREE) {
@@ -610,6 +617,16 @@ window.startTutorial = () => {
 };
 window.endTutorial = tutorial.endTutorial;
 window.tutNav = tutorial.tutNav;
+
+// P17.19: Help-Modal-Family. openHelp/closeHelp/showHelpPage sind pure
+// DOM, openHelpModal nutzt openM via Closure.
+window.openHelpModal = () => {
+  const w = window as unknown as { openM?: (id: string) => void };
+  helpModal.openHelpModal({ openM: w.openM ?? (() => {}) });
+};
+window.openHelp = helpModal.openHelp;
+window.closeHelp = helpModal.closeHelp;
+window.showHelpPage = helpModal.showHelpPage;
 
 window._restoreFromVisualHistory = (idx: number) => {
   const w = window as unknown as {
