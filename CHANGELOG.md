@@ -8,6 +8,14 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Build (Pfad B — Bundle-Ziel-Sprint)
 
+- **i18n-Locales lazy-loaded** (Sub-Task 2): EN/NL/ES werden erst bei
+  `setLang()` nachgeladen, DE bleibt eager (Default + Fallback). `t()`
+  fällt auf DE zurück solange ein Locale noch nicht im Cache ist.
+  `setLang()` ist jetzt async — Caller (`<select onchange>` + Quick-Switch
+  Menü) ignorieren den Return, also kein Bruch. Beim Boot mit
+  preferred-non-DE wird das Locale ohne await geladen + ein
+  `csc-lang-change`-Event gefeuert sobald es da ist. Initial-Bundle gz:
+  −__I18N_DELTA__.
 - **GLTFExporter lazy-loaded** (Sub-Task 1): static `import` aus `src/main.ts`
   entfernt; eager-Bridge `window.THREE.GLTFExporter = …` durch
   `window.cscLoadGLTFExporter()` ersetzt (Promise-cached). Beim ersten
