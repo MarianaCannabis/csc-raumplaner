@@ -66,6 +66,43 @@ export class TableMissingError extends Error {
   }
 }
 
+/**
+ * PostgREST-Error-Body lesen und in eine sprechende Exception umwandeln.
+ * Hotfix v2.6.4: PGRST204 ("Column not found in schema cache") tritt auf
+ * wenn das Frontend ein Feld sendet das in der DB fehlt. Im konkreten
+ * Fall war das `thumbnail` — Migration 0008 ergänzt die Spalte. Der Hint
+ * macht den Operator-Fix sofort sichtbar statt nur "HTTP 400" zu zeigen.
+ *
+ * Andere PostgREST-Codes werden mit Code+Message in die Fehlermeldung
+ * gerendert. Wenn der Body nicht parsebar ist, fallen wir auf den HTTP-
+ * Status zurück (gleiches Verhalten wie vor v2.6.4).
+ */
+interface PostgrestErrorBody { code?: string; message?: string; hint?: string }
+async function _postgrestError(scope: string, r: Response): Promise<Error> {
+  let parsed: PostgrestErrorBody | null = null;
+  try {
+    parsed = (await r.clone().json()) as PostgrestErrorBody;
+  } catch {
+    /* nicht-JSON Body → fallback unten */
+  }
+  if (parsed && typeof parsed.code === 'string') {
+    if (parsed.code === 'PGRST204') {
+      return new Error(
+        `${scope} HTTP ${r.status} (PGRST204 – Column not found in schema cache). ` +
+          (parsed.message ? `Detail: ${parsed.message}. ` : '') +
+          'Migration 0008_add_project_thumbnail.sql nicht angewandt? ' +
+          'Lauf supabase db push oder pasten Sie das SQL im Dashboard.',
+      );
+    }
+    return new Error(
+      `${scope} HTTP ${r.status} (${parsed.code}` +
+        (parsed.message ? ` – ${parsed.message}` : '') +
+        ')',
+    );
+  }
+  return new Error(`${scope} HTTP ${r.status}`);
+}
+
 function buildHeaders(ctx: CloudContext, extra: Record<string, string> = {}): Record<string, string> {
   return {
     apikey: ctx.key,
@@ -159,7 +196,7 @@ export async function saveCloudProject(
       refresh,
       fetchFn,
     );
-    if (!r.ok && r.status !== 204) throw new Error('Cloud-Update HTTP ' + r.status);
+    if (!r.ok && r.status !== 204) throw await _postgrestError('Cloud-Update', r);
     return { id: existingId, created: false };
   }
   // INSERT-Pfad: owner MUSS im Body stehen — siehe CloudSaveBody.owner.
@@ -171,7 +208,7 @@ export async function saveCloudProject(
     refresh,
     fetchFn,
   );
-  if (!r.ok && r.status !== 201 && r.status !== 204) throw new Error('Cloud-Insert HTTP ' + r.status);
+  if (!r.ok && r.status !== 201 && r.status !== 204) throw await _postgrestError('Cloud-Insert', r);
   return { id: null, created: true };
 }
 

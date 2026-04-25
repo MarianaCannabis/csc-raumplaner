@@ -136,6 +136,46 @@ describe('persist/cloudProjects', () => {
     expect(fetchFn).not.toHaveBeenCalled();
   });
 
+  test('saveCloudProject INSERT: PGRST204 → sprechender Fehler mit Migration-Hinweis (v2.6.4)', async () => {
+    const fetchFn = vi
+      .fn()
+      // 1. findProjectByName → leer, also INSERT
+      .mockResolvedValueOnce(mkResponse(200, []))
+      // 2. POST → PGRST204
+      .mockResolvedValueOnce(
+        mkResponse(400, {
+          code: 'PGRST204',
+          message: "Could not find the 'thumbnail' column of 'csc_projects' in the schema cache",
+          hint: null,
+        }),
+      );
+    await expect(
+      cloud.saveCloudProject(
+        CTX,
+        { name: 'P', data: {}, owner: 'user-1', thumbnail: 'data:image/jpeg;base64,/9j/' },
+        undefined,
+        fetchFn as unknown as typeof fetch,
+      ),
+    ).rejects.toThrow(/PGRST204[\s\S]*Migration 0008/);
+  });
+
+  test('saveCloudProject INSERT: nicht-PGRST204 PostgREST-Fehler wird mit Code rendered', async () => {
+    const fetchFn = vi
+      .fn()
+      .mockResolvedValueOnce(mkResponse(200, []))
+      .mockResolvedValueOnce(
+        mkResponse(400, { code: 'PGRST123', message: 'Some other error' }),
+      );
+    await expect(
+      cloud.saveCloudProject(
+        CTX,
+        { name: 'P', data: {}, owner: 'user-1' },
+        undefined,
+        fetchFn as unknown as typeof fetch,
+      ),
+    ).rejects.toThrow(/PGRST123[\s\S]*Some other error/);
+  });
+
   test('saveCloudProject PATCH: Eingabe-body wird nicht mutiert (defensive)', async () => {
     const fetchFn = vi
       .fn()
