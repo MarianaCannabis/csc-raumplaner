@@ -9256,10 +9256,14 @@ async function deleteMyAccount(){
       method: 'DELETE',
       headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_TOKEN },
     });
-    // Realtime-Sessions löschen
+    // Realtime-Sessions löschen.
+    // Hotfix v2.6.5: keepalive analog zu stopRealtimeCollab — der Account-
+    // Delete kann während Page-Unload (Logout-Redirect) feuern, sonst
+    // NS_BINDING_ABORTED und stale Geister-Session in der DB.
     await fetch(SB_URL + '/rest/v1/csc_project_sessions?user_id=eq.' + SB_USER.id, {
       method: 'DELETE',
       headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_TOKEN },
+      keepalive: true,
     }).catch(()=>{});
     // Shared-Furniture vom User löschen (best-effort)
     await fetch(SB_URL + '/rest/v1/csc_shared_furniture?created_by=eq.' + (SB_USER.email || SB_USER.id), {
@@ -21144,11 +21148,17 @@ function startRealtimeCollab(){
 function stopRealtimeCollab(){
   if(_collabHeartbeatTimer){ clearInterval(_collabHeartbeatTimer); _collabHeartbeatTimer = null; }
   if(_collabPollTimer){ clearInterval(_collabPollTimer); _collabPollTimer = null; }
-  // Delete eigene Session beim Leave
+  // Delete eigene Session beim Leave.
+  // Hotfix v2.6.5: keepalive: true macht das DELETE unload-resistent.
+  // Ohne den Flag bricht Firefox/Chrome das Request beim beforeunload mit
+  // NS_BINDING_ABORTED ab → stale Realtime-Session bleibt in der DB bis
+  // last_ping-Filter sie auskickt. keepalive ist genau für dieses
+  // "Cleanup beim Tab-Close"-Pattern gedacht.
   if(SB_URL && SB_KEY && SB_TOKEN && SB_USER){
     fetch(SB_URL + '/rest/v1/csc_project_sessions?user_id=eq.' + SB_USER.id + '&project_name=eq.' + encodeURIComponent(projName||'Projekt'), {
       method: 'DELETE',
       headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_TOKEN },
+      keepalive: true,
     }).catch(()=>{});
   }
   _collabSessions = [];
