@@ -15,7 +15,9 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
   Menü) ignorieren den Return, also kein Bruch. Beim Boot mit
   preferred-non-DE wird das Locale ohne await geladen + ein
   `csc-lang-change`-Event gefeuert sobald es da ist. Initial-Bundle gz:
-  −__I18N_DELTA__.
+  −1,004 (index.js −1,003); separate Locale-Chunks: en 992, nl 652, es 672 gz.
+  Implementation: Switch statt Template-Literal-Import (Vite-Dev hatte mit
+  Template-Literal + JSON-Attribute SyntaxError beim direkten Serve).
 - **GLTFExporter lazy-loaded** (Sub-Task 1): static `import` aus `src/main.ts`
   entfernt; eager-Bridge `window.THREE.GLTFExporter = …` durch
   `window.cscLoadGLTFExporter()` ersetzt (Promise-cached). Beim ersten
