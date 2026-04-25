@@ -7880,33 +7880,11 @@ async function cloudSignOut(){
   toast('🚪 Ausgeloggt','b');
 }
 
+// P17.5: updateSbStatus extrahiert nach src/legacy/sbStatus.ts
+// (window-bound in main.ts). Boot-Shim als Standard-Disziplin.
 function updateSbStatus(connected){
-  const dot=document.getElementById('cloud-status-dot');
-  const txt=document.getElementById('cloud-status-text');
-  const bar=document.getElementById('cloud-status-bar');
-  if(dot&&txt){
-    dot.textContent=connected?'🟢':'🔴';
-    txt.textContent=connected?'☁️ Verbunden — Cloud aktiv':'🔴 Nicht verbunden';
-    // P15 Cluster 7d: Status-Klassen-Toggle statt inline-Style.
-    if(bar){
-      bar.classList.remove('sp-status--pending','sp-status--ok','sp-status--error');
-      bar.classList.add(connected?'sp-status--ok':'sp-status--error');
-    }
-  }
-  const el = document.getElementById('sb-status');
-  const saveBtn = document.getElementById('sb-save-btn');
-  const loadBtn = document.getElementById('sb-load-btn');
-  if(!el) return;
-  if(connected){
-    el.textContent = '✓ Verbunden — Cloud-Speicher aktiv';
-    el.style.color = '#4ade80';
-    if(saveBtn) saveBtn.style.display = 'block';
-    if(loadBtn) loadBtn.style.display = 'block';
-  } else {
-    el.textContent = 'Nicht verbunden';
-    el.style.color = 'var(--tx3)';
-    if(saveBtn) saveBtn.style.display = 'none';
-    if(loadBtn) loadBtn.style.display = 'none';
+  if(typeof window.updateSbStatus === 'function' && window.updateSbStatus !== updateSbStatus){
+    return window.updateSbStatus(connected);
   }
 }
 
@@ -7988,10 +7966,11 @@ async function connectSupabase(){
   }
 }
 
+// P17.5: setSbMsg extrahiert nach src/legacy/sbStatus.ts.
 function setSbMsg(msg, type){
-  const el = document.getElementById('sb-status'); if(!el) return;
-  el.textContent = msg;
-  el.style.color = type==='r'?'#f87171': type==='g'?'#4ade80':'#38bdf8';
+  if(typeof window.setSbMsg === 'function' && window.setSbMsg !== setSbMsg){
+    return window.setSbMsg(msg, type);
+  }
 }
 
 // Track A Phase 2b.2: Cloud-Persist extrahiert nach src/persist/cloudProjects.ts.
