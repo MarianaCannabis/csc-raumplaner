@@ -53,6 +53,7 @@ import { addMsg, renderAIText } from './legacy/aiMessages.js';
 import { showCrashModal } from './legacy/errorBoundary.js';
 import { updateSbStatus, setSbMsg } from './legacy/sbStatus.js';
 import * as inlineRename from './legacy/inlineRename.js';
+import * as authUI from './legacy/authUI.js';
 import * as complianceBridge from './legacy/complianceBridge.js';
 import type { CompletedRoom, SceneObject } from './legacy/types.js';
 import * as authSupabase from './auth/supabase.js';
@@ -172,6 +173,11 @@ declare global {
     doRename: () => void;
     startInlineProjectRename: () => void;
     finishInlineProjectRename: () => void;
+    /** P17.7: Auth-UI aus src/legacy/authUI.ts. Closure-Wrap für SB_TOKEN/
+     *  SB_USER/__cscE2E-Reads zur Aufrufzeit. */
+    updateAuthStatus: () => void;
+    updateLoginGate: () => void;
+    setGateState: (s: 'default' | 'awaiting') => void;
   }
 }
 if (typeof window !== 'undefined' && (window as any).THREE) {
@@ -236,6 +242,23 @@ window.startInlineProjectRename = () =>
   inlineRename.startInlineProjectRename(buildProjectRenameDeps());
 window.finishInlineProjectRename = () =>
   inlineRename.finishInlineProjectRename(buildProjectRenameDeps());
+
+// P17.7: Auth-UI — Closure-Wrap für Legacy-Globals SB_TOKEN/SB_USER/__cscE2E.
+function buildAuthDeps(): authUI.AuthUIDeps {
+  const w = window as unknown as {
+    SB_TOKEN?: string;
+    SB_USER?: authUI.AuthUser | null;
+    __cscE2E?: boolean;
+  };
+  return {
+    token: w.SB_TOKEN || null,
+    user: w.SB_USER || null,
+    e2eMode: !!w.__cscE2E,
+  };
+}
+window.updateAuthStatus = () => authUI.updateAuthStatus(buildAuthDeps());
+window.updateLoginGate = () => authUI.updateLoginGate(buildAuthDeps());
+window.setGateState = (s) => authUI.setGateState(s);
 
 // P17.2: Compliance-Bridge — Closures wrap deps automatisch aus den Legacy-
 // Globals. Inline-Caller in index.html (8 Sites) bleiben so kompatibel ohne
