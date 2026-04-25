@@ -15,6 +15,18 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
   für 30 Tage. A11y-Floor unter Baseline (96) weil CI's Linux-headless-
   Chrome reproduzierbar 3-4 Punkte niedriger scort als lokale Win-Runs.
 
+### Refactor (Strangler P17)
+
+- **toast() extrahiert** nach `src/legacy/toast.ts` (P17.1 Pilot).
+  3 neue Vitest-Tests, window-Binding in `main.ts` für 304 inline-script-
+  Caller. Inline-script behält einen schlanken Boot-Shim (`function toast`
+  delegiert an `window.toast` zur Aufrufzeit, Identitäts-Guard verhindert
+  Recursion vor Module-Boot) — der `setTimeout(()=>toast(...), 600)` für
+  den Welcome-Banner bei index.html:21657 würde sonst racey sein.
+  Bundle-Size: 1,277,647 → 1,277,685 raw (+38 B durch Shim) /
+  347,754 → 348,113 gz (+359 B durch Shim). Echter Bundle-Win kommt
+  mit den größeren Folge-Modulen.
+
 ## [2.6.5] — 2026-04-25
 
 ### Fixed

@@ -1,99 +1,120 @@
 # Functions Inventory v2
-Stand: 2026-04-20 — auto-generiert via `node scripts/audit-functions.mjs`.
+Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 ## Zusammenfassung
 
-- **onclick-Handler:** 732
-- **addEventListener-Bindings:** 84
-- **HTML-Top-Level-Functions:** 842
-- **TS-Exports:** 297
+- **onclick-Handler:** 726
+- **addEventListener-Bindings:** 128
+- **HTML-Top-Level-Functions:** 850
+- **TS-Exports:** 346
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
 | Handler | File:Line | Button-Text |
 |---|---|---|
-| `openM('m-auth')` | index.html:1767 | 🔑 Jetzt einloggen |
-| `undo()` | index.html:1791 | ↩ |
-| `redo()` | index.html:1793 | ↪ |
-| `openTemplates()` | index.html:1797 |  |
-| `openKCaNGDashboard()` | index.html:1800 |  |
-| `openHelpModal()` | index.html:1803 |  |
-| `toggleTBMenu('file')` | index.html:1822 | 📁 Datei |
-| `newProj()` | index.html:1824 | 🆕 Neues Projekt |
-| `saveProj()` | index.html:1825 | 💾 Speichern |
-| `showRight('save')` | index.html:1826 | 📂 Projekte öffnen |
-| `dlJSON()` | index.html:1828 | 📥 Export .json |
-| `exportFurnitureCSV()` | index.html:1829 | 📊 Möbelliste .csv |
-| `exportBudgetCSV()` | index.html:1830 | 💰 Budget .csv |
-| `exportGLTF()` | index.html:1831 | 🏗 3D-Modell .gltf |
-| `exportDXF()` | index.html:1832 | 📐 Grundriss .dxf |
-| `openPrintPreview()` | index.html:1834 | 🖨 Druckvorschau |
-| `generateAuthorityPackage()` | index.html:1835 | 📦 Behörden-Paket (.zip) |
-| `openM('m-hygiene')` | index.html:1836 | 🧴 Hygiene-Konzept PDF |
-| `generateOpeningHoursSign()` | index.html:1837 | ⏰ Öffnungszeiten-Schild |
-| `takePresentationScreenshot()` | index.html:1838 | 📸 3D-Screenshot |
-| `shareByEmail()` | index.html:1839 | 📧 Per E-Mail teilen |
-| `shareWhatsApp()` | index.html:1840 | 📱 WhatsApp |
-| `shareTelegram()` | index.html:1841 | ✈️ Telegram |
-| `exportToGoogleDrive()` | index.html:1842 | 📂 Google Drive |
-| `generateSessionProtocol()` | index.html:1843 | 📋 Sitzungsprotokoll |
-| `saveNamedVersion()` | index.html:1844 | 🏷 Version benennen |
-| `generateCostReport()` | index.html:1845 | 💰 Kostenvoranschlag PDF |
-| `generateEmbedCode()` | index.html:1846 | 🔗 Embed-Code für Website |
-| `exportIFC()` | index.html:1847 | 🏗 IFC-Export (CAD) |
-| `generateSecurityReport()` | index.html:1848 | 🔐 Sicherheitsbericht PDF |
-| `printBarcodeLabel()` | index.html:1849 | 🏷 Inventar-Etiketten drucken |
-| `openCSVImport()` | index.html:1850 | 📂 Räume aus CSV |
-| `openSetupWizard()` | index.html:1851 | 🌿 Einrichtungs-Assistent |
-| `openFloorPlanRecognizer()` | index.html:1852 | 🤖 KI: Grundriss aus Foto |
-| `testAIConnection()` | index.html:1854 | 🔌 KI-Verbindung testen |
-| `localStorage.removeItem('csc-onboarded')` | index.html:1856 | 🔄 Onboarding zurücksetzen |
-| `printToScale()` | index.html:1857 | 📐 Druck 1:50 |
-| `startPresentation()` | index.html:1858 | 🎬 Präsentation |
-| `exportEvacuationPlan()` | index.html:1859 | 🚨 Flucht- & Rettungsplan |
-| `toggleTBMenu('view')` | index.html:1865 | 👁 Ansicht |
-| `window.cscFrameScene&&window.cscFrameScene()` | index.html:1868 | 🎯 Ansicht zentrieren |
-| `toggleHelperFloor()` | index.html:1869 | 🧭 Hilfsboden ein/aus |
-| `toggleCeiling()` | index.html:1870 | ⬜ Decke ein/aus |
-| `toggleSliceView()` | index.html:1871 | ✂️ Schnittansicht |
-| `toggleAllFloors()` | index.html:1872 | 🏢 Alle Etagen |
-| `toggleSunAnimation()` | index.html:1873 | 🌅 Tag/Nacht Animation |
-| `toggleGrid2D()` | index.html:1876 | ⬛ Raster ein/aus |
-| `toggleDimensions()` | index.html:1877 | 📏 Maßketten |
-| `toggleHeatmap()` | index.html:1878 | 🌡 Laufwege-Heatmap |
-| `toggleSoundHeatmap()` | index.html:1879 | 🔊 Schallschutz |
-| `toggleLightSim()` | index.html:1880 | ☀️ Lichteinfall |
-| `toggleRuler()` | index.html:1881 | 📐 Lineal |
-| `toggleNoteMode()` | index.html:1882 | 📌 Notizen |
-| `openLayoutComparison()` | index.html:1884 | 🔀 Lageplan vergleichen |
-| `toggleTheme()` | index.html:1885 | 🌙 Hell/Dunkel wechseln |
-| `cycleDimStyle()` | index.html:1887 | 📐 Maßketten-Stil wechseln |
-| `toggleRoomStats()` | index.html:1888 | 📊 Raum-Statistik im Plan |
-| `openMaterialStudio()` | index.html:1889 | 🎨 Material & Textur Studio |
-| `setWeather('none')` | index.html:1892 | ⛅ Kein Wetter |
-| `setWeather('rain')` | index.html:1893 | 🌧 Regen |
-| `setWeather('snow')` | index.html:1894 | ❄️ Schnee |
-| `setWeather('sun')` | index.html:1895 | ☀️ Sonnenstrahlen |
-| `autoColorRooms()` | index.html:1896 | 🎨 Räume auto-einfärben |
-| `start3DTour()` | index.html:1897 | 🎬 3D-Rundgang starten |
-| `openColorHarmony()` | index.html:1898 | 🖌 Farbharmonie |
-| `placeSmartLighting()` | index.html:1899 | 💡 Smart Lighting (KI) |
-| `setLightTemperature('warm')` | index.html:1902 | 🟡 Warmweiß 2700K |
-| `setLightTemperature('neutral')` | index.html:1903 | ⚪ Neutral 4000K |
-| `setLightTemperature('cool')` | index.html:1904 | 🔵 Kalt 6500K |
-| `toggleKCaNGMonitor()` | index.html:1906 | 🌿 KCanG Live-Monitor |
-| `toggleAnnotationMode()` | index.html:1907 | 📌 Annotations-Modus |
-| `analyzeSound()` | index.html:1908 | 🔊 Schallschutzplan |
-| `toggleTransparency()` | index.html:1909 | 👁 Transparenz-Modus |
-| `autoConnectRooms()` | index.html:1910 | 🚪 Türen automatisch setzen |
-| `startDiff()` | index.html:1911 | 📊 Diff-Basis setzen |
-| `showDiff()` | index.html:1912 | 📊 Diff anzeigen |
-| `generateGantt()` | index.html:1913 | 📅 Gantt aus Aufgaben |
-| `openDashboard()` | index.html:1915 | 🖥 Dashboard |
-| `openChecklistWizard()` | index.html:1916 | 📋 Einrichtungs-Assistent |
-| `toggleLayerPanel()` | index.html:1919 | 📚 Ebenen (Layer) |
+| `openM('m-auth')` | index.html:58 | 🔑 Jetzt einloggen |
+| `undo()` | index.html:90 |  |
+| `redo()` | index.html:92 |  |
+| `saveProj()` | index.html:97 |  |
+| `window.cscSwitchPlanningMode('room')` | index.html:105 |  |
+| `window.cscSwitchPlanningMode('event')` | index.html:109 |  |
+| `openTemplates()` | index.html:172 |  |
+| `openKCaNGDashboard()` | index.html:177 |  |
+| `openHelpModal()` | index.html:182 |  |
+| `window.setUIMode && window.setUIMode('standard')` | index.html:197 |  |
+| `toggleTBMenu('file')` | index.html:211 |  |
+| `newProj()` | index.html:217 | 🆕 Neues Projekt |
+| `showRight('save')` | index.html:219 | 📂 Projekte öffnen |
+| `dlJSON()` | index.html:221 | 📥 Export .json |
+| `exportFurnitureCSV()` | index.html:222 | 📊 Möbelliste .csv |
+| `exportBudgetCSV()` | index.html:223 | 💰 Budget .csv |
+| `exportGLTF()` | index.html:224 | 🏗 3D-Modell .gltf |
+| `exportDXF()` | index.html:225 | 📐 Grundriss .dxf |
+| `openPrintPreview()` | index.html:227 | 🖨 Druckvorschau |
+| `generateAuthorityPackage()` | index.html:228 | 📦 Behörden-Paket (.zip) |
+| `openM('m-hygiene')` | index.html:229 | 🧴 Hygiene-Konzept PDF |
+| `generateOpeningHoursSign()` | index.html:230 | ⏰ Öffnungszeiten-Schild |
+| `takePresentationScreenshot()` | index.html:231 | 📸 3D-Screenshot |
+| `shareByEmail()` | index.html:232 | 📧 Per E-Mail teilen |
+| `shareWhatsApp()` | index.html:233 | 📱 WhatsApp |
+| `shareTelegram()` | index.html:234 | ✈️ Telegram |
+| `exportToGoogleDrive()` | index.html:235 | 📂 Google Drive |
+| `generateSessionProtocol()` | index.html:236 | 📋 Sitzungsprotokoll |
+| `saveNamedVersion()` | index.html:237 | 🏷 Version benennen |
+| `generateCostReport()` | index.html:238 | 💰 Kostenvoranschlag PDF |
+| `generateEmbedCode()` | index.html:239 | 🔗 Embed-Code für Website |
+| `exportIFC()` | index.html:240 | 🏗 IFC-Export (CAD) |
+| `generateSecurityReport()` | index.html:241 | 🔐 Sicherheitsbericht PDF |
+| `printBarcodeLabel()` | index.html:242 | 🏷 Inventar-Etiketten drucken |
+| `openCSVImport()` | index.html:243 | 📂 Räume aus CSV |
+| `openSetupWizard()` | index.html:244 | 🌿 Einrichtungs-Assistent |
+| `openFloorPlanRecognizer()` | index.html:245 | 🤖 KI: Grundriss aus Foto |
+| `testAIConnection()` | index.html:247 | 🔌 KI-Verbindung testen |
+| `localStorage.removeItem('csc-onboarded')` | index.html:249 | 🔄 Onboarding zurücksetzen |
+| `printToScale()` | index.html:250 | 📐 Druck 1:50 |
+| `startPresentation()` | index.html:251 | 🎬 Präsentation |
+| `exportEvacuationPlan()` | index.html:252 | 🚨 Flucht- & Rettungsplan |
+| `toggleTBMenu('view')` | index.html:258 |  |
+| `window.cscFrameScene&&window.cscFrameScene()` | index.html:265 | 🎯 Ansicht zentrieren |
+| `toggleHelperFloor()` | index.html:266 | 🧭 Hilfsboden ein/aus |
+| `toggleCeiling()` | index.html:267 | ⬜ Decke ein/aus |
+| `toggleSliceView()` | index.html:268 | ✂️ Schnittansicht |
+| `toggleAllFloors()` | index.html:269 | 🏢 Alle Etagen |
+| `toggleSunAnimation()` | index.html:270 | 🌅 Tag/Nacht Animation |
+| `toggleGrid2D()` | index.html:273 | ⬛ Raster ein/aus |
+| `toggleDimensions()` | index.html:274 | 📏 Maßketten |
+| `toggleHeatmap()` | index.html:275 | 🌡 Laufwege-Heatmap |
+| `toggleSoundHeatmap()` | index.html:276 | 🔊 Schallschutz |
+| `toggleLightSim()` | index.html:277 | ☀️ Lichteinfall |
+| `toggleRuler()` | index.html:278 | 📐 Lineal |
+| `toggleNoteMode()` | index.html:279 | 📌 Notizen |
+| `openLayoutComparison()` | index.html:281 | 🔀 Lageplan vergleichen |
+| `toggleTheme()` | index.html:282 | 🌙 Hell/Dunkel wechseln |
+| `cycleDimStyle()` | index.html:283 | 📐 Maßketten-Stil wechseln |
+| `toggleRoomStats()` | index.html:284 | 📊 Raum-Statistik im Plan |
+| `openMaterialStudio()` | index.html:285 | 🎨 Material & Textur Studio |
+| `setWeather('none')` | index.html:288 | ⛅ Kein Wetter |
+| `setWeather('rain')` | index.html:289 | 🌧 Regen |
+| `setWeather('snow')` | index.html:290 | ❄️ Schnee |
+| `setWeather('sun')` | index.html:291 | ☀️ Sonnenstrahlen |
+| `autoColorRooms()` | index.html:292 | 🎨 Räume auto-einfärben |
+| `start3DTour()` | index.html:293 | 🎬 3D-Rundgang starten |
+| `openColorHarmony()` | index.html:294 | 🖌 Farbharmonie |
+| `placeSmartLighting()` | index.html:295 | 💡 Smart Lighting (KI) |
+| `setLightTemperature('warm')` | index.html:298 | 🟡 Warmweiß 2700K |
+| `setLightTemperature('neutral')` | index.html:299 | ⚪ Neutral 4000K |
+| `setLightTemperature('cool')` | index.html:300 | 🔵 Kalt 6500K |
+| `toggleKCaNGMonitor()` | index.html:302 | 🌿 KCanG Live-Monitor |
+| `toggleAnnotationMode()` | index.html:303 | 📌 Annotations-Modus |
+| `analyzeSound()` | index.html:304 | 🔊 Schallschutzplan |
+| `toggleTransparency()` | index.html:305 | 👁 Transparenz-Modus |
+| `autoConnectRooms()` | index.html:306 | 🚪 Türen automatisch setzen |
+| `startDiff()` | index.html:307 | 📊 Diff-Basis setzen |
+| `showDiff()` | index.html:308 | 📊 Diff anzeigen |
+| `generateGantt()` | index.html:309 | 📅 Gantt aus Aufgaben |
 
 ## TS-Exports pro File
+
+### src/auth/magicLink.ts
+
+- `consumeMagicLinkFromHash` (line 36)
+
+### src/auth/state.ts
+
+- `getAuthState` (line 34)
+- `subscribe` (line 42)
+- `setToken` (line 55)
+- `clearAuth` (line 73)
+
+### src/auth/supabase.ts
+
+- `parseTokenPayload` (line 49)
+- `tokenExpired` (line 68)
+- `parseAuthRedirectFragment` (line 78)
+- `buildRedirectUrl` (line 99)
+- `performTokenRefresh` (line 110)
+- `postMagicLink` (line 144)
+- `postSignOut` (line 173)
 
 ### src/catalog/credits.ts
 
@@ -128,10 +149,11 @@ Stand: 2026-04-20 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 ### src/compliance/registry.ts
 
-- `registerRule` (line 5)
-- `listRules` (line 10)
-- `evaluateAll` (line 32)
-- `evaluateForRoom` (line 39)
+- `registerRule` (line 6)
+- `listRules` (line 11)
+- `listActiveRules` (line 17)
+- `evaluateAll` (line 40)
+- `evaluateForRoom` (line 47)
 
 ### src/config/defaults.ts
 
@@ -161,6 +183,75 @@ Stand: 2026-04-20 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `t` (line 45)
 - `setLang` (line 49)
 - `availableLanguages` (line 56)
+
+### src/icons/lucide.ts
+
+- `icon` (line 157)
+- `listIcons` (line 171)
+
+### src/input/keyboard.ts
+
+- `registerGlobalShortcuts` (line 70)
+
+### src/legacy/toast.ts
+
+- `toast` (line 16)
+
+### src/modes/planningMode.ts
+
+- `currentMode` (line 25)
+- `setMode` (line 34)
+- `onModeChange` (line 42)
+- `isRuleActive` (line 52)
+
+### src/persist/autosave.ts
+
+- `STORAGE_KEY` (line 13)
+- `TS_KEY` (line 14)
+- `MAX_AGE_MS` (line 17)
+- `writeAutosave` (line 26)
+- `readAutosave` (line 41)
+- `clearAutosave` (line 64)
+
+### src/persist/cloudProjects.ts
+
+- `findProjectByName` (line 145)
+- `saveCloudProject` (line 163)
+- `fetchAllCloudProjects` (line 219)
+- `loadCloudProject` (line 245)
+- `deleteCloudProject` (line 259)
+
+### src/persist/index.ts
+
+- `installBridge` (line 92)
+
+### src/persist/localProjects.ts
+
+- `STORAGE_KEY` (line 12)
+- `loadAllSaved` (line 15)
+- `listSavedNames` (line 29)
+- `saveProject` (line 38)
+- `deleteProject` (line 47)
+- `getProject` (line 55)
+- `countExcluding` (line 64)
+
+### src/persist/offlineQueue.ts
+
+- `registerHandler` (line 60)
+- `queueAction` (line 65)
+- `getQueueSize` (line 71)
+- `listQueue` (line 76)
+- `flushQueue` (line 90)
+- `clearQueue` (line 130)
+
+### src/persist/versionHistory.ts
+
+- `STORAGE_KEY` (line 15)
+- `MAX_VERSIONS` (line 16)
+- `listVersions` (line 19)
+- `pushVersion` (line 35)
+- `removeVersion` (line 56)
+- `getVersion` (line 69)
 
 ### src/templates/index.ts
 
@@ -396,15 +487,9 @@ Stand: 2026-04-20 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `matLED` (line 93)
 - `matLeather` (line 99)
 - `makeMaterial` (line 133)
-- `woodMaterial` (line 149)
-- `metalMaterial` (line 150)
-- `fabricMaterial` (line 151)
-- `plasticMaterial` (line 152)
-- `glassMaterial` (line 153)
-- `concreteMaterial` (line 154)
-- `imageMapMaterial` (line 191)
-- `disposeImageMapTexture` (line 217)
-- `loadGroundMaterial` (line 225)
+- `imageMapMaterial` (line 183)
+- `disposeImageMapTexture` (line 209)
+- `loadGroundMaterial` (line 217)
 
 ### src/three/primitiveBuilders.ts
 
@@ -458,70 +543,76 @@ Stand: 2026-04-20 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `processUpload` (line 20)
 - `estimateImageMapBytes` (line 50)
 
+### src/util/loadingState.ts
+
+- `beginLoading` (line 22)
+- `endLoading` (line 32)
+- `wrapInSpinner` (line 42)
+
 ## HTML-Functions (Top 60 Legacy-Block in index.html)
 
 | Function | Line |
 |---|---|
-| `_loadTelemetryScripts` | 3959 |
-| `_showCrashModal` | 4039 |
-| `loadSharedFurniture` | 4231 |
-| `saveSharedFurniture` | 4248 |
-| `deleteSharedFurniture` | 4275 |
-| `aiFetch` | 4292 |
-| `callAI` | 4319 |
-| `aiText` | 4367 |
-| `aiJSON` | 4373 |
-| `testAIConnection` | 4387 |
-| `loadCustom` | 4429 |
-| `saveCustom` | 4430 |
-| `getCatalog` | 5103 |
-| `getArchCatalog` | 5111 |
-| `getSecurityCatalog` | 5112 |
-| `toggleCatGroup` | 5113 |
-| `findItem` | 5125 |
-| `m2px` | 5153 |
-| `px2m` | 5154 |
-| `wx2cx` | 5155 |
-| `wy2cy` | 5156 |
-| `cx2wx` | 5157 |
-| `cy2wy` | 5158 |
-| `snapM` | 5159 |
-| `resizeCv` | 5161 |
-| `draw2D` | 5167 |
-| `drawGrid` | 5267 |
-| `drawRoom2D` | 5290 |
-| `drawGround2D` | 5352 |
-| `hitGround` | 5389 |
-| `hitGroundResizeHandle` | 5406 |
-| `_getImgCached` | 5421 |
-| `drawObj2D` | 5432 |
-| `drawMeasure` | 5534 |
-| `hitObj` | 5555 |
-| `hitRoom` | 5565 |
-| `hitRoomResizeHandle` | 5573 |
-| `startCatalogDrag` | 5839 |
-| `placeFromCatalog` | 5849 |
-| `quickAddRoom` | 5873 |
-| `addRoom` | 5879 |
-| `addObject` | 5901 |
-| `removeRoom` | 5925 |
-| `quickAddGround` | 5933 |
-| `addGround` | 5943 |
-| `removeGround` | 5960 |
-| `selectGround` | 5969 |
-| `openGroundMaterialPicker` | 5979 |
-| `closeGroundMaterialPicker` | 5999 |
-| `openGroundPropPanel` | 6005 |
-| `closeGroundPropPanel` | 6051 |
-| `syncGroundPropPanel` | 6055 |
-| `deleteSelectedGround` | 6065 |
-| `setSelection` | 6070 |
-| `updateSelBotBar` | 6098 |
-| `applySelProps` | 6134 |
-| `rotateSel` | 6144 |
-| `dupSel` | 6163 |
-| `deleteSel` | 6169 |
-| `removeFreeWall` | 6177 |
+| `_loadTelemetryScripts` | 2342 |
+| `_showCrashModal` | 2422 |
+| `loadSharedFurniture` | 2619 |
+| `saveSharedFurniture` | 2636 |
+| `deleteSharedFurniture` | 2663 |
+| `aiFetch` | 2680 |
+| `callAI` | 2707 |
+| `aiText` | 2755 |
+| `aiJSON` | 2761 |
+| `testAIConnection` | 2775 |
+| `loadCustom` | 2817 |
+| `saveCustom` | 2818 |
+| `getCatalog` | 2828 |
+| `getArchCatalog` | 2836 |
+| `getSecurityCatalog` | 2837 |
+| `toggleCatGroup` | 2838 |
+| `findItem` | 2850 |
+| `m2px` | 2878 |
+| `px2m` | 2879 |
+| `wx2cx` | 2880 |
+| `wy2cy` | 2881 |
+| `cx2wx` | 2882 |
+| `cy2wy` | 2883 |
+| `snapM` | 2884 |
+| `resizeCv` | 2886 |
+| `draw2D` | 2892 |
+| `drawGrid` | 2992 |
+| `drawRoom2D` | 3015 |
+| `drawGround2D` | 3077 |
+| `hitGround` | 3114 |
+| `hitGroundResizeHandle` | 3131 |
+| `_getImgCached` | 3146 |
+| `drawObj2D` | 3157 |
+| `drawMeasure` | 3259 |
+| `hitObj` | 3280 |
+| `hitRoom` | 3290 |
+| `hitRoomResizeHandle` | 3298 |
+| `startCatalogDrag` | 3564 |
+| `placeFromCatalog` | 3574 |
+| `quickAddRoom` | 3598 |
+| `addRoom` | 3604 |
+| `addObject` | 3626 |
+| `removeRoom` | 3650 |
+| `quickAddGround` | 3658 |
+| `addGround` | 3668 |
+| `removeGround` | 3685 |
+| `selectGround` | 3694 |
+| `openGroundMaterialPicker` | 3704 |
+| `closeGroundMaterialPicker` | 3724 |
+| `openGroundPropPanel` | 3730 |
+| `closeGroundPropPanel` | 3776 |
+| `syncGroundPropPanel` | 3780 |
+| `deleteSelectedGround` | 3790 |
+| `setSelection` | 3795 |
+| `updateSelBotBar` | 3823 |
+| `applySelProps` | 3859 |
+| `rotateSel` | 3869 |
+| `dupSel` | 3888 |
+| `deleteSel` | 3894 |
+| `removeFreeWall` | 3902 |
 
 ---
 
