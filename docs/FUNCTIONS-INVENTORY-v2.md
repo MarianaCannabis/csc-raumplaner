@@ -5,8 +5,8 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 - **onclick-Handler:** 720
 - **addEventListener-Bindings:** 128
-- **HTML-Top-Level-Functions:** 850
-- **TS-Exports:** 394
+- **HTML-Top-Level-Functions:** 849
+- **TS-Exports:** 398
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -252,6 +252,13 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 - `updateSbStatus` (line 14)
 - `setSbMsg` (line 46)
+
+### src/legacy/theme.ts
+
+- `applyThemeIcon` (line 28)
+- `toggleTheme` (line 37)
+- `initTheme` (line 51)
+- `setColorMode` (line 65)
 
 ### src/legacy/toast.ts
 

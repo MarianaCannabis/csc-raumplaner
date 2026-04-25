@@ -61,6 +61,7 @@ import * as userTemplatesRead from './legacy/userTemplatesRead.js';
 import * as exports3d from './legacy/exports3d.js';
 import * as undoRedo from './legacy/undoRedo.js';
 import * as viewControls from './legacy/viewControls.js';
+import * as theme from './legacy/theme.js';
 import * as complianceBridge from './legacy/complianceBridge.js';
 import type { CompletedRoom, SceneObject } from './legacy/types.js';
 import * as authSupabase from './auth/supabase.js';
@@ -226,6 +227,12 @@ declare global {
     setView: (v: viewControls.ViewMode) => void;
     fitViewToRooms: () => void;
     switchFloor: (id: string) => void;
+    /** P17.15: Theme-Management aus src/legacy/theme.ts. data-theme als
+     *  Single-Source-of-Truth; setColorMode bleibt als paralleler Pfad
+     *  aus historischen Gründen (Cluster 8d). */
+    toggleTheme: () => void;
+    initTheme: () => void;
+    setColorMode: (dark: boolean) => void;
   }
 }
 if (typeof window !== 'undefined' && (window as any).THREE) {
@@ -514,6 +521,21 @@ window.switchFloor = (id) => {
     rebuild3D: w.rebuild3D ?? (() => {}),
     updateSelBotBar: w.updateSelBotBar ?? (() => {}),
     toast: w.toast ?? (() => {}),
+  });
+};
+
+// P17.15: Theme-Management — leichte Closures.
+window.toggleTheme = () => {
+  const w = window as unknown as { cscPopulateIcons?: () => void; draw2D?: () => void };
+  theme.toggleTheme({ populateIcons: w.cscPopulateIcons, draw2D: w.draw2D });
+};
+window.initTheme = () => {
+  const w = window as unknown as { cscPopulateIcons?: () => void };
+  theme.initTheme({ populateIcons: w.cscPopulateIcons });
+};
+window.setColorMode = (dark: boolean) => {
+  theme.setColorMode(dark, {
+    setDarkMode: (v) => { (window as unknown as { _darkMode?: boolean })._darkMode = v; },
   });
 };
 
