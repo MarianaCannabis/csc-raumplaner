@@ -21,6 +21,18 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Refactor (Strangler P17)
 
+- **renderHighResPreset extrahiert** nach `src/legacy/renderPresets.ts`
+  (P17.9). Erstes Three.js-Touch-Modul: WebGLRenderer-Construction
+  via `deps.createRenderer` injectable (jsdom-Tests mocken). +10 Vitest-
+  Tests inkl. Camera-Selection (Ortho/Perspective). Bundle: −1,158 B gz.
+- **save-family extrahiert** nach `src/legacy/saves.ts` (P17.8).
+  5 Funktionen in 2 Sub-Sections: Local-Save (saveProj/updateSavedUI/
+  delSave) + User-Templates (saveAsUserTemplate/doSaveUserTemplate).
+  +14 Tests inkl. fetch-mock + cscPlan-Limit-Block. Bundle: −464 B gz.
+- **authUI extrahiert** nach `src/legacy/authUI.ts` (P17.7).
+  3 Funktionen: updateAuthStatus + setGateState + updateLoginGate
+  inkl. E2E-Mode-Override. Module-internal _gateState. +11 Tests.
+  Bundle: −364 B gz.
 - **inline-rename extrahiert** nach `src/legacy/inlineRename.ts` (P17.6).
   4 Funktionen: `startInlineRename` (Raum-Rename via Canvas-Input) +
   `doRename` / `startInlineProjectRename` / `finishInlineProjectRename`
