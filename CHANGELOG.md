@@ -14,7 +14,8 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
   `exportGLTF()`-Click wird der Exporter via dynamic `import()` aus
   `three/examples/jsm/exporters/GLTFExporter.js` nachgeladen. `exports3d.ts`
   importiert `GLTFExporter` jetzt nur noch type-only — `ExporterClass` wird
-  über deps gereicht. Initial-Bundle gz: −__GLTF_DELTA__.
+  über deps gereicht. Initial-Bundle gz: −12,877 (index.js −10,792,
+  index.html −2,006; neuer separater GLTFExporter-Chunk: 10,388 gz, lazy).
 
 ### Tooling
 
