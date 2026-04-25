@@ -4,6 +4,24 @@ Alle bedeutsamen Änderungen an CSC Studio Pro.
 
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [2.6.4] — 2026-04-25
+
+### Fixed
+
+- **Cloud-Save HTTP 400 (PGRST204)** — `csc_projects` fehlte die Spalte
+  `thumbnail` (und defensiv `author`) in Production. Migration
+  `0008_add_project_thumbnail.sql` ergänzt beide idempotent inkl.
+  Schema-Cache-Reload. Frontend-Verhalten unverändert: Thumbnail-Anzeige
+  in Cloud-Projekt-Liste funktioniert wieder.
+
+### Tests
+
+- Regressionstest in `src/persist/__tests__/cloudProjects.test.ts`:
+  PGRST204-Response wird mit verständlicher Error-Message gemeldet
+  statt generisch HTTP 400. `_postgrestError`-Helper rendert PostgREST-
+  Codes + Messages und hängt bei PGRST204 den Hinweis "Migration 0008
+  nicht angewandt?" an.
+
 ## [2.6.3] — 2026-04-25 · Defense-in-depth Cloud-Save
 
 **Patch-Release.** Härtet den Persist-Layer nach v2.6.2 an drei Stellen gegen künftigen Drift zwischen Modul-Signatur und JS-Callsite.
