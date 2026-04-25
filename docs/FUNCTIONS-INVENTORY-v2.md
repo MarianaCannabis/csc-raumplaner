@@ -3,10 +3,10 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 ## Zusammenfassung
 
-- **onclick-Handler:** 724
+- **onclick-Handler:** 722
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 851
-- **TS-Exports:** 364
+- **TS-Exports:** 369
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -223,6 +223,14 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `doRename` (line 88)
 - `startInlineProjectRename` (line 101)
 - `finishInlineProjectRename` (line 118)
+
+### src/legacy/saves.ts
+
+- `saveProj` (line 38)
+- `updateSavedUI` (line 49)
+- `delSave` (line 82)
+- `saveAsUserTemplate` (line 111)
+- `doSaveUserTemplate` (line 127)
 
 ### src/legacy/sbStatus.ts
 
