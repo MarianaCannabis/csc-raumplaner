@@ -3,10 +3,10 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 ## Zusammenfassung
 
-- **onclick-Handler:** 715
+- **onclick-Handler:** 713
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 847
-- **TS-Exports:** 430
+- **TS-Exports:** 435
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -321,6 +321,14 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `loadUserTemplates` (line 71)
 - `deleteUserTemplate` (line 95)
 - `applyUserTemplate` (line 119)
+
+### src/legacy/versionHistory.ts
+
+- `saveVersion` (line 47)
+- `loadVersionHistory` (line 64)
+- `renderVersionHistory` (line 68)
+- `restoreVersion` (line 99)
+- `deleteVersion` (line 110)
 
 ### src/legacy/viewControls.ts
 
