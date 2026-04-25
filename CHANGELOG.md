@@ -8,6 +8,10 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Tooling
 
+- **Audit-CI-Workflow** (`.github/workflows/audit.yml`):
+  audit-functions + broken-flow-detect + audit-catalog laufen bei jedem
+  PR + push auf main. broken-flow-detect blockt PRs bei >50 unresolved
+  onclicks — Sicherheitsnetz für JS-Split (P17). +`npm run audit:all`.
 - **Lighthouse-CI** (`.github/workflows/lighthouse.yml`): Build + Preview
   + Lighthouse bei jedem PR + push auf main. Threshold-Check über
   `LH_CI=1` in `lighthouse-baseline.mjs` — fails bei a11y < 90,

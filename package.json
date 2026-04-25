@@ -17,6 +17,7 @@
     "audit:functions": "node scripts/audit-functions.mjs",
     "audit:broken-flows": "node scripts/broken-flow-detect.mjs",
     "audit:catalog": "node scripts/audit-catalog.mjs",
+    "audit:all": "node scripts/audit-functions.mjs && node scripts/broken-flow-detect.mjs && node scripts/audit-catalog.mjs",
     "gen:favicons": "python scripts/gen-favicons.py"
   },
   "devDependencies": {

@@ -121,6 +121,16 @@ CI-Workflow: `.github/workflows/lighthouse.yml`. Lokal:
 `npm run build && npm run preview &` + `npm run lighthouse` (kein
 Threshold-Fail lokal — nur Reporting).
 
+### Audit-Gates (CI)
+
+| Gate | Quelle | Verhalten |
+|---|---|---|
+| Function-Inventory | `scripts/audit-functions.mjs` | generiert Doc, kein Fail |
+| Broken-Flow-Detection | `scripts/broken-flow-detect.mjs` | **fails CI bei >50 unresolved onclicks** |
+| Catalog-Audit | `scripts/audit-catalog.mjs` | generiert Doc, kein Fail |
+
+Lokal: `npm run audit:all`. Reports landen in `docs/`.
+
 ### Sonstige Gates (v2.5.0)
 
 | Gate | Ziel | Aktuell |

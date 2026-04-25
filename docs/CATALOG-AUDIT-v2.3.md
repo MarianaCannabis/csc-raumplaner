@@ -1,4 +1,4 @@
-# Catalog Audit — 2026-04-21 (v2.3)
+# Catalog Audit — 2026-04-25 (v2.3)
 
 **Gescannt:** 480 Items in 20 Dateien.
 
