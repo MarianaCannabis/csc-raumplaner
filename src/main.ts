@@ -66,6 +66,7 @@ import * as changelog from './legacy/changelog.js';
 import * as welcomeFlow from './legacy/welcomeFlow.js';
 import * as tutorial from './legacy/tutorial.js';
 import * as helpModal from './legacy/helpModal.js';
+import * as tbMenu from './legacy/tbMenu.js';
 import * as complianceBridge from './legacy/complianceBridge.js';
 import type { CompletedRoom, SceneObject } from './legacy/types.js';
 import * as authSupabase from './auth/supabase.js';
@@ -263,6 +264,9 @@ declare global {
     openHelp: (page?: string) => void;
     closeHelp: () => void;
     showHelpPage: (id: string) => void;
+    /** P17.20: Topbar-Dropdown-Menu aus src/legacy/tbMenu.ts. */
+    toggleTBMenu: (id: string) => void;
+    closeTBMenu: () => void;
   }
 }
 if (typeof window !== 'undefined' && (window as any).THREE) {
@@ -627,6 +631,13 @@ window.openHelpModal = () => {
 window.openHelp = helpModal.openHelp;
 window.closeHelp = helpModal.closeHelp;
 window.showHelpPage = helpModal.showHelpPage;
+
+// P17.20: Topbar-Dropdown-Menu.
+window.toggleTBMenu = (id: string) => {
+  const w = window as unknown as { updateMenuActiveStates?: () => void };
+  tbMenu.toggleTBMenu(id, { updateMenuActiveStates: w.updateMenuActiveStates });
+};
+window.closeTBMenu = tbMenu.closeTBMenu;
 
 window._restoreFromVisualHistory = (idx: number) => {
   const w = window as unknown as {

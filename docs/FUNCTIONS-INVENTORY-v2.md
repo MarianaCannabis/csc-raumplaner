@@ -6,7 +6,7 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 - **onclick-Handler:** 715
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 847
-- **TS-Exports:** 426
+- **TS-Exports:** 430
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -272,6 +272,13 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 - `updateSbStatus` (line 14)
 - `setSbMsg` (line 46)
+
+### src/legacy/tbMenu.ts
+
+- `toggleTBMenu` (line 18)
+- `closeTBMenu` (line 36)
+- `getOpenMenu` (line 47)
+- `_resetForTests` (line 52)
 
 ### src/legacy/theme.ts
 

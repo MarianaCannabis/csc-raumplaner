@@ -21,6 +21,11 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Refactor (Strangler P17)
 
+- **tbMenu extrahiert** nach `src/legacy/tbMenu.ts` (P17.20). Topbar-
+  Dropdown-System: toggleTBMenu/closeTBMenu mit module-internal
+  _openMenu-Tracking. updateMenuActiveStates bleibt Caller-side via
+  deps (zu viele Legacy-Globals). +8 Vitest-Tests inkl. radio-style
+  toggle, aria-expanded a11y. Bundle: −165 B gz.
 - **helpModal extrahiert** nach `src/legacy/helpModal.ts` (P17.19).
   4 Funktionen: openHelpModal (#m-help via openM) + openHelp/closeHelp/
   showHelpPage (separates #help-overlay-System mit Sub-Page-Navigation).

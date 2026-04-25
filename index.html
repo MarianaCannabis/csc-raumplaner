@@ -11156,29 +11156,16 @@ const _origAddRoom = addRoom;
 // ════════════════════════════════════════════════════════════════════════
 
 // ── DROPDOWN MENU SYSTEM ─────────────────────────────────────────────
-let _openMenu = null;
-
+// P17.20: toggleTBMenu/closeTBMenu extrahiert nach src/legacy/tbMenu.ts.
 function toggleTBMenu(id){
-  const drop = document.getElementById('tbmd-'+id);
-  const btn  = document.querySelector('#tbm-'+id+' .tbm-btn');
-  if(!drop) return;
-  if(_openMenu === id){
-    closeTBMenu(); return;
+  if(typeof window.toggleTBMenu === 'function' && window.toggleTBMenu !== toggleTBMenu){
+    return window.toggleTBMenu(id);
   }
-  closeTBMenu();
-  _openMenu = id;
-  drop.classList.add('open');
-  if(btn){ btn.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
-  // Update active states for toggle items
-  updateMenuActiveStates();
 }
-
 function closeTBMenu(){
-  document.querySelectorAll('.tbm-drop.open').forEach(d=>d.classList.remove('open'));
-  document.querySelectorAll('.tbm-btn.open').forEach(b=>b.classList.remove('open'));
-  // P15 Cluster 4d: a11y — aria-expanded auf allen Dropdown-Triggern zurücksetzen.
-  document.querySelectorAll('.tbm-btn[aria-expanded]').forEach(b=>b.setAttribute('aria-expanded','false'));
-  _openMenu = null;
+  if(typeof window.closeTBMenu === 'function' && window.closeTBMenu !== closeTBMenu){
+    return window.closeTBMenu();
+  }
 }
 
 function updateMenuActiveStates(){
