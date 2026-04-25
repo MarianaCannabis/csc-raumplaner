@@ -238,8 +238,8 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 ### src/legacy/exports3d.ts
 
-- `exportGLTF` (line 58)
-- `exportDXF` (line 103)
+- `exportGLTF` (line 60)
+- `exportDXF` (line 104)
 
 ### src/legacy/helpModal.ts
 

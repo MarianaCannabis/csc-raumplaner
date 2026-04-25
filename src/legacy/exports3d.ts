@@ -1,16 +1,17 @@
 /**
  * P17.12 — 3D-Exports (GLTF + DXF) extrahiert aus index.html:11118-11225.
  *
- * Section A — exportGLTF (async): nutzt GLTFExporter aus three/examples
- *   (in main.ts schon auf window.THREE.GLTFExporter gebridged für legacy
- *   compat, aber im Modul direkt importiert). Async wegen
- *   GLTFExporter.parse-Callback-Pattern → Promise-Wrap.
+ * Section A — exportGLTF (async): nutzt GLTFExporter aus three/examples.
+ *   Pfad B (Sub-Task 1): GLTFExporter wird NICHT mehr direkt importiert,
+ *   sondern als `ExporterClass` über deps gereicht. main.ts lädt das Modul
+ *   lazy beim ersten Click (window.cscLoadGLTFExporter), spart ~−10 KB gz
+ *   im Initial-Bundle. Async wegen GLTFExporter.parse-Callback-Pattern.
  *
  * Section B — exportDXF (sync): Custom-DXF-Generator (5 Layers,
  *   AC1015-Kompatibilität). Pure String-Concat + Math, keine async.
  */
 
-import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js';
+import type { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js';
 import type * as THREE from 'three';
 import type { CompletedRoom, SceneObject } from './types.js';
 
@@ -51,8 +52,9 @@ export interface ExportGLTFDeps {
   scene: THREE.Scene | null;
   projName: string;
   toast: (msg: string, type?: string) => void;
-  /** Test-injection: alternative GLTFExporter-Klasse. */
-  ExporterClass?: typeof GLTFExporter;
+  /** GLTFExporter-Klasse — nach Pfad-B Sub-Task 1 immer Pflicht: main.ts
+   *  reicht sie via lazy-loader ein, Tests injizieren ein FakeExporter. */
+  ExporterClass: typeof GLTFExporter;
 }
 
 export async function exportGLTF(deps: ExportGLTFDeps): Promise<void> {
@@ -61,8 +63,7 @@ export async function exportGLTF(deps: ExportGLTFDeps): Promise<void> {
     return;
   }
   deps.toast('⏳ GLTF wird erstellt…', 'b');
-  const Exporter = deps.ExporterClass ?? GLTFExporter;
-  const exporter = new Exporter();
+  const exporter = new deps.ExporterClass();
   return new Promise<void>((resolve) => {
     exporter.parse(
       deps.scene as THREE.Scene,

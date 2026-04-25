@@ -33,7 +33,9 @@ import { CREDITS, renderCreditsHtml } from './catalog/credits.js';
 import { GROUND_MATERIALS, findGroundMaterial } from './catalog/grounds.js';
 import type { GroundMaterial } from './catalog/grounds.js';
 import { processUpload, estimateImageMapBytes } from './util/imageUpload.js';
-import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js';
+// Pfad B Sub-Task 1: GLTFExporter wird lazy beim ersten exportGLTF()-Click
+// nachgeladen — `loadGLTFExporter()` weiter unten + `window.cscLoadGLTFExporter`.
+import type { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js';
 import { STAND_TEMPLATES, findTemplate } from './templates/index.js';
 import type { StandTemplate } from './templates/index.js';
 import { calcMesseBudget, fmtEUR } from './compliance/budget.js';
@@ -143,14 +145,27 @@ if (typeof window !== 'undefined') {
   });
 }
 
-// Bridge GLTFExporter onto the globally-available legacy THREE (from CDN).
-// Der legacy exportGLTF()-Handler ruft `new THREE.GLTFExporter()` — ohne
-// diese Zuweisung hat er kein GLTFExporter. Früher kam er aus einem
-// separaten CDN-Tag; der ist entfernt (duplicate-Warning), der Exporter
-// kommt jetzt aus dem npm-Bundle (single source of truth).
+// Pfad B Sub-Task 1: GLTFExporter lazy-loader. Cached Promise — zweite
+// Aufrufe lesen aus dem Cache, keine erneute Network-Round-Trip. Die Bridge
+// `window.THREE.GLTFExporter` wird nach erfolgreichem Lazy-Load gesetzt,
+// damit Legacy-Reads weiter funktionieren.
+let _gltfExporterPromise: Promise<typeof GLTFExporter> | null = null;
+async function loadGLTFExporter(): Promise<typeof GLTFExporter> {
+  if (_gltfExporterPromise) return _gltfExporterPromise;
+  _gltfExporterPromise = import('three/examples/jsm/exporters/GLTFExporter.js').then(
+    (mod) => {
+      const w = window as unknown as { THREE?: { GLTFExporter?: typeof GLTFExporter } };
+      if (w.THREE) w.THREE.GLTFExporter = mod.GLTFExporter;
+      return mod.GLTFExporter;
+    },
+  );
+  return _gltfExporterPromise;
+}
 declare global {
   interface Window {
     THREE: any;
+    /** Pfad B Sub-Task 1: Lazy-loader für GLTFExporter. Cached Promise. */
+    cscLoadGLTFExporter: () => Promise<typeof GLTFExporter>;
     /** Hotfix v2.6.3: typisiert, damit zukünftiger Drift zwischen
      *  Modul-Signatur (persist/*) und TS-Callsite bei Build-Time
      *  gefangen wird. Legacy-JS in index.html ist weiterhin untyped —
@@ -277,9 +292,9 @@ declare global {
     deleteVersion: (i: number) => void;
   }
 }
-if (typeof window !== 'undefined' && (window as any).THREE) {
-  (window as any).THREE.GLTFExporter = GLTFExporter;
-}
+// Pfad B Sub-Task 1: Bridge expose. Eager-Bridge entfernt — wird beim ersten
+// exportGLTF()-Click ausgeführt und cached.
+window.cscLoadGLTFExporter = loadGLTFExporter;
 // P17.1: toast() global verfügbar machen für die 304 Caller in index.html.
 window.toast = toast;
 
@@ -483,12 +498,22 @@ window.deleteUserTemplate = (id) => userTemplatesRead.deleteUserTemplate(id, bui
 window.applyUserTemplate = (id) => userTemplatesRead.applyUserTemplate(id, buildUserTemplatesUIDeps());
 
 // P17.12: 3D-Exports (GLTF + DXF).
-window.exportGLTF = () => {
+// Pfad B Sub-Task 1: erst Lazy-Loader awaiten, dann ExporterClass via deps reichen.
+window.exportGLTF = async () => {
   const w = window as unknown as { scene?: import('three').Scene; projName?: string; toast?: (m: string, t?: string) => void };
+  let ExporterClass: typeof GLTFExporter;
+  try {
+    ExporterClass = await loadGLTFExporter();
+  } catch (e) {
+    console.warn('[csc] GLTFExporter lazy-load failed', e);
+    (w.toast ?? (() => {}))('GLTF-Exporter konnte nicht geladen werden', 'r');
+    return;
+  }
   return exports3d.exportGLTF({
     scene: w.scene ?? null,
     projName: w.projName ?? 'Projekt',
     toast: w.toast ?? (() => {}),
+    ExporterClass,
   });
 };
 // P17.13: Undo/Redo wiring — Update-Buttons-Callback registrieren + pure

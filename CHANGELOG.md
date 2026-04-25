@@ -6,6 +6,17 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+### Build (Pfad B — Bundle-Ziel-Sprint)
+
+- **GLTFExporter lazy-loaded** (Sub-Task 1): static `import` aus `src/main.ts`
+  entfernt; eager-Bridge `window.THREE.GLTFExporter = …` durch
+  `window.cscLoadGLTFExporter()` ersetzt (Promise-cached). Beim ersten
+  `exportGLTF()`-Click wird der Exporter via dynamic `import()` aus
+  `three/examples/jsm/exporters/GLTFExporter.js` nachgeladen. `exports3d.ts`
+  importiert `GLTFExporter` jetzt nur noch type-only — `ExporterClass` wird
+  über deps gereicht. Initial-Bundle gz: −12,877 (index.js −10,792,
+  index.html −2,006; neuer separater GLTFExporter-Chunk: 10,388 gz, lazy).
+
 ### Tooling
 
 - **Audit-CI-Workflow** (`.github/workflows/audit.yml`):
