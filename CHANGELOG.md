@@ -21,6 +21,12 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Refactor (Strangler P17)
 
+- **undoRedo extrahiert** nach `src/legacy/undoRedo.ts` (P17.13). Stack-
+  Management: `pushSnapshot/undo/redo/canUndo/canRedo` mit MAX_HISTORY=50.
+  Inline-`snapshot()` bleibt Source-of-Truth (tightly-coupled mit autosave/
+  changelog-diff/init-Cruft); Modul ist Mirror für Test-API. +14 Tests.
+  Bundle: +190 B gz (net-negativ wegen Shadow-Sync — akzeptiert für
+  Test-API-Win, Limit ist 5 KB).
 - **3D-Exports extrahiert** nach `src/legacy/exports3d.ts` (P17.12).
   `exportGLTF` (async, three/examples GLTFExporter direkt importiert) +
   `exportDXF` (sync, 5 Layer AC1015-DXF). Erstes async/sync-Mix-Modul.

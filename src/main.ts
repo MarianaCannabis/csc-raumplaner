@@ -59,6 +59,7 @@ import * as renderPresets from './legacy/renderPresets.js';
 import * as exports10 from './legacy/exports.js';
 import * as userTemplatesRead from './legacy/userTemplatesRead.js';
 import * as exports3d from './legacy/exports3d.js';
+import * as undoRedo from './legacy/undoRedo.js';
 import * as complianceBridge from './legacy/complianceBridge.js';
 import type { CompletedRoom, SceneObject } from './legacy/types.js';
 import * as authSupabase from './auth/supabase.js';
@@ -210,6 +211,14 @@ declare global {
      *  pure String-Math. */
     exportGLTF: () => Promise<void>;
     exportDXF: () => void;
+    /** P17.13: Undo/Redo Stack-Management aus src/legacy/undoRedo.ts.
+     *  Module-internal Stack; Inline-snapshot()/undo()/redo() rufen
+     *  durch und behalten ihre Side-Effects (Serialize, Restore). */
+    _undoRedo_pushSnapshot: (state: string) => void;
+    _undoRedo_undo: () => string | null;
+    _undoRedo_redo: () => string | null;
+    _undoRedo_canUndo: () => boolean;
+    _undoRedo_canRedo: () => boolean;
   }
 }
 if (typeof window !== 'undefined' && (window as any).THREE) {
@@ -426,6 +435,18 @@ window.exportGLTF = () => {
     toast: w.toast ?? (() => {}),
   });
 };
+// P17.13: Undo/Redo wiring — Update-Buttons-Callback registrieren + pure
+// Stack-API exportieren. Inline-snapshot/undo/redo rufen durch.
+undoRedo.setUpdateButtonsCallback(() => {
+  const w = window as unknown as { _updUndoBtns?: () => void };
+  if (typeof w._updUndoBtns === 'function') w._updUndoBtns();
+});
+window._undoRedo_pushSnapshot = undoRedo.pushSnapshot;
+window._undoRedo_undo = undoRedo.undo;
+window._undoRedo_redo = undoRedo.redo;
+window._undoRedo_canUndo = undoRedo.canUndo;
+window._undoRedo_canRedo = undoRedo.canRedo;
+
 window.exportDXF = () => {
   const w = window as unknown as {
     rooms?: import('./legacy/types.js').CompletedRoom[];
