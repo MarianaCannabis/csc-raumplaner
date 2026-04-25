@@ -21,6 +21,11 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Refactor (Strangler P17)
 
+- **tutorial extrahiert** nach `src/legacy/tutorial.ts` (P17.18). Step-
+  basiertes Overlay-Tutorial mit Highlight auf Topbar/Sidebar-Elementen.
+  startTutorial/endTutorial/tutNav/renderTutStep + readonly TUT_STEPS-Array
+  (5 Schritte). Module-internal _step-State. +14 Vitest-Tests inkl.
+  navigation, target-highlighting, clamping. Bundle: −554 B gz.
 - **welcome-flow extrahiert** nach `src/legacy/welcomeFlow.ts` (P17.17).
   3-Step-Onboarding: startWelcomeFlow, welcomeStep, closeWelcomeFlow,
   renderWelcomeStep. Module-internal _idx-State + WELCOME_STEPS-Array.
