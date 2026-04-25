@@ -3,10 +3,10 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 ## Zusammenfassung
 
-- **onclick-Handler:** 720
+- **onclick-Handler:** 718
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 849
-- **TS-Exports:** 398
+- **TS-Exports:** 408
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -205,6 +205,19 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `updateLoginGate` (line 59)
 - `_resetGateStateForTests` (line 76)
 - `_getGateStateForTests` (line 81)
+
+### src/legacy/changelog.ts
+
+- `logChange` (line 45)
+- `getChangelog` (line 61)
+- `loadChangelog` (line 65)
+- `clearChangelog` (line 74)
+- `showChangelog` (line 87)
+- `pushVisualHistory` (line 132)
+- `getVisualHistorySize` (line 152)
+- `clearVisualHistoryForTests` (line 156)
+- `openVisualHistory` (line 165)
+- `restoreFromVisualHistory` (line 232)
 
 ### src/legacy/complianceBridge.ts
 
