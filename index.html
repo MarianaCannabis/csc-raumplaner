@@ -2418,20 +2418,26 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 // zeigt ein minimalistisches Error-Modal. Autosave läuft ohnehin parallel
 // alle 30s in IndexedDB (siehe _idbAutoSave weiter unten), also ist
 // Datenverlust bei Crash nicht garantiert aber deutlich unwahrscheinlicher.
+// P17.4: _showCrashModal extrahiert nach src/legacy/errorBoundary.ts.
+// Listener-Registrierung BLEIBT inline (Boot-Time-Coverage) — sie
+// callen _showCrashModal, das via window.showCrashModal aufs Modul
+// resolved (oder console-only Fallback wenn der Boot gerade selbst
+// crasht und das Modul noch nicht geladen ist).
+//
+// _crashShown bleibt als Inline-State nur für den console-Fallback.
+// Das Modul hält seinen eigenen _crashShown-Flag — bei normalem
+// Betrieb (Modul geladen) wird der Inline-Flag NICHT gesetzt, weil
+// der window-Lookup schon vor `_crashShown=true` greift.
 let _crashShown = false;
 function _showCrashModal(msg){
-  if(_crashShown) return; _crashShown = true;
-  const m = document.createElement('div');
-  m.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
-  m.innerHTML = '<div style="background:#0a0f14;border:1px solid #ef4444;border-radius:10px;padding:24px;max-width:440px;color:#e0e6ed;font-family:system-ui">' +
-    '<h2 style="margin:0 0 10px;color:#ef4444;font-size:18px">⚠ Etwas ist schiefgelaufen</h2>' +
-    '<p style="font-size:13px;line-height:1.5;color:#a0aec0">Die App hat einen Fehler gemeldet. Dein Projekt ist auto-gespeichert (alle 30s in IndexedDB). Bitte die Seite neu laden.</p>' +
-    '<details style="margin-top:8px;font-size:11px;color:#666"><summary>Technischer Fehler</summary><pre style="overflow-x:auto;margin-top:6px">' + (msg || '(unbekannt)').replace(/[<>]/g,'') + '</pre></details>' +
-    '<div style="display:flex;gap:6px;margin-top:14px;justify-content:flex-end">' +
-    '<button onclick="this.closest(\'div\').parentNode.remove();" style="background:#2a2a2a;color:#e0e6ed;border:1px solid #3a3a3a;border-radius:4px;padding:6px 14px;cursor:pointer">Schließen</button>' +
-    '<button onclick="location.reload();" style="background:#4ade80;color:#0a0f14;border:none;border-radius:4px;padding:6px 14px;cursor:pointer;font-weight:600">Neu laden</button>' +
-    '</div></div>';
-  document.body.appendChild(m);
+  if(typeof window.showCrashModal === 'function'){
+    return window.showCrashModal(msg);
+  }
+  // Boot-Race: Modul noch nicht geladen — der Boot ist gerade dabei
+  // zu crashen. Kein Modal, aber console-Spur (Listener loggt eh schon).
+  if(_crashShown) return;
+  _crashShown = true;
+  console.warn('[csc-crash] Modul errorBoundary noch nicht geladen, Modal unterdrückt:', msg);
 }
 window.addEventListener('error', (e) => {
   // User-Code-Errors rauspicken, Three.js-Warnings ignorieren

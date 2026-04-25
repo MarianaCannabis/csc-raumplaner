@@ -50,6 +50,7 @@ import { installBridge as installPersistBridge } from './persist/index.js';
 import type { PersistBridge } from './persist/index.js';
 import { toast } from './legacy/toast.js';
 import { addMsg, renderAIText } from './legacy/aiMessages.js';
+import { showCrashModal } from './legacy/errorBoundary.js';
 import * as complianceBridge from './legacy/complianceBridge.js';
 import type { CompletedRoom, SceneObject } from './legacy/types.js';
 import * as authSupabase from './auth/supabase.js';
@@ -154,6 +155,10 @@ declare global {
      *  Render. Pure DOM, keine Closure-Wrapper nötig. */
     addMsg: typeof addMsg;
     renderAIText: typeof renderAIText;
+    /** P17.4: Crash-Modal aus src/legacy/errorBoundary.ts. Listener-
+     *  Registrierung BLEIBT inline in index.html (Boot-Time-Coverage),
+     *  nur die Modal-Render-Logik wird via window-Bind aufgerufen. */
+    showCrashModal: typeof showCrashModal;
   }
 }
 if (typeof window !== 'undefined' && (window as any).THREE) {
@@ -166,6 +171,10 @@ window.toast = toast;
 // Pure DOM, keine Deps zu wrappen.
 window.addMsg = addMsg;
 window.renderAIText = renderAIText;
+
+// P17.4: Crash-Modal. Listener-Registrierung in index.html behält die
+// Boot-Time-Coverage; das Modul-Modal wird hier verfügbar gemacht.
+window.showCrashModal = showCrashModal;
 
 // P17.2: Compliance-Bridge — Closures wrap deps automatisch aus den Legacy-
 // Globals. Inline-Caller in index.html (8 Sites) bleiben so kompatibel ohne
