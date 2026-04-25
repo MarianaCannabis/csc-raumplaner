@@ -1,5 +1,7 @@
 import { defineConfig } from 'vite';
 import checker from 'vite-plugin-checker';
+// @ts-expect-error — vite-plugin-purgecss has no TS types but we know the export shape.
+import purgecss from 'vite-plugin-purgecss';
 import { readFileSync } from 'node:fs';
 import pkg from './package.json' with { type: 'json' };
 
@@ -59,6 +61,60 @@ export default defineConfig({
   },
   plugins: [
     checker({ typescript: true }),
+    // Pfad B Sub-Task 4: Purgecss auf den CSS-Bundles. Dynamisch gesetzte
+    // Klassen werden via Safelist abgedeckt (purgecss scannt content-Files
+    // + lässt Regex-Matches durch). Bei Verdacht auf gepurgte Klasse:
+    // Pattern in safelist.standard ergänzen.
+    purgecss({
+      content: ['./index.html', './src/**/*.{ts,js,html}'],
+      safelist: {
+        // Standard: Klassen die als regex bzw. exact match überleben.
+        standard: [
+          // State-Modifier — werden via classList.add('is-X') oder
+          // String-Konkatenation gesetzt; purgecss kann das nicht
+          // statisch tracen.
+          /^is-/,
+          // BEM-Modifier — `tb-btn--primary`, `mdl-btn--danger` etc.
+          /--/,
+          // Theme-Selector als Attribute — purgecss erfasst attribute-
+          // selectors, aber sicher ist sicher.
+          /^csc-theme-/,
+          // Toast-Farben (g/r/b) als CSS-Selektoren. Zur Sicherheit
+          // expliziter exact-match:
+          'toast', 'toast-g', 'toast-r', 'toast-b',
+          // Spinner + Loading-States.
+          'loading', 'spinner', 'ana-spinner',
+          // Compliance-Status (gut/warn/fail).
+          'comp-badge', 'comp-good', 'comp-warn', 'comp-fail',
+          // Modal-Dialog-System.
+          'mdl-overlay', 'mdl-dialog', 'mdl-actions',
+          // Sidebar / Topbar / Surfaces (BEM-Roots).
+          'tb-btn', 'tb-select', 'tb-row', 'tb-logo',
+          'sp-status', 'sp-sec', 'sp-sec__summary',
+          // KCanG-Felder.
+          'kc-field', 'kc-rule',
+          // KI-Chat-Messages (4 Typen).
+          'amsg', 'usr', 'load', 'ai', 'sys',
+          // Misc häufig gesetzte Klassen.
+          'active', 'open', 'closed', 'hidden', 'show', 'vis',
+          'sel', 'over', 'mobile-open',
+        ],
+        // Greedy: jeder selector der diese Pattern enthält bleibt drin —
+        // Sicherheitsnetz gegen subtile Pseudo-Selektoren wie
+        // `.tb-btn--primary:hover`.
+        greedy: [
+          /^tb-/, /^mdl-/, /^sp-/, /^kc-/, /^csc-/, /^ann-/, /^cl-/,
+          /^badge-/, /^budget-/, /^changelog-/, /^help-/, /^kcang-/,
+          /^cat-/, /^sitem/, /^be-/, /^bs-/, /^ac-/, /^bprop/,
+          /^align-/, /^acoustic-/, /^cell/, /^bright-/, /^ceil/,
+          /^auto/, /^add/, /^api/, /^app-/, /^arch-/, /^ann-/, /^ana-/,
+        ],
+        // Deep: für Pattern die nur als Sub-Selektor auftauchen.
+        deep: [
+          /^\.amsg\b/,
+        ],
+      },
+    }),
     {
       name: 'csc-version-html-inject',
       transformIndexHtml(html) {
