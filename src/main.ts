@@ -67,6 +67,7 @@ import * as welcomeFlow from './legacy/welcomeFlow.js';
 import * as tutorial from './legacy/tutorial.js';
 import * as helpModal from './legacy/helpModal.js';
 import * as tbMenu from './legacy/tbMenu.js';
+import * as versionHistory from './legacy/versionHistory.js';
 import * as complianceBridge from './legacy/complianceBridge.js';
 import type { CompletedRoom, SceneObject } from './legacy/types.js';
 import * as authSupabase from './auth/supabase.js';
@@ -267,6 +268,13 @@ declare global {
     /** P17.20: Topbar-Dropdown-Menu aus src/legacy/tbMenu.ts. */
     toggleTBMenu: (id: string) => void;
     closeTBMenu: () => void;
+    /** P17.21: Version-History UI aus src/legacy/versionHistory.ts.
+     *  Wrapper um window.cscPersist.versions (P-TrackA Phase 1 Bridge). */
+    saveVersion: (label?: string) => void;
+    loadVersionHistory: () => void;
+    renderVersionHistory: () => void;
+    restoreVersion: (i: number) => void;
+    deleteVersion: (i: number) => void;
   }
 }
 if (typeof window !== 'undefined' && (window as any).THREE) {
@@ -638,6 +646,27 @@ window.toggleTBMenu = (id: string) => {
   tbMenu.toggleTBMenu(id, { updateMenuActiveStates: w.updateMenuActiveStates });
 };
 window.closeTBMenu = tbMenu.closeTBMenu;
+
+// P17.21: Version-History UI.
+function buildVersionDeps(): versionHistory.VersionHistoryDeps {
+  const w = window as unknown as {
+    getPD?: () => unknown;
+    loadPD?: (data: unknown) => void;
+    toast?: (msg: string, type?: string) => void;
+    cscPersist?: { versions?: versionHistory.VersionHistoryDeps['versionsBridge'] };
+  };
+  return {
+    getPD: w.getPD ?? (() => ({})),
+    loadPD: w.loadPD ?? (() => {}),
+    toast: w.toast ?? (() => {}),
+    versionsBridge: w.cscPersist?.versions,
+  };
+}
+window.saveVersion = (label) => versionHistory.saveVersion(label, buildVersionDeps());
+window.loadVersionHistory = () => { versionHistory.loadVersionHistory(buildVersionDeps()); };
+window.renderVersionHistory = () => versionHistory.renderVersionHistory(buildVersionDeps());
+window.restoreVersion = (i) => versionHistory.restoreVersion(i, buildVersionDeps());
+window.deleteVersion = (i) => versionHistory.deleteVersion(i, buildVersionDeps());
 
 window._restoreFromVisualHistory = (idx: number) => {
   const w = window as unknown as {

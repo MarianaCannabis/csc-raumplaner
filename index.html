@@ -8956,56 +8956,31 @@ function _versListAny(){
   return window.cscPersist ? window.cscPersist.versions.list() : _versListRaw();
 }
 
+// P17.21: Version-History UI extrahiert nach src/legacy/versionHistory.ts.
 function saveVersion(label){
-  if(window.cscPersist){
-    _versionHistory = window.cscPersist.versions.push(getPD(), label);
-  } else {
-    const v = { label: label || new Date().toLocaleString('de-DE'), data: getPD(), ts: Date.now() };
-    _versionHistory = [v, ..._versListRaw()].slice(0, MAX_VERSIONS);
-    try { localStorage.setItem('csc-versions', JSON.stringify(_versionHistory)); } catch(_){}
+  if(typeof window.saveVersion === 'function' && window.saveVersion !== saveVersion){
+    return window.saveVersion(label);
   }
-  toast('📌 Version gespeichert','g');
-  renderVersionHistory();
 }
-
 function loadVersionHistory(){
-  _versionHistory = _versListAny();
+  if(typeof window.loadVersionHistory === 'function' && window.loadVersionHistory !== loadVersionHistory){
+    return window.loadVersionHistory();
+  }
 }
-
 function renderVersionHistory(){
-  const el = document.getElementById('version-list'); if(!el) return;
-  _versionHistory = _versListAny();
-  if(!_versionHistory.length){
-    el.innerHTML='<div style="font-size:11px;color:var(--tx3);padding:8px">Keine Versionen gespeichert.<br>Klicke "📌 Version merken" um den aktuellen Stand zu sichern.</div>';
-    return;
+  if(typeof window.renderVersionHistory === 'function' && window.renderVersionHistory !== renderVersionHistory){
+    return window.renderVersionHistory();
   }
-  el.innerHTML = _versionHistory.map((v,i)=>
-    '<div class="sitem" onclick="restoreVersion('+i+')">'
-    +'<div class="ri"><div class="rn">'+v.label+'</div>'
-    +'<div class="rd">'+(v.data.rooms||[]).length+' Räume · '+(v.data.objects||[]).length+' Objekte</div></div>'
-    +'<button class="sdel" onclick="deleteVersion('+i+');event.stopPropagation()">🗑</button>'
-    +'</div>'
-  ).join('');
 }
-
 function restoreVersion(i){
-  const list = _versListAny();
-  const v = list[i];
-  if(!v) return;
-  if(!confirm('Version "'+v.label+'" wiederherstellen? Aktuelle Änderungen gehen verloren.')) return;
-  loadPD(v.data);
-  toast('🔄 Version wiederhergestellt','g');
-}
-
-function deleteVersion(i){
-  if(window.cscPersist){
-    _versionHistory = window.cscPersist.versions.remove(i);
-  } else {
-    _versionHistory = _versListRaw();
-    _versionHistory.splice(i, 1);
-    try { localStorage.setItem('csc-versions', JSON.stringify(_versionHistory)); } catch(_){}
+  if(typeof window.restoreVersion === 'function' && window.restoreVersion !== restoreVersion){
+    return window.restoreVersion(i);
   }
-  renderVersionHistory();
+}
+function deleteVersion(i){
+  if(typeof window.deleteVersion === 'function' && window.deleteVersion !== deleteVersion){
+    return window.deleteVersion(i);
+  }
 }
 
 // ── 12. PROJEKT TEILEN via URL ────────────────────────────────────────
