@@ -9702,52 +9702,20 @@ const TUT_STEPS = [
   },
 ];
 
+// P17.18: Tutorial extrahiert nach src/legacy/tutorial.ts.
 function startTutorial(){
-  closeHelp();
-  _tutStep = 0;
-  document.getElementById('tutorial-overlay').classList.add('active');
-  renderTutStep();
-}
-
-function endTutorial(){
-  document.getElementById('tutorial-overlay').classList.remove('active');
-  document.getElementById('tut-highlight').style.display='none';
-}
-
-function tutNav(dir){
-  _tutStep = Math.max(0, Math.min(TUT_STEPS.length-1, _tutStep+dir));
-  if(_tutStep >= TUT_STEPS.length){ endTutorial(); return; }
-  renderTutStep();
-  if(_tutStep === TUT_STEPS.length-1){
-    document.getElementById('tut-next').textContent = '✓ Fertig';
-    document.getElementById('tut-next').onclick = endTutorial;
+  if(typeof window.startTutorial === 'function' && window.startTutorial !== startTutorial){
+    return window.startTutorial();
   }
 }
-
-function renderTutStep(){
-  const step = TUT_STEPS[_tutStep];
-  document.getElementById('tut-progress').textContent = (_tutStep+1)+' / '+TUT_STEPS.length;
-  document.getElementById('tut-title').textContent = step.title;
-  document.getElementById('tut-text').textContent = step.text;
-  document.getElementById('tut-prev').style.display = _tutStep>0?'block':'none';
-  document.getElementById('tut-next').textContent = _tutStep<TUT_STEPS.length-1?'Weiter →':'✓ Fertig';
-  document.getElementById('tut-next').onclick = ()=>tutNav(1);
-
-  const hl = document.getElementById('tut-highlight');
-  const tt = document.getElementById('tut-tooltip');
-
-  if(step.target){
-    const el = document.querySelector(step.target);
-    if(el){
-      const r = el.getBoundingClientRect();
-      hl.style.cssText = 'display:block;left:'+(r.left-4)+'px;top:'+(r.top-4)+'px;width:'+(r.width+8)+'px;height:'+(r.height+8)+'px';
-      // Position tooltip below or above
-      const ttTop = r.bottom+12 < window.innerHeight-120 ? r.bottom+12 : r.top-140;
-      tt.style.cssText = 'display:block;left:'+Math.max(10,r.left)+'px;top:'+ttTop+'px';
-    }
-  } else {
-    hl.style.display='none';
-    tt.style.cssText = 'display:block;left:50%;top:50%;transform:translate(-50%,-50%)';
+function endTutorial(){
+  if(typeof window.endTutorial === 'function' && window.endTutorial !== endTutorial){
+    return window.endTutorial();
+  }
+}
+function tutNav(dir){
+  if(typeof window.tutNav === 'function' && window.tutNav !== tutNav){
+    return window.tutNav(dir);
   }
 }
 
