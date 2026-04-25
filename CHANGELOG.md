@@ -21,6 +21,11 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Refactor (Strangler P17)
 
+- **aiMessages extrahiert** nach `src/legacy/aiMessages.ts` (P17.3).
+  `addMsg` (74 Caller) + `renderAIText` (XSS-hardening + Markdown).
+  +14 Vitest-Tests inkl. XSS-Regression. Pure DOM, kein Closure-Wrap
+  nötig. Standard-Boot-Shims wegen transitiver Caller (Welcome-Message-
+  Boot, Crash-Modal, _restoreChatHistory). Bundle: −1,741 B raw / −900 B gz.
 - **compliance-bridge extrahiert** nach `src/legacy/complianceBridge.ts`
   (P17.2). Drei Funktionen: `calcHealthScore`, `renderComplianceBadges`,
   `showHealthDetails`. Dependencies via DI (kein direktes Lesen von

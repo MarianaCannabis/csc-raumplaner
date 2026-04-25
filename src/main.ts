@@ -49,6 +49,7 @@ import { icon, type IconName } from './icons/lucide.js';
 import { installBridge as installPersistBridge } from './persist/index.js';
 import type { PersistBridge } from './persist/index.js';
 import { toast } from './legacy/toast.js';
+import { addMsg, renderAIText } from './legacy/aiMessages.js';
 import * as complianceBridge from './legacy/complianceBridge.js';
 import type { CompletedRoom, SceneObject } from './legacy/types.js';
 import * as authSupabase from './auth/supabase.js';
@@ -148,6 +149,11 @@ declare global {
     calcHealthScore: () => number;
     renderComplianceBadges: () => void;
     showHealthDetails: () => void;
+    /** P17.3: KI-Chat-Notifications aus src/legacy/aiMessages.ts. addMsg
+     *  appendet ins #ai-msgs-Panel; renderAIText XSS-hardened Markdown-
+     *  Render. Pure DOM, keine Closure-Wrapper nötig. */
+    addMsg: typeof addMsg;
+    renderAIText: typeof renderAIText;
   }
 }
 if (typeof window !== 'undefined' && (window as any).THREE) {
@@ -155,6 +161,11 @@ if (typeof window !== 'undefined' && (window as any).THREE) {
 }
 // P17.1: toast() global verfügbar machen für die 304 Caller in index.html.
 window.toast = toast;
+
+// P17.3: aiMessages — addMsg (74 Caller) + renderAIText (2 Caller).
+// Pure DOM, keine Deps zu wrappen.
+window.addMsg = addMsg;
+window.renderAIText = renderAIText;
 
 // P17.2: Compliance-Bridge — Closures wrap deps automatisch aus den Legacy-
 // Globals. Inline-Caller in index.html (8 Sites) bleiben so kompatibel ohne

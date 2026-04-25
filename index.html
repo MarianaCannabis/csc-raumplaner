@@ -8643,58 +8643,20 @@ function loadCustomDesigns(){
 // ════════════════════════════════════════════════════════════════════════
 // AI CHAT HELPER FUNCTIONS
 // ════════════════════════════════════════════════════════════════════════
-// Sicherer Mini-Markdown-Renderer für AI-Output. Reihenfolge ist kritisch:
-// 1) Alle HTML-Entities komplett neutralisieren (&lt; &gt; &amp; etc.)
-// 2) Whitelist anwenden — konvertiert &lt;b&gt; (escaped Legacy-HTML der KI)
-//    UND **markdown** in <strong>, dito <code>/`, <br>/\n.
-// Angriff <img src=x onerror=…> wird in Schritt 1 zu &lt;img …&gt; → nie
-// als Tag interpretiert. Schritt 2 matcht nur die Whitelist-Patterns.
-function renderAIText(text){
-  const esc = String(text == null ? '' : text)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-  return esc
-    // Legacy-HTML-Tags die die KI evtl. noch sendet (nach Escape als &lt;b&gt;…)
-    .replace(/&lt;b&gt;([^<]*?)&lt;\/b&gt;/g, '<strong>$1</strong>')
-    .replace(/&lt;strong&gt;([^<]*?)&lt;\/strong&gt;/g, '<strong>$1</strong>')
-    .replace(/&lt;i&gt;([^<]*?)&lt;\/i&gt;/g, '<em>$1</em>')
-    .replace(/&lt;em&gt;([^<]*?)&lt;\/em&gt;/g, '<em>$1</em>')
-    .replace(/&lt;code&gt;([^<]*?)&lt;\/code&gt;/g, '<code>$1</code>')
-    .replace(/&lt;br\s*\/?&gt;/g, '<br>')
-    // Markdown-Syntax (bevorzugt — s. System-Prompt-Hinweis)
-    .replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/`([^`\n]+)`/g, '<code>$1</code>')
-    .replace(/\n/g, '<br>');
-}
-
+// P17.3: addMsg + renderAIText extrahiert nach src/legacy/aiMessages.ts
+// (window-bound in main.ts). Boot-Shims wegen transitivem Race —
+// Caller-Functions u.a. _restoreChatHistory, _showCrashModal, restoreAIChat
+// können während Module-Boot feuern.
 function addMsg(text, type){
-  const el = document.getElementById('ai-msgs');
-  if(!el) return {remove:()=>{}};
-  const div = document.createElement('div');
-  div.className = 'amsg ' + (type==='user'?'usr':type==='load'?'load':type==='ai'?'ai':'sys');
-  if(type==='ai'){
-    // P0 XSS hardening + Markdown-Render: renderAIText escaped zuerst
-    // alle HTML-Entities und wendet dann eine strenge Tag-Whitelist an
-    // (<strong>, <em>, <code>, <br>). Beliebige HTML-Injection aus dem
-    // KI-Output landet sicher als Text, nur Whitelist-Formatierung
-    // wird gerendert.
-    const lbl = document.createElement('div');
-    lbl.className = 'ailbl';
-    lbl.textContent = '🌿 KI-Assistent';
-    div.appendChild(lbl);
-    const body = document.createElement('div');
-    body.innerHTML = renderAIText(text);
-    body.style.whiteSpace = 'pre-wrap';
-    div.appendChild(body);
-  } else {
-    div.textContent = text;
+  if(typeof window.addMsg === 'function' && window.addMsg !== addMsg){
+    return window.addMsg(text, type);
   }
-  el.appendChild(div);
-  el.scrollTop = el.scrollHeight;
-  return div;
+}
+function renderAIText(raw){
+  if(typeof window.renderAIText === 'function' && window.renderAIText !== renderAIText){
+    return window.renderAIText(raw);
+  }
+  return raw; // Fallback: ungerendert. Verhindert NPE im Boot-Race.
 }
 
 function aiKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAI();} }
