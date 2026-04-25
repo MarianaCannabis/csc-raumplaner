@@ -5,7 +5,7 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 - **onclick-Handler:** 726
 - **addEventListener-Bindings:** 128
-- **HTML-Top-Level-Functions:** 848
+- **HTML-Top-Level-Functions:** 851
 - **TS-Exports:** 349
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)

@@ -1,0 +1,36 @@
+name: Audit
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm }
+      - run: npm install --no-audit --no-fund
+
+      - name: Functions Inventory
+        run: npm run audit:functions
+
+      - name: Broken Flow Detection
+        # exited 1 bei >50 unresolved onclicks — Sicherheitsnetz für P17.
+        run: npm run audit:broken-flows
+
+      - name: Catalog Audit
+        run: npm run audit:catalog
+
+      - name: Upload Audit Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-reports
+          path: |
+            docs/FUNCTIONS-INVENTORY-v2.md
+            docs/BROKEN-FLOWS-*.md
+            docs/CATALOG-AUDIT-v2.3.md
+          retention-days: 30
