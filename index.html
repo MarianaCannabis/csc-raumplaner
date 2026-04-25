@@ -5304,38 +5304,24 @@ function showRight(p){
   });
   if(p==='design') renderDesignPanelFull(selId&&!selIsRoom&&!selIsWall?selId:null);
 }
-function doRename(){projName=document.getElementById('rename-in').value||'Projekt';document.getElementById('proj-lbl').textContent=projName;closeM('m-rename');}
-
-// P5.4: Inline-Edit des Projektnamens oben in der Topbar. Klick auf
-// das #proj-lbl-Span blendet Input+Save-Button ein; Enter/Blur schreibt
-// zurück, Escape verwirft.
+// P17.6: doRename + startInlineProjectRename + finishInlineProjectRename
+// extrahiert nach src/legacy/inlineRename.ts (Closure-Wrapping in main.ts
+// liefert die Legacy-Globals projName/closeM/snapshot/toast). Boot-Shims
+// als Standard-Disziplin.
+function doRename(){
+  if(typeof window.doRename === 'function' && window.doRename !== doRename){
+    return window.doRename();
+  }
+}
 function startInlineProjectRename(){
-  const lbl = document.getElementById('proj-lbl');
-  const inp = document.getElementById('proj-lbl-edit');
-  const btn = document.getElementById('proj-lbl-save');
-  if(!lbl || !inp || !btn) return;
-  inp.value = projName || 'Projekt';
-  lbl.style.display = 'none';
-  inp.style.display = 'inline-block';
-  btn.style.display = 'inline-block';
-  inp.focus();
-  inp.select();
+  if(typeof window.startInlineProjectRename === 'function' && window.startInlineProjectRename !== startInlineProjectRename){
+    return window.startInlineProjectRename();
+  }
 }
 function finishInlineProjectRename(){
-  const lbl = document.getElementById('proj-lbl');
-  const inp = document.getElementById('proj-lbl-edit');
-  const btn = document.getElementById('proj-lbl-save');
-  if(!lbl || !inp || !btn) return;
-  const newName = (inp.value || '').trim() || 'Projekt';
-  if(newName !== projName){
-    projName = newName;
-    lbl.textContent = projName;
-    if(typeof snapshot === 'function') snapshot();
-    if(typeof toast === 'function') toast('📝 Projekt umbenannt: ' + projName, 'g');
+  if(typeof window.finishInlineProjectRename === 'function' && window.finishInlineProjectRename !== finishInlineProjectRename){
+    return window.finishInlineProjectRename();
   }
-  lbl.style.display = '';
-  inp.style.display = 'none';
-  btn.style.display = 'none';
 }
 
 // P17.1: toast() lebt in src/legacy/toast.ts und wird von main.ts an
@@ -15487,21 +15473,13 @@ function showHealthDetails(){
 }
 
 // ── 3. DOPPELKLICK UMBENENNEN ──────────────────────────────────────
+// P17.6: startInlineRename extrahiert nach src/legacy/inlineRename.ts
+// (Closure-Wrapping in main.ts mit rooms/wx2cx/wy2cy/draw2D/renderLeft/
+// snapshot deps). Boot-Shim als Standard-Disziplin.
 function startInlineRename(roomId, canvasX, canvasY){
-  const r=rooms.find(r=>r.id===roomId); if(!r) return;
-  const wrap=document.getElementById('canvas-wrap'); if(!wrap) return;
-  const inp=document.createElement('input');
-  inp.className='room-rename-input';
-  inp.value=r.name;
-  const cx=wx2cx(r.x+r.w/2), cy=wy2cy(r.y+r.d/2);
-  inp.style.cssText='position:absolute;left:'+(cx-60)+'px;top:'+(cy-12)+'px;width:120px';
-  inp.onblur=inp.onkeydown=e=>{
-    if(e.type==='keydown'&&e.key!=='Enter'&&e.key!=='Escape') return;
-    if(e.key!=='Escape') r.name=inp.value.trim()||r.name;
-    inp.remove(); draw2D(); renderLeft(); snapshot();
-  };
-  wrap.appendChild(inp);
-  inp.focus(); inp.select();
+  if(typeof window.startInlineRename === 'function' && window.startInlineRename !== startInlineRename){
+    return window.startInlineRename(roomId, canvasX, canvasY);
+  }
 }
 
 // Hook double-click on canvas

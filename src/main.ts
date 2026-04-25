@@ -52,6 +52,7 @@ import { toast } from './legacy/toast.js';
 import { addMsg, renderAIText } from './legacy/aiMessages.js';
 import { showCrashModal } from './legacy/errorBoundary.js';
 import { updateSbStatus, setSbMsg } from './legacy/sbStatus.js';
+import * as inlineRename from './legacy/inlineRename.js';
 import * as complianceBridge from './legacy/complianceBridge.js';
 import type { CompletedRoom, SceneObject } from './legacy/types.js';
 import * as authSupabase from './auth/supabase.js';
@@ -164,6 +165,13 @@ declare global {
      *  Pure DOM-Updaters, keine Closure-Wrapper. */
     updateSbStatus: typeof updateSbStatus;
     setSbMsg: typeof setSbMsg;
+    /** P17.6: Inline-Rename (Raum + Projekt) aus src/legacy/inlineRename.ts.
+     *  Closure-Wrapping nötig, weil mehrere Legacy-Globals betroffen
+     *  (rooms, wx2cx, wy2cy, draw2D, renderLeft, snapshot, projName, closeM). */
+    startInlineRename: (roomId: string, x: number, y: number) => void;
+    doRename: () => void;
+    startInlineProjectRename: () => void;
+    finishInlineProjectRename: () => void;
   }
 }
 if (typeof window !== 'undefined' && (window as any).THREE) {
@@ -184,6 +192,50 @@ window.showCrashModal = showCrashModal;
 // P17.5: Cloud-Status-Bar — pure DOM, keine Deps zu wrappen.
 window.updateSbStatus = updateSbStatus;
 window.setSbMsg = setSbMsg;
+
+// P17.6: Inline-Rename — Closure-Wrapping über Legacy-Globals.
+function buildRoomRenameDeps(): inlineRename.StartInlineRoomRenameDeps {
+  const w = window as unknown as {
+    rooms?: import('./legacy/types.js').CompletedRoom[];
+    wx2cx?: (x: number) => number;
+    wy2cy?: (y: number) => number;
+    draw2D?: () => void;
+    renderLeft?: () => void;
+    snapshot?: () => void;
+  };
+  return {
+    rooms: w.rooms ?? [],
+    wx2cx: w.wx2cx ?? ((x: number) => x),
+    wy2cy: w.wy2cy ?? ((y: number) => y),
+    draw2D: w.draw2D ?? (() => {}),
+    renderLeft: w.renderLeft ?? (() => {}),
+    snapshot: w.snapshot ?? (() => {}),
+  };
+}
+function buildProjectRenameDeps(): inlineRename.ProjectRenameDeps {
+  const w = window as unknown as {
+    projName?: string;
+    closeM?: (id: string) => void;
+    snapshot?: () => void;
+    toast?: (msg: string, type: string) => void;
+  };
+  return {
+    setProjName: (name: string) => {
+      (window as unknown as { projName?: string }).projName = name;
+    },
+    getCurrentProjName: () => w.projName ?? 'Projekt',
+    closeM: w.closeM ?? (() => {}),
+    snapshot: w.snapshot,
+    toast: w.toast,
+  };
+}
+window.startInlineRename = (roomId, x, y) =>
+  inlineRename.startInlineRename(roomId, x, y, buildRoomRenameDeps());
+window.doRename = () => inlineRename.doRename(buildProjectRenameDeps());
+window.startInlineProjectRename = () =>
+  inlineRename.startInlineProjectRename(buildProjectRenameDeps());
+window.finishInlineProjectRename = () =>
+  inlineRename.finishInlineProjectRename(buildProjectRenameDeps());
 
 // P17.2: Compliance-Bridge — Closures wrap deps automatisch aus den Legacy-
 // Globals. Inline-Caller in index.html (8 Sites) bleiben so kompatibel ohne

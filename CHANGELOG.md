@@ -21,6 +21,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Refactor (Strangler P17)
 
+- **inline-rename extrahiert** nach `src/legacy/inlineRename.ts` (P17.6).
+  4 Funktionen: `startInlineRename` (Raum-Rename via Canvas-Input) +
+  `doRename` / `startInlineProjectRename` / `finishInlineProjectRename`
+  (Projekt-Titel-Edit). Closure-Wrapping in main.ts liefert Legacy-
+  Globals (rooms, wx2cx, wy2cy, draw2D, renderLeft, snapshot, projName,
+  closeM, toast). +13 Vitest-Tests inkl. Enter/Escape/Blur-Edge-Cases.
+  Bundle: −829 B raw / −237 B gz.
 - **sb-status extrahiert** nach `src/legacy/sbStatus.ts` (P17.5).
   `updateSbStatus` (~28 LOC, 4 Caller) + `setSbMsg` (~5 LOC, 11 Caller).
   Pure DOM, kein Closure-Wrapper. Standard-Boot-Shims. +12 Vitest-Tests.
