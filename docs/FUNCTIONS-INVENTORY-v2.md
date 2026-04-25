@@ -6,7 +6,7 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 - **onclick-Handler:** 724
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 851
-- **TS-Exports:** 355
+- **TS-Exports:** 359
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -208,6 +208,13 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 - `showCrashModal` (line 18)
 - `_resetCrashShownForTests` (line 47)
+
+### src/legacy/inlineRename.ts
+
+- `startInlineRename` (line 34)
+- `doRename` (line 88)
+- `startInlineProjectRename` (line 101)
+- `finishInlineProjectRename` (line 118)
 
 ### src/legacy/sbStatus.ts
 
