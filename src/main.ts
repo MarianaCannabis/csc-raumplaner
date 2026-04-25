@@ -36,8 +36,12 @@ import { processUpload, estimateImageMapBytes } from './util/imageUpload.js';
 // Pfad B Sub-Task 1: GLTFExporter wird lazy beim ersten exportGLTF()-Click
 // nachgeladen — `loadGLTFExporter()` weiter unten + `window.cscLoadGLTFExporter`.
 import type { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js';
-import { STAND_TEMPLATES, findTemplate } from './templates/index.js';
-import type { StandTemplate } from './templates/index.js';
+// Pfad B Sub-Task 3: STAND_TEMPLATES + findTemplate werden lazy via
+// dynamic import nachgeladen. requestIdleCallback-Pre-Cache + on-demand
+// Trigger via cscTemplates.load(). Bis das Modul da ist, returnen
+// .list/.all null und der vorhandene Retry-Loop in openTemplates() (10× /
+// 300ms) kümmert sich ums Re-Render sobald Templates verfügbar sind.
+import type { StandTemplate, findTemplate as findTemplateType } from './templates/index.js';
 import { calcMesseBudget, fmtEUR } from './compliance/budget.js';
 import type { BudgetResult } from './compliance/budget.js';
 import { exportToIfc, downloadIfc } from './export/ifc.js';
@@ -869,10 +873,17 @@ declare global {
       estimateBytes: typeof estimateImageMapBytes;
     };
     cscTemplates: {
-      list: StandTemplate[];
-      find: typeof findTemplate;
+      /** null bis Lazy-Load fertig. Caller (index.html `_getTSTemplates`)
+       *  prüft mit Array.isArray und fällt auf .all() zurück, der ebenfalls
+       *  null returnt — der Retry-Loop in openTemplates() warnt dann auf
+       *  das Module-Arrival. */
+      list: StandTemplate[] | null;
+      find: (id: string) => ReturnType<typeof findTemplateType> | undefined;
       /** Defensive alias for list — some diagnostic snippets call .all(). */
-      all: () => StandTemplate[];
+      all: () => StandTemplate[] | null;
+      /** Pfad B Sub-Task 3: explizit Lazy-Load triggern (returnt cached
+       *  Promise). Aufgerufen vom requestIdleCallback bei Boot. */
+      load: () => Promise<StandTemplate[]>;
     };
     cscBudget: {
       calc: typeof calcMesseBudget;
@@ -918,12 +929,38 @@ window.cscEnv = environment;
 window.cscCredits = { list: CREDITS, renderHtml: renderCreditsHtml };
 window.cscGrounds = { materials: GROUND_MATERIALS, find: findGroundMaterial, loadMaterial: loadGroundMaterial };
 window.cscImageUpload = { processUpload, estimateBytes: estimateImageMapBytes };
+// Pfad B Sub-Task 3: Templates lazy-load. Cached Promise + Modul-Cache.
+type TemplatesModule = typeof import('./templates/index.js');
+let _templatesCache: TemplatesModule | null = null;
+let _templatesPromise: Promise<TemplatesModule> | null = null;
+function loadTemplatesModule(): Promise<TemplatesModule> {
+  if (_templatesPromise) return _templatesPromise;
+  _templatesPromise = import('./templates/index.js').then((mod) => {
+    _templatesCache = mod;
+    console.info('[csc] templates bridge loaded', mod.STAND_TEMPLATES.length, 'project templates');
+    return mod;
+  });
+  return _templatesPromise;
+}
 window.cscTemplates = {
-  list: STAND_TEMPLATES,
-  find: findTemplate,
-  all: () => STAND_TEMPLATES,
+  get list(): StandTemplate[] | null {
+    return _templatesCache?.STAND_TEMPLATES ?? null;
+  },
+  find: (id: string) => _templatesCache?.findTemplate(id),
+  all: (): StandTemplate[] | null => _templatesCache?.STAND_TEMPLATES ?? null,
+  load: async () => (await loadTemplatesModule()).STAND_TEMPLATES,
 };
-console.info('[csc] templates bridge ready', STAND_TEMPLATES.length, 'project templates');
+// Pre-Cache sobald der Browser idle ist — typisch 1-2s nach Boot, lange
+// bevor der User auf "Vorlagen" klickt. Fallback `setTimeout(2s)` für
+// Browsers ohne requestIdleCallback (Safari < 16.4).
+type IdleWindow = Window & { requestIdleCallback?: (cb: () => void) => number };
+const _idleWin = window as IdleWindow;
+if (typeof _idleWin.requestIdleCallback === 'function') {
+  _idleWin.requestIdleCallback(() => { void loadTemplatesModule(); });
+} else {
+  setTimeout(() => { void loadTemplatesModule(); }, 2000);
+}
+console.info('[csc] templates bridge ready (lazy-loading on idle)');
 window.cscBudget = { calc: calcMesseBudget, fmtEUR };
 window.cscPacklist = { build: buildPackList };
 window.cscIfc = { exportToIfc, download: downloadIfc };
