@@ -5332,13 +5332,19 @@ function finishInlineProjectRename(){
   btn.style.display = 'none';
 }
 
-// ════════════════════════════════════════════════════════════════════════
-// TOAST
-// ════════════════════════════════════════════════════════════════════════
-function toast(msg,type='g'){
-  const el=document.createElement('div');el.className='toast '+type;el.textContent=msg;
-  document.body.appendChild(el);
-  setTimeout(()=>{el.style.opacity='0';setTimeout(()=>el.remove(),350);},2300);
+// P17.1: toast() lebt in src/legacy/toast.ts und wird von main.ts an
+// window.toast gebunden. Dieser thin shim hält das Symbol im inline-
+// script-Scope verfügbar, falls es VOR dem Module-Boot von einem top-
+// level setTimeout (z.B. der v__APP_VERSION__-Welcome-Toast bei
+// :21657, t=600ms) oder einem Event-Handler aufgerufen wird. Nach
+// Module-Boot überschreibt main.ts window.toast; der Shim resolved zur
+// Aufrufzeit auf die richtige Implementation. Die Identitäts-Guard
+// verhindert Infinite-Recursion falls main.ts noch nicht gelaufen ist
+// (dann no-op statt Crash).
+function toast(msg, type){
+  if(typeof window.toast === 'function' && window.toast !== toast){
+    return window.toast(msg, type);
+  }
 }
 
 

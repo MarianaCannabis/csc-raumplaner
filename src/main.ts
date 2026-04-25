@@ -48,6 +48,7 @@ import { registerGlobalShortcuts } from './input/keyboard.js';
 import { icon, type IconName } from './icons/lucide.js';
 import { installBridge as installPersistBridge } from './persist/index.js';
 import type { PersistBridge } from './persist/index.js';
+import { toast } from './legacy/toast.js';
 import * as authSupabase from './auth/supabase.js';
 import * as authState from './auth/state.js';
 import { consumeMagicLinkFromHash } from './auth/magicLink.js';
@@ -134,11 +135,18 @@ declare global {
      *  gefangen wird. Legacy-JS in index.html ist weiterhin untyped —
      *  dafür gibt's den Runtime-Guard in saveCloudProject. */
     cscPersist: PersistBridge;
+    /** P17.1: toast() aus src/legacy/toast.ts (extrahiert aus inline-
+     *  Script). 304 Caller in index.html bleiben kompatibel über die
+     *  window-Bindung unten. Folge-Module der P17-Serie hängen sich
+     *  an dieselbe Stelle. */
+    toast: typeof toast;
   }
 }
 if (typeof window !== 'undefined' && (window as any).THREE) {
   (window as any).THREE.GLTFExporter = GLTFExporter;
 }
+// P17.1: toast() global verfügbar machen für die 304 Caller in index.html.
+window.toast = toast;
 const _allRules = compliance.listRules();
 const _projectRules = _allRules.filter((r) => (r.scope ?? 'project') === 'project').length;
 const _roomRules = _allRules.filter((r) => r.scope === 'room').length;
