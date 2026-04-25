@@ -21,6 +21,12 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Refactor (Strangler P17)
 
+- **helpModal extrahiert** nach `src/legacy/helpModal.ts` (P17.19).
+  4 Funktionen: openHelpModal (#m-help via openM) + openHelp/closeHelp/
+  showHelpPage (separates #help-overlay-System mit Sub-Page-Navigation).
+  +9 Vitest-Tests inkl. scrollIntoView-Defensive für jsdom.
+  Bundle: −67 B gz (klein wegen 4 Shims für 30 LOC — Trade-off klar im
+  Schema).
 - **tutorial extrahiert** nach `src/legacy/tutorial.ts` (P17.18). Step-
   basiertes Overlay-Tutorial mit Highlight auf Topbar/Sidebar-Elementen.
   startTutorial/endTutorial/tutNav/renderTutStep + readonly TUT_STEPS-Array
