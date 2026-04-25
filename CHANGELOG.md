@@ -14,7 +14,8 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
   `cscTemplates.list/all/find` returnen `null` bzw. `undefined` bis das
   Modul da ist — der vorhandene `openTemplates()`-Retry-Loop in
   index.html (10× / 300ms) wartet schon und re-rendert sobald
-  Templates eintreffen. Initial-Bundle gz: −__TEMPLATES_DELTA__.
+  Templates eintreffen. Initial-Bundle gz: −2,051 (index.js −1,995,
+  index.html −56); separater templates-Chunk: 2,298 gz, on-idle.
 - **i18n-Locales lazy-loaded** (Sub-Task 2): EN/NL/ES werden erst bei
   `setLang()` nachgeladen, DE bleibt eager (Default + Fallback). `t()`
   fällt auf DE zurück solange ein Locale noch nicht im Cache ist.
