@@ -10,8 +10,10 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 - **Lighthouse-CI** (`.github/workflows/lighthouse.yml`): Build + Preview
   + Lighthouse bei jedem PR + push auf main. Threshold-Check über
-  `LH_CI=1` in `lighthouse-baseline.mjs` — fails bei a11y/bp/seo < 95
-  oder performance < 50. Reports als Artifact für 30 Tage.
+  `LH_CI=1` in `lighthouse-baseline.mjs` — fails bei a11y < 90,
+  best-practices/seo < 95 oder performance < 50. Reports als Artifact
+  für 30 Tage. A11y-Floor unter Baseline (96) weil CI's Linux-headless-
+  Chrome reproduzierbar 3-4 Punkte niedriger scort als lokale Win-Runs.
 
 ## [2.6.5] — 2026-04-25
 
