@@ -10834,25 +10834,11 @@ function renderBudget(){
   if(tv) tv.textContent = total.toLocaleString('de-DE') + ' €';
 }
 
+// P17.10: exportBudgetCSV extrahiert nach src/legacy/exports.ts.
 function exportBudgetCSV(){
-  const rows = ['Anzahl,Objekt,Einzelpreis,Gesamt'];
-  const items = {};
-  objects.forEach(o=>{
-    const it=findItem(o.typeId)||{};
-    const price=getObjPrice(o.typeId);
-    if(!items[o.typeId]) items[o.typeId]={name:it.name||o.typeId,count:0,price};
-    items[o.typeId].count++;
-  });
-  let total=0;
-  Object.values(items).sort((a,b)=>b.count-a.count).forEach(i=>{
-    const sub=i.count*i.price; total+=sub;
-    rows.push([i.count,'"'+i.name+'"',i.price,sub].join(','));
-  });
-  rows.push(['','GESAMT','',total].join(','));
-  const blob=new Blob(['\uFEFF'+rows.join('\n')],{type:'text/csv;charset=utf-8'});
-  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:'csc_budget.csv'});
-  a.click();
-  toast('📥 Budget als CSV exportiert','g');
+  if(typeof window.exportBudgetCSV === 'function' && window.exportBudgetCSV !== exportBudgetCSV){
+    return window.exportBudgetCSV();
+  }
 }
 
 // ── 2. FLÄCHENDIAGRAMM ────────────────────────────────────────────
@@ -11262,65 +11248,11 @@ function exportDXF(){
 //  - Detail-Liste: pro platzierte Instanz eine Zeile (inkl. Position + Rotation)
 //  - Aggregiert: typeId-gruppiert mit Anzahl, Volumen, Gewicht — ideal zum
 //    Mailen an den Lieferanten ("bitte 5× Rückwand 3m + 2× Counter").
+// P17.10: exportFurnitureCSV extrahiert nach src/legacy/exports.ts.
 function exportFurnitureCSV(){
-  // Detail-Zeilen für Lieferanten-Kontext
-  const detailHeader = '\uFEFFKategorie,Artikel,typeId,Breite(m),Tiefe(m),Höhe(m),X(m),Y(m),Rotation(°),Etage,Preis(€)';
-  const detailRows = [detailHeader];
-  objects.forEach(o=>{
-    const it=findItem(o.typeId)||{};
-    detailRows.push([
-      '"'+(it.cat||'').replace(/"/g,'')+'"',
-      '"'+(it.name||o.typeId).replace(/"/g,'')+'"',
-      '"'+o.typeId+'"',
-      (o.w||it.w||1).toFixed(2),
-      (o.d||it.d||1).toFixed(2),
-      (o.h||it.h||1).toFixed(2),
-      (o.x||0).toFixed(2),
-      (o.y||0).toFixed(2),
-      (o.rot||0).toString(),
-      '"'+(o.floorId||'eg')+'"',
-      getObjPrice(o.typeId),
-    ].join(','));
-  });
-  const total = objects.reduce((s,o)=>s+getObjPrice(o.typeId),0);
-  detailRows.push(['','Gesamt:','','','','','','','','',total].join(','));
-
-  // Aggregierte Packliste (für Lieferanten)
-  const aggHeader = '\nKategorie,Artikel,typeId,Stück,Breite(m),Tiefe(m),Höhe(m),Volumen(m³),Preis-total(€)';
-  const byType = new Map();
-  objects.forEach(o=>{
-    const entry = byType.get(o.typeId) || { count: 0, sample: o };
-    entry.count++;
-    byType.set(o.typeId, entry);
-  });
-  const aggRows = [aggHeader];
-  for(const [tid, {count, sample}] of byType){
-    const it = findItem(tid) || {};
-    const w = sample.w || it.w || 1;
-    const d = sample.d || it.d || 1;
-    const h = sample.h || it.h || 1;
-    const vol = (w * d * h * count).toFixed(3);
-    aggRows.push([
-      '"'+(it.cat||'').replace(/"/g,'')+'"',
-      '"'+(it.name||tid).replace(/"/g,'')+'"',
-      '"'+tid+'"',
-      count,
-      w.toFixed(2),
-      d.toFixed(2),
-      h.toFixed(2),
-      vol,
-      (getObjPrice(tid) * count).toFixed(0),
-    ].join(','));
+  if(typeof window.exportFurnitureCSV === 'function' && window.exportFurnitureCSV !== exportFurnitureCSV){
+    return window.exportFurnitureCSV();
   }
-
-  const csv = detailRows.join('\n') + '\n\n# AGGREGIERT (für Lieferanten)' + aggRows.join('\n') + '\n';
-  const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
-  const a = Object.assign(document.createElement('a'), {
-    href: URL.createObjectURL(blob),
-    download: projName.replace(/[^a-z0-9]/gi, '_') + '_moebel.csv',
-  });
-  a.click();
-  toast('📊 Möbelliste exportiert (Detail + Aggregiert)', 'g');
 }
 
 // ── 11. LINEAL-WERKZEUG ───────────────────────────────────────────
@@ -21067,53 +20999,11 @@ function clearImportedRegulations(){
   toast('Regeln entfernt', 'b');
 }
 
-// ══ PDF / DRUCK EXPORT ═══════════════════════════════════════════
+// P17.10: exportPDF extrahiert nach src/legacy/exports.ts.
 function exportPDF(){
-  const floorRooms=rooms.filter(r=>(r.floorId||'eg')===curFloor);
-  const floorObjs=objects.filter(o=>(o.floorId||'eg')===curFloor);
-  if(!floorRooms.length){toast('Keine Räume zum Drucken','r');return;}
-  const scale=40,pad=1.5;
-  let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
-  floorRooms.forEach(function(r){minX=Math.min(minX,r.x);minY=Math.min(minY,r.y);maxX=Math.max(maxX,r.x+r.w);maxY=Math.max(maxY,r.y+r.d);});
-  const W=Math.ceil((maxX-minX+pad*2)*scale),H=Math.ceil((maxY-minY+pad*2)*scale);
-  let svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+W+' '+H+'" style="background:#f5f5f0;border:1px solid #ccc;max-width:100%">';
-  svg+='<defs><pattern id="g" width="'+scale+'" height="'+scale+'" patternUnits="userSpaceOnUse"><path d="M '+scale+' 0 L 0 0 0 '+scale+'" fill="none" stroke="#ddd" stroke-width="0.5"/></pattern></defs>';
-  svg+='<rect width="100%" height="100%" fill="url(#g)"/>';
-  floorRooms.forEach(function(r){
-    const x=(r.x-minX+pad)*scale,y=(r.y-minY+pad)*scale,rw=r.w*scale,rd=r.d*scale;
-    const col=r.col?('#'+(r.col>>>0).toString(16).padStart(6,'0')):'#2d6a2d';
-    svg+='<rect x="'+x+'" y="'+y+'" width="'+rw+'" height="'+rd+'" fill="'+col+'22" stroke="'+col+'" stroke-width="2" rx="2"/>';
-    svg+='<text x="'+(x+rw/2)+'" y="'+(y+rd/2-6)+'" text-anchor="middle" font-size="13" font-weight="bold" fill="'+col+'">'+r.name+'</text>';
-    svg+='<text x="'+(x+rw/2)+'" y="'+(y+rd/2+10)+'" text-anchor="middle" font-size="10" fill="#555">'+r.w.toFixed(1)+'×'+r.d.toFixed(1)+'m</text>';
-    svg+='<text x="'+(x+rw/2)+'" y="'+(y-5)+'" text-anchor="middle" font-size="9" fill="#336633">'+r.w.toFixed(2)+'m</text>';
-  });
-  floorObjs.forEach(function(o){
-    const item=findItem(o.typeId);if(!item) return;
-    const x=(o.x-minX+pad-o.w/2)*scale,y=(o.y-minY+pad-o.d/2)*scale,ow=o.w*scale,od=o.d*scale;
-    svg+='<g transform="translate('+(x+ow/2)+','+(y+od/2)+') rotate('+(o.rot||0)+')">'
-      +'<rect x="'+(-ow/2)+'" y="'+(-od/2)+'" width="'+ow+'" height="'+od+'" fill="#4a7a0040" stroke="#4a7a00" stroke-width="1" rx="1"/>'
-      +'<text x="0" y="4" text-anchor="middle" font-size="'+(ow<20?6:10)+'">'+item.icon+'</text>'
-      +'</g>';
-  });
-  svg+='</svg>';
-  const d=new Date().toLocaleDateString('de-DE');
-  const team=localStorage.getItem('csc-teamid')||'';
-  const author=localStorage.getItem('csc-username')||'';
-  const w=window.open('','_blank');
-  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+projName+'</title>'
-    +'<style>@page{size:A4 landscape;margin:10mm}body{margin:0;padding:10px;font-family:sans-serif}'
-    +'.hdr{display:flex;justify-content:space-between;border-bottom:2px solid #14532d;padding-bottom:6px;margin-bottom:8px}'
-    +'.title{font-size:18px;font-weight:bold;color:#14532d}.meta{font-size:10px;color:#666;text-align:right}'
-    +'@media print{button{display:none}}</style></head><body>'
-    +'<div class="hdr"><div><div class="title">📐 '+projName+'</div>'
-    +(team?'<div style="font-size:11px;color:#336633">Team: '+team+'</div>':'')
-    +'</div><div class="meta">'+(author?'Erstellt von: '+author+'<br>':'')+'Datum: '+d+'<br>Etage: '+curFloor.toUpperCase()+'<br>Räume: '+floorRooms.length+' · Objekte: '+floorObjs.length+'</div></div>'
-    +svg
-    +'<div style="margin-top:12px;text-align:center">'
-    +'<button onclick="window.print()" style="padding:8px 24px;background:#14532d;color:#fff;border:none;border-radius:5px;cursor:pointer;font-size:13px">🖨️ PDF drucken / speichern</button>'
-    +' <button onclick="window.close()" style="padding:8px 16px;margin-left:6px;background:#444;color:#fff;border:none;border-radius:5px;cursor:pointer">✕ Schließen</button>'
-    +'</div></body></html>');
-  w.document.close();
+  if(typeof window.exportPDF === 'function' && window.exportPDF !== exportPDF){
+    return window.exportPDF();
+  }
 }
 // ═════════════════════════════════════════════════════════════════
 

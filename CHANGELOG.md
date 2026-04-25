@@ -21,6 +21,12 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Refactor (Strangler P17)
 
+- **export-family extrahiert** nach `src/legacy/exports.ts` (P17.10).
+  3 Funktionen: `exportPDF` (HTML/SVG → Print-Window), `exportFurnitureCSV`
+  (Detail + Aggregiert mit UTF-8 BOM), `exportBudgetCSV`. +10 Vitest-
+  Tests inkl. PDF-Window-Mock + Quote-Escape + Pop-up-Block-Toast.
+  Bundle: −1,924 B gz (größter Win der P17-Serie bisher — Legacy-Code
+  hatte viel inline-HTML mit onclicks).
 - **renderHighResPreset extrahiert** nach `src/legacy/renderPresets.ts`
   (P17.9). Erstes Three.js-Touch-Modul: WebGLRenderer-Construction
   via `deps.createRenderer` injectable (jsdom-Tests mocken). +10 Vitest-
