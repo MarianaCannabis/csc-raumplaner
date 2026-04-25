@@ -6,7 +6,7 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 - **onclick-Handler:** 726
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 851
-- **TS-Exports:** 349
+- **TS-Exports:** 351
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -192,6 +192,11 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 ### src/input/keyboard.ts
 
 - `registerGlobalShortcuts` (line 70)
+
+### src/legacy/aiMessages.ts
+
+- `renderAIText` (line 17)
+- `addMsg` (line 44)
 
 ### src/legacy/complianceBridge.ts
 
