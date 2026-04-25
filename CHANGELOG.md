@@ -21,6 +21,11 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Refactor (Strangler P17)
 
+- **viewControls extrahiert** nach `src/legacy/viewControls.ts` (P17.14).
+  3 Funktionen: `setView` (2D/3D/walk-Toggle), `fitViewToRooms`, `switchFloor`.
+  Tightly-coupled mit Three.js + Canvas — Closure-Wrapper für ~10 Legacy-
+  Globals. +9 Vitest-Tests inkl. View-Mode-Switching, Camera-Swap, Tab-
+  toggle. Bundle: −194 B gz.
 - **undoRedo extrahiert** nach `src/legacy/undoRedo.ts` (P17.13). Stack-
   Management: `pushSnapshot/undo/redo/canUndo/canRedo` mit MAX_HISTORY=50.
   Inline-`snapshot()` bleibt Source-of-Truth (tightly-coupled mit autosave/
