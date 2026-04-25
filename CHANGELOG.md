@@ -21,6 +21,10 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Refactor (Strangler P17)
 
+- **sb-status extrahiert** nach `src/legacy/sbStatus.ts` (P17.5).
+  `updateSbStatus` (~28 LOC, 4 Caller) + `setSbMsg` (~5 LOC, 11 Caller).
+  Pure DOM, kein Closure-Wrapper. Standard-Boot-Shims. +12 Vitest-Tests.
+  Bundle: −881 B raw / −287 B gz.
 - **error-boundary extrahiert** nach `src/legacy/errorBoundary.ts` (P17.4).
   `_showCrashModal` (~14 LOC) wandert in TS strict + 7 Vitest-Tests.
   Listener-Registrierung (`window.addEventListener('error'/'unhandledrejection',

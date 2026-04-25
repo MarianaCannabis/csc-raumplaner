@@ -6,7 +6,7 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 - **onclick-Handler:** 724
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 851
-- **TS-Exports:** 353
+- **TS-Exports:** 355
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -208,6 +208,11 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 - `showCrashModal` (line 18)
 - `_resetCrashShownForTests` (line 47)
+
+### src/legacy/sbStatus.ts
+
+- `updateSbStatus` (line 14)
+- `setSbMsg` (line 46)
 
 ### src/legacy/toast.ts
 
