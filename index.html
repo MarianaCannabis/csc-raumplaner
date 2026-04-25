@@ -7644,48 +7644,27 @@ function tokenExpired(token){
   }catch(e){ return true; }
 }
 
+// P17.7: updateAuthStatus + setGateState + updateLoginGate extrahiert
+// nach src/legacy/authUI.ts (Closure-Wrap in main.ts liest SB_TOKEN/
+// SB_USER/__cscE2E zur Aufrufzeit). Boot-Shims als Standard-Disziplin.
+//
+// Hinweis _gateState: Modul hält den State intern. Die Inline-Reader
+// hier sind alle weg; sendMagicLink ruft window.setGateState('awaiting')
+// und der Modul-State synchronisiert sich.
 function updateAuthStatus(){
-  const el = document.getElementById('auth-status');
-  const inBtn = document.getElementById('auth-signin-btn');
-  const outBtn = document.getElementById('auth-signout-btn');
-  if(SB_TOKEN && SB_USER){
-    if(el){ el.textContent = '✅ Eingeloggt als '+(SB_USER.email||SB_USER.id); el.style.color='#4ade80'; }
-    if(inBtn) inBtn.style.display='none';
-    if(outBtn) outBtn.style.display='block';
-  } else {
-    if(el){ el.textContent = '🔒 Nicht eingeloggt — KI-Funktionen erfordern Login'; el.style.color='var(--tx3)'; }
-    if(inBtn) inBtn.style.display='block';
-    if(outBtn) outBtn.style.display='none';
+  if(typeof window.updateAuthStatus === 'function' && window.updateAuthStatus !== updateAuthStatus){
+    return window.updateAuthStatus();
   }
-  updateLoginGate();
 }
-
-// Blocking overlay — visible iff there is no active session. Cheap enough
-// to call on every auth-state change; uses display toggle, no layout churn.
-// Two sub-states (_gateState) swap the visible sub-container:
-//   'default'  — initial "Login erforderlich" CTA
-//   'awaiting' — after sendMagicLink → "Prüfe dein Postfach"
-var _gateState = 'default';
-
 function setGateState(s){
-  _gateState = s;
-  const def = document.getElementById('gate-default');
-  const awa = document.getElementById('gate-awaiting');
-  if(def) def.style.display = s === 'default' ? 'flex' : 'none';
-  if(awa) awa.style.display = s === 'awaiting' ? 'flex' : 'none';
+  if(typeof window.setGateState === 'function' && window.setGateState !== setGateState){
+    return window.setGateState(s);
+  }
 }
-
 function updateLoginGate(){
-  const el = document.getElementById('login-gate');
-  if(!el) return;
-  // fix/e2e-green: E2E-Mode blendet Gate nie ein. Kein Auth-Bypass in der
-  // App-Logik selbst — nur der visuelle Gate wird unterdrückt, alle
-  // authentifizierten Calls (cloudSave etc.) schlagen weiterhin 401 fehl.
-  if (window.__cscE2E) { el.style.display = 'none'; return; }
-  el.style.display = SB_TOKEN ? 'none' : 'flex';
-  // Reset to 'default' once logged in, so the NEXT logout lands on the
-  // initial CTA instead of sticking on "Prüfe dein Postfach".
-  if(SB_TOKEN) setGateState('default');
+  if(typeof window.updateLoginGate === 'function' && window.updateLoginGate !== updateLoginGate){
+    return window.updateLoginGate();
+  }
 }
 
 function rehydrateAuth(){

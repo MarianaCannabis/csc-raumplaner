@@ -6,7 +6,7 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 - **onclick-Handler:** 724
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 851
-- **TS-Exports:** 359
+- **TS-Exports:** 364
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -197,6 +197,14 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 - `renderAIText` (line 17)
 - `addMsg` (line 44)
+
+### src/legacy/authUI.ts
+
+- `setGateState` (line 29)
+- `updateAuthStatus` (line 37)
+- `updateLoginGate` (line 59)
+- `_resetGateStateForTests` (line 76)
+- `_getGateStateForTests` (line 81)
 
 ### src/legacy/complianceBridge.ts
 
