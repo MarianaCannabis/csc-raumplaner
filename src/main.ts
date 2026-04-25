@@ -54,6 +54,7 @@ import { showCrashModal } from './legacy/errorBoundary.js';
 import { updateSbStatus, setSbMsg } from './legacy/sbStatus.js';
 import * as inlineRename from './legacy/inlineRename.js';
 import * as authUI from './legacy/authUI.js';
+import * as saves from './legacy/saves.js';
 import * as complianceBridge from './legacy/complianceBridge.js';
 import type { CompletedRoom, SceneObject } from './legacy/types.js';
 import * as authSupabase from './auth/supabase.js';
@@ -178,6 +179,14 @@ declare global {
     updateAuthStatus: () => void;
     updateLoginGate: () => void;
     setGateState: (s: 'default' | 'awaiting') => void;
+    /** P17.8: Save-Family aus src/legacy/saves.ts. Section A (Local) +
+     *  Section B (User-Templates). Closure-Wrap-Helpers liefern Legacy-
+     *  Globals + cscPlan/cscTelemetry-Bridges. */
+    saveProj: () => void;
+    updateSavedUI: () => void;
+    delSave: (name: string) => void;
+    saveAsUserTemplate: () => void;
+    doSaveUserTemplate: () => Promise<void>;
   }
 }
 if (typeof window !== 'undefined' && (window as any).THREE) {
@@ -259,6 +268,72 @@ function buildAuthDeps(): authUI.AuthUIDeps {
 window.updateAuthStatus = () => authUI.updateAuthStatus(buildAuthDeps());
 window.updateLoginGate = () => authUI.updateLoginGate(buildAuthDeps());
 window.setGateState = (s) => authUI.setGateState(s);
+
+// P17.8: Save-Family — Closure-Wrap. Local-Save-Bridge nutzt die
+// _local*-Helpers aus dem inline-script (die wiederum auf
+// window.cscPersist.local delegieren — siehe Track A Phase 1).
+function buildLocalSaveDeps(): saves.LocalSaveDeps {
+  const w = window as unknown as {
+    projName?: string;
+    getPD?: () => unknown;
+    _localSave?: (n: string, d: unknown) => void;
+    _localLoadAll?: () => Record<string, saves.SavedRecord>;
+    _localDelete?: (n: string) => void;
+    _localCountExcluding?: (n: string) => number;
+    toast?: (msg: string, type?: string) => void;
+    cscPlan?: { check: (k: string, c: number) => boolean };
+    cscTelemetry?: { track: (e: string, p: Record<string, unknown>) => void };
+  };
+  return {
+    projName: w.projName ?? 'Projekt',
+    getPD: w.getPD ?? (() => ({})),
+    localSave: w._localSave ?? (() => {}),
+    localLoadAll: w._localLoadAll ?? (() => ({})),
+    localDelete: w._localDelete ?? (() => {}),
+    localCountExcluding: w._localCountExcluding ?? (() => 0),
+    toast: w.toast ?? (() => {}),
+    cscPlan: w.cscPlan,
+    cscTelemetry: w.cscTelemetry,
+  };
+}
+function buildTemplateSaveDeps(): saves.TemplateSaveDeps {
+  const w = window as unknown as {
+    projName?: string;
+    fpCv?: HTMLCanvasElement;
+    getPD?: () => { rooms?: Array<{ w: number; d: number }> };
+    openM?: (id: string) => void;
+    closeM?: (id: string) => void;
+    toast?: (msg: string, type?: string) => void;
+    SB_URL?: string;
+    SB_KEY?: string;
+    SB_TOKEN?: string;
+    SB_USER?: { id?: string };
+    _userTemplatesCache?: unknown[];
+    _userTemplatesLoadedAt?: number;
+  };
+  return {
+    projName: w.projName ?? 'Projekt',
+    isDefaultProjName: (n) => n === 'Neue Ausgabestelle',
+    fpCv: w.fpCv ?? null,
+    getPD: w.getPD ?? (() => ({})),
+    openM: w.openM ?? (() => {}),
+    closeM: w.closeM ?? (() => {}),
+    toast: w.toast ?? (() => {}),
+    sbUrl: w.SB_URL ?? '',
+    sbKey: w.SB_KEY ?? '',
+    sbToken: w.SB_TOKEN ?? null,
+    sbUser: w.SB_USER ?? null,
+    invalidateTemplatesCache: () => {
+      w._userTemplatesCache = [];
+      w._userTemplatesLoadedAt = 0;
+    },
+  };
+}
+window.saveProj = () => saves.saveProj(buildLocalSaveDeps());
+window.updateSavedUI = () => saves.updateSavedUI(buildLocalSaveDeps());
+window.delSave = (name) => saves.delSave(name, buildLocalSaveDeps());
+window.saveAsUserTemplate = () => saves.saveAsUserTemplate(buildTemplateSaveDeps());
+window.doSaveUserTemplate = () => saves.doSaveUserTemplate(buildTemplateSaveDeps());
 
 // P17.2: Compliance-Bridge — Closures wrap deps automatisch aus den Legacy-
 // Globals. Inline-Caller in index.html (8 Sites) bleiben so kompatibel ohne

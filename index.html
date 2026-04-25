@@ -5221,27 +5221,24 @@ function _localDelete(name){
 function _localCountExcluding(name){
   return Object.keys(_localLoadAll()).filter(k => k !== name).length;
 }
+// P17.8 Section A: saveProj/updateSavedUI/delSave extrahiert nach
+// src/legacy/saves.ts (Closure-Wrap in main.ts mit _localSave/_localLoadAll/
+// _localDelete/_localCountExcluding/cscPlan/cscTelemetry deps).
 function saveProj(){
-  // P9.6: Soft-Limit-Check (Free-Tier: max 3 Projekte)
-  if(window.cscPlan){
-    if(!window.cscPlan.check('projects', _localCountExcluding(projName))) return; // bricht bei Limit
+  if(typeof window.saveProj === 'function' && window.saveProj !== saveProj){
+    return window.saveProj();
   }
-  _localSave(projName, getPD());
-  updateSavedUI();toast('💾 Gespeichert: '+projName,'g');
-  if(window.cscTelemetry) window.cscTelemetry.track('project_saved', { target: 'local' });
 }
 function updateSavedUI(){
-  const el=document.getElementById('saved-list');
-  if(!el) return;
-  const saves=_localLoadAll();
-  const keys=Object.keys(saves);
-  if(!keys.length){el.innerHTML='<div style="font-size:11px;color:var(--tx3);padding:8px">Keine gespeicherten Projekte.</div>';return;}
-  el.innerHTML=keys.map(k=>{const s=saves[k];return`<div class="sitem" onclick="loadPD(${JSON.stringify(s.data).replace(/</g,'&lt;')})">
-    <div class="ri"><div class="rn">${k}</div><div class="rd">${new Date(s.at).toLocaleString('de-DE')}</div></div>
-    <button class="sdel" onclick="delSave('${k}');event.stopPropagation()">🗑</button>
-  </div>`;}).join('');
+  if(typeof window.updateSavedUI === 'function' && window.updateSavedUI !== updateSavedUI){
+    return window.updateSavedUI();
+  }
 }
-function delSave(k){ _localDelete(k); updateSavedUI(); }
+function delSave(k){
+  if(typeof window.delSave === 'function' && window.delSave !== delSave){
+    return window.delSave(k);
+  }
+}
 function dlJSON(){const b=new Blob([JSON.stringify(getPD(),null,2)],{type:'application/json'});const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(b),download:projName.replace(/[^a-z0-9]/gi,'_')+'.json'});a.click();}
 function loadJSONFile(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{loadPD(JSON.parse(ev.target.result));toast('📂 Geladen!','g');}catch(ex){toast('Fehler: '+ex,'r');}};r.readAsText(f);e.target.value='';}
 function newProj(){if(!confirm('Neues Projekt?'))return;loadPD({name:'Neue Ausgabestelle',rooms:[],objects:[],measures:[]});}
@@ -9435,50 +9432,18 @@ async function redeemTeamInvite(teamId){
 let _userTemplatesCache = [];
 let _userTemplatesLoadedAt = 0;
 
+// P17.8 Section B: saveAsUserTemplate + doSaveUserTemplate extrahiert
+// nach src/legacy/saves.ts. Cache (_userTemplatesCache/_userTemplatesLoadedAt)
+// bleibt inline-side, weil loadUserTemplates noch ein P17-Modul wird.
+// invalidateTemplatesCache-Callback im Closure-Wrap synchronisiert.
 function saveAsUserTemplate(){
-  if(!SB_TOKEN){ toast('Erst einloggen — User-Vorlagen werden in der Cloud gespeichert','r'); return; }
-  document.getElementById('tpl-save-name').value = projName === 'Neue Ausgabestelle' ? '' : projName;
-  document.getElementById('tpl-save-desc').value = '';
-  document.getElementById('tpl-save-tags').value = '';
-  openM('m-save-template');
+  if(typeof window.saveAsUserTemplate === 'function' && window.saveAsUserTemplate !== saveAsUserTemplate){
+    return window.saveAsUserTemplate();
+  }
 }
 async function doSaveUserTemplate(){
-  if(!SB_TOKEN){ toast('Nicht eingeloggt','r'); return; }
-  const name = (document.getElementById('tpl-save-name').value || '').trim();
-  if(!name){ toast('Name erforderlich','r'); return; }
-  const desc = document.getElementById('tpl-save-desc').value.trim();
-  const tagsStr = document.getElementById('tpl-save-tags').value.trim();
-  const tags = tagsStr ? tagsStr.split(',').map(s => s.trim()).filter(Boolean) : [];
-  // Thumbnail vom 2D-Canvas
-  let thumb = '';
-  try { thumb = fpCv.toDataURL('image/jpeg', 0.5); } catch(e){}
-  const data = getPD();
-  // Fläche abschätzen für size_label
-  const totalM2 = (data.rooms || []).reduce((s, r) => s + r.w * r.d, 0);
-  try {
-    const r = await fetch(SB_URL + '/rest/v1/csc_user_templates', {
-      method: 'POST',
-      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_TOKEN,
-                 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-      body: JSON.stringify({
-        owner: SB_USER && SB_USER.id,
-        name, description: desc, tags,
-        icon: '📋',
-        size_label: totalM2 ? totalM2.toFixed(1) + ' m²' : null,
-        data, thumbnail: thumb,
-      }),
-    });
-    if(r.status === 404 || r.status === 406){
-      toast('❌ Tabelle fehlt — Migration 0004_user_templates.sql einspielen','r');
-      return;
-    }
-    if(!r.ok) throw new Error('API ' + r.status);
-    closeM('m-save-template');
-    _userTemplatesCache = [];
-    _userTemplatesLoadedAt = 0;
-    toast('✅ Als Vorlage gespeichert: ' + name, 'g');
-  } catch(e){
-    toast('Speichern fehlgeschlagen: ' + e.message, 'r');
+  if(typeof window.doSaveUserTemplate === 'function' && window.doSaveUserTemplate !== doSaveUserTemplate){
+    return window.doSaveUserTemplate();
   }
 }
 async function loadUserTemplates(){
