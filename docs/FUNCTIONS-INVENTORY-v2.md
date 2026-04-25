@@ -6,7 +6,7 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 - **onclick-Handler:** 720
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 850
-- **TS-Exports:** 374
+- **TS-Exports:** 379
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -251,6 +251,14 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 ### src/legacy/toast.ts
 
 - `toast` (line 16)
+
+### src/legacy/userTemplatesRead.ts
+
+- `getUserTemplatesCacheSnapshot` (line 54)
+- `invalidateUserTemplatesCache` (line 59)
+- `loadUserTemplates` (line 71)
+- `deleteUserTemplate` (line 95)
+- `applyUserTemplate` (line 119)
 
 ### src/modes/planningMode.ts
 

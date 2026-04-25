@@ -57,6 +57,7 @@ import * as authUI from './legacy/authUI.js';
 import * as saves from './legacy/saves.js';
 import * as renderPresets from './legacy/renderPresets.js';
 import * as exports10 from './legacy/exports.js';
+import * as userTemplatesRead from './legacy/userTemplatesRead.js';
 import * as complianceBridge from './legacy/complianceBridge.js';
 import type { CompletedRoom, SceneObject } from './legacy/types.js';
 import * as authSupabase from './auth/supabase.js';
@@ -198,6 +199,11 @@ declare global {
     exportPDF: () => void;
     exportFurnitureCSV: () => void;
     exportBudgetCSV: () => void;
+    /** P17.11: User-Templates Cloud-Read aus src/legacy/userTemplatesRead.ts.
+     *  Module-internal Cache; saves.ts (P17.8) invalidiert via Hook. */
+    loadUserTemplates: () => Promise<userTemplatesRead.UserTemplate[]>;
+    deleteUserTemplate: (id: string) => Promise<void>;
+    applyUserTemplate: (id: string) => void;
   }
 }
 if (typeof window !== 'undefined' && (window as any).THREE) {
@@ -335,6 +341,8 @@ function buildTemplateSaveDeps(): saves.TemplateSaveDeps {
     sbToken: w.SB_TOKEN ?? null,
     sbUser: w.SB_USER ?? null,
     invalidateTemplatesCache: () => {
+      // P17.11-Bridge: Modul-Cache und Inline-Shadow synchronisieren.
+      userTemplatesRead.invalidateUserTemplatesCache();
       w._userTemplatesCache = [];
       w._userTemplatesLoadedAt = 0;
     },
@@ -374,6 +382,34 @@ function buildExportDeps(): exports10.ExportDeps {
 window.exportPDF = () => exports10.exportPDF(buildExportDeps());
 window.exportFurnitureCSV = () => exports10.exportFurnitureCSV(buildExportDeps());
 window.exportBudgetCSV = () => exports10.exportBudgetCSV(buildExportDeps());
+
+// P17.11: User-Templates Cloud-Read.
+function buildUserTemplatesDeps(): userTemplatesRead.UserTemplatesDeps {
+  const w = window as unknown as { SB_URL?: string; SB_KEY?: string; SB_TOKEN?: string };
+  return {
+    sbUrl: w.SB_URL ?? '',
+    sbKey: w.SB_KEY ?? '',
+    sbToken: w.SB_TOKEN ?? null,
+  };
+}
+function buildUserTemplatesUIDeps(): userTemplatesRead.UserTemplatesUIDeps {
+  const w = window as unknown as {
+    closeM?: (id: string) => void;
+    openTemplates?: () => void;
+    toast?: (msg: string, type?: string) => void;
+    loadPD?: (data: unknown) => void;
+  };
+  return {
+    ...buildUserTemplatesDeps(),
+    closeM: w.closeM ?? (() => {}),
+    refreshTemplatesUI: w.openTemplates,
+    toast: w.toast ?? (() => {}),
+    loadPD: w.loadPD ?? (() => {}),
+  };
+}
+window.loadUserTemplates = () => userTemplatesRead.loadUserTemplates(buildUserTemplatesDeps());
+window.deleteUserTemplate = (id) => userTemplatesRead.deleteUserTemplate(id, buildUserTemplatesUIDeps());
+window.applyUserTemplate = (id) => userTemplatesRead.applyUserTemplate(id, buildUserTemplatesUIDeps());
 
 window.renderHighResPreset = (preset, defaultW, defaultH) => {
   const w = window as unknown as {
