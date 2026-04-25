@@ -21,6 +21,12 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Refactor (Strangler P17)
 
+- **changelog + visual-history extrahiert** nach `src/legacy/changelog.ts`
+  (P17.16). Section A: logChange/getChangelog/loadChangelog/clearChangelog/
+  showChangelog mit localStorage-Persistenz. Section B: pushVisualHistory/
+  openVisualHistory/restoreFromVisualHistory mit Thumbnail-Capture in-
+  memory. +15 Vitest-Tests inkl. canvas-Prototype-Mock für jsdom.
+  Bundle: −1,094 B gz.
 - **theme extrahiert** nach `src/legacy/theme.ts` (P17.15).
   4 Funktionen (intern + 3 export): `applyThemeIcon`, `toggleTheme`,
   `initTheme`, `setColorMode`. data-theme als Single-Source-of-Truth

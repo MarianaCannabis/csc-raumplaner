@@ -11020,43 +11020,26 @@ function deleteNote(id){
 // (injected into mousedown handler)
 
 // ── 6. ÄNDERUNGS-PROTOKOLL ────────────────────────────────────────
-var _changelog=[];
-var MAX_CHANGELOG=50;
-
+// P17.16: Changelog + Visual-History extrahiert nach src/legacy/changelog.ts.
 function logChange(msg){
-  _changelog.unshift({
-    ts:Date.now(),
-    msg,
-    rooms:rooms.length,
-    objects:objects.length,
-    floor:curFloor
-  });
-  if(_changelog.length>MAX_CHANGELOG) _changelog.pop();
-  try{localStorage.setItem('csc-changelog',JSON.stringify(_changelog));}catch(e){}
-}
-
-function loadChangelog(){
-  try{const s=localStorage.getItem('csc-changelog');if(s)_changelog=JSON.parse(s);}catch(e){}
-}
-
-function showChangelog(){
-  const el=document.getElementById('changelog-list'); if(!el) return;
-  if(!_changelog.length){
-    el.innerHTML='<div style="padding:12px;font-size:11px;color:var(--tx3)">Noch keine Änderungen protokolliert.</div>';
-  } else {
-    el.innerHTML=_changelog.map(c=>{
-      const d=new Date(c.ts).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
-      return '<div class="changelog-entry">'
-        +'<div class="cl-time">'+d+' · Etage: '+c.floor+' · '+c.rooms+' Räume · '+c.objects+' Objekte</div>'
-        +'<div class="cl-msg">'+c.msg+'</div></div>';
-    }).join('');
+  if(typeof window.logChange === 'function' && window.logChange !== logChange){
+    return window.logChange(msg);
   }
-  openM('m-changelog');
 }
-
+function loadChangelog(){
+  if(typeof window.loadChangelog === 'function' && window.loadChangelog !== loadChangelog){
+    return window.loadChangelog();
+  }
+}
+function showChangelog(){
+  if(typeof window.showChangelog === 'function' && window.showChangelog !== showChangelog){
+    return window.showChangelog();
+  }
+}
 function clearChangelog(){
-  _changelog=[]; try{localStorage.removeItem('csc-changelog');}catch(e){}
-  showChangelog();
+  if(typeof window.clearChangelog === 'function' && window.clearChangelog !== clearChangelog){
+    return window.clearChangelog();
+  }
 }
 
 // ── 7. LIVE CURSORS (Supabase Realtime) ───────────────────────────
@@ -18925,74 +18908,20 @@ function addQuickRoom(name,w,d){
 
 // ── 5. UNDO MIT BESCHREIBUNGEN ────────────────────────────────────────
 var _undoLabelIdx=0;
-// P6.4: Visual-History — Thumbnails + Modal. Parallel zum undoStack.
-const _visualHistory = [];
-const _VISUAL_HISTORY_MAX = 50;
-
+// P17.16: Visual-History extrahiert nach src/legacy/changelog.ts (Section B).
 function _pushVisualHistory(state){
-  // Vom Haupt-Canvas einen kleinen Snapshot ziehen. fpCv ist unser 2D-
-  // Raumplaner-Canvas (existiert immer, auch wenn der User gerade im
-  // 3D-Modus ist — wir halten es im 2D-Zustand parallel gezeichnet).
-  try {
-    const src = fpCv;
-    if(!src) return;
-    const thumb = document.createElement('canvas');
-    thumb.width = 180;
-    thumb.height = 120;
-    const tctx = thumb.getContext('2d');
-    if(!tctx) return;
-    tctx.drawImage(src, 0, 0, 180, 120);
-    _visualHistory.push({
-      ts: Date.now(),
-      thumb: thumb.toDataURL('image/jpeg', 0.6),
-      state,
-    });
-    if(_visualHistory.length > _VISUAL_HISTORY_MAX) _visualHistory.shift();
-  } catch(e){ /* canvas not drawable yet — skip */ }
+  if(typeof window._pushVisualHistory === 'function' && window._pushVisualHistory !== _pushVisualHistory){
+    return window._pushVisualHistory(state);
+  }
 }
-
 function openVisualHistory(){
-  let modal = document.getElementById('m-visual-history');
-  if(!modal){
-    modal = document.createElement('div');
-    modal.id = 'm-visual-history';
-    modal.className = 'mdl-overlay';
-    modal.innerHTML = '<div class="mdl-dialog" style="max-width:720px;max-height:80vh">' +
-      '<h2>📜 Verlauf (Visual History)</h2>' +
-      '<div style="font-size:11px;color:var(--tx3);margin-bottom:10px">Klick auf ein Thumbnail springt zu diesem Stand zurück. Max ' + _VISUAL_HISTORY_MAX + ' Einträge.</div>' +
-      '<div id="visual-history-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;max-height:50vh;overflow-y:auto;padding:4px"></div>' +
-      '<div class="mdl-actions"><button class="mdl-btn" data-tier="simple" onclick="closeM(\'m-visual-history\')">Schließen</button></div>' +
-      '</div>';
-    document.body.appendChild(modal);
+  if(typeof window.openVisualHistory === 'function' && window.openVisualHistory !== openVisualHistory){
+    return window.openVisualHistory();
   }
-  const grid = document.getElementById('visual-history-grid');
-  if(_visualHistory.length === 0){
-    grid.innerHTML = '<div style="grid-column:1/-1;padding:20px;text-align:center;color:var(--tx3);font-size:11px">Noch kein Verlauf. Mache Änderungen, um Einträge zu erzeugen.</div>';
-  } else {
-    grid.innerHTML = _visualHistory.slice().reverse().map((entry, revIdx) => {
-      const idx = _visualHistory.length - 1 - revIdx;
-      const date = new Date(entry.ts);
-      const timeStr = date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      return '<div style="cursor:pointer;border:1px solid var(--bd);border-radius:6px;overflow:hidden;background:var(--bg3);transition:.1s" ' +
-        'onmouseover="this.style.borderColor=\'var(--gr)\'" onmouseout="this.style.borderColor=\'var(--bd)\'" ' +
-        'onclick="_restoreFromVisualHistory(' + idx + ')">' +
-        '<img src="' + entry.thumb + '" style="width:100%;display:block" alt="Snapshot ' + timeStr + '">' +
-        '<div style="padding:4px 8px;font-size:10px;color:var(--tx2);display:flex;justify-content:space-between">' +
-        '<span>' + timeStr + '</span><span>#' + (idx + 1) + '</span></div></div>';
-    }).join('');
-  }
-  openM('m-visual-history');
 }
-
 function _restoreFromVisualHistory(idx){
-  const entry = _visualHistory[idx];
-  if(!entry) return;
-  try {
-    _restoreSnapshot(entry.state);
-    closeM('m-visual-history');
-    toast('📜 Zurück zu Snapshot #' + (idx + 1), 'g');
-  } catch(e){
-    toast('Restore fehlgeschlagen: ' + e.message, 'r');
+  if(typeof window._restoreFromVisualHistory === 'function' && window._restoreFromVisualHistory !== _restoreFromVisualHistory){
+    return window._restoreFromVisualHistory(idx);
   }
 }
 
