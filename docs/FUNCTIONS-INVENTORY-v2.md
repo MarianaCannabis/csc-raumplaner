@@ -3,10 +3,10 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 ## Zusammenfassung
 
-- **onclick-Handler:** 722
+- **onclick-Handler:** 720
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 850
-- **TS-Exports:** 371
+- **TS-Exports:** 374
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -216,6 +216,12 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 - `showCrashModal` (line 18)
 - `_resetCrashShownForTests` (line 47)
+
+### src/legacy/exports.ts
+
+- `exportPDF` (line 41)
+- `exportFurnitureCSV` (line 210)
+- `exportBudgetCSV` (line 288)
 
 ### src/legacy/inlineRename.ts
 

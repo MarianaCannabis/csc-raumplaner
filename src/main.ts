@@ -56,6 +56,7 @@ import * as inlineRename from './legacy/inlineRename.js';
 import * as authUI from './legacy/authUI.js';
 import * as saves from './legacy/saves.js';
 import * as renderPresets from './legacy/renderPresets.js';
+import * as exports10 from './legacy/exports.js';
 import * as complianceBridge from './legacy/complianceBridge.js';
 import type { CompletedRoom, SceneObject } from './legacy/types.js';
 import * as authSupabase from './auth/supabase.js';
@@ -192,6 +193,11 @@ declare global {
      *  Three.js-touch — erstes P17-Modul mit WebGL-Pipeline. Closure-Wrap
      *  liefert scene/_computeSceneBounds zur Aufrufzeit. */
     renderHighResPreset: (preset: string, defaultW: number, defaultH: number) => void;
+    /** P17.10: Export-Family (PDF + CSV) aus src/legacy/exports.ts.
+     *  Pure DOM/Math-Pipelines, keine async-Pfade. */
+    exportPDF: () => void;
+    exportFurnitureCSV: () => void;
+    exportBudgetCSV: () => void;
   }
 }
 if (typeof window !== 'undefined' && (window as any).THREE) {
@@ -344,6 +350,31 @@ window.doSaveUserTemplate = () => saves.doSaveUserTemplate(buildTemplateSaveDeps
 // zur Aufrufzeit (rend3 ist nicht needed im Modul; wir spawnen einen
 // eigenen WebGLRenderer). renderToDataURL ist die Three.js-Pipeline aus
 // dem Modul — closures binden scene + bounds zur Aufrufzeit.
+// P17.10: Export-Family Closure-Wrap.
+function buildExportDeps(): exports10.ExportDeps {
+  const w = window as unknown as {
+    objects?: import('./legacy/types.js').SceneObject[];
+    rooms?: import('./legacy/types.js').CompletedRoom[];
+    projName?: string;
+    curFloor?: string;
+    findItem?: (id: string) => exports10.CatalogItemView | null | undefined;
+    getObjPrice?: (id: string) => number;
+    toast?: (msg: string, type?: string) => void;
+  };
+  return {
+    objects: w.objects ?? [],
+    rooms: w.rooms ?? [],
+    projName: w.projName ?? 'Projekt',
+    curFloor: w.curFloor ?? 'eg',
+    findItem: w.findItem ?? (() => null),
+    getObjPrice: w.getObjPrice ?? (() => 0),
+    toast: w.toast ?? (() => {}),
+  };
+}
+window.exportPDF = () => exports10.exportPDF(buildExportDeps());
+window.exportFurnitureCSV = () => exports10.exportFurnitureCSV(buildExportDeps());
+window.exportBudgetCSV = () => exports10.exportBudgetCSV(buildExportDeps());
+
 window.renderHighResPreset = (preset, defaultW, defaultH) => {
   const w = window as unknown as {
     scene?: import('three').Scene;
