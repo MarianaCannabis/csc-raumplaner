@@ -6,6 +6,21 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+## 2.7.0 — 2026-04-26 — Pfad B (Bundle-Ziel-Sprint, Tranche 1)
+
+**Strategie-Wechsel** nach 21 P17-Strangler-Modulen: weg von "−500 B/Modul
+Strangler", hin zu Build-Konfig-Optimierungen mit großem Win in einem Schwung.
+Tranche 1 lieferte 3 von 4 Sub-Tasks erfolgreich; Sub-Task 4 (Purgecss) ist
+als DRAFT-PR #186 für manuelle Visual-Regression markiert.
+
+**Initial-Bundle gz: 448,930 → 432,998 (Δ −15,932 / −3.55%)**
+
+Konkret:
+- index.html gz: 338,720 → 336,657 (Δ −2,063)
+- index.js gz: 89,450 → 75,660 (Δ −13,790)
+- CSS gz: 20,760 → 20,681 (Δ −79)
+- Neue Lazy-Chunks: GLTFExporter 10,388 + templates 2,298 + en/nl/es 2,316 gz
+
 ### Build (Pfad B — Bundle-Ziel-Sprint)
 
 - **STAND_TEMPLATES lazy-loaded** (Sub-Task 3): 14 Templates (Mari-Jane,
