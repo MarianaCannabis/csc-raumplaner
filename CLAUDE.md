@@ -61,6 +61,34 @@ Dependencies (Bundle-Budget!), Migrationen die Production-Daten anfassen
 - **RLS-Disziplin**: jede neue Tabelle bekommt ENABLE ROW LEVEL SECURITY + per-User-Policies
 - **Health-Check index.html**: ~1.19 MB. >1.5 MB = Duplikat-Bug.
 
+## P17 — JS-Split-Schema (validiert in PR #159 + #160)
+
+Beim Extrahieren einer Function aus `index.html` nach `src/legacy/<modul>.ts`:
+
+| Schritt | Wann | Tool |
+|---|---|---|
+| Vorab-Grep direct | immer | `grep -nE '^(setTimeout\|setInterval\|window\.addEventListener)\(.*\b<funcName>\(' index.html` |
+| Vorab-Grep transitiv | bei Modulen >30 LOC oder vielen Callern | Caller-Functions identifizieren, rekursiv prüfen ob sie in Top-Level-Schedulern auftauchen |
+| Boot-Shim einplanen | **als Standard, nicht Sonderfall** — Kosten ~80-150 B gz, eliminiert ganze Race-Klasse | `function <name>(...args){ if(typeof window.<name>==='function' && window.<name>!==<name>) return window.<name>(...args); }` |
+| Closure-Wrap in main.ts | wenn Module >1 legacy-global liest | `buildXDeps()` Helper, deklarativ + type-safe |
+| Type-Files erweitern | wenn neue Datenstruktur | `src/legacy/types.ts` (gemeinsamer Pool) |
+| Manual-Smoke-Spec | jeder PR | `tests/e2e/_<feature>-smoke.spec.ts` (vor Commit löschen) |
+
+**Bundle-Win-Erwartung:** Module unter ~30 LOC sind durch Shim-Overhead
+oft net-negativ (Pilot toast: +359 B gz). Ab ~50 LOC kippt es ins
+Positive (compliance-bridge: −826 B gz mit 3 Shims).
+
+**Quality-Gates pro PR:** `tsc clean` · `vitest grün` · `npm run audit:all`
+(broken-flow-detect Exit-Code, unresolved-Count) · `npm run build` ·
+`npm run test:e2e` · manueller 5-Flow Smoke.
+
+**Stopp-Bedingungen** (= NICHT pushen, Bericht):
+- broken-flow-detect unresolved-Count steigt
+- vitest unerwartete Failures
+- Bundle +5 KB gz oder mehr
+- E2E-Tests die vorher grün waren rot
+- Smoke: vorher arbeitende Feature liefert NaN/falsche Werte
+
 ## Konventionen
 
 - Commit-Stil: `<type>(<scope>): <kurz>`, DE/EN gemischt OK
