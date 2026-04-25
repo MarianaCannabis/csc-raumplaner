@@ -6,7 +6,7 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 - **onclick-Handler:** 720
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 850
-- **TS-Exports:** 379
+- **TS-Exports:** 381
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -222,6 +222,11 @@ Stand: 2026-04-25 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `exportPDF` (line 41)
 - `exportFurnitureCSV` (line 210)
 - `exportBudgetCSV` (line 288)
+
+### src/legacy/exports3d.ts
+
+- `exportGLTF` (line 58)
+- `exportDXF` (line 102)
 
 ### src/legacy/inlineRename.ts
 

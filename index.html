@@ -11115,115 +11115,20 @@ function renderLiveCursors(cursors){
 }
 
 // ── 8. GLTF EXPORT ───────────────────────────────────────────────
-function exportGLTF(){
-  if(typeof THREE.GLTFExporter==='undefined'){
-    toast('GLTFExporter nicht geladen — bitte Seite neu laden','r'); return;
+// P17.12: exportGLTF extrahiert nach src/legacy/exports3d.ts.
+async function exportGLTF(){
+  if(typeof window.exportGLTF === 'function' && window.exportGLTF !== exportGLTF){
+    return window.exportGLTF();
   }
-  toast('⏳ GLTF wird erstellt…','b');
-  const exporter=new THREE.GLTFExporter();
-  exporter.parse(scene,(gltf)=>{
-    const str=JSON.stringify(gltf);
-    const blob=new Blob([str],{type:'application/json'});
-    const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:projName.replace(/[^a-z0-9]/gi,'_')+'.gltf'});
-    a.click();
-    toast('✅ GLTF exportiert!','g');
-  },{binary:false});
 }
 
 // ── 9. DXF EXPORT ────────────────────────────────────────────────
-// P6.3: DXF-Export upgraded auf LWPOLYLINE (kompakter, lesbarer in CAD)
-// für Rooms/Grounds, 3DFACE für rotierte Object-Footprints, LINE für
-// Wands + Measures. Separate Layers: ROOMS, GROUNDS, OBJECTS,
-// FREE_WALLS, MEASURES. Kompatibel zu AutoCAD R12+ (ACADVER AC1009) —
-// einfachster Lesbarkeits-Modus für Messebauer-Tools.
+// P17.12: exportDXF extrahiert nach src/legacy/exports3d.ts.
 function exportDXF(){
-  const layers = [
-    { name: 'ROOMS',      color: 5 },  // blue
-    { name: 'GROUNDS',    color: 3 },  // green
-    { name: 'OBJECTS',    color: 7 },  // white/black
-    { name: 'FREE_WALLS', color: 8 },  // dark grey
-    { name: 'MEASURES',   color: 2 },  // yellow
-  ];
-  let dxf = '0\nSECTION\n2\nHEADER\n9\n$ACADVER\n1\nAC1015\n0\nENDSEC\n';
-  // Layer-Tabelle
-  dxf += '0\nSECTION\n2\nTABLES\n0\nTABLE\n2\nLAYER\n';
-  layers.forEach(l => {
-    dxf += '0\nLAYER\n2\n' + l.name + '\n70\n0\n62\n' + l.color + '\n6\nCONTINUOUS\n';
-  });
-  dxf += '0\nENDTAB\n0\nENDSEC\n0\nSECTION\n2\nENTITIES\n';
-
-  // LWPOLYLINE-Helfer für geschlossenes Rechteck
-  const lwpolyRect = (x1, y1, x2, y2, layer) => {
-    return '0\nLWPOLYLINE\n8\n' + layer + '\n90\n4\n70\n1\n' +
-      '10\n' + x1 + '\n20\n' + y1 + '\n' +
-      '10\n' + x2 + '\n20\n' + y1 + '\n' +
-      '10\n' + x2 + '\n20\n' + y2 + '\n' +
-      '10\n' + x1 + '\n20\n' + y2 + '\n';
-  };
-
-  // Räume als LWPOLYLINE + Beschriftung zentriert
-  rooms.forEach(r => {
-    dxf += lwpolyRect(r.x, r.y, r.x + r.w, r.y + r.d, 'ROOMS');
-    const cx = (r.x + r.w / 2).toFixed(3);
-    const cy = (r.y + r.d / 2).toFixed(3);
-    dxf += '0\nTEXT\n8\nROOMS\n10\n' + cx + '\n20\n' + cy + '\n40\n0.25\n1\n' + (r.name || 'Raum') + '\n';
-  });
-
-  // P4.1 Grounds als LWPOLYLINE
-  if(typeof grounds !== 'undefined'){
-    grounds.forEach(g => {
-      dxf += lwpolyRect(g.x, g.y, g.x + g.w, g.y + g.d, 'GROUNDS');
-    });
+  if(typeof window.exportDXF === 'function' && window.exportDXF !== exportDXF){
+    return window.exportDXF();
   }
-
-  // Free walls als LINE
-  walls.forEach(w => {
-    dxf += '0\nLINE\n8\nFREE_WALLS\n' +
-      '10\n' + w.x1 + '\n20\n' + w.z1 + '\n30\n0\n' +
-      '11\n' + w.x2 + '\n21\n' + w.z2 + '\n31\n0\n';
-  });
-
-  // Objekte als rotiertes Footprint-Rechteck (4 Ecken mit Rotation)
-  objects.forEach(o => {
-    const it = findItem(o.typeId) || {};
-    const w = o.w || it.w || 1, d = o.d || it.d || 1;
-    const cx = o.x + w / 2, cy = o.y + d / 2;
-    const rot = (o.rot || 0) * Math.PI / 180;
-    const cos = Math.cos(rot), sin = Math.sin(rot);
-    const corners = [[-w/2,-d/2],[w/2,-d/2],[w/2,d/2],[-w/2,d/2]].map(([lx,ly]) => ({
-      x: cx + lx * cos - ly * sin,
-      y: cy + lx * sin + ly * cos,
-    }));
-    dxf += '0\nLWPOLYLINE\n8\nOBJECTS\n90\n4\n70\n1\n';
-    corners.forEach(c => {
-      dxf += '10\n' + c.x.toFixed(3) + '\n20\n' + c.y.toFixed(3) + '\n';
-    });
-    // Name zentriert als TEXT
-    dxf += '0\nTEXT\n8\nOBJECTS\n10\n' + cx.toFixed(3) + '\n20\n' + cy.toFixed(3) +
-      '\n40\n0.15\n1\n' + (it.name || o.typeId).replace(/[^\x20-\x7E]/g, '') + '\n';
-  });
-
-  // Maße als LINE + TEXT
-  measures.forEach(m => {
-    dxf += '0\nLINE\n8\nMEASURES\n' +
-      '10\n' + m.ax + '\n20\n' + m.ay + '\n30\n0\n' +
-      '11\n' + m.bx + '\n21\n' + m.by + '\n31\n0\n';
-    const dist = Math.hypot(m.bx - m.ax, m.by - m.ay);
-    const mx = (m.ax + m.bx) / 2, my = (m.ay + m.by) / 2;
-    dxf += '0\nTEXT\n8\nMEASURES\n10\n' + mx.toFixed(3) + '\n20\n' + my.toFixed(3) +
-      '\n40\n0.2\n1\n' + dist.toFixed(2) + ' m\n';
-  });
-
-  dxf += '0\nENDSEC\n0\nEOF\n';
-  const blob = new Blob([dxf], { type: 'application/dxf' });
-  const a = Object.assign(document.createElement('a'), {
-    href: URL.createObjectURL(blob),
-    download: projName.replace(/[^a-z0-9]/gi, '_') + '.dxf',
-  });
-  a.click();
-  toast('📐 DXF exportiert (5 Layers: ROOMS/GROUNDS/OBJECTS/FREE_WALLS/MEASURES)', 'g');
 }
-
 // ── 10. MÖBELLISTE CSV EXPORT ─────────────────────────────────────
 // P6.3: Zwei CSV-Exporte:
 //  - Detail-Liste: pro platzierte Instanz eine Zeile (inkl. Position + Rotation)

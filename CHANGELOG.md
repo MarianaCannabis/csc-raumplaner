@@ -21,6 +21,11 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Refactor (Strangler P17)
 
+- **3D-Exports extrahiert** nach `src/legacy/exports3d.ts` (P17.12).
+  `exportGLTF` (async, three/examples GLTFExporter direkt importiert) +
+  `exportDXF` (sync, 5 Layer AC1015-DXF). Erstes async/sync-Mix-Modul.
+  +9 Vitest-Tests inkl. GLTFExporter-Mock + DXF-Format-Spec. Bundle:
+  −1,514 B gz (zweitbestes Win der P17-Serie).
 - **userTemplatesRead extrahiert** nach `src/legacy/userTemplatesRead.ts`
   (P17.11). 3 Funktionen + module-internal Cache: `loadUserTemplates`
   (TTL 60s), `deleteUserTemplate`, `applyUserTemplate`. Cache-Invalidation-
