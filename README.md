@@ -103,6 +103,24 @@ docs/
 
 > Performance-Baseline ist v2.4-spezifisch; Hauptoptimierung erfolgt in v2.5 über den in [`docs/P17-JS-SPLIT-PLAN.md`](docs/P17-JS-SPLIT-PLAN.md) dokumentierten JS-Split.
 
+### Lighthouse-Gates (CI)
+
+| Score | Floor | Lokal (Win) | CI (Linux headless) |
+|---|---|---|---|
+| Accessibility | ≥ 90 | 97 | 93 |
+| Best Practices | ≥ 95 | 100 | 100 |
+| SEO | ≥ 95 | 100 | 100 |
+| Performance | ≥ 50 | 51 | 62 (Ziel v2.5+/JS-Split: 90) |
+
+A11y-Floor ist 90 statt 95: Linux-headless-Chrome im GitHub-Runner gibt
+reproduzierbar 3-4 Punkte niedriger als lokale Windows-Runs. Buffer 3
+gegen weitere CI-Variance ist defensiver als ein engerer Floor mit
+flaky Builds.
+
+CI-Workflow: `.github/workflows/lighthouse.yml`. Lokal:
+`npm run build && npm run preview &` + `npm run lighthouse` (kein
+Threshold-Fail lokal — nur Reporting).
+
 ### Sonstige Gates (v2.5.0)
 
 | Gate | Ziel | Aktuell |

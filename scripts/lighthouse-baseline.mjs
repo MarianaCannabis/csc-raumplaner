@@ -83,4 +83,29 @@ proc.on('exit', (code) => {
   console.log(`✅ perf: ${p} · a11y: ${a} · best-practices: ${b} · seo: ${s}`);
   console.log(`📊 ${OUT_SUMMARY}`);
   console.log(`📄 ${OUT_HTML}`);
+
+  // CI-Mode: Threshold-Check. Nur bei LH_CI=1 aktiv, damit lokale Runs
+  // weiterhin nur reportieren ohne zu failen.
+  //
+  // Floors basieren auf Baseline 2026-04-21 (perf=61/a11y=96/bp=100/seo=100):
+  // - a11y: 90. Die Linux-headless-Chrome-Runs in GitHub-Actions liefern
+  //   reproduzierbar 3-4 Punkte niedriger als lokale Windows-Runs (CI: 93,
+  //   local: 97). Floor 90 lässt 3 Punkte Buffer gegen weitere Variance.
+  // - best-practices/seo: 95 (CI gibt 100, 5 Punkte Buffer).
+  // - performance: 50 (~20% Buffer unter aktuellem 61er Stand;
+  //   v2.5+/JS-Split-Ziel ist 90, das ziehen wir hoch sobald wir dort sind).
+  if (process.env.LH_CI === '1') {
+    const fails = [];
+    if (a < 90) fails.push(`a11y ${a} < 90`);
+    if (b < 95) fails.push(`best-practices ${b} < 95`);
+    if (s < 95) fails.push(`seo ${s} < 95`);
+    if (p < 50) fails.push(`performance ${p} < 50`);
+
+    if (fails.length) {
+      console.error('\n❌ Lighthouse-Threshold-Fails:');
+      for (const f of fails) console.error('  - ' + f);
+      process.exit(3);
+    }
+    console.log('\n✅ Alle Lighthouse-Thresholds eingehalten.');
+  }
 });
