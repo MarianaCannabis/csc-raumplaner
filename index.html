@@ -20757,13 +20757,23 @@ setTimeout(initTooltips,500);
 setTimeout(renderKIDropdown,200);
 loadBadges();
 showTipOfDay();
-// Onboarding for first-time users
-if(!localStorage.getItem('csc-onboarded')){ 
-    setTimeout(function(){if(localStorage.getItem("csc-welcome-never")!=="1")startWelcomeFlow();}, 800); 
-  } else { 
-    checkAndAwardBadge('first_open'); 
-    setTimeout(suggestNextStep, 3000);
+// Pfad-C #7: Onboarding-Tour. autoStartTour() ist die neue Single-
+// Source-of-Truth für den Boot-Trigger — es kümmert sich selbst um
+// Skip/Done-Migration alter Keys und Welcome → Bridge → Tutorial.
+// Existing User mit csc-onboarded='1' werden via Migration auf state='done'
+// gesetzt; csc-welcome-never='1' migriert zu csc-onboarding-skip='1'.
+setTimeout(function(){
+  if(typeof window.autoStartTour === 'function'){
+    window.autoStartTour();
+  } else if(!localStorage.getItem('csc-onboarded') && localStorage.getItem('csc-welcome-never')!=='1'){
+    // Boot-Shim-Fallback falls main.ts noch nicht geladen ist (theoretisch).
+    if(typeof startWelcomeFlow === 'function') startWelcomeFlow();
   }
+}, 800);
+if(localStorage.getItem('csc-onboarded') || localStorage.getItem('csc-onboarding-state')==='done' || localStorage.getItem('csc-onboarding-skip')==='1'){
+  checkAndAwardBadge('first_open');
+  setTimeout(suggestNextStep, 3000);
+}
 renderNorthArrow();
 setTimeout(registerServiceWorker,1000);
 // P15 Topbar-Responsive: Overflow-Menü-Verwaltung. Klont beim Boot alle
@@ -21872,7 +21882,7 @@ document.getElementById('mood-panel').classList.remove('vis');
     <div style="font-size:11px;color:#555">v__APP_VERSION__</div>
     <div style="flex:1"></div>
     <button class="tb-btn tb-btn--ghost is-compact-tbt" onclick="startOnboarding()" style="border-color:var(--gr);color:var(--gr);padding:6px 14px">▶ Illustriertes Intro</button>
-    <button class="tb-btn tb-btn--ghost is-compact-tbt" onclick="startTutorial()" style="padding:6px 14px">🎯 Interaktives Tutorial</button>
+    <button class="tb-btn tb-btn--ghost is-compact-tbt" onclick="(window.startTour||startTutorial)()" style="padding:6px 14px">🎯 Interaktives Tutorial</button>
     <button class="tb-btn tb-btn--ghost is-compact-tbt" onclick="closeHelp()" style="padding:6px 14px">Schließen</button>
   </div>
 

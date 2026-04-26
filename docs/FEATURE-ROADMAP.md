@@ -16,18 +16,18 @@ Wird live gepflegt — pro abgeschlossenem PR wird der Status aktualisiert.
 
 | Status | Item | Aufwand | PR / Notiz |
 |---|---|---|---|
-| ⏳ | Right-Panel Tab-Boot-Race | 10 min | KNOWN-ISSUES #1 |
-| ⏳ | NS_BINDING_ABORTED → sendBeacon | 30 min | nice-to-have aus v2.6.5 |
-| ⏳ | broken-flow-detect FP `try{...}` :2395 | 5 min | Audit |
-| ⏳ | Lighthouse-Filename-Cleanup (`v2.3-` → ohne) | 15 min | Bonus aus #158 |
-| ⏳ | README-Update v2.7.x + Bundle-Stand | 20 min | jetzt nötig |
-| ⏳ | Doppel-Aufruf `setTimeout startWelcomeFlow` (Z. 5382+13095) | 10 min | bei Recherche entdeckt |
+| ✅ | Right-Panel Tab-Boot-Race | 10 min | [#190](https://github.com/MarianaCannabis/csc-raumplaner/pull/190) — KNOWN-ISSUES #1 behoben |
+| ✅ | NS_BINDING_ABORTED → sendBeacon | 30 min | [#191](https://github.com/MarianaCannabis/csc-raumplaner/pull/191) — kein Action-Item, KNOWN-ISSUES #2 |
+| ✅ | broken-flow-detect FP `try{...}` | 5 min | [#192](https://github.com/MarianaCannabis/csc-raumplaner/pull/192) — JS-Keywords-Filter, 0 unresolved |
+| ✅ | Lighthouse-Filename-Cleanup (`v2.3-` → ohne) | 15 min | [#193](https://github.com/MarianaCannabis/csc-raumplaner/pull/193) |
+| ✅ | README-Update v2.7.x + Bundle-Stand | 20 min | [#194](https://github.com/MarianaCannabis/csc-raumplaner/pull/194) |
+| ✅ | Doppel-Aufruf `setTimeout startWelcomeFlow` | 10 min | [#195](https://github.com/MarianaCannabis/csc-raumplaner/pull/195) — Init-Block 3× kopiert, schwerer Bug |
 
 ## Bedienkonzept
 
 | Status | Item | Aufwand | Notiz |
 |---|---|---|---|
-| ⏳ | **Onboarding-Tour neu strukturieren** | 3-4h | welcomeFlow + tutorial vereinen |
+| ✅ | **Onboarding-Tour neu strukturieren** | 3-4h | [#196](https://github.com/MarianaCannabis/csc-raumplaner/pull/196) — Phase-State-Machine, Migration alter Keys |
 | ⏳ | Konflikt-Resolution Cloud-Save | 4-6h | last-writer-wins → merge/diff |
 | ⏳ | Compliance-Wizard für KCanG-Antrag | 6-8h | geführter Flow durch 21 Regeln |
 | ⏳ | Tastatur-Shortcuts-Editor erweitern | 2-3h | Konflikt-Detection + Presets |

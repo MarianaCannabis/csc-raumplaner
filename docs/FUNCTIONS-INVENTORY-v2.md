@@ -6,7 +6,7 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - **onclick-Handler:** 713
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 847
-- **TS-Exports:** 435
+- **TS-Exports:** 445
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -255,6 +255,19 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `startInlineProjectRename` (line 101)
 - `finishInlineProjectRename` (line 118)
 
+### src/legacy/onboardingTour.ts
+
+- `getTourState` (line 94)
+- `skipTour` (line 113)
+- `autoStartTourIfNew` (line 122)
+- `startTour` (line 142)
+- `onWelcomeDone` (line 151)
+- `onWelcomeCtaChosen` (line 162)
+- `onBridgeYes` (line 167)
+- `onBridgeNo` (line 175)
+- `onTutorialDone` (line 182)
+- `_resetForTests` (line 231)
+
 ### src/legacy/renderPresets.ts
 
 - `renderHighResPreset` (line 80)
@@ -338,13 +351,13 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 ### src/legacy/welcomeFlow.ts
 
-- `startWelcomeFlow` (line 58)
-- `renderWelcomeStep` (line 65)
-- `welcomeStep` (line 112)
-- `closeWelcomeFlow` (line 117)
-- `_resetForTests` (line 131)
-- `_getCurrentIdx` (line 136)
-- `WELCOME_STEP_COUNT` (line 140)
+- `startWelcomeFlow` (line 62)
+- `renderWelcomeStep` (line 69)
+- `welcomeStep` (line 116)
+- `closeWelcomeFlow` (line 121)
+- `_resetForTests` (line 138)
+- `_getCurrentIdx` (line 143)
+- `WELCOME_STEP_COUNT` (line 147)
 
 ### src/modes/planningMode.ts
 

@@ -6,6 +6,29 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+### Bedienkonzept
+
+- **Onboarding-Tour neu strukturiert**: neuer Orchestrator-Modul
+  `src/legacy/onboardingTour.ts` vereint Welcome + Tutorial zu einem
+  Phase-State-Machine-Flow:
+  `idle → welcome → bridge → tutorial → done` (skipped als opt-out
+  Sonderpfad). Bridge-Modal wird programmatisch erzeugt — kein neuer
+  HTML-Block in der 21k-Zeilen-`index.html` nötig.
+  - `autoStartTour()` ist neuer Boot-Single-Source-of-Truth (ersetzt den
+    `setTimeout(startWelcomeFlow)`-Trigger)
+  - `startTour()` ist der explizite Reset-Pfad für den
+    "🎯 Interaktives Tutorial"-Button
+  - `welcomeFlow.WelcomeFlowDeps` um `onClose?`-Hook ergänzt (additiv,
+    kein Breaking-Change) — feuert nach mark=true close + informiert
+    den Orchestrator
+  - localStorage-Migration: `csc-welcome-never='1'` → `csc-onboarding-skip='1'`,
+    `csc-onboarded='1'` → `csc-onboarding-state='done'` (existing User
+    sehen die Tour nicht erneut)
+  - 22 neue Vitest-Tests (`src/legacy/__tests__/onboardingTour.test.ts`):
+    Migration, Phase-Transitions, Skip-Idempotenz, State-Restore aus
+    localStorage. Tests gesamt: 390 → 412.
+  - Bundle: +1,318 B gz (Initial-Total 431,151 → 432,469)
+
 ### Docs
 
 - **README mit v2.7.1-Status aktualisiert**: Versions-Badge 2.7.1,

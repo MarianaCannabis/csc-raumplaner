@@ -53,6 +53,10 @@ export interface WelcomeFlowDeps {
   e2eMode?: boolean;
   openM: (id: string) => void;
   closeM: (id: string) => void;
+  /** Pfad-C #7: Hook für die Onboarding-Tour-Orchestrierung. Feuert nach
+   *  closeWelcomeFlow(mark=true). Nicht-aufrufer haben dasselbe Verhalten
+   *  wie vorher (additiv, kein Breaking-Change). */
+  onClose?: () => void;
 }
 
 export function startWelcomeFlow(deps: WelcomeFlowDeps): void {
@@ -125,6 +129,9 @@ export function closeWelcomeFlow(deps: WelcomeFlowDeps, mark = true): void {
     }
   }
   deps.closeM('m-welcome');
+  if (mark && typeof deps.onClose === 'function') {
+    try { deps.onClose(); } catch (e) { console.warn('[welcome] onClose threw', e); }
+  }
 }
 
 /** Test-Helper: state-reset. */

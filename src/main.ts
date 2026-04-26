@@ -71,6 +71,7 @@ import * as theme from './legacy/theme.js';
 import * as changelog from './legacy/changelog.js';
 import * as welcomeFlow from './legacy/welcomeFlow.js';
 import * as tutorial from './legacy/tutorial.js';
+import * as onboardingTour from './legacy/onboardingTour.js';
 import * as helpModal from './legacy/helpModal.js';
 import * as tbMenu from './legacy/tbMenu.js';
 import * as versionHistory from './legacy/versionHistory.js';
@@ -273,6 +274,11 @@ declare global {
     closeWelcomeFlow: () => void;
     _welcomeStep: (delta: number) => void;
     _welcomeClose: (mark: boolean) => void;
+    /** Pfad-C #7: Onboarding-Tour-Orchestrator vereint Welcome + Tutorial
+     *  zu einem Phase-Flow (welcome → bridge → tutorial → done). */
+    cscOnboarding: typeof onboardingTour;
+    autoStartTour: () => void;
+    startTour: () => void;
     /** P17.18: Tutorial aus src/legacy/tutorial.ts. Step-basiertes
      *  Overlay mit Highlight auf Topbar/Sidebar-Elementen. */
     startTutorial: () => void;
@@ -633,7 +639,22 @@ window.openVisualHistory = () => {
   const w = window as unknown as { openM?: (id: string) => void };
   changelog.openVisualHistory({ openM: w.openM ?? (() => {}) });
 };
-// P17.17: Welcome-Flow.
+// P17.17 + Pfad-C #7: Welcome-Flow mit Onboarding-Tour-Hook.
+// onClose-Hook informiert den Orchestrator, dass die Welcome-Phase fertig
+// ist — er entscheidet dann ob Bridge angezeigt wird (state==='welcome').
+function buildOnboardingDeps(): onboardingTour.TourDeps {
+  return {
+    startWelcome: () => welcomeFlow.startWelcomeFlow(buildWelcomeDeps()),
+    startTutorial: () => {
+      const w = window as unknown as { closeHelp?: () => void };
+      tutorial.startTutorial({ closeHelp: w.closeHelp });
+    },
+    toast: (msg, type) => {
+      const w = window as unknown as { toast?: (m: string, t?: string) => void };
+      w.toast?.(msg, type);
+    },
+  };
+}
 function buildWelcomeDeps(): welcomeFlow.WelcomeFlowDeps {
   const w = window as unknown as {
     __cscE2E?: boolean;
@@ -644,6 +665,7 @@ function buildWelcomeDeps(): welcomeFlow.WelcomeFlowDeps {
     e2eMode: !!w.__cscE2E,
     openM: w.openM ?? (() => {}),
     closeM: w.closeM ?? (() => {}),
+    onClose: () => onboardingTour.onWelcomeDone(buildOnboardingDeps()),
   };
 }
 window.startWelcomeFlow = () => welcomeFlow.startWelcomeFlow(buildWelcomeDeps());
@@ -651,13 +673,24 @@ window.closeWelcomeFlow = () => welcomeFlow.closeWelcomeFlow(buildWelcomeDeps())
 window._welcomeStep = (delta) => welcomeFlow.welcomeStep(delta, buildWelcomeDeps());
 window._welcomeClose = (mark) => welcomeFlow.closeWelcomeFlow(buildWelcomeDeps(), mark);
 
-// P17.18: Tutorial.
+// P17.18 + Pfad-C #7: Tutorial mit endTutorial-Hook in Orchestrator.
 window.startTutorial = () => {
   const w = window as unknown as { closeHelp?: () => void };
   tutorial.startTutorial({ closeHelp: w.closeHelp });
 };
-window.endTutorial = tutorial.endTutorial;
+window.endTutorial = () => {
+  tutorial.endTutorial();
+  onboardingTour.onTutorialDone(buildOnboardingDeps());
+};
 window.tutNav = tutorial.tutNav;
+
+// Pfad-C #7: Onboarding-Tour-Orchestrator als Bridge.
+// `autoStartTour` ist der einzige neue Boot-Trigger (ersetzt den direkten
+// startWelcomeFlow-Call in index.html). `startTour` ist der explizite
+// Reset-Pfad für den Tutorial-Button.
+window.cscOnboarding = onboardingTour;
+window.autoStartTour = () => onboardingTour.autoStartTourIfNew(buildOnboardingDeps());
+window.startTour = () => onboardingTour.startTour(buildOnboardingDeps());
 
 // P17.19: Help-Modal-Family. openHelp/closeHelp/showHelpPage sind pure
 // DOM, openHelpModal nutzt openM via Closure.
