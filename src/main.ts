@@ -79,6 +79,7 @@ import * as kcangPdfExport from './legacy/kcangPdfExport.js';
 import type { KCanGApplication } from './legacy/kcangWizard.js';
 import * as touchSupport from './legacy/touchSupport.js';
 import * as collabAvatars from './legacy/collabAvatars.js';
+import * as pdfPageSelector from './legacy/pdfPageSelector.js';
 import * as helpModal from './legacy/helpModal.js';
 import * as tbMenu from './legacy/tbMenu.js';
 import * as versionHistory from './legacy/versionHistory.js';
@@ -307,6 +308,8 @@ declare global {
     /** Mega-Sammel #5: Multi-User-Avatar-Helpers. colorForUser hash-basiert,
      *  Tooltip-Format, pulseCursorGlow. */
     cscCollab: typeof collabAvatars;
+    /** Mega-Sammel #6: PDF-Page-Selector — Dialog für Multi-Page-Imports. */
+    cscPdfPages: typeof pdfPageSelector;
     /** P17.18: Tutorial aus src/legacy/tutorial.ts. Step-basiertes
      *  Overlay mit Highlight auf Topbar/Sidebar-Elementen. */
     startTutorial: () => void;
@@ -812,6 +815,7 @@ function buildKCanGDeps(): kcangWizard.KCanGWizardDeps {
 // stellt nur die Pattern-Logik bereit.
 window.cscTouch = touchSupport;
 window.cscCollab = collabAvatars;
+window.cscPdfPages = pdfPageSelector;
 queueMicrotask(() => {
   if (touchSupport.isTouchDevice()) {
     document.body.classList.add('is-touch');

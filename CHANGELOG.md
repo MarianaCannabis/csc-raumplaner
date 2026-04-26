@@ -60,7 +60,15 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Zusatzfunktionen
 
-(in dieser Sitzung verschoben — siehe Mega-Sammel-Bericht)
+- **PDF-Messeordnung Multi-Page-Support (Mega-Sammel Schritt 6)** — neuer
+  `src/legacy/pdfPageSelector.ts` mit `promptForPages(numPages, options)`-
+  Helper. Bei PDF-Upload mit mehreren Seiten zeigt sich jetzt ein
+  Auswahl-Dialog ("alle" / "1-3" / "1,3,5" / Custom-Range). `parseRange`
+  unterstützt deduped+sortierte Output, ESC-Cancel, Hardlimit-Truncation.
+  index.html `uploadPDF` integriert: Single-Page bleibt ohne Dialog,
+  Multi-Page öffnet den Selector. +14 Vitest-Tests (parseRange-edge-cases,
+  Modal-Interaction, Cancel-Pfade). Vitest gesamt: 492 → 506. Bundle:
+  +ca. 1 KB gz.
 
 ### Bedienkonzept
 
