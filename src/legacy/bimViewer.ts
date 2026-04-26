@@ -32,6 +32,40 @@ export interface BimViewerDeps {
   loadBimComponents: () => Promise<BimComponentsModule>;
 }
 
+/** Phase 2: Scene-Daten für IFC-Export. Forms aus index.html-Globals. */
+export interface BimExportDeps {
+  rooms: Array<{ id: string; name?: string; x: number; y: number; w: number; d: number; h?: number }>;
+  objects: Array<{ id: string; typeId: string; name?: string; x: number; y: number; w?: number; d?: number; h?: number; rot?: number; py?: number }>;
+  walls?: Array<{ id: string; x1: number; z1: number; x2: number; z2: number; h?: number }>;
+  grounds?: Array<{ id: string; name?: string; x: number; y: number; w: number; d: number }>;
+  measures?: Array<{ ax: number; ay: number; bx: number; by: number }>;
+  projName: string;
+  meta?: { owner?: string; createdAt?: string; memberCount?: number; maxHeight?: number };
+}
+
+/**
+ * Phase 2: Exportiert die aktuelle Scene als IFC2x3-STEP-21 String/Blob.
+ *
+ * Delegiert an `src/export/ifc.ts` (handgeschriebener Exporter, lizenzfrei,
+ * unter 9 KB Code). Output ist Standard-IFC-STEP-21, lesbar in BIMvision,
+ * Solibri, xeokit, ifcjs, Revit-Import.
+ */
+export async function exportCurrentSceneAsIfc(deps: BimExportDeps): Promise<Blob> {
+  const { exportToIfc } = await import('../export/ifc.js');
+  const ifcContent = exportToIfc({
+    name: deps.projName,
+    rooms: deps.rooms.map((r) => ({
+      id: r.id, name: r.name ?? 'Raum', x: r.x, y: r.y, w: r.w, d: r.d, h: r.h,
+    })),
+    objects: deps.objects,
+    walls: deps.walls,
+    grounds: deps.grounds,
+    measures: deps.measures,
+    meta: deps.meta,
+  });
+  return new Blob([ifcContent], { type: 'application/x-step' });
+}
+
 export interface BimViewerInstance {
   loadIfcFile: (file: File) => Promise<void>;
   exportToIfc: () => Promise<Blob>;
@@ -95,7 +129,13 @@ export async function createBimViewer(deps: BimViewerDeps): Promise<BimViewerIns
       }
     },
     exportToIfc: async () => {
-      throw new Error('IFC-Export Phase 1: noch nicht implementiert. Phase 2.');
+      // Phase 2: nutzt jetzt den existing handgeschriebenen IFC2x3-Exporter
+      // (`src/export/ifc.ts`). @thatopen/components-Library wird bewusst NICHT
+      // für den Export benutzt — der existing-Code ist 9 KB statt 5 MB Lazy-Lib
+      // und produziert valides IFC-STEP-21 das in Solibri/BIMvision/Revit lädt.
+      // Aufrufer muss die Scene-Daten via `exportCurrentSceneAsIfc(deps)`
+      // mitliefern; dieser Stub wirft, weil er keinen Scene-Zugriff hat.
+      throw new Error('exportToIfc(): bitte exportCurrentSceneAsIfc(deps) verwenden.');
     },
     dispose: () => {
       try { state.components.dispose(); } catch { /* noop */ }

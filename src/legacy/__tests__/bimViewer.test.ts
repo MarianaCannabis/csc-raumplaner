@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { createBimViewer, type BimComponentsModule, type BimViewerDeps } from '../bimViewer.js';
+import { createBimViewer, exportCurrentSceneAsIfc, type BimComponentsModule, type BimViewerDeps } from '../bimViewer.js';
 
 interface MockInstance { init: ReturnType<typeof vi.fn>; get: ReturnType<typeof vi.fn>; dispose: ReturnType<typeof vi.fn>; }
 function makeMockOBC(instanceOverride?: Partial<MockInstance>): { obc: BimComponentsModule; instance: MockInstance } {
@@ -56,9 +56,9 @@ describe('createBimViewer (Phase 1)', () => {
     expect(inst.isReady()).toBe(true);
   });
 
-  it('exportToIfc Phase 1 wirft "noch nicht implementiert"', async () => {
+  it('exportToIfc auf Instance verweist auf exportCurrentSceneAsIfc', async () => {
     const inst = await createBimViewer(makeDeps());
-    await expect(inst.exportToIfc()).rejects.toThrow(/noch nicht implementiert/);
+    await expect(inst.exportToIfc()).rejects.toThrow(/exportCurrentSceneAsIfc/);
   });
 
   it('loadIfcFile ruft IfcLoader.load wenn vorhanden', async () => {
@@ -76,5 +76,85 @@ describe('createBimViewer (Phase 1)', () => {
     const inst = await createBimViewer(makeDeps(obc));
     inst.dispose();
     expect(instance.dispose).toHaveBeenCalled();
+  });
+
+  it('exportToIfc auf BimViewerInstance wirft (use exportCurrentSceneAsIfc)', async () => {
+    const inst = await createBimViewer(makeDeps());
+    await expect(inst.exportToIfc()).rejects.toThrow(/exportCurrentSceneAsIfc/);
+  });
+});
+
+describe('exportCurrentSceneAsIfc (Phase 2)', () => {
+  it('returnt Blob mit MIME application/x-step', async () => {
+    const blob = await exportCurrentSceneAsIfc({
+      rooms: [{ id: 'r1', name: 'Hauptraum', x: 0, y: 0, w: 5, d: 4 }],
+      objects: [],
+      walls: [],
+      grounds: [],
+      measures: [],
+      projName: 'Test',
+    });
+    expect(blob).toBeInstanceOf(Blob);
+    expect(blob.type).toBe('application/x-step');
+  });
+
+  it('Blob-Inhalt enthält IFC-Header (ISO-10303-21)', async () => {
+    const blob = await exportCurrentSceneAsIfc({
+      rooms: [{ id: 'r1', name: 'Raum', x: 0, y: 0, w: 5, d: 4 }],
+      objects: [],
+      projName: 'Test',
+    });
+    const txt = await blob.text();
+    expect(txt).toContain('ISO-10303-21;');
+    expect(txt).toContain('END-ISO-10303-21;');
+    expect(txt).toContain('IFC2X3');
+  });
+
+  it('Rooms → IFCSPACE-Entries mit Namen', async () => {
+    const blob = await exportCurrentSceneAsIfc({
+      rooms: [
+        { id: 'r1', name: 'Konsumraum', x: 0, y: 0, w: 5, d: 4 },
+        { id: 'r2', name: 'Anbauraum', x: 6, y: 0, w: 5, d: 4 },
+      ],
+      objects: [],
+      projName: 'Test',
+    });
+    const txt = await blob.text();
+    expect(txt).toContain('IFCSPACE');
+    expect(txt).toContain('Konsumraum');
+    expect(txt).toContain('Anbauraum');
+  });
+
+  it('Objects → IFCFURNISHINGELEMENT', async () => {
+    const blob = await exportCurrentSceneAsIfc({
+      rooms: [],
+      objects: [{ id: 'o1', typeId: 'sofa-001', x: 1, y: 1, w: 2, d: 1 }],
+      projName: 'Test',
+    });
+    const txt = await blob.text();
+    expect(txt).toContain('IFCFURNISHINGELEMENT');
+    expect(txt).toContain('sofa-001');
+  });
+
+  it('Walls → IFCWALLSTANDARDCASE', async () => {
+    const blob = await exportCurrentSceneAsIfc({
+      rooms: [],
+      objects: [],
+      walls: [{ id: 'w1', x1: 0, z1: 0, x2: 5, z2: 0 }],
+      projName: 'Test',
+    });
+    const txt = await blob.text();
+    expect(txt).toContain('IFCWALLSTANDARDCASE');
+  });
+
+  it('Building/Storey-Hierarchie immer vorhanden', async () => {
+    const blob = await exportCurrentSceneAsIfc({
+      rooms: [], objects: [], projName: 'Empty',
+    });
+    const txt = await blob.text();
+    expect(txt).toContain('IFCPROJECT');
+    expect(txt).toContain('IFCSITE');
+    expect(txt).toContain('IFCBUILDING');
+    expect(txt).toContain('IFCBUILDINGSTOREY');
   });
 });

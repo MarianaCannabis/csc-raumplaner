@@ -698,16 +698,24 @@
     </div>
   </div>
 
-  <!-- BIM PANEL (Roadmap v3.0 #4 — Phase 1) -->
+  <!-- BIM PANEL (Roadmap v3.0 #4 — Phase 1+2) -->
   <div class="rpanel rp-pane" id="rpanel-bim" style="display:none;flex-direction:column;padding:10px;gap:8px;overflow-y:auto">
-    <h3 style="margin:0;font-size:13px">🏗 BIM / IFC-Import</h3>
-    <div style="font-size:11px;color:var(--tx3)">Lade eine .ifc-Datei zum Anzeigen. <b>Export</b> kommt in Phase 2.</div>
+    <h3 style="margin:0;font-size:13px">🏗 BIM / IFC</h3>
+
+    <!-- Import-Section -->
+    <div style="font-size:11px;color:var(--tx3)">Lade eine .ifc-Datei zum Anzeigen.</div>
     <input type="file" id="ifc-file-input" accept=".ifc" style="font-size:11px"
       onchange="window.cscBimUI && window.cscBimUI.handleFileSelect(this.files[0])">
-    <div id="bim-viewer-container" style="width:100%;height:400px;background:#1a1a1a;display:none;border:1px solid var(--bd)"></div>
+    <div id="bim-viewer-container" style="width:100%;height:300px;background:#1a1a1a;display:none;border:1px solid var(--bd)"></div>
     <div id="bim-status" style="font-size:11px;color:var(--tx3)"></div>
-    <button id="bim-export-btn" class="mdl-btn" disabled
-      onclick="window.cscBimUI && window.cscBimUI.exportIfc()">📤 Als IFC exportieren (Phase 2)</button>
+
+    <hr style="border:0;border-top:1px solid var(--bd);margin:6px 0">
+
+    <!-- Export-Section (Phase 2) -->
+    <div style="font-size:11px;color:var(--tx3)">Aktuellen Plan als IFC2x3 exportieren (Räume, Möbel, Wände, Böden).</div>
+    <button id="bim-export-btn" class="mdl-btn mdl-btn--primary"
+      onclick="window.cscBimUI && window.cscBimUI.exportIfc()">📤 Aktuellen Plan als IFC exportieren</button>
+    <div id="bim-export-status" style="font-size:11px;color:var(--tx3)"></div>
   </div>
 
   <!-- AI PANEL -->

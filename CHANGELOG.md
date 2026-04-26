@@ -6,6 +6,28 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+## v2.7.7 — 2026-04-26
+
+### BIM-Viewer Phase 2 (Roadmap v3.0 #4 — Phase 2 done)
+
+- **`exportCurrentSceneAsIfc(deps)`** in `src/legacy/bimViewer.ts` —
+  delegiert an den existing handgeschriebenen IFC2x3-Exporter
+  (`src/export/ifc.ts`, ~9 KB Code, lizenzfrei, IFC-STEP-21 valid für
+  BIMvision/Solibri/xeokit/Revit-Import). **Bewusst NICHT @thatopen-
+  Library** — der existing-Code ist 1000× kleiner und liefert
+  Standard-IFC ohne Lazy-5-MB-Chunk.
+- **`window.cscBimUI.exportIfc()`** sammelt Scene-Daten aus den
+  window-Globals (`rooms`, `objects`, `walls`, `grounds`, `measures`,
+  `projName`) und triggert Download — funktioniert auch ohne dass der
+  User je den BIM-Viewer geöffnet hat.
+- **`index.html` BIM-Tab** umstrukturiert: Import-Section + neue Export-
+  Section mit prominentem Button. Status-Anzeige unter dem Button.
+- **Roundtrip BIM:** Import (Phase 1, lazy via @thatopen) → Inspizieren
+  → Plan im CSC-Tool weiterbauen → Export (Phase 2, native).
+- **+7 Vitest-Tests** (Blob-MIME, IFC-Header, Spaces, Furnishing,
+  Walls, Building-Hierarchie, exportToIfc-Stub-Errortext). Vitest
+  gesamt: 652 → 659.
+
 ## v2.7.6 — 2026-04-26
 
 ### Stripe Phase 2 (Roadmap v3.0 #4 — Phase 2 done)
