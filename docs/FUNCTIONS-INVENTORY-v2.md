@@ -3,10 +3,10 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 ## Zusammenfassung
 
-- **onclick-Handler:** 732
+- **onclick-Handler:** 734
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 863
-- **TS-Exports:** 511
+- **TS-Exports:** 513
 - **tbm-item-Coverage:** 160/160 fully tagged (data-mode: 160/160, data-tier: 160/160)
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
@@ -211,6 +211,10 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 - `generateBauantragPdf` (line 81)
 
+### src/legacy/bimViewer.ts
+
+- `createBimViewer` (line 47)
+
 ### src/legacy/changelog.ts
 
 - `logChange` (line 45)
@@ -360,7 +364,8 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 ### src/legacy/stairsGeometry.ts
 
 - `buildStairsMesh` (line 32)
-- `getStairsZRange` (line 207)
+- `buildSpiralStairsMesh` (line 215)
+- `getStairsZRange` (line 293)
 
 ### src/legacy/stampMode.ts
 
@@ -821,66 +826,66 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 | Function | Line |
 |---|---|
-| `_loadTelemetryScripts` | 2398 |
-| `_showCrashModal` | 2488 |
-| `loadSharedFurniture` | 2681 |
-| `saveSharedFurniture` | 2698 |
-| `deleteSharedFurniture` | 2725 |
-| `aiFetch` | 2742 |
-| `callAI` | 2769 |
-| `aiText` | 2817 |
-| `aiJSON` | 2823 |
-| `testAIConnection` | 2837 |
-| `loadCustom` | 2885 |
-| `saveCustom` | 2886 |
-| `getCatalog` | 2896 |
-| `getArchCatalog` | 2904 |
-| `getSecurityCatalog` | 2905 |
-| `toggleCatGroup` | 2906 |
-| `findItem` | 2918 |
-| `m2px` | 2953 |
-| `px2m` | 2954 |
-| `wx2cx` | 2955 |
-| `wy2cy` | 2956 |
-| `cx2wx` | 2957 |
-| `cy2wy` | 2958 |
-| `snapM` | 2959 |
-| `resizeCv` | 2961 |
-| `draw2D` | 2967 |
-| `drawGrid` | 3067 |
-| `drawRoom2D` | 3090 |
-| `drawGround2D` | 3152 |
-| `hitGround` | 3189 |
-| `hitGroundResizeHandle` | 3206 |
-| `_getImgCached` | 3221 |
-| `drawObj2D` | 3232 |
-| `drawMeasure` | 3334 |
-| `hitObj` | 3355 |
-| `hitRoom` | 3365 |
-| `hitRoomResizeHandle` | 3373 |
-| `startCatalogDrag` | 3639 |
-| `placeFromCatalog` | 3649 |
-| `quickAddRoom` | 3673 |
-| `addRoom` | 3679 |
-| `addObject` | 3701 |
-| `removeRoom` | 3725 |
-| `quickAddGround` | 3733 |
-| `addGround` | 3743 |
-| `removeGround` | 3760 |
-| `selectGround` | 3769 |
-| `openGroundMaterialPicker` | 3779 |
-| `closeGroundMaterialPicker` | 3799 |
-| `openGroundPropPanel` | 3805 |
-| `closeGroundPropPanel` | 3851 |
-| `syncGroundPropPanel` | 3855 |
-| `deleteSelectedGround` | 3865 |
-| `setSelection` | 3870 |
-| `updateSelBotBar` | 3898 |
-| `applySelProps` | 3934 |
-| `rotateSel` | 3944 |
-| `dupSel` | 3963 |
-| `deleteSel` | 3969 |
-| `removeFreeWall` | 3977 |
+| `_loadTelemetryScripts` | 2414 |
+| `_showCrashModal` | 2504 |
+| `loadSharedFurniture` | 2697 |
+| `saveSharedFurniture` | 2714 |
+| `deleteSharedFurniture` | 2741 |
+| `aiFetch` | 2758 |
+| `callAI` | 2785 |
+| `aiText` | 2833 |
+| `aiJSON` | 2839 |
+| `testAIConnection` | 2853 |
+| `loadCustom` | 2901 |
+| `saveCustom` | 2902 |
+| `getCatalog` | 2912 |
+| `getArchCatalog` | 2920 |
+| `getSecurityCatalog` | 2921 |
+| `toggleCatGroup` | 2922 |
+| `findItem` | 2934 |
+| `m2px` | 2969 |
+| `px2m` | 2970 |
+| `wx2cx` | 2971 |
+| `wy2cy` | 2972 |
+| `cx2wx` | 2973 |
+| `cy2wy` | 2974 |
+| `snapM` | 2975 |
+| `resizeCv` | 2977 |
+| `draw2D` | 2983 |
+| `drawGrid` | 3083 |
+| `drawRoom2D` | 3106 |
+| `drawGround2D` | 3168 |
+| `hitGround` | 3205 |
+| `hitGroundResizeHandle` | 3222 |
+| `_getImgCached` | 3237 |
+| `drawObj2D` | 3248 |
+| `drawMeasure` | 3350 |
+| `hitObj` | 3371 |
+| `hitRoom` | 3381 |
+| `hitRoomResizeHandle` | 3389 |
+| `startCatalogDrag` | 3655 |
+| `placeFromCatalog` | 3665 |
+| `quickAddRoom` | 3689 |
+| `addRoom` | 3695 |
+| `addObject` | 3717 |
+| `removeRoom` | 3741 |
+| `quickAddGround` | 3749 |
+| `addGround` | 3759 |
+| `removeGround` | 3776 |
+| `selectGround` | 3785 |
+| `openGroundMaterialPicker` | 3795 |
+| `closeGroundMaterialPicker` | 3815 |
+| `openGroundPropPanel` | 3821 |
+| `closeGroundPropPanel` | 3867 |
+| `syncGroundPropPanel` | 3871 |
+| `deleteSelectedGround` | 3881 |
+| `setSelection` | 3886 |
+| `updateSelBotBar` | 3914 |
+| `applySelProps` | 3950 |
+| `rotateSel` | 3960 |
+| `dupSel` | 3979 |
+| `deleteSel` | 3985 |
+| `removeFreeWall` | 3993 |
 
 ---
 

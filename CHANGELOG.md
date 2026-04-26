@@ -6,6 +6,29 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+## v2.7.5 — 2026-04-26
+
+### BIM-Viewer Phase 1 (Roadmap v3.0 #4 — Phase 1)
+
+- **Dependency:** `@thatopen/components` + `@thatopen/fragments` als
+  **dynamic-import** — initial-Bundle-Impact ~0, Lazy-Chunk ~5 MB beim
+  ersten BIM-Tab-Open.
+- **`src/legacy/bimViewer.ts`** — `createBimViewer({ containerEl, toast,
+  loadBimComponents })` returnt `{ loadIfcFile, exportToIfc, dispose,
+  isReady }`. Skeleton-Modus: wenn die @thatopen-API zwischen Versionen
+  wechselt, fällt der Init graceful zurück, IFC-Loader-Aufruf bleibt
+  via `components.get(IfcLoader).load()`.
+- **`src/main.ts` Bridges:** `window.cscBim.load()` (Lazy-Loader-Cache),
+  `window.cscBimUI.handleFileSelect/exportIfc/isOpen`.
+- **`index.html` neuer BIM-Tab** im rechten Panel (`#rtab-bim`,
+  `#rpanel-bim`). File-Input akzeptiert `.ifc`. Export-Button ist
+  disabled bis Phase 2 (Stub wirft "noch nicht implementiert").
+- **+6 Vitest-Tests** (mock @thatopen-Modul). Vitest gesamt: 639 → 645.
+- **Bekannte Vuln:** `fast-xml-parser <=5.6.0` (transitive über
+  @thatopen/components, lokale npm-audit High-Severity). Risiko gering
+  (nur User-eigene IFC-Dateien parsed, keine Remote-XMLs). Fix bei
+  @thatopen-3.3.3+ Update; in Phase 2 evaluieren.
+
 ## v2.7.4 — 2026-04-26
 
 ### Multi-Floor Phase 4 — Wendeltreppen
