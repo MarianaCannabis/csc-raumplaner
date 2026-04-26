@@ -196,3 +196,90 @@ export function findFloorConnection(
   if (!above) return null;
   return { fromFloorId, toFloorId: above.id };
 }
+
+// ── Multi-Floor Phase 3 (#2): Treppen-Position-Validation ────────────
+
+export interface StairsValidationResult {
+  ok: boolean;
+  warnings: string[];
+  errors: string[];
+}
+
+interface StairsPlacement {
+  x: number;
+  y: number;
+  w: number;
+  d: number;
+  connectsFloors?: { fromFloorId: string; toFloorId: string };
+}
+
+interface RoomLike {
+  id: string;
+  x: number;
+  y: number;
+  w: number;
+  d: number;
+  floorId?: string;
+}
+
+/**
+ * Phase 3 (#2): validiert eine geplante Treppen-Platzierung.
+ *
+ * Errors (blockend):
+ * - connectsFloors muss vorhanden sein
+ * - fromFloor + toFloor müssen existieren
+ * - toFloor.order > fromFloor.order
+ *
+ * Warnings (nicht blockend, User-Confirm sinnvoll):
+ * - Treppe liegt außerhalb aller Räume des fromFloor
+ * - Treppe liegt außerhalb aller Räume des toFloor
+ *
+ * Idempotent + pure — kein Side-Effect.
+ */
+export function validateStairsPlacement(
+  stairs: StairsPlacement,
+  floors: Floor[],
+  rooms: RoomLike[],
+): StairsValidationResult {
+  const warnings: string[] = [];
+  const errors: string[] = [];
+
+  if (!stairs.connectsFloors) {
+    errors.push('connectsFloors fehlt — Treppe muss zwei Floors verbinden');
+    return { ok: false, warnings, errors };
+  }
+
+  const from = floors.find((f) => f.id === stairs.connectsFloors!.fromFloorId);
+  const to = floors.find((f) => f.id === stairs.connectsFloors!.toFloorId);
+  if (!from) errors.push('Unterer Floor "' + stairs.connectsFloors.fromFloorId + '" nicht gefunden');
+  if (!to) errors.push('Oberer Floor "' + stairs.connectsFloors.toFloorId + '" nicht gefunden');
+  if (from && to && to.order <= from.order) {
+    errors.push('Oberer Floor (order=' + to.order + ') muss höher liegen als unterer (order=' + from.order + ')');
+  }
+
+  // Position-Check: Treppe sollte innerhalb mind. 1 Raum auf jedem Floor liegen.
+  if (from && to && errors.length === 0) {
+    const fromRooms = rooms.filter((r) => r.floorId === stairs.connectsFloors!.fromFloorId);
+    const toRooms = rooms.filter((r) => r.floorId === stairs.connectsFloors!.toFloorId);
+    const isInsideAnyRoom = (rs: RoomLike[]): boolean =>
+      rs.some(
+        (r) =>
+          stairs.x >= r.x &&
+          stairs.x + stairs.w <= r.x + r.w &&
+          stairs.y >= r.y &&
+          stairs.y + stairs.d <= r.y + r.d,
+      );
+    if (fromRooms.length === 0) {
+      warnings.push('Unterer Floor hat keine Räume — Treppe liegt frei');
+    } else if (!isInsideAnyRoom(fromRooms)) {
+      warnings.push('Treppe liegt außerhalb aller Räume des unteren Floors');
+    }
+    if (toRooms.length === 0) {
+      warnings.push('Oberer Floor hat keine Räume — Treppe endet ins Leere');
+    } else if (!isInsideAnyRoom(toRooms)) {
+      warnings.push('Treppe liegt außerhalb aller Räume des oberen Floors');
+    }
+  }
+
+  return { ok: errors.length === 0, warnings, errors };
+}

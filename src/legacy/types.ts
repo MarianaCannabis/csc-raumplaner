@@ -26,7 +26,8 @@ export interface SceneObject {
  * in Phase 2; L/Wendel kommen in Phase 3. Werte in Metern.
  */
 export interface StairsConfig {
-  shape: 'straight';
+  /** 'straight' = einläufig, 'l' = L-Treppe mit 90° Podest. */
+  shape: 'straight' | 'l';
   /** Stufen-Höhe in m (Bauordnung: max 0.19). */
   stepHeight: number;
   /** Stufen-Tiefe in m. */
@@ -35,6 +36,11 @@ export interface StairsConfig {
   stepCount: number;
   /** Geländer rechts (Default true). */
   withRailing: boolean;
+  /**
+   * Phase 3 #4: Bei shape='l' — wieviele Stufen vor dem Podest liegen
+   * (Lauf 1). Lauf 2 hat dann (stepCount - landingAfter). Default = floor(stepCount/2).
+   */
+  landingAfter?: number;
 }
 
 /**

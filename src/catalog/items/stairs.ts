@@ -50,6 +50,25 @@ export const STAIRS: CatalogItem[] = [
     },
   },
   {
+    id: 'stairs-l-standard',
+    cat: '🪜 Treppen',
+    icon: '🪜',
+    name: 'L-Treppe (mit Podest)',
+    // Footprint: depthRun1 + width × width + depthRun2 (siehe stairsGeometry.buildLStairsMesh)
+    w: 1.2 + 8 * 0.28, // width + depthRun2
+    d: 8 * 0.28 + 1.2, // depthRun1 + width (Podest)
+    h: 16 * 0.18,      // 2.88 m
+    type: 'stairs',
+    stairsConfig: {
+      shape: 'l',
+      stepHeight: 0.18,
+      stepDepth: 0.28,
+      stepCount: 16,
+      withRailing: true,
+      landingAfter: 8,
+    },
+  },
+  {
     id: 'stairs-straight-keller',
     cat: '🪜 Treppen',
     icon: '🪜',

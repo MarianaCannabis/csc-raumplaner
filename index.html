@@ -2915,7 +2915,14 @@ function toggleCatGroup(id){
   else localStorage.removeItem('fcat-closed-'+cat);
 }
 
-function findItem(id){ if(!id) return null; return [...BUILTIN,...ARCH,...customObjs].find(x=>x&&x.id===id)||null; }
+function findItem(id){
+  if(!id) return null;
+  // Multi-Floor Phase 3: NEW_CATALOG (TS-Catalog) auch durchsuchen.
+  // Vorher landeten STAIRS, CHAIRS, TABLES etc. nur über cscCatalog.newItems —
+  // findItem gab null zurück → build3DObj early-return → Item unsichtbar.
+  const newItems = (window.cscCatalog && Array.isArray(window.cscCatalog.newItems)) ? window.cscCatalog.newItems : [];
+  return [...BUILTIN, ...ARCH, ...customObjs, ...newItems].find(x=>x&&x.id===id) || null;
+}
 
 // ════════════════════════════════════════════════════════════════════════
 // 2D CANVAS ENGINE
@@ -4390,39 +4397,73 @@ function rebuild3D(){
   // All-floors flag (declared once at top to avoid TDZ)
   const showAF = !!_show3DAllFloors;
 
+  // Phase 3 (#3): Stacked-View-Transparenz für nicht-aktive Floors.
+  // Klonen erforderlich, damit Material-Mutation nicht den Originalpool dimmt.
+  function _applyFloorOpacity(group, opacity){
+    if(!group || typeof group.traverse !== 'function') return;
+    group.traverse(o=>{
+      if(o.isMesh && o.material){
+        const mats = Array.isArray(o.material) ? o.material : [o.material];
+        const cloned = mats.map(m=>{
+          if(!m || typeof m.clone !== 'function') return m;
+          const c = m.clone(); c.transparent = true; c.opacity = opacity; c.depthWrite = false; return c;
+        });
+        o.material = Array.isArray(o.material) ? cloned : cloned[0];
+      }
+    });
+  }
+  function _isInactiveFloor(floorId){
+    return showAF && (floorId||'eg') !== curFloor;
+  }
+
   // ── Grounds (P4.1) — render BEFORE room floors so they sit under rooms.
   //    Slight y=+0.001 offset above the scene floor prevents z-fighting with
   //    the big sky-room ground plane; the room floor at y=elev is higher, so
   //    grounds overlapping a room stay visibly under the room's floor.
   grounds.filter(g=>showAF||(g.floorId===curFloor||!g.floorId)).forEach(g=>{
     const m=build3DGround(g);
-    if(m){ scene.add(m); obj3Map['gnd_'+g.id]=m; }
+    if(m){
+      if(_isInactiveFloor(g.floorId)) _applyFloorOpacity(m, 0.35);
+      scene.add(m); obj3Map['gnd_'+g.id]=m;
+    }
   });
 
   // ── Room FLOORS
   rooms.filter(r=>showAF||(r.floorId===curFloor||!r.floorId)).forEach(r=>{
     const g=build3DRoomFloor(r);
+    if(_isInactiveFloor(r.floorId)) _applyFloorOpacity(g, 0.35);
     scene.add(g); obj3Map[r.id]=g;
   });
 
-  // ── Unique ROOM WALLS
+  // ── Unique ROOM WALLS (Phase 3 #3: in stacked-view nur aktiven Floor walls
+  // voll opak; restliche kommen aus Räumen die in der Iteration darunter mit
+  // Transparenz versehen werden.)
   const allCurRooms = showAF ? rooms : rooms.filter(r=>r.floorId===curFloor||!r.floorId);
   const wallSegs = buildRoomWalls3D(allCurRooms);
   wallSegs.forEach((seg,i)=>{
     const m = buildWallSegMesh3D(seg);
-    if(m){ scene.add(m); obj3Map['wseg_'+i]=m; }
+    if(m){
+      if(showAF && seg.floorId && seg.floorId !== curFloor) _applyFloorOpacity(m, 0.35);
+      scene.add(m); obj3Map['wseg_'+i]=m;
+    }
   });
 
   // ── Freehand walls
   walls.forEach(w=>{
     const m=buildFreeWall3D(w);
-    if(m){ scene.add(m); obj3Map['fw_'+w.id]=m; }
+    if(m){
+      if(_isInactiveFloor(w.floorId)) _applyFloorOpacity(m, 0.35);
+      scene.add(m); obj3Map['fw_'+w.id]=m;
+    }
   });
 
   // ── Objects
   objects.filter(o=>showAF||(o.floorId===curFloor||!o.floorId)).forEach(o=>{
     const g=build3DObj(o);
-    if(g){scene.add(g);obj3Map[o.id]=g;}
+    if(g){
+      if(_isInactiveFloor(o.floorId)) _applyFloorOpacity(g, 0.35);
+      scene.add(g);obj3Map[o.id]=g;
+    }
   });
 
   // Centre orbit
@@ -21876,6 +21917,28 @@ function build3DObj(o){
   g.position.set(o.x+w/2, py, o.y+d/2);
   g.rotation.y = (o.rot||0)*Math.PI/180;
   g.visible = true; // Safety: Custom-Items hatten manchmal visible=false vererbt
+
+  // Multi-Floor Phase 3 (Mega-Sammel #1): Treppen-Type via cscStairs-Modul.
+  // Phase 2 hatte den buildStairsMesh-Helper gebaut, aber rebuild3D rief ihn
+  // nicht auf. Ohne diesen Branch waren Treppen 3D-unsichtbar (nur generic-
+  // builder-Box). Item-Type='stairs' + stairsConfig kommen aus dem Catalog
+  // (src/catalog/items/stairs.ts).
+  const _stairsItem = item.type === 'stairs' ? item : (o.type === 'stairs' ? o : null);
+  const _stairsCfg = (_stairsItem && _stairsItem.stairsConfig) ? _stairsItem.stairsConfig : null;
+  if(item.type === 'stairs' && _stairsCfg && window.cscStairs && typeof window.cscStairs.buildStairsMesh === 'function'){
+    try {
+      const stairsMesh = window.cscStairs.buildStairsMesh(item.w||w, _stairsCfg);
+      // buildStairsMesh-Origin ist „hinten links unten" mit lokalen Achsen
+      // (X=Breite, Y=Höhe, Z=Tiefe). Group g ist bereits an World-Position
+      // (o.x+w/2, py, o.y+d/2) — wir müssen die Stairs zurück in den
+      // Quadranten 0..w × 0..d schieben.
+      stairsMesh.position.set(-w/2, 0, -d/2);
+      g.add(stairsMesh);
+      return g;
+    } catch(err){
+      console.warn('[3D] stairs-Geometrie fehlgeschlagen, fallback auf Default', err);
+    }
+  }
 
   // P3.1: async GLTF load path (Kenney/Quaternius external assets).
   if(item.modelUrl && window.cscAssets){
