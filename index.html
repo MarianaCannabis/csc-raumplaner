@@ -4037,6 +4037,29 @@ const grid3=new THREE.GridHelper(120,60,0x99aabb,0xbbccdd);
 grid3.material.opacity=0.2; grid3.material.transparent=true;
 scene.add(grid3);
 
+// Hotfix v2.7.2 — 3D-Mode-Restore:
+// fpCv/tCv/scene/oCam/fpCam3/topCam/grid3/cam3/rend3 sind oben als `const`
+// im Inline-Script-Scope deklariert. Die TS-Wrapper in src/main.ts (P17.14
+// View-Controls / P17.9 RenderPresets / P17.12 Exports3d) lesen sie aus
+// `window.*` — das war seit Extraktion stillschweigend null/undefined,
+// weil `const`s nicht auf window landen. Resultat: setView('3d') wechselt
+// die Canvas-Sichtbarkeit nicht, 3D-Mode bleibt visuell unsichtbar.
+// Fix: explizite window-Bridge unmittelbar nach Init.
+window.fpCv = fpCv;
+window.tCv = tCv;
+window.scene = scene;
+window.oCam = oCam;
+window.fpCam3 = fpCam3;
+window.topCam = topCam;
+window.grid3 = grid3;
+window.cam3 = cam3;
+window.rend3 = rend3;
+// Setter-Bridge für cam3 — TS-Wrapper (viewControls.setView) muss das
+// lokale `let cam3` reassignen können, nicht nur window.cam3 (die zwei
+// Bindings sind getrennt). Ohne diesen Setter würde der walk-mode-Swap
+// nur window.cam3 aktualisieren, der Render-Loop liest aber das lokale.
+window._setCam3 = function(c){ cam3 = c; window.cam3 = c; };
+
 // Fix-5: Hilfsboden + Achsen für leere Szenen. Wird ausgeblendet sobald
 // Räume oder Grounds existieren (siehe _updateHelperVisibility). Via
 // Ansicht-Menü togglebar.
