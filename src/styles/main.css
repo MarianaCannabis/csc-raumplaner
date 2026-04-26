@@ -1,3 +1,18 @@
+/* Mega-Sammel Schritt 5 — Multi-User-Avatar v2.
+   Cursor-Glow-Animation: 500ms Pulse beim Klick/Action eines anderen
+   Users. Wird via JS class-toggle ausgelöst (collabAvatars.pulseCursorGlow). */
+@keyframes cursor-glow-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+  50%  { box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.6); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+.cursor-glow {
+  animation: cursor-glow-pulse 500ms ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cursor-glow { animation: none; }
+}
+
 /* Mega-Sammel Schritt 4 — Mobile/Touch-Optimierung.
    Touch-Devices: größere Hit-Areas (44×44 px WCAG-Mindestmaß).
    <800px Viewport: reduzierte Topbar, gestapelte Layouts.
