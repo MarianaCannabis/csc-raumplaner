@@ -6,6 +6,15 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+### Fixed
+
+- **Right-Panel Tab-Boot-Race (KNOWN-ISSUES #1)** — beide
+  `setTimeout(()=>showRight('props'),200)` Boot-Aufrufe in `index.html`
+  prüfen jetzt vorher, ob der User schon einen anderen Tab aktiviert hat
+  (`document.querySelector('.rtab.active')`) und sind dann no-op. Klicks
+  in den ersten 200ms nach Reload werden nicht mehr vom Default
+  überschrieben.
+
 ## 2.7.1 — 2026-04-26 — Purgecss Visual-Regression Verify
 
 ### Build
