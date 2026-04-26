@@ -25,7 +25,7 @@ interface ChangelogEntry {
   floor: string;
 }
 
-interface VisualHistoryEntry {
+export interface VisualHistoryEntry {
   ts: number;
   thumb: string;
   state: string;
@@ -151,6 +151,20 @@ export function pushVisualHistory(state: string, deps: PushVisualHistoryDeps): v
 
 export function getVisualHistorySize(): number {
   return _visualHistory.length;
+}
+
+/**
+ * Sitzung G Schritt 2: read-access auf Visual-History-Entries für die
+ * neue UI (visualHistoryUI.ts). Returnt readonly-Slice — kein direkter
+ * Zugriff auf den internen Array.
+ */
+export function getVisualHistory(): readonly VisualHistoryEntry[] {
+  return _visualHistory;
+}
+
+/** Sitzung G Schritt 2: Single-Entry-Lookup für Restore-Pfade. */
+export function getVisualHistoryEntry(idx: number): VisualHistoryEntry | null {
+  return _visualHistory[idx] ?? null;
 }
 
 export function clearVisualHistoryForTests(): void {

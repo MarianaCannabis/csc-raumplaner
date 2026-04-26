@@ -6,6 +6,27 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+### Zusatzfunktionen
+
+- **Visual-History UX mit 3 Modes (Sitzung G Schritt 2)** — neues
+  `src/legacy/visualHistoryUI.ts` Modul rendert das alte
+  `m-visual-history`-Modal komplett neu:
+  - **Slider-Mode** (default): horizontale Scroll-Bahn mit allen Snapshot-
+    Thumbnails, neueste links. Click öffnet Compare.
+  - **Grid-Mode**: 3-spaltige Karten (auto-fill, min 220px).
+  - **Compare-Mode**: 2 Thumbnails nebeneinander (selected + aktueller),
+    Diff-Counter (rooms/objects/walls/measures) via wiederverwendetem
+    `computeDiff` aus conflictResolver.ts. Restore-Button delegiert an
+    existierenden `_restoreFromVisualHistory`-Pfad.
+  - Header mit 4 Buttons: Slider / Grid / Compare / Schließen.
+  - `changelog.ts` bekommt `getVisualHistory()` + `getVisualHistoryEntry(idx)`
+    als read-only-Accessoren für die neue UI.
+  - `window.openVisualHistory` in `main.ts` delegiert jetzt an die neue
+    UI (alter Pfad in changelog.ts bleibt für Backwards-Compat).
+  - +14 Vitest-Tests (Modal-Open, Empty-State, Mode-Switch, Compare-Diff,
+    Card-Click, Restore, Cancel, Close). Vitest gesamt: 506 → 520.
+  - Bundle: ~+2 KB gz (index.html unverändert, JS-Bundle).
+
 ### Bedienkonzept
 
 - **Shortcuts-Editor v2 (Sitzung G Schritt 1)** — Konflikt-Detection +

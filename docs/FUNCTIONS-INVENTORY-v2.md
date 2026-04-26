@@ -6,7 +6,7 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - **onclick-Handler:** 723
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 852
-- **TS-Exports:** 475
+- **TS-Exports:** 483
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -215,9 +215,11 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `showChangelog` (line 87)
 - `pushVisualHistory` (line 132)
 - `getVisualHistorySize` (line 152)
-- `clearVisualHistoryForTests` (line 156)
-- `openVisualHistory` (line 165)
-- `restoreFromVisualHistory` (line 232)
+- `getVisualHistory` (line 161)
+- `getVisualHistoryEntry` (line 166)
+- `clearVisualHistoryForTests` (line 170)
+- `openVisualHistory` (line 179)
+- `restoreFromVisualHistory` (line 246)
 
 ### src/legacy/collabAvatars.ts
 
@@ -394,6 +396,15 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `setView` (line 54)
 - `fitViewToRooms` (line 88)
 - `switchFloor` (line 108)
+
+### src/legacy/visualHistoryUI.ts
+
+- `openVisualHistoryModal` (line 35)
+- `closeVisualHistoryModal` (line 47)
+- `setMode` (line 55)
+- `selectForCompare` (line 60)
+- `_resetForTests` (line 67)
+- `_getMode` (line 73)
 
 ### src/legacy/welcomeFlow.ts
 
