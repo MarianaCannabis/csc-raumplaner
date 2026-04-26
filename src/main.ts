@@ -77,6 +77,7 @@ import { probeOptimisticLocking } from './persist/cloudProjects.js';
 import * as kcangWizard from './legacy/kcangWizard.js';
 import * as kcangPdfExport from './legacy/kcangPdfExport.js';
 import type { KCanGApplication } from './legacy/kcangWizard.js';
+import * as touchSupport from './legacy/touchSupport.js';
 import * as helpModal from './legacy/helpModal.js';
 import * as tbMenu from './legacy/tbMenu.js';
 import * as versionHistory from './legacy/versionHistory.js';
@@ -299,6 +300,9 @@ declare global {
       toggleCloudSync: (enabled: boolean) => void;
       reset: () => void;
     };
+    /** Mega-Sammel #4: Touch-Support — attach/detach + Detection. Default
+     *  bei Boot wird body.is-touch gesetzt wenn isTouchDevice() === true. */
+    cscTouch: typeof touchSupport;
     /** P17.18: Tutorial aus src/legacy/tutorial.ts. Step-basiertes
      *  Overlay mit Highlight auf Topbar/Sidebar-Elementen. */
     startTutorial: () => void;
@@ -796,6 +800,18 @@ function buildKCanGDeps(): kcangWizard.KCanGWizardDeps {
     toast: w.toast,
   };
 }
+
+// Mega-Sammel #4: Touch-Bridge + Boot-Detection.
+// body.is-touch aktiviert mobile-spezifische CSS-Klassen.
+// Tatsächliche Touch-Listener werden vom Inline-Script gebunden (Canvas-
+// spezifisch, mit Zugriff auf vpZoom/vpX/vpY-State); cscTouch.attach
+// stellt nur die Pattern-Logik bereit.
+window.cscTouch = touchSupport;
+queueMicrotask(() => {
+  if (touchSupport.isTouchDevice()) {
+    document.body.classList.add('is-touch');
+  }
+});
 
 window.cscKCanG = {
   open: () => kcangWizard.openWizardModal(buildKCanGDeps()),

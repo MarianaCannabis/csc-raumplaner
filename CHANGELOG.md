@@ -42,6 +42,19 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Bedienkonzept
 
+- **Mobile/Touch-Optimierung (Mega-Sammel Schritt 4)** — neuer
+  `src/legacy/touchSupport.ts` Modul mit `attachTouchHandlers(deps)`
+  Helper für Pan / Pinch-Zoom / Tap / Long-Press auf jedem Canvas.
+  Pattern: Single-Touch+Move > 8 px → onPan, Two-Finger → onZoom,
+  short Tap → onTap, ≥300ms ohne Move → onLongPress. Cleanup-Funktion
+  als Return-Value. Boot-Detection via `isTouchDevice()` setzt
+  `body.is-touch` für mobile-spezifische CSS-Regeln (44×44 px Hit-Areas
+  via `@media (hover: none) and (pointer: coarse)`). Zusätzlich:
+  `@media (max-width: 800px)` für reduzierte Topbar-Gaps und Sidebar-
+  Slide-Toggle. Keine Behavior-Änderung beim Desktop. +8 Vitest-Tests
+  (Pan/Tap/Long-Press/Pinch/Cleanup/Threshold). Vitest gesamt: 467 → 475.
+  Bundle: +1.5 KB gz.
+
 - **KCanG-Compliance-Wizard (Pfad-E)** — Single-Page-Form mit 7 frei
   navigierbaren Sektionen (Vereinsdaten, Räume, Compliance, Hygienekonzept,
   Suchtberatung, Sicherheit, Notizen). localStorage default + opt-in
