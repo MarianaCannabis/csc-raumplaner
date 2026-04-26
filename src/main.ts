@@ -1028,11 +1028,29 @@ function buildPricingDeps(currentPlan: subscriptions.PlanId): pricingModal.Prici
       if (!w.SB_URL || !w.SB_KEY || !w.SB_TOKEN || !w.SB_USER?.id) {
         throw new Error('Cloud-Login benötigt');
       }
-      await subscriptions.setUserPlan(
-        { url: w.SB_URL, key: w.SB_KEY, token: w.SB_TOKEN },
-        w.SB_USER.id,
-        plan,
-      );
+      // Phase 2: Free wird direkt via REST gesetzt; Pro/Team triggern
+      // Stripe-Checkout-Session via Edge-Function und redirecten den User.
+      if (plan === 'free') {
+        await subscriptions.setUserPlan(
+          { url: w.SB_URL, key: w.SB_KEY, token: w.SB_TOKEN },
+          w.SB_USER.id,
+          plan,
+        );
+        return;
+      }
+      const r = await fetch(w.SB_URL + '/functions/v1/stripe-checkout', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + w.SB_TOKEN,
+          'apikey': w.SB_KEY,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ plan }),
+      });
+      if (!r.ok) throw new Error('Checkout HTTP ' + r.status);
+      const { url } = (await r.json()) as { url?: string };
+      if (!url) throw new Error('Keine Checkout-URL erhalten');
+      window.location.href = url;
     },
     toast: w.toast,
   };

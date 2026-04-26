@@ -6,6 +6,38 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+## v2.7.6 — 2026-04-26
+
+### Stripe Phase 2 (Roadmap v3.0 #4 — Phase 2 done)
+
+- **Pricing-Strategie:** alle Pläne **0 € im Stripe-Test-Mode**. Frei für
+  CSC-Vereine; Live-Pricing-Aktivierung später ohne Code-Änderung möglich
+  (nur Stripe-Live-Mode + neue Price-IDs in Edge-Function-Secrets).
+- **Migration 0012** (`csc_subscriptions` Stripe-Hardening):
+  - Neue Spalten: `stripe_price_id`, `metadata` jsonb
+  - **RLS-Policy umgestellt:** UPDATE jetzt nur `service_role`
+    (Anti-Tampering — User kann Plan nicht ohne Webhook setzen).
+- **Edge-Function `stripe-webhook`** mit Signature-Verification über
+  `STRIPE_WEBHOOK_SECRET`. Behandelt `customer.subscription.{created,
+  updated,deleted}` → upsert/update in csc_subscriptions via
+  SERVICE_ROLE_KEY. Plan-Mapping via `STRIPE_PRICE_FREE/PRO/TEAM`.
+- **Edge-Function `stripe-checkout`** mit JWT-Verify → Stripe-Checkout-
+  Session mit `subscription`-mode + user_id-metadata + Success/Cancel-URLs.
+- **Frontend `pricingModal.ts`:** Pro/Team triggern Checkout-Redirect via
+  Edge-Function statt symbolischem DB-Update. Free bleibt Direct-Update.
+  Confirm-Dialog signalisiert Test-Mode + Test-Karte 4242…
+- **`index.html` Boot-Hook** für Success/Cancel-URL-Params: zeigt Toast
+  „🎉 Upgrade erfolgreich!" bei `?upgraded=true`.
+- **`features.ts:checkPlanLimit()`** Soft-Limit (returnt
+  `{ ok, warning? }` — blockt nicht, weist auf Upgrade hin). Komplementär
+  zum bestehenden harten `checkLimit`.
+- **+9 Vitest-Tests** (6 checkPlanLimit + 1 angepasster Phase-2-Banner +
+  2 Free/Pro-Click-Pfade). Vitest gesamt: 645 → 652.
+- **`docs/STRIPE-SETUP.md`** — User-Setup: Account → 3 Products mit 0 € →
+  Price-IDs notieren → Webhook im Stripe-Dashboard registrieren →
+  Supabase-Edge-Function-Secrets setzen → Edge-Functions deployen →
+  Smoke-Test mit Test-Karte.
+
 ## v2.7.5 — 2026-04-26
 
 ### BIM-Viewer Phase 1 (Roadmap v3.0 #4 — Phase 1)

@@ -9695,6 +9695,20 @@ async function redeemTeamInvite(teamId){
   } catch(e){ toast('Beitritt fehlgeschlagen: '+e.message,'r'); }
 }
 
+// Stripe Phase 2: Success/Cancel-Param Handling beim Boot.
+(function handleStripeReturn(){
+  window.addEventListener('DOMContentLoaded', () => {
+    const p = new URLSearchParams(location.search);
+    if(p.get('upgraded') === 'true'){
+      toast('🎉 Upgrade erfolgreich! Plan wird in Kürze aktiviert.','g');
+      history.replaceState({},'',location.pathname);
+    } else if(p.get('upgrade_canceled') === 'true'){
+      toast('Upgrade abgebrochen','b');
+      history.replaceState({},'',location.pathname);
+    }
+  });
+})();
+
 // Auto-accept team invite wenn ?team=X im URL
 (function handleTeamInvite(){
   window.addEventListener('DOMContentLoaded', async () => {
