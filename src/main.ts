@@ -82,6 +82,11 @@ import * as floorManager from './legacy/floorManager.js';
 import * as stairsGeometry from './legacy/stairsGeometry.js';
 import * as pricingModal from './legacy/pricingModal.js';
 import type * as bimViewer from './legacy/bimViewer.js';
+type BimExportDepsRoom = bimViewer.BimExportDeps['rooms'][number];
+type BimExportDepsObject = bimViewer.BimExportDeps['objects'][number];
+type BimExportDepsWall = NonNullable<bimViewer.BimExportDeps['walls']>[number];
+type BimExportDepsGround = NonNullable<bimViewer.BimExportDeps['grounds']>[number];
+type BimExportDepsMeasure = NonNullable<bimViewer.BimExportDeps['measures']>[number];
 import * as subscriptions from './persist/subscriptions.js';
 import * as touchSupport from './legacy/touchSupport.js';
 import * as collabAvatars from './legacy/collabAvatars.js';
@@ -1086,20 +1091,46 @@ window.cscBimUI = {
     const inst = await ensureBimInstance();
     if (!inst) return;
     await inst.loadIfcFile(file);
-    const exportBtn = document.getElementById('bim-export-btn') as HTMLButtonElement | null;
-    if (exportBtn) exportBtn.disabled = false;
   },
   exportIfc: async () => {
-    if (!_bimInstance) return;
+    // Phase 2: nutzt direkt den existing IFC-Exporter mit Scene-Daten aus
+    // den window-Globals — kein BIM-Viewer-Init nötig, Export funktioniert
+    // auch wenn der User nie auf den BIM-Tab geklickt hat.
+    const w = window as unknown as {
+      rooms?: BimExportDepsRoom[];
+      objects?: BimExportDepsObject[];
+      walls?: BimExportDepsWall[];
+      grounds?: BimExportDepsGround[];
+      measures?: BimExportDepsMeasure[];
+      projName?: string;
+      SB_USER?: { email?: string };
+      toast?: (m: string, t?: string) => void;
+    };
+    const status = document.getElementById('bim-export-status');
+    if (status) status.textContent = 'IFC wird generiert…';
     try {
-      const blob = await _bimInstance.exportToIfc();
+      const mod = await import('./legacy/bimViewer.js');
+      const projName = w.projName ?? 'Projekt';
+      const blob = await mod.exportCurrentSceneAsIfc({
+        rooms: w.rooms ?? [],
+        objects: w.objects ?? [],
+        walls: w.walls ?? [],
+        grounds: w.grounds ?? [],
+        measures: w.measures ?? [],
+        projName,
+        meta: { owner: w.SB_USER?.email ?? 'CSC Raumplaner', createdAt: new Date().toISOString() },
+      });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = url; a.download = 'export.ifc'; a.click();
+      a.href = url;
+      a.download = projName.replace(/[^a-z0-9]/gi, '_') + '.ifc';
+      a.click();
       URL.revokeObjectURL(url);
+      if (status) status.textContent = '✅ IFC erstellt';
+      w.toast?.('IFC-Export erfolgreich', 'g');
     } catch (err) {
-      const w = window as unknown as { toast?: (m: string, t?: string) => void };
-      w.toast?.((err as Error).message, 'r');
+      if (status) status.textContent = 'Fehler: ' + (err as Error).message;
+      w.toast?.('IFC-Export fehlgeschlagen: ' + (err as Error).message, 'r');
     }
   },
   isOpen: () => _bimInstance !== null,
