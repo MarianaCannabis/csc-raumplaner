@@ -60,6 +60,15 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Zusatzfunktionen
 
+- **Bild-auf-Wand (Mega-Sammel Schritt 7)** — bestehendes
+  `imageMap`-Pattern (für 3D-Objekte mit `imageMapFace`-Catalog-Hint)
+  jetzt auch für freie Wände. Property-Panel erweitert um
+  „🖼️ Bild auf Wand"-Section mit File-Upload + Preview + Remove.
+  3D-Renderer (`buildWallSegMesh3D`) prüft `seg.imageMap` und nutzt
+  `THREE.TextureLoader` mit ClampToEdgeWrapping, UV repeat=1×1
+  (Bild streckt sich über die ganze Wand-Fläche, kein Pattern-Repeat).
+  Verwendet `window.cscImageUpload.processUpload` für Resize+Compress.
+  Bundle: nur index.html (~+1.5 KB gz).
 - **PDF-Messeordnung Multi-Page-Support (Mega-Sammel Schritt 6)** — neuer
   `src/legacy/pdfPageSelector.ts` mit `promptForPages(numPages, options)`-
   Helper. Bei PDF-Upload mit mehreren Seiten zeigt sich jetzt ein
