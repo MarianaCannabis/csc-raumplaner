@@ -35,7 +35,7 @@ Wird live gepflegt — pro abgeschlossenem PR wird der Status aktualisiert.
 | ⏳ | Tastatur-Shortcuts-Editor erweitern | 2-3h | Konflikt-Detection + Presets |
 | ⏳ | Hygiene-Compliance-Regel in src/compliance/ | 1-2h | analog zu §23 Präventionsbeauftragter; Daten kommen jetzt aus KCanG-Wizard Section D |
 | ⏳ | Suchtberatung-Pflichtfeld als KCanG-Regel | 1-2h | Kontakt-Validierung; Daten aus Wizard Section E |
-| ⏳ | Mobile/Touch-Optimierung | 4-8h | Tablet-Workflow Audit |
+| ✅ | Mobile/Touch-Optimierung | 4-8h | [#203](https://github.com/MarianaCannabis/csc-raumplaner/pull/203) — touchSupport-Modul mit Pan/Zoom/Tap/Long-Press, Boot-Detection, mobile-CSS |
 
 ## Zusatzfunktionen
 

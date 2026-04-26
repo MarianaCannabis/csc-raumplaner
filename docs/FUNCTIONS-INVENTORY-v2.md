@@ -6,7 +6,7 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - **onclick-Handler:** 717
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 847
-- **TS-Exports:** 465
+- **TS-Exports:** 467
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -330,6 +330,11 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 ### src/legacy/toast.ts
 
 - `toast` (line 16)
+
+### src/legacy/touchSupport.ts
+
+- `attachTouchHandlers` (line 66)
+- `isTouchDevice` (line 212)
 
 ### src/legacy/tutorial.ts
 

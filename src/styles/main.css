@@ -1,3 +1,38 @@
+/* Mega-Sammel Schritt 4 — Mobile/Touch-Optimierung.
+   Touch-Devices: größere Hit-Areas (44×44 px WCAG-Mindestmaß).
+   <800px Viewport: reduzierte Topbar, gestapelte Layouts.
+   body.is-touch wird beim Boot via touchSupport.isTouchDevice() gesetzt. */
+@media (hover: none) and (pointer: coarse) {
+  /* Touch-Device-spezifisch: alle interaktiven Buttons mind. 44×44 */
+  .tb-btn,
+  .mdl-btn,
+  .rtab,
+  .tbm-btn,
+  .tbm-item {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  /* Sticky Right-Panel-Tabs verstärken — manche Devices haben Touch-Drift,
+     größere Trefferflächen helfen. */
+  .rtab {
+    min-height: 48px;
+  }
+}
+@media (max-width: 800px) {
+  /* Topbar verschlankt — nicht-essenzielle Buttons werden vom Overflow-Menü
+     übernommen (data-overflow-priority-System ist schon da). Dieser Fallback
+     deckt Devices ab die das Resize-Beobachter-Pattern nicht triggern. */
+  .topbar-v2 .tb-row--sub { gap: 4px; }
+  /* Sidebar darf bei kleiner Breite teils ausgeblendet werden — User
+     toggelt sie via Topbar-Burger-Menu. */
+  body.is-touch #left-panel {
+    transition: transform 0.18s ease;
+  }
+  body.is-touch.left-collapsed #left-panel {
+    transform: translateX(-100%);
+  }
+}
+
 /* P8.5 — prefers-reduced-motion: Transitions + Animationen für
    User die Motion reduzieren wollen (WCAG 2.3.3, Barrierefreiheit) */
 @media (prefers-reduced-motion: reduce) {
