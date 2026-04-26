@@ -6,6 +6,24 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+### Bedienkonzept
+
+- **Menu-Mode-Filter (Mega-Sammel ACBD #6)** — Topbar-Menus filtern Items
+  basierend auf aktivem Planning-Mode (room/event). Items mit
+  `data-mode="both"` bleiben immer sichtbar, mode-spezifische Items werden
+  versteckt wenn der Filter aktiv ist und der Modus nicht passt.
+  - **Toggle-Eintrag** in der Topbar-Hilfe-Menu („📂 Menu-Mode-Filter ein/aus",
+    data-tier="expert"). localStorage-Persistenz via `csc-mode-filter`.
+  - **Filter-Logik:** `applyMenuModeFilter()` läuft beim Boot + bei jedem
+    `csc-mode-change`-Event (Planning-Mode-Switch).
+  - **Hinweis:** Tagging-Defaults sind aktuell konservativ (94% `both`,
+    9 `room`, 0 `event` für tbm-items). Filter zeigt im event-Mode 9
+    Items hidden, im room-Mode 0. Korrekturen via Mini-PR oder eigene
+    Walk-through-Sitzung. Default-Off (0), User muss aktiv aktivieren.
+  - +4 E2E-Tests (Default-off, Filter-on-room, Filter-on-event, Toggle-
+    localStorage). E2E gesamt: 49 → 53.
+  - Bundle: ~+500 B gz (index.html).
+
 ### Roadmap v3.0
 
 - **Bauantrag-PDF-Generierung (Mega-Sammel ACBD #1-5)** — neuer
