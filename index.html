@@ -2823,17 +2823,23 @@ const DEFAULT_SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmF
 // ════════════════════════════════════════════════════════════════════════
 // STATE
 // ════════════════════════════════════════════════════════════════════════
-let projName = 'Neue Ausgabestelle';
-let rooms    = [];   // {id,name,x,y,w,d,h,floorColor,wallColor,ceilColor}
-let grounds  = [];   // P4.1: {id,name,x,y,w,d,rot,material,color,floorId} — floor-only polygons, no walls
-let objects  = [];   // {id,typeId,name,icon,x,y,w,d,h,rot,py,arch}
-let walls    = [];   // free-hand walls (Phase 2 – already reserved)
-let measures = [];   // {ax,ay,bx,by}
-let floors   = [{id:'eg', name:'EG', elev:0}];
-let curFloor = 'eg';
-let selId    = null;
-let selIsRoom = false;
-let selIsWall = false;  // true when a freehand wall is selected
+// Sitzung G Schritt 0 / Module-Bridge-Audit: alle Top-Level-State-Variablen
+// als `var` deklariert, damit sie auf `window` gebridged werden. Wrapper
+// in src/main.ts lesen `(window as any).rooms` etc. — als `let` waren
+// diese unsichtbar (Silent-Fail-Pattern wie der 3D-Bug aus v2.7.2).
+// Reassignments (`rooms = newArray`) propagieren mit `var` automatisch
+// auf `window.rooms`. Mutationen (`rooms.push(x)`) bleiben unverändert.
+var projName = 'Neue Ausgabestelle';
+var rooms    = [];   // {id,name,x,y,w,d,h,floorColor,wallColor,ceilColor}
+var grounds  = [];   // P4.1: {id,name,x,y,w,d,rot,material,color,floorId} — floor-only polygons, no walls
+var objects  = [];   // {id,typeId,name,icon,x,y,w,d,h,rot,py,arch}
+var walls    = [];   // free-hand walls (Phase 2 – already reserved)
+var measures = [];   // {ax,ay,bx,by}
+var floors   = [{id:'eg', name:'EG', elev:0}];
+var curFloor = 'eg';
+var selId    = null;
+var selIsRoom = false;
+var selIsWall = false;  // true when a freehand wall is selected
 let selIsGround = false; // P4.1: true when a ground plane is selected
 let rid = 1, oid = 1, wid = 1, gid = 1;
 let leftMode  = 'rooms';
@@ -2892,9 +2898,9 @@ const cvWrap = document.getElementById('canvas-wrap');
 const fpCv = document.getElementById('fp-canvas');
 const ctx = fpCv.getContext('2d');
 
-// Viewport state
-let vpX = 100, vpY = 80;   // pan offset (canvas px)
-let vpZoom = 40;            // pixels per meter
+// Viewport state — `var` für window-Bridge (siehe Bridge-Audit oben).
+var vpX = 100, vpY = 80;   // pan offset (canvas px)
+var vpZoom = 40;            // pixels per meter
 const GRID = 0.25;          // snap grid in meters
 
 // Interaction state
