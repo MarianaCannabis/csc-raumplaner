@@ -1,6 +1,6 @@
 # Catalog Audit — 2026-04-26 (v2.3)
 
-**Gescannt:** 483 Items in 21 Dateien.
+**Gescannt:** 484 Items in 21 Dateien.
 
 ## Zusammenfassung
 
@@ -57,10 +57,10 @@
 | 🌱 Deko (Rich) | 5 |
 | 🪟 Fenster+ | 5 |
 | 🛋 Sozial (Rich) | 4 |
+| 🪜 Treppen | 4 |
 | 🔐 CSC-Sicherheit | 3 |
 | 🔥 Brandschutz+ | 3 |
 | 🍳 Küche (Rich) | 3 |
-| 🪜 Treppen | 3 |
 
 ## Methodik + Einschränkungen
 

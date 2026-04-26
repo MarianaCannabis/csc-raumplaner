@@ -6,7 +6,7 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - **onclick-Handler:** 732
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 863
-- **TS-Exports:** 510
+- **TS-Exports:** 511
 - **tbm-item-Coverage:** 160/160 fully tagged (data-mode: 160/160, data-tier: 160/160)
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
@@ -278,6 +278,7 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `isStackedView` (line 165)
 - `toggleStackedView` (line 170)
 - `findFloorConnection` (line 191)
+- `validateStairsPlacement` (line 239)
 
 ### src/legacy/helpModal.ts
 
@@ -359,7 +360,7 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 ### src/legacy/stairsGeometry.ts
 
 - `buildStairsMesh` (line 32)
-- `getStairsZRange` (line 146)
+- `getStairsZRange` (line 207)
 
 ### src/legacy/stampMode.ts
 
@@ -837,49 +838,49 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 | `getSecurityCatalog` | 2905 |
 | `toggleCatGroup` | 2906 |
 | `findItem` | 2918 |
-| `m2px` | 2946 |
-| `px2m` | 2947 |
-| `wx2cx` | 2948 |
-| `wy2cy` | 2949 |
-| `cx2wx` | 2950 |
-| `cy2wy` | 2951 |
-| `snapM` | 2952 |
-| `resizeCv` | 2954 |
-| `draw2D` | 2960 |
-| `drawGrid` | 3060 |
-| `drawRoom2D` | 3083 |
-| `drawGround2D` | 3145 |
-| `hitGround` | 3182 |
-| `hitGroundResizeHandle` | 3199 |
-| `_getImgCached` | 3214 |
-| `drawObj2D` | 3225 |
-| `drawMeasure` | 3327 |
-| `hitObj` | 3348 |
-| `hitRoom` | 3358 |
-| `hitRoomResizeHandle` | 3366 |
-| `startCatalogDrag` | 3632 |
-| `placeFromCatalog` | 3642 |
-| `quickAddRoom` | 3666 |
-| `addRoom` | 3672 |
-| `addObject` | 3694 |
-| `removeRoom` | 3718 |
-| `quickAddGround` | 3726 |
-| `addGround` | 3736 |
-| `removeGround` | 3753 |
-| `selectGround` | 3762 |
-| `openGroundMaterialPicker` | 3772 |
-| `closeGroundMaterialPicker` | 3792 |
-| `openGroundPropPanel` | 3798 |
-| `closeGroundPropPanel` | 3844 |
-| `syncGroundPropPanel` | 3848 |
-| `deleteSelectedGround` | 3858 |
-| `setSelection` | 3863 |
-| `updateSelBotBar` | 3891 |
-| `applySelProps` | 3927 |
-| `rotateSel` | 3937 |
-| `dupSel` | 3956 |
-| `deleteSel` | 3962 |
-| `removeFreeWall` | 3970 |
+| `m2px` | 2953 |
+| `px2m` | 2954 |
+| `wx2cx` | 2955 |
+| `wy2cy` | 2956 |
+| `cx2wx` | 2957 |
+| `cy2wy` | 2958 |
+| `snapM` | 2959 |
+| `resizeCv` | 2961 |
+| `draw2D` | 2967 |
+| `drawGrid` | 3067 |
+| `drawRoom2D` | 3090 |
+| `drawGround2D` | 3152 |
+| `hitGround` | 3189 |
+| `hitGroundResizeHandle` | 3206 |
+| `_getImgCached` | 3221 |
+| `drawObj2D` | 3232 |
+| `drawMeasure` | 3334 |
+| `hitObj` | 3355 |
+| `hitRoom` | 3365 |
+| `hitRoomResizeHandle` | 3373 |
+| `startCatalogDrag` | 3639 |
+| `placeFromCatalog` | 3649 |
+| `quickAddRoom` | 3673 |
+| `addRoom` | 3679 |
+| `addObject` | 3701 |
+| `removeRoom` | 3725 |
+| `quickAddGround` | 3733 |
+| `addGround` | 3743 |
+| `removeGround` | 3760 |
+| `selectGround` | 3769 |
+| `openGroundMaterialPicker` | 3779 |
+| `closeGroundMaterialPicker` | 3799 |
+| `openGroundPropPanel` | 3805 |
+| `closeGroundPropPanel` | 3851 |
+| `syncGroundPropPanel` | 3855 |
+| `deleteSelectedGround` | 3865 |
+| `setSelection` | 3870 |
+| `updateSelBotBar` | 3898 |
+| `applySelProps` | 3934 |
+| `rotateSel` | 3944 |
+| `dupSel` | 3963 |
+| `deleteSel` | 3969 |
+| `removeFreeWall` | 3977 |
 
 ---
 

@@ -42,10 +42,13 @@ export interface CatalogItem {
    *  liest stairsConfig + zeichnet Stufen-Profil statt Standard-Box. */
   type?: 'standard' | 'stairs';
   stairsConfig?: {
-    shape: 'straight';
+    /** Phase 3 #4: 'l' für L-Treppen mit 90° Podest. */
+    shape: 'straight' | 'l';
     stepHeight: number;
     stepDepth: number;
     stepCount: number;
     withRailing: boolean;
+    /** Phase 3 #4: nur bei shape='l'. */
+    landingAfter?: number;
   };
 }

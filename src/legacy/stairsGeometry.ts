@@ -30,6 +30,7 @@ import type { StairsConfig } from './types.js';
  * @param cfg StairsConfig (stepHeight, stepDepth, stepCount, withRailing)
  */
 export function buildStairsMesh(width: number, cfg: StairsConfig): THREE.Group {
+  if (cfg.shape === 'l') return buildLStairsMesh(width, cfg);
   const group = new THREE.Group();
 
   const totalDepth = cfg.stepCount * cfg.stepDepth;
@@ -139,6 +140,66 @@ function buildRailing(length: number, totalStairsHeight: number): THREE.Group {
   const mid = new THREE.Mesh(midGeom, matRailing);
   group.add(mid);
 
+  return group;
+}
+
+/**
+ * Phase 3 #4: L-Treppe — 2 Läufe + 90°-Podest (rechtsdrehend).
+ * Lauf 1 läuft entlang +Z, dann Podest, dann Lauf 2 entlang +X.
+ * Origin = vordere untere Ecke wie bei straight.
+ */
+function buildLStairsMesh(width: number, cfg: StairsConfig): THREE.Group {
+  const group = new THREE.Group();
+  const stepsRun1 = Math.max(
+    1,
+    Math.min(cfg.stepCount - 1, cfg.landingAfter ?? Math.floor(cfg.stepCount / 2)),
+  );
+  const stepsRun2 = cfg.stepCount - stepsRun1;
+  const heightRun1 = stepsRun1 * cfg.stepHeight;
+  const depthRun1 = stepsRun1 * cfg.stepDepth;
+  const depthRun2 = stepsRun2 * cfg.stepDepth;
+
+  const cfgRun1: StairsConfig = { ...cfg, shape: 'straight', stepCount: stepsRun1, withRailing: false };
+  const cfgRun2: StairsConfig = { ...cfg, shape: 'straight', stepCount: stepsRun2, withRailing: false };
+
+  const run1 = buildStairsMesh(width, cfgRun1);
+  group.add(run1);
+
+  // Landing — quadratisch (width × width), oben auf Lauf 1.
+  const matLanding = new THREE.MeshStandardMaterial({
+    color: 0xa0826d,
+    roughness: 0.85,
+    metalness: 0.0,
+  });
+  const landingGeom = new THREE.BoxGeometry(width, 0.13, width);
+  const landing = new THREE.Mesh(landingGeom, matLanding);
+  landing.position.set(width / 2, heightRun1 - 0.065, depthRun1 + width / 2);
+  landing.castShadow = true;
+  landing.receiveShadow = true;
+  group.add(landing);
+
+  // Run 2 — startet am Ende des Podests, läuft +X, beginnt auf Höhe heightRun1.
+  const run2 = buildStairsMesh(width, cfgRun2);
+  run2.rotation.y = -Math.PI / 2;
+  run2.position.set(width, heightRun1, depthRun1 + width);
+  group.add(run2);
+
+  if (cfg.withRailing) {
+    const railing = buildRailing(depthRun1, heightRun1);
+    railing.position.x = width;
+    group.add(railing);
+  }
+
+  group.userData = {
+    type: 'stairs',
+    shape: 'l',
+    width,
+    totalDepth: depthRun1 + width,
+    totalWidth: width + depthRun2,
+    totalHeight: cfg.stepCount * cfg.stepHeight,
+    stepCount: cfg.stepCount,
+    landingAfter: stepsRun1,
+  };
   return group;
 }
 

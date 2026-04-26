@@ -1,7 +1,7 @@
 {
   "name": "csc-raumplaner",
   "private": true,
-  "version": "2.7.2",
+  "version": "2.7.3",
   "description": "CSC Studio Pro — CSC- und Veranstaltungsplanung",
   "type": "module",
   "scripts": {

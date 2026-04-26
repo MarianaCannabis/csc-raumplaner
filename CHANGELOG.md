@@ -6,6 +6,32 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+## v2.7.3 — 2026-04-26
+
+### Multi-Floor Phase 3 — Treppen wirklich rendern
+
+- **`index.html` `findItem()`** durchsucht jetzt auch `window.cscCatalog.newItems`
+  zusätzlich zu BUILTIN/ARCH/customObjs. Vorher fielen STAIRS-Items (im
+  NEW_CATALOG) aus dem Lookup → `build3DObj` early-returnte → Treppen
+  unsichtbar in 3D obwohl die Stairs-Branch in `build3DObj` schon Phase-2
+  drin war. Smoke `tests/e2e/stairs-3d-render.spec.ts` belegt den Fix
+  (stairs-mesh count: 1).
+- **`floorManager.ts:validateStairsPlacement()`** — Position-Validation für
+  Treppen (Phase 3 #2). Errors: connectsFloors fehlt · Floors nicht gefunden
+  · Order-Reihenfolge falsch. Warnings (nicht blockend): Treppe außerhalb
+  aller Räume eines Floors · Floor ohne Räume. Pure Funktion — leicht
+  testbar. +6 Vitest-Tests.
+- **`rebuild3D` Stacked-View-Transparenz** (Phase 3 #3) — wenn
+  `_show3DAllFloors` aktiv und Floor !== curFloor, werden Materialien
+  gecloned und auf opacity=0.35 + transparent + depthWrite=false gesetzt.
+  Aktiver Floor bleibt voll opak. Trifft Grounds, Room-Floors, Walls,
+  Freehand-Walls, Objects.
+- **L-Treppen (Phase 3 #4 optional)** — `stairsGeometry.buildLStairsMesh`
+  baut 2 straight-Läufe + 90°-Podest + Geländer. `landingAfter` konfigurabel
+  (Default = floor(stepCount/2)). Neues Catalog-Item `stairs-l-standard`.
+  +3 Vitest-Tests.
+- Vitest gesamt: 624 → 633.
+
 ### Roadmap v3.0
 
 - **Stripe-Phase-1 (v3.0 #4 — Phase 1)** — Subscription-Schema + Pricing-
