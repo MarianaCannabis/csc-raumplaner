@@ -103,7 +103,13 @@ Positive (compliance-bridge: −826 B gz mit 3 Shims).
 - **KEIN Feature ENTFERNEN ohne expliziten User-OK.** Default ist erhalten,
   refactoren, dokumentieren. Gilt auch für Catalog-Items, Compliance-Regeln,
   Templates, KI-Features, Export-Formate, Shortcuts, UI-Buttons, Dialoge.
-- KEIN git push --force außer User fordert es
+- **Force-Push**: erlaubt auf eigenen Feature-Branches zur Korrektur (z.B.
+  versehentlich committete gitignored-Dateien, Build-Artifacts, falscher
+  Co-Author) **vor** PR-Merge. Verboten auf `main`, auf shared-branches, oder
+  als Workaround für fehlgeschlagene Hooks. Bevorzugt: NEUEN Commit obendrauf
+  schieben statt amend+force. Force-Push muss immer im PR-Bericht erwähnt
+  werden mit Grund + Auswirkung (z.B. „revertet versehentlich-committete
+  Lighthouse-Artifacts").
 - KEINE neuen Dependencies ohne User-Freigabe (Bundle-Budget!)
 - KEINE nicht-idempotente Migration
 - KEINE Tabelle ohne RLS
