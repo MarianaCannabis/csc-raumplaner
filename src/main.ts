@@ -80,6 +80,7 @@ import type { KCanGApplication } from './legacy/kcangWizard.js';
 import * as touchSupport from './legacy/touchSupport.js';
 import * as collabAvatars from './legacy/collabAvatars.js';
 import * as pdfPageSelector from './legacy/pdfPageSelector.js';
+import * as visualHistoryUI from './legacy/visualHistoryUI.js';
 import * as helpModal from './legacy/helpModal.js';
 import * as tbMenu from './legacy/tbMenu.js';
 import * as versionHistory from './legacy/versionHistory.js';
@@ -310,6 +311,8 @@ declare global {
     cscCollab: typeof collabAvatars;
     /** Mega-Sammel #6: PDF-Page-Selector — Dialog für Multi-Page-Imports. */
     cscPdfPages: typeof pdfPageSelector;
+    /** Sitzung G #2: Visual-History UX mit Slider/Grid/Compare-Modes. */
+    cscVisualHistory: typeof visualHistoryUI;
     /** P17.18: Tutorial aus src/legacy/tutorial.ts. Step-basiertes
      *  Overlay mit Highlight auf Topbar/Sidebar-Elementen. */
     startTutorial: () => void;
@@ -675,9 +678,17 @@ window._pushVisualHistory = (state: string) => {
   const w = window as unknown as { fpCv?: HTMLCanvasElement };
   changelog.pushVisualHistory(state, { fpCv: w.fpCv ?? null });
 };
+// Sitzung G #2: openVisualHistory delegiert an die neue UI mit Slider/Grid/
+// Compare-Modes (visualHistoryUI). Restore-Pfad nutzt weiterhin den
+// existierenden _restoreFromVisualHistory-Wrapper am Ende von main.ts.
 window.openVisualHistory = () => {
-  const w = window as unknown as { openM?: (id: string) => void };
-  changelog.openVisualHistory({ openM: w.openM ?? (() => {}) });
+  visualHistoryUI.openVisualHistoryModal({
+    restoreFromIndex: (idx: number) => {
+      const w = window as unknown as { _restoreFromVisualHistory?: (i: number) => void };
+      if (typeof w._restoreFromVisualHistory === 'function') w._restoreFromVisualHistory(idx);
+    },
+    toast: (window as unknown as { toast?: (m: string, t?: string) => void }).toast,
+  });
 };
 // P17.17 + Pfad-C #7: Welcome-Flow mit Onboarding-Tour-Hook.
 // onClose-Hook informiert den Orchestrator, dass die Welcome-Phase fertig
@@ -816,6 +827,7 @@ function buildKCanGDeps(): kcangWizard.KCanGWizardDeps {
 window.cscTouch = touchSupport;
 window.cscCollab = collabAvatars;
 window.cscPdfPages = pdfPageSelector;
+window.cscVisualHistory = visualHistoryUI;
 queueMicrotask(() => {
   if (touchSupport.isTouchDevice()) {
     document.body.classList.add('is-touch');
