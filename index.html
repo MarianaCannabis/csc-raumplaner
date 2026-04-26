@@ -5729,10 +5729,13 @@ function buildFreeWall3D(w){
   if(len<0.05) return null;
 
   // Use same opening-aware builder as room walls
+  // Mega-Sammel #7: imageMap durchschleifen, damit buildWallSegMesh3D
+  // den Material-Override anwenden kann.
   const seg = {
     a:{x:w.x1,z:w.z1}, b:{x:w.x2,z:w.z2},
     h:w.h||2.8, col:parseInt((w.col||'#d8d0c0').replace('#',''),16),
-    elev, floorId:w.floorId, wallTex:null
+    elev, floorId:w.floorId, wallTex:null,
+    imageMap: w.imageMap || null,
   };
   const group = buildWallSegMesh3D(seg);
   if(group){
@@ -5810,6 +5813,19 @@ function buildWallSegMesh3D(seg){
 
   const wallTexKey = seg.wallTex ? WALL_TEX_MAP[seg.wallTex] : null;
   const makeMat=()=>{
+    // Mega-Sammel #7: Bild-auf-Wand. Wenn imageMap gesetzt → Textur aus
+    // dataURL laden, NICHT skaliert wiederholt sondern einmalig über
+    // die ganze Wand-Fläche gestreckt (UV repeat=1,1). User-Wunsch:
+    // Bild „passt" exakt auf die Wand, kein Pattern-Repeat.
+    if(seg.imageMap){
+      const loader = new THREE.TextureLoader();
+      const tex = loader.load(seg.imageMap);
+      tex.wrapS = THREE.ClampToEdgeWrapping;
+      tex.wrapT = THREE.ClampToEdgeWrapping;
+      tex.repeat.set(1, 1);
+      tex.colorSpace = THREE.SRGBColorSpace || THREE.sRGBEncoding;
+      return new THREE.MeshStandardMaterial({color:0xffffff,roughness:0.82,metalness:0,map:tex,side:THREE.DoubleSide});
+    }
     if(wallTexKey){
       const tx=makeTex(wallTexKey,Math.max(1,len),1);
       return new THREE.MeshStandardMaterial({color:seg.col,roughness:0.82,metalness:0,map:tx,side:THREE.DoubleSide});
@@ -10682,6 +10698,15 @@ function openWallPropPanel(wallId){
         </div>
       </div>
       <div class="psec">
+        <div class="psh">🖼️ Bild auf Wand</div>
+        <div class="pprow" style="display:flex;gap:6px;align-items:center">
+          <input type="file" id="wall-img-upload-${w.id}" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="handleWallImageUpload(event,'${w.id}')">
+          <button class="pp-btn" onclick="document.getElementById('wall-img-upload-${w.id}').click()">📁 Bild wählen</button>
+        </div>
+        <div id="wall-img-preview-${w.id}" style="margin-top:6px">${renderWallImagePreview(w)}</div>
+        <div style="font-size:10px;color:var(--tx3);margin-top:4px">Streckt sich über die ganze Wand-Fläche (UV 1:1).</div>
+      </div>
+      <div class="psec">
         <div class="psh">Aktionen</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <button class="pp-btn" onclick="splitWallAt('${w.id}')" style="border-color:var(--bl);color:var(--bl)">✂️ Teilen</button>
@@ -10693,6 +10718,53 @@ function openWallPropPanel(wallId){
         </div>
       </div>
     </div>`;
+}
+
+// Mega-Sammel #7: Bild-auf-Wand — Pattern wie objects.imageMap, jetzt für walls.
+function renderWallImagePreview(w){
+  if(!w || !w.imageMap){
+    return '<div style="font-size:10px;color:var(--tx3);padding:6px;border:1px dashed var(--bd);border-radius:4px;text-align:center">Kein Bild geladen</div>';
+  }
+  const fname = (w.imageMapName||'Bild').replace(/[<>&"']/g,s=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[s]));
+  return `<div style="display:flex;gap:8px;align-items:center;padding:4px;background:var(--bg3);border-radius:4px">
+    <img src="${w.imageMap}" style="width:48px;height:48px;object-fit:cover;border-radius:3px;border:1px solid var(--bd)">
+    <div style="flex:1;min-width:0">
+      <div style="font-size:10px;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${fname}</div>
+    </div>
+    <button class="pp-btn del" style="padding:2px 8px;font-size:10px" onclick="removeWallImageMap('${w.id}')">✕</button>
+  </div>`;
+}
+
+async function handleWallImageUpload(e, wallId){
+  const file = e.target.files && e.target.files[0];
+  if(!file) return;
+  if(file.size > 10*1024*1024){ toast('Bild > 10 MB — bitte vorher verkleinern','r'); return; }
+  if(!window.cscImageUpload){ toast('Bild-Modul nicht geladen','r'); return; }
+  const w = walls.find(x=>x.id===wallId);
+  if(!w){ toast('Wand nicht gefunden','r'); return; }
+  try {
+    const result = await window.cscImageUpload.processUpload(file);
+    w.imageMap = result.dataUrl;
+    w.imageMapName = file.name;
+    toast(`Wand-Bild geladen (${result.width}×${result.height}, ${(result.bytes/1024).toFixed(0)} KB)`,'g');
+    rebuild3D(); draw2D();
+    // Preview re-rendern ohne Panel-Komplettrefresh
+    const prev = document.getElementById('wall-img-preview-'+wallId);
+    if(prev) prev.innerHTML = renderWallImagePreview(w);
+    snapshot();
+  } catch(err){
+    toast('Bild-Upload fehlgeschlagen: '+(err && err.message ? err.message : err),'r');
+  }
+}
+
+function removeWallImageMap(wallId){
+  const w = walls.find(x=>x.id===wallId); if(!w) return;
+  w.imageMap = '';
+  w.imageMapName = '';
+  rebuild3D(); draw2D();
+  const prev = document.getElementById('wall-img-preview-'+wallId);
+  if(prev) prev.innerHTML = renderWallImagePreview(w);
+  snapshot();
 }
 
 function updateWallProp(id, prop, val){
