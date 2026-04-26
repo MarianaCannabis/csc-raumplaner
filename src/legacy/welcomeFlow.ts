@@ -89,9 +89,12 @@ export function renderWelcomeStep(deps: WelcomeFlowDeps): void {
       '</div>' +
       (s.cta
         ? '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:14px">' +
-          '<button class="mdl-btn mdl-btn--primary" onclick="_welcomeClose(true);openTemplates()" style="padding:10px 6px;font-size:11px">📋 Vorlage</button>' +
-          '<button class="mdl-btn mdl-btn--primary" onclick="_welcomeClose(true);set2DTool(\'room\')" style="padding:10px 6px;font-size:11px">⬜ Leer</button>' +
-          '<button class="mdl-btn" onclick="_welcomeClose(true);showRight(\'save\')" style="padding:10px 6px;font-size:11px">📂 Laden</button>' +
+          // Pfad-E #0: CTA → ctaThenAction setzt state=done direkt + schließt
+          // Modal + ruft action(). Ohne diesen Wrapper hätte die Bridge-Phase
+          // kurz aufpoppen können (visueller Glitch).
+          '<button class="mdl-btn mdl-btn--primary" onclick="window.cscOnboarding.ctaThenAction(function(){openTemplates()})" style="padding:10px 6px;font-size:11px">📋 Vorlage</button>' +
+          '<button class="mdl-btn mdl-btn--primary" onclick="window.cscOnboarding.ctaThenAction(function(){set2DTool(\'room\')})" style="padding:10px 6px;font-size:11px">⬜ Leer</button>' +
+          '<button class="mdl-btn" onclick="window.cscOnboarding.ctaThenAction(function(){showRight(\'save\')})" style="padding:10px 6px;font-size:11px">📂 Laden</button>' +
           '</div>'
         : '');
   }

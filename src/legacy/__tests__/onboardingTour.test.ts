@@ -5,6 +5,7 @@ import {
   skipTour,
   onWelcomeDone,
   onWelcomeCtaChosen,
+  ctaThenAction,
   onBridgeYes,
   onBridgeNo,
   onTutorialDone,
@@ -117,6 +118,29 @@ describe('Phase-Transitions', () => {
     onWelcomeCtaChosen();
     expect(getTourState()).toBe('done');
     expect(deps.startTutorial).not.toHaveBeenCalled();
+  });
+
+  it('ctaThenAction (Pfad-E #0): setzt state=done + ruft action + Bridge erscheint NICHT', () => {
+    autoStartTourIfNew(baseDeps());
+    expect(getTourState()).toBe('welcome');
+    const action = vi.fn();
+    (window as unknown as { closeM: (id: string) => void }).closeM = vi.fn();
+    ctaThenAction(action);
+    expect(getTourState()).toBe('done');
+    expect(action).toHaveBeenCalledOnce();
+    expect(localStorage.getItem('csc-onboarded')).toBe('1');
+    expect(document.getElementById('m-onboarding-bridge')).toBeNull();
+    delete (window as unknown as { closeM?: unknown }).closeM;
+  });
+
+  it('ctaThenAction: action throwt — state bleibt done, kein Crash', () => {
+    autoStartTourIfNew(baseDeps());
+    const action = vi.fn(() => {
+      throw new Error('CTA boom');
+    });
+    expect(() => ctaThenAction(action)).not.toThrow();
+    expect(getTourState()).toBe('done');
+    expect(action).toHaveBeenCalled();
   });
 
   it('onBridgeYes: bridge → tutorial + ruft startTutorial', () => {

@@ -163,6 +163,43 @@ export function onWelcomeCtaChosen(): void {
   setState('done');
 }
 
+/**
+ * Pfad-E #0: CTA-Glitch-Fix. CTA-Buttons im Welcome-Modal (Vorlage / Leer /
+ * Laden) rufen diese Funktion auf statt `_welcomeClose(true);action()`.
+ * Setzt State **vor** dem Modal-Close auf 'done', damit der `onClose`-Hook
+ * (→ onWelcomeDone) keine Bridge-Phase auslöst (state !== 'welcome' returnt
+ * früh).
+ *
+ * Ablauf:
+ *   1. State → 'done'
+ *   2. Legacy-Key csc-onboarded='1' (für Migration-Konsistenz)
+ *   3. window._welcomeClose(true) — schließt Modal, mark=true setzt
+ *      welcome-never falls Checkbox aktiv
+ *   4. action() — öffnet Templates / Leer-Mode / Save-Panel
+ */
+export function ctaThenAction(action: () => void): void {
+  setState('done');
+  try {
+    localStorage.setItem('csc-onboarded', '1');
+  } catch {
+    /* private-mode etc. */
+  }
+  const w = window as unknown as {
+    _welcomeClose?: (mark: boolean) => void;
+    closeM?: (id: string) => void;
+  };
+  if (typeof w._welcomeClose === 'function') {
+    try { w._welcomeClose(true); } catch (e) { console.warn('[onboarding] _welcomeClose threw', e); }
+  } else if (typeof w.closeM === 'function') {
+    try { w.closeM('m-welcome'); } catch (e) { console.warn('[onboarding] closeM threw', e); }
+  }
+  try {
+    action();
+  } catch (e) {
+    console.warn('[onboarding] CTA action threw', e);
+  }
+}
+
 /** Bridge "Tour starten" → tutorial-Phase. */
 export function onBridgeYes(deps: TourDeps): void {
   closeBridgeModal();
