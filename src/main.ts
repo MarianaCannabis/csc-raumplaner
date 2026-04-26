@@ -80,6 +80,8 @@ import type { KCanGApplication } from './legacy/kcangWizard.js';
 import * as bauantragPdf from './legacy/bauantragPdf.js';
 import * as floorManager from './legacy/floorManager.js';
 import * as stairsGeometry from './legacy/stairsGeometry.js';
+import * as pricingModal from './legacy/pricingModal.js';
+import * as subscriptions from './persist/subscriptions.js';
 import * as touchSupport from './legacy/touchSupport.js';
 import * as collabAvatars from './legacy/collabAvatars.js';
 import * as pdfPageSelector from './legacy/pdfPageSelector.js';
@@ -332,6 +334,12 @@ declare global {
     cscFloors: typeof floorManager;
     /** Multi-Floor Phase 2 (Mega-Sammel #2): Treppen-3D-Geometrie. */
     cscStairs: typeof stairsGeometry;
+    /** Stripe-Phase-1 (Mega-Sammel #8): Pricing-Modal mit 3 Plänen.
+     *  Phase 2 wird Stripe-Checkout-Session anbinden. */
+    cscPricing: {
+      open: () => Promise<void>;
+      getCurrentPlan: () => Promise<subscriptions.PlanId>;
+    };
     /** P17.18: Tutorial aus src/legacy/tutorial.ts. Step-basiertes
      *  Overlay mit Highlight auf Topbar/Sidebar-Elementen. */
     startTutorial: () => void;
@@ -991,6 +999,74 @@ window.cscBauantrag = {
 // rename/setHeight; existing renderFloorTabs/switchFloor bleiben unverändert.
 window.cscFloors = floorManager;
 window.cscStairs = stairsGeometry;
+
+// Stripe-Phase-1 (Mega-Sammel #8-9): Pricing-Modal-Bridge.
+// Phase 1: User schreibt direkt in csc_subscriptions (RLS owner_upd).
+// Phase 2 wird Stripe-Checkout-Session via Edge-Function aufrufen.
+function buildPricingDeps(currentPlan: subscriptions.PlanId): pricingModal.PricingModalDeps {
+  const w = window as unknown as {
+    SB_URL?: string;
+    SB_KEY?: string;
+    SB_TOKEN?: string;
+    SB_USER?: { id?: string };
+    toast?: (msg: string, type?: string) => void;
+  };
+  return {
+    currentPlan,
+    onSelectPlan: async (plan: subscriptions.PlanId) => {
+      if (!w.SB_URL || !w.SB_KEY || !w.SB_TOKEN || !w.SB_USER?.id) {
+        throw new Error('Cloud-Login benötigt');
+      }
+      await subscriptions.setUserPlan(
+        { url: w.SB_URL, key: w.SB_KEY, token: w.SB_TOKEN },
+        w.SB_USER.id,
+        plan,
+      );
+    },
+    toast: w.toast,
+  };
+}
+
+window.cscPricing = {
+  open: async () => {
+    const w = window as unknown as {
+      SB_URL?: string;
+      SB_KEY?: string;
+      SB_TOKEN?: string;
+      SB_USER?: { id?: string };
+      toast?: (msg: string, type?: string) => void;
+    };
+    let currentPlan: subscriptions.PlanId = 'free';
+    if (w.SB_URL && w.SB_KEY && w.SB_TOKEN && w.SB_USER?.id) {
+      try {
+        currentPlan = await subscriptions.getCurrentPlan(
+          { url: w.SB_URL, key: w.SB_KEY, token: w.SB_TOKEN },
+          w.SB_USER.id,
+        );
+      } catch (e) {
+        console.warn('[csc-pricing] currentPlan-Fetch fehlgeschlagen', e);
+      }
+    }
+    pricingModal.openPricingModal(buildPricingDeps(currentPlan));
+  },
+  getCurrentPlan: async () => {
+    const w = window as unknown as {
+      SB_URL?: string;
+      SB_KEY?: string;
+      SB_TOKEN?: string;
+      SB_USER?: { id?: string };
+    };
+    if (!w.SB_URL || !w.SB_KEY || !w.SB_TOKEN || !w.SB_USER?.id) return 'free';
+    try {
+      return await subscriptions.getCurrentPlan(
+        { url: w.SB_URL, key: w.SB_KEY, token: w.SB_TOKEN },
+        w.SB_USER.id,
+      );
+    } catch {
+      return 'free';
+    }
+  },
+};
 queueMicrotask(() => {
   if (!touchSupport.isTouchDevice()) return;
   document.body.classList.add('is-touch');

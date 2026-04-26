@@ -58,7 +58,7 @@ Wird live gepflegt — pro abgeschlossenem PR wird der Status aktualisiert.
 | 🔧 | Multi-Floor mit 3D-Treppen | 2-3 Wo | **Phase 1+2 ✅** (#216 + [#217](https://github.com/MarianaCannabis/csc-raumplaner/pull/217) — Treppen-Catalog, 3D-Geometrie, Stacked-View, +2 Compliance-Regeln). Phase 3 (L/Wendel-Treppen, Position-basierte Verbindung) als eigene Sitzung. |
 | ✅ | Bauantrag-PDF-Generierung | 1-2 Wo | [#214](https://github.com/MarianaCannabis/csc-raumplaner/pull/214) — 10 Sektionen, jsPDF-Lazy-Reuse, KCanG-Wizard-Daten + Compliance + Möbel + Anhang |
 | ⏳ | BIM-Viewer (ifcViewer) Integration | 1-2 Wo | externe Library + Bundle-Impact |
-| ⏳ | Stripe-Checkout Pro/Team | 1-2 Wo | + Subscription-Tabelle Supabase |
+| 🔧 | Stripe-Checkout Pro/Team | 1-2 Wo | **Phase 1 ✅** ([#218](https://github.com/MarianaCannabis/csc-raumplaner/pull/218) — Migration 0011, Pricing-Modal, REST-Wrapper). Phase 2 (echtes Stripe + Webhook) als eigene Sitzung. |
 
 ## Code-Qualität (parkiert für Bedarfsfall)
 
@@ -83,6 +83,7 @@ User soll vor Sitzungs-Start beider Migrations applien (falls noch nicht):
 |---|---|---|
 | **0009 Optimistic Locking** | ❓ ggf. ausstehend | Konflikt-Modal inaktiv, last-writer-wins (graceful) |
 | **0010 KCanG-Apps Cloud-Sync** | ❓ ggf. ausstehend | Wizard-Cloud-Sync inaktiv (graceful, localStorage funktioniert) |
+| **0011 Subscriptions** | ❓ neu (Sammel ACBD/v3.0 #4) | Pricing-Modal öffnet, Plan-Wechsel scheitert mit Login-Fehler oder 404 |
 
 Apply-URL: https://supabase.com/dashboard/project/wvkjkdwahsqozeupoxpj/sql
 
