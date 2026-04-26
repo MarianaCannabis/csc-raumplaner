@@ -20,3 +20,28 @@ export interface SceneObject {
   typeId: string;
   // weitere Felder hinzufügen wenn andere Module sie brauchen
 }
+
+/**
+ * Multi-Floor Phase 2 (Mega-Sammel #1): Treppen-Konfiguration. Nur straight
+ * in Phase 2; L/Wendel kommen in Phase 3. Werte in Metern.
+ */
+export interface StairsConfig {
+  shape: 'straight';
+  /** Stufen-Höhe in m (Bauordnung: max 0.19). */
+  stepHeight: number;
+  /** Stufen-Tiefe in m. */
+  stepDepth: number;
+  /** Anzahl Stufen — totalHeight = stepCount * stepHeight. */
+  stepCount: number;
+  /** Geländer rechts (Default true). */
+  withRailing: boolean;
+}
+
+/**
+ * Multi-Floor Phase 2: Floor-Verbindung. Wird gesetzt wenn eine Treppe
+ * platziert wird — die Treppe verbindet zwei adjacente Floors.
+ */
+export interface FloorConnection {
+  fromFloorId: string;
+  toFloorId: string;
+}
