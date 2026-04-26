@@ -61,4 +61,39 @@ Beide setTimeout-Aufrufe (Zeile 22068 und 22077) sollten den Guard bekommen — 
 
 ---
 
+## #2 — NS_BINDING_ABORTED bei Realtime-Cleanup (kein Action-Item)
+
+- **Status:** ✅ kein Action-Item — keepalive ist bereits der Best-Stand
+- **Priorität:** keine (bereits korrekt mitigiert)
+- **Entdeckt:** 2026-04 beim v2.6.5-Hotfix-Cycle
+
+### Symptom
+
+Beim Logout / Tab-Close: gelegentlich `NS_BINDING_ABORTED` in der DevTools-Konsole vom DELETE auf `csc_project_sessions`. Stale Geister-Session bleibt für 3-5 Min in der DB bis last_ping-Filter sie auskickt.
+
+### Aktueller Mitigation-Stand
+
+`stopRealtimeCollab()` und der Account-Delete-Pfad in index.html nutzen
+beide `fetch(..., { keepalive: true })`. Das ist der Browser-empfohlene
+Weg für unload-resistente Requests.
+
+### Warum nicht sendBeacon?
+
+`navigator.sendBeacon(url, body)` ist garantiert unload-resistent, **kann
+aber keine Custom-Header senden**. Der Supabase-DELETE braucht zwingend
+`apikey` + `Authorization: Bearer <token>`-Header — sendBeacon ist
+deshalb ungeeignet.
+
+Theoretisch wäre eine Edge-Function mit unauthenticated Cleanup-Endpoint
+möglich (sendBeacon-fähig), aber das ist ein neuer Auth-Pfad mit eigenem
+Spec-Aufwand — out-of-scope für Polish.
+
+### Fazit
+
+`keepalive: true` ist der Stand der Technik für diesen Use-Case. Kein
+Code-Change nötig. Issue dokumentiert als „kein Action-Item" für künftige
+Audit-Runs.
+
+---
+
 <!-- Neue Issues hier unten anfügen, gleiches Format. -->
