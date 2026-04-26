@@ -81,6 +81,7 @@ import * as bauantragPdf from './legacy/bauantragPdf.js';
 import * as floorManager from './legacy/floorManager.js';
 import * as stairsGeometry from './legacy/stairsGeometry.js';
 import * as pricingModal from './legacy/pricingModal.js';
+import * as selfTest from './legacy/selfTest.js';
 import type * as bimViewer from './legacy/bimViewer.js';
 type BimExportDepsRoom = bimViewer.BimExportDeps['rooms'][number];
 type BimExportDepsObject = bimViewer.BimExportDeps['objects'][number];
@@ -355,6 +356,10 @@ declare global {
       handleFileSelect: (file: File | null) => Promise<void>;
       exportIfc: () => Promise<void>;
       isOpen: () => boolean;
+    };
+    /** Feature-Selbsttest (Mega-Sammel #11): Health-Check im Live-Browser. */
+    cscSelfTest: {
+      run: (containerId?: string) => Promise<selfTest.SelfTestResult>;
     };
     /** P17.18: Tutorial aus src/legacy/tutorial.ts. Step-basiertes
      *  Overlay mit Highlight auf Topbar/Sidebar-Elementen. */
@@ -1134,6 +1139,16 @@ window.cscBimUI = {
     }
   },
   isOpen: () => _bimInstance !== null,
+};
+
+window.cscSelfTest = {
+  run: async (containerId = 'self-test-results') => {
+    const container = document.getElementById(containerId);
+    if (container) container.innerHTML = '<div style="font-size:11px;color:var(--tx3)">🩺 Prüfe Features…</div>';
+    const result = await selfTest.runSelfTest();
+    if (container) container.innerHTML = selfTest.renderSelfTestResults(result);
+    return result;
+  },
 };
 
 window.cscPricing = {
