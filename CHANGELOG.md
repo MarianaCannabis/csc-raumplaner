@@ -6,6 +6,24 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+### Bedienkonzept
+
+- **Touch-Wire-Up auf 2D-Canvas (Sitzung G Schritt 4)** — die in PR #203
+  angelegte Touch-Pattern-Library wird jetzt tatsächlich an `fp-canvas`
+  gebunden. main.ts queueMicrotask-Hook bei `isTouchDevice()===true`:
+  - **Pan**: Single-Touch-Drag → `vpX += dx, vpY += dy`, draw2D()
+  - **Pinch-Zoom**: Two-Finger → `vpZoom *= scale`, **Pinch-Center-Anker**
+    (world-coord am Pinch-Center bleibt fixiert), Clamp [5..200]
+  - **Tap**: Mouse-Down+Up-Simulation am Click-Punkt (Object-Select)
+  - **Long-Press**: Toast-Hint („Context-Menu kommt in v3.0")
+  - kein OrbitControls in Three.js (custom Mouse-Handler) → kein 3D-Wire-Up
+    nötig
+  - +4 Vitest-Tests (Pan-Math, Pinch-Center-Anker, Zoom-Clamp, Tap-Click).
+    Vitest gesamt: 532 → 536.
+  - Bundle: ~+800 B gz.
+  - **Wichtig:** funktioniert nur dank Bridge-Audit (Schritt 0) — vpX/vpY/
+    vpZoom sind jetzt auf window. Vorher hätte das Wire-Up silent gefailed.
+
 ### Zusatzfunktionen
 
 - **Stempel-Funktion (Sitzung G Schritt 3)** — neues
