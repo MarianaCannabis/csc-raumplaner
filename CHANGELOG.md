@@ -6,6 +6,16 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+### Fixed
+
+- **Onboarding-Tour CTA-Glitch (Pfad-E #0)** — bei CTA-Click im Welcome-
+  Modal (Vorlage / Leer / Laden) erschien kurz das Bridge-Modal vor der
+  CTA-Aktion. Neue Funktion `ctaThenAction(action)` in `onboardingTour.ts`
+  setzt `state='done'` **vor** dem Modal-Close, sodass der `onClose`-Hook
+  (→ `onWelcomeDone`) keinen Bridge-Übergang mehr auslöst (state-Guard
+  greift). CTA-Buttons in `welcomeFlow.ts` rufen jetzt
+  `window.cscOnboarding.ctaThenAction(()=>action())`. +2 Tests.
+
 ### Bedienkonzept
 
 - **Konflikt-Resolution Cloud-Save** — Optimistic Locking via Version-Counter.
