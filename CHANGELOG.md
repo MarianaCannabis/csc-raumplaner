@@ -6,6 +6,23 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+### Bedienkonzept
+
+- **Shortcuts-Editor v2 (Sitzung G Schritt 1)** — Konflikt-Detection +
+  3 Presets + erweiterte Liste auf 15 Items.
+  - `SHORTCUT_DEFINITIONS` als Source-of-Truth für die Editor-UI
+    (vorher: 5 Einträge hardcoded, jetzt: 15 inkl. ctrl+s/ctrl+z/ctrl+y/
+    Escape/Delete/Space/2/3/m/+).
+  - `SHORTCUT_PRESETS` (power-user / maus-user / touch-tablet) als
+    1-Klick-Konfiguration. Apply ersetzt alle bisherigen Bindings.
+  - Konflikt-Check beim Capture: Wenn Taste schon belegt → confirm-Dialog.
+    Bei OK: alte Belegung verlieren ihren Key, DOM-Refresh.
+  - Esc/Enter im Capture-Mode = Abbruch (keine Speicherung).
+  - Eine fn → ein key invariante: vor jeder Speicherung werden alte
+    Key-Bindings dieser fn entfernt.
+  - +6 neue E2E-Tests (Editor-Render, Preset-Apply, Reset, Konflikt).
+  - Bundle: ~+700 B gz (index.html).
+
 ### Tooling
 
 - **Module-Bridge-Audit (Sitzung G Schritt 0)** — systematischer Check

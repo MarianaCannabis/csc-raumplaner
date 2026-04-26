@@ -3,9 +3,9 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 ## Zusammenfassung
 
-- **onclick-Handler:** 719
+- **onclick-Handler:** 723
 - **addEventListener-Bindings:** 128
-- **HTML-Top-Level-Functions:** 850
+- **HTML-Top-Level-Functions:** 852
 - **TS-Exports:** 475
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
