@@ -153,3 +153,46 @@ export function getFloorBelow(floors: Floor[], id: string): Floor | null {
     .sort((a, b) => b.order - a.order);
   return below[0] ?? null;
 }
+
+/**
+ * Multi-Floor Phase 2 (#3): Stacked-3D-View Wrapper.
+ *
+ * Existing rebuild3D im inline-script nutzt bereits den `_show3DAllFloors`-
+ * Flag — wenn `true`, werden Räume + Möbel aus ALLEN Floors gerendert (mit
+ * jeweiligen Y-Offsets aus floor.elev). Diese Wrapper-Functions sind eine
+ * saubere API für TS-Wrapper + Tests.
+ */
+export function isStackedView(): boolean {
+  const w = window as unknown as { _show3DAllFloors?: boolean };
+  return !!w._show3DAllFloors;
+}
+
+export function toggleStackedView(): boolean {
+  const w = window as unknown as {
+    _show3DAllFloors?: boolean;
+    toggleAllFloors?: () => void;
+  };
+  if (typeof w.toggleAllFloors === 'function') {
+    w.toggleAllFloors();
+    return !!w._show3DAllFloors;
+  }
+  // Fallback wenn die Inline-Function noch nicht da ist (Boot-Race)
+  w._show3DAllFloors = !w._show3DAllFloors;
+  return !!w._show3DAllFloors;
+}
+
+/**
+ * Multi-Floor Phase 2 (#5): Floor-Verbindung für Treppen.
+ *
+ * Berechnet, welche zwei Floors eine Treppe verbindet basierend auf
+ * der Position im Floor-Stack. Treppe sitzt auf `fromFloorId` und
+ * führt zum nächsten Floor mit höherem order (oder null wenn topmost).
+ */
+export function findFloorConnection(
+  floors: Floor[],
+  fromFloorId: string,
+): { fromFloorId: string; toFloorId: string } | null {
+  const above = getFloorAbove(floors, fromFloorId);
+  if (!above) return null;
+  return { fromFloorId, toFloorId: above.id };
+}

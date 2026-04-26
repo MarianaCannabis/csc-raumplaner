@@ -38,4 +38,14 @@ export interface CatalogItem {
    *  cropping overflow, 'contain' fits inside with bars, 'stretch' distorts
    *  to exact bounds. Default 'cover'. */
   imageMapAspect?: 'contain' | 'cover' | 'stretch';
+  /** Multi-Floor Phase 2: Marker für Treppen-Items. Catalog-Builder
+   *  liest stairsConfig + zeichnet Stufen-Profil statt Standard-Box. */
+  type?: 'standard' | 'stairs';
+  stairsConfig?: {
+    shape: 'straight';
+    stepHeight: number;
+    stepDepth: number;
+    stepCount: number;
+    withRailing: boolean;
+  };
 }

@@ -1,6 +1,6 @@
 # Catalog Audit — 2026-04-26 (v2.3)
 
-**Gescannt:** 480 Items in 20 Dateien.
+**Gescannt:** 483 Items in 21 Dateien.
 
 ## Zusammenfassung
 
@@ -60,6 +60,7 @@
 | 🔐 CSC-Sicherheit | 3 |
 | 🔥 Brandschutz+ | 3 |
 | 🍳 Küche (Rich) | 3 |
+| 🪜 Treppen | 3 |
 
 ## Methodik + Einschränkungen
 

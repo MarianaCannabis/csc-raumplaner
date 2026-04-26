@@ -7,6 +7,7 @@ import { CSC_SECURITY } from './items/cscSecurity.js';
 import { FIRE_SAFETY } from './items/fireSafety.js';
 import { DOORS } from './items/doors.js';
 import { WINDOWS } from './items/windows.js';
+import { STAIRS } from './items/stairs.js';
 
 // GLTF-basierte Kategorien (Kenney Furniture Kit 2.0 + Quaternius "Ultimate
 // House Interior Pack" via poly.pizza, beides CC0).
@@ -26,6 +27,7 @@ export const NEW_CATALOG: CatalogItem[] = [
   ...FIRE_SAFETY,
   ...DOORS,
   ...WINDOWS,
+  ...STAIRS,
   ...CHAIRS,
   ...TABLES,
   ...SOFAS,

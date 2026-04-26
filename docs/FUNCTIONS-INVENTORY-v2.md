@@ -6,7 +6,7 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - **onclick-Handler:** 731
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 863
-- **TS-Exports:** 500
+- **TS-Exports:** 505
 - **tbm-item-Coverage:** 159/159 fully tagged (data-mode: 159/159, data-tier: 159/159)
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
@@ -275,6 +275,9 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `getFloorById` (line 135)
 - `getFloorAbove` (line 139)
 - `getFloorBelow` (line 148)
+- `isStackedView` (line 165)
+- `toggleStackedView` (line 170)
+- `findFloorConnection` (line 191)
 
 ### src/legacy/helpModal.ts
 
@@ -347,6 +350,11 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 - `updateSbStatus` (line 14)
 - `setSbMsg` (line 46)
+
+### src/legacy/stairsGeometry.ts
+
+- `buildStairsMesh` (line 32)
+- `getStairsZRange` (line 146)
 
 ### src/legacy/stampMode.ts
 

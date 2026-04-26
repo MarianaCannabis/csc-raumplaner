@@ -79,6 +79,7 @@ import * as kcangPdfExport from './legacy/kcangPdfExport.js';
 import type { KCanGApplication } from './legacy/kcangWizard.js';
 import * as bauantragPdf from './legacy/bauantragPdf.js';
 import * as floorManager from './legacy/floorManager.js';
+import * as stairsGeometry from './legacy/stairsGeometry.js';
 import * as touchSupport from './legacy/touchSupport.js';
 import * as collabAvatars from './legacy/collabAvatars.js';
 import * as pdfPageSelector from './legacy/pdfPageSelector.js';
@@ -329,6 +330,8 @@ declare global {
     /** Mega-Sammel ACBD #7-10 / v3.0 #2: Multi-Floor Phase 1.
      *  Pure Floor-Logik. UI bleibt im Inline-Script, nutzt diese Helpers. */
     cscFloors: typeof floorManager;
+    /** Multi-Floor Phase 2 (Mega-Sammel #2): Treppen-3D-Geometrie. */
+    cscStairs: typeof stairsGeometry;
     /** P17.18: Tutorial aus src/legacy/tutorial.ts. Step-basiertes
      *  Overlay mit Highlight auf Topbar/Sidebar-Elementen. */
     startTutorial: () => void;
@@ -987,6 +990,7 @@ window.cscBauantrag = {
 // Inline-Script-UI in index.html nutzt window.cscFloors für add/remove/
 // rename/setHeight; existing renderFloorTabs/switchFloor bleiben unverändert.
 window.cscFloors = floorManager;
+window.cscStairs = stairsGeometry;
 queueMicrotask(() => {
   if (!touchSupport.isTouchDevice()) return;
   document.body.classList.add('is-touch');

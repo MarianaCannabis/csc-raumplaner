@@ -6,6 +6,37 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+### Roadmap v3.0
+
+- **Multi-Floor Phase 2 (v3.0 #3)** — Treppen + Stacked-3D-View + Compliance.
+  Folge zu Phase 1 (PR #216).
+  - **Catalog-Items:** 3 neue Treppen in `src/catalog/items/stairs.ts`:
+    `stairs-straight-standard` (1.20m, 17×0.18m), `stairs-straight-narrow`
+    (0.90m — triggert Compliance-Fail), `stairs-straight-keller` (kompakt
+    14 Stufen ohne Geländer). `CatalogItem.type='stairs'` + `stairsConfig`
+    als neue optionale Felder.
+  - **3D-Geometrie:** neues Modul `src/legacy/stairsGeometry.ts` mit
+    `buildStairsMesh(width, cfg)` — ExtrudeGeometry mit treppen-förmigem
+    Profil (1 Mesh statt N Stufen-Boxes). Optionales Geländer mit Posten +
+    Handlauf + Mittelbalken (Bauordnung-konform 1m über höchster Stufe).
+  - **Stacked-3D-View:** existierender `_show3DAllFloors`-Flag aus
+    `rebuild3D` als saubere `cscFloors.toggleStackedView()` /
+    `cscFloors.isStackedView()` API exposed.
+  - **Compliance-Regeln (2 neue):**
+    - `stairs-min-width` (critical): Treppe < 1.20m → Fail (Notausgang)
+    - `stairs-connection` (critical): Mehrere Floors ohne Treppe → Fail
+  - **Floor-Verbindung:** `cscFloors.findFloorConnection(floors, fromId)`
+    findet automatisch den nächsten Floor darüber für Treppen-Platzierung.
+  - +27 Vitest-Tests (Geometrie + 2 Compliance-Regeln + Stacked-View-API +
+    findFloorConnection). Vitest gesamt: 575 → 602.
+  - **Bundle:** index.js +~3 KB gz (stairsGeometry-Modul + 2 Rules +
+    bridges).
+
+  **Phase 3 (eigene Sitzung):** L-/Wendel-Treppen, Position-basierte Floor-
+  Verbindungs-Validation (Treppe muss tatsächlich auf beiden Floors
+  Position haben), Transparenz für nicht-aktive Floors in Stacked-View
+  (rebuild3D-Refactor nötig).
+
 ### Bedienkonzept
 
 - **Menu-Mode-Filter (Mega-Sammel ACBD #6)** — Topbar-Menus filtern Items

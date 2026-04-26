@@ -28,6 +28,9 @@ import './rules/messeHeightLimit.js';
 import './rules/roomSmokeDetector.js';
 import './rules/roomMinArea.js';
 import './rules/roomDoorWidth.js';
+// Multi-Floor Phase 2 (Mega-Sammel #4): Treppen-Compliance.
+import './rules/stairsMinWidth.js';
+import './rules/stairsConnection.js';
 
 export * as escapeAnalysis from './escapeAnalysis.js';
 export * as metrics from './metrics.js';
