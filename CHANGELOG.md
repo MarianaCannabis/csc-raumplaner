@@ -6,6 +6,15 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+### Docs
+
+- **README mit v2.7.1-Status aktualisiert**: Versions-Badge 2.7.1,
+  Bundle-Badge 431 KB gz, Tests-Badge 390 passing. Quality-Gates-Tabelle
+  aktualisiert mit aktuellen Werten + Strangler-Counter (21 Module).
+  Roadmap-Sektion: v2.3-Block großteils ✅, neue „v2.7-Recap"-Sektion mit
+  der 626→431 KB-Reise. Verweis auf `docs/FEATURE-ROADMAP.md` als
+  Source-of-Truth für offene Themen.
+
 ### Tooling
 
 - **Lighthouse-Filename-Cleanup**: `scripts/lighthouse-baseline.mjs`,

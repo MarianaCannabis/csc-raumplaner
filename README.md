@@ -2,9 +2,9 @@
 
 Browser-basierter Raum- und Veranstaltungsplaner für **Cannabis Social Clubs (KCanG)** — 2D + 3D, Compliance-Live-Check, Cloud-Save, KI-Features.
 
-**Live:** https://marianacannabis.github.io/csc-raumplaner/ · **Version:** 2.4.0 · **Lizenz:** MIT
+**Live:** https://marianacannabis.github.io/csc-raumplaner/ · **Version:** 2.7.1 · **Lizenz:** MIT
 
-![Version](https://img.shields.io/badge/version-2.4.0-4ade80) ![Bundle gz](https://img.shields.io/badge/bundle-626KB_gz-fbbf24) ![Tests](https://img.shields.io/badge/tests-42_passing-4ade80) ![E2E](https://img.shields.io/badge/E2E-29_assertions-blue)
+![Version](https://img.shields.io/badge/version-2.7.1-4ade80) ![Bundle gz](https://img.shields.io/badge/bundle-431KB_gz-fbbf24) ![Tests](https://img.shields.io/badge/tests-390_passing-4ade80) ![E2E](https://img.shields.io/badge/E2E-41_passing-blue)
 
 ## Was kann's
 
@@ -32,7 +32,7 @@ npm run dev
 # Produktions-Build
 npm run build
 
-# Unit-Tests (Vitest, 26 Tests)
+# Unit-Tests (Vitest, 390 Tests)
 npm test
 
 # Coverage-Report
@@ -131,25 +131,37 @@ Threshold-Fail lokal — nur Reporting).
 
 Lokal: `npm run audit:all`. Reports landen in `docs/`.
 
-### Sonstige Gates (v2.5.0)
+### Sonstige Gates (v2.7.1)
 
 | Gate | Ziel | Aktuell |
 |---|---|---|
-| Bundle-Size gz | <400 KB | **~435 KB** (index.html + CSS + JS; index.html-JS-Split weiterhin offen) |
-| Unit-Tests | passing | **61/61 ✅** (v2.4.2: 48 → v2.5.0: 61, +13 durch Lucide + Keyboard-Module) |
-| E2E-Tests | 41/41 passing | **41/41 ✅** (~1.6 min Laufzeit) |
-| TS strict | clean | **✅** (+ noFallthroughCasesInSwitch, noImplicitReturns) |
+| Bundle-Size gz | <400 KB | **~431 KB** (index.html 337 + JS 76 + CSS 19; Distance −31 KB) |
+| Unit-Tests | passing | **390/390 ✅** (von 26 in v2.4 hochgewachsen, P17-Strangler + neue Module) |
+| E2E-Tests | 41/41 passing | **41/41 ✅** (~1.4 min Laufzeit) |
+| TS strict | clean | **✅** (+ noUncheckedIndexedAccess, noFallthroughCasesInSwitch, noImplicitReturns, noImplicitOverride) |
 | WCAG 2.1 AA Touch-Targets | 44×44 px | **✅** (P11.2 + P-Bug-Bash) |
-| Topbar-Design-System | Lucide-Icons + `[data-theme]` | **✅** v2.5.0 (6 Cluster 4a–4f + v2-Iteration) |
+| Topbar-Design-System | Lucide-Icons + `[data-theme]` | **✅** Single-Source-of-Truth (Track B Cluster 8d) |
+| Audit | 0 unresolved | **✅** 704 resolved / 0 unresolved (PR #192) |
+| Strangler-Module | extract from index.html | **21 Module ✅** (P17.1-21 in `src/legacy/`) |
 
 ## Roadmap
 
-### v2.3 (Q2 2026)
+Aktuelle Themenliste mit Status: [`docs/FEATURE-ROADMAP.md`](docs/FEATURE-ROADMAP.md).
 
-- **JS-Split:** 21k-Zeilen inline-JS aus `index.html` nach `src/legacy/*.ts` — eröffnet <400 KB Bundle-Ziel
-- **Full Menu-Tagging:** restliche ~140 Items mit `data-mode`/`data-tier` (aktuell 17 getaggt)
-- **Lighthouse-CI-Integration** nach erstem grünen Baseline-Run
-- **Purgecss** für src/styles/main.css (geschätzt −20 KB gz)
+### v2.7-Recap
+
+Bundle-Reise seit v2.4: **626 KB → 431 KB gz** (−195 KB, −31%) durch
+21 Strangler-Module (P17.1–21 in `src/legacy/`) + 4 Build-Konfig-Sub-Tasks
+(GLTFExporter/STAND_TEMPLATES/i18n-Locales lazy-loaded + Purgecss).
+390 Vitest-Tests · 41 Playwright-E2E · audit:all 0 unresolved · Lighthouse-CI
++ Audit-CI etabliert. Distance zu <400 KB Stretch-Goal: **31 KB**.
+
+### v2.3-Block (großteils ✅)
+
+- **JS-Split:** ✅ 21 Module extrahiert (P17.1–21), Bundle −11 KB gz
+- **Full Menu-Tagging:** ⏳ offen (~140 Items mit `data-mode`/`data-tier`)
+- **Lighthouse-CI:** ✅ done (v2.6+, Workflow active mit Threshold-Gates)
+- **Purgecss:** ✅ done (v2.7.1, −1.8 KB CSS gz nach Visual-Regression-Verify)
 
 ### v3.0 (2026 H2)
 
