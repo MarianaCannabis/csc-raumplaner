@@ -6,6 +6,15 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+### Tooling
+
+- **broken-flow-detect Skip-Liste erweitert**: filtert jetzt JS-Keywords
+  (`try`/`catch`/`finally`/`throw`/`await`/`async`/`function`/`var`/`let`/
+  `const`/`do`/`while`/`for`/`switch`/`case`/`break`/`continue`/`typeof`/
+  `instanceof`/`void`/`delete`/`yield`/`class`/`extends`/`super`/`this`)
+  als Pseudo-Identifier. Letzter pre-existing FP weg: 704 resolved,
+  0 unresolved.
+
 ### Fixed
 
 - **Right-Panel Tab-Boot-Race (KNOWN-ISSUES #1)** — beide
