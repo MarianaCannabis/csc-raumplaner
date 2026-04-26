@@ -8,6 +8,31 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Roadmap v3.0
 
+- **Stripe-Phase-1 (v3.0 #4 — Phase 1)** — Subscription-Schema + Pricing-
+  Modal. **Phase 2 (eigene Sitzung):** echte Stripe-Integration mit
+  Checkout-Session + Webhook.
+  - **Migration 0011** (`csc_subscriptions`-Tabelle): user_id (unique),
+    plan ('free' | 'pro' | 'team'), status, stripe_customer_id (Phase 2),
+    stripe_subscription_id (Phase 2), current_period_end. Mit
+    set_updated_at + inc_version_on_update Triggers (reuse 0002 + 0009).
+    RLS owner-Policies — Phase 1 erlaubt User-Self-Update; Phase 2 wird
+    auf service_role-only umstellen (Anti-Tampering).
+  - **`src/persist/subscriptions.ts`** — REST-Wrapper:
+    `fetchSubscription`, `setUserPlan` (Upsert), `getCurrentPlan`.
+  - **`src/legacy/pricingModal.ts`** — programmatisches Modal mit 3 Plan-
+    Cards: Free (0€) · Pro (9€/Mo, highlighted) · Team (29€/Mo). Disabled-
+    Button für Aktueller-Plan. Phase-1-Hinweis-Banner unten.
+  - **UI-Trigger:** „💎 Plan & Preise"-Item im Topbar-Hilfe-Menu.
+  - **`src/main.ts`** Bridge mit `window.cscPricing.open()` /
+    `getCurrentPlan()`. Fetcht aktuellen Plan beim Open via Supabase.
+  - **+22 Vitest-Tests** (10 Modal-Tests + 12 subscriptions-REST-Tests).
+    Vitest gesamt: 602 → 624.
+  - **Bundle:** index.js +~2 KB gz, index.html +~200 B gz (Trigger).
+
+  **⚠ User-Action:** Migration 0011 manuell auf Production-DB applien
+  (Supabase SQL-Editor). Bis dahin: Pricing-Modal öffnet sich, aber
+  Plan-Wechsel scheitert mit „Cloud-Login benötigt" oder 404.
+
 - **Multi-Floor Phase 2 (v3.0 #3)** — Treppen + Stacked-3D-View + Compliance.
   Folge zu Phase 1 (PR #216).
   - **Catalog-Items:** 3 neue Treppen in `src/catalog/items/stairs.ts`:
