@@ -23,6 +23,11 @@ Konkret:
 
 ### Build (Pfad B — Bundle-Ziel-Sprint)
 
+- **Purgecss auf CSS-Bundle** (Sub-Task 4): `vite-plugin-purgecss` mit
+  kuratierter Safelist (BEM-Modifier `--*`, State-Klassen `is-*`, alle
+  dynamisch via JS gesetzten classNames + greedy-Roots `tb-/mdl-/sp-/kc-/`
+  etc.). CSS gz: 20,681 → 18,834 (Δ −1,847 / −8.93%); raw 114,601 → 103,749
+  (Δ −10,852).
 - **STAND_TEMPLATES lazy-loaded** (Sub-Task 3): 14 Templates (Mari-Jane,
   Dmexco etc.) werden via dynamic `import()` nachgeladen. `requestIdleCallback`-
   Pre-Cache hält die UX snappy (typisch 1-2s nach Boot fertig).
