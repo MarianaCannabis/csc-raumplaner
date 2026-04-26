@@ -692,6 +692,22 @@
       <span class="rp-tab__icon" data-icon="settings"></span>
       <span class="rp-tab__label">Eigenschaften</span>
     </div>
+    <div class="rtab rp-tab" id="rtab-bim" onclick="showRight('bim')" title="BIM/IFC-Import">
+      <span class="rp-tab__icon">🏗</span>
+      <span class="rp-tab__label">BIM</span>
+    </div>
+  </div>
+
+  <!-- BIM PANEL (Roadmap v3.0 #4 — Phase 1) -->
+  <div class="rpanel rp-pane" id="rpanel-bim" style="display:none;flex-direction:column;padding:10px;gap:8px;overflow-y:auto">
+    <h3 style="margin:0;font-size:13px">🏗 BIM / IFC-Import</h3>
+    <div style="font-size:11px;color:var(--tx3)">Lade eine .ifc-Datei zum Anzeigen. <b>Export</b> kommt in Phase 2.</div>
+    <input type="file" id="ifc-file-input" accept=".ifc" style="font-size:11px"
+      onchange="window.cscBimUI && window.cscBimUI.handleFileSelect(this.files[0])">
+    <div id="bim-viewer-container" style="width:100%;height:400px;background:#1a1a1a;display:none;border:1px solid var(--bd)"></div>
+    <div id="bim-status" style="font-size:11px;color:var(--tx3)"></div>
+    <button id="bim-export-btn" class="mdl-btn" disabled
+      onclick="window.cscBimUI && window.cscBimUI.exportIfc()">📤 Als IFC exportieren (Phase 2)</button>
   </div>
 
   <!-- AI PANEL -->
@@ -5417,7 +5433,7 @@ function closeM(id){
 function showRight(p){
   // P15 Cluster 7b: beide Klassen togglen — .active (legacy, breit
   // referenziert) + .is-active (BEM, surfaces.css-Matcher).
-  ['ai','design','light','save','props'].forEach(x=>{
+  ['ai','design','light','save','props','bim'].forEach(x=>{
     const pane = document.getElementById('rpanel-'+x);
     const tab  = document.getElementById('rtab-'+x);
     if(pane){ pane.classList.toggle('active',x===p); pane.classList.toggle('is-active',x===p); }

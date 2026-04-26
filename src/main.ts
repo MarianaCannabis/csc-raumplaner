@@ -81,6 +81,7 @@ import * as bauantragPdf from './legacy/bauantragPdf.js';
 import * as floorManager from './legacy/floorManager.js';
 import * as stairsGeometry from './legacy/stairsGeometry.js';
 import * as pricingModal from './legacy/pricingModal.js';
+import type * as bimViewer from './legacy/bimViewer.js';
 import * as subscriptions from './persist/subscriptions.js';
 import * as touchSupport from './legacy/touchSupport.js';
 import * as collabAvatars from './legacy/collabAvatars.js';
@@ -339,6 +340,16 @@ declare global {
     cscPricing: {
       open: () => Promise<void>;
       getCurrentPlan: () => Promise<subscriptions.PlanId>;
+    };
+    /** BIM-Phase-1 (v3.0 #4 — Phase 1): IFC-Import via @thatopen/components.
+     *  Lazy-Import — kein initial-bundle-Impact. */
+    cscBim: {
+      load: () => Promise<bimViewer.BimComponentsModule>;
+    };
+    cscBimUI: {
+      handleFileSelect: (file: File | null) => Promise<void>;
+      exportIfc: () => Promise<void>;
+      isOpen: () => boolean;
     };
     /** P17.18: Tutorial aus src/legacy/tutorial.ts. Step-basiertes
      *  Overlay mit Highlight auf Topbar/Sidebar-Elementen. */
@@ -1026,6 +1037,55 @@ function buildPricingDeps(currentPlan: subscriptions.PlanId): pricingModal.Prici
     toast: w.toast,
   };
 }
+
+// ── BIM-Phase-1: lazy-loader + UI-Bridge ─────────────────────────────
+let _bimComponentsPromise: Promise<bimViewer.BimComponentsModule> | null = null;
+async function loadBimComponents(): Promise<bimViewer.BimComponentsModule> {
+  if (_bimComponentsPromise) return _bimComponentsPromise;
+  _bimComponentsPromise = import('@thatopen/components') as unknown as Promise<bimViewer.BimComponentsModule>;
+  return _bimComponentsPromise;
+}
+window.cscBim = { load: loadBimComponents };
+
+let _bimInstance: bimViewer.BimViewerInstance | null = null;
+async function ensureBimInstance(): Promise<bimViewer.BimViewerInstance | null> {
+  if (_bimInstance) return _bimInstance;
+  const container = document.getElementById('bim-viewer-container');
+  if (!container) return null;
+  container.style.display = 'block';
+  const mod = await import('./legacy/bimViewer.js');
+  _bimInstance = await mod.createBimViewer({
+    containerEl: container,
+    toast: (window as unknown as { toast: (m: string, t?: string) => void }).toast,
+    loadBimComponents,
+  });
+  return _bimInstance;
+}
+
+window.cscBimUI = {
+  handleFileSelect: async (file: File | null) => {
+    if (!file) return;
+    const inst = await ensureBimInstance();
+    if (!inst) return;
+    await inst.loadIfcFile(file);
+    const exportBtn = document.getElementById('bim-export-btn') as HTMLButtonElement | null;
+    if (exportBtn) exportBtn.disabled = false;
+  },
+  exportIfc: async () => {
+    if (!_bimInstance) return;
+    try {
+      const blob = await _bimInstance.exportToIfc();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'export.ifc'; a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      const w = window as unknown as { toast?: (m: string, t?: string) => void };
+      w.toast?.((err as Error).message, 'r');
+    }
+  },
+  isOpen: () => _bimInstance !== null,
+};
 
 window.cscPricing = {
   open: async () => {
