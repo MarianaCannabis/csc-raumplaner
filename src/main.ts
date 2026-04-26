@@ -81,6 +81,7 @@ import * as touchSupport from './legacy/touchSupport.js';
 import * as collabAvatars from './legacy/collabAvatars.js';
 import * as pdfPageSelector from './legacy/pdfPageSelector.js';
 import * as visualHistoryUI from './legacy/visualHistoryUI.js';
+import * as stampMode from './legacy/stampMode.js';
 import * as helpModal from './legacy/helpModal.js';
 import * as tbMenu from './legacy/tbMenu.js';
 import * as versionHistory from './legacy/versionHistory.js';
@@ -313,6 +314,11 @@ declare global {
     cscPdfPages: typeof pdfPageSelector;
     /** Sitzung G #2: Visual-History UX mit Slider/Grid/Compare-Modes. */
     cscVisualHistory: typeof visualHistoryUI;
+    /** Sitzung G #3: Stempel-Funktion — toggle/activate/deactivate. */
+    cscStamp: {
+      toggle: () => void;
+      isActive: () => boolean;
+    };
     /** P17.18: Tutorial aus src/legacy/tutorial.ts. Step-basiertes
      *  Overlay mit Highlight auf Topbar/Sidebar-Elementen. */
     startTutorial: () => void;
@@ -828,6 +834,62 @@ window.cscTouch = touchSupport;
 window.cscCollab = collabAvatars;
 window.cscPdfPages = pdfPageSelector;
 window.cscVisualHistory = visualHistoryUI;
+
+// Sitzung G #3: Stempel-Funktion. buildStampDeps liest Selection, Coords-
+// Helpers und addRoom aus den window-bridged Variablen (Bridge-Audit-Ergebnis).
+function buildStampDeps(): stampMode.StampDeps {
+  const w = window as unknown as {
+    rooms?: Array<{ id: string; name?: string; w: number; d: number; h?: number; floorId?: string; floorColor?: string; wallColor?: string; ceilColor?: string }>;
+    selId?: string | null;
+    selIsRoom?: boolean;
+    addRoom?: (cfg: unknown) => void;
+    cx2wx?: (cx: number) => number;
+    cy2wy?: (cy: number) => number;
+    snapshot?: () => void;
+    toast?: (msg: string, type?: string) => void;
+  };
+  return {
+    getSelectedRoom: () => {
+      if (!w.selIsRoom || !w.selId) return null;
+      const found = w.rooms?.find((r) => r.id === w.selId);
+      if (!found) return null;
+      return {
+        id: found.id,
+        name: found.name ?? 'Raum',
+        w: found.w,
+        d: found.d,
+        h: found.h,
+        floorId: found.floorId,
+        floorColor: found.floorColor,
+        wallColor: found.wallColor,
+        ceilColor: found.ceilColor,
+      };
+    },
+    addRoom: (cfg) => {
+      if (typeof w.addRoom === 'function') w.addRoom(cfg);
+    },
+    canvasToWorld: (cx, cy) => {
+      const wx = typeof w.cx2wx === 'function' ? w.cx2wx(cx) : cx;
+      const wy = typeof w.cy2wy === 'function' ? w.cy2wy(cy) : cy;
+      return { wx, wy };
+    },
+    snapshot: () => {
+      if (typeof w.snapshot === 'function') w.snapshot();
+    },
+    toast: (msg, type) => {
+      if (typeof w.toast === 'function') w.toast(msg, type);
+    },
+  };
+}
+
+window.cscStamp = {
+  toggle: () => {
+    const active = stampMode.toggleStampMode(buildStampDeps());
+    const btn = document.getElementById('stamp-btn');
+    if (btn) btn.classList.toggle('is-active', active);
+  },
+  isActive: stampMode.isStampActive,
+};
 queueMicrotask(() => {
   if (touchSupport.isTouchDevice()) {
     document.body.classList.add('is-touch');

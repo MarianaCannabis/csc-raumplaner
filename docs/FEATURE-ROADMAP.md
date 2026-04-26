@@ -49,7 +49,7 @@ Wird live gepflegt — pro abgeschlossenem PR wird der Status aktualisiert.
 | ✅ | Multi-User-Avatar-Verbesserungen | 3-4h | [#204](https://github.com/MarianaCannabis/csc-raumplaner/pull/204) — colorForUser hash-basiert, Live-Names im Tooltip, Cursor-Glow |
 | ✅ | PDF-Messeordnung Multi-Page-Support | 4-6h | [#205](https://github.com/MarianaCannabis/csc-raumplaner/pull/205) — promptForPages-Dialog mit "alle"/"1-3"/"1,3,5" |
 | ✅ | Bild-auf-Wand erweitern | 5-7h | [#206](https://github.com/MarianaCannabis/csc-raumplaner/pull/206) — UV 1:1 Stretch, Property-Panel-Upload, Pattern wie objects.imageMap |
-| ⏳ | Wiederholte Räume / Stempel-Funktion | 3-4h | Beschleunigt große Layouts |
+| ✅ | Wiederholte Räume / Stempel-Funktion | 3-4h | [#211](https://github.com/MarianaCannabis/coffee-raumplaner/pull/211) — `stampMode.ts` mit Live-Selection-Lookup, Esc-Beenden |
 
 ## Roadmap v3.0
 
