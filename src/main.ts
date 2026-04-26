@@ -78,6 +78,7 @@ import * as kcangWizard from './legacy/kcangWizard.js';
 import * as kcangPdfExport from './legacy/kcangPdfExport.js';
 import type { KCanGApplication } from './legacy/kcangWizard.js';
 import * as bauantragPdf from './legacy/bauantragPdf.js';
+import * as floorManager from './legacy/floorManager.js';
 import * as touchSupport from './legacy/touchSupport.js';
 import * as collabAvatars from './legacy/collabAvatars.js';
 import * as pdfPageSelector from './legacy/pdfPageSelector.js';
@@ -325,6 +326,9 @@ declare global {
     cscBauantrag: {
       generate: (opts?: bauantragPdf.BauantragOptions) => Promise<void>;
     };
+    /** Mega-Sammel ACBD #7-10 / v3.0 #2: Multi-Floor Phase 1.
+     *  Pure Floor-Logik. UI bleibt im Inline-Script, nutzt diese Helpers. */
+    cscFloors: typeof floorManager;
     /** P17.18: Tutorial aus src/legacy/tutorial.ts. Step-basiertes
      *  Overlay mit Highlight auf Topbar/Sidebar-Elementen. */
     startTutorial: () => void;
@@ -978,6 +982,11 @@ window.cscBauantrag = {
     await bauantragPdf.generateBauantragPdf(buildBauantragDeps(), opts);
   },
 };
+
+// Mega-Sammel ACBD #7-10: Multi-Floor Phase 1 — pure Floor-Helpers.
+// Inline-Script-UI in index.html nutzt window.cscFloors für add/remove/
+// rename/setHeight; existing renderFloorTabs/switchFloor bleiben unverändert.
+window.cscFloors = floorManager;
 queueMicrotask(() => {
   if (!touchSupport.isTouchDevice()) return;
   document.body.classList.add('is-touch');

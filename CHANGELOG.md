@@ -26,6 +26,32 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Roadmap v3.0
 
+- **Multi-Floor Phase 1 (Mega-Sammel ACBD #7-10)** — neuer
+  `src/legacy/floorManager.ts` Modul mit pure Floor-Management-Funktionen:
+  - **API:** `getDefaultFloors`, `addFloor(above/below)`, `removeFloor`,
+    `renameFloor`, `setFloorHeight`, `recomputeZOffsets`, `validateFloors`,
+    `getFloorById`, `getFloorAbove`, `getFloorBelow`.
+  - **Datenmodell:** `{id, name, height, zOffset (computed), order}`.
+    EG=order:0 als Anker. KG/UG haben negative order, OG positive.
+    `recomputeZOffsets` berechnet kumulativ aus den Höhen.
+  - **Backwards-Compat:** existing `floors`-Array (`{id, name, elev}`) wird
+    via `_floorsToManagerFormat`/`_managerToFloorsFormat` gewrapped.
+    `confirmFloor`/`getFloorElev`/`renderFloorTabs` bleiben unverändert.
+  - **UI:** neuer `m-floor-manager`-Modal mit add-above/add-below + pro
+    Floor inline-Edit (name, height) + Delete-Button. Topbar-Trigger
+    „⚙" neben dem existing „+"-Button.
+  - **Mindestens 1 Floor:** `removeFloor` no-op wenn nur 1 Floor.
+  - **Confirm bei Räumen:** Delete fragt wenn Räume auf dem Floor sind.
+  - +26 Vitest-Tests (defaults/add/remove/rename/setHeight/recompute/
+    validate/getFloorById/Above/Below). Vitest gesamt: 549 → 575.
+  - Bundle: index.js +~2 KB gz (floorManager-Modul + bridge), index.html
+    +~1 KB gz (m-floor-manager-Modal + UI-Functions).
+
+  **Phase 2 (eigene Sitzung mit Architektur-Diskussion):**
+  3D-Treppen-Geometrie (gerade/L/Wendeltreppe), Treppen-Bauteil im Catalog,
+  Treppen-Compliance-Regel (§ Mindestbreite, Notausgang), Stacked-3D-View
+  mit Z-Offset-Render (alle Floors gleichzeitig sichtbar mit Transparenz).
+
 - **Bauantrag-PDF-Generierung (Mega-Sammel ACBD #1-5)** — neuer
   `src/legacy/bauantragPdf.ts` Modul generiert vollständiges KCanG-Antrags-
   Dokument mit 10 Sektionen:
