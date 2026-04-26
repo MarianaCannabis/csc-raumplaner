@@ -69,6 +69,26 @@ export const STAIRS: CatalogItem[] = [
     },
   },
   {
+    id: 'stairs-spiral-standard',
+    cat: '🪜 Treppen',
+    icon: '🪜',
+    name: 'Wendeltreppe (Standard)',
+    w: 2.4, // 2 × outerRadius
+    d: 2.4,
+    h: 17 * 0.18, // 3.06 m
+    type: 'stairs',
+    stairsConfig: {
+      shape: 'spiral',
+      stepHeight: 0.18,
+      stepDepth: 0.28, // ungenutzt für spiral, aber required by interface
+      stepCount: 17,
+      withRailing: true,
+      outerRadius: 1.2,
+      innerRadius: 0.2,
+      totalRotation: Math.PI * 1.5, // 270°
+    },
+  },
+  {
     id: 'stairs-straight-keller',
     cat: '🪜 Treppen',
     icon: '🪜',
