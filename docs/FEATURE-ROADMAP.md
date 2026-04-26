@@ -21,7 +21,9 @@ Wird live gepflegt — pro abgeschlossenem PR wird der Status aktualisiert.
 | ✅ | broken-flow-detect FP `try{...}` | 5 min | [#192](https://github.com/MarianaCannabis/csc-raumplaner/pull/192) — JS-Keywords-Filter, 0 unresolved |
 | ✅ | Lighthouse-Filename-Cleanup (`v2.3-` → ohne) | 15 min | [#193](https://github.com/MarianaCannabis/csc-raumplaner/pull/193) |
 | ✅ | README-Update v2.7.x + Bundle-Stand | 20 min | [#194](https://github.com/MarianaCannabis/csc-raumplaner/pull/194) |
-| ✅ | Doppel-Aufruf `setTimeout startWelcomeFlow` | 10 min | [#195](https://github.com/MarianaCannabis/csc-raumplaner/pull/195) — Init-Block 3× kopiert, schwerer Bug |
+| ✅ | Doppel-Aufruf `setTimeout startWelcomeFlow` | 10 min | [#195](https://github.com/MarianaCannabis/csc-raumplaner/pull/195) — **3×-Init-Block-Bug**: kompletter Boot-Init bei jeder State-Mutation, major Performance-Win |
+| ⏳ | Onboarding-Tour CTA-Glitch (Bridge-Modal kurz sichtbar nach Vorlage/Leer/Laden-Click) | 30 min | Polish-Item aus Sitzung C |
+| ⏳ | CLAUDE.md-Force-Push-Regel verfeinern (erlauben auf eigenen Feature-Branches, weiterhin verboten auf main) | 15 min | Aus Sitzung C-Lehre |
 
 ## Bedienkonzept
 
@@ -57,6 +59,16 @@ Wird live gepflegt — pro abgeschlossenem PR wird der Status aktualisiert.
 
 - ⏸ HIGH-Risk Strangler-Module (Room-Manipulation, 2D-Render-Helpers, AI-Foto-Pipeline) — eigene Spec mit Sub-Modul-Split, niedrige Priorität nach v2.7.0
 - ⏸ Three.js-Tree-Shaking Audit — wenn Bundle-Ziel <400 KB wieder dringend wird
+
+## Performance-Beobachtungen (post-PR #195)
+
+User soll in den nächsten Tagen prüfen:
+- [ ] Drag-and-Drop fühlt sich geschmeidiger an
+- [ ] Tooltips „flackern" nicht mehr beim Bewegen
+- [ ] Welcome-Modal taucht nicht mehr unerwartet auf
+- [ ] App-Boot fühlt sich schneller an
+
+Falls Verhalten unverändert: Ursache war woanders, neuer Audit nötig.
 
 ## Bundle-Status (informativ)
 
