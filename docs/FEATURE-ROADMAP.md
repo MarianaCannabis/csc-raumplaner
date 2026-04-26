@@ -22,8 +22,8 @@ Wird live gepflegt — pro abgeschlossenem PR wird der Status aktualisiert.
 | ✅ | Lighthouse-Filename-Cleanup (`v2.3-` → ohne) | 15 min | [#193](https://github.com/MarianaCannabis/csc-raumplaner/pull/193) |
 | ✅ | README-Update v2.7.x + Bundle-Stand | 20 min | [#194](https://github.com/MarianaCannabis/csc-raumplaner/pull/194) |
 | ✅ | Doppel-Aufruf `setTimeout startWelcomeFlow` | 10 min | [#195](https://github.com/MarianaCannabis/csc-raumplaner/pull/195) — **3×-Init-Block-Bug**: kompletter Boot-Init bei jeder State-Mutation, major Performance-Win |
-| ⏳ | Onboarding-Tour CTA-Glitch (Bridge-Modal kurz sichtbar nach Vorlage/Leer/Laden-Click) | 30 min | Polish-Item aus Sitzung C |
-| ⏳ | CLAUDE.md-Force-Push-Regel verfeinern (erlauben auf eigenen Feature-Branches, weiterhin verboten auf main) | 15 min | Aus Sitzung C-Lehre |
+| ✅ | Onboarding-Tour CTA-Glitch (Bridge-Modal kurz sichtbar nach Vorlage/Leer/Laden-Click) | 30 min | [#199](https://github.com/MarianaCannabis/csc-raumplaner/pull/199) — `ctaThenAction` setzt state=done VOR Modal-Close |
+| ✅ | CLAUDE.md-Force-Push-Regel verfeinern (erlauben auf eigenen Feature-Branches, weiterhin verboten auf main) | 15 min | [#200](https://github.com/MarianaCannabis/csc-raumplaner/pull/200) — Lehre aus Sitzung C umgesetzt |
 
 ## Bedienkonzept
 
@@ -31,8 +31,10 @@ Wird live gepflegt — pro abgeschlossenem PR wird der Status aktualisiert.
 |---|---|---|---|
 | ✅ | **Onboarding-Tour neu strukturieren** | 3-4h | [#196](https://github.com/MarianaCannabis/csc-raumplaner/pull/196) — Phase-State-Machine, Migration alter Keys |
 | ✅ | **Konflikt-Resolution Cloud-Save** | 4-6h | [#198](https://github.com/MarianaCannabis/csc-raumplaner/pull/198) — Optimistic Locking via Version-Counter (Migration 0009 PFLICHT-Apply) |
-| ⏳ | Compliance-Wizard für KCanG-Antrag | 6-8h | geführter Flow durch 21 Regeln |
+| ✅ | **Compliance-Wizard für KCanG-Antrag** | 6-8h | [#201](https://github.com/MarianaCannabis/csc-raumplaner/pull/201) — Single-Page-Form 7 Sektionen, localStorage + opt-in Cloud-Sync, jsPDF lazy-Export (Migration 0010 PFLICHT-Apply) |
 | ⏳ | Tastatur-Shortcuts-Editor erweitern | 2-3h | Konflikt-Detection + Presets |
+| ⏳ | Hygiene-Compliance-Regel in src/compliance/ | 1-2h | analog zu §23 Präventionsbeauftragter; Daten kommen jetzt aus KCanG-Wizard Section D |
+| ⏳ | Suchtberatung-Pflichtfeld als KCanG-Regel | 1-2h | Kontakt-Validierung; Daten aus Wizard Section E |
 | ⏳ | Mobile/Touch-Optimierung | 4-8h | Tablet-Workflow Audit |
 
 ## Zusatzfunktionen

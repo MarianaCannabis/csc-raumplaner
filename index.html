@@ -1253,6 +1253,33 @@
 </div>
 </div>
 
+<!-- Pfad-E #2-9: KCanG-Compliance-Wizard. Single-Page-Form mit 7 Sektionen,
+     localStorage default + opt-in Cloud-Sync. Sektionen werden via JS
+     gerendert (siehe src/legacy/kcangWizard.ts). -->
+<div class="mdl-overlay" id="m-kcang-wizard" style="display:none">
+  <div class="mdl-dialog" style="max-width:1100px;width:95vw;height:90vh;padding:0;display:flex;overflow:hidden">
+    <nav style="width:220px;border-right:1px solid var(--bd);overflow-y:auto;padding:16px;background:var(--bg2);display:flex;flex-direction:column;gap:4px">
+      <h3 style="margin:0 0 8px;font-size:14px">📋 KCanG-Antrag</h3>
+      <a href="#kcang-sec-vereinsdaten" style="font-size:11px;color:var(--tx);text-decoration:none;padding:4px 6px;border-radius:3px">A. Vereinsdaten</a>
+      <a href="#kcang-sec-raeume" style="font-size:11px;color:var(--tx);text-decoration:none;padding:4px 6px;border-radius:3px">B. Räume</a>
+      <a href="#kcang-sec-compliance" style="font-size:11px;color:var(--tx);text-decoration:none;padding:4px 6px;border-radius:3px">C. Compliance</a>
+      <a href="#kcang-sec-hygiene" style="font-size:11px;color:var(--tx);text-decoration:none;padding:4px 6px;border-radius:3px">D. Hygiene</a>
+      <a href="#kcang-sec-suchtberatung" style="font-size:11px;color:var(--tx);text-decoration:none;padding:4px 6px;border-radius:3px">E. Suchtberatung</a>
+      <a href="#kcang-sec-sicherheit" style="font-size:11px;color:var(--tx);text-decoration:none;padding:4px 6px;border-radius:3px">F. Sicherheit</a>
+      <a href="#kcang-sec-notizen" style="font-size:11px;color:var(--tx);text-decoration:none;padding:4px 6px;border-radius:3px">G. Notizen</a>
+      <hr style="border:none;border-top:1px solid var(--bd);margin:8px 0">
+      <button class="mdl-btn mdl-btn--primary" onclick="window.cscKCanG&&window.cscKCanG.exportPdf()" style="font-size:11px">📄 PDF generieren</button>
+      <label style="font-size:10px;color:var(--tx2);display:flex;gap:6px;align-items:center;padding:4px 0">
+        <input type="checkbox" id="kcang-cloud-sync" onchange="window.cscKCanG&&window.cscKCanG.toggleCloudSync(this.checked)">
+        ☁️ Cloud-Sync
+      </label>
+      <button class="mdl-btn" onclick="window.cscKCanG&&window.cscKCanG.reset()" style="font-size:11px">Zurücksetzen</button>
+      <button class="mdl-btn" onclick="closeM('m-kcang-wizard')" style="font-size:11px">Schließen</button>
+    </nav>
+    <main id="kcang-sections" style="flex:1;overflow-y:auto;padding:20px"></main>
+  </div>
+</div>
+
 <!-- P7 Bug-2-Fix / P15 Cluster 7c — KCanG-Dashboard Modal, .kc-*-Surface -->
 <div class="mdl-overlay" id="m-kcang-dashboard">
 <div class="mdl-dialog">
@@ -1336,6 +1363,9 @@
   </details>
 
   <div class="mdl-actions">
+    <!-- Pfad-E #5: Wizard-Trigger aus KCanG-Dashboard. Schließt Dashboard
+         und öffnet den 7-Sektionen-Wizard für vollständige Antrags-Erstellung. -->
+    <button class="mdl-btn" onclick="closeM('m-kcang-dashboard');window.cscKCanG&&window.cscKCanG.open()" title="Vollständigen KCanG-Antrag mit 7 Sektionen + PDF-Export">📋 Antrag-Wizard öffnen</button>
     <button class="mdl-btn mdl-btn--primary" data-tier="simple" onclick="closeM('m-kcang-dashboard')">Fertig</button>
   </div>
 </div>
