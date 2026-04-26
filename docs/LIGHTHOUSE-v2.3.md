@@ -18,9 +18,9 @@ kill %1
 ```
 
 Output:
-- `docs/lighthouse-v2.3-report.html` — Human-readable Report (Chrome öffnet via Double-Click)
-- `docs/lighthouse-v2.3-summary.json` — Scores + Kern-Metriken für Automatisierung
-- `docs/lighthouse-v2.3-full.json` — Roh-Daten, ~3 MB
+- `docs/lighthouse-report.html` — Human-readable Report (Chrome öffnet via Double-Click)
+- `docs/lighthouse-summary.json` — Scores + Kern-Metriken für Automatisierung
+- `docs/lighthouse-full.json` — Roh-Daten, ~3 MB
 
 ## Ziel-Scores
 
@@ -45,8 +45,8 @@ Diese Container-Umgebung hat keinen Chrome-Browser — `npx lighthouse` läuft n
 1. Repository klonen + `npm install`
 2. `npm run build && npm run preview &` (läuft im Hintergrund auf Port 4173)
 3. `npm run lighthouse`
-4. Scores aus `docs/lighthouse-v2.3-summary.json` in diesen Report kopieren
-5. `docs/lighthouse-v2.3-report.html` als Beweis-Datei committen
+4. Scores aus `docs/lighthouse-summary.json` in diesen Report kopieren
+5. `docs/lighthouse-report.html` als Beweis-Datei committen
 
 ## Kein Lighthouse-CI
 
