@@ -25,7 +25,7 @@ Wird live gepflegt — pro abgeschlossenem PR wird der Status aktualisiert.
 | ✅ | Onboarding-Tour CTA-Glitch (Bridge-Modal kurz sichtbar nach Vorlage/Leer/Laden-Click) | 30 min | [#199](https://github.com/MarianaCannabis/csc-raumplaner/pull/199) — `ctaThenAction` setzt state=done VOR Modal-Close |
 | ✅ | CLAUDE.md-Force-Push-Regel verfeinern (erlauben auf eigenen Feature-Branches, weiterhin verboten auf main) | 15 min | [#200](https://github.com/MarianaCannabis/csc-raumplaner/pull/200) — Lehre aus Sitzung C umgesetzt |
 | ✅ | **3D-Mode-Hotfix (KRITISCH)** | 3h | [#202](https://github.com/MarianaCannabis/csc-raumplaner/pull/202) — `setView`-Wrapper las `window.fpCv/tCv/...` (lokale const, nicht auf window) → Canvas-Display-Swap unterblieb 5+ Wochen. v2.7.2 released |
-| ⏳ | **Module-Bridge-Audit** (Lehre aus 3D-Bug) | 2-3h | systematischer Audit aller `buildXDeps` in main.ts — sind weitere `const`-Reads silent broken? |
+| ✅ | **Module-Bridge-Audit** (Lehre aus 3D-Bug) | 2-3h | [#208](https://github.com/MarianaCannabis/csc-raumplaner/pull/208) — **14 Silent-Fail-Candidates gefunden + gefixt!** Saves heißen jetzt richtig, Exports/Compliance arbeiten mit echten Daten. `docs/MODULE-BRIDGE-AUDIT.md` |
 | ⏳ | Touch-Listener-Wire-Up auf fpCv/tCv | 2-3h | Folge zu PR #203 — Pattern-Library steht, tatsächlicher Wire-Up fehlt |
 
 ## Bedienkonzept

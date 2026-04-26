@@ -6,6 +6,24 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+### Tooling
+
+- **Module-Bridge-Audit (Sitzung G Schritt 0)** — systematischer Check
+  aller `(window as any).X`-Reads in `src/main.ts` gegen Inline-Script-
+  Deklarationen in `index.html`, Lehre aus dem 3D-Bug-Hotfix (v2.7.2).
+  **14 Silent-Fail-Candidates gefunden + gefixt:**
+  `rooms`, `objects`, `walls`, `measures`, `grounds`, `floors`,
+  `curFloor`, `projName`, `selId`, `selIsRoom`, `selIsWall`,
+  `vpZoom`, `vpX`, `vpY` — alle waren `let`-deklariert, landeten nicht
+  auf `window` → `buildExportDeps` / `buildLocalSaveDeps` / `buildComplianceDeps`
+  in main.ts kriegten leere Arrays + Default-Names. **Folge:**
+  Saves hießen immer „Projekt", PDF/CSV-Exports waren leer,
+  Compliance-Score basierte auf `[]`-Daten. Fix: `let` → `var` für
+  alle 14 (Top-Level `var` landet auf `window`, semantisch identisch).
+  Permanenter Regression-Schutz: `tests/e2e/audit-bridges.spec.ts`
+  prüft 38 Variablen + Functions, hard-fails wenn off-window.
+  Audit-Bericht: `docs/MODULE-BRIDGE-AUDIT.md`.
+
 ## 2.7.2 — 2026-04-26 — Hotfix 3D-Mode-Restore
 
 ### Fixed
