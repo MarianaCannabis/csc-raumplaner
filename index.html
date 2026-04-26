@@ -5050,7 +5050,23 @@ async function uploadPDF(file){
   if(typeof pdfjsLib==='undefined') throw new Error('PDF.js nicht geladen');
   const buf = await file.arrayBuffer();
   const pdf = await pdfjsLib.getDocument({data:buf}).promise;
-  for(let i=1;i<=Math.min(pdf.numPages,10);i++){
+  // Mega-Sammel #6: bei mehreren Seiten User fragen, sonst auto-import.
+  // Default: Threshold=1 (jedes >1-page-PDF zeigt Dialog), max=10 (alte
+  // hardcoded-Grenze). User kann „alle" / „1-3" / „1,3,5" wählen.
+  let pageNumbers;
+  if(window.cscPdfPages && pdf.numPages > 1){
+    pageNumbers = await window.cscPdfPages.promptForPages(pdf.numPages, { autoSelectThreshold: 1, maxSelectablePages: 10 });
+    if(!pageNumbers || pageNumbers.length === 0){
+      setProg(0, 'Abgebrochen');
+      throw new Error('PDF-Import abgebrochen');
+    }
+  } else {
+    // Fallback: alte Hardcoded-Logik (Single-Page PDFs / fehlender Selector)
+    pageNumbers = [];
+    for(let i=1; i<=Math.min(pdf.numPages, 10); i++) pageNumbers.push(i);
+  }
+  for(let idx=0; idx<pageNumbers.length; idx++){
+    const i = pageNumbers[idx];
     const page  = await pdf.getPage(i);
     const vp    = page.getViewport({scale:1.5});
     const cv    = document.createElement('canvas');
@@ -5061,7 +5077,7 @@ async function uploadPDF(file){
       label:'S.'+i,
       mime: 'image/jpeg'
     });
-    setProg(Math.round((i/pdf.numPages)*80)+10,'Seite '+i+'/'+pdf.numPages);
+    setProg(Math.round(((idx+1)/pageNumbers.length)*80)+10,'Seite '+i+' ('+(idx+1)+'/'+pageNumbers.length+')');
   }
 }
 

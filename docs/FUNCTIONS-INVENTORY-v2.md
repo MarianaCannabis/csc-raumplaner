@@ -6,7 +6,7 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - **onclick-Handler:** 717
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 847
-- **TS-Exports:** 472
+- **TS-Exports:** 475
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -302,6 +302,12 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `onBridgeNo` (line 212)
 - `onTutorialDone` (line 219)
 - `_resetForTests` (line 268)
+
+### src/legacy/pdfPageSelector.ts
+
+- `promptForPages` (line 34)
+- `closeSelector` (line 120)
+- `parseRange` (line 129)
 
 ### src/legacy/renderPresets.ts
 
