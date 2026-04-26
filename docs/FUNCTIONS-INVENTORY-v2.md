@@ -7,6 +7,7 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 852
 - **TS-Exports:** 488
+- **tbm-item-Coverage:** 158/158 fully tagged (data-mode: 158/158, data-tier: 158/158)
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
