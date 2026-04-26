@@ -4,8 +4,8 @@ Statische Analyse: alle `onclick="X(…)"` gegen definierte Functions gemuxt.
 
 ## Ergebnis
 
-- Geprüfte onclick-Handler: 714
-- ✅ Resolved (Function ist definiert): 714
+- Geprüfte onclick-Handler: 715
+- ✅ Resolved (Function ist definiert): 715
 - ❌ Unresolved: 0
 
 ✅ Keine unresolved Handler gefunden.

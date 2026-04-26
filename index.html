@@ -1269,7 +1269,8 @@
       <a href="#kcang-sec-sicherheit" style="font-size:11px;color:var(--tx);text-decoration:none;padding:4px 6px;border-radius:3px">F. Sicherheit</a>
       <a href="#kcang-sec-notizen" style="font-size:11px;color:var(--tx);text-decoration:none;padding:4px 6px;border-radius:3px">G. Notizen</a>
       <hr style="border:none;border-top:1px solid var(--bd);margin:8px 0">
-      <button class="mdl-btn mdl-btn--primary" onclick="window.cscKCanG&&window.cscKCanG.exportPdf()" style="font-size:11px">📄 PDF generieren</button>
+      <button class="mdl-btn mdl-btn--primary" onclick="window.cscKCanG&&window.cscKCanG.exportPdf()" style="font-size:11px">📄 KCanG-PDF (Wizard-Daten)</button>
+      <button class="mdl-btn mdl-btn--primary" onclick="window.cscBauantrag&&window.cscBauantrag.generate()" style="font-size:11px;margin-top:4px" title="Vollständiger Bauantrag mit Lageplan, Grundrissen, Compliance, Möbel-Liste, Hygiene, Suchtberatung, Sicherheit">📋 Bauantrag-PDF (komplett)</button>
       <label style="font-size:10px;color:var(--tx2);display:flex;gap:6px;align-items:center;padding:4px 0">
         <input type="checkbox" id="kcang-cloud-sync" onchange="window.cscKCanG&&window.cscKCanG.toggleCloudSync(this.checked)">
         ☁️ Cloud-Sync

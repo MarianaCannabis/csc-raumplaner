@@ -3,10 +3,10 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 ## Zusammenfassung
 
-- **onclick-Handler:** 724
+- **onclick-Handler:** 725
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 852
-- **TS-Exports:** 488
+- **TS-Exports:** 489
 - **tbm-item-Coverage:** 158/158 fully tagged (data-mode: 158/158, data-tier: 158/158)
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
@@ -206,6 +206,10 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `updateLoginGate` (line 59)
 - `_resetGateStateForTests` (line 76)
 - `_getGateStateForTests` (line 81)
+
+### src/legacy/bauantragPdf.ts
+
+- `generateBauantragPdf` (line 81)
 
 ### src/legacy/changelog.ts
 
@@ -783,66 +787,66 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 | Function | Line |
 |---|---|
-| `_loadTelemetryScripts` | 2373 |
-| `_showCrashModal` | 2463 |
-| `loadSharedFurniture` | 2656 |
-| `saveSharedFurniture` | 2673 |
-| `deleteSharedFurniture` | 2700 |
-| `aiFetch` | 2717 |
-| `callAI` | 2744 |
-| `aiText` | 2792 |
-| `aiJSON` | 2798 |
-| `testAIConnection` | 2812 |
-| `loadCustom` | 2860 |
-| `saveCustom` | 2861 |
-| `getCatalog` | 2871 |
-| `getArchCatalog` | 2879 |
-| `getSecurityCatalog` | 2880 |
-| `toggleCatGroup` | 2881 |
-| `findItem` | 2893 |
-| `m2px` | 2921 |
-| `px2m` | 2922 |
-| `wx2cx` | 2923 |
-| `wy2cy` | 2924 |
-| `cx2wx` | 2925 |
-| `cy2wy` | 2926 |
-| `snapM` | 2927 |
-| `resizeCv` | 2929 |
-| `draw2D` | 2935 |
-| `drawGrid` | 3035 |
-| `drawRoom2D` | 3058 |
-| `drawGround2D` | 3120 |
-| `hitGround` | 3157 |
-| `hitGroundResizeHandle` | 3174 |
-| `_getImgCached` | 3189 |
-| `drawObj2D` | 3200 |
-| `drawMeasure` | 3302 |
-| `hitObj` | 3323 |
-| `hitRoom` | 3333 |
-| `hitRoomResizeHandle` | 3341 |
-| `startCatalogDrag` | 3607 |
-| `placeFromCatalog` | 3617 |
-| `quickAddRoom` | 3641 |
-| `addRoom` | 3647 |
-| `addObject` | 3669 |
-| `removeRoom` | 3693 |
-| `quickAddGround` | 3701 |
-| `addGround` | 3711 |
-| `removeGround` | 3728 |
-| `selectGround` | 3737 |
-| `openGroundMaterialPicker` | 3747 |
-| `closeGroundMaterialPicker` | 3767 |
-| `openGroundPropPanel` | 3773 |
-| `closeGroundPropPanel` | 3819 |
-| `syncGroundPropPanel` | 3823 |
-| `deleteSelectedGround` | 3833 |
-| `setSelection` | 3838 |
-| `updateSelBotBar` | 3866 |
-| `applySelProps` | 3902 |
-| `rotateSel` | 3912 |
-| `dupSel` | 3931 |
-| `deleteSel` | 3937 |
-| `removeFreeWall` | 3945 |
+| `_loadTelemetryScripts` | 2374 |
+| `_showCrashModal` | 2464 |
+| `loadSharedFurniture` | 2657 |
+| `saveSharedFurniture` | 2674 |
+| `deleteSharedFurniture` | 2701 |
+| `aiFetch` | 2718 |
+| `callAI` | 2745 |
+| `aiText` | 2793 |
+| `aiJSON` | 2799 |
+| `testAIConnection` | 2813 |
+| `loadCustom` | 2861 |
+| `saveCustom` | 2862 |
+| `getCatalog` | 2872 |
+| `getArchCatalog` | 2880 |
+| `getSecurityCatalog` | 2881 |
+| `toggleCatGroup` | 2882 |
+| `findItem` | 2894 |
+| `m2px` | 2922 |
+| `px2m` | 2923 |
+| `wx2cx` | 2924 |
+| `wy2cy` | 2925 |
+| `cx2wx` | 2926 |
+| `cy2wy` | 2927 |
+| `snapM` | 2928 |
+| `resizeCv` | 2930 |
+| `draw2D` | 2936 |
+| `drawGrid` | 3036 |
+| `drawRoom2D` | 3059 |
+| `drawGround2D` | 3121 |
+| `hitGround` | 3158 |
+| `hitGroundResizeHandle` | 3175 |
+| `_getImgCached` | 3190 |
+| `drawObj2D` | 3201 |
+| `drawMeasure` | 3303 |
+| `hitObj` | 3324 |
+| `hitRoom` | 3334 |
+| `hitRoomResizeHandle` | 3342 |
+| `startCatalogDrag` | 3608 |
+| `placeFromCatalog` | 3618 |
+| `quickAddRoom` | 3642 |
+| `addRoom` | 3648 |
+| `addObject` | 3670 |
+| `removeRoom` | 3694 |
+| `quickAddGround` | 3702 |
+| `addGround` | 3712 |
+| `removeGround` | 3729 |
+| `selectGround` | 3738 |
+| `openGroundMaterialPicker` | 3748 |
+| `closeGroundMaterialPicker` | 3768 |
+| `openGroundPropPanel` | 3774 |
+| `closeGroundPropPanel` | 3820 |
+| `syncGroundPropPanel` | 3824 |
+| `deleteSelectedGround` | 3834 |
+| `setSelection` | 3839 |
+| `updateSelBotBar` | 3867 |
+| `applySelProps` | 3903 |
+| `rotateSel` | 3913 |
+| `dupSel` | 3932 |
+| `deleteSel` | 3938 |
+| `removeFreeWall` | 3946 |
 
 ---
 
