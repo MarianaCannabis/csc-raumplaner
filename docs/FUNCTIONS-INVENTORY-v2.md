@@ -6,7 +6,7 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - **onclick-Handler:** 717
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 847
-- **TS-Exports:** 467
+- **TS-Exports:** 472
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -218,6 +218,14 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `clearVisualHistoryForTests` (line 156)
 - `openVisualHistory` (line 165)
 - `restoreFromVisualHistory` (line 232)
+
+### src/legacy/collabAvatars.ts
+
+- `colorForUser` (line 31)
+- `formatLastAction` (line 44)
+- `avatarTooltipHtml` (line 66)
+- `pulseCursorGlow` (line 87)
+- `PALETTE_SIZE` (line 101)
 
 ### src/legacy/complianceBridge.ts
 

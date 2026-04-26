@@ -43,7 +43,7 @@ Wird live gepflegt — pro abgeschlossenem PR wird der Status aktualisiert.
 |---|---|---|---|
 | ⏳ | Full Menu-Tagging (140 Items mit data-mode/tier) | 4-6h | Roadmap v2.3 |
 | ⏳ | Snapshot/Visual-History UX | 4-5h | Time-Travel-UI mit Thumbnails |
-| ⏳ | Multi-User-Avatar-Verbesserungen | 3-4h | Realtime-Kollab-Polish |
+| ✅ | Multi-User-Avatar-Verbesserungen | 3-4h | [#204](https://github.com/MarianaCannabis/csc-raumplaner/pull/204) — colorForUser hash-basiert, Live-Names im Tooltip, Cursor-Glow |
 | ⏳ | PDF-Messeordnung Multi-Page-Support | 4-6h | aktuell single-page |
 | ⏳ | Bild-auf-Wand erweitern | 5-7h | Pattern wie Boden auf Wände/Decken |
 | ⏳ | Wiederholte Räume / Stempel-Funktion | 3-4h | Beschleunigt große Layouts |

@@ -42,6 +42,28 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Bedienkonzept
 
+- **Multi-User-Avatar v2 (Mega-Sammel Schritt 5)** — neuer
+  `src/legacy/collabAvatars.ts` Modul mit:
+  - `colorForUser(id)`: hash-basierte Farb-Zuordnung (12 Farben),
+    deterministisch — User sehen sich selbst und andere immer in
+    derselben Farbe (auch nach Reconnect).
+  - `formatLastAction(ts)`: "vor 30 Sek." / "vor 5 Min." / "14:23"
+    (Format je nach Alter).
+  - `avatarTooltipHtml`: XSS-gehärtetes Tooltip-Format Email + last-action.
+  - `pulseCursorGlow(el)`: 500ms CSS-Animation auf Cursor-Element bei
+    User-Action; mit prefers-reduced-motion-Honor.
+  - Avatar-Bar in `index.html` jetzt `pointer-events:auto` für Tooltips,
+    Cursor-Render in 2D-Canvas nutzt hash-Farbe statt Server-Random.
+  - +17 Vitest-Tests (deterministisch, distribution, formatLastAction,
+    XSS-Escape, glow-pulse). Vitest gesamt: 475 → 492.
+  - Bundle: index.html +320 gz, index.js +780 gz, CSS +90 gz.
+
+### Zusatzfunktionen
+
+(in dieser Sitzung verschoben — siehe Mega-Sammel-Bericht)
+
+### Bedienkonzept
+
 - **Mobile/Touch-Optimierung (Mega-Sammel Schritt 4)** — neuer
   `src/legacy/touchSupport.ts` Modul mit `attachTouchHandlers(deps)`
   Helper für Pan / Pinch-Zoom / Tap / Long-Press auf jedem Canvas.
