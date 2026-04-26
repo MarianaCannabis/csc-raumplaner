@@ -6,6 +6,40 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+## 2.7.2 — 2026-04-26 — Hotfix 3D-Mode-Restore
+
+### Fixed
+
+- **3D-Mode-Toggle wiederhergestellt (Hotfix kritisch)** — User-Bericht
+  „3D funktioniert nicht mehr": setView('3d') änderte zwar `currentView`,
+  aber die Canvas-Sichtbarkeit wurde nicht geswappt — 3D-Canvas blieb
+  versteckt, 2D-Canvas blieb sichtbar.
+  - **Root-Cause**: Der `setView`-Wrapper in `src/main.ts` (P17.14
+    View-Controls) las `window.fpCv`, `window.tCv`, `window.fpCam3`,
+    `window.oCam`, `window.grid3` — die sind aber alle als `const` im
+    Inline-Script-Scope deklariert (Zeilen 2892, 4002-4036) und landen
+    deshalb NICHT auf `window`. Resultat: alle deps kamen als null/undefined
+    rein, der DOM-Display-Swap unterblieb stillschweigend. Bug bestand
+    seit P17.14 (PR #173) — wurde von User erst bei Sammel-Sitzung F
+    bemerkt.
+  - **Fix**:
+    1. `index.html` exposed jetzt explizit nach Three.js-Init:
+       `window.fpCv/tCv/scene/oCam/fpCam3/topCam/grid3/cam3/rend3` — eine
+       targeted-edit Bridge, kein Verhaltens-Wechsel.
+    2. Neuer `window._setCam3(c)` Setter — reassigniert auch das LOKALE
+       `let cam3`, nicht nur `window.cam3` (sonst sah der Render-Loop
+       den Camera-Swap im walk-mode nicht).
+    3. `setView`-Wrapper in `src/main.ts` fällt auf
+       `document.getElementById('fp-canvas'/'three-canvas')` zurück, falls
+       die Bridge fehlt — robust gegen künftige Refactors.
+  - **Regression-Schutz**: neuer E2E-Test `tests/e2e/3d-toggle.spec.ts`
+    asserts dass nach `setView('3d')` der 3D-Canvas `display:block` und
+    der 2D-Canvas `display:none` hat. Hätte den Bug damals gefangen.
+  - **Bundle-Impact**: ±0 (nur Variable-Bridges, ein Setter, kein neues
+    Modul).
+
+## Unreleased — werden mit nächstem Release gemerged
+
 ### Bedienkonzept
 
 - **KCanG-Compliance-Wizard (Pfad-E)** — Single-Page-Form mit 7 frei

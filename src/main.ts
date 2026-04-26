@@ -568,11 +568,20 @@ window.setView = (v) => {
   };
   viewControls.setView(v, {
     setCurrentView: (val) => { w.currentView = val; },
-    fpCv: w.fpCv ?? null,
-    tCv: w.tCv ?? null,
+    // Hotfix v2.7.2: DOM-Lookup statt window.fpCv/tCv (lokale const im
+    // Inline-Script — landen nicht auf window).
+    fpCv: w.fpCv ?? (document.getElementById('fp-canvas') as HTMLCanvasElement | null),
+    tCv: w.tCv ?? (document.getElementById('three-canvas') as HTMLCanvasElement | null),
     exitPointerLock: () => document.exitPointerLock(),
     draw2D: w.draw2D ?? (() => {}),
-    setCam3: (cam) => { w.cam3 = cam; },
+    // Hotfix v2.7.2: window._setCam3 reassigniert auch das lokale cam3 —
+    // sonst sieht der Render-Loop den Camera-Swap nicht. Fallback-Pfad
+    // (nur window.cam3 setzen) bleibt für E2E-Tests ohne Setter.
+    setCam3: (cam) => {
+      const setter = (window as unknown as { _setCam3?: (c: unknown) => void })._setCam3;
+      if (typeof setter === 'function') setter(cam);
+      else w.cam3 = cam;
+    },
     fpCam3: w.fpCam3,
     oCam: w.oCam,
     setGrid3Visible: (vis) => { if (w.grid3) w.grid3.visible = vis; },
