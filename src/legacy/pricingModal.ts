@@ -41,7 +41,7 @@ export const PRICING_PLANS: readonly PlanDef[] = [
   {
     id: 'pro',
     name: 'Pro',
-    price: '9 € / Monat',
+    price: '0 € (Test-Mode)',
     features: [
       'Unbegrenzt Projekte',
       'Cloud-Save + Sync',
@@ -55,7 +55,7 @@ export const PRICING_PLANS: readonly PlanDef[] = [
   {
     id: 'team',
     name: 'Team',
-    price: '29 € / Monat',
+    price: '0 € (Test-Mode)',
     features: [
       'Pro-Features',
       'Multi-User-Kollaboration',
@@ -133,8 +133,9 @@ export function openPricingModal(deps: PricingModalDeps): void {
     cards +
     '</div>' +
     '<div style="margin-top:14px;padding:10px 12px;background:var(--bg2);border:1px solid var(--bd);border-radius:4px;font-size:10px;color:var(--tx2)">' +
-    '<b>Phase 1:</b> Pricing-UI ohne echtes Stripe. Plan-Wechsel ist heute symbolisch ' +
-    '(DB-Update). Echte Zahlung kommt in Phase 2 mit Stripe-Checkout-Session + Webhook.' +
+    '<b>Phase 2 (Test-Mode):</b> Stripe-Checkout aktiv, alle Pläne mit 0 € als Test. ' +
+    'Pro/Team triggert echten Stripe-Checkout-Flow (Karten-Eingabe optional in Test-Mode). ' +
+    'Real-Pricing-Aktivierung später, Infrastruktur ist live.' +
     '</div>' +
     '</div>';
 
@@ -145,19 +146,23 @@ export function openPricingModal(deps: PricingModalDeps): void {
     btn.onclick = async () => {
       const plan = btn.dataset.plan as PlanId;
       const planDef = PRICING_PLANS.find((p) => p.id === plan);
-      const ok = window.confirm(
-        'Plan zu "' + (planDef?.name || plan) + '" wechseln?\n\n' +
-          'Phase 1: symbolische Änderung in der Datenbank. Keine Zahlung.',
-      );
+      const confirmMsg = plan === 'free'
+        ? 'Auf Free-Plan zurücksetzen?'
+        : 'Stripe-Checkout für "' + (planDef?.name || plan) + '" öffnen?\n\n' +
+          'Test-Mode: 0 € — Karte ist optional (Test-Karte: 4242 4242 4242 4242).';
+      const ok = window.confirm(confirmMsg);
       if (!ok) return;
       btn.disabled = true;
-      btn.textContent = '⏳ Wechsle…';
+      btn.textContent = plan === 'free' ? '⏳ Wechsle…' : '⏳ Öffne Checkout…';
       try {
         await deps.onSelectPlan(plan);
-        if (deps.toast) deps.toast('✅ Plan auf "' + (planDef?.name || plan) + '" gesetzt', 'g');
-        closePricingModal();
+        if (plan === 'free' && deps.toast) {
+          deps.toast('✅ Plan auf "Free" gesetzt', 'g');
+          closePricingModal();
+        }
+        // Bei pro/team führt onSelectPlan einen Redirect aus → kein Toast nötig.
       } catch (e) {
-        if (deps.toast) deps.toast('Plan-Wechsel fehlgeschlagen: ' + (e as Error).message, 'r');
+        if (deps.toast) deps.toast('Checkout fehlgeschlagen: ' + (e as Error).message, 'r');
         btn.disabled = false;
         btn.textContent = planDef?.cta || 'Plan wählen';
       }

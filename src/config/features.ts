@@ -66,3 +66,19 @@ export function checkLimit(feature: keyof TierLimits, currentValue: number): boo
   try { (window as unknown as { toast?: (t: string, k: string) => void }).toast?.(msg, 'r'); } catch (e) {}
   return false;
 }
+
+// ── Stripe Phase 2 (#14): Soft-Limit-Check ────────────────────────────
+// Im Gegensatz zu checkLimit blockiert dieser nichts — returnt
+// { ok: true, warning?: string } sodass der Caller den Save trotzdem
+// ausführen kann, aber den User auf Upgrade aufmerksam macht.
+export interface SoftLimitResult { ok: boolean; warning?: string }
+export function checkPlanLimit(feature: keyof TierLimits, currentValue: number): SoftLimitResult {
+  const limits = currentLimits();
+  const limit = limits[feature];
+  if (currentValue < limit) return { ok: true };
+  const label = PLANS[userTier()].label;
+  return {
+    ok: true, // soft: erlaubt aber Warning
+    warning: `${feature}-Limit (${limit === Infinity ? '∞' : limit}) für ${label}-Plan erreicht. Upgrade auf Pro?`,
+  };
+}

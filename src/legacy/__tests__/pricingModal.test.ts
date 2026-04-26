@@ -41,22 +41,34 @@ describe('openPricingModal', () => {
     expect(btn.textContent).toContain('Aktueller');
   });
 
-  it('Phase-1-Hinweis-Banner sichtbar', () => {
+  it('Phase-2-Hinweis-Banner sichtbar (Test-Mode)', () => {
     openPricingModal(mkDeps());
     const html = document.getElementById('m-pricing')!.innerHTML;
-    expect(html).toContain('Phase 1');
-    expect(html).toContain('symbolisch');
+    expect(html).toContain('Phase 2');
+    expect(html).toContain('Test-Mode');
   });
 
-  it('Plan-Wechsel-Click ruft onSelectPlan + toast', async () => {
+  it('Plan-Wechsel-Click auf "free" ruft onSelectPlan + toast', async () => {
+    const deps = mkDeps({ currentPlan: 'pro' });
+    openPricingModal(deps);
+    const freeBtn = document.querySelector('button[data-plan="free"]') as HTMLButtonElement;
+    freeBtn.click();
+    await new Promise((r) => setTimeout(r, 50));
+    expect(deps.onSelectPlan).toHaveBeenCalledWith('free');
+    expect(deps.toast).toHaveBeenCalledWith(expect.stringContaining('Free'), 'g');
+  });
+
+  it('Plan-Wechsel-Click auf "pro" ruft onSelectPlan ohne Toast (Redirect erwartet)', async () => {
     const deps = mkDeps({ currentPlan: 'free' });
     openPricingModal(deps);
     const proBtn = document.querySelector('button[data-plan="pro"]') as HTMLButtonElement;
     proBtn.click();
-    // confirm wurde aufgerufen, action ist async
     await new Promise((r) => setTimeout(r, 50));
     expect(deps.onSelectPlan).toHaveBeenCalledWith('pro');
-    expect(deps.toast).toHaveBeenCalledWith(expect.stringContaining('Pro'), 'g');
+    // Pro-Plan: kein Toast (Redirect-Pfad), nur onSelectPlan-Call.
+    const toastCalls = (deps.toast as ReturnType<typeof vi.fn>).mock.calls;
+    const successToast = toastCalls.find((c) => c[1] === 'g');
+    expect(successToast).toBeUndefined();
   });
 
   it('User-Cancel im confirm: kein onSelectPlan', () => {

@@ -6,7 +6,7 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - **onclick-Handler:** 734
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 863
-- **TS-Exports:** 513
+- **TS-Exports:** 514
 - **tbm-item-Coverage:** 160/160 fully tagged (data-mode: 160/160, data-tier: 160/160)
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
@@ -167,6 +167,7 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `currentLimits` (line 38)
 - `hasFeature` (line 45)
 - `checkLimit` (line 60)
+- `checkPlanLimit` (line 75)
 
 ### src/export/ifc.ts
 
@@ -341,7 +342,7 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 ### src/legacy/pricingModal.ts
 
 - `openPricingModal` (line 110)
-- `closePricingModal` (line 171)
+- `closePricingModal` (line 176)
 
 ### src/legacy/renderPresets.ts
 
