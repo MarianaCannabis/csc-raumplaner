@@ -468,6 +468,7 @@
   <div class="tb-group" id="floor-tabs-wrap">
     <div id="floor-tabs"></div>
     <button class="tb-btn tb-btn--ghost is-compact" id="btn-floor-add" data-tier="simple" onclick="openM('m-floor')" aria-label="Etage hinzufügen" title="Etage hinzufügen" data-icon="plus"></button>
+    <button class="tb-btn tb-btn--ghost is-compact" id="btn-floor-manager" data-tier="standard" onclick="openFloorManager()" aria-label="Etagen-Manager öffnen" title="Etagen-Manager (Phase 1: add/remove/rename/Höhe)">⚙</button>
   </div>
   <span class="tb-divider"></span>
 
@@ -2313,6 +2314,27 @@
   <div class="mdl-actions">
     <button class="mdl-btn" data-tier="simple" onclick="closeM('m-floor')">Abbrechen</button>
     <button class="mdl-btn mdl-btn--primary" onclick="confirmFloor()">Erstellen</button>
+  </div>
+</div>
+</div>
+
+<!-- Mega-Sammel ACBD #7-10 / v3.0 #2: Multi-Floor-Manager (Phase 1).
+     Vollständiges UI für add/remove/rename/setHeight aller Floors.
+     Sticky-Liste links, Editor rechts. Existing m-floor (Add-Only) bleibt
+     für Backwards-Compat. -->
+<div class="mdl-overlay" id="m-floor-manager">
+<div class="mdl-dialog" style="max-width:520px;max-height:80vh;overflow-y:auto">
+  <h2>🏢 Etagen-Manager</h2>
+  <div style="font-size:11px;color:var(--tx2);margin-bottom:10px">
+    Etagen anlegen, umbenennen, Höhen anpassen. EG ist immer Anker (zOffset=0).
+  </div>
+  <div id="floor-manager-list" style="margin-bottom:12px"></div>
+  <div style="display:flex;gap:6px;margin-bottom:10px">
+    <button class="mdl-btn" onclick="addFloorAbove()">⬆ Etage darüber</button>
+    <button class="mdl-btn" onclick="addFloorBelow()">⬇ Etage darunter</button>
+  </div>
+  <div class="mdl-actions">
+    <button class="mdl-btn mdl-btn--primary" data-tier="simple" onclick="closeM('m-floor-manager')">Schließen</button>
   </div>
 </div>
 </div>
@@ -5549,6 +5571,106 @@ function confirmFloor(){
 function getFloorElev(floorId){
   const f = floors.find(f=>f.id===(floorId||curFloor));
   return f ? f.elev : 0;
+}
+
+// Mega-Sammel ACBD #7-10 / v3.0 #2: Multi-Floor-Manager-UI.
+// floors-Array (existing) ist {id, name, elev}-Format. Wir wrappen das
+// auf das floorManager-Format {id, name, height, zOffset, order} für
+// Computations und schreiben zurück. Backwards-Compat zu existing
+// confirmFloor/getFloorElev/renderFloorTabs.
+function _floorsToManagerFormat(){
+  return floors.map(function(f, i){
+    return {
+      id: f.id,
+      name: f.name,
+      height: typeof f.elev === 'number' && f.elev > 0 ? f.elev : 3.0,
+      zOffset: 0,
+      // EG=0, andere folgen Reihenfolge im Array. KG/UG bleibt — alte
+      // Daten haben kein order-Feld, wir leiten es ab: 'eg' → 0,
+      // sonst aus index.
+      order: f.id === 'eg' ? 0 : (i === 0 ? 0 : i),
+    };
+  });
+}
+function _managerToFloorsFormat(managerFloors){
+  // Schreibt zurück nach existing floors-Array-Format. Behält elev (= height).
+  return managerFloors.map(function(f){
+    return { id: f.id, name: f.name, elev: f.height };
+  });
+}
+function openFloorManager(){
+  renderFloorManagerList();
+  openM('m-floor-manager');
+}
+function renderFloorManagerList(){
+  var el = document.getElementById('floor-manager-list');
+  if(!el) return;
+  if(floors.length === 0){
+    el.innerHTML = '<div style="font-size:11px;color:var(--tx3)">Keine Etagen.</div>';
+    return;
+  }
+  var rows = floors.map(function(f){
+    var safeId = f.id.replace(/'/g, '\\\'');
+    return '<div style="display:flex;gap:6px;align-items:center;padding:6px;border:1px solid var(--bd);border-radius:4px;margin-bottom:4px">'
+      + '<input type="text" value="' + (f.name||'').replace(/"/g, '&quot;') + '" '
+      + 'oninput="renameFloorCmd(\'' + safeId + '\', this.value)" '
+      + 'style="flex:1;min-width:0;padding:4px 6px;background:var(--bg2);border:1px solid var(--bd);border-radius:3px;color:var(--tx)">'
+      + '<input type="number" value="' + (f.elev||3.0) + '" step="0.1" min="0.5" '
+      + 'oninput="setFloorHeightCmd(\'' + safeId + '\', +this.value)" '
+      + 'style="width:60px;padding:4px;background:var(--bg2);border:1px solid var(--bd);border-radius:3px;color:var(--tx)" title="Höhe in m">'
+      + '<span style="font-size:9px;color:var(--tx3)">m</span>'
+      + (floors.length > 1
+          ? '<button class="mdl-btn" onclick="removeFloorCmd(\'' + safeId + '\')" style="font-size:10px;padding:2px 6px;color:var(--rd, #ef4444)">🗑</button>'
+          : '')
+      + '</div>';
+  }).join('');
+  el.innerHTML = rows;
+}
+function addFloorAbove(){
+  var managerFloors = _floorsToManagerFormat();
+  var next = window.cscFloors.addFloor(managerFloors, 'above');
+  floors = _managerToFloorsFormat(next);
+  renderFloorTabs();
+  renderFloorManagerList();
+  if(typeof toast === 'function') toast('Etage darüber hinzugefügt', 'g');
+  if(typeof snapshot === 'function') snapshot();
+}
+function addFloorBelow(){
+  var managerFloors = _floorsToManagerFormat();
+  var next = window.cscFloors.addFloor(managerFloors, 'below');
+  floors = _managerToFloorsFormat(next);
+  renderFloorTabs();
+  renderFloorManagerList();
+  if(typeof toast === 'function') toast('Etage darunter hinzugefügt', 'g');
+  if(typeof snapshot === 'function') snapshot();
+}
+function removeFloorCmd(id){
+  var hasRoomsOnFloor = (rooms || []).some(function(r){ return r.floorId === id; });
+  var msg = hasRoomsOnFloor
+    ? 'Etage hat noch Räume. Trotzdem löschen? Räume bleiben in der DB aber sind ohne sichtbare Etage.'
+    : 'Etage löschen?';
+  if(!confirm(msg)) return;
+  var managerFloors = _floorsToManagerFormat();
+  var next = window.cscFloors.removeFloor(managerFloors, id);
+  floors = _managerToFloorsFormat(next);
+  if(curFloor === id && floors.length > 0) curFloor = floors[0].id;
+  renderFloorTabs();
+  renderFloorManagerList();
+  if(typeof toast === 'function') toast('Etage gelöscht', 'b');
+  if(typeof snapshot === 'function') snapshot();
+}
+function renameFloorCmd(id, newName){
+  var managerFloors = _floorsToManagerFormat();
+  var next = window.cscFloors.renameFloor(managerFloors, id, newName);
+  floors = _managerToFloorsFormat(next);
+  renderFloorTabs();
+}
+function setFloorHeightCmd(id, height){
+  if(!Number.isFinite(height) || height <= 0) return;
+  var managerFloors = _floorsToManagerFormat();
+  var next = window.cscFloors.setFloorHeight(managerFloors, id, height);
+  floors = _managerToFloorsFormat(next);
+  renderFloorTabs();
 }
 
 // ════════════════════════════════════════════════════════════════════════
