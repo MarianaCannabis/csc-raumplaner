@@ -5358,18 +5358,12 @@ function snapshot(){
   if(typeof _pushVisualHistory === 'function') _pushVisualHistory(state);
   // Auto-save to localStorage on every change (skip during init)
   updateSuggestions();
-initPWA();
-setTimeout(initTooltips,500);
-setTimeout(renderKIDropdown,200);
-loadBadges();
-showTipOfDay();
-// Onboarding for first-time users
-if(!localStorage.getItem('csc-onboarded')){ 
-    setTimeout(function(){if(localStorage.getItem("csc-welcome-never")!=="1")startWelcomeFlow();}, 800); 
-  } else { 
-    checkAndAwardBadge('first_open'); 
-    setTimeout(suggestNextStep, 3000);
-  }
+  // Bug-Fix Pfad-C #6: bis 2026-04-26 stand hier ein verirrter Boot-Init-
+  // Block (initPWA + initTooltips + renderKIDropdown + loadBadges +
+  // showTipOfDay + Onboarding-Welcome-Flow + checkAndAwardBadge +
+  // suggestNextStep). Der lief bei JEDEM snapshot() (also bei JEDER
+  // State-Mutation) und re-triggerte u.a. den Welcome-Flow für neue
+  // User. Korrekte Boot-Initialisierung läuft in den Z. ~20770ff.
   triggerAutoCloudSave();
   if(_autoSaveReady) {
     // Log the change
@@ -12697,18 +12691,9 @@ async function autoOptimizeAll(){
   }
 
   rebuild3D(); draw2D(); snapshot(); updateSuggestions();
-initPWA();
-setTimeout(initTooltips,500);
-setTimeout(renderKIDropdown,200);
-loadBadges();
-showTipOfDay();
-// Onboarding for first-time users
-if(!localStorage.getItem('csc-onboarded')){ 
-    setTimeout(function(){if(localStorage.getItem("csc-welcome-never")!=="1")startWelcomeFlow();}, 800); 
-  } else { 
-    checkAndAwardBadge('first_open'); 
-    setTimeout(suggestNextStep, 3000);
-  }
+  // Bug-Fix Pfad-C #6: bis 2026-04-26 stand hier derselbe verirrte Boot-
+  // Init-Block wie in snapshot() — siehe Kommentar dort. Wurde mit
+  // Schritt 6 entfernt; korrekter Boot läuft in Z. ~20770ff.
   addMsg('⚡ Auto-Optimierung abgeschlossen!\n\nDurchgeführt:\n'
     +issues.map(i=>'• '+i).join('\n')+(issues.length?'':'\n✅ Alles bereits optimal!'),'ai');
   toast('⚡ '+issues.length+' Verbesserungen durchgeführt','g');
