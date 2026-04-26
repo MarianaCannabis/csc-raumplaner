@@ -32,6 +32,15 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Fixed
 
+- **Verirrter Boot-Init-Block in `snapshot()` + `autoOptimizeAll()`
+  entfernt** — bei Recherche zum Welcome-Flow-Doppel-Trigger entdeckt:
+  der gesamte Boot-Init-Block (initPWA + initTooltips + renderKIDropdown
+  + loadBadges + showTipOfDay + Onboarding-Welcome-Flow + checkAndAwardBadge
+  + suggestNextStep) war versehentlich 3× kopiert (snapshot, autoOptimizeAll,
+  Boot). `snapshot()` läuft bei JEDER State-Mutation — der Block re-triggerte
+  also bei jedem Move/Add/Delete den Welcome-Flow für neue User und
+  re-registrierte den Service-Worker. Korrekter Boot-Init bleibt nur noch
+  einmal in den Z. ~20770ff.
 - **Right-Panel Tab-Boot-Race (KNOWN-ISSUES #1)** — beide
   `setTimeout(()=>showRight('props'),200)` Boot-Aufrufe in `index.html`
   prüfen jetzt vorher, ob der User schon einen anderen Tab aktiviert hat
