@@ -74,6 +74,9 @@ import * as tutorial from './legacy/tutorial.js';
 import * as onboardingTour from './legacy/onboardingTour.js';
 import * as conflictResolver from './legacy/conflictResolver.js';
 import { probeOptimisticLocking } from './persist/cloudProjects.js';
+import * as kcangWizard from './legacy/kcangWizard.js';
+import * as kcangPdfExport from './legacy/kcangPdfExport.js';
+import type { KCanGApplication } from './legacy/kcangWizard.js';
 import * as helpModal from './legacy/helpModal.js';
 import * as tbMenu from './legacy/tbMenu.js';
 import * as versionHistory from './legacy/versionHistory.js';
@@ -287,6 +290,15 @@ declare global {
     cscConflictResolver: typeof conflictResolver;
     /** Pfad-D: Boot-Capability-Flag — true wenn version-Spalte existiert. */
     __cscOptimisticLocking?: boolean;
+    /** Pfad-E: KCanG-Compliance-Wizard. open/close/exportPdf/toggleCloudSync/reset.
+     *  localStorage default + opt-in Cloud-Sync nach Migration 0010-Apply. */
+    cscKCanG: {
+      open: () => void;
+      close: () => void;
+      exportPdf: () => Promise<void>;
+      toggleCloudSync: (enabled: boolean) => void;
+      reset: () => void;
+    };
     /** P17.18: Tutorial aus src/legacy/tutorial.ts. Step-basiertes
      *  Overlay mit Highlight auf Topbar/Sidebar-Elementen. */
     startTutorial: () => void;
@@ -706,6 +718,96 @@ window.startTour = () => onboardingTour.startTour(buildOnboardingDeps());
 // angewendet ist (probe → false), bleibt das Frontend funktionsfähig
 // mit dem alten last-writer-wins-Verhalten.
 window.cscConflictResolver = conflictResolver;
+
+// ── Pfad-E: KCanG-Compliance-Wizard ──────────────────────────────────
+function buildKCanGDeps(): kcangWizard.KCanGWizardDeps {
+  const w = window as unknown as {
+    rooms?: Array<{ name?: string; w?: number; d?: number }>;
+    getKCaNGChecklist?: () => Array<{ id?: string; passed?: boolean; label?: string }>;
+    SB_URL?: string;
+    SB_KEY?: string;
+    SB_TOKEN?: string;
+    SB_USER?: { id?: string };
+    toast?: (msg: string, type?: string) => void;
+  };
+  return {
+    getCurrentProjectData: () => {
+      const checklist = typeof w.getKCaNGChecklist === 'function' ? w.getKCaNGChecklist() : [];
+      return {
+        rooms: w.rooms ?? [],
+        compliance: checklist.map((c, i) => ({
+          id: c.id || c.label || 'rule-' + i,
+          passed: !!c.passed,
+        })),
+      };
+    },
+    saveToCloud: async (data: KCanGApplication): Promise<void> => {
+      // Nur bei eingeloggtem User + verfügbarer Cloud + Migration 0010 applied.
+      // Tabelle: csc_kcang_applications. Owner = SB_USER.id (RLS owner-policy).
+      // Upsert-by-name analog zu cloudProjects.
+      if (!w.SB_URL || !w.SB_KEY || !w.SB_TOKEN || !w.SB_USER?.id) {
+        throw new Error('Cloud-Sync benötigt Login');
+      }
+      const headers = {
+        apikey: w.SB_KEY,
+        Authorization: 'Bearer ' + w.SB_TOKEN,
+        'Content-Type': 'application/json',
+        Prefer: 'return=minimal',
+      };
+      const name = data.vereinsdaten.name || 'Unbenannter Antrag';
+      // Find by owner+name
+      const findUrl =
+        w.SB_URL +
+        '/rest/v1/csc_kcang_applications?owner=eq.' +
+        w.SB_USER.id +
+        '&name=eq.' +
+        encodeURIComponent(name) +
+        '&select=id';
+      const findR = await fetch(findUrl, { headers });
+      if (!findR.ok) throw new Error('csc_kcang_applications find HTTP ' + findR.status);
+      const rows = await findR.json();
+      const existingId = Array.isArray(rows) && rows[0]?.id ? rows[0].id : null;
+      if (existingId) {
+        const r = await fetch(
+          w.SB_URL + '/rest/v1/csc_kcang_applications?id=eq.' + existingId,
+          { method: 'PATCH', headers, body: JSON.stringify({ data, name }) },
+        );
+        if (!r.ok && r.status !== 204) throw new Error('csc_kcang_applications PATCH HTTP ' + r.status);
+      } else {
+        const r = await fetch(w.SB_URL + '/rest/v1/csc_kcang_applications', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ owner: w.SB_USER.id, name, data }),
+        });
+        if (!r.ok && r.status !== 201 && r.status !== 204) {
+          throw new Error('csc_kcang_applications POST HTTP ' + r.status);
+        }
+      }
+    },
+    toast: w.toast,
+  };
+}
+
+window.cscKCanG = {
+  open: () => kcangWizard.openWizardModal(buildKCanGDeps()),
+  close: () => kcangWizard.closeWizardModal(),
+  exportPdf: async () => {
+    const app =
+      kcangWizard.loadFromLocalStorage() ?? kcangWizard.getEmptyApplication();
+    const w = window as unknown as { toast?: (m: string, t?: string) => void };
+    await kcangPdfExport.exportApplicationAsPdf(app, { toast: w.toast });
+  },
+  toggleCloudSync: (enabled: boolean) => {
+    kcangWizard.setCloudSync(enabled, buildKCanGDeps());
+  },
+  reset: () => {
+    if (window.confirm('Wirklich alle Wizard-Daten verwerfen?')) {
+      kcangWizard.resetApplication();
+      kcangWizard.openWizardModal(buildKCanGDeps());
+    }
+  },
+};
+
 queueMicrotask(() => {
   const w = window as unknown as { SB_URL?: string; SB_KEY?: string; SB_TOKEN?: string };
   if (!w.SB_URL || !w.SB_KEY) {

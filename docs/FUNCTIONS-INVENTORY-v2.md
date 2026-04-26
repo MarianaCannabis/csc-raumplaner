@@ -3,10 +3,10 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 ## Zusammenfassung
 
-- **onclick-Handler:** 713
+- **onclick-Handler:** 717
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 847
-- **TS-Exports:** 450
+- **TS-Exports:** 465
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -261,6 +261,26 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `startInlineProjectRename` (line 101)
 - `finishInlineProjectRename` (line 118)
 
+### src/legacy/kcangPdfExport.ts
+
+- `exportApplicationAsPdf` (line 33)
+
+### src/legacy/kcangWizard.ts
+
+- `LS_KEY` (line 85)
+- `getEmptyApplication` (line 87)
+- `loadFromLocalStorage` (line 123)
+- `saveToLocalStorage` (line 133)
+- `autoImportFromProject` (line 147)
+- `validateApplication` (line 182)
+- `openWizardModal` (line 480)
+- `closeWizardModal` (line 500)
+- `setCloudSync` (line 508)
+- `resetApplication` (line 520)
+- `getCurrentState` (line 526)
+- `_resetForTests` (line 531)
+- `_setStateForTests` (line 539)
+
 ### src/legacy/onboardingTour.ts
 
 - `getTourState` (line 94)
@@ -269,10 +289,11 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `startTour` (line 142)
 - `onWelcomeDone` (line 151)
 - `onWelcomeCtaChosen` (line 162)
-- `onBridgeYes` (line 167)
-- `onBridgeNo` (line 175)
-- `onTutorialDone` (line 182)
-- `_resetForTests` (line 231)
+- `ctaThenAction` (line 180)
+- `onBridgeYes` (line 204)
+- `onBridgeNo` (line 212)
+- `onTutorialDone` (line 219)
+- `_resetForTests` (line 268)
 
 ### src/legacy/renderPresets.ts
 
@@ -359,11 +380,11 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 - `startWelcomeFlow` (line 62)
 - `renderWelcomeStep` (line 69)
-- `welcomeStep` (line 116)
-- `closeWelcomeFlow` (line 121)
-- `_resetForTests` (line 138)
-- `_getCurrentIdx` (line 143)
-- `WELCOME_STEP_COUNT` (line 147)
+- `welcomeStep` (line 119)
+- `closeWelcomeFlow` (line 124)
+- `_resetForTests` (line 141)
+- `_getCurrentIdx` (line 146)
+- `WELCOME_STEP_COUNT` (line 150)
 
 ### src/modes/planningMode.ts
 
@@ -723,66 +744,66 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 | Function | Line |
 |---|---|
-| `_loadTelemetryScripts` | 2342 |
-| `_showCrashModal` | 2432 |
-| `loadSharedFurniture` | 2625 |
-| `saveSharedFurniture` | 2642 |
-| `deleteSharedFurniture` | 2669 |
-| `aiFetch` | 2686 |
-| `callAI` | 2713 |
-| `aiText` | 2761 |
-| `aiJSON` | 2767 |
-| `testAIConnection` | 2781 |
-| `loadCustom` | 2823 |
-| `saveCustom` | 2824 |
-| `getCatalog` | 2834 |
-| `getArchCatalog` | 2842 |
-| `getSecurityCatalog` | 2843 |
-| `toggleCatGroup` | 2844 |
-| `findItem` | 2856 |
-| `m2px` | 2884 |
-| `px2m` | 2885 |
-| `wx2cx` | 2886 |
-| `wy2cy` | 2887 |
-| `cx2wx` | 2888 |
-| `cy2wy` | 2889 |
-| `snapM` | 2890 |
-| `resizeCv` | 2892 |
-| `draw2D` | 2898 |
-| `drawGrid` | 2998 |
-| `drawRoom2D` | 3021 |
-| `drawGround2D` | 3083 |
-| `hitGround` | 3120 |
-| `hitGroundResizeHandle` | 3137 |
-| `_getImgCached` | 3152 |
-| `drawObj2D` | 3163 |
-| `drawMeasure` | 3265 |
-| `hitObj` | 3286 |
-| `hitRoom` | 3296 |
-| `hitRoomResizeHandle` | 3304 |
-| `startCatalogDrag` | 3570 |
-| `placeFromCatalog` | 3580 |
-| `quickAddRoom` | 3604 |
-| `addRoom` | 3610 |
-| `addObject` | 3632 |
-| `removeRoom` | 3656 |
-| `quickAddGround` | 3664 |
-| `addGround` | 3674 |
-| `removeGround` | 3691 |
-| `selectGround` | 3700 |
-| `openGroundMaterialPicker` | 3710 |
-| `closeGroundMaterialPicker` | 3730 |
-| `openGroundPropPanel` | 3736 |
-| `closeGroundPropPanel` | 3782 |
-| `syncGroundPropPanel` | 3786 |
-| `deleteSelectedGround` | 3796 |
-| `setSelection` | 3801 |
-| `updateSelBotBar` | 3829 |
-| `applySelProps` | 3865 |
-| `rotateSel` | 3875 |
-| `dupSel` | 3894 |
-| `deleteSel` | 3900 |
-| `removeFreeWall` | 3908 |
+| `_loadTelemetryScripts` | 2372 |
+| `_showCrashModal` | 2462 |
+| `loadSharedFurniture` | 2655 |
+| `saveSharedFurniture` | 2672 |
+| `deleteSharedFurniture` | 2699 |
+| `aiFetch` | 2716 |
+| `callAI` | 2743 |
+| `aiText` | 2791 |
+| `aiJSON` | 2797 |
+| `testAIConnection` | 2811 |
+| `loadCustom` | 2853 |
+| `saveCustom` | 2854 |
+| `getCatalog` | 2864 |
+| `getArchCatalog` | 2872 |
+| `getSecurityCatalog` | 2873 |
+| `toggleCatGroup` | 2874 |
+| `findItem` | 2886 |
+| `m2px` | 2914 |
+| `px2m` | 2915 |
+| `wx2cx` | 2916 |
+| `wy2cy` | 2917 |
+| `cx2wx` | 2918 |
+| `cy2wy` | 2919 |
+| `snapM` | 2920 |
+| `resizeCv` | 2922 |
+| `draw2D` | 2928 |
+| `drawGrid` | 3028 |
+| `drawRoom2D` | 3051 |
+| `drawGround2D` | 3113 |
+| `hitGround` | 3150 |
+| `hitGroundResizeHandle` | 3167 |
+| `_getImgCached` | 3182 |
+| `drawObj2D` | 3193 |
+| `drawMeasure` | 3295 |
+| `hitObj` | 3316 |
+| `hitRoom` | 3326 |
+| `hitRoomResizeHandle` | 3334 |
+| `startCatalogDrag` | 3600 |
+| `placeFromCatalog` | 3610 |
+| `quickAddRoom` | 3634 |
+| `addRoom` | 3640 |
+| `addObject` | 3662 |
+| `removeRoom` | 3686 |
+| `quickAddGround` | 3694 |
+| `addGround` | 3704 |
+| `removeGround` | 3721 |
+| `selectGround` | 3730 |
+| `openGroundMaterialPicker` | 3740 |
+| `closeGroundMaterialPicker` | 3760 |
+| `openGroundPropPanel` | 3766 |
+| `closeGroundPropPanel` | 3812 |
+| `syncGroundPropPanel` | 3816 |
+| `deleteSelectedGround` | 3826 |
+| `setSelection` | 3831 |
+| `updateSelBotBar` | 3859 |
+| `applySelProps` | 3895 |
+| `rotateSel` | 3905 |
+| `dupSel` | 3924 |
+| `deleteSel` | 3930 |
+| `removeFreeWall` | 3938 |
 
 ---
 

@@ -6,6 +6,42 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+### Bedienkonzept
+
+- **KCanG-Compliance-Wizard (Pfad-E)** — Single-Page-Form mit 7 frei
+  navigierbaren Sektionen (Vereinsdaten, Räume, Compliance, Hygienekonzept,
+  Suchtberatung, Sicherheit, Notizen). localStorage default + opt-in
+  Cloud-Sync via Toggle (Migration 0010 PFLICHT-Apply). PDF-Export mit
+  jsPDF (dynamic-import, ~127 KB lazy-Chunk) + browser-print Fallback.
+  Sektionen B+C automatisch aus aktuellem Projekt-Stand vorausgefüllt
+  (Räume mit Heuristik-Typ-Erkennung; Compliance-Status aus
+  getKCaNGChecklist).
+  - **Migration 0010** (`supabase/migrations/0010_kcang_applications.sql`):
+    neue Tabelle `csc_kcang_applications` mit per-User-RLS, set_updated_at
+    + inc_version_on_update Triggers (reuse aus 0002 + 0009). Idempotent.
+  - **Module:** `src/legacy/kcangWizard.ts` (State-Machine, 7 Sektionen,
+    auto-import, validation, debounced auto-save) + `src/legacy/kcangPdfExport.ts`
+    (jsPDF-Pipeline mit deps.loadJsPdf für Test-Mock + browser-print Fallback).
+  - **DOM:** neuer `m-kcang-wizard` Modal in index.html mit Sticky-Nav links
+    + Section-Container rechts. Trigger aus KCanG-Dashboard
+    "📋 Antrag-Wizard öffnen".
+  - **Cloud-Sync:** ZWraps `cloud_sync=true` in meta-Block. Toggle in der
+    Sticky-Nav. Save-Pfad nutzt `csc_kcang_applications` per Owner-Find +
+    Upsert. Default off (localStorage reicht).
+  - **PDF-Layout:** A4 portrait, 7 Sektionen + Footer mit Seitenzahl.
+    `splitTextToSize` für lange Notizen, automatisches `addPage` bei
+    Overflow.
+  - **Tests:** +28 (23 kcangWizard + 5 kcangPdfExport). Vitest gesamt:
+    439 → **467**.
+  - **jsPDF dependency** als `dependencies` in package.json (User-OK Q4=ba).
+    Dynamic-import → 127,381 B gz lazy-Chunk, kein Initial-Bundle-Hit.
+  - **Bundle:** Initial-Total 435,189 → 439,963 gz (Δ +4,774 für komplettes
+    Feature; jsPDF separat lazy 127 KB).
+
+  **⚠ User-Action nach Merge:** Migration 0010 manuell auf Production-DB
+  applien (analog zu 0009). Bis dahin Cloud-Sync inaktiv (graceful);
+  localStorage-Pfad funktioniert sofort.
+
 ### Fixed
 
 - **Onboarding-Tour CTA-Glitch (Pfad-E #0)** — bei CTA-Click im Welcome-
