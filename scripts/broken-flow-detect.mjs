@@ -68,8 +68,18 @@ for (const p of walk(ROOT)) {
       const callMatch = handler.match(/^\s*([A-Za-z_][\w$]*)/);
       if (!callMatch) continue;
       const callName = callMatch[1];
-      // Skip: window.X-Calls, document.X-Calls, this.X, event.X, return/if/etc
-      if (['return', 'if', 'else', 'true', 'false', 'null', 'undefined', 'new'].includes(callName)) continue;
+      // Skip: JS-Keywords + Pseudo-Identifier — diese sind nie aufrufbare
+      // Funktionen, sondern Statement-Starter (`try{...}`, `throw new X()`,
+      // `await foo()` etc.). Ohne diese Skip-Liste meldet der Detector
+      // false-positives für inline-onclick-Handler die mit Statements
+      // beginnen statt mit Function-Calls.
+      if ([
+        'return', 'if', 'else', 'true', 'false', 'null', 'undefined', 'new',
+        'try', 'catch', 'finally', 'throw', 'await', 'async', 'function',
+        'var', 'let', 'const', 'do', 'while', 'for', 'switch', 'case',
+        'break', 'continue', 'typeof', 'instanceof', 'void', 'delete',
+        'yield', 'class', 'extends', 'super', 'this',
+      ].includes(callName)) continue;
       const row = { file: rel(p), line: lineNum, callName, handler: handler.slice(0, 80) };
       if (defined.has(callName)) resolved.push(row);
       else unresolved.push(row);
