@@ -3,10 +3,10 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 ## Zusammenfassung
 
-- **onclick-Handler:** 723
+- **onclick-Handler:** 724
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 852
-- **TS-Exports:** 483
+- **TS-Exports:** 488
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -328,6 +328,14 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 - `updateSbStatus` (line 14)
 - `setSbMsg` (line 46)
+
+### src/legacy/stampMode.ts
+
+- `isStampActive` (line 53)
+- `activateStampMode` (line 61)
+- `deactivateStampMode` (line 112)
+- `toggleStampMode` (line 128)
+- `_resetForTests` (line 137)
 
 ### src/legacy/tbMenu.ts
 
@@ -774,66 +782,66 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 | Function | Line |
 |---|---|
-| `_loadTelemetryScripts` | 2372 |
-| `_showCrashModal` | 2462 |
-| `loadSharedFurniture` | 2655 |
-| `saveSharedFurniture` | 2672 |
-| `deleteSharedFurniture` | 2699 |
-| `aiFetch` | 2716 |
-| `callAI` | 2743 |
-| `aiText` | 2791 |
-| `aiJSON` | 2797 |
-| `testAIConnection` | 2811 |
-| `loadCustom` | 2859 |
-| `saveCustom` | 2860 |
-| `getCatalog` | 2870 |
-| `getArchCatalog` | 2878 |
-| `getSecurityCatalog` | 2879 |
-| `toggleCatGroup` | 2880 |
-| `findItem` | 2892 |
-| `m2px` | 2920 |
-| `px2m` | 2921 |
-| `wx2cx` | 2922 |
-| `wy2cy` | 2923 |
-| `cx2wx` | 2924 |
-| `cy2wy` | 2925 |
-| `snapM` | 2926 |
-| `resizeCv` | 2928 |
-| `draw2D` | 2934 |
-| `drawGrid` | 3034 |
-| `drawRoom2D` | 3057 |
-| `drawGround2D` | 3119 |
-| `hitGround` | 3156 |
-| `hitGroundResizeHandle` | 3173 |
-| `_getImgCached` | 3188 |
-| `drawObj2D` | 3199 |
-| `drawMeasure` | 3301 |
-| `hitObj` | 3322 |
-| `hitRoom` | 3332 |
-| `hitRoomResizeHandle` | 3340 |
-| `startCatalogDrag` | 3606 |
-| `placeFromCatalog` | 3616 |
-| `quickAddRoom` | 3640 |
-| `addRoom` | 3646 |
-| `addObject` | 3668 |
-| `removeRoom` | 3692 |
-| `quickAddGround` | 3700 |
-| `addGround` | 3710 |
-| `removeGround` | 3727 |
-| `selectGround` | 3736 |
-| `openGroundMaterialPicker` | 3746 |
-| `closeGroundMaterialPicker` | 3766 |
-| `openGroundPropPanel` | 3772 |
-| `closeGroundPropPanel` | 3818 |
-| `syncGroundPropPanel` | 3822 |
-| `deleteSelectedGround` | 3832 |
-| `setSelection` | 3837 |
-| `updateSelBotBar` | 3865 |
-| `applySelProps` | 3901 |
-| `rotateSel` | 3911 |
-| `dupSel` | 3930 |
-| `deleteSel` | 3936 |
-| `removeFreeWall` | 3944 |
+| `_loadTelemetryScripts` | 2373 |
+| `_showCrashModal` | 2463 |
+| `loadSharedFurniture` | 2656 |
+| `saveSharedFurniture` | 2673 |
+| `deleteSharedFurniture` | 2700 |
+| `aiFetch` | 2717 |
+| `callAI` | 2744 |
+| `aiText` | 2792 |
+| `aiJSON` | 2798 |
+| `testAIConnection` | 2812 |
+| `loadCustom` | 2860 |
+| `saveCustom` | 2861 |
+| `getCatalog` | 2871 |
+| `getArchCatalog` | 2879 |
+| `getSecurityCatalog` | 2880 |
+| `toggleCatGroup` | 2881 |
+| `findItem` | 2893 |
+| `m2px` | 2921 |
+| `px2m` | 2922 |
+| `wx2cx` | 2923 |
+| `wy2cy` | 2924 |
+| `cx2wx` | 2925 |
+| `cy2wy` | 2926 |
+| `snapM` | 2927 |
+| `resizeCv` | 2929 |
+| `draw2D` | 2935 |
+| `drawGrid` | 3035 |
+| `drawRoom2D` | 3058 |
+| `drawGround2D` | 3120 |
+| `hitGround` | 3157 |
+| `hitGroundResizeHandle` | 3174 |
+| `_getImgCached` | 3189 |
+| `drawObj2D` | 3200 |
+| `drawMeasure` | 3302 |
+| `hitObj` | 3323 |
+| `hitRoom` | 3333 |
+| `hitRoomResizeHandle` | 3341 |
+| `startCatalogDrag` | 3607 |
+| `placeFromCatalog` | 3617 |
+| `quickAddRoom` | 3641 |
+| `addRoom` | 3647 |
+| `addObject` | 3669 |
+| `removeRoom` | 3693 |
+| `quickAddGround` | 3701 |
+| `addGround` | 3711 |
+| `removeGround` | 3728 |
+| `selectGround` | 3737 |
+| `openGroundMaterialPicker` | 3747 |
+| `closeGroundMaterialPicker` | 3767 |
+| `openGroundPropPanel` | 3773 |
+| `closeGroundPropPanel` | 3819 |
+| `syncGroundPropPanel` | 3823 |
+| `deleteSelectedGround` | 3833 |
+| `setSelection` | 3838 |
+| `updateSelBotBar` | 3866 |
+| `applySelProps` | 3902 |
+| `rotateSel` | 3912 |
+| `dupSel` | 3931 |
+| `deleteSel` | 3937 |
+| `removeFreeWall` | 3945 |
 
 ---
 

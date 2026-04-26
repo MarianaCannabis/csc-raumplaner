@@ -8,6 +8,18 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Zusatzfunktionen
 
+- **Stempel-Funktion (Sitzung G Schritt 3)** — neues
+  `src/legacy/stampMode.ts` Modul für „Wiederholte Räume"-Use-Case.
+  User wählt Raum → klickt 🔁 Stempeln-Button in mode-pills → Cursor wird
+  Crosshair → Click auf Canvas platziert Kopie an Click-Position →
+  Mehrfach-Klicks = Mehrfach-Stempel → Esc / Toggle-Button beendet.
+  - `activateStampMode(deps)`: Cursor + Listener (capture-phase!) + Esc-Key
+  - Live-Selection-Lookup: User kann während Stamp-Mode die Selection
+    wechseln, addRoom nutzt jeweils das aktuell selektierte Template.
+  - Snapshot nach jedem Click (undo/redo-fähig).
+  - +12 Vitest-Tests (Activation/Click/Esc/Toggle/Live-Selection).
+  - Bundle: ~+1 KB gz.
+
 - **Visual-History UX mit 3 Modes (Sitzung G Schritt 2)** — neues
   `src/legacy/visualHistoryUI.ts` Modul rendert das alte
   `m-visual-history`-Modal komplett neu:
