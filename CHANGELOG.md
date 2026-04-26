@@ -6,6 +6,36 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+## 2.7.1 — 2026-04-26 — Purgecss Visual-Regression Verify
+
+### Build
+
+- **Purgecss aus #186** nach automatisierter Visual-Regression-Suite
+  freigegeben. 8 Test-Cases gegen `npm run preview` (production-build
+  mit aktivem Purgecss): Boot/data-theme · Toast 3 Farben · AI-Chat 4
+  Message-Types · Modals (.mdl-overlay/.mdl-btn) · Theme-Toggle ·
+  SB-Status · Compliance-Badge · Topbar-Menu (.tbm-drop). Alle 8 grün.
+- **Initial-Bundle gz total**: 448,930 → 431,151 (Δ −17,779 / −3.96%
+  seit P17.21).
+- **CSS gz**: 20,681 → 18,834 (Δ −1,847 / −8.93%).
+
+### Bundle-Status (informativ)
+
+- index.html gz: 336,657 B
+- index.js gz: 75,660 B
+- CSS gz: 18,834 B
+- Initial total gz: ~431 KB
+- <400-KB-Roadmap-Ziel: 31 KB Distanz, weiterer Sprint mit
+  Three.js-Tree-Shaking als nächster Hebel — derzeit pausiert,
+  Fokus auf Feature-Ausbau.
+
+### Testing-Hinweis
+
+Die Visual-Regression-Spec wurde nach erfolgreichem Verify wieder
+gelöscht. Production-Build-Visual-Tests gehören nicht in PR-CI —
+Build-Konfig-Änderungen (Purgecss-Safelist-Updates etc.) sollten
+explizit ausgelöst kontrolliert werden, nicht bei jedem Code-PR.
+
 ## 2.7.0 — 2026-04-26 — Pfad B (Bundle-Ziel-Sprint, Tranche 1)
 
 **Strategie-Wechsel** nach 21 P17-Strangler-Modulen: weg von "−500 B/Modul
