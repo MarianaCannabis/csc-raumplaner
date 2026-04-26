@@ -6,9 +6,14 @@ Sammlung bekannter, nicht-kritischer Bugs und UX-Defizite für die Produktions-A
 
 ## #1 — Right-Panel Tab-Boot-Race
 
-- **Status:** offen
+- **Status:** ✅ behoben in PR #190 (2026-04-26)
 - **Priorität:** niedrig (kosmetisch, aber real)
 - **Entdeckt:** 2026-04-22 beim Schreiben von `tests/e2e/right-panel.spec.ts` (P15 Topbar-Cleanup)
+- **Fix:** Beide `setTimeout(()=>showRight('props'),200)` (index.html
+  Z. 20718 + 20727) prüfen jetzt `!document.querySelector('.rtab.active')`
+  bevor sie das Default setzen — User-Click in den ersten 200ms wird
+  respektiert. Das `page.evaluate()`-Workaround in
+  `tests/e2e/right-panel.spec.ts` ist optional rückgängig.
 
 ### Symptom
 

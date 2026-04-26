@@ -20715,7 +20715,9 @@ window.addEventListener('resize',()=>{resizeCv();resize3D();draw2D();});
 resizeCv();resize3D();
 // P15: toter localStorage-Key einmalig aufräumen (siehe API-KEY Kommentar oben).
 try{ localStorage.removeItem('csc-key'); }catch(e){}
-setTimeout(()=>showRight('props'),200);
+// Bug-Fix KNOWN-ISSUES #1: nur default 'props'-Tab setzen wenn User noch
+// nicht selbst geklickt hat (in den ersten 200ms nach Boot möglich).
+setTimeout(function(){ if(!document.querySelector('.rtab.active')) showRight('props'); }, 200);
 startRealtime();
 // Auto-save every 2 minutes
 setInterval(function(){ try{ saveProj(); }catch(e){} }, 120000);
@@ -20724,7 +20726,10 @@ setTimeout(function(){
   if(u) u.value=localStorage.getItem('csc-username')||'';
   if(t) t.value=localStorage.getItem('csc-teamid')||'';
 },600);
-setTimeout(()=>showRight('props'),200);
+// Bug-Fix KNOWN-ISSUES #1: gleiche Race-Guard wie Z. ~20718. Doppel-Aufruf
+// historisch belegt (zwei Boot-Phasen wollten beide den Default setzen),
+// mit Guard ist der zweite ein No-Op falls Tab schon aktiv.
+setTimeout(function(){ if(!document.querySelector('.rtab.active')) showRight('props'); }, 200);
 
 // ResizeObserver — canvas always has correct size
 if(typeof ResizeObserver !== 'undefined'){
