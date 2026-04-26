@@ -26,7 +26,7 @@ Wird live gepflegt — pro abgeschlossenem PR wird der Status aktualisiert.
 | ✅ | CLAUDE.md-Force-Push-Regel verfeinern (erlauben auf eigenen Feature-Branches, weiterhin verboten auf main) | 15 min | [#200](https://github.com/MarianaCannabis/csc-raumplaner/pull/200) — Lehre aus Sitzung C umgesetzt |
 | ✅ | **3D-Mode-Hotfix (KRITISCH)** | 3h | [#202](https://github.com/MarianaCannabis/csc-raumplaner/pull/202) — `setView`-Wrapper las `window.fpCv/tCv/...` (lokale const, nicht auf window) → Canvas-Display-Swap unterblieb 5+ Wochen. v2.7.2 released |
 | ✅ | **Module-Bridge-Audit** (Lehre aus 3D-Bug) | 2-3h | [#208](https://github.com/MarianaCannabis/csc-raumplaner/pull/208) — **14 Silent-Fail-Candidates gefunden + gefixt!** Saves heißen jetzt richtig, Exports/Compliance arbeiten mit echten Daten. `docs/MODULE-BRIDGE-AUDIT.md` |
-| ⏳ | Touch-Listener-Wire-Up auf fpCv/tCv | 2-3h | Folge zu PR #203 — Pattern-Library steht, tatsächlicher Wire-Up fehlt |
+| ✅ | Touch-Listener-Wire-Up auf fpCv | 2-3h | [#212](https://github.com/MarianaCannabis/csc-raumplaner/pull/212) — Pan/Pinch-Center-Zoom/Tap/Long-Press auf 2D-Canvas. 3D ohne OrbitControls = kein Wire-Up nötig |
 
 ## Bedienkonzept
 

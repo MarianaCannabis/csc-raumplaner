@@ -891,8 +891,72 @@ window.cscStamp = {
   isActive: stampMode.isStampActive,
 };
 queueMicrotask(() => {
-  if (touchSupport.isTouchDevice()) {
-    document.body.classList.add('is-touch');
+  if (!touchSupport.isTouchDevice()) return;
+  document.body.classList.add('is-touch');
+
+  // Sitzung G #4: Touch-Wire-Up für 2D-Canvas (fpCv).
+  // Pan via Single-Touch, Pinch-Zoom mit Center-Anker, Tap als Click-
+  // Equivalent, Long-Press als Hint. window.fpCv ist seit Bridge-Audit
+  // (Sitzung G #0) verfügbar; vpX/vpY/vpZoom ebenfalls (let → var).
+  const setupTouch = (): void => {
+    const fpCv = document.getElementById('fp-canvas') as HTMLCanvasElement | null;
+    if (!fpCv) return;
+    const w = window as unknown as {
+      vpX?: number;
+      vpY?: number;
+      vpZoom?: number;
+      draw2D?: () => void;
+      toast?: (msg: string, type?: string) => void;
+    };
+    touchSupport.attachTouchHandlers({
+      canvas: fpCv,
+      onPan: (dx, dy) => {
+        if (typeof w.vpX === 'number') w.vpX += dx;
+        if (typeof w.vpY === 'number') w.vpY += dy;
+        if (typeof w.draw2D === 'function') w.draw2D();
+      },
+      onZoom: (scale, cx, cy) => {
+        if (
+          typeof w.vpX !== 'number' ||
+          typeof w.vpY !== 'number' ||
+          typeof w.vpZoom !== 'number'
+        ) {
+          return;
+        }
+        // Pinch-Center-Anker: world-coord am Pinch-Center bleibt fixiert.
+        const wxBefore = (cx - w.vpX) / w.vpZoom;
+        const wyBefore = (cy - w.vpY) / w.vpZoom;
+        const newZoom = Math.max(5, Math.min(200, w.vpZoom * scale));
+        w.vpZoom = newZoom;
+        w.vpX = cx - wxBefore * newZoom;
+        w.vpY = cy - wyBefore * newZoom;
+        if (typeof w.draw2D === 'function') w.draw2D();
+      },
+      onTap: (x, y) => {
+        // Tap → simulierter Mousedown+Mouseup für Object-Select.
+        const rect = fpCv.getBoundingClientRect();
+        const downEvt = new MouseEvent('mousedown', {
+          clientX: x + rect.left,
+          clientY: y + rect.top,
+          bubbles: true,
+          button: 0,
+        });
+        fpCv.dispatchEvent(downEvt);
+        const upEvt = new MouseEvent('mouseup', { bubbles: true, button: 0 });
+        fpCv.dispatchEvent(upEvt);
+      },
+      onLongPress: () => {
+        if (typeof w.toast === 'function') {
+          w.toast('💡 Lange gedrückt — Context-Menu kommt in v3.0', 'b');
+        }
+      },
+    });
+  };
+  // DOM-Ready warten, falls fpCv noch nicht da ist.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupTouch, { once: true });
+  } else {
+    setupTouch();
   }
 });
 
