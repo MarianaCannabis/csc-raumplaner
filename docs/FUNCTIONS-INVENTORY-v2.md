@@ -6,7 +6,7 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - **onclick-Handler:** 713
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 847
-- **TS-Exports:** 445
+- **TS-Exports:** 450
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
 
@@ -225,6 +225,12 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `renderComplianceBadges` (line 124)
 - `showHealthDetails` (line 167)
 
+### src/legacy/conflictResolver.ts
+
+- `computeDiff` (line 45)
+- `showConflictModal` (line 93)
+- `closeConflictModal` (line 212)
+
 ### src/legacy/errorBoundary.ts
 
 - `showCrashModal` (line 18)
@@ -377,11 +383,13 @@ Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 ### src/persist/cloudProjects.ts
 
-- `findProjectByName` (line 145)
-- `saveCloudProject` (line 163)
-- `fetchAllCloudProjects` (line 219)
-- `loadCloudProject` (line 245)
-- `deleteCloudProject` (line 259)
+- `findProjectByName` (line 173)
+- `saveCloudProject` (line 198)
+- `fetchProjectByIdFull` (line 305)
+- `probeOptimisticLocking` (line 352)
+- `fetchAllCloudProjects` (line 369)
+- `loadCloudProject` (line 404)
+- `deleteCloudProject` (line 424)
 
 ### src/persist/index.ts
 

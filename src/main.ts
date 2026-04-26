@@ -72,6 +72,8 @@ import * as changelog from './legacy/changelog.js';
 import * as welcomeFlow from './legacy/welcomeFlow.js';
 import * as tutorial from './legacy/tutorial.js';
 import * as onboardingTour from './legacy/onboardingTour.js';
+import * as conflictResolver from './legacy/conflictResolver.js';
+import { probeOptimisticLocking } from './persist/cloudProjects.js';
 import * as helpModal from './legacy/helpModal.js';
 import * as tbMenu from './legacy/tbMenu.js';
 import * as versionHistory from './legacy/versionHistory.js';
@@ -279,6 +281,12 @@ declare global {
     cscOnboarding: typeof onboardingTour;
     autoStartTour: () => void;
     startTour: () => void;
+    /** Pfad-D: Konflikt-Modal für parallele Cloud-Saves. Wird vom
+     *  index.html-Wrapper aufgerufen wenn cloudSave-result.type ===
+     *  'conflict'. Nach Migration 0009-Apply automatisch aktiv. */
+    cscConflictResolver: typeof conflictResolver;
+    /** Pfad-D: Boot-Capability-Flag — true wenn version-Spalte existiert. */
+    __cscOptimisticLocking?: boolean;
     /** P17.18: Tutorial aus src/legacy/tutorial.ts. Step-basiertes
      *  Overlay mit Highlight auf Topbar/Sidebar-Elementen. */
     startTutorial: () => void;
@@ -691,6 +699,31 @@ window.tutNav = tutorial.tutNav;
 window.cscOnboarding = onboardingTour;
 window.autoStartTour = () => onboardingTour.autoStartTourIfNew(buildOnboardingDeps());
 window.startTour = () => onboardingTour.startTour(buildOnboardingDeps());
+
+// Pfad-D: Konflikt-Resolver-Modul + Boot-Capability-Probe.
+// Der Probe-Call läuft asynchron im Hintergrund und setzt einen Flag,
+// den der index.html-cloudSave-Wrapper liest. Falls Migration 0009 nicht
+// angewendet ist (probe → false), bleibt das Frontend funktionsfähig
+// mit dem alten last-writer-wins-Verhalten.
+window.cscConflictResolver = conflictResolver;
+queueMicrotask(() => {
+  const w = window as unknown as { SB_URL?: string; SB_KEY?: string; SB_TOKEN?: string };
+  if (!w.SB_URL || !w.SB_KEY) {
+    window.__cscOptimisticLocking = false;
+    return;
+  }
+  probeOptimisticLocking({ url: w.SB_URL, key: w.SB_KEY, token: w.SB_TOKEN || '' })
+    .then((available) => {
+      window.__cscOptimisticLocking = available;
+      console.info(
+        '[csc] optimistic locking:',
+        available ? 'enabled (Migration 0009 applied)' : 'disabled (Migration 0009 not applied)',
+      );
+    })
+    .catch(() => {
+      window.__cscOptimisticLocking = false;
+    });
+});
 
 // P17.19: Help-Modal-Family. openHelp/closeHelp/showHelpPage sind pure
 // DOM, openHelpModal nutzt openM via Closure.

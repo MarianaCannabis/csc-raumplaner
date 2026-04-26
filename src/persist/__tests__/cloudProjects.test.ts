@@ -37,12 +37,12 @@ describe('persist/cloudProjects', () => {
     ).rejects.toBeInstanceOf(cloud.TableMissingError);
   });
 
-  test('saveCloudProject: existing id → PATCH mit created=false', async () => {
+  test('saveCloudProject: existing id → PATCH, type=updated', async () => {
     const fetchFn = vi
       .fn()
       // 1. findProjectByName
       .mockResolvedValueOnce(mkResponse(200, [{ id: 'existing-9' }]))
-      // 2. PATCH
+      // 2. PATCH (204 = no content, fallback-Pfad ohne version-Tracking)
       .mockResolvedValueOnce(mkResponse(204));
     const r = await cloud.saveCloudProject(
       CTX,
@@ -50,13 +50,13 @@ describe('persist/cloudProjects', () => {
       undefined,
       fetchFn as unknown as typeof fetch,
     );
-    expect(r).toEqual({ id: 'existing-9', created: false });
+    expect(r).toEqual({ type: 'updated', id: 'existing-9' });
     const [patchUrl, patchInit] = fetchFn.mock.calls[1]!;
     expect(patchUrl).toContain('/rest/v1/csc_projects?id=eq.existing-9');
     expect((patchInit as RequestInit).method).toBe('PATCH');
   });
 
-  test('saveCloudProject: kein existing → POST mit created=true', async () => {
+  test('saveCloudProject: kein existing → POST, type=created', async () => {
     const fetchFn = vi
       .fn()
       .mockResolvedValueOnce(mkResponse(200, []))
@@ -67,7 +67,7 @@ describe('persist/cloudProjects', () => {
       undefined,
       fetchFn as unknown as typeof fetch,
     );
-    expect(r.created).toBe(true);
+    expect(r.type).toBe('created');
     const [postUrl, postInit] = fetchFn.mock.calls[1]!;
     expect(postUrl).toBe('https://demo.supabase.co/rest/v1/csc_projects');
     expect((postInit as RequestInit).method).toBe('POST');
@@ -212,16 +212,41 @@ describe('persist/cloudProjects', () => {
     expect(list).toEqual([]);
   });
 
-  test('loadCloudProject liefert data-Feld', async () => {
-    const fetchFn = vi.fn().mockResolvedValue(mkResponse(200, [{ data: { rooms: [] } }]));
-    const data = await cloud.loadCloudProject(CTX, 'id-42', undefined, fetchFn as unknown as typeof fetch);
-    expect(data).toEqual({ rooms: [] });
+  test('loadCloudProject liefert {data, version}', async () => {
+    const fetchFn = vi
+      .fn()
+      .mockResolvedValue(mkResponse(200, [{ data: { rooms: [] }, version: 7 }]));
+    const result = await cloud.loadCloudProject(
+      CTX,
+      'id-42',
+      undefined,
+      fetchFn as unknown as typeof fetch,
+    );
+    expect(result).toEqual({ data: { rooms: [] }, version: 7 });
+    const [url] = fetchFn.mock.calls[0]!;
+    expect(url).toContain('select=data,version');
+  });
+
+  test('loadCloudProject ohne version-Spalte (pre-Migration): version=undefined', async () => {
+    const fetchFn = vi.fn().mockResolvedValue(mkResponse(200, [{ data: { x: 1 } }]));
+    const result = await cloud.loadCloudProject(
+      CTX,
+      'id',
+      undefined,
+      fetchFn as unknown as typeof fetch,
+    );
+    expect(result).toEqual({ data: { x: 1 }, version: undefined });
   });
 
   test('loadCloudProject liefert null wenn Row nicht da', async () => {
     const fetchFn = vi.fn().mockResolvedValue(mkResponse(200, []));
-    const data = await cloud.loadCloudProject(CTX, 'missing', undefined, fetchFn as unknown as typeof fetch);
-    expect(data).toBeNull();
+    const result = await cloud.loadCloudProject(
+      CTX,
+      'missing',
+      undefined,
+      fetchFn as unknown as typeof fetch,
+    );
+    expect(result).toBeNull();
   });
 
   test('deleteCloudProject: 204 resolves', async () => {
@@ -265,5 +290,154 @@ describe('persist/cloudProjects', () => {
     await expect(
       cloud.findProjectByName(CTX, 'P', refresh, fetchFn as unknown as typeof fetch),
     ).rejects.toBeInstanceOf(cloud.AuthError);
+  });
+
+  // ── Pfad-D: Optimistic Locking + Conflict Detection ─────────
+
+  test('saveCloudProject mit version: PATCH-URL enthält version=eq.X', async () => {
+    const fetchFn = vi
+      .fn()
+      .mockResolvedValueOnce(mkResponse(200, [{ id: 'p-1' }]))
+      .mockResolvedValueOnce(mkResponse(200, [{ version: 6 }]));
+    await cloud.saveCloudProject(
+      CTX,
+      { name: 'P', data: {}, owner: 'user-1', version: 5 },
+      undefined,
+      fetchFn as unknown as typeof fetch,
+    );
+    const [patchUrl] = fetchFn.mock.calls[1]!;
+    expect(patchUrl).toContain('version=eq.5');
+    expect(patchUrl).toContain('select=version');
+  });
+
+  test('saveCloudProject ohne version: PATCH-URL hat keinen version-Filter', async () => {
+    const fetchFn = vi
+      .fn()
+      .mockResolvedValueOnce(mkResponse(200, [{ id: 'p-1' }]))
+      .mockResolvedValueOnce(mkResponse(204));
+    await cloud.saveCloudProject(
+      CTX,
+      { name: 'P', data: {}, owner: 'user-1' },
+      undefined,
+      fetchFn as unknown as typeof fetch,
+    );
+    const [patchUrl] = fetchFn.mock.calls[1]!;
+    expect(patchUrl).not.toContain('version=eq');
+  });
+
+  test('saveCloudProject mit version: erfolgreicher PATCH returnt {type:updated, version: serverNew}', async () => {
+    const fetchFn = vi
+      .fn()
+      .mockResolvedValueOnce(mkResponse(200, [{ id: 'p-1' }]))
+      .mockResolvedValueOnce(mkResponse(200, [{ version: 6 }]));
+    const r = await cloud.saveCloudProject(
+      CTX,
+      { name: 'P', data: {}, owner: 'user-1', version: 5 },
+      undefined,
+      fetchFn as unknown as typeof fetch,
+    );
+    expect(r).toEqual({ type: 'updated', id: 'p-1', version: 6 });
+  });
+
+  test('saveCloudProject Konflikt: 0 rows → fetchProjectByIdFull → ConflictDetected', async () => {
+    const fetchFn = vi
+      .fn()
+      // 1. findProjectByName
+      .mockResolvedValueOnce(mkResponse(200, [{ id: 'p-1' }]))
+      // 2. PATCH mit version-filter → 0 rows (Konflikt)
+      .mockResolvedValueOnce(mkResponse(200, []))
+      // 3. fetchProjectByIdFull
+      .mockResolvedValueOnce(
+        mkResponse(200, [
+          {
+            data: { rooms: [{ id: 'r-server' }] },
+            thumbnail: 'data:image/jpeg;base64,SERVER',
+            version: 8,
+            updated_at: '2026-04-26T12:00:00Z',
+            author: 'kollege@example.com',
+          },
+        ]),
+      );
+    const r = await cloud.saveCloudProject(
+      CTX,
+      { name: 'P', data: { rooms: [{ id: 'r-local' }] }, owner: 'user-1', version: 5 },
+      undefined,
+      fetchFn as unknown as typeof fetch,
+    );
+    expect(r.type).toBe('conflict');
+    if (r.type !== 'conflict') throw new Error('TS-narrowing');
+    expect(r.serverVersion).toBe(8);
+    expect(r.localVersion).toBe(5);
+    expect(r.serverThumbnail).toContain('SERVER');
+    expect(r.serverAuthor).toBe('kollege@example.com');
+    expect((r.serverData as { rooms: { id: string }[] }).rooms[0]!.id).toBe('r-server');
+    expect((r.localData as { rooms: { id: string }[] }).rooms[0]!.id).toBe('r-local');
+  });
+
+  test('saveCloudProject ohne version + 0 rows: kein Conflict (alter Pfad)', async () => {
+    const fetchFn = vi
+      .fn()
+      .mockResolvedValueOnce(mkResponse(200, [{ id: 'p-1' }]))
+      .mockResolvedValueOnce(mkResponse(200, []));
+    const r = await cloud.saveCloudProject(
+      CTX,
+      { name: 'P', data: {}, owner: 'user-1' },
+      undefined,
+      fetchFn as unknown as typeof fetch,
+    );
+    // Ohne body.version → kein Conflict-Check; updated mit version=undefined
+    expect(r.type).toBe('updated');
+  });
+
+  test('fetchProjectByIdFull: Server-State korrekt extrahiert', async () => {
+    const fetchFn = vi.fn().mockResolvedValue(
+      mkResponse(200, [
+        {
+          data: { x: 1 },
+          thumbnail: 'thumb',
+          version: 3,
+          updated_at: '2026-04-26',
+          author: 'me',
+        },
+      ]),
+    );
+    const r = await cloud.fetchProjectByIdFull(
+      CTX,
+      'p-1',
+      undefined,
+      fetchFn as unknown as typeof fetch,
+    );
+    expect(r).toEqual({
+      data: { x: 1 },
+      thumbnail: 'thumb',
+      version: 3,
+      updated_at: '2026-04-26',
+      author: 'me',
+    });
+  });
+
+  test('fetchProjectByIdFull: Row gelöscht → throws "Project not found"', async () => {
+    const fetchFn = vi.fn().mockResolvedValue(mkResponse(200, []));
+    await expect(
+      cloud.fetchProjectByIdFull(CTX, 'gone', undefined, fetchFn as unknown as typeof fetch),
+    ).rejects.toThrow(/Project not found/);
+  });
+
+  test('probeOptimisticLocking: 200 → true', async () => {
+    const fetchFn = vi.fn().mockResolvedValue(mkResponse(200, [{ version: 1 }]));
+    const ok = await cloud.probeOptimisticLocking(CTX, fetchFn as unknown as typeof fetch);
+    expect(ok).toBe(true);
+  });
+
+  test('probeOptimisticLocking: 400 (Spalte fehlt) → false', async () => {
+    const fetchFn = vi.fn().mockResolvedValue(mkResponse(400));
+    const ok = await cloud.probeOptimisticLocking(CTX, fetchFn as unknown as typeof fetch);
+    expect(ok).toBe(false);
+  });
+
+  test('probeOptimisticLocking: network-error → false (graceful)', async () => {
+    const fetchFn = vi.fn().mockRejectedValue(new Error('network down'));
+    const ok = await cloud.probeOptimisticLocking(CTX, fetchFn as unknown as typeof fetch);
+    expect(ok).toBe(false);
   });
 });

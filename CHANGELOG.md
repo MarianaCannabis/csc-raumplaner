@@ -8,6 +8,41 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Bedienkonzept
 
+- **Konflikt-Resolution Cloud-Save** — Optimistic Locking via Version-Counter.
+  Beim parallelen Save erkennt das Frontend den Konflikt und zeigt ein
+  Modal mit Server- und lokalem Thumbnail + Diff-Counter (Räume/Objekte/
+  Wände/Maße); User wählt **Server-Stand übernehmen** /
+  **Mein Stand erzwingen** / **Abbrechen**. Komponenten:
+  - **Migration 0009** (`supabase/migrations/0009_optimistic_locking.sql`):
+    `version`-Spalte + Trigger `inc_version_on_update` auf `csc_projects` +
+    `csc_user_templates`. Idempotent, doppeltes Apply harmlos.
+    `csc_versions`-Tabelle existiert nur als localStorage-Bridge — daher
+    nicht enthalten.
+  - **`src/persist/cloudProjects.ts`**: `SaveResult`-Union mit Branch
+    `ConflictDetected`. PATCH-URL erhält `version=eq.X`-Filter wenn
+    `body.version` gesetzt; bei 0 rows wird `fetchProjectByIdFull()`
+    aufgerufen für den vollen Server-Stand. Neuer `probeOptimisticLocking`-
+    Helper für Boot-Capability-Check. `loadCloudProject` returnt jetzt
+    `{data, version}` statt nur data.
+  - **Neues Modul `src/legacy/conflictResolver.ts`**: programmatisches Modal,
+    `computeDiff()`-Helper. CSS-Klassen (.mdl-overlay, .mdl-btn) wiederverwendet,
+    kein neuer HTML-Block in index.html.
+  - **`src/main.ts`**: `window.cscConflictResolver` + Boot-Probe für
+    `__cscOptimisticLocking`-Flag.
+  - **`index.html`**: `_cloudSaveImpl` checkt `result.type === 'conflict'`,
+    delegiert ans Modal. `_currentLoadedVersion`-State; `cloudLoad` setzt
+    Version aus dem Load-Response.
+  - **Graceful Degradation**: ohne Migration-Apply (probe → false) bleibt
+    das Frontend funktionsfähig im alten last-writer-wins-Modus, kein
+    User-facing Bruch.
+  - Tests: +25 (10 cloudProjects + 14 conflictResolver + 1 indirekt). Vitest
+    gesamt: 412 → 437.
+  - Bundle: +2,720 B gz (Initial-Total 432,469 → 435,189).
+
+  **⚠ User-Action nach Merge:** Migration 0009 muss manuell auf
+  Production-DB angewendet werden (Supabase Dashboard SQL Editor).
+  Bis dahin Optimistic Locking inaktiv (graceful).
+
 - **Onboarding-Tour neu strukturiert**: neuer Orchestrator-Modul
   `src/legacy/onboardingTour.ts` vereint Welcome + Tutorial zu einem
   Phase-State-Machine-Flow:

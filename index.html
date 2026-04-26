@@ -7942,6 +7942,11 @@ function _cloudCtxAndRefresh(){
 // in Race-Condition geraten. Inflight-Promise wird geshared: Caller bekommt
 // den laufenden Save, startet keinen zweiten.
 var _cloudSaveInflight = null;
+// Pfad-D: aktuell geladene Server-Version für Optimistic Locking. Wird
+// gesetzt beim cloudLoad und erfolgreichem cloudSave; gelesen beim
+// nächsten cloudSave-Aufruf. undefined = noch keine geladene Version
+// bekannt (frisches Projekt, oder pre-Migration-0009-Apply).
+var _currentLoadedVersion = undefined;
 async function cloudSave(){
   if(_cloudSaveInflight){ return _cloudSaveInflight; }
   _cloudSaveInflight = _cloudSaveImpl().finally(() => { _cloudSaveInflight = null; });
@@ -7984,11 +7989,53 @@ async function _cloudSaveImpl(){
     const { ctx, refresh } = _cloudCtxAndRefresh();
     const _tid = localStorage.getItem('csc-teamid') || '';
     const _aut = localStorage.getItem('csc-username') || 'anonym';
-    await window.cscPersist.cloud.save(
-      ctx,
-      { name: projName, data: data, thumbnail: thumb, team_id: _tid, author: _aut, owner: auth.user.id },
-      refresh,
-    );
+    // Pfad-D: Optimistic Locking. version wird nur mitgeschickt wenn
+    // Migration 0009 applied ist (Boot-Probe in main.ts setzt den Flag).
+    // Andernfalls fallback auf altes last-writer-wins.
+    const _useLocking = window.__cscOptimisticLocking === true;
+    const _ver = (_useLocking && typeof _currentLoadedVersion === 'number') ? _currentLoadedVersion : undefined;
+    const body = { name: projName, data: data, thumbnail: thumb, team_id: _tid, author: _aut, owner: auth.user.id };
+    if(_ver !== undefined) body.version = _ver;
+    const result = await window.cscPersist.cloud.save(ctx, body, refresh);
+    if(result && result.type === 'conflict' && window.cscConflictResolver){
+      // Konflikt erkannt — Modal zeigt Server-Stand + lokalen Stand. User
+      // wählt Verwerfen / Erzwingen / Abbrechen. Toast zeigt Status.
+      window.cscConflictResolver.showConflictModal(result, {
+        onDiscardLocal: function(serverData){
+          if(typeof loadPD === 'function') loadPD(serverData);
+          _currentLoadedVersion = result.serverVersion;
+          toast('☁️ Server-Stand übernommen','b');
+          showCloudProjects();
+        },
+        onForceOverwrite: async function(serverVersion){
+          // Erneuter Save mit serverVersion — Trigger inc'ed → neue version=serverVersion+1.
+          try{
+            const forceBody = Object.assign({}, body, { version: serverVersion });
+            const result2 = await window.cscPersist.cloud.save(ctx, forceBody, refresh);
+            if(result2 && result2.type === 'updated'){
+              _currentLoadedVersion = result2.version || (serverVersion + 1);
+              toast('☁️ Lokaler Stand erzwungen','g');
+              showCloudProjects();
+            } else if(result2 && result2.type === 'conflict'){
+              // Sehr unwahrscheinlich (jemand hat zwischen den beiden Saves nochmal gespeichert)
+              toast('Erneuter Konflikt — bitte nochmal versuchen','r');
+            }
+          } catch(e2){
+            toast('Force-Save Fehler: '+(e2 && e2.message ? e2.message : e2),'r');
+          }
+        },
+        onCancel: function(){
+          toast('Save abgebrochen — lokale Änderungen bleiben','b');
+        },
+      });
+      return;
+    }
+    if(result && (result.type === 'updated' || result.type === 'created')){
+      // version aus Response merken für nächsten Save
+      if(typeof result.version === 'number'){
+        _currentLoadedVersion = result.version;
+      }
+    }
     toast('☁️ In Cloud gespeichert: '+projName,'g');
     showCloudProjects();
   } catch(e){
@@ -8035,8 +8082,15 @@ async function cloudLoad(id, cardEl){
   if(card) card.classList.add('loading');
   try {
     const { ctx, refresh } = _cloudCtxAndRefresh();
-    const data = await window.cscPersist.cloud.load(ctx, id, refresh);
-    if(data){ loadPD(data); toast('☁️ Aus Cloud geladen!','g'); }
+    const result = await window.cscPersist.cloud.load(ctx, id, refresh);
+    if(result && result.data){
+      loadPD(result.data);
+      // Pfad-D: Version merken für nächsten Save (Optimistic Locking).
+      // Falls Migration 0009 noch nicht applied ist, ist version=undefined
+      // und der Save fällt automatisch auf last-writer-wins zurück.
+      _currentLoadedVersion = result.version;
+      toast('☁️ Aus Cloud geladen!','g');
+    }
   } catch(e){ toast('Fehler: '+e.message,'r'); }
   finally { if(card) card.classList.remove('loading'); }
 }
