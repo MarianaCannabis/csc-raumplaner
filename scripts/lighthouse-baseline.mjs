@@ -10,8 +10,9 @@
 //   kill %1                               # preview stoppen
 //
 // Output:
-//   docs/lighthouse-v2.3-report.html    (Human-readable)
-//   docs/lighthouse-v2.3-summary.json   (Scores zum Automatisieren)
+//   docs/lighthouse-report.html    (Human-readable)
+//   docs/lighthouse-summary.json   (Scores zum Automatisieren — Baseline-Snapshot, getrackt)
+//   docs/lighthouse-full.json      (Vollreport — gitignored)
 //
 // Scores werden konsolenlog-ausgegeben im Format "perf: 92 / a11y: 98 / ..."
 
@@ -22,9 +23,9 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const URL = process.env.LH_URL || 'http://localhost:4173';
-const OUT_HTML = join(ROOT, 'docs/lighthouse-v2.3-report.html');
-const OUT_JSON_FULL = join(ROOT, 'docs/lighthouse-v2.3-full.json');
-const OUT_SUMMARY = join(ROOT, 'docs/lighthouse-v2.3-summary.json');
+const OUT_HTML = join(ROOT, 'docs/lighthouse-report.html');
+const OUT_JSON_FULL = join(ROOT, 'docs/lighthouse-full.json');
+const OUT_SUMMARY = join(ROOT, 'docs/lighthouse-summary.json');
 
 console.log(`🚦 Lighthouse-Baseline läuft gegen ${URL}`);
 console.log('(Sicherstellen: npm run preview läuft im Hintergrund auf Port 4173)');

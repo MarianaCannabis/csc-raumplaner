@@ -18,6 +18,10 @@ playwright/.cache/
 
 # Lighthouse-Artefakte — Full-JSON + HTML-Report sind groß (500+ KB),
 # nur das Summary-JSON (295 bytes) kommt ins Repo als Baseline-Snapshot.
+docs/lighthouse-full.json
+docs/lighthouse-report.html
+# Migration-Patterns für alte Filenames — können später entfernt werden,
+# wenn keine User mehr lokal die v2.3-Filenames generieren.
 docs/lighthouse-v2.3-full.json
 docs/lighthouse-v2.3-report.report.html
 docs/lighthouse-v2.3-report.report.json

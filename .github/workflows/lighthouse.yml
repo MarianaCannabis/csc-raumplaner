@@ -53,6 +53,6 @@ jobs:
         with:
           name: lighthouse-report
           path: |
-            docs/lighthouse-v2.3-report.html
-            docs/lighthouse-v2.3-summary.json
+            docs/lighthouse-report.html
+            docs/lighthouse-summary.json
           retention-days: 30

@@ -8,6 +8,12 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Tooling
 
+- **Lighthouse-Filename-Cleanup**: `scripts/lighthouse-baseline.mjs`,
+  `.gitignore` und `.github/workflows/lighthouse.yml` nutzen jetzt
+  versionsfreie Filenames (`docs/lighthouse-report.html`,
+  `docs/lighthouse-full.json`, `docs/lighthouse-summary.json`). Das
+  getrackte `docs/lighthouse-v2.3-summary.json` per `git mv` umbenannt
+  zum neuen Namen — Baseline-Snapshot bleibt erhalten.
 - **broken-flow-detect Skip-Liste erweitert**: filtert jetzt JS-Keywords
   (`try`/`catch`/`finally`/`throw`/`await`/`async`/`function`/`var`/`let`/
   `const`/`do`/`while`/`for`/`switch`/`case`/`break`/`continue`/`typeof`/
