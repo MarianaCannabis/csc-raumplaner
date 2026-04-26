@@ -214,42 +214,42 @@
         <span class="tb-btn__chev" data-icon="chevron"></span>
       </button>
       <div class="tbm-drop" id="tbmd-file">
-        <div class="tbm-item" data-tier="simple" onclick="newProj();closeTBMenu()">🆕 Neues Projekt</div>
-        <div class="tbm-item" data-tier="simple" onclick="saveProj();closeTBMenu()">💾 Speichern <span class="tbm-kbd">Ctrl+S</span></div>
-        <div class="tbm-item" onclick="showRight('save');closeTBMenu()">📂 Projekte öffnen</div>
+        <div class="tbm-item" data-mode="both" data-tier="simple" onclick="newProj();closeTBMenu()">🆕 Neues Projekt</div>
+        <div class="tbm-item" data-mode="both" data-tier="simple" onclick="saveProj();closeTBMenu()">💾 Speichern <span class="tbm-kbd">Ctrl+S</span></div>
+        <div class="tbm-item" data-mode="both" data-tier="simple" onclick="showRight('save');closeTBMenu()">📂 Projekte öffnen</div>
         <div class="tbm-sep"></div>
-        <div class="tbm-item" data-tier="simple" onclick="dlJSON();closeTBMenu()">📥 Export .json</div>
-        <div class="tbm-item" onclick="exportFurnitureCSV();closeTBMenu()">📊 Möbelliste .csv</div>
-        <div class="tbm-item" onclick="exportBudgetCSV();closeTBMenu()">💰 Budget .csv</div>
-        <div class="tbm-item" onclick="exportGLTF();closeTBMenu()">🏗 3D-Modell .gltf</div>
-        <div class="tbm-item" onclick="exportDXF();closeTBMenu()">📐 Grundriss .dxf</div>
+        <div class="tbm-item" data-mode="both" data-tier="simple" onclick="dlJSON();closeTBMenu()">📥 Export .json</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="exportFurnitureCSV();closeTBMenu()">📊 Möbelliste .csv</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="exportBudgetCSV();closeTBMenu()">💰 Budget .csv</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="exportGLTF();closeTBMenu()">🏗 3D-Modell .gltf</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="exportDXF();closeTBMenu()">📐 Grundriss .dxf</div>
         <div class="tbm-sep"></div>
-        <div class="tbm-item" onclick="openPrintPreview();closeTBMenu()">🖨 Druckvorschau</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="openPrintPreview();closeTBMenu()">🖨 Druckvorschau</div>
         <div class="tbm-item" data-tier="standard" data-mode="room" onclick="generateAuthorityPackage();closeTBMenu()">📦 Behörden-Paket (.zip)</div>
         <div class="tbm-item" data-mode="room" data-tier="simple" onclick="openM('m-hygiene');closeTBMenu()">🧴 Hygiene-Konzept PDF</div>
-        <div class="tbm-item" data-mode="room" onclick="generateOpeningHoursSign();closeTBMenu()">⏰ Öffnungszeiten-Schild</div>
-        <div class="tbm-item" onclick="takePresentationScreenshot();closeTBMenu()">📸 3D-Screenshot</div>
-        <div class="tbm-item" onclick="shareByEmail();closeTBMenu()">📧 Per E-Mail teilen</div>
-        <div class="tbm-item" onclick="shareWhatsApp();closeTBMenu()">📱 WhatsApp</div>
-        <div class="tbm-item" onclick="shareTelegram();closeTBMenu()">✈️ Telegram</div>
-        <div class="tbm-item" onclick="exportToGoogleDrive();closeTBMenu()">📂 Google Drive</div>
-        <div class="tbm-item" data-mode="room" onclick="generateSessionProtocol();closeTBMenu()">📋 Sitzungsprotokoll</div>
-        <div class="tbm-item" onclick="saveNamedVersion();closeTBMenu()">🏷 Version benennen</div>
-        <div class="tbm-item" data-tier="standard" onclick="generateCostReport();closeTBMenu()">💰 Kostenvoranschlag PDF</div>
-        <div class="tbm-item" onclick="generateEmbedCode();closeTBMenu()">🔗 Embed-Code für Website</div>
-        <div class="tbm-item" data-tier="pro" onclick="exportIFC();closeTBMenu()">🏗 IFC-Export (CAD)</div>
-        <div class="tbm-item" data-tier="pro" onclick="generateSecurityReport();closeTBMenu()">🔐 Sicherheitsbericht PDF</div>
-        <div class="tbm-item" data-tier="standard" onclick="printBarcodeLabel()">🏷 Inventar-Etiketten drucken</div>
-        <div class="tbm-item" onclick="openCSVImport();closeTBMenu()">📂 Räume aus CSV</div>
-        <div class="tbm-item" data-mode="room" onclick="openSetupWizard();closeTBMenu()">🌿 Einrichtungs-Assistent</div>
-        <div class="tbm-item" onclick="openFloorPlanRecognizer();closeTBMenu()">🤖 KI: Grundriss aus Foto</div>
+        <div class="tbm-item" data-mode="room" data-tier="standard" onclick="generateOpeningHoursSign();closeTBMenu()">⏰ Öffnungszeiten-Schild</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="takePresentationScreenshot();closeTBMenu()">📸 3D-Screenshot</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="shareByEmail();closeTBMenu()">📧 Per E-Mail teilen</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="shareWhatsApp();closeTBMenu()">📱 WhatsApp</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="shareTelegram();closeTBMenu()">✈️ Telegram</div>
+        <div class="tbm-item" data-mode="both" data-tier="simple" onclick="exportToGoogleDrive();closeTBMenu()">📂 Google Drive</div>
+        <div class="tbm-item" data-mode="room" data-tier="standard" onclick="generateSessionProtocol();closeTBMenu()">📋 Sitzungsprotokoll</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="saveNamedVersion();closeTBMenu()">🏷 Version benennen</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="generateCostReport();closeTBMenu()">💰 Kostenvoranschlag PDF</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="generateEmbedCode();closeTBMenu()">🔗 Embed-Code für Website</div>
+        <div class="tbm-item" data-mode="both" data-tier="pro" onclick="exportIFC();closeTBMenu()">🏗 IFC-Export (CAD)</div>
+        <div class="tbm-item" data-mode="both" data-tier="pro" onclick="generateSecurityReport();closeTBMenu()">🔐 Sicherheitsbericht PDF</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="printBarcodeLabel()">🏷 Inventar-Etiketten drucken</div>
+        <div class="tbm-item" data-mode="both" data-tier="simple" onclick="openCSVImport();closeTBMenu()">📂 Räume aus CSV</div>
+        <div class="tbm-item" data-mode="room" data-tier="simple" onclick="openSetupWizard();closeTBMenu()">🌿 Einrichtungs-Assistent</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="openFloorPlanRecognizer();closeTBMenu()">🤖 KI: Grundriss aus Foto</div>
         <div class="tbm-sep"></div>
-        <div class="tbm-item" onclick="testAIConnection();closeTBMenu()">🔌 KI-Verbindung testen</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="testAIConnection();closeTBMenu()">🔌 KI-Verbindung testen</div>
         <div class="tbm-sep"></div>
-        <div class="tbm-item" onclick="localStorage.removeItem('csc-onboarded');location.reload()">🔄 Onboarding zurücksetzen</div>
-        <div class="tbm-item" onclick="printToScale();closeTBMenu()">📐 Druck 1:50</div>
-        <div class="tbm-item" onclick="startPresentation();closeTBMenu()">🎬 Präsentation</div>
-        <div class="tbm-item" data-tier="pro" onclick="exportEvacuationPlan();closeTBMenu()">🚨 Flucht- & Rettungsplan</div>
+        <div class="tbm-item" data-mode="room" data-tier="simple" onclick="localStorage.removeItem('csc-onboarded');location.reload()">🔄 Onboarding zurücksetzen</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="printToScale();closeTBMenu()">📐 Druck 1:50</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="startPresentation();closeTBMenu()">🎬 Präsentation</div>
+        <div class="tbm-item" data-mode="both" data-tier="pro" onclick="exportEvacuationPlan();closeTBMenu()">🚨 Flucht- & Rettungsplan</div>
       </div>
     </div>
 
@@ -262,66 +262,66 @@
       </button>
       <div class="tbm-drop" id="tbmd-view">
         <div class="tbm-label">3D-Optionen</div>
-        <div class="tbm-item" onclick="window.cscFrameScene&&window.cscFrameScene();closeTBMenu()">🎯 Ansicht zentrieren</div>
-        <div class="tbm-item" onclick="toggleHelperFloor();closeTBMenu()">🧭 Hilfsboden ein/aus</div>
-        <div class="tbm-item" onclick="toggleCeiling();closeTBMenu()" id="mi-ceiling">⬜ Decke ein/aus</div>
-        <div class="tbm-item" onclick="toggleSliceView();closeTBMenu()">✂️ Schnittansicht</div>
-        <div class="tbm-item" id="mi-allfloors" onclick="toggleAllFloors();closeTBMenu()" style="display:none">🏢 Alle Etagen</div>
-        <div class="tbm-item" onclick="toggleSunAnimation();closeTBMenu()" id="mi-sunanim">🌅 Tag/Nacht Animation</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="window.cscFrameScene&&window.cscFrameScene();closeTBMenu()">🎯 Ansicht zentrieren</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleHelperFloor();closeTBMenu()">🧭 Hilfsboden ein/aus</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleCeiling();closeTBMenu()" id="mi-ceiling">⬜ Decke ein/aus</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleSliceView();closeTBMenu()">✂️ Schnittansicht</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" id="mi-allfloors" onclick="toggleAllFloors();closeTBMenu()" style="display:none">🏢 Alle Etagen</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleSunAnimation();closeTBMenu()" id="mi-sunanim">🌅 Tag/Nacht Animation</div>
         <div class="tbm-sep"></div>
         <div class="tbm-label">2D-Overlays</div>
-        <div class="tbm-item" onclick="toggleGrid2D();closeTBMenu()" id="mi-grid">⬛ Raster ein/aus</div>
-        <div class="tbm-item" onclick="toggleDimensions();closeTBMenu()" id="mi-dims">📏 Maßketten</div>
-        <div class="tbm-item" onclick="toggleHeatmap();closeTBMenu()" id="mi-heatmap">🌡 Laufwege-Heatmap</div>
-        <div class="tbm-item" onclick="toggleSoundHeatmap();closeTBMenu()" id="mi-sound">🔊 Schallschutz</div>
-        <div class="tbm-item" onclick="toggleLightSim();closeTBMenu()" id="mi-light">☀️ Lichteinfall</div>
-        <div class="tbm-item" onclick="toggleRuler();closeTBMenu()" id="mi-ruler">📐 Lineal</div>
-        <div class="tbm-item" onclick="toggleNoteMode();closeTBMenu()" id="mi-notes">📌 Notizen</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleGrid2D();closeTBMenu()" id="mi-grid">⬛ Raster ein/aus</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleDimensions();closeTBMenu()" id="mi-dims">📏 Maßketten</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleHeatmap();closeTBMenu()" id="mi-heatmap">🌡 Laufwege-Heatmap</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleSoundHeatmap();closeTBMenu()" id="mi-sound">🔊 Schallschutz</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleLightSim();closeTBMenu()" id="mi-light">☀️ Lichteinfall</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleRuler();closeTBMenu()" id="mi-ruler">📐 Lineal</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleNoteMode();closeTBMenu()" id="mi-notes">📌 Notizen</div>
         <div class="tbm-sep"></div>
-        <div class="tbm-item" onclick="openLayoutComparison();closeTBMenu()">🔀 Lageplan vergleichen</div>
-        <div class="tbm-item" data-tier="simple" onclick="toggleTheme();closeTBMenu()">🌙 Hell/Dunkel wechseln</div>
-        <div class="tbm-item" onclick="cycleDimStyle();closeTBMenu()">📐 Maßketten-Stil wechseln</div>
-        <div class="tbm-item" onclick="toggleRoomStats();closeTBMenu()">📊 Raum-Statistik im Plan</div>
-        <div class="tbm-item" onclick="openMaterialStudio();closeTBMenu()">🎨 Material & Textur Studio</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="openLayoutComparison();closeTBMenu()">🔀 Lageplan vergleichen</div>
+        <div class="tbm-item" data-mode="both" data-tier="simple" onclick="toggleTheme();closeTBMenu()">🌙 Hell/Dunkel wechseln</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="cycleDimStyle();closeTBMenu()">📐 Maßketten-Stil wechseln</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleRoomStats();closeTBMenu()">📊 Raum-Statistik im Plan</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="openMaterialStudio();closeTBMenu()">🎨 Material & Textur Studio</div>
         <div class="tbm-sep"></div>
         <div class="tbm-label">Wetter</div>
-        <div class="tbm-item" onclick="setWeather('none');closeTBMenu()">⛅ Kein Wetter</div>
-        <div class="tbm-item" onclick="setWeather('rain');closeTBMenu()">🌧 Regen</div>
-        <div class="tbm-item" onclick="setWeather('snow');closeTBMenu()">❄️ Schnee</div>
-        <div class="tbm-item" onclick="setWeather('sun');closeTBMenu()">☀️ Sonnenstrahlen</div>
-        <div class="tbm-item" onclick="autoColorRooms();closeTBMenu()">🎨 Räume auto-einfärben</div>
-        <div class="tbm-item" onclick="start3DTour();closeTBMenu()">🎬 3D-Rundgang starten</div>
-        <div class="tbm-item" onclick="openColorHarmony();closeTBMenu()">🖌 Farbharmonie</div>
-        <div class="tbm-item" onclick="placeSmartLighting();closeTBMenu()">💡 Smart Lighting (KI)</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="setWeather('none');closeTBMenu()">⛅ Kein Wetter</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="setWeather('rain');closeTBMenu()">🌧 Regen</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="setWeather('snow');closeTBMenu()">❄️ Schnee</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="setWeather('sun');closeTBMenu()">☀️ Sonnenstrahlen</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="autoColorRooms();closeTBMenu()">🎨 Räume auto-einfärben</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="start3DTour();closeTBMenu()">🎬 3D-Rundgang starten</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="openColorHarmony();closeTBMenu()">🖌 Farbharmonie</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="placeSmartLighting();closeTBMenu()">💡 Smart Lighting (KI)</div>
         <div class="tbm-sep"></div>
         <div class="tbm-label">Lichttemperatur</div>
-        <div class="tbm-item" onclick="setLightTemperature('warm');closeTBMenu()">🟡 Warmweiß 2700K</div>
-        <div class="tbm-item" onclick="setLightTemperature('neutral');closeTBMenu()">⚪ Neutral 4000K</div>
-        <div class="tbm-item" onclick="setLightTemperature('cool');closeTBMenu()">🔵 Kalt 6500K</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="setLightTemperature('warm');closeTBMenu()">🟡 Warmweiß 2700K</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="setLightTemperature('neutral');closeTBMenu()">⚪ Neutral 4000K</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="setLightTemperature('cool');closeTBMenu()">🔵 Kalt 6500K</div>
         <div class="tbm-sep"></div>
-        <div class="tbm-item" data-mode="room" onclick="toggleKCaNGMonitor();closeTBMenu()">🌿 KCanG Live-Monitor</div>
-        <div class="tbm-item" onclick="toggleAnnotationMode();closeTBMenu()">📌 Annotations-Modus</div>
-        <div class="tbm-item" onclick="analyzeSound();closeTBMenu()">🔊 Schallschutzplan</div>
-        <div class="tbm-item" onclick="toggleTransparency();closeTBMenu()">👁 Transparenz-Modus</div>
-        <div class="tbm-item" onclick="autoConnectRooms();closeTBMenu()">🚪 Türen automatisch setzen</div>
-        <div class="tbm-item" onclick="startDiff();closeTBMenu()">📊 Diff-Basis setzen</div>
-        <div class="tbm-item" onclick="showDiff();closeTBMenu()">📊 Diff anzeigen</div>
-        <div class="tbm-item" onclick="generateGantt();closeTBMenu()">📅 Gantt aus Aufgaben</div>
+        <div class="tbm-item" data-mode="room" data-tier="simple" onclick="toggleKCaNGMonitor();closeTBMenu()">🌿 KCanG Live-Monitor</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleAnnotationMode();closeTBMenu()">📌 Annotations-Modus</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="analyzeSound();closeTBMenu()">🔊 Schallschutzplan</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleTransparency();closeTBMenu()">👁 Transparenz-Modus</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="autoConnectRooms();closeTBMenu()">🚪 Türen automatisch setzen</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="startDiff();closeTBMenu()">📊 Diff-Basis setzen</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="showDiff();closeTBMenu()">📊 Diff anzeigen</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="generateGantt();closeTBMenu()">📅 Gantt aus Aufgaben</div>
         <div class="tbm-sep"></div>
-        <div class="tbm-item" onclick="openDashboard();closeTBMenu()">🖥 Dashboard</div>
-        <div class="tbm-item" onclick="openChecklistWizard();closeTBMenu()">📋 Einrichtungs-Assistent</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="openDashboard();closeTBMenu()">🖥 Dashboard</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="openChecklistWizard();closeTBMenu()">📋 Einrichtungs-Assistent</div>
         <div class="tbm-sep"></div>
         <div class="tbm-label">Werkzeuge</div>
         <!-- P15 Topbar-Cleanup: aus Topbar-Mood-Block hochverschoben -->
-        <div class="tbm-item" onclick="toggleGuidedMode();closeTBMenu()">🧭 Geführter Modus</div>
-        <div class="tbm-item" onclick="toggleUndoTimeline();closeTBMenu()">🕐 Verlaufs-Timeline</div>
-        <div class="tbm-item" onclick="openCmdPalette();closeTBMenu()">⌨ Alle Befehle anzeigen <span class="tbm-kbd">Ctrl+K</span></div>
-        <div class="tbm-item" onclick="openHelp('start');closeTBMenu()">📚 Vollständige Anleitung</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleGuidedMode();closeTBMenu()">🧭 Geführter Modus</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleUndoTimeline();closeTBMenu()">🕐 Verlaufs-Timeline</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="openCmdPalette();closeTBMenu()">⌨ Alle Befehle anzeigen <span class="tbm-kbd">Ctrl+K</span></div>
+        <div class="tbm-item" data-mode="both" data-tier="simple" onclick="openHelp('start');closeTBMenu()">📚 Vollständige Anleitung</div>
         <div class="tbm-sep"></div>
         <div class="tbm-label">Einstellungen</div>
-        <div class="tbm-item" onclick="toggleLayerPanel();closeTBMenu()">📚 Ebenen (Layer)</div>
-        <div class="tbm-item" data-tier="simple" onclick="openM('m-display');closeTBMenu()">🎨 Darstellung</div>
-        <div class="tbm-item" data-tier="simple" onclick="openM('m-groups');closeTBMenu()">📦 Räume gruppieren</div>
+        <div class="tbm-item" data-mode="both" data-tier="simple" onclick="toggleLayerPanel();closeTBMenu()">📚 Ebenen (Layer)</div>
+        <div class="tbm-item" data-mode="both" data-tier="simple" onclick="openM('m-display');closeTBMenu()">🎨 Darstellung</div>
+        <div class="tbm-item" data-mode="both" data-tier="simple" onclick="openM('m-groups');closeTBMenu()">📦 Räume gruppieren</div>
       </div>
     </div>
 
@@ -333,85 +333,85 @@
         <span class="tb-btn__chev" data-icon="chevron"></span>
       </button>
       <div class="tbm-drop" id="tbmd-analyse">
-        <div class="tbm-item" onclick="openAnalysisDashboard();closeTBMenu()">📊 Analyse-Dashboard</div>
-        <div class="tbm-item" onclick="toggleVisitorFlow();closeTBMenu()" id="mi-visflow">👥 Besucherfluss-Animation</div>
-        <div class="tbm-item" onclick="calcCleaningScore();closeTBMenu()">🧹 Reinigungseffizienz</div>
-        <div class="tbm-item" onclick="calcAISecurityScore();closeTBMenu()">🔐 KI-Sicherheitsbewertung</div>
-        <div class="tbm-item" onclick="analyzeDaylight();closeTBMenu()">☀️ Tageslichtsimulation</div>
-        <div class="tbm-item" onclick="analyzeLux();closeTBMenu()">💡 Lux-Berechnung</div>
-        <div class="tbm-item" onclick="calcHeatLoad();closeTBMenu()">🌡 Heizlast-Berechnung</div>
-        <div class="tbm-item" onclick="showShiftGantt();closeTBMenu()">📅 Schichtplan (Gantt)</div>
-        <div class="tbm-item" onclick="autoConnectRooms();closeTBMenu()">🚪 Türen automatisch setzen</div>
-        <div class="tbm-item" onclick="analyzeNoise();closeTBMenu()">🔊 Schallschutz</div>
-        <div class="tbm-item" onclick="generateFullReport();closeTBMenu()">📋 KI-Gesamtgutachten</div>
-        <div class="tbm-item" onclick="calcCleaningScore();closeTBMenu()">🧹 Reinigungseffizienz</div>
-        <div class="tbm-item" onclick="calcAISecurityScore();closeTBMenu()">🔐 KI-Sicherheitsbewertung</div>
-        <div class="tbm-item" onclick="calcAccessibilityScore();closeTBMenu()">♿ Barrierefreiheits-Score</div>
-        <div class="tbm-item" onclick="generateEnergyCertificate();closeTBMenu()">⚡ Energie-Ausweis</div>
-        <div class="tbm-item" onclick="analyzStorage();closeTBMenu()">📦 Lager-Auslastung</div>
-        <div class="tbm-item" onclick="analyzeDaylight();closeTBMenu()">☀️ Tageslichtsimulation</div>
-        <div class="tbm-item" onclick="analyzeLux();closeTBMenu()">💡 Lux-Berechnung</div>
-        <div class="tbm-item" onclick="calcHeatLoad();closeTBMenu()">🌡 Heizlast-Berechnung</div>
-        <div class="tbm-item" onclick="showShiftGantt();closeTBMenu()">📅 Schichtplan (Gantt)</div>
-        <div class="tbm-item" onclick="autoConnectRooms();closeTBMenu()">🚪 Türen automatisch setzen</div>
-        <div class="tbm-item" onclick="analyzeWaitQueue();closeTBMenu()">⏱ Warteschlangen-Analyse</div>
-        <div class="tbm-item" onclick="calcBreakEven();closeTBMenu()">📈 Break-Even-Rechner</div>
-        <div class="tbm-item" onclick="generateShiftPlan();closeTBMenu()">👥 Personalplan / Schichtplan</div>
-        <div class="tbm-item" onclick="generateMaintenanceCalendar();closeTBMenu()">🗓 Wartungskalender</div>
-        <div class="tbm-item" onclick="analyzeMemberGrowth();closeTBMenu()">📈 Wachstumsplanung</div>
-        <div class="tbm-item" onclick="showStats();closeTBMenu()">📊 Raumstatistik <span class="tbm-kbd">I</span></div>
-        <div class="tbm-item" onclick="showAreaChart();closeTBMenu()">🥧 Flächenaufteilung</div>
-        <div class="tbm-item" onclick="toggleBudget();closeTBMenu()">💰 Möbelbudget</div>
-        <div class="tbm-item" onclick="openMaterialCalc();closeTBMenu()">🧱 Materialmengen</div>
-        <div class="tbm-item" onclick="calcFireSafety();openM('m-fire');closeTBMenu()">🧯 Brandschutz (DIN)</div>
-        <div class="tbm-item" onclick="openAcoustic();closeTBMenu()">🔊 Akustik-Planung</div>
-        <div class="tbm-item" onclick="calcEnergy();openM('m-energy');closeTBMenu()">⚡ Energie-Check</div>
-        <div class="tbm-item" onclick="openCleaning();closeTBMenu()">🧹 Reinigungsplan</div>
-        <div class="tbm-item" onclick="calcRoutes();openM('m-routes');closeTBMenu()">🚚 Lieferwege</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="openAnalysisDashboard();closeTBMenu()">📊 Analyse-Dashboard</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleVisitorFlow();closeTBMenu()" id="mi-visflow">👥 Besucherfluss-Animation</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="calcCleaningScore();closeTBMenu()">🧹 Reinigungseffizienz</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="calcAISecurityScore();closeTBMenu()">🔐 KI-Sicherheitsbewertung</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="analyzeDaylight();closeTBMenu()">☀️ Tageslichtsimulation</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="analyzeLux();closeTBMenu()">💡 Lux-Berechnung</div>
+        <div class="tbm-item" data-mode="both" data-tier="simple" onclick="calcHeatLoad();closeTBMenu()">🌡 Heizlast-Berechnung</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="showShiftGantt();closeTBMenu()">📅 Schichtplan (Gantt)</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="autoConnectRooms();closeTBMenu()">🚪 Türen automatisch setzen</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="analyzeNoise();closeTBMenu()">🔊 Schallschutz</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="generateFullReport();closeTBMenu()">📋 KI-Gesamtgutachten</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="calcCleaningScore();closeTBMenu()">🧹 Reinigungseffizienz</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="calcAISecurityScore();closeTBMenu()">🔐 KI-Sicherheitsbewertung</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="calcAccessibilityScore();closeTBMenu()">♿ Barrierefreiheits-Score</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="generateEnergyCertificate();closeTBMenu()">⚡ Energie-Ausweis</div>
+        <div class="tbm-item" data-mode="room" data-tier="standard" onclick="analyzStorage();closeTBMenu()">📦 Lager-Auslastung</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="analyzeDaylight();closeTBMenu()">☀️ Tageslichtsimulation</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="analyzeLux();closeTBMenu()">💡 Lux-Berechnung</div>
+        <div class="tbm-item" data-mode="both" data-tier="simple" onclick="calcHeatLoad();closeTBMenu()">🌡 Heizlast-Berechnung</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="showShiftGantt();closeTBMenu()">📅 Schichtplan (Gantt)</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="autoConnectRooms();closeTBMenu()">🚪 Türen automatisch setzen</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="analyzeWaitQueue();closeTBMenu()">⏱ Warteschlangen-Analyse</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="calcBreakEven();closeTBMenu()">📈 Break-Even-Rechner</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="generateShiftPlan();closeTBMenu()">👥 Personalplan / Schichtplan</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="generateMaintenanceCalendar();closeTBMenu()">🗓 Wartungskalender</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="analyzeMemberGrowth();closeTBMenu()">📈 Wachstumsplanung</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="showStats();closeTBMenu()">📊 Raumstatistik <span class="tbm-kbd">I</span></div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="showAreaChart();closeTBMenu()">🥧 Flächenaufteilung</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleBudget();closeTBMenu()">💰 Möbelbudget</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="openMaterialCalc();closeTBMenu()">🧱 Materialmengen</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="calcFireSafety();openM('m-fire');closeTBMenu()">🧯 Brandschutz (DIN)</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="openAcoustic();closeTBMenu()">🔊 Akustik-Planung</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="calcEnergy();openM('m-energy');closeTBMenu()">⚡ Energie-Check</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="openCleaning();closeTBMenu()">🧹 Reinigungsplan</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="calcRoutes();openM('m-routes');closeTBMenu()">🚚 Lieferwege</div>
         <div class="tbm-sep"></div>
-        <div class="tbm-item" onclick="openInventory();closeTBMenu()">📋 Inventarliste</div>
-        <div class="tbm-item" onclick="analyzeInventoryValue();closeTBMenu()">💎 Inventarwert</div>
-        <div class="tbm-item" onclick="analyzeSpaceEfficiency();closeTBMenu()">📐 Flächeneffizienz</div>
-        <div class="tbm-item" onclick="calcCO2Footprint();closeTBMenu()">🌱 CO₂-Fußabdruck</div>
-        <div class="tbm-item" onclick="calcStaffNeeds();closeTBMenu()">👥 Personalbedarf</div>
-        <div class="tbm-item" onclick="analyzeEscapeRoutes();closeTBMenu()">🚨 Fluchtweg-Analyse</div>
-        <div class="tbm-item" onclick="runEmergencyScenario();closeTBMenu()">⚠️ Notfall-Szenario</div>
-        <div class="tbm-item" onclick="toggleMemberHeatmap();closeTBMenu()" id="mi-memberheat">👥 Mitglieder-Heatmap</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="openInventory();closeTBMenu()">📋 Inventarliste</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="analyzeInventoryValue();closeTBMenu()">💎 Inventarwert</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="analyzeSpaceEfficiency();closeTBMenu()">📐 Flächeneffizienz</div>
+        <div class="tbm-item" data-mode="both" data-tier="simple" onclick="calcCO2Footprint();closeTBMenu()">🌱 CO₂-Fußabdruck</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="calcStaffNeeds();closeTBMenu()">👥 Personalbedarf</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="analyzeEscapeRoutes();closeTBMenu()">🚨 Fluchtweg-Analyse</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="runEmergencyScenario();closeTBMenu()">⚠️ Notfall-Szenario</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleMemberHeatmap();closeTBMenu()" id="mi-memberheat">👥 Mitglieder-Heatmap</div>
         <div class="tbm-sep"></div>
-        <div class="tbm-item" onclick="showCSCPanel();closeTBMenu()">🌿 CSC Checkliste</div>
-        <div class="tbm-item" onclick="checkAccessibility();closeTBMenu()">♿ Barrierefreiheit</div>
-        <div class="tbm-item" onclick="estimateCosts();closeTBMenu()">💰 Kosten schätzen</div>
-        <div class="tbm-item" onclick="optimizeLayout();closeTBMenu()">🔍 KI: Grundriss optimieren</div>
+        <div class="tbm-item" data-mode="room" data-tier="simple" onclick="showCSCPanel();closeTBMenu()">🌿 CSC Checkliste</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="checkAccessibility();closeTBMenu()">♿ Barrierefreiheit</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="estimateCosts();closeTBMenu()">💰 Kosten schätzen</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="optimizeLayout();closeTBMenu()">🔍 KI: Grundriss optimieren</div>
         <div class="tbm-sep"></div>
-        <div class="tbm-item" onclick="openSmartHome();closeTBMenu()">🏠 Smart Home Planung</div>
-        <div class="tbm-item" onclick="openTimeline();closeTBMenu()">📅 Zeitplan</div>
-        <div class="tbm-item" onclick="startAR();closeTBMenu()">🔮 Augmented Reality</div>
-        <div class="tbm-item" onclick="autoOptimizeAll();closeTBMenu()">⚡ Auto-Optimierung</div>
-        <div class="tbm-item" onclick="autoLabelRooms();closeTBMenu()">🏷 Räume automatisch benennen</div>
-        <div class="tbm-item" onclick="suggestNextStep();closeTBMenu()">💡 Nächster Schritt</div>
-        <div class="tbm-item" onclick="toggleVoice();closeTBMenu()">🎙 Sprachsteuerung</div>
-        <div class="tbm-item" onclick="aiStyleAdvisor();closeTBMenu()">🎨 KI: Stil-Berater</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="openSmartHome();closeTBMenu()">🏠 Smart Home Planung</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="openTimeline();closeTBMenu()">📅 Zeitplan</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="startAR();closeTBMenu()">🔮 Augmented Reality</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="autoOptimizeAll();closeTBMenu()">⚡ Auto-Optimierung</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="autoLabelRooms();closeTBMenu()">🏷 Räume automatisch benennen</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="suggestNextStep();closeTBMenu()">💡 Nächster Schritt</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleVoice();closeTBMenu()">🎙 Sprachsteuerung</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="aiStyleAdvisor();closeTBMenu()">🎨 KI: Stil-Berater</div>
         <div class="tbm-sep"></div>
-        <div class="tbm-item" onclick="fitViewToRooms();closeTBMenu()">🎯 Ansicht einpassen (F)</div>
-        <div class="tbm-item" onclick="switchLightingPreset('indoor');closeTBMenu()">💡 Beleuchtung: Studio</div>
-        <div class="tbm-item" onclick="switchLightingPreset('evening');closeTBMenu()">🌙 Beleuchtung: Abend</div>
-        <div class="tbm-item" onclick="toggleBloom();closeTBMenu()">✨ Bloom an/aus</div>
-        <div class="tbm-item" onclick="openBadges();closeTBMenu()">🏆 Errungenschaften</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="fitViewToRooms();closeTBMenu()">🎯 Ansicht einpassen (F)</div>
+        <div class="tbm-item" data-mode="both" data-tier="expert" onclick="switchLightingPreset('indoor');closeTBMenu()">💡 Beleuchtung: Studio</div>
+        <div class="tbm-item" data-mode="both" data-tier="expert" onclick="switchLightingPreset('evening');closeTBMenu()">🌙 Beleuchtung: Abend</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleBloom();closeTBMenu()">✨ Bloom an/aus</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="openBadges();closeTBMenu()">🏆 Errungenschaften</div>
         <div class="tbm-sep"></div>
-        <div class="tbm-item" data-tier="simple" onclick="openM('m-todos');closeTBMenu()">✅ Aufgaben</div>
-        <div class="tbm-item" data-tier="simple" onclick="openM('m-prompts');closeTBMenu()">💬 Eigene KI-Befehle</div>
-        <div class="tbm-item" onclick="openShortcutEditor();closeTBMenu()">⌨ Tastenkürzel</div>
-        <div class="tbm-item" onclick="enableAutoCloudSave(!_autoCloudSave);closeTBMenu()" id="mi-autocloudsvae">☁ Auto-Cloud-Save</div>
-        <div class="tbm-item" data-tier="simple" onclick="openM('m-waittime');closeTBMenu()">⏱ Wartezeit-Simulation</div>
-        <div class="tbm-item" onclick="calcROI();openM('m-roi');closeTBMenu()">📈 ROI-Rechner</div>
-        <div class="tbm-item" onclick="showGrowthPlan();closeTBMenu()">📊 Wachstumsplanung</div>
-        <div class="tbm-item" onclick="toggleClimate();closeTBMenu()" id="btn-climate">🌡 Raumklima-Simulation</div>
-        <div class="tbm-item" onclick="toggleWheelchair();closeTBMenu()">♿ Rollstuhl-Simulator</div>
-        <div class="tbm-item" data-tier="simple" onclick="openM('m-seasons');closeTBMenu()">🍂 Saison-Layouts</div>
+        <div class="tbm-item" data-mode="both" data-tier="simple" onclick="openM('m-todos');closeTBMenu()">✅ Aufgaben</div>
+        <div class="tbm-item" data-mode="both" data-tier="simple" onclick="openM('m-prompts');closeTBMenu()">💬 Eigene KI-Befehle</div>
+        <div class="tbm-item" data-mode="both" data-tier="expert" onclick="openShortcutEditor();closeTBMenu()">⌨ Tastenkürzel</div>
+        <div class="tbm-item" data-mode="both" data-tier="simple" onclick="enableAutoCloudSave(!_autoCloudSave);closeTBMenu()" id="mi-autocloudsvae">☁ Auto-Cloud-Save</div>
+        <div class="tbm-item" data-mode="both" data-tier="simple" onclick="openM('m-waittime');closeTBMenu()">⏱ Wartezeit-Simulation</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="calcROI();openM('m-roi');closeTBMenu()">📈 ROI-Rechner</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="showGrowthPlan();closeTBMenu()">📊 Wachstumsplanung</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleClimate();closeTBMenu()" id="btn-climate">🌡 Raumklima-Simulation</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="toggleWheelchair();closeTBMenu()">♿ Rollstuhl-Simulator</div>
+        <div class="tbm-item" data-mode="both" data-tier="simple" onclick="openM('m-seasons');closeTBMenu()">🍂 Saison-Layouts</div>
         <div class="tbm-sep"></div>
-        <div class="tbm-item" onclick="aiDescribeRoom();closeTBMenu()">🔮 KI: Raum beschreiben</div>
-        <div class="tbm-item" data-tier="pro" onclick="aiSecurityAudit();closeTBMenu()">🔐 KI: Sicherheits-Audit</div>
-        <div class="tbm-item" data-tier="pro" onclick="aiAccessibleRebuild();closeTBMenu()">♿ KI: Barrierefrei-Umbau</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="aiDescribeRoom();closeTBMenu()">🔮 KI: Raum beschreiben</div>
+        <div class="tbm-item" data-mode="both" data-tier="pro" onclick="aiSecurityAudit();closeTBMenu()">🔐 KI: Sicherheits-Audit</div>
+        <div class="tbm-item" data-mode="both" data-tier="pro" onclick="aiAccessibleRebuild();closeTBMenu()">♿ KI: Barrierefrei-Umbau</div>
       </div>
     </div>
 
@@ -423,15 +423,15 @@
         <span class="tb-btn__chev" data-icon="chevron"></span>
       </button>
       <div class="tbm-drop" id="tbmd-share">
-        <div class="tbm-item" onclick="shareProject();closeTBMenu()">🔗 Projekt-Link teilen</div>
-        <div class="tbm-item" onclick="openVisionBoard();closeTBMenu()">🎨 Visions-Board</div>
-        <div class="tbm-item" onclick="generateQRCode();closeTBMenu()">📱 QR-Code generieren</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="shareProject();closeTBMenu()">🔗 Projekt-Link teilen</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="openVisionBoard();closeTBMenu()">🎨 Visions-Board</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="generateQRCode();closeTBMenu()">📱 QR-Code generieren</div>
         <div class="tbm-sep"></div>
-        <div class="tbm-item" onclick="showChangelog();closeTBMenu()">📋 Änderungsprotokoll</div>
-        <div class="tbm-item" onclick="saveVersion();closeTBMenu()">📌 Version merken</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="showChangelog();closeTBMenu()">📋 Änderungsprotokoll</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="saveVersion();closeTBMenu()">📌 Version merken</div>
         <div class="tbm-sep"></div>
-        <div class="tbm-item" onclick="saveCurrentAIChat();closeTBMenu()">💬 KI-Chat speichern</div>
-        <div class="tbm-item" onclick="showAIChatHistory();closeTBMenu()">💬 KI-Gespräche laden</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="saveCurrentAIChat();closeTBMenu()">💬 KI-Chat speichern</div>
+        <div class="tbm-item" data-mode="both" data-tier="standard" onclick="showAIChatHistory();closeTBMenu()">💬 KI-Gespräche laden</div>
       </div>
     </div>
 

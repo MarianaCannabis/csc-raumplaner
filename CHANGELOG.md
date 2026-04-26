@@ -6,6 +6,28 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+### Zusatzfunktionen
+
+- **Full Menu-Tagging (Sitzung H)** — alle 158 Topbar-Menu-Items haben
+  jetzt `data-mode` (room/event/both) + `data-tier` (simple/standard/expert/
+  advanced). Vorher: 28/158 mit data-mode, 105/158 mit data-tier. Jetzt
+  **158/158 fully tagged**.
+  - **Heuristik:** Caller-Funktion + Label-Keywords:
+    - `data-mode="room"` bei KCanG/Compliance/Lager/Anbau/Behörden-Items (9 von 158)
+    - `data-mode="both"` bei allgemeinen Tools (Help/Settings/Cloud/Theme — 149 von 158, default-fallback bei Ambiguität)
+    - `data-mode="event"` blieb bei den bereits manuell getaggten Topbar-Buttons (`btn-templates`, `pm-event` etc.) — keine tbm-items als event klassifiziert (typische Event-Items sind Topbar-Direkt-Buttons, nicht Menu-Items).
+    - `data-tier="simple"` bei Save/Load/Undo/Theme/Hilfe (24 von 158)
+    - `data-tier="standard"` als Default-Fallback (126 von 158)
+    - `data-tier="expert"` bei Multi-User/Collaboration (3 von 158)
+    - `data-tier="advanced"` bei Telemetry/Audit/Debug (0 von 158 — die wenigen Dev-Items waren bereits getaggt)
+  - **Audit-Coverage:** `scripts/audit-functions.mjs` ergänzt um
+    tbm-item-Coverage-Sektion. Loggs zeigen jetzt `158/158 fully tagged`
+    bei jedem Audit-Run; warnt loud bei zukünftigen ungetaggten Items.
+  - **Bundle-Delta:** index.html gz +3,746 (130 Tag-Attribute).
+  - **Korrektur-Pfad:** Heuristik kann unstimmig sein — User-Korrekturen
+    via Mini-PR mit `data-mode`/`data-tier` direkt am betroffenen
+    `tbm-item` editieren.
+
 ### Bedienkonzept
 
 - **Touch-Wire-Up auf 2D-Canvas (Sitzung G Schritt 4)** — die in PR #203

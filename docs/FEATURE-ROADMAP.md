@@ -44,7 +44,7 @@ Wird live gepflegt — pro abgeschlossenem PR wird der Status aktualisiert.
 
 | Status | Item | Aufwand | Notiz |
 |---|---|---|---|
-| ⏳ | Full Menu-Tagging (140 Items mit data-mode/tier) | 4-6h | Roadmap v2.3 |
+| ✅ | Full Menu-Tagging (158 Items mit data-mode/tier) | 4-6h | [#213](https://github.com/MarianaCannabis/csc-raumplaner/pull/213) — 158/158 fully tagged via Heuristik, Audit-Coverage in audit-functions.mjs |
 | ✅ | Snapshot/Visual-History UX | 4-5h | [#210](https://github.com/MarianaCannabis/csc-raumplaner/pull/210) — Slider/Grid/Compare-Modes mit Diff-Counter (computeDiff-Reuse) |
 | ✅ | Multi-User-Avatar-Verbesserungen | 3-4h | [#204](https://github.com/MarianaCannabis/csc-raumplaner/pull/204) — colorForUser hash-basiert, Live-Names im Tooltip, Cursor-Glow |
 | ✅ | PDF-Messeordnung Multi-Page-Support | 4-6h | [#205](https://github.com/MarianaCannabis/csc-raumplaner/pull/205) — promptForPages-Dialog mit "alle"/"1-3"/"1,3,5" |
