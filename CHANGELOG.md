@@ -6,6 +6,33 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+### Roadmap v3.0
+
+- **Bauantrag-PDF-Generierung (Mega-Sammel ACBD #1-5)** — neuer
+  `src/legacy/bauantragPdf.ts` Modul generiert vollständiges KCanG-Antrags-
+  Dokument mit 10 Sektionen:
+  - **Deckblatt** (Vereinsdaten + Antragsdatum)
+  - **Lageplan** (top-down 3D-Render via rend3.topCam)
+  - **Grundrisse** (1 Seite pro Floor, 2D-Canvas-Snapshot mit curFloor-Switch)
+  - **Positionsplan** (Räume nummeriert + Tabelle: Nr | Name | B | T | Fläche | Etage)
+  - **Möbel-Liste** (gruppiert nach Catalog-Kategorie)
+  - **Compliance-Bericht** (alle 21 KCanG-Regeln mit OK/FAIL/N/A)
+  - **Hygienekonzept** (KCanG-Wizard Section D)
+  - **Suchtberatung** (Section E)
+  - **Sicherheit** (Section F: Brandschutz/Notausgang/§14 Sichtschutz/§13 POI)
+  - **Anhang** (Material-Aufstellung mit Schätzkosten via getObjPrice +
+    Flächen-Berechnung pro Raum-Typ heuristisch)
+
+  Technisches:
+  - jsPDF-Lazy-Reuse: nutzt denselben dynamic-Import wie KCanG-Wizard.
+  - Footer: Seitenzahl + Vereinsname + Datum auf jeder Seite.
+  - UI-Trigger: neuer Button im KCanG-Wizard Sticky-Nav.
+  - Filename: `Bauantrag_<Vereinsname>_<YYYY-MM-DD>.pdf` mit Sanitization.
+  - Graceful Degradation: kcangApp=null / leere Compliance / Render-Fail
+    → Hinweis-Text statt Crash.
+  - +13 Vitest-Tests. Vitest gesamt: 536 → 549.
+  - Bundle: ~+3 KB gz (index.js).
+
 ### Zusatzfunktionen
 
 - **Full Menu-Tagging (Sitzung H)** — alle 158 Topbar-Menu-Items haben

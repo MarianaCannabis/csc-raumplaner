@@ -77,6 +77,7 @@ import { probeOptimisticLocking } from './persist/cloudProjects.js';
 import * as kcangWizard from './legacy/kcangWizard.js';
 import * as kcangPdfExport from './legacy/kcangPdfExport.js';
 import type { KCanGApplication } from './legacy/kcangWizard.js';
+import * as bauantragPdf from './legacy/bauantragPdf.js';
 import * as touchSupport from './legacy/touchSupport.js';
 import * as collabAvatars from './legacy/collabAvatars.js';
 import * as pdfPageSelector from './legacy/pdfPageSelector.js';
@@ -318,6 +319,11 @@ declare global {
     cscStamp: {
       toggle: () => void;
       isActive: () => boolean;
+    };
+    /** Mega-Sammel ACBD #1-5: Bauantrag-PDF-Generierung. Komplettes Antrags-
+     *  Dokument mit 10 Sektionen (Deckblatt, Lageplan, Grundrisse, etc.). */
+    cscBauantrag: {
+      generate: (opts?: bauantragPdf.BauantragOptions) => Promise<void>;
     };
     /** P17.18: Tutorial aus src/legacy/tutorial.ts. Step-basiertes
      *  Overlay mit Highlight auf Topbar/Sidebar-Elementen. */
@@ -889,6 +895,88 @@ window.cscStamp = {
     if (btn) btn.classList.toggle('is-active', active);
   },
   isActive: stampMode.isStampActive,
+};
+
+// Mega-Sammel ACBD #1-5: Bauantrag-PDF — bridge mit deps-builder.
+function buildBauantragDeps(): bauantragPdf.BauantragDeps {
+  const w = window as unknown as {
+    projName?: string;
+    rooms?: bauantragPdf.ProjectData['rooms'];
+    objects?: bauantragPdf.ProjectData['objects'];
+    walls?: unknown[];
+    measures?: unknown[];
+    floors?: bauantragPdf.ProjectData['floors'];
+    curFloor?: string;
+    fpCv?: HTMLCanvasElement;
+    rend3?: { render: (s: unknown, c: unknown) => void; domElement: HTMLCanvasElement };
+    scene?: unknown;
+    topCam?: unknown;
+    upTop?: () => void;
+    draw2D?: () => void;
+    toast?: (m: string, t?: string) => void;
+    findItem?: (id: string) => { name?: string; cat?: string } | null;
+    getObjPrice?: (id: string) => number;
+    cscCompliance?: {
+      listRules?: () => Array<{ id: string; label: string; severity?: 'critical' | 'warning' | 'info'; eval?: unknown }>;
+    };
+    getKCaNGChecklist?: () => Array<{ id?: string; label?: string; passed?: boolean }>;
+  };
+
+  // KCanG-Wizard-Daten aus localStorage
+  const kcangApp = kcangWizard.loadFromLocalStorage();
+
+  // Compliance-Results bauen — aus existing getKCaNGChecklist (legacy)
+  const checklist = typeof w.getKCaNGChecklist === 'function' ? w.getKCaNGChecklist() : [];
+  const complianceResults: bauantragPdf.ComplianceResult[] = checklist.map((c, i) => ({
+    rule: { id: c.id || c.label || 'rule-' + i, label: c.label || 'Regel ' + (i + 1) },
+    passed: typeof c.passed === 'boolean' ? c.passed : null,
+  }));
+
+  return {
+    kcangApp,
+    projectData: {
+      name: w.projName ?? 'Projekt',
+      rooms: w.rooms ?? [],
+      objects: w.objects ?? [],
+      walls: w.walls ?? [],
+      measures: w.measures ?? [],
+      floors: w.floors ?? [],
+      curFloor: w.curFloor ?? 'eg',
+    },
+    complianceResults,
+    renderFloorPlan: (floorId: string) => {
+      // Switch zu Floor + draw + Snapshot + restore.
+      const prev = w.curFloor;
+      w.curFloor = floorId;
+      try { w.draw2D?.(); } catch { /* ignore */ }
+      const dataUrl = w.fpCv?.toDataURL?.('image/jpeg', 0.85) ?? '';
+      w.curFloor = prev;
+      try { w.draw2D?.(); } catch { /* ignore */ }
+      return dataUrl;
+    },
+    renderPerspective: () => {
+      try {
+        w.upTop?.();
+        if (w.rend3 && w.scene && w.topCam) {
+          w.rend3.render(w.scene, w.topCam);
+          return w.rend3.domElement.toDataURL('image/jpeg', 0.85);
+        }
+      } catch {
+        /* canvas not ready */
+      }
+      return '';
+    },
+    toast: w.toast ?? (() => {}),
+    loadJsPdf: () => import('jspdf'),
+    findItem: w.findItem,
+    getObjPrice: w.getObjPrice,
+  };
+}
+
+window.cscBauantrag = {
+  generate: async (opts?: bauantragPdf.BauantragOptions) => {
+    await bauantragPdf.generateBauantragPdf(buildBauantragDeps(), opts);
+  },
 };
 queueMicrotask(() => {
   if (!touchSupport.isTouchDevice()) return;

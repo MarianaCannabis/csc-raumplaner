@@ -56,7 +56,7 @@ Wird live gepflegt — pro abgeschlossenem PR wird der Status aktualisiert.
 | Status | Item | Aufwand | Notiz |
 |---|---|---|---|
 | ⏳ | Multi-Floor mit 3D-Treppen | 2-3 Wo | eigene Spec mit Vorab-Diskussion |
-| ⏳ | Bauantrag-PDF-Generierung | 1-2 Wo | bestehende PDF-Infra ausbauen |
+| ✅ | Bauantrag-PDF-Generierung | 1-2 Wo | [#214](https://github.com/MarianaCannabis/csc-raumplaner/pull/214) — 10 Sektionen, jsPDF-Lazy-Reuse, KCanG-Wizard-Daten + Compliance + Möbel + Anhang |
 | ⏳ | BIM-Viewer (ifcViewer) Integration | 1-2 Wo | externe Library + Bundle-Impact |
 | ⏳ | Stripe-Checkout Pro/Team | 1-2 Wo | + Subscription-Tabelle Supabase |
 
