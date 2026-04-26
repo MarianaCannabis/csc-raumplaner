@@ -322,6 +322,7 @@
         <div class="tbm-item" data-mode="both" data-tier="simple" onclick="toggleLayerPanel();closeTBMenu()">📚 Ebenen (Layer)</div>
         <div class="tbm-item" data-mode="both" data-tier="simple" onclick="openM('m-display');closeTBMenu()">🎨 Darstellung</div>
         <div class="tbm-item" data-mode="both" data-tier="simple" onclick="openM('m-groups');closeTBMenu()">📦 Räume gruppieren</div>
+        <div class="tbm-item" data-mode="both" data-tier="expert" onclick="toggleMenuModeFilter();closeTBMenu()" title="Filtert Menu-Items basierend auf Planungs-Modus (room/event). Items mit data-mode='both' bleiben immer sichtbar." id="menu-filter-toggle-item">📂 Menu-Mode-Filter ein/aus</div>
       </div>
     </div>
 
@@ -21080,6 +21081,35 @@ setTimeout(initTooltips,500);
 setTimeout(renderKIDropdown,200);
 loadBadges();
 showTipOfDay();
+
+// Mega-Sammel ACBD #6: Menu-Mode-Filter. Items mit data-mode="room"/"event"
+// werden je nach aktivem Planning-Mode versteckt. data-mode="both" bleibt
+// immer sichtbar. Toggle in Topbar-Hilfe-Menu (📂 Menu-Mode-Filter ein/aus).
+function applyMenuModeFilter(){
+  var filterEnabled = false;
+  try { filterEnabled = localStorage.getItem('csc-mode-filter') === '1'; } catch(_){}
+  var planningMode = document.body.dataset.planningMode || 'room';
+  document.querySelectorAll('.tbm-item[data-mode]').forEach(function(el){
+    if(!filterEnabled){
+      el.style.display = '';
+      return;
+    }
+    var itemMode = el.dataset.mode;
+    el.style.display = (itemMode === planningMode || itemMode === 'both') ? '' : 'none';
+  });
+}
+function toggleMenuModeFilter(){
+  var cur = false;
+  try { cur = localStorage.getItem('csc-mode-filter') === '1'; } catch(_){}
+  try { localStorage.setItem('csc-mode-filter', cur ? '0' : '1'); } catch(_){}
+  applyMenuModeFilter();
+  if(typeof toast === 'function'){
+    toast(cur ? '📂 Menu-Filter aus — alle Items sichtbar' : '📂 Menu-Filter an — nur passende Items sichtbar', 'b');
+  }
+}
+// Beim Boot + bei jedem Mode-Switch anwenden.
+applyMenuModeFilter();
+window.addEventListener('csc-mode-change', applyMenuModeFilter);
 // Pfad-C #7: Onboarding-Tour. autoStartTour() ist die neue Single-
 // Source-of-Truth für den Boot-Trigger — es kümmert sich selbst um
 // Skip/Done-Migration alter Keys und Welcome → Bridge → Tutorial.
