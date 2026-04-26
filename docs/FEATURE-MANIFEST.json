@@ -1,0 +1,79 @@
+{
+  "$comment": "Feature-Inventory-Manifest für audit:features. Source-of-Truth für Min-Erwartungswerte. Bei Feature-Add diese Datei + Test-Suite parallel updaten.",
+  "version": "2.8.0",
+  "categories": {
+    "catalog": {
+      "$comment": "RICH_PRIMITIVES + EVENT_ITEMS + alle items/*.ts. Min-Wert ist defensiv.",
+      "$comment_min_items": "Zählt cat:-Pattern in src/catalog/items/*.ts (alle Items inkl. EVENT/CSC_EXPANSION). cscCatalog.newItems im Browser ist nur ein Subset von ~164 — separate Health-Check-Floor in tests/e2e/feature-health.spec.ts.",
+      "expected_min_items": 250,
+      "expected_categories": [
+        "Stühle", "Sofas", "Tische", "Büro", "Pflanzen", "Licht",
+        "Anbau", "Ausgabe", "Sicherheit", "Lager", "Sozial",
+        "Messe", "Bühne", "Türen", "Fenster", "Treppen"
+      ],
+      "expected_stairs_items": 5
+    },
+    "compliance": {
+      "$comment": "src/compliance/index.ts importiert alle rules/*.ts.",
+      "expected_min_rule_imports": 23
+    },
+    "modals": {
+      "$comment": "Selektive m-IDs die für Major-Features stehen. NICHT alle 50 m-* IDs — nur die userseitig wichtigen.",
+      "$comment_ids": "m-pricing wird programmatisch erzeugt (pricingModal.ts), daher nicht hier — wird via window.cscPricing-Bridge gecheckt.",
+      "expected_ids": [
+        "m-help",
+        "m-rename",
+        "m-templates",
+        "m-welcome",
+        "m-kcang-wizard",
+        "m-floor-manager",
+        "m-changelog",
+        "m-credits"
+      ]
+    },
+    "window_bridges": {
+      "expected": [
+        "cscCompliance",
+        "cscBauantrag",
+        "cscPricing",
+        "cscFloors",
+        "cscStairs",
+        "cscBim",
+        "cscBimUI",
+        "cscConflictResolver",
+        "cscOnboarding",
+        "cscKCanG",
+        "cscStamp",
+        "cscTouch",
+        "cscCollab",
+        "cscPdfPages"
+      ]
+    },
+    "right_panel_tabs": {
+      "expected": ["ai", "design", "light", "save", "props", "bim"]
+    },
+    "exports": {
+      "$comment": "Symbolische Format-Liste; Code-Existenz wird über bridges + DXF-Funktion-Match geprüft.",
+      "formats": ["dxf", "pdf", "csv-furniture", "csv-budget", "gltf", "ifc"]
+    },
+    "migrations": {
+      "expected_files": [
+        "0001_rls_owner.sql",
+        "0002_schema_cleanup.sql",
+        "0003_realtime_sessions.sql",
+        "0004_user_templates.sql",
+        "0005_teams.sql",
+        "0006_subscriptions.sql",
+        "0007_marketplace.sql",
+        "0008_add_project_thumbnail.sql",
+        "0009_optimistic_locking.sql",
+        "0010_kcang_applications.sql",
+        "0011_subscriptions.sql",
+        "0012_subscriptions_stripe.sql"
+      ]
+    },
+    "edge_functions": {
+      "expected": ["anthropic-proxy", "stripe-webhook", "stripe-checkout"]
+    }
+  }
+}

@@ -6,6 +6,28 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+## v2.8.1 — 2026-04-26
+
+### Feature-Selbsttest — automatischer Health-Check
+
+- **`docs/FEATURE-MANIFEST.json`** als Source-of-Truth für Min-Erwartungen:
+  Catalog-Items, Compliance-Rules, Modals, Window-Bridges, Right-Panel-
+  Tabs, Migrations, Edge-Functions.
+- **`scripts/audit-features.mjs`** prüft Manifest gegen die Codebase
+  bei jedem `npm run audit:all`. Exit 1 wenn Major-Feature fehlt.
+- **`tests/e2e/feature-health.spec.ts`** — 11 E2E-Health-Tests im
+  Headless-Browser (Boot-Errors, Window-Bridges, Catalog-Items + Stairs,
+  Compliance-Rules, Modals, Pricing-Modal, BIM-Tab, 3D-Pipeline,
+  Multi-Floor-Add, IFC-Export-Bridge, Stripe-Bridge). E2E gesamt:
+  54 → 65.
+- **`src/legacy/selfTest.ts`** + UI-Button im Help-Modal — User-
+  facing 30-Sekunden-Selbsttest mit 7 Checks (Bridges, Catalog,
+  Compliance, Modals, Right-Panel-Tabs, Exports, BIM-Export). Resultat
+  als HTML-Liste im Help-Modal.
+- **+9 Vitest-Tests** für selfTest.ts. Vitest gesamt: 659 → 668.
+- Macht das „ist alles noch da?"-Audit von Pflicht-30-Min-Smoke zu
+  Pflicht-30-Sekunden-Click.
+
 ## v2.8.0 — 2026-04-26 — Roadmap v3.0 komplett ✅
 
 **Bedeutender Release.** Roadmap v3.0 (Bauantrag-PDF · Multi-Floor · Stripe ·
