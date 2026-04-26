@@ -30,7 +30,7 @@ Wird live gepflegt — pro abgeschlossenem PR wird der Status aktualisiert.
 | Status | Item | Aufwand | Notiz |
 |---|---|---|---|
 | ✅ | **Onboarding-Tour neu strukturieren** | 3-4h | [#196](https://github.com/MarianaCannabis/csc-raumplaner/pull/196) — Phase-State-Machine, Migration alter Keys |
-| ⏳ | Konflikt-Resolution Cloud-Save | 4-6h | last-writer-wins → merge/diff |
+| ✅ | **Konflikt-Resolution Cloud-Save** | 4-6h | [#198](https://github.com/MarianaCannabis/csc-raumplaner/pull/198) — Optimistic Locking via Version-Counter (Migration 0009 PFLICHT-Apply) |
 | ⏳ | Compliance-Wizard für KCanG-Antrag | 6-8h | geführter Flow durch 21 Regeln |
 | ⏳ | Tastatur-Shortcuts-Editor erweitern | 2-3h | Konflikt-Detection + Presets |
 | ⏳ | Mobile/Touch-Optimierung | 4-8h | Tablet-Workflow Audit |
