@@ -42,13 +42,17 @@ export interface CatalogItem {
    *  liest stairsConfig + zeichnet Stufen-Profil statt Standard-Box. */
   type?: 'standard' | 'stairs';
   stairsConfig?: {
-    /** Phase 3 #4: 'l' für L-Treppen mit 90° Podest. */
-    shape: 'straight' | 'l';
+    /** Phase 3 #4: 'l' für L-Treppen, Phase 4: 'spiral' für Wendeltreppen. */
+    shape: 'straight' | 'l' | 'spiral';
     stepHeight: number;
     stepDepth: number;
     stepCount: number;
     withRailing: boolean;
     /** Phase 3 #4: nur bei shape='l'. */
     landingAfter?: number;
+    /** Phase 4: Wendeltreppe-Geometrie. */
+    outerRadius?: number;
+    innerRadius?: number;
+    totalRotation?: number;
   };
 }

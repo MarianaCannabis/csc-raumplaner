@@ -30,6 +30,7 @@ import type { StairsConfig } from './types.js';
  * @param cfg StairsConfig (stepHeight, stepDepth, stepCount, withRailing)
  */
 export function buildStairsMesh(width: number, cfg: StairsConfig): THREE.Group {
+  if (cfg.shape === 'spiral') return buildSpiralStairsMesh(cfg);
   if (cfg.shape === 'l') return buildLStairsMesh(width, cfg);
   const group = new THREE.Group();
 
@@ -200,6 +201,91 @@ function buildLStairsMesh(width: number, cfg: StairsConfig): THREE.Group {
     stepCount: cfg.stepCount,
     landingAfter: stepsRun1,
   };
+  return group;
+}
+
+/**
+ * Phase 4: Wendeltreppe — Tortenstück-Stufen um zentrale Säule + Spiral-Geländer.
+ *
+ * Geometrie-Strategie:
+ *   Pro Stufe ein extrudierter Ring-Sektor (outerRadius, innerRadius, stepAngle)
+ *   gestapelt auf y = i * stepHeight. Mittel-Pfosten ist ein Cylinder mit
+ *   0.8 × innerRadius. Geländer ist eine TubeGeometry entlang einer Spiral-Curve.
+ */
+export function buildSpiralStairsMesh(cfg: StairsConfig): THREE.Group {
+  const group = new THREE.Group();
+  const outerR = cfg.outerRadius ?? 1.2;
+  const innerR = cfg.innerRadius ?? 0.2;
+  const totalRot = cfg.totalRotation ?? Math.PI * 1.5;
+
+  if (innerR >= outerR) {
+    console.warn('[stairs] innerRadius >= outerRadius — degenerate spiral');
+  }
+
+  const stepAngle = totalRot / cfg.stepCount;
+  const matWedge = new THREE.MeshStandardMaterial({
+    color: 0xa0826d, roughness: 0.85, metalness: 0.0,
+  });
+
+  for (let i = 0; i < cfg.stepCount; i++) {
+    const startAngle = i * stepAngle;
+    const endAngle = (i + 1) * stepAngle;
+    const stepZ = i * cfg.stepHeight;
+    const shape = new THREE.Shape();
+    shape.absarc(0, 0, outerR, startAngle, endAngle, false);
+    shape.absarc(0, 0, innerR, endAngle, startAngle, true);
+    const geom = new THREE.ExtrudeGeometry(shape, { depth: cfg.stepHeight, bevelEnabled: false });
+    geom.rotateX(-Math.PI / 2);
+    const mesh = new THREE.Mesh(geom, matWedge);
+    mesh.position.y = stepZ + cfg.stepHeight;
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    group.add(mesh);
+  }
+
+  const totalHeight = cfg.stepCount * cfg.stepHeight;
+  const pillarGeom = new THREE.CylinderGeometry(innerR * 0.8, innerR * 0.8, totalHeight, 16);
+  const matPillar = new THREE.MeshStandardMaterial({ color: 0x2d2d2d, roughness: 0.5, metalness: 0.6 });
+  const pillar = new THREE.Mesh(pillarGeom, matPillar);
+  pillar.position.y = totalHeight / 2;
+  pillar.castShadow = true;
+  group.add(pillar);
+
+  if (cfg.withRailing) {
+    group.add(buildSpiralRailing(outerR, totalRot, totalHeight, cfg.stepCount));
+  }
+
+  group.userData = {
+    type: 'stairs',
+    shape: 'spiral',
+    outerRadius: outerR,
+    innerRadius: innerR,
+    totalRotation: totalRot,
+    totalHeight,
+    stepCount: cfg.stepCount,
+  };
+  return group;
+}
+
+function buildSpiralRailing(
+  outerR: number, totalRot: number, totalHeight: number, stepCount: number,
+): THREE.Group {
+  const group = new THREE.Group();
+  const points: THREE.Vector3[] = [];
+  const steps = Math.max(stepCount * 4, 40);
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    const angle = t * totalRot;
+    points.push(new THREE.Vector3(
+      Math.cos(angle) * outerR,
+      t * totalHeight + 1.0,
+      Math.sin(angle) * outerR,
+    ));
+  }
+  const curve = new THREE.CatmullRomCurve3(points);
+  const tubeGeom = new THREE.TubeGeometry(curve, steps, 0.025, 6, false);
+  const matRail = new THREE.MeshStandardMaterial({ color: 0x2d2d2d, roughness: 0.4, metalness: 0.7 });
+  group.add(new THREE.Mesh(tubeGeom, matRail));
   return group;
 }
 

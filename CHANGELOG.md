@@ -6,6 +6,25 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+## v2.7.4 — 2026-04-26
+
+### Multi-Floor Phase 4 — Wendeltreppen
+
+- **`stairsGeometry.buildSpiralStairsMesh()`** — Tortenstück-Stufen
+  (ExtrudeGeometry pro Ring-Sektor) gestapelt um zentrale Säule. Spiral-
+  Geländer als TubeGeometry entlang CatmullRom-Curve. Defaults:
+  outerRadius 1.2 m, innerRadius 0.2 m, totalRotation 270°.
+- **`buildStairsMesh()` Dispatcher** erkennt jetzt `shape='spiral'` und
+  delegiert vor dem L/Straight-Pfad. Keine Änderung in `index.html`
+  build3DObj nötig.
+- **Catalog-Item `stairs-spiral-standard`** — 17 Stufen, 270° Rotation,
+  Bounding-Box 2.4×2.4 m.
+- **Types**: `StairsConfig.shape` jetzt `'straight' | 'l' | 'spiral'`,
+  `outerRadius`/`innerRadius`/`totalRotation` als optional fields.
+- **+6 Vitest-Tests** (Wedge-Count, totalHeight, userData, Defaults,
+  withRailing-False, Catalog-Roundtrip). Vitest gesamt: 633 → 639.
+- **Multi-Floor v3.0 jetzt 4/4 Phasen done.**
+
 ## v2.7.3 — 2026-04-26
 
 ### Multi-Floor Phase 3 — Treppen wirklich rendern

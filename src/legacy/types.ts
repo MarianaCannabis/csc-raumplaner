@@ -26,11 +26,11 @@ export interface SceneObject {
  * in Phase 2; L/Wendel kommen in Phase 3. Werte in Metern.
  */
 export interface StairsConfig {
-  /** 'straight' = einläufig, 'l' = L-Treppe mit 90° Podest. */
-  shape: 'straight' | 'l';
+  /** 'straight' = einläufig, 'l' = L-Treppe mit 90° Podest, 'spiral' = Wendeltreppe. */
+  shape: 'straight' | 'l' | 'spiral';
   /** Stufen-Höhe in m (Bauordnung: max 0.19). */
   stepHeight: number;
-  /** Stufen-Tiefe in m. */
+  /** Stufen-Tiefe in m. Bei spiral ungenutzt (durch Radius/Rotation bestimmt). */
   stepDepth: number;
   /** Anzahl Stufen — totalHeight = stepCount * stepHeight. */
   stepCount: number;
@@ -41,6 +41,12 @@ export interface StairsConfig {
    * (Lauf 1). Lauf 2 hat dann (stepCount - landingAfter). Default = floor(stepCount/2).
    */
   landingAfter?: number;
+  /** Phase 4: Wendeltreppe-Außenradius (m). Default 1.2. */
+  outerRadius?: number;
+  /** Phase 4: Mittel-Pfosten-Radius (m). Default 0.2. */
+  innerRadius?: number;
+  /** Phase 4: Gesamt-Rotation in rad — z.B. Math.PI*1.5 für 270°. Default Math.PI*1.5. */
+  totalRotation?: number;
 }
 
 /**

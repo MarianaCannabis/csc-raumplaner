@@ -98,3 +98,58 @@ describe('L-Treppe (Phase 3 #4)', () => {
     expect((m.userData as { totalHeight: number }).totalHeight).toBeCloseTo(14 * 0.18, 4);
   });
 });
+
+describe('Wendeltreppe (Phase 4)', () => {
+  const SPIRAL_CFG: StairsConfig = {
+    shape: 'spiral',
+    stepHeight: 0.18,
+    stepDepth: 0.28,
+    stepCount: 17,
+    withRailing: true,
+    outerRadius: 1.2,
+    innerRadius: 0.2,
+    totalRotation: Math.PI * 1.5,
+  };
+
+  it('shape="spiral" erzeugt stepCount Wedges + 1 Pillar + 1 Railing-Group', () => {
+    const m = buildStairsMesh(2.4, SPIRAL_CFG);
+    const meshCount = m.children.filter((c) => (c as { isMesh?: boolean }).isMesh).length;
+    expect(meshCount).toBe(SPIRAL_CFG.stepCount + 1); // wedges + pillar
+    const groupCount = m.children.filter((c) => c instanceof THREE.Group).length;
+    expect(groupCount).toBe(1); // railing-group
+  });
+
+  it('totalHeight = stepCount × stepHeight', () => {
+    const m = buildStairsMesh(2.4, SPIRAL_CFG);
+    expect((m.userData as { totalHeight: number }).totalHeight).toBeCloseTo(17 * 0.18, 4);
+  });
+
+  it('userData speichert outerRadius + totalRotation', () => {
+    const m = buildStairsMesh(2.4, SPIRAL_CFG);
+    const data = m.userData as { outerRadius: number; totalRotation: number; shape: string };
+    expect(data.shape).toBe('spiral');
+    expect(data.outerRadius).toBe(1.2);
+    expect(data.totalRotation).toBeCloseTo(Math.PI * 1.5, 4);
+  });
+
+  it('Defaults wenn outerRadius/innerRadius/totalRotation fehlen', () => {
+    const m = buildStairsMesh(2.4, {
+      shape: 'spiral', stepHeight: 0.18, stepDepth: 0.28, stepCount: 12, withRailing: false,
+    });
+    const data = m.userData as { outerRadius: number; innerRadius: number; totalRotation: number };
+    expect(data.outerRadius).toBe(1.2);
+    expect(data.innerRadius).toBe(0.2);
+    expect(data.totalRotation).toBeCloseTo(Math.PI * 1.5, 4);
+  });
+
+  it('ohne withRailing: keine Railing-Gruppe', () => {
+    const m = buildStairsMesh(2.4, { ...SPIRAL_CFG, withRailing: false });
+    const groupCount = m.children.filter((c) => c instanceof THREE.Group).length;
+    expect(groupCount).toBe(0);
+  });
+
+  it('Catalog-Item stairs-spiral-standard registriert + dispatched zu spiral', () => {
+    const m = buildStairsMesh(2.4, SPIRAL_CFG);
+    expect((m.userData as { shape: string }).shape).toBe('spiral');
+  });
+});
