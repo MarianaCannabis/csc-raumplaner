@@ -24,6 +24,9 @@ Wird live gepflegt — pro abgeschlossenem PR wird der Status aktualisiert.
 | ✅ | Doppel-Aufruf `setTimeout startWelcomeFlow` | 10 min | [#195](https://github.com/MarianaCannabis/csc-raumplaner/pull/195) — **3×-Init-Block-Bug**: kompletter Boot-Init bei jeder State-Mutation, major Performance-Win |
 | ✅ | Onboarding-Tour CTA-Glitch (Bridge-Modal kurz sichtbar nach Vorlage/Leer/Laden-Click) | 30 min | [#199](https://github.com/MarianaCannabis/csc-raumplaner/pull/199) — `ctaThenAction` setzt state=done VOR Modal-Close |
 | ✅ | CLAUDE.md-Force-Push-Regel verfeinern (erlauben auf eigenen Feature-Branches, weiterhin verboten auf main) | 15 min | [#200](https://github.com/MarianaCannabis/csc-raumplaner/pull/200) — Lehre aus Sitzung C umgesetzt |
+| ✅ | **3D-Mode-Hotfix (KRITISCH)** | 3h | [#202](https://github.com/MarianaCannabis/csc-raumplaner/pull/202) — `setView`-Wrapper las `window.fpCv/tCv/...` (lokale const, nicht auf window) → Canvas-Display-Swap unterblieb 5+ Wochen. v2.7.2 released |
+| ⏳ | **Module-Bridge-Audit** (Lehre aus 3D-Bug) | 2-3h | systematischer Audit aller `buildXDeps` in main.ts — sind weitere `const`-Reads silent broken? |
+| ⏳ | Touch-Listener-Wire-Up auf fpCv/tCv | 2-3h | Folge zu PR #203 — Pattern-Library steht, tatsächlicher Wire-Up fehlt |
 
 ## Bedienkonzept
 
@@ -72,7 +75,22 @@ User soll in den nächsten Tagen prüfen:
 
 Falls Verhalten unverändert: Ursache war woanders, neuer Audit nötig.
 
+## Migration-Status (User-Aktion-Reminder)
+
+User soll vor Sitzungs-Start beider Migrations applien (falls noch nicht):
+
+| Migration | Status | Was wenn nicht applied |
+|---|---|---|
+| **0009 Optimistic Locking** | ❓ ggf. ausstehend | Konflikt-Modal inaktiv, last-writer-wins (graceful) |
+| **0010 KCanG-Apps Cloud-Sync** | ❓ ggf. ausstehend | Wizard-Cloud-Sync inaktiv (graceful, localStorage funktioniert) |
+
+Apply-URL: https://supabase.com/dashboard/project/wvkjkdwahsqozeupoxpj/sql
+
+Smoke nach Apply:
+- [ ] **0009**: Browser 1 + Browser 2 (Inkognito) auf gleiches Projekt → beide ändern + speichern → Konflikt-Modal erscheint
+- [ ] **0010**: KCanG-Wizard öffnen → Cloud-Sync-Toggle aktivieren → Save → Supabase Dashboard zeigt csc_kcang_applications-Row
+
 ## Bundle-Status (informativ)
 
-- v2.7.1 (aktuell): ~431 KB total gz, Distance zu <400-KB-Roadmap-Ziel: 31 KB
+- v2.7.2 (aktuell): ~445 KB total gz, Distance zu <400-KB-Roadmap-Ziel: ~45 KB
 - Strategie: nicht aktiv jagen, Diminishing Returns nach Bundle-Sprint
