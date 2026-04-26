@@ -141,6 +141,56 @@ Wenn ein zweiter User eingeloggt ist und dasselbe Projekt öffnet:
 | `Strg+S` | Lokal speichern |
 | `Mausrad` | Zoom (2D + 3D) |
 
+## Neu in v2.8.0
+
+### Multi-Floor mit Treppen
+
+Mehrere Etagen anlegen + per Treppe verbinden:
+
+1. **Floor-Manager öffnen** — Topbar → `🏢 Etage`-Button (oder Topbar-Menu „Plan").
+2. **Floor anlegen** — `+ Etage darüber` (für OG) oder `+ Etage darunter` (für Keller). Höhe pro Floor anpassbar (Default 3 m).
+3. **Aktiven Floor wechseln** — Tabs am Bottom des Canvas.
+4. **Treppe platzieren** — Catalog-Kategorie `🪜 Treppen`. Drei Bauformen:
+   - `Gerade Treppe` (Standard, 17 Stufen)
+   - `L-Treppe` mit 90° Podest
+   - `Wendeltreppe` (270° Spirale, Mittel-Säule, Spiral-Geländer)
+5. **Stacked-View** — `🏢 Alle Etagen`-Button blendet alle Floors gleichzeitig in 3D ein, inaktive Floors mit 35 % Transparenz.
+6. **Compliance** — 2 Treppen-Regeln (Mindestbreite 1.20 m für Notausgang, Stufenhöhe ≤ 0.19 m) laufen auto.
+
+### Bauantrag-PDF generieren
+
+1. Topbar-Menu „Tools" → `📄 Bauantrag-PDF`.
+2. Wizard ausfüllen (Antragsteller, Lageplan, …).
+3. Button `📄 Bauantrag-PDF erzeugen` klickt, jsPDF lazy-loaded ~127 KB.
+4. PDF mit 10 Sektionen wird heruntergeladen: Deckblatt, Lageplan, Grundrisse pro Floor, Compliance-Bericht, Möbel-Liste, Schnitte …
+
+### KCanG-Compliance-Wizard
+
+7-Sektionen-Wizard für KCanG-Antragsdokumentation:
+1. Topbar-Menu „Tools" → `📋 KCanG-Wizard`.
+2. Sektionen: Vereinsdaten · Räume · Hygiene · Suchtberatung · Sicherheit · Präventionsbeauftragter · Anhänge.
+3. Cloud-Sync (opt-in) — speichert Wizard-Stand in `csc_kcang_applications` (RLS owner-only).
+4. PDF-Export am Ende.
+
+### BIM-Import/Export
+
+Rechtes Panel → `🏗 BIM`-Tab.
+
+**Import:** IFC-Datei (von Architekt) auswählen → @thatopen/components-Library lazy-loaded (~5 MB beim ersten Mal) → IFC-Modell wird im 400-px-Container angezeigt.
+
+**Export:** Button `📤 Aktuellen Plan als IFC exportieren` → Räume + Möbel + Wände + Böden werden als IFC2x3-STEP-21 generiert + Download. Datei lädt in BIMvision, Solibri, xeokit, Revit-Import.
+
+### Plan-Wechsel (Pricing)
+
+Topbar-Menu „Hilfe" → `💎 Plan & Preise`.
+
+- 3 Pläne: Free (0 €), Pro (0 € Test-Mode), Team (0 € Test-Mode).
+- Pro/Team triggern Stripe-Checkout-Redirect (Test-Mode-Banner sichtbar).
+- Test-Karte: `4242 4242 4242 4242`, beliebiges Zukunftsdatum, beliebige CVC.
+- Nach erfolgreichem Checkout: Webhook upserted in `csc_subscriptions` → Plan ist aktiv beim nächsten App-Refresh.
+- Free-Plan: Direct DB-Update ohne Checkout.
+- Soft-Limits: bei Limit-Überschreitung erscheint Toast mit Upgrade-Hinweis (kein Block).
+
 ## Troubleshooting
 
 **App zeigt Welcome-Overlay bei jedem Start** — LocalStorage-Check `csc-welcome-never` nicht gesetzt. Im Welcome-Modal Checkbox `Nicht mehr anzeigen` aktivieren.

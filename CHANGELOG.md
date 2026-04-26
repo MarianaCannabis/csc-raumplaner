@@ -6,6 +6,22 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+## v2.8.0 — 2026-04-26 — Roadmap v3.0 komplett ✅
+
+**Bedeutender Release.** Roadmap v3.0 (Bauantrag-PDF · Multi-Floor · Stripe ·
+BIM-Viewer) ist nach 4 Wellen + diesem Doc-Polish komplett — alle 4 Items done.
+
+### Doc-Polish
+
+- **README.md** komplett aktualisiert: Version-Badge 2.8.0, Test-Counts
+  (659/659), neue Bundle-Sektion (Initial vs. Lazy-Chunks), erweiterte
+  Feature-Liste, „Was ist erledigt"-Sektion mit allen v3.0-Items als ✅,
+  „Was kommen kann" für künftige Themen.
+- **`docs/USER-GUIDE.md`** ergänzt um Sektionen: Multi-Floor mit Treppen,
+  Bauantrag-PDF generieren, KCanG-Compliance-Wizard, BIM-Import/Export,
+  Plan-Wechsel (Pricing).
+- Version-Bump 2.7.7 → **2.8.0** (Minor wegen v3.0-komplett-Milestone).
+
 ## v2.7.7 — 2026-04-26
 
 ### BIM-Viewer Phase 2 (Roadmap v3.0 #4 — Phase 2 done)

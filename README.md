@@ -1,24 +1,61 @@
 # 🌿 CSC Studio Pro
 
-Browser-basierter Raum- und Veranstaltungsplaner für **Cannabis Social Clubs (KCanG)** — 2D + 3D, Compliance-Live-Check, Cloud-Save, KI-Features.
+Browser-basierter Raum- und Veranstaltungsplaner für **Cannabis Social Clubs (KCanG)** — 2D + 3D, Compliance-Live-Check, Cloud-Save, BIM-Roundtrip, KI-Features.
 
-**Live:** https://marianacannabis.github.io/csc-raumplaner/ · **Version:** 2.7.1 · **Lizenz:** MIT
+**Live:** https://marianacannabis.github.io/csc-raumplaner/ · **Version:** 2.8.0 · **Lizenz:** MIT
 
-![Version](https://img.shields.io/badge/version-2.7.1-4ade80) ![Bundle gz](https://img.shields.io/badge/bundle-431KB_gz-fbbf24) ![Tests](https://img.shields.io/badge/tests-390_passing-4ade80) ![E2E](https://img.shields.io/badge/E2E-41_passing-blue)
+![Version](https://img.shields.io/badge/version-2.8.0-4ade80) ![Tests](https://img.shields.io/badge/tests-659_passing-4ade80) ![E2E](https://img.shields.io/badge/E2E-54_passing-blue) ![Roadmap](https://img.shields.io/badge/v3.0%20Roadmap-4%2F4%20done-22c55e)
 
-## Was kann's
+## Features (v2.8.0)
 
-- **Zwei Planungs-Modi:** Segmented Control in der Topbar wechselt zwischen `🏪 Raumplanung` (KCanG-Clubhaus) und `🎪 Veranstaltungs-Planung` (Messe/Kongress). Sidebar, Katalog, Regeln, Export-Buttons passen sich automatisch an.
-- **Raum-Planung:** 2D zeichnen, Objekte platzieren, 3D-Vorschau mit PBR-Materialien + HDRI-Environment
-- **KCanG-Compliance-Check:** 21 Live-Regeln (Ausgabe, Lager, WC, Sozial, Sicherheit, Flucht, §13-POI-Distance, §14-Sichtschutz, §23-Präventionsbeauftragter, Messe-Höhe …). Mode-abhängig gefiltert.
-- **Messe-Workflow:** 14 Stand-Templates (Mari-Jane, Dmexco, Boot, Gamescom, Showroom) + Budget-Kalkulator + Packliste + DXF-Export
-- **260+ Katalog-Items** in 30+ Kategorien mit PBR-Materialien (Kenney, Quaternius, ambientCG — alle CC0)
-- **KI-Features:** Grundriss-Analyse + Smart Lighting + **PDF-Messeordnung-Import** via Claude Vision API
-- **Multi-User-Kollaboration:** farbige Cursor der anderen User, Avatar-Presence-Bar
-- **Cloud-Save:** Magic-Link-Auth (Supabase), Token-Auto-Refresh, 1h-TTL mit silent-keepalive
-- **Export:** DXF (5 Layer, CAD-tauglich), PDF, CSV (Detail + Aggregiert), GLTF, IFC (light)
-- **PWA:** installierbar, offline-fähig, Auto-Save in IndexedDB alle 30s
-- **DSGVO-konform:** Daten-Export (Art. 20), Account-Löschung (Art. 17), nur technisch-notwendige Cookies
+### Räume + Compliance
+- **2D + 3D Multi-Floor** mit gerade/L/Wendel-Treppen, Stacked-View mit Floor-Transparenz
+- **23 Compliance-Regeln** (KCanG: Ausgabe, Lager, WC, Sozial, Sicherheit, Flucht, §13-POI-Distance, §14-Sichtschutz, §23-Präventionsbeauftragter; Bauordnung: Treppen-Mindestbreite, Stufenhöhe, Messe-Höhe …). Mode-abhängig gefiltert.
+- **Bild-auf-Boden + Bild-auf-Wand** (User-Uploads, IndexedDB-cached)
+- **Visual-History** mit Slider/Grid/Compare-Modes (Time-Travel-UI)
+- **Stempel-Funktion** für identische Räume
+
+### Wizards + Antrag
+- **KCanG-Compliance-Wizard** mit 7 Sektionen (Vereinsdaten, Räume, Hygiene, Suchtberatung, Sicherheit, …) + Cloud-Sync (opt-in)
+- **Bauantrag-PDF-Generator** — 10 Sektionen (Deckblatt, Lageplan, Grundrisse, Compliance-Bericht, …)
+- **Onboarding-Tour** mit Phase-State-Machine
+
+### Cloud + Multi-User
+- **Magic-Link-Auth** (Supabase) + Token-Auto-Refresh
+- **Cloud-Save mit Optimistic Locking** + Konflikt-Diff-Modal
+- **Realtime-Multi-User** mit konsistenten Cursor-Farben + Live-Avatar-Bar
+
+### Export
+- DXF (5 Layer, CAD-tauglich)
+- PDF (Bauantrag + Standard-Print)
+- CSV (Möbel + Budget)
+- GLTF (3D-Format, lazy GLTFExporter)
+- **IFC** — Import via @thatopen/components (lazy) + Export via handgeschriebenem IFC2x3-Writer (aktueller Plan → Datei für Revit/BIMvision/Solibri)
+
+### Subscription (Stripe Phase 2)
+- 3 Pläne (Free/Pro/Team) — alle 0 € im Test-Mode (CSC-frei)
+- Stripe-Checkout-Pipeline aktiv (Webhook + Edge-Functions); Live-Pricing per Config-Switch
+- Soft-Limits-Enforcement (`checkPlanLimit`)
+
+### Tooling + DX
+- TypeScript strict (5 strict-Flags: `strict`, `noUncheckedIndexedAccess`, `noImplicitReturns`, `noFallthroughCasesInSwitch`, `noImplicitOverride`)
+- **659 Vitest** Unit-Tests · **54 Playwright** E2E
+- 4 CI-Workflows: Tests, E2E, Lighthouse, Audit
+- Audit: Functions-Inventory, Broken-Flow-Detect, Catalog-Audit, Menu-Coverage, Module-Bridge-Audit, Feature-Manifest
+
+## Bundle (v2.8.0)
+
+| File | Initial gz | Lazy (on-demand) |
+|---|---|---|
+| index.html | ~351 KB | – |
+| index.js | ~94 KB | – |
+| CSS | ~19 KB | – |
+| **Initial total** | **~470 KB** | – |
+| jsPDF + html2canvas | – | ~127 KB (Bauantrag-PDF) |
+| @thatopen/components + web-ifc-Worker | – | ~5 MB (BIM-Import) |
+| GLTFExporter | – | ~13 KB (3D-Export) |
+| STAND_TEMPLATES | – | ~6 KB (Template-Modal) |
+| i18n locales | – | ~600 B × 3 (EN/NL/ES) |
 
 ## Getting Started
 
@@ -32,7 +69,7 @@ npm run dev
 # Produktions-Build
 npm run build
 
-# Unit-Tests (Vitest, 390 Tests)
+# Unit-Tests (Vitest, 659 Tests)
 npm test
 
 # Coverage-Report
@@ -131,44 +168,40 @@ Threshold-Fail lokal — nur Reporting).
 
 Lokal: `npm run audit:all`. Reports landen in `docs/`.
 
-### Sonstige Gates (v2.7.1)
+### Sonstige Gates (v2.8.0)
 
 | Gate | Ziel | Aktuell |
 |---|---|---|
-| Bundle-Size gz | <400 KB | **~431 KB** (index.html 337 + JS 76 + CSS 19; Distance −31 KB) |
-| Unit-Tests | passing | **390/390 ✅** (von 26 in v2.4 hochgewachsen, P17-Strangler + neue Module) |
-| E2E-Tests | 41/41 passing | **41/41 ✅** (~1.4 min Laufzeit) |
+| Bundle-Initial gz | <500 KB | **~470 KB** |
+| Bundle-Lazy chunks | unbounded | BIM-Lib ~5 MB, jsPDF ~127 KB, GLTFExporter ~13 KB |
+| Unit-Tests | passing | **659/659 ✅** |
+| E2E-Tests | passing | **54/54 ✅** (~1.7 min Laufzeit) |
 | TS strict | clean | **✅** (+ noUncheckedIndexedAccess, noFallthroughCasesInSwitch, noImplicitReturns, noImplicitOverride) |
-| WCAG 2.1 AA Touch-Targets | 44×44 px | **✅** (P11.2 + P-Bug-Bash) |
-| Topbar-Design-System | Lucide-Icons + `[data-theme]` | **✅** Single-Source-of-Truth (Track B Cluster 8d) |
-| Audit | 0 unresolved | **✅** 704 resolved / 0 unresolved (PR #192) |
-| Strangler-Module | extract from index.html | **21 Module ✅** (P17.1-21 in `src/legacy/`) |
+| WCAG 2.1 AA Touch-Targets | 44×44 px | **✅** |
+| Topbar-Design-System | Lucide-Icons + `[data-theme]` | **✅** Single-Source-of-Truth |
+| Audit | 0 unresolved | **✅** |
+| Strangler-Module | extract from index.html | **22+ Module ✅** in `src/legacy/` |
 
-## Roadmap
+## Was ist erledigt (Stand v2.8.0)
 
-Aktuelle Themenliste mit Status: [`docs/FEATURE-ROADMAP.md`](docs/FEATURE-ROADMAP.md).
+### v3.0-Roadmap — komplett ✅
+
+- ✅ **Bauantrag-PDF-Generierung** (10-Sektionen-Generator)
+- ✅ **Multi-Floor mit Treppen** (alle 4 Phasen): Floor-Manager, gerade Treppen, L-Treppen, Wendeltreppen, Stacked-3D-View, +2 Compliance-Regeln
+- ✅ **Stripe Phase 1+2**: Pricing-Modal + Edge-Functions (`stripe-checkout`, `stripe-webhook`) + Webhook-Signature-Verify + RLS-Hardening (Migration 0012). Test-Mode aktiv, alle Pläne 0 € (CSC-frei).
+- ✅ **BIM-Viewer Phase 1+2**: IFC-Import via @thatopen/components (lazy), IFC-Export via handgeschriebenem IFC2x3-Writer. Roundtrip-Editing.
 
 ### v2.7-Recap
 
-Bundle-Reise seit v2.4: **626 KB → 431 KB gz** (−195 KB, −31%) durch
-21 Strangler-Module (P17.1–21 in `src/legacy/`) + 4 Build-Konfig-Sub-Tasks
-(GLTFExporter/STAND_TEMPLATES/i18n-Locales lazy-loaded + Purgecss).
-390 Vitest-Tests · 41 Playwright-E2E · audit:all 0 unresolved · Lighthouse-CI
-+ Audit-CI etabliert. Distance zu <400 KB Stretch-Goal: **31 KB**.
+659 Vitest-Tests · 54 Playwright-E2E · audit:all 0 unresolved · Lighthouse-CI + Audit-CI aktiv. 21 Strangler-Module in `src/legacy/`. 4 CI-Workflows.
 
-### v2.3-Block (großteils ✅)
+## Was kommen kann
 
-- **JS-Split:** ✅ 21 Module extrahiert (P17.1–21), Bundle −11 KB gz
-- **Full Menu-Tagging:** ⏳ offen (~140 Items mit `data-mode`/`data-tier`)
-- **Lighthouse-CI:** ✅ done (v2.6+, Workflow active mit Threshold-Gates)
-- **Purgecss:** ✅ done (v2.7.1, −1.8 KB CSS gz nach Visual-Regression-Verify)
-
-### v3.0 (2026 H2)
-
-- Multi-Floor-Konstruktionen mit 3D-Treppen
-- Bauantrag-PDF-Generierung (Grundriss + Positionsplan + Schnitte)
-- BIM-Viewer (ifcViewer) Integration
-- Stripe-Checkout für Pro/Team-Pläne (v2.2 hat Infrastruktur, nicht Payment)
+- Wendeltreppen-Compliance-Erweiterung
+- Stripe Live-Mode-Aktivierung (wenn Pricing fest)
+- BIM-Roundtrip-In-Viewer-Edit (jetzt nur Import + Export, kein Live-Edit im 3D)
+- Mobile-Native-App (PWA-Wrap statt Browser-only)
+- Touch-/Pen-optimierte Eingabe
 
 ## Contributing
 
