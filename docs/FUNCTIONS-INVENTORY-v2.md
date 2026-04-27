@@ -6,7 +6,7 @@ Stand: 2026-04-27 — auto-generiert via `node scripts/audit-functions.mjs`.
 - **onclick-Handler:** 735
 - **addEventListener-Bindings:** 128
 - **HTML-Top-Level-Functions:** 863
-- **TS-Exports:** 517
+- **TS-Exports:** 518
 - **tbm-item-Coverage:** 160/160 fully tagged (data-mode: 160/160, data-tier: 160/160)
 
 ## onclick-Handler (Top 80 — Kontext zeigt Button-Text)
@@ -155,6 +155,10 @@ Stand: 2026-04-27 — auto-generiert via `node scripts/audit-functions.mjs`.
 - `listActiveRules` (line 17)
 - `evaluateAll` (line 40)
 - `evaluateForRoom` (line 47)
+
+### src/compliance/rules/_kcangData.ts
+
+- `getKCanGApp` (line 7)
 
 ### src/config/defaults.ts
 

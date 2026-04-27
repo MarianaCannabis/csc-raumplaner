@@ -55,7 +55,7 @@ test.describe('Feature-Health: ist alles noch da?', () => {
     expect(info.stairs).toBeGreaterThanOrEqual(4);
   });
 
-  test('Compliance — mindestens 23 Regeln registriert', async ({ page }) => {
+  test('Compliance — mindestens 25 Regeln registriert', async ({ page }) => {
     const ruleCount = await page.evaluate(() => {
       const w = window as unknown as { cscCompliance?: { listRules?: () => unknown[]; rules?: unknown[]; getRules?: () => unknown[] } };
       const c = w.cscCompliance;
@@ -65,7 +65,7 @@ test.describe('Feature-Health: ist alles noch da?', () => {
       if (Array.isArray(c.rules)) return c.rules.length;
       return -1; // API unbekannt
     });
-    expect(ruleCount, 'cscCompliance.listRules/getRules/rules nicht verfügbar').toBeGreaterThanOrEqual(23);
+    expect(ruleCount, 'cscCompliance.listRules/getRules/rules nicht verfügbar').toBeGreaterThanOrEqual(25);
   });
 
   test('Modals — Welcome programmatisch öffnen + schließen', async ({ page }) => {
