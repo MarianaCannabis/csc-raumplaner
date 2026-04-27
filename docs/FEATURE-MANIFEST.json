@@ -1,6 +1,6 @@
 {
   "$comment": "Feature-Inventory-Manifest für audit:features. Source-of-Truth für Min-Erwartungswerte. Bei Feature-Add diese Datei + Test-Suite parallel updaten.",
-  "version": "2.8.1",
+  "version": "2.8.2",
   "categories": {
     "catalog": {
       "$comment": "RICH_PRIMITIVES + EVENT_ITEMS + alle items/*.ts. Min-Wert ist defensiv.",
@@ -15,7 +15,7 @@
     },
     "compliance": {
       "$comment": "src/compliance/index.ts importiert alle rules/*.ts.",
-      "expected_min_rule_imports": 23
+      "expected_min_rule_imports": 25
     },
     "modals": {
       "$comment": "Selektive m-IDs die für Major-Features stehen. NICHT alle 50 m-* IDs — nur die userseitig wichtigen.",

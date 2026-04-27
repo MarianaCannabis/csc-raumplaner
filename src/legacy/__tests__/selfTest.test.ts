@@ -28,7 +28,7 @@ function setupWorld(opts: {
   }));
   w.cscCatalog = { newItems: items };
   // Compliance
-  const ruleArr = Array.from({ length: opts.rules ?? 23 }, (_, i) => ({ id: 'r' + i }));
+  const ruleArr = Array.from({ length: opts.rules ?? 25 }, (_, i) => ({ id: 'r' + i }));
   w.cscCompliance = { listRules: () => ruleArr };
   // Modals — DOM
   document.body.innerHTML = '';

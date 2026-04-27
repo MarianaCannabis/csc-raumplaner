@@ -6,6 +6,26 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+## v2.8.2 — 2026-04-27
+
+### Compliance-Doppelwelle: KCanG-Wizard Section D + E als Regeln
+
+- **`src/compliance/rules/_kcangData.ts`** (NEU) — `getKCanGApp()` liest
+  `localStorage[csc-kcang-application]` (gleiche Source wie kcangWizard.ts).
+  Robust gegen Storage-Korruption (try/catch).
+- **`hygienekonzept.ts`** (KCanG § 14 + Hygiene-VO) — prüft 5 Section-D-
+  Items: Händewaschen, Flächendesinfektion, Schädlingsbekämpfung,
+  Abfallentsorgung, Personalschulung. category=member, severity=high.
+- **`suchtberatung.ts`** (KCanG § 23) — prüft Section-E: kontakt_name +
+  mind. ein Kanal (E-Mail oder Telefon). category=member, severity=high.
+- **+11 Vitest-Tests** (4 hygiene + 7 suchtberatung) mit
+  `vi.stubGlobal('localStorage')`-Pattern. Vitest gesamt: 668 → 679.
+- **Manifest-Bump** rule-imports 23 → **25** (`docs/FEATURE-MANIFEST.json`).
+  selfTest.ts + feature-health.spec.ts + selfTest.test.ts default-rules
+  parallel nachgezogen.
+- Roadmap-Items **Hygiene + Suchtberatung** (FEATURE-ROADMAP.md
+  Bedienkonzept-Sektion) damit ✅.
+
 ## v2.8.1 — 2026-04-26
 
 ### Feature-Selbsttest — automatischer Health-Check

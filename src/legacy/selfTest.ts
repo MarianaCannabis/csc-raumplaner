@@ -76,9 +76,9 @@ function checkCompliance(): SelfTestCheck {
   else if (Array.isArray(c?.rules)) count = c.rules.length;
   return {
     name: 'Compliance-Rules',
-    status: count >= 23 ? 'pass' : 'fail',
+    status: count >= 25 ? 'pass' : 'fail',
     detail: count >= 0 ? `${count} Regeln` : 'API unklar',
-    error: count < 23 ? `Nur ${count}/23 Regeln` : undefined,
+    error: count < 25 ? `Nur ${count}/25 Regeln` : undefined,
   };
 }
 

@@ -31,6 +31,9 @@ import './rules/roomDoorWidth.js';
 // Multi-Floor Phase 2 (Mega-Sammel #4): Treppen-Compliance.
 import './rules/stairsMinWidth.js';
 import './rules/stairsConnection.js';
+// v2.8.2: KCanG-Wizard-Section-D + -E als Compliance-Regeln.
+import './rules/hygienekonzept.js';
+import './rules/suchtberatung.js';
 
 export * as escapeAnalysis from './escapeAnalysis.js';
 export * as metrics from './metrics.js';

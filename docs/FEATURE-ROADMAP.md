@@ -36,8 +36,8 @@ Wird live gepflegt — pro abgeschlossenem PR wird der Status aktualisiert.
 | ✅ | **Konflikt-Resolution Cloud-Save** | 4-6h | [#198](https://github.com/MarianaCannabis/csc-raumplaner/pull/198) — Optimistic Locking via Version-Counter (Migration 0009 PFLICHT-Apply) |
 | ✅ | **Compliance-Wizard für KCanG-Antrag** | 6-8h | [#201](https://github.com/MarianaCannabis/csc-raumplaner/pull/201) — Single-Page-Form 7 Sektionen, localStorage + opt-in Cloud-Sync, jsPDF lazy-Export (Migration 0010 PFLICHT-Apply) |
 | ✅ | Tastatur-Shortcuts-Editor erweitern | 2-3h | [#209](https://github.com/MarianaCannabis/csc-raumplaner/pull/209) — Konflikt-Detection + 3 Presets + 15 Items |
-| ⏳ | Hygiene-Compliance-Regel in src/compliance/ | 1-2h | analog zu §23 Präventionsbeauftragter; Daten kommen jetzt aus KCanG-Wizard Section D |
-| ⏳ | Suchtberatung-Pflichtfeld als KCanG-Regel | 1-2h | Kontakt-Validierung; Daten aus Wizard Section E |
+| ✅ | Hygiene-Compliance-Regel in src/compliance/ | 1-2h | v2.8.2 — `hygienekonzept.ts` prüft 5 Section-D-Items, +4 Vitest |
+| ✅ | Suchtberatung-Pflichtfeld als KCanG-Regel | 1-2h | v2.8.2 — `suchtberatung.ts` prüft kontakt_name + Kanal, +7 Vitest |
 | ✅ | Mobile/Touch-Optimierung | 4-8h | [#203](https://github.com/MarianaCannabis/csc-raumplaner/pull/203) — touchSupport-Modul mit Pan/Zoom/Tap/Long-Press, Boot-Detection, mobile-CSS |
 
 ## Zusatzfunktionen
