@@ -18,9 +18,14 @@ Diese Datei ist dein Dauer-Kontext bei jedem Session-Start. Lies sie zuerst, dan
 
 ## Aktueller Stand
 
-- **Version:** 2.6.3
+- **Version:** 2.8.2
 - **Default-Branch:** main
-- **Letzte Welle:** Auth-/Cloud-Save-Hotfixes v2.6.1 → v2.6.3
+- **Letzte Welle:** Compliance-Doppelwelle Hygiene + Suchtberatung (KCanG
+  § 14 + § 23) — `hygienekonzept.ts` + `suchtberatung.ts` lesen aus
+  Wizard Section D + E, +11 Vitest, rule-imports 23 → 25. Davor
+  Roadmap v3.0 komplett (4/4) — Multi-Floor 4 Phasen, Bauantrag-PDF,
+  BIM-Viewer Roundtrip, Stripe-Checkout 2 Phasen + Bonus Doc-Polish
+  und Feature-Selbsttest mit 🩺-Button. PRs #214–#228.
 
 ## Workflow — Rollenverteilung
 

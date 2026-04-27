@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CSC Studio Pro — Roadmap-v3.0-Test (v2.8.1)</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #0a0f14; color: #e0e6ed; margin: 0; padding: 20px; max-width: 1100px; margin-left: auto; margin-right: auto; }
+    h1 { margin: 0 0 6px; font-size: 22px; }
+    h2 { font-size: 16px; color: #4ade80; margin: 16px 0 10px; border-left: 3px solid #4ade80; padding-left: 10px; }
+    h3 { font-size: 14px; color: #93c5fd; margin: 10px 0 6px; }
+    .hint { color: #a0aec0; margin-bottom: 14px; font-size: 13px; line-height: 1.5; }
+    .section { background: #1a2230; border: 1px solid #2d3748; border-radius: 8px; padding: 16px; margin: 14px 0; }
+    .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+    .pill { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+    .pill-pass { background: #0a4a2e; color: #4ade80; }
+    .pill-fail { background: #5a1f1f; color: #f87171; }
+    .pill-pending { background: #1f2937; color: #a0aec0; }
+    .pill-info { background: #1e3a5f; color: #93c5fd; }
+    button { font-family: inherit; cursor: pointer; }
+    .btn-primary { background: #4ade80; color: #0a0f14; border: none; padding: 10px 18px; border-radius: 4px; font-weight: 600; font-size: 13px; }
+    .btn-primary:hover { background: #22c55e; }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-secondary { background: transparent; color: #e0e6ed; border: 1px solid #2d3748; padding: 8px 14px; border-radius: 4px; font-size: 12px; }
+    .btn-secondary:hover { border-color: #4ade80; }
+    .status-btn { border: 1px solid #2d3748; background: #0a0f14; color: #a0aec0; padding: 4px 12px; border-radius: 4px; font-size: 12px; }
+    .status-btn:hover { border-color: #4ade80; }
+    .status-btn.active-ok { background: #0a4a2e; border-color: #4ade80; color: #4ade80; }
+    .status-btn.active-issue { background: #5a1f1f; border-color: #f87171; color: #f87171; }
+    .test-row { padding: 8px 0; border-bottom: 1px solid #2d3748; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .test-row:last-child { border-bottom: none; }
+    .test-name { flex: 1; font-size: 13px; min-width: 200px; }
+    .test-detail { font-size: 11px; color: #6b7280; max-width: 360px; text-align: right; }
+    .test-detail.err { color: #f87171; }
+    iframe { width: 100%; height: 320px; border: 1px solid #2d3748; border-radius: 4px; background: #0a0f14; }
+    .steps { font-size: 13px; color: #cbd5e0; margin: 6px 0 8px; padding-left: 22px; line-height: 1.7; }
+    .steps li { margin: 2px 0; }
+    .expect { background: #102a4a; border-left: 3px solid #93c5fd; padding: 6px 10px; margin: 6px 0; font-size: 12px; color: #cbd5e0; border-radius: 0 4px 4px 0; }
+    .warn { background: #3a2c0a; border-left: 3px solid #facc15; padding: 6px 10px; margin: 6px 0; font-size: 12px; color: #fcd34d; border-radius: 0 4px 4px 0; }
+    textarea { width: 100%; background: #0a0f14; color: #e0e6ed; border: 1px solid #2d3748; border-radius: 4px; padding: 8px; font-family: inherit; font-size: 12px; min-height: 60px; resize: vertical; }
+    .progress-bar { height: 6px; background: #2d3748; border-radius: 3px; overflow: hidden; margin: 10px 0; }
+    .progress-fill { height: 100%; background: #4ade80; transition: width 0.3s; width: 0%; }
+    .summary { display: flex; gap: 12px; flex-wrap: wrap; margin: 10px 0; }
+    .summary > div { background: #0a0f14; padding: 8px 14px; border-radius: 4px; border: 1px solid #2d3748; font-size: 12px; }
+    code { background: #0a0f14; padding: 1px 6px; border-radius: 3px; font-size: 12px; color: #fcd34d; }
+    .export-bar { position: sticky; bottom: 0; background: #1a2230; padding: 10px; margin: 20px -20px -20px; border-top: 1px solid #2d3748; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <h1>CSC Studio Pro — Roadmap-v3.0-Test (v2.8.1)</h1>
+  <div class="hint">
+    Schritt-für-Schritt-Test für die abgeschlossene <b>Roadmap v3.0</b>
+    (Multi-Floor, Bauantrag-PDF, BIM-Roundtrip, Stripe-Checkout) plus
+    Bonus-Items (Doc-Polish, Feature-Selbsttest). Auto-Tests laufen
+    direkt gegen die App im iframe; manuelle Schritte sind danach
+    Click-für-Click beschrieben.
+    <br><br>
+    Fortschritt wird im <code>localStorage</code> gespeichert. Am Ende
+    klick auf <b>„Bericht in Zwischenablage"</b> — Markdown landet im
+    Clipboard.
+  </div>
+
+  <div class="summary" id="summary">
+    <div>Auto: <span id="auto-pass" class="pill pill-pending">0/0</span></div>
+    <div>Manual: <span id="manual-pass" class="pill pill-pending">0/0</span></div>
+    <div>Stand: <span class="pill pill-info">v2.8.1</span></div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+  <!-- ── App-iframe ───────────────────────────────────────────────────── -->
+  <div class="section">
+    <h2>App-Bootstrap</h2>
+    <div class="hint">Lädt <code>./index.html</code> in einem iframe. Auto-Tests laufen erst nach Boot.</div>
+    <div class="row">
+      <button class="btn-primary" id="btn-load-app">App in iframe laden</button>
+      <span id="boot-status" class="pill pill-pending">noch nicht geladen</span>
+    </div>
+    <iframe id="app-iframe" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals" title="CSC App"></iframe>
+  </div>
+
+  <!-- ── Auto-Tests ───────────────────────────────────────────────────── -->
+  <div class="section">
+    <h2>Automatische Tests</h2>
+    <div class="hint">Greifen via <code>iframe.contentWindow</code> auf die App zu (gleicher Origin = direct access).</div>
+    <div class="row">
+      <button class="btn-primary" id="btn-run-auto" disabled>Tests starten</button>
+    </div>
+    <div id="auto-results"></div>
+  </div>
+
+  <!-- ── Manuelle Tests ───────────────────────────────────────────────── -->
+  <div class="section">
+    <h2>Manuelle Tests — Roadmap v3.0</h2>
+    <div class="hint">Markiere pro Schritt: ✓ bestanden oder ✗ Problem. Notizen optional.</div>
+    <div id="manual-list"></div>
+  </div>
+
+  <!-- ── User-Action-Reminders ────────────────────────────────────────── -->
+  <div class="section">
+    <h2>Vorab — User-Action falls noch nicht erledigt</h2>
+    <div id="user-actions"></div>
+  </div>
+
+  <div class="export-bar">
+    <button class="btn-primary" id="btn-copy">Bericht in Zwischenablage</button>
+    <button class="btn-secondary" id="btn-download">Als .md herunterladen</button>
+    <button class="btn-secondary" id="btn-reset">Alles zurücksetzen</button>
+  </div>
+
+  <script src="test-v2.8.1.js"></script>
+</body>
+</html>
