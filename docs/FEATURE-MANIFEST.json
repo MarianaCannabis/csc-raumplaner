@@ -1,6 +1,6 @@
 {
   "$comment": "Feature-Inventory-Manifest für audit:features. Source-of-Truth für Min-Erwartungswerte. Bei Feature-Add diese Datei + Test-Suite parallel updaten.",
-  "version": "2.8.0",
+  "version": "2.8.1",
   "categories": {
     "catalog": {
       "$comment": "RICH_PRIMITIVES + EVENT_ITEMS + alle items/*.ts. Min-Wert ist defensiv.",

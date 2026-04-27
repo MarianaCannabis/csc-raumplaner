@@ -1,6 +1,6 @@
 # Feature-Roadmap (intern)
 
-Stand: 2026-04-26. Tracking aller Themen für den Software-Ausbau-Marathon.
+Stand: 2026-04-27 · **v2.8.1 · Roadmap v3.0 4/4 ✅**.
 Wird live gepflegt — pro abgeschlossenem PR wird der Status aktualisiert.
 
 ## Status-Legende
@@ -51,14 +51,21 @@ Wird live gepflegt — pro abgeschlossenem PR wird der Status aktualisiert.
 | ✅ | Bild-auf-Wand erweitern | 5-7h | [#206](https://github.com/MarianaCannabis/csc-raumplaner/pull/206) — UV 1:1 Stretch, Property-Panel-Upload, Pattern wie objects.imageMap |
 | ✅ | Wiederholte Räume / Stempel-Funktion | 3-4h | [#211](https://github.com/MarianaCannabis/coffee-raumplaner/pull/211) — `stampMode.ts` mit Live-Selection-Lookup, Esc-Beenden |
 
-## Roadmap v3.0
+## Roadmap v3.0 — komplett ✅ (Stand v2.8.1)
 
 | Status | Item | Aufwand | Notiz |
 |---|---|---|---|
-| 🔧 | Multi-Floor mit 3D-Treppen | 2-3 Wo | **Phase 1+2 ✅** (#216 + [#217](https://github.com/MarianaCannabis/csc-raumplaner/pull/217) — Treppen-Catalog, 3D-Geometrie, Stacked-View, +2 Compliance-Regeln). Phase 3 (L/Wendel-Treppen, Position-basierte Verbindung) als eigene Sitzung. |
-| ✅ | Bauantrag-PDF-Generierung | 1-2 Wo | [#214](https://github.com/MarianaCannabis/csc-raumplaner/pull/214) — 10 Sektionen, jsPDF-Lazy-Reuse, KCanG-Wizard-Daten + Compliance + Möbel + Anhang |
-| ⏳ | BIM-Viewer (ifcViewer) Integration | 1-2 Wo | externe Library + Bundle-Impact |
-| 🔧 | Stripe-Checkout Pro/Team | 1-2 Wo | **Phase 1 ✅** ([#218](https://github.com/MarianaCannabis/csc-raumplaner/pull/218) — Migration 0011, Pricing-Modal, REST-Wrapper). Phase 2 (echtes Stripe + Webhook) als eigene Sitzung. |
+| ✅ | **Multi-Floor mit 3D-Treppen (4/4 Phasen)** | 2-3 Wo | Phase 1+2 #216/[#217](https://github.com/MarianaCannabis/csc-raumplaner/pull/217) (Treppen-Catalog, 3D-Geometrie, Stacked-View, +2 Compliance-Regeln). Phase 3 [#219](https://github.com/MarianaCannabis/csc-raumplaner/pull/219) — Treppen wirklich rendern (`findItem` ergänzt um NEW_CATALOG), `validateStairsPlacement`, Stacked-View-Transparenz, L-Treppen. Phase 4 [#220](https://github.com/MarianaCannabis/csc-raumplaner/pull/220) — Wendeltreppen mit Spiral-Geländer. |
+| ✅ | **Bauantrag-PDF-Generierung** | 1-2 Wo | [#214](https://github.com/MarianaCannabis/csc-raumplaner/pull/214) — 10 Sektionen, jsPDF-Lazy-Reuse, KCanG-Wizard-Daten + Compliance + Möbel + Anhang |
+| ✅ | **BIM-Viewer Integration (Phase 1+2)** | 1-2 Wo | Phase 1 [#221](https://github.com/MarianaCannabis/csc-raumplaner/pull/221) — IFC-Import via @thatopen/components als lazy-Chunk (~5 MB, kein initial-Bundle-Impact). Phase 2 [#223](https://github.com/MarianaCannabis/csc-raumplaner/pull/223) — IFC-Export via existing `src/export/ifc.ts` (handgeschrieben ~9 KB). Roundtrip Import → Edit → Export funktional. |
+| ✅ | **Stripe-Checkout Pro/Team (Phase 1+2)** | 1-2 Wo | Phase 1 [#218](https://github.com/MarianaCannabis/csc-raumplaner/pull/218) — Migration 0011, Pricing-Modal, REST-Wrapper. Phase 2 [#222](https://github.com/MarianaCannabis/csc-raumplaner/pull/222) — Migration 0012 (RLS-Hardening), Edge-Functions `stripe-webhook` + `stripe-checkout` (Test-Mode, alle Pläne 0 €), Soft-Limits, `docs/STRIPE-SETUP.md`. |
+
+## Bonus — Quality-Infrastruktur (post-v3.0)
+
+| Status | Item | Aufwand | Notiz |
+|---|---|---|---|
+| ✅ | **Doc-Polish v2.8.0** | 3-4h | [#224](https://github.com/MarianaCannabis/csc-raumplaner/pull/224) — README + USER-GUIDE komplett aktualisiert, Bundle-Sektion (initial vs lazy), Was-ist-erledigt + Was-kommen-kann, Version-Bump 2.7.7 → 2.8.0 (Minor wegen v3.0-Milestone). |
+| ✅ | **Feature-Selbsttest + 🩺-Button** | 6-10h | [#225](https://github.com/MarianaCannabis/csc-raumplaner/pull/225) — `docs/FEATURE-MANIFEST.json` als Source-of-Truth, `scripts/audit-features.mjs` (statisch, in `audit:all`), `tests/e2e/feature-health.spec.ts` (11 E2E-Tests), `src/legacy/selfTest.ts` + UI-Button im Help-Modal (7 Live-Browser-Checks). „Ist alles noch da?"-Audit von Pflicht-30-Min-Smoke zu Pflicht-30-Sekunden-Click. |
 
 ## Code-Qualität (parkiert für Bedarfsfall)
 
@@ -77,21 +84,30 @@ Falls Verhalten unverändert: Ursache war woanders, neuer Audit nötig.
 
 ## Migration-Status (User-Aktion-Reminder)
 
-User soll vor Sitzungs-Start beider Migrations applien (falls noch nicht):
+User soll vor Sitzungs-Start alle ausstehenden Migrationen applien:
 
 | Migration | Status | Was wenn nicht applied |
 |---|---|---|
 | **0009 Optimistic Locking** | ❓ ggf. ausstehend | Konflikt-Modal inaktiv, last-writer-wins (graceful) |
 | **0010 KCanG-Apps Cloud-Sync** | ❓ ggf. ausstehend | Wizard-Cloud-Sync inaktiv (graceful, localStorage funktioniert) |
-| **0011 Subscriptions** | ❓ neu (Sammel ACBD/v3.0 #4) | Pricing-Modal öffnet, Plan-Wechsel scheitert mit Login-Fehler oder 404 |
+| **0011 Subscriptions** | ❓ ggf. ausstehend | Pricing-Modal öffnet, aber Phase-1-Plan-Wechsel scheitert |
+| **0012 Subscriptions Stripe-Hardening** | ❓ neu (v2.7.6) | RLS-UPDATE bleibt User-Self-Update statt service_role-only — Anti-Tampering-Lücke |
 
 Apply-URL: https://supabase.com/dashboard/project/wvkjkdwahsqozeupoxpj/sql
 
+Stripe-Setup separat: siehe [`docs/STRIPE-SETUP.md`](STRIPE-SETUP.md) für Account, Webhook-URL, Edge-Function-Secrets, Deploy-Schritte.
+
 Smoke nach Apply:
 - [ ] **0009**: Browser 1 + Browser 2 (Inkognito) auf gleiches Projekt → beide ändern + speichern → Konflikt-Modal erscheint
-- [ ] **0010**: KCanG-Wizard öffnen → Cloud-Sync-Toggle aktivieren → Save → Supabase Dashboard zeigt csc_kcang_applications-Row
+- [ ] **0010**: KCanG-Wizard öffnen → Cloud-Sync-Toggle aktivieren → Save → Supabase Dashboard zeigt `csc_kcang_applications`-Row
+- [ ] **0011 + 0012 + Stripe-Setup**: Pricing-Modal → "Pro werden" → Stripe-Checkout-Page öffnet → Test-Karte 4242 4242 4242 4242 → Redirect mit Toast „🎉 Upgrade erfolgreich!" → `csc_subscriptions`-Row hat plan='pro'
 
-## Bundle-Status (informativ)
+## App-Selbsttest (NEU v2.8.1)
 
-- v2.7.2 (aktuell): ~445 KB total gz, Distance zu <400-KB-Roadmap-Ziel: ~45 KB
-- Strategie: nicht aktiv jagen, Diminishing Returns nach Bundle-Sprint
+User-facing 30-Sekunden-Health-Check: `❓ Hilfe → 🩺 App-Selbsttest → 🩺 Jetzt prüfen`. Prüft 7 Kategorien (Bridges, Catalog, Compliance, Modals, Right-Panel-Tabs, Exports, BIM). Manifest-Drift wird zusätzlich in CI gefangen via `audit:features`.
+
+## Bundle-Status (Stand v2.8.1)
+
+- **Initial gz** ~470 KB (index.html ~351 + JS ~94 + CSS ~19) — unverändert seit v2.7-Sprint
+- **Lazy-Chunks on-demand:** BIM-Lib ~5 MB, jsPDF + html2canvas ~127 KB, GLTFExporter ~13 KB, STAND_TEMPLATES ~6 KB, i18n locales ~600 B × 3
+- Strategie: <400-KB-Initial nicht aktiv jagen — Lazy-Splits sind die effektivere Hebel
