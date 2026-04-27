@@ -74,6 +74,15 @@
     },
     "edge_functions": {
       "expected": ["anthropic-proxy", "stripe-webhook", "stripe-checkout"]
+    },
+    "test_pages": {
+      "$comment": "Statische Test-Runner-Seiten unter /public. Kein Auto-Check (audit-features.mjs ignoriert diese Sektion) — reine Doku, damit nicht versehentlich gelöscht.",
+      "files": [
+        "public/test.html",
+        "public/test-checklist.js",
+        "public/test-v2.8.1.html",
+        "public/test-v2.8.1.js"
+      ]
     }
   }
 }

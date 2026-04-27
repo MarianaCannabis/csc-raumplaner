@@ -6,6 +6,27 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## Unreleased
 
+### Doc-Stand-Restdaten (Nachzug PR #227)
+
+- **`CLAUDE.md`** — „Aktueller Stand" von v2.6.3 auf **v2.8.2** gehoben,
+  Compliance-Doppelwelle als „Letzte Welle" eingetragen.
+- **`docs/FEATURE-MANIFEST.json`** — neue Sektion `test_pages` mit den
+  4 statischen Test-Runner-Files (`public/test.html`,
+  `public/test-checklist.js`, `public/test-v2.8.1.html`,
+  `public/test-v2.8.1.js`). Schutz gegen versehentliches Löschen bei
+  Cleanups. `audit-features.mjs` greift Categories einzeln zu, die
+  neue Sektion wird ignoriert (kein Drift-Risiko).
+- **`public/test-v2.8.1.html`** + **`public/test-v2.8.1.js`** (NEU) —
+  standalone Roadmap-v3.0-Test-Page. iframe lädt index.html, 12
+  Auto-Tests (Boot-Errors, 14 Window-Bridges, 8 Modal-IDs, 6 Right-
+  Panel-Tabs, Catalog ≥150 + ≥4 Treppen, ≥25 Compliance-Rules,
+  3 Export-Funktionen, BIM-Bridge, Bauantrag-Bridge, Pricing-Bridge,
+  Multi-Floor-Bridge, eingebauter `cscSelfTest.run`) + 10 manuelle
+  Click-Tests für Multi-Floor / Bauantrag-PDF / BIM-Roundtrip /
+  Stripe-Checkout / 🩺-Selbsttest + 5 User-Action-Reminders
+  (Migrations 0009-0012 + Stripe-Setup). localStorage-Persistenz,
+  Markdown-Report-Export. Compliance-Floor an v2.8.2 angepasst (25).
+
 ## v2.8.2 — 2026-04-27
 
 ### Compliance-Doppelwelle: KCanG-Wizard Section D + E als Regeln
