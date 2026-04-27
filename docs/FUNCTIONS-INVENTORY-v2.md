@@ -1,5 +1,5 @@
 # Functions Inventory v2
-Stand: 2026-04-26 — auto-generiert via `node scripts/audit-functions.mjs`.
+Stand: 2026-04-27 — auto-generiert via `node scripts/audit-functions.mjs`.
 
 ## Zusammenfassung
 
