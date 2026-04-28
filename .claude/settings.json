@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "_comment": "Session-Resilience-Setup für Lokal-Claude (Claude Code CLI). SessionStart zeigt SESSION-CONTEXT.md + git-Status, sodass jede neue Instanz sofort orientiert ist. Stop hängt eine Zeile an SESSION-LOG.md an. Web-Claude (claude.ai/code) nutzt diese Hooks NICHT direkt, ist aber via CLAUDE.md-Pflicht-Verweis auf SESSION-CONTEXT.md ebenfalls abgesichert.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/scripts/session-start.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/scripts/session-stop.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
