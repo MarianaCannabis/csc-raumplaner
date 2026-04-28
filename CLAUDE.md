@@ -3,6 +3,15 @@
 Du arbeitest am Browser-basierten Raum-/Veranstaltungsplaner für Cannabis Social Clubs (KCanG).
 Diese Datei ist dein Dauer-Kontext bei jedem Session-Start. Lies sie zuerst, dann frage gezielt nach.
 
+## ⚠ Pflicht-Reihenfolge bei Session-Start
+
+1. **`SESSION-CONTEXT.md`** lesen — der lebendige Stand: aktueller Branch, was läuft,
+   Blocker, offene User-Actions. Das ist der primäre Kompass für jede neue Instanz
+   (Web-Claude UND Lokal-Claude). Bei Änderungen am Stand: vor Antwort-Ende aktualisieren.
+2. **`SESSION-LOG.md`** kurz checken (letzte 5 Einträge) — Audit-Trail vom Stop-Hook.
+3. Diese `CLAUDE.md` als Hintergrund-Wissen (Stack, Konventionen, Don'ts).
+4. Erst dann auf den User-Prompt antworten.
+
 ## Stack
 
 - **Frontend:** Vanilla-JS-Legacy-Core (`index.html`, ~21k Zeilen, ~1.19 MB) +
@@ -125,5 +134,25 @@ Positive (compliance-bridge: −826 B gz mit 3 Shims).
 
 - /compact bei langen Sessions
 - /resume für noch lebende Sessions
-- Crashed Sessions sind nicht resumebar — CLAUDE.md + CHANGELOG.md + Git-Log sind die Anker
+- Crashed Sessions sind nicht resumebar — `SESSION-CONTEXT.md` + `SESSION-LOG.md` +
+  `CHANGELOG.md` + Git-Log sind die Anker
 - CHANGELOG-Einträge sind Pflicht bei jedem Release (Langzeitgedächtnis)
+- **`SESSION-CONTEXT.md` aktualisieren bevor du eine Antwort beendest**, falls sich
+  Branch / Blocker / nächster Schritt geändert haben. Das ist der einzige Mechanismus
+  der Web-Claude bei API-Crash absichert.
+
+## Resilience-Setup (für beide Claude-Varianten)
+
+Drei Bausteine, in `.claude/` + Repo-Root:
+
+| Datei | Zweck | Wer pflegt |
+|---|---|---|
+| `SESSION-CONTEXT.md` | Lebendiger Stand-Kompass — Branch, was läuft, Blocker, nächster Schritt | Manuell von Web/Lokal vor Antwort-Ende |
+| `SESSION-LOG.md` | Append-only Audit-Trail (1 Zeile pro Stop) | Lokal-Claude via Stop-Hook (auto) |
+| `.claude/settings.json` | SessionStart + Stop Hooks für Lokal-Claude | Einmal-Setup, selten geändert |
+| `.claude/scripts/session-start.sh` | Zeigt Stand bei jedem Lokal-Claude-Start | Einmal-Setup |
+| `.claude/scripts/session-stop.sh` | Schreibt Log-Zeile bei jedem Lokal-Claude-Stop | Einmal-Setup |
+
+Web-Claude hat keine Hooks, aber durch die Pflicht-Reihenfolge oben (zuerst
+`SESSION-CONTEXT.md` lesen) ist der Effekt äquivalent: jede neue Web-Instanz ist
+nach 30 Sekunden orientiert, ohne dass der User die ganze Vorgeschichte erklären muss.
